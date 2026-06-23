@@ -94,6 +94,21 @@
   .band{text-align:center;background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(0,184,136,.02));border:1px solid rgba(0,184,136,.28);border-radius:22px;padding:clamp(36px,7vw,64px);box-shadow:0 50px 110px -60px rgba(0,184,136,.55)}
 
   footer{border-top:1px solid var(--line);padding:30px var(--px);text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint)}
+  .founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:38px}
+  .fcard{background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;transition:transform .3s var(--ease),border-color .3s}
+  .fcard:hover{transform:translateY(-4px);border-color:rgba(0,184,136,.32)}
+  .fcard .pic{width:84px;height:84px;border-radius:50%;margin:0 auto 16px;background:radial-gradient(circle at 35% 30%,#1d1d22,#0c0c0e);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9px;line-height:1.3}
+  .fcard h3{font-size:1.25rem;font-weight:600}
+  .fcard .role{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);margin-top:5px}
+  .fcard p{font-size:.94rem;color:var(--muted);margin-top:12px;line-height:1.6}
+  .faq{max-width:760px;margin:32px auto 0;display:flex;flex-direction:column;gap:12px}
+  .faq details{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:0 22px;transition:border-color .25s var(--ease)}
+  .faq details[open]{border-color:rgba(0,184,136,.30)}
+  .faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;font-size:1.04rem;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--emerald);font-size:1.5rem;line-height:1;transition:transform .25s var(--ease)}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq p{color:var(--muted);font-size:.95rem;line-height:1.6;padding:0 0 18px;margin:0}
   footer a{color:var(--paper);text-decoration:none}footer a:hover{color:var(--emerald)}
 </style>
 </head>
@@ -127,6 +142,37 @@
         <div class="card"><div class="n">01</div><h3>Setup</h3><p>Wir bauen deinen kompletten Social-Auftritt professionell auf — Profile, Branding, Strategie.</p></div>
         <div class="card"><div class="n">02</div><h3>Betreuung</h3><p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot — echte Menschen.</p></div>
         <div class="card"><div class="n">03</div><h3>Skalierung</h3><p>Reichweite → Leads → Umsatz. Inklusive Ads &amp; Paid Growth, messbar in deiner PEAKING-Plattform.</p></div>
+      </div>
+    </div></section>
+
+    <section class="blk"><div class="wrap reveal">
+      <span class="klabel">Für wen</span>
+      <h2>Für die, die <em>endlich</em> sichtbar werden wollen.</h2>
+      <div class="grid3">
+        <div class="card"><div class="n">B2B</div><h3>Firmen ohne Auftritt</h3><p>Unternehmen, die digital bisher nicht stattfinden — wir bauen den Auftritt von null.</p></div>
+        <div class="card"><div class="n">Coaches</div><h3>Coaches &amp; Experten</h3><p>Du hast Expertise, aber zu wenig Sichtbarkeit? Wir machen daraus Reichweite, Leads &amp; Umsatz.</p></div>
+        <div class="card"><div class="n">Scale</div><h3>Wachstums-Willige</h3><p>Schon aktiv, aber es stockt? Wir bringen System und Tempo rein.</p></div>
+      </div>
+    </div></section>
+
+    <section class="blk"><div class="wrap reveal">
+      <span class="klabel">Die Gründer</span>
+      <h2>Zwei, die <em>anpacken</em>.</h2>
+      <div class="founders">
+        <div class="fcard"><div class="pic">Foto<br>Sebi</div><h3>Sebi</h3><div class="role">Marke &amp; Content</div><p>Positionierung, Marke und Content-Strategie — damit deine Botschaft sitzt.</p></div>
+        <div class="fcard"><div class="pic">Foto<br>Phil</div><h3>Phil</h3><div class="role">Tech &amp; Plattform</div><p>Baut die PEAKING-Plattform und hält Technik &amp; Daten am Laufen.</p></div>
+      </div>
+      <!-- TODO: echte Fotos von Sebi & Phil statt Platzhalter -->
+    </div></section>
+
+    <section class="blk"><div class="wrap reveal">
+      <span class="klabel">Häufige Fragen</span>
+      <h2>Gut zu <em>wissen</em>.</h2>
+      <div class="faq">
+        <details><summary>Was, wenn ich noch gar keinen Social-Auftritt habe?</summary><p>Perfekt — genau dafür sind wir da. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content.</p></details>
+        <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. Reichweite &amp; Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in PEAKING.</p></details>
+        <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um.</p></details>
+        <details><summary>Was kostet das?</summary><p>Das hängt von Ziel und Umfang ab. Im unverbindlichen Strategie-Call zeigen wir dir, wie dein System aussieht — inklusive Pakete &amp; Preise.</p></details>
       </div>
     </div></section>
 
