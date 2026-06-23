@@ -57,8 +57,8 @@
   .hero{position:relative;min-height:96svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 0 40px;overflow:hidden}
   .celebrate{position:absolute;top:34%;left:50%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;background:radial-gradient(circle, rgba(0,184,136,.5), transparent 60%);pointer-events:none;animation:glowPulse 1.5s var(--ease) .2s both}
   .logo{height:clamp(48px,7vw,64px);width:auto;display:block;margin:0 auto;mix-blend-mode:screen;animation:upIn .6s var(--ease) both}
-  .logo-s2s{display:none}
-  @media (max-width:600px){.logo-full{display:none}.logo-s2s{display:inline-block}}
+  .logo-s2s{display:none!important}
+  @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
   .badge{display:inline-flex;align-items:center;gap:8px;margin-top:26px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);background:rgba(0,184,136,.10);border:1px solid rgba(0,184,136,.30);border-radius:999px;padding:7px 14px;animation:upIn .6s var(--ease) .15s both}
   .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:24;stroke-dashoffset:24;animation:drawCheck .5s var(--ease) .5s forwards}
   .hero h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.6rem,1.6rem+4vw,4.8rem);line-height:1.04;letter-spacing:-.015em;margin-top:22px;animation:upIn .7s var(--ease) .28s both}
