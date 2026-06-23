@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https:; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#000000">
+<title>Datenschutzerklärung — social2scale</title>
+<meta name="description" content="Datenschutzerklärung von social2scale gemäß DSGVO — Informationen zur Verarbeitung personenbezogener Daten.">
+<link rel="canonical" href="https://social2scale.com/datenschutz/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- DSGVO-HINWEIS: Google Fonts werden hier per CDN geladen (Datenübertragung an Google/USA).
+     Empfehlung für später: Schriften selbst hosten (vgl. vegetarianhulk) — DSGVO-freundlicher.
+     Siehe Abschnitt „Schriftarten (Google Fonts)" weiter unten. -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#6B6D68;
+    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);
+    --px:clamp(20px,5vw,40px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.65;overflow-x:hidden;
+    background-image:
+      radial-gradient(120% 70% at 50% -8%, rgba(0,184,136,.10), transparent 52%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px);}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
+  .wrap{width:100%;max-width:720px;margin:0 auto;padding:0 var(--px)}
+  a{color:var(--emerald-soft)}
+  a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
+
+  @keyframes upIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1!important;transform:none!important}}
+
+  /* ============================================================
+     ⚠️ ENTWURF-BANNER — vor Live-Schaltung ENTFERNEN.
+     Den gesamten Block zwischen den BANNER-Markern löschen. */
+  .draft-banner{position:sticky;top:0;z-index:90;background:linear-gradient(180deg,rgba(0,184,136,.16),rgba(0,184,136,.06));
+    border-bottom:1px solid rgba(0,184,136,.34);color:var(--paper);font-family:"JetBrains Mono",monospace;
+    font-size:12px;line-height:1.5;text-align:center;padding:10px var(--px);backdrop-filter:blur(8px)}
+  .draft-banner b{color:var(--emerald-soft)}
+  /* ============================================================ */
+
+  /* HEADER */
+  .site-head{padding:34px 0 8px}
+  .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn .6s var(--ease) both}
+  .home-link{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;margin-top:4px}
+  .home-link:hover{color:var(--paper)}
+
+  /* HERO TITLE */
+  .lead-block{padding:clamp(28px,5vw,52px) 0 8px}
+  .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald)}
+  h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.4rem,1.6rem+3.4vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:14px}
+  h1 em{font-style:italic;color:var(--emerald)}
+  .lead{color:var(--muted);font-size:1.05rem;margin-top:18px;max-width:54ch}
+  .meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);margin-top:20px}
+
+  /* TOC */
+  .toc{margin-top:26px;background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,22px)}
+  .toc p{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
+  .toc ol{margin:12px 0 0;padding-left:0;list-style:none;counter-reset:t;display:grid;gap:6px}
+  .toc li{counter-increment:t;color:var(--muted)}
+  .toc li a{color:var(--muted);text-decoration:none}
+  .toc li a:hover{color:var(--paper)}
+  .toc li a::before{content:counter(t,decimal-leading-zero)" · ";font-family:"JetBrains Mono",monospace;color:var(--emerald);font-size:.85em}
+
+  /* SECTIONS */
+  article{padding:clamp(20px,4vw,32px) 0 60px}
+  section.blk{padding:clamp(26px,5vw,40px) 0;border-top:1px solid var(--line);scroll-margin-top:80px}
+  h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.5rem,1.1rem+1.6vw,2.1rem);line-height:1.14;letter-spacing:-.01em}
+  h2 em{font-style:italic;color:var(--emerald)}
+  h2 .n{font-family:"JetBrains Mono",monospace;font-size:.6em;color:var(--emerald);margin-right:10px;vertical-align:.12em}
+  h3{font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-top:24px}
+  p{margin-top:14px;color:var(--paper)}
+  p.muted{color:var(--muted)}
+  ul{margin:14px 0 0;padding-left:0;list-style:none;display:grid;gap:8px}
+  ul li{position:relative;padding-left:20px;color:var(--paper)}
+  ul li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:rgba(0,184,136,.6);border:1px solid var(--emerald)}
+  .legal{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--faint);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
+
+  .data{margin-top:18px;background:linear-gradient(180deg,rgba(22,22,26,.8),rgba(12,12,14,.8));border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,24px)}
+  .data dl{display:grid;grid-template-columns:auto 1fr;gap:6px 22px}
+  .data dt{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+  .data dd{color:var(--paper)}
+  @media (max-width:520px){.data dl{grid-template-columns:1fr;gap:2px 0}.data dt{padding-top:12px}.data dt:first-child{padding-top:0}}
+  .ph{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--emerald-soft);background:rgba(0,184,136,.10);border:1px dashed rgba(0,184,136,.40);border-radius:5px;padding:1px 7px;white-space:nowrap}
+
+  footer{border-top:1px solid var(--line);padding:30px var(--px) 40px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);line-height:2}
+  footer a{color:var(--paper);text-decoration:none}
+  footer a:hover{color:var(--emerald-soft)}
+  footer nav{display:flex;flex-direction:column;gap:4px;align-items:center;margin-top:14px}
+</style>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+
+  <!-- ⚠️ ENTWURF-BANNER START — vor Live-Schaltung diesen Block löschen -->
+  <div class="draft-banner" role="note">
+    ⚠️ <b>Entwurf</b> — Platzhalter ausfüllen und vor Live-Schaltung rechtlich prüfen lassen.
+  </div>
+  <!-- ⚠️ ENTWURF-BANNER ENDE -->
+
+  <!-- HEADER -->
+  <header class="site-head">
+    <div class="wrap">
+      <img class="logo" src="../assets/logo-sm.png" alt="social2scale" width="240" height="48" decoding="async">
+      <a class="home-link" href="../">← zur Startseite</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="lead-block">
+      <div class="wrap">
+        <p class="klabel">Rechtliches</p>
+        <h1>Datenschutz&shy;erklärung</h1>
+        <p class="lead">Diese Erklärung informiert über Art, Umfang und Zweck der Verarbeitung personenbezogener Daten auf social2scale.com gemäß <em>Datenschutz-Grundverordnung (DSGVO)</em> und Bundesdatenschutzgesetz (BDSG).</p>
+        <p class="meta">Stand: <span class="ph">[Datum]</span></p>
+
+        <nav class="toc" aria-label="Inhaltsverzeichnis">
+          <p>Inhalt</p>
+          <ol>
+            <li><a href="#verantwortlicher">Verantwortlicher</a></li>
+            <li><a href="#grundsaetze">Grundsätze der Verarbeitung</a></li>
+            <li><a href="#hosting">Hosting &amp; Server-Logfiles (GitHub Pages)</a></li>
+            <li><a href="#fonts">Schriftarten (Google Fonts)</a></li>
+            <li><a href="#formular">Onboarding-Formular</a></li>
+            <li><a href="#web3forms">Formularversand (Web3Forms)</a></li>
+            <li><a href="#zahlung">Zahlungsabwicklung (Digistore24)</a></li>
+            <li><a href="#speicherdauer">Speicherdauer</a></li>
+            <li><a href="#rechte">Ihre Rechte als betroffene Person</a></li>
+            <li><a href="#beschwerde">Beschwerderecht bei der Aufsichtsbehörde</a></li>
+            <li><a href="#sonstiges">Automatisierte Entscheidung &amp; Aktualität</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <article>
+      <section class="blk" id="verantwortlicher"><div class="wrap reveal">
+        <h2><span class="n">01</span>Verantwortlicher</h2>
+        <p class="muted">Verantwortlicher im Sinne des Art. 4 Nr. 7 DSGVO ist:</p>
+        <div class="data">
+          <dl>
+            <dt>Anbieter</dt>   <dd><span class="ph">[Firmenname / Name]</span> (<span class="ph">[Rechtsform]</span>)</dd>
+            <dt>Anschrift</dt>  <dd><span class="ph">[Straße Hausnr.]</span>, <span class="ph">[PLZ Ort]</span></dd>
+            <dt>Vertretung</dt> <dd><span class="ph">[Vor- und Nachname — Sebi]</span>, <span class="ph">[Vor- und Nachname — Phil]</span></dd>
+            <dt>E-Mail</dt>     <dd><a href="mailto:info@social2scale.com">info@social2scale.com</a></dd>
+            <dt>Telefon</dt>    <dd><span class="ph">[Telefonnummer]</span></dd>
+          </dl>
+        </div>
+        <p class="muted">Ein Datenschutzbeauftragter ist gesetzlich nicht in jedem Fall vorgeschrieben. <span class="ph">[Falls ein Datenschutzbeauftragter benannt wurde, hier Name und Kontakt ergänzen.]</span></p>
+      </div></section>
+
+      <section class="blk" id="grundsaetze"><div class="wrap reveal">
+        <h2><span class="n">02</span>Grundsätze der <em>Verarbeitung</em></h2>
+        <p>Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Verarbeitung erfolgt regelmäßig nur nach Einwilligung der betroffenen Person oder wenn die Verarbeitung durch gesetzliche Vorschriften gestattet ist.</p>
+        <p>Personenbezogene Daten sind alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen (z. B. Name, Anschrift, E-Mail-Adresse, IP-Adresse).</p>
+        <p class="muted">Als Rechtsgrundlagen kommen insbesondere in Betracht: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), Vertragserfüllung bzw. vorvertragliche Maßnahmen (lit. b), rechtliche Verpflichtung (lit. c) sowie berechtigtes Interesse (lit. f).</p>
+      </div></section>
+
+      <section class="blk" id="hosting"><div class="wrap reveal">
+        <h2><span class="n">03</span>Hosting &amp; Server-Logfiles</h2>
+        <p>Diese Website wird als statische Seite über <b>GitHub Pages</b> bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA (Teil von Microsoft).</p>
+        <p>Beim Aufruf der Website erhebt GitHub als Hoster automatisch Informationen, die Ihr Browser übermittelt, und speichert diese in sogenannten Server-Logfiles. Erfasst werden können insbesondere:</p>
+        <ul>
+          <li>IP-Adresse des anfragenden Endgeräts</li>
+          <li>Datum und Uhrzeit des Zugriffs</li>
+          <li>aufgerufene Seite / angeforderte Datei und übertragene Datenmenge</li>
+          <li>Referrer-URL (zuvor besuchte Seite)</li>
+          <li>Browsertyp, Sprache und Betriebssystem</li>
+        </ul>
+        <p>Diese Daten dienen der technischen Bereitstellung, Sicherheit und Stabilität der Website und werden nicht mit anderen Datenquellen zusammengeführt.</p>
+        <p class="muted">Da GitHub Daten in den USA verarbeiten kann, erfolgt eine Datenübermittlung in ein Drittland. GitHub stützt diese auf geeignete Garantien (z. B. EU-Standardvertragsklauseln / EU-US Data Privacy Framework). Weitere Informationen finden Sie in der Datenschutzerklärung von GitHub: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an sicherer, effizienter Bereitstellung)</span>
+      </div></section>
+
+      <section class="blk" id="fonts"><div class="wrap reveal">
+        <h2><span class="n">04</span>Schriftarten (Google Fonts)</h2>
+        <p>Zur einheitlichen Darstellung von Schriftarten werden auf dieser Website aktuell <b>Google Fonts</b> verwendet, die über ein CDN von Google geladen werden (Anbieter: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland).</p>
+        <p>Beim Aufruf einer Seite lädt Ihr Browser die benötigten Schriftarten direkt von einem Google-Server. Dadurch erhält Google Kenntnis davon, dass über Ihre IP-Adresse unsere Website aufgerufen wurde; es kann eine Datenübertragung an Google in die USA stattfinden.</p>
+        <p class="muted">Hinweis: Eine datenschutzfreundlichere Variante ist das lokale Selbst-Hosten der Schriftarten, sodass keine Verbindung zu Google-Servern aufgebaut wird. Eine Umstellung auf selbst gehostete Fonts ist geplant (vgl. Umsetzung bei vegetarianhulk).</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einheitlicher Darstellung) bzw. lit. a bei Einwilligung</span>
+      </div></section>
+
+      <section class="blk" id="formular"><div class="wrap reveal">
+        <h2><span class="n">05</span>Onboarding-Formular</h2>
+        <p>Wenn Sie nach einem Kauf über unser Onboarding-Formular Kontakt aufnehmen bzw. Ihre Angaben übermitteln, verarbeiten wir die von Ihnen eingegebenen Daten zur Abwicklung der Zusammenarbeit und zur Beantwortung Ihrer Anfrage. Je nach Formularfeldern können dies sein:</p>
+        <ul>
+          <li>Name bzw. Ansprechpartner</li>
+          <li>E-Mail-Adresse</li>
+          <li>Telefonnummer</li>
+          <li>Firma / Marke / Unternehmen</li>
+          <li>Angaben zu Ihren Zielen, Social-Media-Kanälen, Reichweite und Vorhaben</li>
+          <li><span class="ph">[ggf. weitere im Formular abgefragte Angaben]</span></li>
+        </ul>
+        <p><b>Zweck:</b> Durchführung vorvertraglicher Maßnahmen und Abwicklung des Vertrags bzw. der beauftragten Leistungen, Kontaktaufnahme sowie individuelle Betreuung im Rahmen unseres Social-Growth-Angebots.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertrag / vorvertragliche Maßnahmen); ergänzend lit. a (Einwilligung) bei freiwilligen Zusatzangaben</span>
+      </div></section>
+
+      <section class="blk" id="web3forms"><div class="wrap reveal">
+        <h2><span class="n">06</span>Formular&shy;versand (Web3Forms)</h2>
+        <p>Für die technische Übermittlung der über das Onboarding-Formular eingegebenen Daten setzen wir den Dienst <b>Web3Forms</b> ein. Web3Forms nimmt die Formulardaten entgegen und leitet sie per E-Mail an uns weiter, sodass uns keine eigene serverseitige Verarbeitung auf dieser statischen Website nötig ist.</p>
+        <p>Bei Absenden des Formulars werden die eingegebenen Daten an die Server von Web3Forms übertragen und dort zum Zweck der Zustellung verarbeitet. Dabei kann eine Übermittlung bzw. Verarbeitung außerhalb der EU/des EWR erfolgen.</p>
+        <p class="muted">Anbieter: <span class="ph">[Web3Forms — Anbieter/Betreiber und vollständige Anschrift gemäß deren Angaben eintragen]</span>. Soweit es sich um eine Auftragsverarbeitung handelt, ist ein Vertrag zur Auftragsverarbeitung (Art. 28 DSGVO) abzuschließen. <span class="ph">[Status AV-Vertrag prüfen/ergänzen.]</span> Weitere Informationen: <a href="https://web3forms.com/privacy" target="_blank" rel="noopener noreferrer">Web3Forms Datenschutz</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung/-abwicklung); lit. f (effiziente, sichere Formularzustellung)</span>
+      </div></section>
+
+      <section class="blk" id="zahlung"><div class="wrap reveal">
+        <h2><span class="n">07</span>Zahlungsabwicklung (Digistore24)</h2>
+        <p>Der Kauf unserer Leistungen erfolgt vor dem Erreichen dieser Website über den Zahlungs- und Vertriebsdienstleister <b>Digistore24</b> (Digistore24 GmbH, St.-Godehard-Straße 32, 31139 Hildesheim, Deutschland). Digistore24 tritt dabei als Reseller/Zahlungsabwickler auf.</p>
+        <p>Die zur Zahlung erforderlichen Daten (z. B. Name, E-Mail-Adresse, Rechnungs- und Zahlungsdaten) werden direkt bei Digistore24 erhoben und dort in eigener Verantwortung verarbeitet. Wir erhalten von Digistore24 die zur Auftrags- und Kundenverwaltung notwendigen Informationen.</p>
+        <p class="muted">Einzelheiten zur Datenverarbeitung durch Digistore24 finden Sie in deren Datenschutzerklärung: <a href="https://www.digistore24.com/page/privacy" target="_blank" rel="noopener noreferrer">Digistore24 Datenschutz</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsabwicklung); lit. c (gesetzliche Aufbewahrungspflichten)</span>
+      </div></section>
+
+      <section class="blk" id="speicherdauer"><div class="wrap reveal">
+        <h2><span class="n">08</span>Speicherdauer</h2>
+        <p>Wir verarbeiten und speichern personenbezogene Daten nur so lange, wie es für die Erreichung des jeweiligen Zwecks erforderlich ist oder wie es gesetzliche Aufbewahrungsfristen vorsehen (z. B. handels- und steuerrechtliche Fristen von bis zu 10 Jahren).</p>
+        <p>Server-Logfiles werden durch den Hoster regelmäßig nach kurzer Zeit gelöscht oder anonymisiert. Anfragedaten aus dem Formular löschen wir, sobald sie für die Bearbeitung Ihrer Anfrage bzw. die Vertragsabwicklung nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+      </div></section>
+
+      <section class="blk" id="rechte"><div class="wrap reveal">
+        <h2><span class="n">09</span>Ihre <em>Rechte</em></h2>
+        <p>Als betroffene Person stehen Ihnen nach der DSGVO insbesondere folgende Rechte zu:</p>
+        <ul>
+          <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+          <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+          <li>Recht auf Löschung / „Recht auf Vergessenwerden" (Art. 17 DSGVO)</li>
+          <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+          <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+          <li>Recht auf Widerspruch gegen die Verarbeitung (Art. 21 DSGVO)</li>
+          <li>Recht auf Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
+        </ul>
+        <p>Zur Ausübung Ihrer Rechte sowie für alle Fragen zum Datenschutz genügt eine formlose Nachricht an: <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+      </div></section>
+
+      <section class="blk" id="beschwerde"><div class="wrap reveal">
+        <h2><span class="n">10</span>Beschwerde&shy;recht</h2>
+        <p>Unbeschadet anderweitiger Rechtsbehelfe steht Ihnen gemäß Art. 77 DSGVO ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen die DSGVO verstößt.</p>
+        <p class="muted">Zuständig ist in der Regel die Aufsichtsbehörde Ihres gewöhnlichen Aufenthaltsorts oder die des Verantwortlichen. <span class="ph">[Zuständige Landesdatenschutzbehörde des Verantwortlichen ergänzen.]</span></p>
+      </div></section>
+
+      <section class="blk" id="sonstiges"><div class="wrap reveal">
+        <h2><span class="n">11</span>Automatisierte Entscheidung &amp; Aktualität</h2>
+        <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne des Art. 22 DSGVO findet nicht statt.</p>
+        <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die jeweils aktuelle Fassung.</p>
+      </div></section>
+    </article>
+  </main>
+
+  <footer>
+    <span>© <span id="yr"></span> social2scale · Powered by PEAKING</span><br>
+    <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+    <nav aria-label="Rechtliche Seiten">
+      <a href="../impressum/">Impressum</a>
+      <a href="../datenschutz/">Datenschutz</a>
+    </nav>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent=new Date().getFullYear();
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
+    else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.16,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
+  </script>
+</body>
+</html>
