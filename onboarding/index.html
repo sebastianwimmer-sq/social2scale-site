@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https: https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#000000">
+<title>Onboarding — social2scale</title>
+<meta name="description" content="Erzähl uns kurz von dir — dann legen wir los.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- ============================================================
+   ANPASSEN (Sebi/Phil):
+   [W3F]  Web3Forms Access Key  →  <input name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
+          Kostenlos holen auf https://web3forms.com  (E-Mail info@social2scale.de eintragen,
+          Key per Mail erhalten, hier einsetzen). Antworten landen dann bei info@social2scale.de.
+   ============================================================ -->
+<style>
+  :root{
+    --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#6B6D68;
+    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);
+    --px:clamp(20px,5vw,40px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
+    background-image:
+      radial-gradient(120% 70% at 50% -8%, rgba(0,184,136,.10), transparent 52%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px);}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
+  .wrap{width:100%;max-width:760px;margin:0 auto;padding:0 var(--px)}
+
+  @keyframes upIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes glowPulse{0%{opacity:0;transform:scale(.7)}40%{opacity:.9}100%{opacity:0;transform:scale(1.5)}}
+  @keyframes drawCheck{to{stroke-dashoffset:0}}
+  @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+  @keyframes popIn{0%{opacity:0;transform:scale(.5)}60%{transform:scale(1.08)}100%{opacity:1;transform:scale(1)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1!important;transform:none!important}.success-mark path{stroke-dashoffset:0!important}}
+
+  :focus-visible{outline:2px solid var(--emerald-soft);outline-offset:3px;border-radius:4px}
+
+  /* HEADER */
+  .top{position:relative;text-align:center;padding:54px 0 8px;overflow:hidden}
+  .glowtop{position:absolute;top:-40px;left:50%;width:460px;height:460px;margin-left:-230px;border-radius:50%;background:radial-gradient(circle, rgba(0,184,136,.28), transparent 62%);pointer-events:none;animation:glowPulse 1.6s var(--ease) .2s both}
+  .logo{height:46px;width:auto;aspect-ratio:auto;display:block;margin:0 auto;mix-blend-mode:screen;animation:upIn .6s var(--ease) both}
+  .step{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);background:rgba(0,184,136,.10);border:1px solid rgba(0,184,136,.30);border-radius:999px;padding:7px 14px;animation:upIn .6s var(--ease) .15s both}
+  .step b{color:var(--paper);font-weight:700}
+  h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2rem,1.3rem+3vw,3.3rem);line-height:1.06;letter-spacing:-.015em;margin-top:20px;animation:upIn .7s var(--ease) .28s both}
+  h1 em{font-style:italic;color:var(--emerald)}
+  .intro{color:var(--muted);font-size:clamp(1.02rem,1rem+.4vw,1.2rem);margin-top:18px;max-width:52ch;margin-inline:auto;animation:upIn .7s var(--ease) .4s both}
+  .intro b{color:var(--paper);font-weight:600}
+
+  /* FORM */
+  form{padding:clamp(34px,7vw,60px) 0 30px}
+  fieldset{border:0;margin:0;padding:0}
+  .group{margin-top:clamp(26px,4vw,40px)}
+  .group:first-of-type{margin-top:8px}
+  legend,.klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald);padding:0}
+  .gtitle{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.4rem,1.1rem+1.4vw,1.9rem);line-height:1.12;letter-spacing:-.01em;margin-top:10px}
+  .gtitle em{font-style:italic;color:var(--emerald)}
+
+  .card{margin-top:18px;background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line-2);border-radius:16px;padding:clamp(18px,3vw,26px);box-shadow:0 40px 90px -60px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05)}
+
+  .grid{display:grid;gap:16px 18px}
+  @media(min-width:560px){.grid.cols-2{grid-template-columns:1fr 1fr}}
+
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field.full{grid-column:1/-1}
+  label{font-size:.92rem;font-weight:600;color:var(--paper);display:flex;align-items:baseline;gap:7px}
+  label .opt{font-weight:400;font-size:.78rem;color:var(--faint);font-family:"JetBrains Mono",monospace;letter-spacing:.04em}
+  label .req{color:var(--emerald);font-size:.9rem}
+
+  input[type=text],input[type=email],input[type=tel],input[type=url],select,textarea{
+    width:100%;font-family:inherit;font-size:1rem;color:var(--paper);
+    background:rgba(0,0,0,.35);border:1px solid var(--line-2);border-radius:10px;
+    padding:13px 15px;transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)}
+  input::placeholder,textarea::placeholder{color:var(--faint)}
+  input:hover,select:hover,textarea:hover{border-color:rgba(0,184,136,.30)}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--emerald);background:rgba(0,0,0,.5);box-shadow:0 0 0 3px rgba(0,184,136,.16)}
+  textarea{resize:vertical;min-height:96px;line-height:1.55}
+  select{appearance:none;-webkit-appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300B888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 14px center;background-size:18px;padding-right:42px}
+  select option{background:var(--surface-2);color:var(--paper)}
+
+  /* CHANNEL CHECKBOXES */
+  .channels{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:4px}
+  .chan{position:relative}
+  .chan input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .chan label{cursor:pointer;display:flex;align-items:center;gap:11px;font-weight:500;
+    background:rgba(0,0,0,.3);border:1px solid var(--line-2);border-radius:11px;padding:13px 15px;
+    transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+  .chan label:hover{border-color:rgba(0,184,136,.30);transform:translateY(-2px)}
+  .chan .box{flex:none;width:22px;height:22px;border-radius:6px;border:1px solid var(--line-2);background:rgba(0,0,0,.4);display:grid;place-items:center;transition:border-color .2s var(--ease),background .2s var(--ease)}
+  .chan .box svg{width:13px;height:13px;opacity:0;transform:scale(.4);transition:opacity .2s var(--ease),transform .2s var(--ease)}
+  .chan input:checked + label{border-color:rgba(0,184,136,.5);background:rgba(0,184,136,.10)}
+  .chan input:checked + label .box{background:var(--emerald);border-color:var(--emerald)}
+  .chan input:checked + label .box svg{opacity:1;transform:scale(1)}
+  .chan input:focus-visible + label{outline:2px solid var(--emerald-soft);outline-offset:3px}
+
+  /* SUBMIT */
+  .submit-wrap{margin-top:clamp(30px,5vw,46px);text-align:center}
+  .btn{position:relative;display:inline-flex;align-items:center;gap:10px;font-family:"Archivo",sans-serif;font-size:15.5px;font-weight:700;letter-spacing:.02em;padding:18px 40px;border:0;border-radius:10px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s,opacity .25s}
+  .btn-primary{background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 14px 34px -10px rgba(0,184,136,.8),inset 0 1px 0 rgba(255,255,255,.3)}
+  .btn-primary:hover:not(:disabled){transform:translateY(-3px)}
+  .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
+  .btn-primary:hover:not(:disabled)::after{animation:glint .85s var(--ease) forwards}
+  .btn:disabled{opacity:.6;cursor:progress}
+  .btn .arr{display:inline-block;transition:transform .25s var(--ease)}.btn:hover:not(:disabled) .arr{transform:translateX(4px)}
+  .btn .spin{display:none;width:16px;height:16px;border:2px solid rgba(4,32,26,.35);border-top-color:var(--emerald-ink);border-radius:50%;animation:spin .7s linear infinite}
+  .btn.loading .arr{display:none}.btn.loading .spin{display:inline-block}
+  .privacy{margin-top:16px;font-size:.82rem;color:var(--faint);max-width:46ch;margin-inline:auto}
+  .formerr{margin-top:16px;color:#ff8b7d;font-size:.92rem;min-height:1.2em}
+  .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
+
+  /* SUCCESS STATE */
+  .success{display:none;text-align:center;padding:clamp(40px,9vw,90px) 0}
+  .success.show{display:block;animation:upIn .6s var(--ease) both}
+  .success-mark{width:88px;height:88px;margin:0 auto;display:grid;place-items:center;border-radius:50%;
+    background:radial-gradient(circle,rgba(0,184,136,.22),rgba(0,184,136,.04));border:1px solid rgba(0,184,136,.4);
+    box-shadow:0 30px 70px -40px rgba(0,184,136,.9);animation:popIn .55s var(--ease) .05s both}
+  .success-mark svg{width:46px;height:46px}
+  .success-mark path{stroke-dasharray:36;stroke-dashoffset:36;animation:drawCheck .55s var(--ease) .45s forwards}
+  .success h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.9rem,1.3rem+2.4vw,2.8rem);line-height:1.08;letter-spacing:-.015em;margin-top:26px}
+  .success h2 em{font-style:italic;color:var(--emerald)}
+  .success p{color:var(--muted);font-size:1.05rem;margin-top:16px;max-width:44ch;margin-inline:auto}
+  .success .home{display:inline-block;margin-top:30px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--paper);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:2px;transition:color .25s,border-color .25s}
+  .success .home:hover{color:var(--emerald);border-color:var(--emerald)}
+
+  footer{border-top:1px solid var(--line);padding:26px var(--px);text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
+  footer a{color:var(--paper);text-decoration:none}
+  footer a:hover{color:var(--emerald)}
+</style>
+</head>
+<body>
+  <a class="skip" href="#onboarding-form">Direkt zum Fragebogen</a>
+
+  <!-- HEADER -->
+  <header class="top">
+    <div class="glowtop" aria-hidden="true"></div>
+    <div class="wrap">
+      <img class="logo" src="../assets/logo-sm.png" width="180" height="46" alt="social2scale" decoding="async">
+      <span class="step">Onboarding · <b>Schritt 1 von 1</b></span>
+      <h1>Fast geschafft — <em>erzähl</em> uns kurz von dir.</h1>
+      <p class="intro">Ein paar Minuten, dann <b>legen wir los</b>. Je mehr wir über dich und dein Ziel wissen, desto schneller bringen wir dein Wachstum auf die Straße.</p>
+    </div>
+  </header>
+
+  <main class="wrap reveal">
+    <!-- FORM -->
+    <form id="onboarding-form" action="https://api.web3forms.com/submit" method="POST" novalidate aria-labelledby="form-heading">
+      <h2 id="form-heading" class="skip">Onboarding-Fragebogen</h2>
+
+      <!-- Web3Forms hidden fields -->
+      <!-- ANPASSEN [W3F]: echten Access Key von web3forms.com (kostenlos) hier eintragen -->
+      <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
+      <input type="hidden" name="subject" value="Neues Onboarding — social2scale">
+      <input type="hidden" name="from_name" value="social2scale Onboarding">
+      <!-- Honeypot (Web3Forms Spam-Schutz) -->
+      <div class="hp" aria-hidden="true"><label>Bitte leer lassen<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
+
+      <!-- 1 — KONTAKT -->
+      <fieldset class="group">
+        <legend class="klabel">01 — Kontakt</legend>
+        <p class="gtitle">Wer bist <em>du</em>?</p>
+        <div class="card">
+          <div class="grid cols-2">
+            <div class="field">
+              <label for="vorname">Vorname <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="vorname" name="Vorname" autocomplete="given-name" required placeholder="Max">
+            </div>
+            <div class="field">
+              <label for="nachname">Nachname <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="nachname" name="Nachname" autocomplete="family-name" required placeholder="Mustermann">
+            </div>
+            <div class="field">
+              <label for="email">E-Mail <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="E-Mail" autocomplete="email" required placeholder="max@firma.de">
+            </div>
+            <div class="field">
+              <label for="telefon">Telefon <span class="opt">optional</span></label>
+              <input type="tel" id="telefon" name="Telefon" autocomplete="tel" placeholder="+49 …">
+            </div>
+            <div class="field full">
+              <label for="firma">Firma / Marke <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="firma" name="Firma / Marke" autocomplete="organization" required placeholder="Deine Firma oder Personenmarke">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 2 — STATUS QUO -->
+      <fieldset class="group">
+        <legend class="klabel">02 — Status quo</legend>
+        <p class="gtitle">Wo stehst du <em>gerade</em>?</p>
+        <div class="card">
+          <div class="grid">
+            <div class="field">
+              <label for="website">Website-URL <span class="opt">optional</span></label>
+              <input type="url" id="website" name="Website" autocomplete="url" placeholder="https://…" inputmode="url">
+            </div>
+            <div class="field">
+              <label for="profile">Bestehende Social-Profile / Handles <span class="opt">optional</span></label>
+              <textarea id="profile" name="Social-Profile" placeholder="@deinhandle auf Instagram, TikTok, LinkedIn …"></textarea>
+            </div>
+            <div class="field">
+              <label for="auftritt">Hast du aktuell einen Social-Auftritt? <span class="req" aria-hidden="true">*</span></label>
+              <select id="auftritt" name="Aktueller Social-Auftritt" required>
+                <option value="" disabled selected>Bitte wählen …</option>
+                <option value="Nein">Nein</option>
+                <option value="Ansatzweise">Ansatzweise</option>
+                <option value="Ja, aber schwach">Ja, aber schwach</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 3 — ZIELE -->
+      <fieldset class="group">
+        <legend class="klabel">03 — Ziele</legend>
+        <p class="gtitle">Wohin soll die <em>Reise</em>?</p>
+        <div class="card">
+          <div class="grid">
+            <div class="field">
+              <label for="ziel90">Was willst du in den nächsten 90 Tagen erreichen? <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="ziel90" name="Ziel 90 Tage" required placeholder="z. B. von 0 auf erste 1.000 Follower, planbar Leads über Instagram, sichtbar werden in meiner Nische …"></textarea>
+            </div>
+            <div class="field">
+              <label for="hauptziel">Hauptziel <span class="req" aria-hidden="true">*</span></label>
+              <select id="hauptziel" name="Hauptziel" required>
+                <option value="" disabled selected>Bitte wählen …</option>
+                <option value="Mehr Reichweite">Mehr Reichweite</option>
+                <option value="Mehr Leads">Mehr Leads</option>
+                <option value="Mehr Umsatz">Mehr Umsatz</option>
+                <option value="Markenaufbau">Markenaufbau</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 4 — ZIELGRUPPE -->
+      <fieldset class="group">
+        <legend class="klabel">04 — Zielgruppe</legend>
+        <p class="gtitle">Wen willst du <em>erreichen</em>?</p>
+        <div class="card">
+          <div class="field full">
+            <label for="zielgruppe">Beschreib kurz deine Wunschkund:innen <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="zielgruppe" name="Zielgruppe" required placeholder="z. B. Selbstständige Coaches 30–45, regional, die online sichtbarer werden wollen …"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 5 — KANÄLE -->
+      <fieldset class="group">
+        <legend class="klabel">05 — Kanäle</legend>
+        <p class="gtitle">Wo wollen wir <em>spielen</em>?</p>
+        <div class="card">
+          <div class="channels" role="group" aria-label="Gewünschte Social-Kanäle">
+            <div class="chan">
+              <input type="checkbox" id="ch-ig" name="Kanäle" value="Instagram">
+              <label for="ch-ig"><span class="box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Instagram</label>
+            </div>
+            <div class="chan">
+              <input type="checkbox" id="ch-tt" name="Kanäle" value="TikTok">
+              <label for="ch-tt"><span class="box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>TikTok</label>
+            </div>
+            <div class="chan">
+              <input type="checkbox" id="ch-li" name="Kanäle" value="LinkedIn">
+              <label for="ch-li"><span class="box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LinkedIn</label>
+            </div>
+            <div class="chan">
+              <input type="checkbox" id="ch-yt" name="Kanäle" value="YouTube">
+              <label for="ch-yt"><span class="box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>YouTube</label>
+            </div>
+            <div class="chan">
+              <input type="checkbox" id="ch-fb" name="Kanäle" value="Facebook">
+              <label for="ch-fb"><span class="box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Facebook</label>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- 6 — SONSTIGES -->
+      <fieldset class="group">
+        <legend class="klabel">06 — Sonstiges</legend>
+        <p class="gtitle">Was sollen wir noch <em>wissen</em>?</p>
+        <div class="card">
+          <div class="field full">
+            <label for="sonstiges">Alles, was uns hilft <span class="opt">optional</span></label>
+            <textarea id="sonstiges" name="Sonstiges" placeholder="Wünsche, No-Gos, Lieblingsbeispiele, Deadlines, Budget-Gefühl …"></textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="submit-wrap">
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          <span class="spin" aria-hidden="true"></span>
+          <span class="btn-label">Antworten absenden</span>
+          <span class="arr" aria-hidden="true">→</span>
+        </button>
+        <p class="formerr" id="form-error" role="status" aria-live="polite"></p>
+        <p class="privacy">Mit dem Absenden schickst du uns deine Angaben, damit wir dein Onboarding starten können. Wir behandeln alles vertraulich.</p>
+      </div>
+    </form>
+
+    <!-- SUCCESS STATE -->
+    <section class="success" id="success" role="status" aria-live="polite" tabindex="-1">
+      <div class="success-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#00B888" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Danke — wir haben deine <em>Antworten</em>!</h2>
+      <p>Wir gehen alles in Ruhe durch und melden uns persönlich bei dir. Ab jetzt machen wir dein Wachstum zu unserem.</p>
+      <a class="home" href="https://social2scale.de/">Zurück zu social2scale →</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="yr"></span> social2scale · Powered by PEAKING</span> &nbsp;·&nbsp;
+    Fragen? <a href="mailto:info@social2scale.de">info@social2scale.de</a>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Prefill Vorname aus URL (?vorname= oder ?firstname=), z. B. von der Danke-Seite verlinkt
+    try {
+      var p = new URLSearchParams(location.search);
+      var v = (p.get('vorname') || p.get('firstname') || '').trim().slice(0, 40);
+      if (v) {
+        var vn = document.getElementById('vorname');
+        if (vn && !vn.value) vn.value = v;
+      }
+      var em = (p.get('email') || '').trim().slice(0, 120);
+      if (em) { var ee = document.getElementById('email'); if (ee && !ee.value) ee.value = em; }
+    } catch (e) {}
+
+    // Scroll-Reveal (prefers-reduced-motion-safe)
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (e) { e.classList.add('on'); });
+    } else {
+      var ob = new IntersectionObserver(function (en) {
+        en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); ob.unobserve(e.target); } });
+      }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function (e) { ob.observe(e); });
+    }
+
+    // Web3Forms submit via fetch → eigener Success-State
+    var form = document.getElementById('onboarding-form');
+    var btn = document.getElementById('submit-btn');
+    var errEl = document.getElementById('form-error');
+    var successEl = document.getElementById('success');
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      errEl.textContent = '';
+
+      // Native Pflichtfeld-/E-Mail-Validierung (novalidate am Form → manuell auslösen)
+      if (!form.reportValidity()) return;
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      var data = new FormData(form);
+
+      fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
+        .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
+        .then(function (r) {
+          if (r.ok && r.json && r.json.success) {
+            form.style.display = 'none';
+            successEl.classList.add('show');
+            try { successEl.focus(); } catch (e) {}
+            successEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            throw new Error((r.json && r.json.message) || 'Senden fehlgeschlagen');
+          }
+        })
+        .catch(function (e) {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          errEl.textContent = 'Da ist etwas schiefgelaufen. Bitte versuch es erneut oder schreib uns an info@social2scale.de.';
+        });
+    });
+  </script>
+</body>
+</html>
