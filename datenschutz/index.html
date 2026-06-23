@@ -52,6 +52,8 @@
   .site-head{padding:34px 0 8px}
   .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
   .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn .6s var(--ease) both}
+  .logo-s2s{display:none}
+  @media (max-width:600px){.logo-full{display:none}.logo-s2s{display:inline-block}}
   .home-link{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;margin-top:4px}
   .home-link:hover{color:var(--paper)}
 
@@ -111,7 +113,8 @@
   <!-- HEADER -->
   <header class="site-head">
     <div class="wrap">
-      <img class="logo" src="../assets/logo-sm.png" alt="social2scale" width="240" height="48" decoding="async">
+      <img class="logo logo-full" src="/assets/logo-sm.png" alt="social2scale" width="240" height="48" decoding="async">
+      <img class="logo logo-s2s" src="/assets/logo-s2s-sm.png" alt="social2scale" width="240" height="48" decoding="async" hidden>
       <a class="home-link" href="../">← zur Startseite</a>
     </div>
   </header>
