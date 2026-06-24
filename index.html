@@ -113,11 +113,10 @@
 
   /* ===== sticky header + nav (flat, hairline) ===== */
   .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:120;background:rgba(10,11,13,.82);backdrop-filter:blur(14px) saturate(140%)}
-  /* header: no logo image — dezenter Text-Wortmark als Anchor links */
-  .bar .brand{flex:0 0 auto;display:flex;align-items:center;gap:9px;text-decoration:none;font-family:"Archivo",sans-serif;font-size:14px;font-weight:700;letter-spacing:-.01em;color:var(--paper);transition:opacity .25s var(--ease)}
-  .bar .brand::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald);flex:0 0 auto}
-  .bar .brand::after{content:"social2scale"}
-  .bar .brand:hover{opacity:.78}
+  /* header: freigestellte s2s-Bildmarke als Anchor links (transparent, kein schwarzer Kasten) */
+  .bar .brand{flex:0 0 auto;display:flex;align-items:center;text-decoration:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
+  .bar .brand img{height:30px;width:auto;display:block}
+  .bar .brand:hover{opacity:.82;transform:translateY(-1px)}
 
   .nav{display:flex;align-items:center;gap:var(--s-6);margin-left:auto}
   .nav-links{display:flex;align-items:center;gap:var(--s-6);list-style:none}
@@ -156,7 +155,7 @@
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
   /* the ONE prominent brand mark — large centered wordmark */
-  .hero-logo{display:block;width:clamp(360px,56vw,720px);height:auto;mix-blend-mode:screen;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .hero-logo{display:block;width:clamp(300px,52vw,680px);height:auto;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
   .hero .eyebrow{margin-bottom:var(--s-5)}
   .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.9rem,1rem+7vw,7rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
   .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
@@ -374,7 +373,7 @@
   <a class="skip" href="#hero">Zum Inhalt</a>
 
   <header class="bar">
-    <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"></a>
+    <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
       <ul class="nav-links">
         <li><a href="#leistungen">Leistungen</a></li>
@@ -405,7 +404,7 @@
     <section class="hero" id="hero">
       <div class="wrap">
         <div class="hero-center">
-          <img class="hero-logo r" src="/assets/wordmark.png" alt="social2scale" width="560" height="120">
+          <img class="hero-logo r" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315">
           <p class="eyebrow r" style="animation-delay:.08s"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
           <h1 class="r" style="animation-delay:.14s">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</h1>
           <p class="sub r" style="animation-delay:.24s">Keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b> Done-for-you, persönlich betreut, messbar.</p>
