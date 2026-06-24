@@ -254,6 +254,19 @@
   /* climb-bar motif row */
   .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
   .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
+  /* ===== Vorher/Nachher-Regler im Growth-Panel ===== */
+  .chart .growth-scale{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(var(--p,1));transition:transform .09s linear}
+  .chart .growth-scale .curve{vector-effect:non-scaling-stroke}
+  .reglr{margin:var(--s-4) 0 var(--s-3)}
+  .reglr-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-2)}
+  .reglr-lbl{font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
+  .reglr-state{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:3px 9px;border-radius:100px;white-space:nowrap}
+  .reglr-range{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:100px;background:linear-gradient(90deg,var(--emerald),var(--teal));outline:none;cursor:pointer;margin:2px 0}
+  .reglr-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--emerald);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 0 4px rgba(0,184,136,.18);cursor:grab;transition:transform .15s var(--ease)}
+  .reglr-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.14)}
+  .reglr-range::-moz-range-thumb{width:22px;height:22px;border:2px solid var(--emerald);border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:grab}
+  .reglr-range:focus-visible{outline:2px solid var(--emerald);outline-offset:4px}
+  .reglr-ends{display:flex;justify-content:space-between;margin-top:var(--s-2);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.05em;color:var(--faint)}
   .panel-climb .cb.on{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.35))}
   .panel-climb .cb.on:last-child{background:linear-gradient(180deg,var(--cyan),rgba(31,166,224,.35))}
   .panel-tag{position:absolute;z-index:3;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;color:var(--emerald);background:var(--emerald-ink);border:1px solid rgba(0,184,136,.4);border-radius:5px;padding:3px 7px}
@@ -478,7 +491,7 @@
             <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools. Powered by PEAKING.</p>
           </div>
           <div class="proof-visual">
-            <div class="panel" role="img" aria-label="Wachstums-Dashboard: Reichweite steigt um 218 Prozent, 47 Leads pro Monat, von 0 zu 1 sichtbar.">
+            <div class="panel">
               <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
               <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
               <span class="panel-tag t1" aria-hidden="true">live · PEAKING</span>
@@ -488,10 +501,13 @@
                 <span class="meta" id="panel-meta">Q · 0 → skaliert</span>
               </div>
 
-              <div class="panel-tabs" role="tablist" aria-label="Wachstums-Metrik wählen">
-                <button class="ptab" type="button" role="tab" id="ptab-reach" aria-selected="true" data-metric="0">Reach</button>
-                <button class="ptab" type="button" role="tab" id="ptab-leads" aria-selected="false" data-metric="1">Leads</button>
-                <button class="ptab" type="button" role="tab" id="ptab-revenue" aria-selected="false" data-metric="2">Umsatz</button>
+              <div class="reglr">
+                <div class="reglr-head">
+                  <span class="reglr-lbl">Zieh den Regler — so wächst dein Auftritt mit uns</span>
+                  <span class="reglr-state" id="rgl-state">skaliert</span>
+                </div>
+                <input class="reglr-range" type="range" id="growth-range" min="0" max="100" value="100" aria-label="Vorher–Nachher-Regler: ziehen, um zu sehen, wie Reichweite, Leads und Umsatz wachsen">
+                <div class="reglr-ends"><span>Vorher · unsichtbar</span><span>Nachher · skaliert</span></div>
               </div>
 
               <div class="chart" aria-hidden="true">
@@ -511,37 +527,39 @@
                   <line class="grid-line" x1="0" y1="26" x2="320" y2="26"/>
                   <line class="grid-line" x1="0" y1="65" x2="320" y2="65"/>
                   <line class="grid-line" x1="0" y1="104" x2="320" y2="104"/>
-                  <rect class="bar" x="14" y="96" width="14" height="18"/>
-                  <rect class="bar" x="54" y="88" width="14" height="26"/>
-                  <rect class="bar up" x="94" y="74" width="14" height="40"/>
-                  <rect class="bar up" x="134" y="60" width="14" height="54"/>
-                  <rect class="bar up" x="174" y="44" width="14" height="70"/>
-                  <rect class="bar up" x="214" y="30" width="14" height="84"/>
-                  <rect class="bar up" x="254" y="18" width="14" height="96"/>
-                  <path class="area" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12 L294 114 L14 114 Z"/>
-                  <path class="curve" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12"/>
-                  <circle class="node-ring" cx="294" cy="12" r="7"/>
-                  <circle class="node-dot" cx="294" cy="12" r="3.4"/>
+                  <g class="growth-scale">
+                    <rect class="bar" x="14" y="96" width="14" height="18"/>
+                    <rect class="bar" x="54" y="88" width="14" height="26"/>
+                    <rect class="bar up" x="94" y="74" width="14" height="40"/>
+                    <rect class="bar up" x="134" y="60" width="14" height="54"/>
+                    <rect class="bar up" x="174" y="44" width="14" height="70"/>
+                    <rect class="bar up" x="214" y="30" width="14" height="84"/>
+                    <rect class="bar up" x="254" y="18" width="14" height="96"/>
+                    <path class="area" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12 L294 114 L14 114 Z"/>
+                    <path class="curve" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12"/>
+                    <circle class="node-ring" cx="294" cy="12" r="7"/>
+                    <circle class="node-dot" cx="294" cy="12" r="3.4"/>
+                  </g>
                 </svg>
                 <div class="xlab"><span>W1</span><span>W4</span><span>W8</span><span>jetzt</span></div>
               </div>
 
               <div class="panel-stats">
-                <button class="pstat" type="button" data-metric="0" aria-pressed="true" aria-label="Reichweite plus 218 Prozent, steigend">
-                  <div class="pv"><em>+218%</em></div>
-                  <div class="pl">Reichweite</div>
+                <div class="pstat">
+                  <div class="pv"><em id="kpi-reach">+218%</em></div>
+                  <div class="pl">Reichweite*</div>
                   <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</div>
-                </button>
-                <button class="pstat" type="button" data-metric="1" aria-pressed="false" aria-label="47 Leads pro Monat, plus 12">
-                  <div class="pv"><em>47</em></div>
-                  <div class="pl">Leads / Mo</div>
-                  <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>+12</div>
-                </button>
-                <button class="pstat" type="button" data-metric="2" aria-pressed="false" aria-label="Umsatz von null zu eins, aktiv">
-                  <div class="pv">0&nbsp;→&nbsp;<em>1</em></div>
-                  <div class="pl">Umsatz</div>
+                </div>
+                <div class="pstat">
+                  <div class="pv"><em id="kpi-leads">47</em></div>
+                  <div class="pl">Leads / Mo*</div>
+                  <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>wächst</div>
+                </div>
+                <div class="pstat">
+                  <div class="pv"><em id="kpi-rev">€4,8k</em></div>
+                  <div class="pl">Umsatz / Mo*</div>
                   <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</div>
-                </button>
+                </div>
               </div>
 
               <div class="panel-climb" aria-hidden="true">
@@ -747,7 +765,7 @@
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
     else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
 
-    // ===== growth panel: draw-in chart + interactive metric switch =====
+    // ===== growth panel: draw-in chart + Vorher/Nachher-Regler =====
     (function(){
       var panel=document.querySelector('.proof .panel');
       if(!panel)return;
@@ -762,23 +780,22 @@
       if(reduce||!('IntersectionObserver' in window)){draw();}
       else{var dob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){draw();dob.unobserve(e.target);}});},{threshold:.4});dob.observe(panel);}
 
-      // metric switch — tabs + clickable stat tiles stay in sync
-      var tabs=Array.prototype.slice.call(panel.querySelectorAll('.ptab'));
-      var tiles=Array.prototype.slice.call(panel.querySelectorAll('.pstat'));
-      var meta=panel.querySelector('#panel-meta');
-      var META=['Q · 0 → skaliert','Q · Leads / Monat','Q · 0 → Umsatz'];
-      function select(idx){
-        tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.metric===idx?'true':'false');});
-        tiles.forEach(function(t){t.setAttribute('aria-pressed',t.dataset.metric===idx?'true':'false');});
-        if(meta&&META[idx])meta.textContent=META[idx];
+      // Vorher/Nachher-Regler — treibt Chart-Höhe + KPI-Zahlen + Status
+      var range=panel.querySelector('#growth-range');
+      var scale=panel.querySelector('.growth-scale');
+      var kReach=panel.querySelector('#kpi-reach'),kLeads=panel.querySelector('#kpi-leads'),kRev=panel.querySelector('#kpi-rev');
+      var stateEl=panel.querySelector('#rgl-state'),meta=panel.querySelector('#panel-meta');
+      var climb=Array.prototype.slice.call(panel.querySelectorAll('.panel-climb .cb'));
+      function state(p){return p<.12?'unsichtbar':p<.5?'wird sichtbar':p<.88?'wächst':'skaliert';}
+      function apply(p){
+        if(scale)scale.style.setProperty('--p',(0.06+p*0.94).toFixed(3));
+        if(kReach)kReach.textContent='+'+Math.round(218*p)+'%';
+        if(kLeads)kLeads.textContent=Math.round(47*p);
+        if(kRev)kRev.textContent='€'+(4.8*p).toFixed(1).replace('.',',')+'k';
+        var s=state(p);if(stateEl)stateEl.textContent=s;if(meta)meta.textContent='Q · '+s;
+        var on=Math.round(p*climb.length);climb.forEach(function(c,i){c.classList.toggle('on',i<on);});
       }
-      function wire(el){el.addEventListener('click',function(){select(el.dataset.metric);});}
-      tabs.forEach(wire);tiles.forEach(wire);
-      // arrow-key roving for the tablist (a11y)
-      tabs.forEach(function(t,i){t.addEventListener('keydown',function(e){
-        var n=null;if(e.key==='ArrowRight')n=tabs[(i+1)%tabs.length];if(e.key==='ArrowLeft')n=tabs[(i-1+tabs.length)%tabs.length];
-        if(n){e.preventDefault();select(n.dataset.metric);n.focus();}
-      });});
+      if(range){range.addEventListener('input',function(){apply(range.value/100);});apply(range.value/100);}
     })();
 
     // ===== scrollspy nav-state (handmade touch) =====
