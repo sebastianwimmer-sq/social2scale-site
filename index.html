@@ -30,6 +30,10 @@
     --ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --surface-3:#23252A;
     --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
     --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    /* second accent — Teal/Cyan flow (Aurora dual-tone), used tastefully alongside emerald */
+    --teal:#1FA6E0; --cyan:#2FBEEA;
+    /* gradient-text for headline em-words: emerald → teal */
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
     --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
     --hi:inset 0 1px 0 rgba(255,255,255,.05);
     --hi-2:inset 0 1px 0 rgba(255,255,255,.07);
@@ -44,8 +48,8 @@
     --depth-hover:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 26px 52px -22px rgba(0,0,0,.7);
     --depth-lg:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88);
     --pill-depth:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.4);
-    /* dezenter dunkler Verlauf mit minimalem Emerald-Touch — nur für ausgewählte Sektionen */
-    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.10),transparent 52%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
+    /* dezenter dunkler Verlauf mit Aurora-Touch (Emerald→Teal) — nur für ausgewählte Sektionen */
+    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.12),transparent 52%),radial-gradient(120% 130% at 14% 96%,rgba(31,166,224,.10),transparent 56%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
 
     /* ===== 8pt spacing scale — single source of truth, no stray px ===== */
     --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px;
@@ -65,7 +69,26 @@
   ::-webkit-scrollbar-thumb:hover{background:#37373c}
   ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
   html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 14px)}
-  body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+  /* ===== site-wide Aurora wash (Option B · Dual-Tone) =====
+     two soft radials — Emerald (top-left) → Teal (bottom-right) — over a dark diagonal base.
+     background-attachment:fixed keeps the wash consistent across the whole scrolling page. */
+  body{
+    background:
+      radial-gradient(78% 60% at 12% 8%,rgba(0,184,136,.22),transparent 56%),
+      radial-gradient(82% 66% at 92% 88%,rgba(20,140,200,.20),transparent 58%),
+      linear-gradient(150deg,#04140F 0%,#051018 52%,#03070C 100%);
+    background-attachment:fixed;
+    background-color:#03070C;
+    color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+  /* mobile: background-attachment:fixed is often ignored / janky — fall back to a large non-fixed wash that still reads as one continuous gradient over the page */
+  @media (max-width:700px){
+    body{
+      background:
+        radial-gradient(120% 50% at 10% 2%,rgba(0,184,136,.20),transparent 54%),
+        radial-gradient(120% 55% at 95% 98%,rgba(20,140,200,.18),transparent 56%),
+        linear-gradient(160deg,#04140F 0%,#051018 55%,#03070C 100%);
+      background-attachment:scroll;background-size:cover;background-repeat:no-repeat}
+  }
   body.nav-open{overflow:hidden}
   .skip{position:absolute;left:-9999px}.skip:focus-visible{left:16px;top:16px;z-index:200;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
   .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 var(--px)}
@@ -84,7 +107,7 @@
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald);flex:0 0 auto}
   .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:block}
   h2{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(2.2rem,1.4rem+2.8vw,3.6rem);line-height:1.04;letter-spacing:-.022em;margin-top:var(--s-3)}
-  h2 em{font-style:italic;font-weight:450;color:var(--emerald)}
+  h2 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.02rem,.98rem+.3vw,1.15rem)}
   .head{max-width:42ch}
 
@@ -120,7 +143,7 @@
   .mobile-menu.open{transform:none}
   .mobile-menu a.m-link{font-family:"Fraunces",serif;font-weight:430;font-size:1.5rem;letter-spacing:-.015em;color:var(--paper);text-decoration:none;padding:15px 0;border-bottom:1px solid var(--line);transition:color .2s var(--ease),padding-left .25s var(--ease)}
   .mobile-menu a.m-link:hover{color:var(--emerald);padding-left:8px}
-  .mobile-menu .m-cta{margin-top:24px;text-align:center;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:16px 24px;border-radius:10px;text-decoration:none;background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 14px 34px -14px rgba(0,184,136,.7),inset 0 1px 0 rgba(255,255,255,.3)}
+  .mobile-menu .m-cta{margin-top:24px;text-align:center;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:16px 24px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 14px 34px -14px rgba(0,184,136,.6),0 14px 34px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3)}
   .mobile-menu .m-foot{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);padding-top:26px}
 
   @media (max-width:819px){
@@ -136,7 +159,7 @@
   .hero-logo{display:block;width:clamp(360px,56vw,720px);height:auto;mix-blend-mode:screen;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
   .hero .eyebrow{margin-bottom:var(--s-5)}
   .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.9rem,1rem+7vw,7rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
-  .hero h1 em{font-style:italic;font-weight:500;color:var(--emerald)}
+  .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem+.55vw,1.32rem);margin-top:var(--s-6);max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
   /* hero trust row — 3 value pills, semantic emerald checks */
@@ -146,7 +169,7 @@
   .hero-center .cta-row{justify-content:center}
 
   /* ===== proof section — relocated growth dashboard, full-bleed under hero ===== */
-  .proof{position:relative;padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line);background:radial-gradient(110% 120% at 82% 0%,rgba(0,184,136,.07),transparent 50%),linear-gradient(180deg,#15171B 0%,var(--ink) 80%)}
+  .proof{position:relative;padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line);background:radial-gradient(110% 120% at 82% 0%,rgba(0,184,136,.08),transparent 50%),radial-gradient(110% 120% at 8% 100%,rgba(31,166,224,.07),transparent 52%),linear-gradient(180deg,rgba(21,23,27,.72) 0%,rgba(10,11,13,.55) 80%)}
   .proof-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
   .proof-copy .ix{margin-bottom:var(--s-4)}
   .proof-h{margin-top:0}
@@ -158,7 +181,7 @@
   .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
   .btn:hover{transform:translateY(-3px)}
   /* the ONE emerald-glow element on the page */
-  .btn-primary{background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.7),inset 0 1px 0 rgba(255,255,255,.3)}
+  .btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
   .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
   .btn-primary:hover::after{animation:glint .85s var(--ease) forwards}
   .textlink{font-family:"Archivo",sans-serif;font-size:14px;font-weight:600;letter-spacing:.01em;color:var(--paper);text-decoration:none;position:relative;padding-bottom:3px}
@@ -186,11 +209,11 @@
   .chart svg{display:block;width:100%;height:auto}
   .chart .grid-line{stroke:var(--line);stroke-width:1}
   .chart .area{fill:url(#areaFill)}
-  .chart .curve{fill:none;stroke:var(--emerald);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .chart .curve{fill:none;stroke:url(#curveGrad);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
   .chart .bar{fill:var(--surface-3)}
   .chart .bar.up{fill:rgba(0,184,136,.32)}
-  .chart .node-dot{fill:var(--emerald)}
-  .chart .node-ring{fill:none;stroke:var(--emerald);stroke-width:1.4;opacity:.5}
+  .chart .node-dot{fill:var(--cyan)}
+  .chart .node-ring{fill:none;stroke:var(--cyan);stroke-width:1.4;opacity:.5}
   .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-3);padding-left:var(--s-5);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
   /* panel tabs — kleine echte Interaktion (Reach / Leads / Umsatz) */
   .panel-tabs{display:flex;gap:var(--s-2);padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--line)}
@@ -227,6 +250,7 @@
   .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
   .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
   .panel-climb .cb.on{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.35))}
+  .panel-climb .cb.on:last-child{background:linear-gradient(180deg,var(--cyan),rgba(31,166,224,.35))}
   .panel-tag{position:absolute;z-index:3;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;color:var(--emerald);background:var(--emerald-ink);border:1px solid rgba(0,184,136,.4);border-radius:5px;padding:3px 7px}
   .panel-tag.t1{top:78px;right:24px}
 
@@ -328,7 +352,7 @@
 
   /* ===== cta band — flat surface, hairline, no glow ===== */
   .band{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(40px,7vw,80px);box-shadow:var(--depth-lg)}
-  .band::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6),transparent)}
+  .band::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
   .band h2{max-width:18ch}
   .band .lead{max-width:46ch}
   .band .cta-row{margin-top:var(--s-7)}
@@ -427,9 +451,14 @@
                 <div class="ylab"><span>hoch</span><span>·</span><span>0</span></div>
                 <svg viewBox="0 0 320 130" preserveAspectRatio="none">
                   <defs>
-                    <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id="areaFill" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stop-color="#00B888" stop-opacity=".22"/>
-                      <stop offset="100%" stop-color="#00B888" stop-opacity="0"/>
+                      <stop offset="60%" stop-color="#1FA6E0" stop-opacity=".12"/>
+                      <stop offset="100%" stop-color="#1FA6E0" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stop-color="#00B888"/>
+                      <stop offset="100%" stop-color="#2FBEEA"/>
                     </linearGradient>
                   </defs>
                   <line class="grid-line" x1="0" y1="26" x2="320" y2="26"/>
