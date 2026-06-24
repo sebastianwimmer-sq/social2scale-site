@@ -32,9 +32,20 @@
     --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
     --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
     --hi:inset 0 1px 0 rgba(255,255,255,.05);
-    --shadow:0 24px 60px -32px rgba(0,0,0,.7);
+    --hi-2:inset 0 1px 0 rgba(255,255,255,.07);
+    --shadow:0 18px 44px -24px rgba(0,0,0,.62);
     --shadow-lg:0 40px 90px -40px rgba(0,0,0,.85);
     --ease:cubic-bezier(.16,1,.3,1);
+
+    /* ===== depth: materiell gebaute Flächen (surface-gradient + inset-highlight + cast-shadow) ===== */
+    --surf-grad:linear-gradient(180deg,#202227 0%,var(--surface-2) 38%,var(--surface) 100%);
+    --surf-grad-hover:linear-gradient(180deg,#24262c 0%,var(--surface-3) 42%,var(--surface-2) 100%);
+    --depth:var(--hi-2),0 1px 2px rgba(0,0,0,.4),0 14px 30px -18px rgba(0,0,0,.6);
+    --depth-hover:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 26px 52px -22px rgba(0,0,0,.7);
+    --depth-lg:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88);
+    --pill-depth:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.4);
+    /* dezenter dunkler Verlauf mit minimalem Emerald-Touch — nur für ausgewählte Sektionen */
+    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.10),transparent 52%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
 
     /* ===== 8pt spacing scale — single source of truth, no stray px ===== */
     --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px;
@@ -91,8 +102,8 @@
   .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--emerald);transition:width .3s var(--ease)}
   .nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--paper)}
   .nav-links a:hover::after,.nav-links a[aria-current="true"]::after{width:100%}
-  .nav-cta{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:10px 18px;border-radius:8px;text-decoration:none;background:var(--surface-2);color:var(--paper);border:1px solid var(--line-2);box-shadow:var(--hi);transition:border-color .25s var(--ease),background .25s var(--ease)}
-  .nav-cta:hover{border-color:var(--line-3);background:var(--surface-3)}
+  .nav-cta{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:10px 18px;border-radius:8px;text-decoration:none;background:linear-gradient(180deg,var(--surface-3),var(--surface-2));color:var(--paper);border:1px solid var(--line-2);box-shadow:var(--pill-depth);transition:border-color .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),transform .25s var(--ease)}
+  .nav-cta:hover{border-color:var(--line-3);background:linear-gradient(180deg,#26282e,var(--surface-3));box-shadow:var(--hi-2),0 4px 10px -2px rgba(0,0,0,.5);transform:translateY(-1px)}
 
   /* burger */
   .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);cursor:pointer;margin-left:auto;transition:border-color .25s var(--ease)}
@@ -122,7 +133,7 @@
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
   /* the ONE prominent brand mark — large centered wordmark */
-  .hero-logo{display:block;width:clamp(300px,46vw,560px);height:auto;mix-blend-mode:screen;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .hero-logo{display:block;width:clamp(360px,56vw,720px);height:auto;mix-blend-mode:screen;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
   .hero .eyebrow{margin-bottom:var(--s-5)}
   .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.9rem,1rem+7vw,7rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
   .hero h1 em{font-style:italic;font-weight:500;color:var(--emerald)}
@@ -135,11 +146,10 @@
   .hero-center .cta-row{justify-content:center}
 
   /* ===== proof section — relocated growth dashboard, full-bleed under hero ===== */
-  .proof{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
+  .proof{position:relative;padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line);background:radial-gradient(110% 120% at 82% 0%,rgba(0,184,136,.07),transparent 50%),linear-gradient(180deg,#15171B 0%,var(--ink) 80%)}
   .proof-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
   .proof-copy .ix{margin-bottom:var(--s-4)}
   .proof-h{margin-top:0}
-  .proof-copy .peak{margin-top:var(--s-6)}
   .proof-visual{max-width:560px;width:100%;justify-self:end}
   @media (max-width:880px){
     .proof-grid{grid-template-columns:1fr;gap:var(--s-7)}
@@ -155,13 +165,10 @@
   .textlink::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--line-3);transition:background .25s var(--ease)}
   .textlink:hover{transform:none}
   .textlink:hover::after{background:var(--paper)}
-  .peak{margin-top:var(--s-7);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--faint);display:flex;align-items:center;gap:var(--s-3)}
-  .peak::before{content:"";width:28px;height:1px;background:var(--line-3)}
-  .peak b{color:var(--muted);font-weight:400}
 
   /* ===== hero growth panel — stylised analytics dashboard (PEAKING-style) ===== */
-  .panel{position:relative;background:var(--surface);border:1px solid var(--line-2);border-radius:20px;
-    box-shadow:var(--hi),var(--shadow-lg);overflow:hidden}
+  .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:20px;
+    box-shadow:var(--depth-lg);overflow:hidden}
   .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
   /* corner index markers */
   .panel .corner{position:absolute;width:9px;height:9px;border:1px solid var(--line-3);z-index:2;pointer-events:none}
@@ -185,15 +192,37 @@
   .chart .node-dot{fill:var(--emerald)}
   .chart .node-ring{fill:none;stroke:var(--emerald);stroke-width:1.4;opacity:.5}
   .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-3);padding-left:var(--s-5);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
-  /* stat tiles */
+  /* panel tabs — kleine echte Interaktion (Reach / Leads / Umsatz) */
+  .panel-tabs{display:flex;gap:var(--s-2);padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--line)}
+  .ptab{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:linear-gradient(180deg,var(--surface-3),var(--surface-2));border:1px solid var(--line-2);border-radius:7px;box-shadow:var(--pill-depth);padding:7px 13px;cursor:pointer;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease)}
+  .ptab:hover{color:var(--paper);border-color:var(--line-3);transform:translateY(-1px)}
+  .ptab[aria-selected="true"]{color:var(--emerald);border-color:rgba(0,184,136,.45);background:linear-gradient(180deg,rgba(0,184,136,.16),rgba(0,184,136,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(0,184,136,.12)}
+  /* stat tiles — interaktiv (hover-lift, emerald-akzent, fokus, aktiv) */
   .panel-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
-  .pstat{padding:var(--s-4) var(--s-4) var(--s-5)}
+  .pstat{position:relative;padding:var(--s-4) var(--s-4) var(--s-5);background:transparent;border:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
   .pstat + .pstat{border-left:1px solid var(--line)}
+  .pstat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--emerald);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);box-shadow:0 0 10px rgba(0,184,136,.5)}
+  .pstat:hover{background:rgba(0,184,136,.05);transform:translateY(-2px)}
+  .pstat:hover::before,.pstat[aria-pressed="true"]::before{transform:scaleX(1)}
+  .pstat[aria-pressed="true"]{background:rgba(0,184,136,.08)}
+  .pstat:focus-visible{outline:2px solid var(--emerald);outline-offset:-2px;border-radius:6px}
   .pstat .pv{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(1.35rem,1rem+1.1vw,1.7rem);line-height:1;letter-spacing:-.02em;color:var(--paper)}
   .pstat .pv em{font-style:normal;color:var(--emerald)}
   .pstat .pl{font-family:"Archivo",sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-2);line-height:1.3}
   .pstat .trend{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--emerald);margin-top:var(--s-2);display:flex;align-items:center;gap:4px}
   .pstat .trend svg{width:9px;height:9px;stroke:var(--emerald);stroke-width:2.4;fill:none}
+  /* chart draw-in (stroke-dashoffset), einmalig beim reveal */
+  .chart .curve{stroke-dasharray:var(--curve-len,640);stroke-dashoffset:var(--curve-len,640);transition:stroke-dashoffset 1.5s var(--ease)}
+  .panel.drawn .chart .curve{stroke-dashoffset:0}
+  .chart .node-dot,.chart .node-ring{opacity:0;transition:opacity .4s var(--ease) 1.2s}
+  .panel.drawn .chart .node-dot,.panel.drawn .chart .node-ring{opacity:1}
+  .chart .node-ring{opacity:0}.panel.drawn .chart .node-ring{opacity:.5}
+  @media (prefers-reduced-motion:reduce){
+    .chart .curve{stroke-dashoffset:0;transition:none}
+    .chart .node-dot,.chart .node-ring{opacity:1;transition:none}
+    .chart .node-ring{opacity:.5}
+    .pstat:hover{transform:none}
+  }
   /* climb-bar motif row */
   .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
   .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
@@ -204,15 +233,13 @@
   /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
-    .hero-logo{width:clamp(220px,64vw,340px);margin-bottom:var(--s-6)}
+    .hero-logo{width:clamp(280px,72vw,420px);margin-bottom:var(--s-6)}
     .panel-tag.t1{top:70px;right:16px}
   }
 
   /* ===== trust strip — compact, editorial ===== */
   .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .trust .row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5) var(--s-7);padding:var(--s-5) 0}
-  .trust .tlab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-right:var(--s-5);border-right:1px solid var(--line-2);align-self:stretch;display:flex;align-items:center}
-  @media (max-width:560px){.trust .tlab{border-right:0;padding-right:0;width:100%}}
   .trust .item{display:flex;align-items:center;gap:var(--s-3);font-size:.92rem;color:var(--muted);font-weight:500}
   .chk{flex:0 0 auto;width:18px;height:18px;display:grid;place-items:center}
   .chk svg{width:14px;height:14px;stroke:var(--emerald);stroke-width:2.6;fill:none}
@@ -228,8 +255,8 @@
 
   /* ===== leistungen — bento (1 hero + 2 narrow) ===== */
   .bento{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s-4)}
-  .cell{position:relative;background:var(--surface);border:1px solid var(--line-2);border-radius:18px;padding:clamp(28px,4vw,40px);box-shadow:var(--hi),var(--shadow);transition:border-color .3s var(--ease),background .3s var(--ease)}
-  .cell:hover{border-color:var(--line-3);background:var(--surface-2)}
+  .cell{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(28px,4vw,40px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .cell:hover{border-color:var(--line-3);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
   .cell .n{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--faint)}
   .cell h3{font-family:"Fraunces",serif;font-weight:430;font-size:1.5rem;letter-spacing:-.015em;margin-top:var(--s-3)}
   .cell p{font-size:.98rem;color:var(--muted);margin-top:var(--s-3);line-height:1.6;max-width:46ch}
@@ -240,7 +267,8 @@
   .cell-hero .spacer{flex:1}
   .cell-hero .tags{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-6)}
   .cell-hero::after{content:"";position:absolute;top:18px;right:18px;width:10px;height:10px;border-top:1px solid var(--line-3);border-right:1px solid var(--line-3);pointer-events:none}
-  .tag{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted);padding:6px 12px;border:1px solid var(--line-2);border-radius:100px}
+  .tag{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted);padding:6px 13px;border:1px solid var(--line-2);border-radius:100px;background:linear-gradient(180deg,var(--surface-3),var(--surface-2));box-shadow:var(--pill-depth);transition:border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
+  .tag:hover{border-color:var(--line-3);color:var(--paper);transform:translateY(-1px)}
   @media (max-width:760px){.bento{grid-template-columns:1fr}.cell-hero{grid-row:auto}}
 
   /* ===== ablauf — large overlapping mono numbers, left editorial ===== */
@@ -279,8 +307,8 @@
 
   /* ===== über uns — founders, flat surfaces ===== */
   .founders{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
-  .fcard{background:var(--surface);border:1px solid var(--line-2);border-radius:18px;padding:clamp(28px,4vw,40px);box-shadow:var(--hi),var(--shadow);transition:border-color .3s var(--ease),background .3s var(--ease)}
-  .fcard:hover{border-color:var(--line-3);background:var(--surface-2)}
+  .fcard{background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(28px,4vw,40px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .fcard:hover{border-color:var(--line-3);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
   .fcard .pic{width:72px;height:72px;border-radius:50%;margin-bottom:var(--s-5);background:var(--surface-3);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9px;line-height:1.3;text-align:center}
   .fcard h3{font-family:"Fraunces",serif;font-weight:430;font-size:1.5rem;letter-spacing:-.015em}
   .fcard .role{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-top:var(--s-2)}
@@ -288,16 +316,18 @@
   @media (max-width:680px){.founders{grid-template-columns:1fr}}
 
   /* ===== faq ===== */
-  .faq{margin-top:0;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
-  .faq details{border-bottom:1px solid var(--line);transition:border-color .25s var(--ease)}
-  .faq summary{cursor:pointer;list-style:none;padding:var(--s-5) 0;font-family:"Fraunces",serif;font-weight:430;font-size:1.18rem;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:var(--s-4)}
+  .faq{margin-top:0;display:flex;flex-direction:column;gap:var(--s-3)}
+  .faq details{background:var(--surf-grad);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--depth);transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)}
+  .faq details:hover{border-color:var(--line-3);box-shadow:var(--depth-hover)}
+  .faq details[open]{background:var(--surf-grad-hover);border-color:var(--line-3)}
+  .faq summary{cursor:pointer;list-style:none;padding:var(--s-5);font-family:"Fraunces",serif;font-weight:430;font-size:1.18rem;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:var(--s-4)}
   .faq summary::-webkit-details-marker{display:none}
   .faq summary::after{content:"+";color:var(--emerald);font-size:1.5rem;line-height:1;transition:transform .25s var(--ease);flex:0 0 auto}
   .faq details[open] summary::after{transform:rotate(45deg)}
-  .faq p{color:var(--muted);font-size:.98rem;line-height:1.65;padding:0 0 var(--s-5);margin:0;max-width:64ch}
+  .faq p{color:var(--muted);font-size:.98rem;line-height:1.65;padding:0 var(--s-5) var(--s-5);margin:0;max-width:64ch}
 
   /* ===== cta band — flat surface, hairline, no glow ===== */
-  .band{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line-2);border-radius:24px;padding:clamp(40px,7vw,80px);box-shadow:var(--hi),var(--shadow-lg)}
+  .band{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(40px,7vw,80px);box-shadow:var(--depth-lg)}
   .band::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6),transparent)}
   .band h2{max-width:18ch}
   .band .lead{max-width:46ch}
@@ -375,7 +405,6 @@
             <span class="ix"><b>00</b> / Live</span>
             <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
             <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools. Powered by PEAKING.</p>
-            <p class="peak">Plattform: Powered by <b>PEAKING</b></p>
           </div>
           <div class="proof-visual">
             <div class="panel" role="img" aria-label="Wachstums-Dashboard: Reichweite steigt um 218 Prozent, 47 Leads pro Monat, von 0 zu 1 sichtbar.">
@@ -385,7 +414,13 @@
 
               <div class="panel-head">
                 <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
-                <span class="meta">Q · 0 → skaliert</span>
+                <span class="meta" id="panel-meta">Q · 0 → skaliert</span>
+              </div>
+
+              <div class="panel-tabs" role="tablist" aria-label="Wachstums-Metrik wählen">
+                <button class="ptab" type="button" role="tab" id="ptab-reach" aria-selected="true" data-metric="0">Reach</button>
+                <button class="ptab" type="button" role="tab" id="ptab-leads" aria-selected="false" data-metric="1">Leads</button>
+                <button class="ptab" type="button" role="tab" id="ptab-revenue" aria-selected="false" data-metric="2">Umsatz</button>
               </div>
 
               <div class="chart" aria-hidden="true">
@@ -416,21 +451,21 @@
               </div>
 
               <div class="panel-stats">
-                <div class="pstat">
+                <button class="pstat" type="button" data-metric="0" aria-pressed="true" aria-label="Reichweite plus 218 Prozent, steigend">
                   <div class="pv"><em>+218%</em></div>
                   <div class="pl">Reichweite</div>
-                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</div>
-                </div>
-                <div class="pstat">
+                  <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</div>
+                </button>
+                <button class="pstat" type="button" data-metric="1" aria-pressed="false" aria-label="47 Leads pro Monat, plus 12">
                   <div class="pv"><em>47</em></div>
                   <div class="pl">Leads / Mo</div>
-                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>+12</div>
-                </div>
-                <div class="pstat">
+                  <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>+12</div>
+                </button>
+                <button class="pstat" type="button" data-metric="2" aria-pressed="false" aria-label="Umsatz von null zu eins, aktiv">
                   <div class="pv">0&nbsp;→&nbsp;<em>1</em></div>
-                  <div class="pl">Sichtbar</div>
-                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</div>
-                </div>
+                  <div class="pl">Umsatz</div>
+                  <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</div>
+                </button>
               </div>
 
               <div class="panel-climb" aria-hidden="true">
@@ -448,7 +483,6 @@
     <section class="trust" aria-label="Unsere Stärken">
       <div class="wrap">
         <div class="row reveal">
-          <span class="tlab" aria-hidden="true">[ Standard ]</span>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</div>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</div>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in PEAKING</div>
@@ -641,6 +675,40 @@
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
     else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
+
+    // ===== growth panel: draw-in chart + interactive metric switch =====
+    (function(){
+      var panel=document.querySelector('.proof .panel');
+      if(!panel)return;
+      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // set exact curve length so the draw-in lands flush
+      var curve=panel.querySelector('.chart .curve');
+      if(curve&&curve.getTotalLength){var len=Math.ceil(curve.getTotalLength());panel.style.setProperty('--curve-len',len);}
+
+      // trigger draw-in once when panel scrolls into view
+      function draw(){panel.classList.add('drawn');}
+      if(reduce||!('IntersectionObserver' in window)){draw();}
+      else{var dob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){draw();dob.unobserve(e.target);}});},{threshold:.4});dob.observe(panel);}
+
+      // metric switch — tabs + clickable stat tiles stay in sync
+      var tabs=Array.prototype.slice.call(panel.querySelectorAll('.ptab'));
+      var tiles=Array.prototype.slice.call(panel.querySelectorAll('.pstat'));
+      var meta=panel.querySelector('#panel-meta');
+      var META=['Q · 0 → skaliert','Q · Leads / Monat','Q · 0 → Umsatz'];
+      function select(idx){
+        tabs.forEach(function(t){t.setAttribute('aria-selected',t.dataset.metric===idx?'true':'false');});
+        tiles.forEach(function(t){t.setAttribute('aria-pressed',t.dataset.metric===idx?'true':'false');});
+        if(meta&&META[idx])meta.textContent=META[idx];
+      }
+      function wire(el){el.addEventListener('click',function(){select(el.dataset.metric);});}
+      tabs.forEach(wire);tiles.forEach(wire);
+      // arrow-key roving for the tablist (a11y)
+      tabs.forEach(function(t,i){t.addEventListener('keydown',function(e){
+        var n=null;if(e.key==='ArrowRight')n=tabs[(i+1)%tabs.length];if(e.key==='ArrowLeft')n=tabs[(i-1+tabs.length)%tabs.length];
+        if(n){e.preventDefault();select(n.dataset.metric);n.focus();}
+      });});
+    })();
 
     // ===== scrollspy nav-state (handmade touch) =====
     (function(){
