@@ -20,7 +20,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
+{"@context":"https://schema.org","@graph":[{"@type":["Organization","ProfessionalService"],"@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth-Agentur für Coaches, Experten und B2B-Unternehmen ohne eigenen Social-Auftritt. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich planbar wachsen.","email":"info@social2scale.com","areaServed":"DE","knowsAbout":["Social Media Marketing","Content","Paid Growth","Personal Branding"],"founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}],"contactPoint":{"@type":"ContactPoint","email":"info@social2scale.com","contactType":"sales"}},{"@type":"FAQPage","@id":"https://social2scale.com/#faq","mainEntity":[{"@type":"Question","name":"Was, wenn ich noch gar keinen Social-Auftritt habe?","acceptedAnswer":{"@type":"Answer","text":"Perfekt — genau dafür sind wir da. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content."}},{"@type":"Question","name":"Wie schnell sehe ich Ergebnisse?","acceptedAnswer":{"@type":"Answer","text":"Den Auftritt sofort. Reichweite & Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in PEAKING."}},{"@type":"Question","name":"Muss ich selbst Content erstellen?","acceptedAnswer":{"@type":"Answer","text":"Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um."}},{"@type":"Question","name":"Was ist PEAKING?","acceptedAnswer":{"@type":"Answer","text":"PEAKING ist unsere Plattform, in der du dein Wachstum transparent verfolgst — Reichweite, Leads und Fortschritt an einem Ort, statt Zahlen aus zehn Tools zusammenzusuchen."}},{"@type":"Question","name":"Was kostet das?","acceptedAnswer":{"@type":"Answer","text":"Das hängt von Ziel und Umfang ab. Im unverbindlichen Strategie-Call zeigen wir dir, wie dein System aussieht — inklusive Pakete & Preise."}}]}]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
@@ -324,17 +324,6 @@
     border-color:rgba(0,184,136,.50)}
   #leistungen .cell-hero{border-color:rgba(0,184,136,.38)}
 
-  /* ===== ablauf — large overlapping mono numbers, left editorial ===== */
-  .steps{display:grid;gap:var(--s-2);margin-top:0}
-  .step{position:relative;display:grid;grid-template-columns:minmax(96px,140px) 1fr;gap:var(--s-6);align-items:baseline;padding:var(--s-6) 0;border-top:1px solid var(--line)}
-  .step:first-child{border-top:0}
-  .step .num{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(3rem,2rem+3vw,5rem);line-height:.9;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .3s var(--ease),color .3s var(--ease)}
-  .step:hover .num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.06)}
-  .step .st-body{padding-top:var(--s-2)}
-  .step h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.3rem,1.1rem+.8vw,1.7rem);letter-spacing:-.015em}
-  .step p{font-size:1rem;color:var(--muted);margin-top:var(--s-3);max-width:54ch;line-height:1.6}
-  @media (max-width:560px){.step{grid-template-columns:1fr;gap:var(--s-2);padding:var(--s-5) 0}.step .num{font-size:2.6rem}}
-
   /* ===== Weg: Scroll-Journey — wachsender Kreis + 1→4-Reel + Fortschrittsring ===== */
   .weg{position:relative}
   .weg-track{height:380vh}
@@ -354,8 +343,9 @@
     background:radial-gradient(circle at 36% 30%,rgba(0,184,136,.32),rgba(31,166,224,.14) 58%,transparent 76%),var(--surf-grad);
     border:1px solid rgba(0,184,136,.4);box-shadow:0 36px 90px -32px rgba(0,184,136,.55),inset 0 1px 0 rgba(255,255,255,.14);
     transform:translate(-50%,-50%) scale(var(--orb,.82));transition:transform .12s linear}
-  .weg-reel{position:absolute;top:0;left:0;width:100%;display:flex;flex-direction:column;transform:translateY(calc(var(--r,0) * -25%));transition:transform .12s linear}
+  .weg-reel{position:absolute;top:0;left:0;width:100%;display:flex;flex-direction:column;transform:translateY(calc(var(--r,0) * -20%));transition:transform .12s linear}
   .weg-reel span{height:clamp(190px,22vw,290px);display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:500;line-height:1;font-size:clamp(5.5rem,12vw,9.5rem);background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .weg-reel span.go{-webkit-text-fill-color:initial;color:initial;background:none;font-size:clamp(4rem,9vw,7rem)}
   .weg-detail{position:relative;margin:var(--s-7) auto 0;max-width:560px;min-height:7em}
   .wd{position:absolute;inset:0;text-align:center;opacity:0;transform:translateY(16px);transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
   .wd.is-on{opacity:1;transform:none}
@@ -373,54 +363,10 @@
   .weg-static .weg-detail{min-height:0;max-width:none}
   .weg-static .wd{position:relative;inset:auto;opacity:1;transform:none;text-align:left;margin-top:var(--s-5)}
   .weg-static .weg-orb{transform:translate(-50%,-50%) scale(1)}
-
-  /* ===== für wen — asymmetric label/text rows ===== */
-  .rows{display:grid;gap:0}
-  .frow{display:grid;grid-template-columns:minmax(140px,260px) 1fr;gap:var(--s-6) var(--s-7);align-items:start;padding:var(--s-7) 0;border-top:1px solid var(--line)}
-  .frow:first-child{border-top:0}
-  .frow .ftag{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--emerald)}
-  .frow h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.5rem,1.2rem+1.2vw,2rem);letter-spacing:-.018em;margin-top:var(--s-3)}
-  .frow .ftxt p{font-size:1.04rem;color:var(--muted);margin-top:var(--s-4);max-width:56ch;line-height:1.6}
-  @media (max-width:680px){.frow{grid-template-columns:1fr;gap:var(--s-2);padding:var(--s-6) 0}}
-  /* Für-wen hervorgehoben: aus Hairline-Liste → prominente Aurora-Karten */
-  #fuer-wen .rows{gap:var(--s-4)}
-  #fuer-wen .frow{border-top:0;align-items:center;padding:clamp(24px,3vw,36px);border-radius:18px;
-    background:
-      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.22),transparent 58%),
-      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.17),transparent 60%),
-      var(--surf-grad);
-    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
-    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
-  #fuer-wen .frow:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-3px);
-    background:
-      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.30),transparent 58%),
-      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.23),transparent 60%),
-      var(--surf-grad-hover)}
-  #fuer-wen .ftag{display:inline-block;font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 12px;border-radius:100px}
-
-  /* ===== ergebnisse — left stat row + pull-quote ===== */
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
-  .stat{padding:var(--s-7) var(--s-6) var(--s-7) 0}
-  .stat + .stat{border-left:1px solid var(--line);padding-left:var(--s-6)}
-  .stat .num{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(2.6rem,1.8rem+2.6vw,4rem);line-height:.95;color:var(--paper);letter-spacing:-.03em}
-  .stat .num em{font-style:normal;color:var(--emerald)}
-  .stat .lbl{font-family:"Archivo",sans-serif;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-4)}
-  @media (max-width:680px){.stats{grid-template-columns:1fr}.stat{padding:var(--s-6) 0}.stat + .stat{border-left:0;border-top:1px solid var(--line);padding-left:0}}
-  .pullquote{margin-top:var(--s-8);max-width:24ch}
-  .pullquote blockquote{font-family:"Fraunces",serif;font-weight:430;font-style:italic;font-size:clamp(1.5rem,1.1rem+1.8vw,2.6rem);line-height:1.22;letter-spacing:-.02em;color:var(--paper);max-width:18ch}
-  .pullquote .by{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);margin-top:var(--s-5)}
-  .ph-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:var(--s-6)}
-  .ph-note b{color:var(--emerald);font-weight:400}
-
-  /* ===== über uns — founders, flat surfaces ===== */
-  .founders{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
-  .fcard{background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(28px,4vw,40px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
-  .fcard:hover{border-color:var(--line-3);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
-  .fcard .pic{width:72px;height:72px;border-radius:50%;margin-bottom:var(--s-5);background:var(--surface-3);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9px;line-height:1.3;text-align:center}
-  .fcard h3{font-family:"Fraunces",serif;font-weight:430;font-size:1.5rem;letter-spacing:-.015em}
-  .fcard .role{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-top:var(--s-2)}
-  .fcard p{font-size:.98rem;color:var(--muted);margin-top:var(--s-4);line-height:1.6}
-  @media (max-width:680px){.founders{grid-template-columns:1fr}}
+  /* launch flourish — orb glows when countdown hits the rocket (p>0.9) */
+  .weg.is-launch .weg-orb{box-shadow:0 0 0 2px rgba(0,184,136,.5),0 40px 110px -28px rgba(0,184,136,.8);animation:wegLaunchPulse 1.6s var(--ease) infinite}
+  @keyframes wegLaunchPulse{0%,100%{box-shadow:0 0 0 2px rgba(0,184,136,.5),0 40px 110px -28px rgba(0,184,136,.8)}50%{box-shadow:0 0 0 3px rgba(0,184,136,.7),0 48px 130px -24px rgba(0,184,136,1)}}
+  @media (prefers-reduced-motion: reduce){.weg.is-launch .weg-orb{animation:none}}
 
   /* ===== faq ===== */
   .faq{margin-top:0;display:flex;flex-direction:column;gap:var(--s-3)}
@@ -672,7 +618,7 @@
                 <circle class="rg-bg" cx="110" cy="110" r="100"/>
                 <circle class="rg-fg" cx="110" cy="110" r="100"/>
               </svg>
-              <div class="weg-orb" aria-hidden="true"><div class="weg-reel"><span>1</span><span>2</span><span>3</span><span>4</span></div></div>
+              <div class="weg-orb" aria-hidden="true"><div class="weg-reel"><span>4</span><span>3</span><span>2</span><span>1</span><span class="go">🚀</span></div></div>
             </div>
           </div>
           <div class="weg-detail">
@@ -680,6 +626,7 @@
             <div class="wd" data-i="1"><h3>Setup &amp; Onboarding</h3><p>Wir bauen Profile, Branding und Content-Strategie auf und richten deine PEAKING-Plattform ein.</p></div>
             <div class="wd" data-i="2"><h3>Content &amp; Betreuung</h3><p>Laufende Produktion und persönliche Betreuung. Du gibst die Richtung vor, wir setzen um.</p></div>
             <div class="wd" data-i="3"><h3>Skalierung &amp; Reporting</h3><p>Reichweite, Leads und Umsatz wachsen — jeden Fortschritt verfolgst du transparent in PEAKING.</p></div>
+            <div class="wd" data-i="4"><h3>🚀 Durchstarten.</h3><p>Auftritt steht, System läuft, Zahlen wachsen — du bist sichtbar und skalierst planbar weiter.</p></div>
           </div>
         </div></div>
       </div>
@@ -829,14 +776,17 @@
         var r=track.getBoundingClientRect();
         var total=r.height-window.innerHeight;
         var p=clamp((-r.top)/(total||1),0,1);
-        var reel=p*3;
+        var reel=p*4;
         sec.style.setProperty('--r',reel.toFixed(3));
         sec.style.setProperty('--orb',(0.8+p*0.2).toFixed(3));
         if(ring)ring.style.strokeDashoffset=(CIRC*(1-p)).toFixed(1);
-        var act=clamp(Math.round(reel),0,3);
-        if(act!==last){last=act;
-          lis.forEach(function(li,i){li.classList.toggle('is-on',i===act);});
-          wds.forEach(function(d,i){d.classList.toggle('is-on',i===act);});
+        var launch=p>0.9;
+        sec.classList.toggle('is-launch',launch);
+        var step=clamp(Math.round(p*3),0,3);
+        var detail=launch?4:step;
+        if(detail!==last){last=detail;
+          lis.forEach(function(li,i){li.classList.toggle('is-on',i===step);});
+          wds.forEach(function(d,i){d.classList.toggle('is-on',i===detail);});
         }
       }
       var ticking=false;

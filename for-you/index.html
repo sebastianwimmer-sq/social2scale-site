@@ -8,19 +8,28 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#000000">
-<title>Für wen — social2scale</title>
-<meta name="description" content="Für B2B-Firmen ohne Social-Auftritt, Coaches & Experten und Wachstums-Willige: social2scale baut und skaliert deinen Auftritt.">
-<meta property="og:title" content="social2scale — Premium Social-Growth">
-<meta property="og:description" content="Wir bauen dein Wachstum — System statt Zufall.">
-<meta property="og:url" content="https://social2scale.com/">
+<title>Für wen — social2scale | Social-Growth für B2B, Coaches & Experten</title>
+<meta name="description" content="Für wen ist social2scale? Für B2B-Firmen ohne Social-Auftritt, Coaches & Experten mit zu wenig Sichtbarkeit und Wachstums-Willige. Wir bauen deinen Auftritt von null und skalieren ihn — done-for-you, messbar.">
+<link rel="canonical" href="https://social2scale.com/for-you/">
+<meta property="og:title" content="Für wen — social2scale | Social-Growth für B2B, Coaches & Experten">
+<meta property="og:description" content="Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird planbares, sichtbares Wachstum. Done-for-you, messbar in PEAKING.">
+<meta property="og:url" content="https://social2scale.com/for-you/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Für wen — social2scale">
+<meta name="twitter:description" content="Social-Growth für B2B, Coaches & Experten — von null bis Wachstum, done-for-you.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service","name":"Social-Media-Growth","serviceType":"Social-Media-Marketing & Content-Wachstum","url":"https://social2scale.com/for-you/","description":"Done-for-you Social-Media-Growth: Wir bauen Social-Auftritte für B2B-Firmen, Coaches und Experten von Grund auf und skalieren sie planbar und messbar.","provider":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/","email":"info@social2scale.com"},"areaServed":{"@type":"Country","name":"Deutschland"},"audience":[{"@type":"BusinessAudience","name":"B2B-Firmen ohne Social-Auftritt"},{"@type":"Audience","name":"Coaches & Experten"},{"@type":"Audience","name":"Wachstums-willige Marken"}],"offers":{"@type":"Offer","name":"Strategie-Call","description":"Unverbindlicher Strategie-Call zur Wachstums-Roadmap","price":"0","priceCurrency":"EUR"}}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Für wen ist social2scale gemacht?","acceptedAnswer":{"@type":"Answer","text":"Für B2B-Firmen ohne digitalen Auftritt, für Coaches und Experten mit Expertise aber zu wenig Sichtbarkeit, und für wachstums-willige Marken, die bereits aktiv sind, aber ins Stocken geraten."}},{"@type":"Question","name":"Was, wenn ich noch keinen Social-Auftritt habe?","acceptedAnswer":{"@type":"Answer","text":"Genau dafür sind wir da. Wir bauen deinen Auftritt von null — von der Positionierung über das Profil bis zum laufenden Content. Du brauchst keine Vorarbeit."}},{"@type":"Question","name":"Wie wird Wachstum messbar gemacht?","acceptedAnswer":{"@type":"Answer","text":"Reichweite, Leads und Umsatz-Wirkung werden in PEAKING getrackt. Du siehst jederzeit, was dein Auftritt bewirkt — System statt Bauchgefühl."}}]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
@@ -412,6 +421,80 @@
   .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2;margin-top:var(--s-8);padding-top:var(--s-5);border-top:1px solid var(--line)}
   .foot-meta a{color:var(--muted);text-decoration:none}.foot-meta a:hover{color:var(--paper)}
   @media (max-width:680px){.foot-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+
+  /* ============================================================
+     FÜR WEN — page-scoped editorial layer (.fw-*)
+     Premium, results-oriented redesign of <main>.
+     Reuses tokens (--emerald/--teal/--surf-grad/--depth/--s-*),
+     adds depth, category pills and aurora cards à la OMR.
+     ============================================================ */
+
+  /* — bold editorial hero — */
+  .fw-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-7),5vw,var(--s-9));border-top:0}
+  .fw-hero .wrap{position:relative;z-index:1}
+  .fw-hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.7rem,1rem+6.4vw,6rem);line-height:.98;letter-spacing:-.03em;max-width:16ch;margin-top:var(--s-4);font-variation-settings:"opsz" 144}
+  .fw-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .fw-hero .lead{max-width:60ch}
+  .fw-hero .cta-row{margin-top:var(--s-7)}
+
+  /* — section index marker (reuses .ix look, scoped header) — */
+  .fw-blk{padding:var(--section-y) 0;border-top:1px solid var(--line)}
+  .fw-blk-head{margin-bottom:var(--s-8);max-width:46ch}
+
+  /* — 1. category pill (emerald→teal chip) — */
+  .fw-pill{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 55%,var(--teal) 100%);padding:6px 14px;border-radius:100px;box-shadow:0 6px 16px -8px rgba(0,184,136,.6),inset 0 1px 0 rgba(255,255,255,.3)}
+
+  /* — 2. premium audience cards (aurora, depth, hover-lift) — */
+  .fw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+  @media (max-width:920px){.fw-cards{grid-template-columns:1fr}}
+  .fw-card{position:relative;display:flex;flex-direction:column;border-radius:20px;padding:clamp(26px,3.4vw,38px);overflow:hidden;
+    background:
+      radial-gradient(130% 120% at 0% 0%,rgba(0,184,136,.22),transparent 58%),
+      radial-gradient(130% 120% at 100% 100%,rgba(31,166,224,.17),transparent 60%),
+      var(--surf-grad);
+    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
+    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .fw-card::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),rgba(31,166,224,.4),transparent)}
+  .fw-card:hover{border-color:rgba(0,184,136,.52);box-shadow:var(--depth-hover);transform:translateY(-4px);
+    background:
+      radial-gradient(130% 120% at 0% 0%,rgba(0,184,136,.3),transparent 58%),
+      radial-gradient(130% 120% at 100% 100%,rgba(31,166,224,.23),transparent 60%),
+      var(--surf-grad-hover)}
+  .fw-card h3{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.45rem,1.2rem+1vw,1.85rem);letter-spacing:-.018em;margin-top:var(--s-5)}
+  .fw-card .pain{color:var(--muted);font-size:1rem;line-height:1.62;margin-top:var(--s-4)}
+  .fw-card .spacer{flex:1;min-height:var(--s-5)}
+  .fw-out{margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line-2)}
+  .fw-out .k{display:flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--emerald)}
+  .fw-out .k svg{width:13px;height:13px;stroke:var(--emerald);stroke-width:2.6;fill:none;flex:0 0 auto}
+  .fw-out p{color:var(--paper);font-size:1.02rem;font-weight:500;line-height:1.55;margin-top:var(--s-3)}
+
+  /* — 3. qualifier block (fit / no-fit columns) — */
+  .fw-qual{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+  @media (max-width:760px){.fw-qual{grid-template-columns:1fr}}
+  .fw-qcol{position:relative;border-radius:18px;padding:clamp(26px,3.2vw,36px);background:var(--surf-grad);border:1px solid var(--line-2);box-shadow:var(--depth)}
+  .fw-qcol.fit{background:
+      radial-gradient(120% 130% at 0% 0%,rgba(0,184,136,.16),transparent 60%),
+      var(--surf-grad);
+    border-color:rgba(0,184,136,.3)}
+  .fw-qcol .qh{display:flex;align-items:center;gap:var(--s-3);font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.2rem,1rem+.7vw,1.5rem);letter-spacing:-.015em}
+  .fw-qcol ul{list-style:none;margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-4)}
+  .fw-qcol li{display:flex;align-items:flex-start;gap:var(--s-3);font-size:1rem;line-height:1.5;color:var(--muted)}
+  .fw-qcol.fit li{color:var(--paper)}
+  .fw-qcol li svg{width:18px;height:18px;flex:0 0 auto;margin-top:2px;stroke-width:2.6;fill:none}
+  .fw-qcol.fit li svg{stroke:var(--emerald)}
+  .fw-qcol.nofit li svg{stroke:var(--faint)}
+  .fw-qbadge{position:absolute;top:clamp(26px,3.2vw,36px);right:clamp(26px,3.2vw,36px);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  .fw-qcol.fit .fw-qbadge{color:var(--emerald)}
+
+  /* — 4. outcome / stat strip — */
+  .fw-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  @media (max-width:680px){.fw-stats{grid-template-columns:1fr}}
+  .fw-stat{padding:var(--s-7) var(--s-6) var(--s-7) 0}
+  .fw-stat + .fw-stat{border-left:1px solid var(--line);padding-left:var(--s-6)}
+  @media (max-width:680px){.fw-stat{padding:var(--s-6) 0}.fw-stat + .fw-stat{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+  .fw-stat .v{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(2.2rem,1.5rem+2.2vw,3.4rem);line-height:1;letter-spacing:-.03em;color:var(--emerald)}
+  .fw-stat .l{font-family:"Archivo",sans-serif;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-4);line-height:1.4}
+  .fw-stat .l b{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -462,32 +545,119 @@
   </nav>
 
   <main>
-    <section class="blk" id="fuer-wen-hero"><div class="wrap reveal">
-      <div class="blk-head head">
-        <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Für wen</span>
-        <h2>Für die, die <em>endlich</em> sichtbar werden wollen.</h2>
-        <p class="lead">Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird planbares, sichtbares Wachstum. Findest du dich wieder?</p>
+    <!-- 1. Bold editorial hero -->
+    <section class="fw-hero" id="fuer-wen-hero" aria-labelledby="fw-hero-h"><div class="wrap reveal">
+      <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Für wen</span>
+      <h1 id="fw-hero-h">Für die, die <em>endlich</em> sichtbar werden wollen.</h1>
+      <p class="lead">Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird planbares, sichtbares Wachstum. Wir bauen deinen Auftritt von null — done-for-you, messbar, ohne Bauchgefühl.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="cta-hero" href="#" data-cta-url="#">Strategie-Call buchen →</a>
+        <a class="textlink" href="#fuer-wen">Erkennst du dich wieder?</a>
       </div>
     </div></section>
 
-    <section class="blk" id="fuer-wen"><div class="wrap reveal">
-      <div class="rows">
-        <div class="frow">
-          <div><div class="ftag">B2B</div><h3>Firmen ohne Auftritt</h3></div>
-          <div class="ftxt"><p>Unternehmen, die digital bisher nicht stattfinden — wir bauen den Auftritt von null. Von der Positionierung bis zum laufenden Content.</p></div>
-        </div>
-        <div class="frow">
-          <div><div class="ftag">Coaches</div><h3>Coaches &amp; Experten</h3></div>
-          <div class="ftxt"><p>Du hast Expertise, aber zu wenig Sichtbarkeit? Wir machen daraus Reichweite, Leads &amp; Umsatz — mit System statt Bauchgefühl.</p></div>
-        </div>
-        <div class="frow">
-          <div><div class="ftag">Scale</div><h3>Wachstums-Willige</h3></div>
-          <div class="ftxt"><p>Schon aktiv, aber es stockt? Wir bringen System und Tempo rein — und machen Wachstum planbar und messbar.</p></div>
-        </div>
+    <!-- 2. The 3 audiences as premium aurora cards -->
+    <section class="fw-blk" id="fuer-wen" aria-labelledby="fw-audiences-h"><div class="wrap reveal">
+      <div class="fw-blk-head">
+        <div class="ix"><b>02</b> Ausgangslagen</div>
+        <h2 id="fw-audiences-h">Drei Typen, mit denen wir am besten <em>wachsen</em>.</h2>
+      </div>
+      <div class="fw-cards">
+
+        <article class="fw-card">
+          <span class="fw-pill">B2B</span>
+          <h3>Firmen ohne Auftritt</h3>
+          <p class="pain">Ihr seid stark im Geschäft, aber digital findet euch niemand. Kein Profil, keine Reichweite, kein Content — und der Wettbewerb ist längst sichtbar.</p>
+          <div class="spacer"></div>
+          <div class="fw-out">
+            <span class="k"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Was du gewinnst</span>
+            <p>Ein Auftritt von Grund auf — Positionierung, Profil und laufender Content, der euch endlich auf die Landkarte bringt.</p>
+          </div>
+        </article>
+
+        <article class="fw-card">
+          <span class="fw-pill">Coaches</span>
+          <h3>Coaches &amp; Experten</h3>
+          <p class="pain">Du hast die Expertise, aber zu wenig Sichtbarkeit. Posts kosten Zeit, bringen wenig — und Reichweite fühlt sich nach Glück statt nach System an.</p>
+          <div class="spacer"></div>
+          <div class="fw-out">
+            <span class="k"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Was du gewinnst</span>
+            <p>Aus Expertise wird planbare Reichweite, Leads &amp; Umsatz — mit System und Content, der für dich arbeitet.</p>
+          </div>
+        </article>
+
+        <article class="fw-card">
+          <span class="fw-pill">Scale</span>
+          <h3>Wachstums-Willige</h3>
+          <p class="pain">Du bist aktiv, aber es stockt. Die Zahlen stagnieren, der Output ist mühsam — und du weißt nicht, an welcher Schraube du drehen sollst.</p>
+          <div class="spacer"></div>
+          <div class="fw-out">
+            <span class="k"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Was du gewinnst</span>
+            <p>System und Tempo statt Stillstand — Wachstum wird planbar, messbar und wiederholbar.</p>
+          </div>
+        </article>
+
       </div>
     </div></section>
 
-    <section class="blk"><div class="wrap reveal">
+    <!-- 3. Qualifier block -->
+    <section class="fw-blk" id="fuer-wen-qual" aria-labelledby="fw-qual-h"><div class="wrap reveal">
+      <div class="fw-blk-head">
+        <div class="ix"><b>03</b> Ehrlicher Fit-Check</div>
+        <h2 id="fw-qual-h">Erkennst du dich <em>wieder?</em></h2>
+        <p class="lead">Wir arbeiten lieber mit den Richtigen als mit jedem. Hier die ehrliche Einordnung.</p>
+      </div>
+      <div class="fw-qual">
+
+        <div class="fw-qcol fit">
+          <span class="fw-qbadge">Match</span>
+          <div class="qh">Passt perfekt, wenn …</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>du echtes Wachstum willst — und bereit bist, es ernst zu nehmen.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>du Substanz hast (Produkt, Expertise, Angebot), aber zu wenig Sichtbarkeit.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>du lieber ein System willst als ständig selbst Content jagen zu müssen.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>du Ergebnisse messen willst — nicht nur „mehr Likes".</li>
+          </ul>
+        </div>
+
+        <div class="fw-qcol nofit">
+          <span class="fw-qbadge">Eher nicht</span>
+          <div class="qh">Eher nicht, wenn …</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>du eine Garantie für viral über Nacht suchst.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>du bei jedem Post mitreden, aber nichts abgeben willst.</li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Social für dich „nur mal kurz testen" ist, ohne echtes Ziel.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div></section>
+
+    <!-- 4. Outcome / stat strip -->
+    <section class="fw-blk" id="fuer-wen-ergebnisse" aria-labelledby="fw-stats-h"><div class="wrap reveal">
+      <div class="fw-blk-head">
+        <div class="ix"><b>04</b> Was am Ende zählt</div>
+        <h2 id="fw-stats-h">Wachstum, das man <em>sieht</em>.</h2>
+      </div>
+      <div class="fw-stats">
+        <div class="fw-stat">
+          <div class="v">0&nbsp;→&nbsp;1</div>
+          <div class="l">Auftritt von Grund auf <b>neu gebaut</b></div>
+        </div>
+        <div class="fw-stat">
+          <div class="v">Done-for-you</div>
+          <div class="l">Strategie, Content &amp; Umsetzung <b>aus einer Hand</b></div>
+        </div>
+        <div class="fw-stat">
+          <div class="v">Messbar*</div>
+          <div class="l">Reichweite &amp; Wirkung <b>getrackt in PEAKING</b></div>
+        </div>
+      </div>
+      <p class="ph-note"><b>*</b> Ergebnisse hängen von Ausgangslage, Markt und Einsatz ab — wir versprechen System, nicht Zauberei.</p>
+    </div></section>
+
+    <!-- 5. Closing CTA -->
+    <section class="fw-blk"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
@@ -525,7 +695,7 @@
     document.getElementById('yr').textContent=new Date().getFullYear();
 
     // wire real CTA urls (placeholder until Calendly link arrives)
-    ['cta','cta-top','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
+    ['cta','cta-top','cta-hero','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
 
     // ===== burger / mobile menu =====
     (function(){

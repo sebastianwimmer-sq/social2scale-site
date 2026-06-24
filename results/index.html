@@ -22,6 +22,11 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
 </script>
+<!-- Service-Schema für die Ergebnis-/Proof-Seite. BEWUSST OHNE aggregateRating/review:
+     alle Kennzahlen auf dieser Seite sind Platzhalter — keine erfundenen Bewertungen/Sterne ausspielen. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service","name":"Social-Media-Growth as a Service","serviceType":"Social-Media-Growth & Content-System","provider":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/"},"areaServed":"DACH","audience":{"@type":"Audience","audienceType":"Coaches, Experten & B2B"},"description":"Messbares Social-Media-Wachstum: Reichweite, qualifizierte Leads und Umsatz — live nachvollziehbar in der PEAKING-Plattform. Wir bauen Strategie, Content und Distribution als System statt Zufall.","url":"https://social2scale.com/results/","hasOfferCatalog":{"@type":"OfferCatalog","name":"Messbare Wachstums-Ergebnisse","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Reichweiten-Aufbau"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Lead-Generierung"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Umsatz-Wachstum durch Social"}}]}}
+</script>
 <link rel="stylesheet" href="/fonts.css">
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
 <style>
@@ -412,6 +417,105 @@
   .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2;margin-top:var(--s-8);padding-top:var(--s-5);border-top:1px solid var(--line)}
   .foot-meta a{color:var(--muted);text-decoration:none}.foot-meta a:hover{color:var(--paper)}
   @media (max-width:680px){.foot-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+
+  /* ============================================================
+     .rs-* — Ergebnisse / Results page (scoped, proof-driven)
+     Reuse tokens only: --emerald/--teal, --surf-grad, --s-*, depth.
+     ============================================================ */
+
+  /* ---- 1) editorial hero ---- */
+  .rs-hero{padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-7),5vw,var(--s-9))}
+  .rs-hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.7rem,1rem+6.4vw,6.2rem);line-height:.96;letter-spacing:-.03em;max-width:16ch;margin-top:var(--s-5);font-variation-settings:"opsz" 144}
+  .rs-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .rs-hero .lead{font-size:clamp(1.08rem,1rem+.5vw,1.32rem);max-width:50ch;color:var(--muted)}
+  .rs-hero .lead b{color:var(--paper);font-weight:600}
+
+  /* ---- 2) BIG hero stat band — the dominant proof ---- */
+  .rs-statband{position:relative;overflow:hidden;border:1px solid rgba(0,184,136,.30);border-radius:24px;box-shadow:var(--depth-lg);
+    background:
+      radial-gradient(120% 150% at 8% 0%,rgba(0,184,136,.26),transparent 56%),
+      radial-gradient(120% 150% at 96% 100%,rgba(31,166,224,.22),transparent 58%),
+      var(--surf-grad)}
+  .rs-statband::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 72%,transparent)}
+  .rs-statband-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4);padding:clamp(22px,3vw,32px) clamp(24px,4vw,44px) 0}
+  .rs-statband-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
+  .rs-statband-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald)}
+  .rs-statband-head .meta{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+  .rs-bigstats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:clamp(20px,3vw,32px) clamp(8px,2vw,20px) clamp(24px,3vw,36px)}
+  .rs-bigstat{position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.6vw,32px)}
+  .rs-bigstat + .rs-bigstat{border-left:1px solid var(--line)}
+  .rs-bigstat .v{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(3rem,1.6rem+5vw,6rem);line-height:.86;letter-spacing:-.035em;color:var(--emerald);font-variation-settings:"opsz" 144}
+  .rs-bigstat .v sup{font-size:.34em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em;-webkit-text-fill-color:var(--teal)}
+  .rs-bigstat .l{font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--paper);margin-top:var(--s-4)}
+  .rs-bigstat .s{font-family:"Hanken Grotesk",sans-serif;font-size:.92rem;color:var(--muted);margin-top:var(--s-2);line-height:1.5;max-width:24ch}
+  @media (max-width:760px){
+    .rs-bigstats{grid-template-columns:1fr}
+    .rs-bigstat + .rs-bigstat{border-left:0;border-top:1px solid var(--line)}
+    .rs-bigstat{padding:var(--s-6) clamp(16px,5vw,28px)}
+  }
+
+  /* ---- 3) case-study blocks — aurora cards, situation→action→result ---- */
+  .rs-cases{display:grid;gap:var(--s-4);margin-top:0}
+  .rs-case{position:relative;display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(24px,4vw,48px);align-items:center;
+    border-radius:20px;padding:clamp(26px,3.4vw,44px);
+    background:
+      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.20),transparent 58%),
+      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.16),transparent 60%),
+      var(--surf-grad);
+    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
+    transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease),background .3s var(--ease)}
+  .rs-case:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-3px);
+    background:
+      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.28),transparent 58%),
+      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.22),transparent 60%),
+      var(--surf-grad-hover)}
+  .rs-case .pill{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 13px;border-radius:100px}
+  .rs-case h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.4rem,1.1rem+1vw,1.9rem);letter-spacing:-.018em;margin-top:var(--s-4)}
+  .rs-narr{list-style:none;margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-4)}
+  .rs-narr li{display:grid;grid-template-columns:minmax(78px,90px) 1fr;gap:var(--s-4);align-items:baseline}
+  .rs-narr .k{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald)}
+  .rs-narr .t{font-size:1rem;color:var(--muted);line-height:1.6;max-width:50ch}
+  .rs-narr .t b{color:var(--paper);font-weight:600}
+  /* highlighted result metric panel on the right */
+  .rs-result{position:relative;border-radius:16px;padding:clamp(22px,2.6vw,30px);background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(31,166,224,.04));border:1px solid rgba(0,184,136,.30);box-shadow:var(--hi),0 1px 2px rgba(0,0,0,.4)}
+  .rs-result .rk{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .rs-result .rv{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2.4rem,1.4rem+3vw,3.6rem);line-height:.9;letter-spacing:-.03em;color:var(--paper);margin-top:var(--s-3);font-variation-settings:"opsz" 144}
+  .rs-result .rv em{font-style:normal;color:var(--emerald)}
+  .rs-result .rv sup{font-size:.3em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em}
+  .rs-result .rs-sub{font-family:"Hanken Grotesk",sans-serif;font-size:.9rem;color:var(--muted);margin-top:var(--s-3);line-height:1.5}
+  @media (max-width:840px){
+    .rs-case{grid-template-columns:1fr;gap:var(--s-6)}
+    .rs-narr li{grid-template-columns:1fr;gap:var(--s-1)}
+  }
+
+  /* ---- 4) testimonial block — large editorial pull-quotes ---- */
+  .rs-quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4)}
+  .rs-quote{position:relative;border-radius:20px;padding:clamp(28px,3.6vw,44px);background:var(--surf-grad);border:1px solid var(--line-2);box-shadow:var(--depth);transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .rs-quote:hover{border-color:var(--line-3);box-shadow:var(--depth-hover);transform:translateY(-3px)}
+  .rs-quote::before{content:"\201C";position:absolute;top:clamp(8px,1.4vw,18px);left:clamp(18px,2.6vw,30px);font-family:"Fraunces",serif;font-size:clamp(4rem,2rem+6vw,7rem);line-height:1;color:rgba(0,184,136,.20);pointer-events:none}
+  .rs-quote blockquote{position:relative;font-family:"Fraunces",serif;font-weight:430;font-style:italic;font-size:clamp(1.35rem,1rem+1.5vw,2.1rem);line-height:1.24;letter-spacing:-.02em;color:var(--paper);margin-top:clamp(20px,2.4vw,32px)}
+  .rs-quote .by{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.07em;color:var(--faint);margin-top:var(--s-5);display:flex;align-items:center;gap:var(--s-3)}
+  .rs-quote .by .av{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-size:11px}
+  @media (max-width:760px){.rs-quotes{grid-template-columns:1fr}}
+
+  /* ---- 5) "So messen wir" transparency block — PEAKING tie-in ---- */
+  .rs-measure{position:relative;overflow:hidden;border-radius:22px;padding:clamp(30px,4vw,56px);background:var(--grad-emerald);border:1px solid var(--line-2);box-shadow:var(--depth-lg)}
+  .rs-measure::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.55) 38%,rgba(31,166,224,.5) 70%,transparent)}
+  .rs-measure-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(28px,4vw,56px);align-items:center;position:relative;z-index:1}
+  .rs-measure h2{margin-top:var(--s-3)}
+  .rs-measure .lead{max-width:46ch}
+  .rs-mlist{list-style:none;display:flex;flex-direction:column;gap:var(--s-3)}
+  .rs-mlist li{display:flex;align-items:flex-start;gap:var(--s-4);padding:var(--s-4) 0;border-top:1px solid var(--line)}
+  .rs-mlist li:first-child{border-top:0}
+  .rs-mlist .ic{flex:0 0 auto;width:22px;height:22px;display:grid;place-items:center;margin-top:2px}
+  .rs-mlist .ic svg{width:15px;height:15px;stroke:var(--emerald);stroke-width:2.6;fill:none}
+  .rs-mlist .mt{font-family:"Hanken Grotesk",sans-serif;font-size:1.02rem;color:var(--paper);line-height:1.5}
+  .rs-mlist .mt span{display:block;color:var(--muted);font-size:.94rem;margin-top:2px}
+  @media (max-width:840px){.rs-measure-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+
+  /* shared placeholder note (reuses .ph-note pattern) */
+  .rs-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:var(--s-6)}
+  .rs-note b{color:var(--emerald);font-weight:400}
 </style>
 </head>
 <body>
@@ -463,33 +567,161 @@
     <p class="m-foot">Powered by PEAKING</p>
   </nav>
 
-  <main>
-    <section class="blk" style="border-top:0"><div class="wrap reveal">
-      <div class="blk-head head">
+  <main id="ergebnisse">
+
+    <!-- 1) editorial hero -->
+    <section class="blk rs-hero" style="border-top:0"><div class="wrap reveal">
+      <div class="head">
         <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Ergebnisse</span>
-        <h2>Wachstum, das man <em>sieht</em>.</h2>
-        <p class="lead">Was unser System bewegt, sobald die ersten Wochen laufen — transparent statt Bauchgefühl.</p>
+        <h1>Wachstum, das man <em>sieht</em>.</h1>
+        <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in PEAKING.</p>
       </div>
     </div></section>
 
-    <section class="blk" id="ergebnisse"><div class="wrap reveal">
-      <div class="stats">
-        <div class="stat"><div class="num"><em>+218%</em></div><div class="lbl">Reichweite*</div></div>
-        <div class="stat"><div class="num"><em>47</em></div><div class="lbl">Leads / Monat*</div></div>
-        <div class="stat"><div class="num">0&nbsp;→&nbsp;<em>1</em></div><div class="lbl">Von unsichtbar zu sichtbar*</div></div>
+    <!-- 2) BIG hero stat band — dominant proof -->
+    <section class="blk" style="border-top:0;padding-top:0"><div class="wrap reveal">
+      <div class="rs-statband">
+        <div class="rs-statband-head">
+          <span class="ttl"><span class="dot" aria-hidden="true"></span>Das bewegt unser System</span>
+          <span class="meta">Q · Wachstum gemessen in PEAKING</span>
+        </div>
+        <div class="rs-bigstats">
+          <div class="rs-bigstat">
+            <div class="v">+218<sup>*</sup></div>
+            <div class="l">% Reichweite</div>
+            <p class="s">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
+          </div>
+          <div class="rs-bigstat">
+            <div class="v">47<sup>*</sup></div>
+            <div class="l">Leads / Monat</div>
+            <p class="s">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
+          </div>
+          <div class="rs-bigstat">
+            <div class="v">€4,8k<sup>*</sup></div>
+            <div class="l">Umsatz / Monat</div>
+            <p class="s">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
+          </div>
+        </div>
       </div>
-      <div class="pullquote">
-        <blockquote>„Endlich ein Team, das den ganzen Social-Aufbau abnimmt — und ich sehe in PEAKING genau, was es bringt."</blockquote>
-        <div class="by">— Platzhalter-Stimme · echtes Testimonial folgt</div>
-      </div>
-      <p class="ph-note"><b>*</b> Platzhalter — echte Kundenergebnisse einsetzen.</p>
+      <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
     </div></section>
 
+    <!-- 3) case-study blocks — situation → action → result -->
+    <section class="blk"><div class="wrap reveal">
+      <div class="blk-head head">
+        <div class="ix"><b>02</b> / Fallstudien</div>
+        <h2>Vom Stillstand zu <em>planbarem</em> Wachstum.</h2>
+        <p class="lead">Wie unser System in der Praxis greift — Ausgangslage, was wir gebaut haben, und das messbare Ergebnis.</p>
+      </div>
+
+      <div class="rs-cases">
+
+        <article class="rs-case">
+          <div>
+            <span class="pill">Coach</span>
+            <h3>Aus „posten ohne Plan" wurde ein Lead-Motor.</h3>
+            <ul class="rs-narr">
+              <li><span class="k">Vorher</span><span class="t">Unregelmäßige Posts, kaum Reichweite, <b>null planbare Anfragen</b> — sichtbar nur für die bestehenden Follower.</span></li>
+              <li><span class="k">Aufbau</span><span class="t">Klare Content-Säulen, ein wiederholbares Format und ein Funnel, der Profilbesucher zu <b>Erstgesprächen</b> führt.</span></li>
+              <li><span class="k">Ergebnis</span><span class="t">Stetiger Zustrom an qualifizierten Leads — ohne Mehraufwand auf Seite des Coaches.</span></li>
+            </ul>
+          </div>
+          <div class="rs-result">
+            <div class="rk">Ergebnis nach 90 Tagen</div>
+            <div class="rv">+<em>218</em><sup>*</sup>%</div>
+            <p class="rs-sub">Reichweite — bei gleichbleibendem Zeitaufwand.</p>
+          </div>
+        </article>
+
+        <article class="rs-case">
+          <div>
+            <span class="pill">B2B</span>
+            <h3>Von unsichtbar zu fester Größe in der Nische.</h3>
+            <ul class="rs-narr">
+              <li><span class="k">Vorher</span><span class="t">Starkes Angebot, aber <b>kein Social-Auftritt</b> — Entscheider kannten die Marke schlicht nicht.</span></li>
+              <li><span class="k">Aufbau</span><span class="t">Positionierung, Expertise-Content und eine Distribution, die genau die <b>richtigen Entscheider</b> erreicht.</span></li>
+              <li><span class="k">Ergebnis</span><span class="t">Planbare qualifizierte Anfragen statt Kaltakquise — Pipeline aus eingehenden Leads.</span></li>
+            </ul>
+          </div>
+          <div class="rs-result">
+            <div class="rk">Qualifizierte Leads</div>
+            <div class="rv"><em>47</em><sup>*</sup></div>
+            <p class="rs-sub">pro Monat — direkt aus dem Social-Auftritt.</p>
+          </div>
+        </article>
+
+        <article class="rs-case">
+          <div>
+            <span class="pill">Experte</span>
+            <h3>Reichweite, die endlich Umsatz wird.</h3>
+            <ul class="rs-narr">
+              <li><span class="k">Vorher</span><span class="t">Follower-Zahlen ohne Wirkung — viel Aufmerksamkeit, aber <b>kein messbarer Umsatzbeitrag</b>.</span></li>
+              <li><span class="k">Aufbau</span><span class="t">Content mit Verkaufslogik, klare Angebote und ein Weg vom Reel bis zur <b>Buchung</b>.</span></li>
+              <li><span class="k">Ergebnis</span><span class="t">Sichtbarkeit, die in monatlich wiederkehrenden Umsatz übersetzt — transparent nachvollziehbar.</span></li>
+            </ul>
+          </div>
+          <div class="rs-result">
+            <div class="rk">Umsatz / Monat</div>
+            <div class="rv"><em>€4,8k</em><sup>*</sup></div>
+            <p class="rs-sub">attribuierbar auf den Social-Auftritt.</p>
+          </div>
+        </article>
+
+      </div>
+      <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
+    </div></section>
+
+    <!-- 4) testimonials -->
+    <section class="blk"><div class="wrap reveal">
+      <div class="blk-head head">
+        <div class="ix"><b>03</b> / Stimmen</div>
+        <h2>Was Kund:innen über die <em>Zusammenarbeit</em> sagen.</h2>
+      </div>
+      <div class="rs-quotes">
+        <figure class="rs-quote">
+          <blockquote>Endlich ein Team, das den ganzen Social-Aufbau abnimmt — und ich sehe in PEAKING genau, was es bringt.</blockquote>
+          <figcaption class="by"><span class="av" aria-hidden="true">＂</span>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
+        </figure>
+        <figure class="rs-quote">
+          <blockquote>Zum ersten Mal fühlt sich mein Wachstum planbar an — System statt Zufall, mit Zahlen, die ich verstehe.</blockquote>
+          <figcaption class="by"><span class="av" aria-hidden="true">＂</span>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
+        </figure>
+      </div>
+    </div></section>
+
+    <!-- 5) So messen wir — PEAKING transparency tie-in -->
+    <section class="blk"><div class="wrap reveal">
+      <div class="rs-measure">
+        <div class="rs-measure-grid">
+          <div class="head">
+            <div class="ix"><b>04</b> / Transparenz</div>
+            <h2>So <em>messen</em> wir Wachstum.</h2>
+            <p class="lead">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
+          </div>
+          <ul class="rs-mlist">
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="mt">Live-Dashboard statt Bauchgefühl<span>Reichweite, Leads und Umsatz an einem Ort — in Echtzeit einsehbar.</span></span>
+            </li>
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="mt">Klare KPIs, die zählen<span>Wir messen Wachstum, das auf dein Geschäft einzahlt — nicht nur Vanity-Metriken.</span></span>
+            </li>
+            <li>
+              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <span class="mt">Volle Nachvollziehbarkeit<span>Du siehst jederzeit, was wir tun und was es bringt — transparent von Tag eins.</span></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- 6) closing CTA band -->
     <section class="blk"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
+        <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde und welche Zahlen realistisch sind.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="#" data-cta-url="#">Strategie-Call buchen →</a>
           <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>

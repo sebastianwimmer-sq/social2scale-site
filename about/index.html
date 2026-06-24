@@ -8,19 +8,26 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#000000">
-<title>Über uns — social2scale</title>
-<meta name="description" content="Zwei Gründer, ein System: Sebi (Marke & Content) und Phil (Tech & Plattform) hinter social2scale.">
-<meta property="og:title" content="Über uns — social2scale">
-<meta property="og:description" content="Wir bauen dein Wachstum — System statt Zufall.">
+<title>Über uns — Sebi &amp; Phil hinter social2scale</title>
+<meta name="description" content="Zwei Gründer, ein System: Sebi (Marke & Content) und Phil (Tech & Plattform) bauen Premium Social-Media-Growth für Coaches, Experten & B2B. Done-for-you, transparent via PEAKING — System statt Zufall.">
+<link rel="canonical" href="https://social2scale.com/about/">
+<meta property="og:site_name" content="social2scale">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Über uns — Sebi &amp; Phil hinter social2scale">
+<meta property="og:description" content="Zwei Gründer, ein System: Marke trifft Technik. Premium Social-Growth, done-for-you und transparent via PEAKING.">
 <meta property="og:url" content="https://social2scale.com/about/">
-<meta property="og:type" content="website">
+<meta property="og:type" content="profile">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="social2scale — Über uns">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Über uns — Sebi &amp; Phil hinter social2scale">
+<meta name="twitter:description" content="Zwei Gründer, ein System: Marke trifft Technik. Premium Social-Growth, done-for-you und transparent via PEAKING.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
+<meta name="twitter:image:alt" content="social2scale — Über uns">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
+{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen — System statt Zufall, done-for-you und transparent via PEAKING.","email":"info@social2scale.com","areaServed":{"@type":"Country","name":"Germany"},"contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"info@social2scale.com","areaServed":"DE","availableLanguage":["German"]},"founder":[{"@type":"Person","name":"Sebi","jobTitle":"Mitgründer — Marke & Content","worksFor":{"@type":"Organization","name":"social2scale"}},{"@type":"Person","name":"Phil","jobTitle":"Mitgründer — Tech & Plattform","worksFor":{"@type":"Organization","name":"social2scale"}}],"sameAs":["https://peaking.world/"]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
@@ -412,6 +419,79 @@
   .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2;margin-top:var(--s-8);padding-top:var(--s-5);border-top:1px solid var(--line)}
   .foot-meta a{color:var(--muted);text-decoration:none}.foot-meta a:hover{color:var(--paper)}
   @media (max-width:680px){.foot-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+
+  /* ============================================================
+     ===== ABOUT PAGE — scoped overrides (.ab-*) ================
+     editorial, layered "Über uns" build for Sebi & Phil.
+     Reuses tokens (--emerald/--teal/--surf-grad/--s-*) + base
+     classes (.eyebrow/.lead/.band/.tag/.cell). No new fonts/colors.
+     ============================================================ */
+
+  /* --- ab hero: bold editorial, big Fraunces, no centered template --- */
+  .ab-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-7),5vw,var(--s-9))}
+  .ab-hero .eyebrow{margin-bottom:var(--s-5)}
+  .ab-hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(3rem,1rem+7.4vw,7.6rem);line-height:.92;letter-spacing:-.032em;max-width:14ch;font-variation-settings:"opsz" 144}
+  .ab-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .ab-hero .lead{font-size:clamp(1.12rem,1rem+.6vw,1.4rem);max-width:50ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));color:var(--paper)}
+  .ab-hero .lead b{color:var(--emerald-soft);font-weight:600}
+  /* signature line — two names as a typographic mark, mono coordinate */
+  .ab-sig{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3) var(--s-5);margin-top:clamp(var(--s-7),4vw,var(--s-8));font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+  .ab-sig .nm{color:var(--paper);font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:1.5rem;letter-spacing:-.01em;text-transform:none}
+  .ab-sig .amp{color:var(--emerald);font-family:"Fraunces",serif;font-style:italic;font-size:1.5rem}
+  .ab-sig .ln{flex:1;min-width:40px;height:1px;background:var(--line-2)}
+
+  /* --- ab mission: large pull-quote statement block, emerald accent --- */
+  .ab-mission{position:relative;padding:clamp(var(--s-8),6vw,var(--s-10)) 0;border-top:1px solid var(--line);
+    background:
+      radial-gradient(120% 130% at 88% 4%,rgba(0,184,136,.10),transparent 52%),
+      radial-gradient(120% 120% at 6% 98%,rgba(31,166,224,.09),transparent 55%),
+      linear-gradient(180deg,rgba(21,23,27,.55),rgba(10,11,13,.42))}
+  .ab-mission .ab-q{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:var(--s-6) var(--s-8);align-items:start}
+  .ab-mission .ab-q-side .ix{margin-bottom:var(--s-4)}
+  .ab-mission .ab-q-side p{font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--muted);line-height:1.5;max-width:22ch}
+  .ab-mission blockquote{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.7rem,1.1rem+2.4vw,3.3rem);line-height:1.16;letter-spacing:-.022em;color:var(--paper);max-width:20ch}
+  .ab-mission blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .ab-mission .ab-mark{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(3rem,5vw,5rem);line-height:0;color:rgba(0,184,136,.35);display:block;height:0;transform:translateY(.4em)}
+  @media (max-width:760px){.ab-mission .ab-q{grid-template-columns:1fr;gap:var(--s-4)}.ab-mission blockquote{max-width:none}}
+
+  /* --- ab founders: rich profile cards with aurora depth --- */
+  .ab-founders{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
+  .ab-fcard{position:relative;overflow:hidden;display:flex;flex-direction:column;border-radius:20px;padding:clamp(28px,3.4vw,42px);
+    background:
+      radial-gradient(135% 120% at 0% 0%,rgba(0,184,136,.20),transparent 56%),
+      radial-gradient(135% 120% at 100% 100%,rgba(31,166,224,.16),transparent 60%),
+      var(--surf-grad);
+    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
+    transition:border-color .32s var(--ease),background .32s var(--ease),box-shadow .32s var(--ease),transform .32s var(--ease)}
+  .ab-fcard::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
+  .ab-fcard:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-4px);
+    background:
+      radial-gradient(135% 120% at 0% 0%,rgba(0,184,136,.28),transparent 56%),
+      radial-gradient(135% 120% at 100% 100%,rgba(31,166,224,.22),transparent 60%),
+      var(--surf-grad-hover)}
+  .ab-fhead{display:flex;align-items:center;gap:var(--s-5)}
+  .ab-pic{flex:0 0 auto;width:92px;height:92px;border-radius:18px;background:linear-gradient(180deg,var(--surface-3),var(--surface));border:1px solid var(--line-2);box-shadow:var(--pill-depth);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.06em;line-height:1.4;text-align:center}
+  .ab-fname h3{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.7rem,1.3rem+1vw,2.2rem);letter-spacing:-.02em;line-height:1}
+  .ab-pill{display:inline-flex;align-items:center;gap:var(--s-2);margin-top:var(--s-3);font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 12px;border-radius:100px}
+  .ab-lead-line{font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.12rem,1rem+.7vw,1.4rem);line-height:1.4;letter-spacing:-.01em;color:var(--paper);margin-top:var(--s-6)}
+  .ab-owns{list-style:none;margin-top:var(--s-6);display:flex;flex-direction:column;gap:var(--s-3)}
+  .ab-owns .ol{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-1)}
+  .ab-owns li{display:flex;align-items:flex-start;gap:var(--s-3);font-size:.98rem;color:var(--muted);line-height:1.5}
+  .ab-owns li .ck{flex:0 0 auto;width:18px;height:18px;margin-top:2px}
+  .ab-owns li .ck svg{width:14px;height:14px;stroke:var(--emerald);stroke-width:2.6;fill:none}
+  .ab-owns li b{color:var(--paper);font-weight:600}
+  .ab-pers{margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line);font-size:.98rem;color:var(--muted);line-height:1.6}
+  .ab-pers b{color:var(--paper);font-weight:600}
+  @media (max-width:760px){.ab-founders{grid-template-columns:1fr}}
+
+  /* --- ab principles: how we work, editorial cards --- */
+  .ab-princ{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
+  .ab-pcard{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(26px,3vw,36px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .ab-pcard:hover{border-color:rgba(0,184,136,.4);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
+  .ab-pcard .pn{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--emerald)}
+  .ab-pcard h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.35rem,1.1rem+.9vw,1.7rem);letter-spacing:-.016em;margin-top:var(--s-4)}
+  .ab-pcard p{font-size:.98rem;color:var(--muted);margin-top:var(--s-3);line-height:1.6;max-width:42ch}
+  @media (max-width:680px){.ab-princ{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -462,20 +542,110 @@
   </nav>
 
   <main>
-    <section class="blk" id="ueber-uns-hero"><div class="wrap reveal">
+    <!-- 1 · editorial hero -->
+    <section class="ab-hero" id="ueber-uns" aria-labelledby="ab-heading"><div class="wrap reveal">
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Über uns</p>
-      <h2>Zwei, die <em>anpacken</em>.</h2>
-      <p class="lead">Keine Agentur-Maschine. Zwei Gründer, die deinen Auftritt selbst in die Hand nehmen — Marke trifft Technik.</p>
+      <h1 id="ab-heading">Zwei, die <em>anpacken</em>.</h1>
+      <p class="lead">Keine Agentur-Maschine. Zwei Gründer, die deinen Auftritt <b>selbst</b> in die Hand nehmen — Marke trifft Technik.</p>
+      <p class="ab-sig">
+        <span class="nm">Sebi</span><span class="amp">&amp;</span><span class="nm">Phil</span>
+        <span class="ln" aria-hidden="true"></span>
+        Gründer · social2scale
+      </p>
     </div></section>
 
-    <section class="blk" id="ueber-uns"><div class="wrap reveal">
-      <div class="founders">
-        <div class="fcard"><div class="pic">Foto<br>Sebi</div><h3>Sebi</h3><div class="role">Marke &amp; Content</div><p>Positionierung, Marke und Content-Strategie — damit deine Botschaft sitzt.</p></div>
-        <div class="fcard"><div class="pic">Foto<br>Phil</div><h3>Phil</h3><div class="role">Tech &amp; Plattform</div><p>Baut die PEAKING-Plattform und hält Technik &amp; Daten am Laufen.</p></div>
+    <!-- 2 · mission / warum wir das machen -->
+    <section class="ab-mission" aria-labelledby="ab-mission-h"><div class="wrap reveal">
+      <div class="ab-q">
+        <div class="ab-q-side">
+          <p class="ix"><b>01</b> Warum wir das machen</p>
+          <p>Wir haben es satt, dass guter Content im Zufall verpufft — und gute Leute unsichtbar bleiben.</p>
+        </div>
+        <blockquote id="ab-mission-h">
+          <span class="ab-mark" aria-hidden="true">&ldquo;</span>Wachstum auf Social ist kein Glück. Es ist ein <em>System</em> — Positionierung, Content und Technik, die zusammenarbeiten. Genau das bauen wir dir. Done-for-you, persönlich, mit echten Zahlen statt Bauchgefühl.
+        </blockquote>
       </div>
-      <!-- TODO: echte Fotos von Sebi & Phil statt Platzhalter -->
     </div></section>
 
+    <!-- 3 · die zwei Gründer -->
+    <section class="blk" aria-labelledby="ab-founders-h"><div class="wrap reveal">
+      <div class="blk-head">
+        <p class="ix"><b>02</b> Die Gründer</p>
+        <h2 id="ab-founders-h">Sebi &amp; Phil — <em>zwei Hälften</em>, ein System.</h2>
+        <p class="lead">Marke und Technik in zwei Köpfen, die jeden Tag zusammen daran sitzen. Kein Hin-und-Her zwischen Abteilungen — du sprichst direkt mit denen, die es bauen.</p>
+      </div>
+      <div class="ab-founders">
+        <!-- TODO echte Fotos: Sebi -->
+        <article class="ab-fcard">
+          <div class="ab-fhead">
+            <div class="ab-pic">Foto<br>Sebi</div>
+            <div class="ab-fname">
+              <h3>Sebi</h3>
+              <span class="ab-pill">Marke &amp; Content</span>
+            </div>
+          </div>
+          <p class="ab-lead-line">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
+          <ul class="ab-owns" aria-label="Sebis Verantwortung">
+            <li class="ol">Was Sebi besitzt</li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Positionierung &amp; Marke</b> — wofür du stehst, scharf gemacht.</span></li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Content-Strategie</b> — Hooks, Formate, roter Faden.</span></li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Redaktion &amp; Voice</b> — dein Auftritt klingt nach dir, nicht nach Agentur.</span></li>
+          </ul>
+          <p class="ab-pers">Christ, Vegetarier, Frühaufsteher. Baut seit Jahren Marken auf — und glaubt fest daran, dass <b>klar schlägt laut</b>.</p>
+        </article>
+
+        <!-- TODO echte Fotos: Phil -->
+        <article class="ab-fcard">
+          <div class="ab-fhead">
+            <div class="ab-pic">Foto<br>Phil</div>
+            <div class="ab-fname">
+              <h3>Phil</h3>
+              <span class="ab-pill">Tech &amp; Plattform</span>
+            </div>
+          </div>
+          <p class="ab-lead-line">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
+          <ul class="ab-owns" aria-label="Phils Verantwortung">
+            <li class="ol">Was Phil besitzt</li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>PEAKING-Plattform</b> — dein Wachstum in echten Zahlen, transparent.</span></li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Daten &amp; Reporting</b> — was wirkt, sehen wir schwarz auf weiß.</span></li>
+            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Automatisierung</b> — Technik, die den Hebel hält, damit ihr skaliert.</span></li>
+          </ul>
+          <p class="ab-pers">Entwickler mit Hang zu sauberen Systemen. Baut die Infrastruktur, die aus Content <b>planbares Wachstum</b> macht.</p>
+        </article>
+      </div>
+    </div></section>
+
+    <!-- 4 · wie wir arbeiten -->
+    <section class="blk" aria-labelledby="ab-princ-h"><div class="wrap reveal">
+      <div class="blk-head">
+        <p class="ix"><b>03</b> Wie wir arbeiten</p>
+        <h2 id="ab-princ-h">Vier Prinzipien, <em>keine Floskeln</em>.</h2>
+      </div>
+      <div class="ab-princ">
+        <article class="ab-pcard">
+          <p class="pn">P—01</p>
+          <h3>Done-for-you</h3>
+          <p>Du musst nichts lernen, nichts selbst posten. Wir übernehmen — Strategie, Produktion, Veröffentlichung. Dein Job: du selbst sein.</p>
+        </article>
+        <article class="ab-pcard">
+          <p class="pn">P—02</p>
+          <h3>Transparenz via PEAKING</h3>
+          <p>Jeder Schritt sichtbar in echten Zahlen. Kein Reporting-Theater — du siehst, was wirkt, wann immer du willst.</p>
+        </article>
+        <article class="ab-pcard">
+          <p class="pn">P—03</p>
+          <h3>System statt Zufall</h3>
+          <p>Reichweite ist kein Glücksspiel. Wir bauen einen wiederholbaren Prozess, der unabhängig von einzelnen viralen Treffern wächst.</p>
+        </article>
+        <article class="ab-pcard">
+          <p class="pn">P—04</p>
+          <h3>Persönlich &amp; nah</h3>
+          <p>Zwei Gründer, kein Account-Manager-Karussell. Du sprichst direkt mit uns — und wir behandeln deine Marke wie unsere eigene.</p>
+        </article>
+      </div>
+    </div></section>
+
+    <!-- 5 · closing cta -->
     <section class="blk"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>

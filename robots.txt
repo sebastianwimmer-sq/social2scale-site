@@ -1,3 +1,6 @@
+# social2scale — KI-/Such-Crawler ausdrücklich willkommen.
+# Wir wollen in Google UND in KI-Antworten (ChatGPT, Claude, Perplexity, Gemini) sichtbar sein.
+# Maschinenlesbare Kurzbeschreibung der Seite: /llms.txt
 User-agent: *
 Allow: /
 Disallow: /danke/
