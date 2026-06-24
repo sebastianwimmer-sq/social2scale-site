@@ -18,13 +18,13 @@
 {"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
-<!-- ANPASSEN: [C1] #cta data-cta-url (Strategie-Call/Calendly) · später Sektionen ausbauen -->
+<!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
 <style>
   :root{
     --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
     --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
     --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);
-    --px:clamp(20px,5vw,56px);
+    --px:clamp(20px,5vw,56px); --header-h:72px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   /* ===== Fix-Dark Hardening — dunkel in JEDEM OS-Modus (Dark-Audit) ===== */
@@ -36,14 +36,16 @@
   ::-webkit-scrollbar-thumb{background:#2a2a2e;border-radius:7px;border:2px solid #000}
   ::-webkit-scrollbar-thumb:hover{background:#37373c}
   ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 14px)}
   body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden;
     background-image:
       radial-gradient(120% 75% at 50% -8%, rgba(0,184,136,.12), transparent 54%),
       repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 46px),
       repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 46px);}
-  .skip{position:absolute;left:-9999px}.skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
+  body.nav-open{overflow:hidden}
+  .skip{position:absolute;left:-9999px}.skip:focus-visible{left:16px;top:16px;z-index:200;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
   .wrap{width:100%;max-width:1040px;margin:0 auto;padding:0 var(--px)}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;border-radius:4px}
 
   @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
   @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
@@ -52,18 +54,53 @@
   .reveal.on{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){.r,.reveal{opacity:1!important;transform:none!important;animation:none!important}}
 
-  /* top bar */
-  .bar{display:flex;align-items:center;justify-content:space-between;padding:18px var(--px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:#000}
-  .bar img{height:40px;width:auto;display:block;mix-blend-mode:screen}
+  /* ===== sticky header + nav ===== */
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:120;background:#000}
+  .bar .brand{display:flex;align-items:center;flex:0 0 auto}
+  .bar img.logo{height:38px;width:auto;display:block;mix-blend-mode:screen}
   .logo-s2s{display:none!important}
   @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
-  .bar a.cta{font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.04em;padding:10px 18px;border:1px solid var(--line-2);border-radius:7px;color:var(--paper);text-decoration:none;transition:.25s var(--ease)}
-  .bar a.cta:hover{border-color:var(--emerald);color:var(--emerald)}
 
-  /* hero */
-  .hero{padding:clamp(64px,12vw,140px) 0 clamp(48px,8vw,90px);text-align:center;position:relative}
-  .eyebrow{font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--emerald)}
-  .hero h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.6rem,1.5rem+4.4vw,5.2rem);line-height:1.03;letter-spacing:-.018em;margin-top:20px;max-width:16ch;margin-left:auto;margin-right:auto}
+  .nav{display:flex;align-items:center;gap:30px;margin-left:auto}
+  .nav-links{display:flex;align-items:center;gap:26px;list-style:none}
+  .nav-links a{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.01em;color:var(--muted);text-decoration:none;position:relative;padding:6px 0;transition:color .25s var(--ease)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--emerald);transition:width .3s var(--ease)}
+  .nav-links a:hover{color:var(--paper)}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:11px 20px;border-radius:8px;text-decoration:none;background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 10px 26px -12px rgba(0,184,136,.8),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .25s var(--ease)}
+  .nav-cta:hover{transform:translateY(-2px)}
+
+  /* burger */
+  .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:9px;background:rgba(255,255,255,.02);cursor:pointer;margin-left:auto;transition:border-color .25s var(--ease)}
+  .burger:hover{border-color:var(--emerald)}
+  .burger span{display:block;height:2px;width:100%;background:var(--paper);border-radius:2px;transition:transform .3s var(--ease),opacity .2s var(--ease)}
+  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* mobile overlay menu */
+  .nav-scrim{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s var(--ease)}
+  .nav-scrim.open{opacity:1;visibility:visible}
+  .mobile-menu{position:fixed;top:0;right:0;z-index:115;width:min(86vw,360px);height:100dvh;padding:calc(var(--header-h) + 26px) 30px 40px;background:linear-gradient(180deg,#0c0c0e,#000);border-left:1px solid var(--line-2);box-shadow:-30px 0 80px -30px rgba(0,0,0,.9);display:flex;flex-direction:column;gap:6px;transform:translateX(105%);transition:transform .42s var(--ease);overflow-y:auto}
+  .mobile-menu.open{transform:none}
+  .mobile-menu a.m-link{font-family:"Fraunces",serif;font-weight:300;font-size:1.5rem;letter-spacing:-.01em;color:var(--paper);text-decoration:none;padding:15px 0;border-bottom:1px solid var(--line);transition:color .2s var(--ease),padding-left .25s var(--ease)}
+  .mobile-menu a.m-link:hover{color:var(--emerald);padding-left:8px}
+  .mobile-menu .m-cta{margin-top:24px;text-align:center;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:16px 24px;border-radius:10px;text-decoration:none;background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 14px 34px -14px rgba(0,184,136,.8),inset 0 1px 0 rgba(255,255,255,.3)}
+  .mobile-menu .m-foot{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);padding-top:26px}
+
+  @media (max-width:819px){
+    .nav-links,.nav>.nav-cta{display:none}
+    .burger{display:flex}
+  }
+
+  /* ===== hero ===== */
+  .hero{padding:clamp(46px,8vw,96px) 0 clamp(48px,8vw,88px);text-align:center;position:relative;overflow:hidden}
+  .hero .glow{position:absolute;inset:0;pointer-events:none;z-index:-1;
+    background:radial-gradient(50% 38% at 50% 22%,rgba(0,184,136,.14),transparent 70%)}
+  .hero .grow-line{position:absolute;left:50%;bottom:-2px;width:1px;height:34%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(0,184,136,.5));pointer-events:none;z-index:-1}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald);border:1px solid rgba(0,184,136,.28);border-radius:100px;padding:8px 16px;background:rgba(0,184,136,.06)}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
+  .hero h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.6rem,1.5rem+4.4vw,5.2rem);line-height:1.03;letter-spacing:-.018em;margin-top:26px;max-width:16ch;margin-left:auto;margin-right:auto}
   .hero h1 em{font-style:italic;color:var(--emerald)}
   .hero .sub{color:var(--muted);font-size:clamp(1.08rem,1rem+.45vw,1.32rem);margin:24px auto 0;max-width:54ch}
   .hero .sub b{color:var(--paper);font-weight:600}
@@ -78,30 +115,65 @@
   .peak{margin-top:26px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--faint)}
   .peak b{color:var(--emerald)}
 
-  /* value */
-  section.blk{padding:clamp(50px,8vw,90px) 0;border-top:1px solid var(--line)}
+  /* ===== trust strip ===== */
+  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.018),transparent)}
+  .trust .row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:22px 0}
+  .trust .item{display:flex;align-items:center;gap:11px;font-size:.94rem;color:var(--paper);font-weight:500;padding:6px 14px}
+  .trust .item + .item{border-left:1px solid var(--line)}
+  .chk{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(0,184,136,.12);border:1px solid rgba(0,184,136,.4)}
+  .chk svg{width:12px;height:12px;stroke:var(--emerald);stroke-width:2.6;fill:none}
+  @media (max-width:819px){.trust .row{grid-template-columns:repeat(2,1fr);row-gap:4px}.trust .item:nth-child(odd){border-left:0}.trust .item:nth-child(3),.trust .item:nth-child(4){border-top:1px solid var(--line)}}
+  @media (max-width:480px){.trust .row{grid-template-columns:1fr}.trust .item{border-left:0!important}.trust .item + .item{border-top:1px solid var(--line)}}
+
+  /* ===== blocks ===== */
+  section.blk{padding:clamp(54px,8.5vw,96px) 0;border-top:1px solid var(--line)}
+  .trust + section.blk{border-top:0}
   .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald);text-align:center;display:block}
   h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.9rem,1.3rem+2.3vw,3rem);line-height:1.1;letter-spacing:-.015em;margin-top:14px;text-align:center}
   h2 em{font-style:italic;color:var(--emerald)}
-  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:38px}
-  .card{background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line);border-radius:16px;padding:30px;transition:transform .3s var(--ease),border-color .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+  .lead{color:var(--muted);text-align:center;max-width:56ch;margin:16px auto 0;font-size:1.06rem}
+  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:40px}
+  .card{position:relative;background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line);border-radius:16px;padding:30px;transition:transform .3s var(--ease),border-color .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 24px 50px -40px rgba(0,0,0,.9)}
   .card:hover{transform:translateY(-4px);border-color:rgba(0,184,136,.32)}
   .card .n{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--emerald)}
   .card h3{font-size:1.25rem;font-weight:600;letter-spacing:-.01em;margin-top:12px}
   .card p{font-size:.96rem;color:var(--muted);margin-top:10px;line-height:1.6}
 
-  /* cta band */
-  .band{text-align:center;background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(0,184,136,.02));border:1px solid rgba(0,184,136,.28);border-radius:22px;padding:clamp(36px,7vw,64px);box-shadow:0 50px 110px -60px rgba(0,184,136,.55)}
+  /* ===== process / timeline ===== */
+  .steps{position:relative;margin-top:44px;display:grid;gap:18px}
+  .steps::before{content:"";position:absolute;left:30px;top:18px;bottom:18px;width:2px;background:linear-gradient(180deg,rgba(0,184,136,.55),rgba(0,184,136,.06));z-index:0}
+  .step{position:relative;display:grid;grid-template-columns:60px 1fr;gap:22px;align-items:start;z-index:1}
+  .step .mark{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-size:15px;font-weight:600;color:var(--emerald);background:linear-gradient(180deg,#16161A,#0c0c0e);border:1px solid rgba(0,184,136,.32);box-shadow:0 0 0 6px #000,0 14px 30px -18px rgba(0,184,136,.7)}
+  .step .body{background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:14px;padding:22px 24px;transition:border-color .3s var(--ease),transform .3s var(--ease)}
+  .step:hover .body{border-color:rgba(0,184,136,.3);transform:translateX(4px)}
+  .step h3{font-size:1.18rem;font-weight:600;letter-spacing:-.01em}
+  .step p{font-size:.95rem;color:var(--muted);margin-top:8px}
+  @media (max-width:560px){.steps::before{left:22px}.step{grid-template-columns:46px 1fr;gap:16px}.step .mark{width:46px;height:46px;font-size:13px;border-radius:12px;box-shadow:0 0 0 5px #000}}
 
-  footer{border-top:1px solid var(--line);padding:30px var(--px);text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint)}
-  .founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:38px}
-  .fcard{background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;transition:transform .3s var(--ease),border-color .3s}
+  /* ===== results / social proof ===== */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .stat{position:relative;text-align:center;background:linear-gradient(180deg,rgba(0,184,136,.07),rgba(12,12,14,.85));border:1px solid rgba(0,184,136,.22);border-radius:18px;padding:34px 24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 30px 60px -48px rgba(0,184,136,.6)}
+  .stat .num{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.4rem,1.6rem+2.2vw,3.4rem);line-height:1;color:var(--paper);letter-spacing:-.02em}
+  .stat .num em{font-style:normal;color:var(--emerald)}
+  .stat .lbl{font-family:"Archivo",sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  @media (max-width:680px){.stats{grid-template-columns:1fr}}
+  .quote{margin-top:22px;background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:18px;padding:clamp(28px,5vw,40px);text-align:center}
+  .quote blockquote{font-family:"Fraunces",serif;font-weight:300;font-style:italic;font-size:clamp(1.25rem,1rem+1.1vw,1.7rem);line-height:1.4;letter-spacing:-.01em;max-width:40ch;margin:0 auto;color:var(--paper)}
+  .quote .by{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);margin-top:18px}
+  .ph-note{text-align:center;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:20px}
+  .ph-note b{color:var(--emerald);font-weight:400}
+
+  /* ===== founders ===== */
+  .founders{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:40px}
+  .fcard{background:linear-gradient(180deg,rgba(22,22,26,.85),rgba(12,12,14,.85));border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center;transition:transform .3s var(--ease),border-color .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 24px 50px -40px rgba(0,0,0,.9)}
   .fcard:hover{transform:translateY(-4px);border-color:rgba(0,184,136,.32)}
   .fcard .pic{width:84px;height:84px;border-radius:50%;margin:0 auto 16px;background:radial-gradient(circle at 35% 30%,#1d1d22,#0c0c0e);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9px;line-height:1.3}
   .fcard h3{font-size:1.25rem;font-weight:600}
   .fcard .role{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);margin-top:5px}
   .fcard p{font-size:.94rem;color:var(--muted);margin-top:12px;line-height:1.6}
-  .faq{max-width:760px;margin:32px auto 0;display:flex;flex-direction:column;gap:12px}
+
+  /* ===== faq ===== */
+  .faq{max-width:760px;margin:36px auto 0;display:flex;flex-direction:column;gap:12px}
   .faq details{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:0 22px;transition:border-color .25s var(--ease)}
   .faq details[open]{border-color:rgba(0,184,136,.30)}
   .faq summary{cursor:pointer;list-style:none;padding:18px 0;font-weight:600;font-size:1.04rem;display:flex;justify-content:space-between;align-items:center;gap:14px}
@@ -109,22 +181,59 @@
   .faq summary::after{content:"+";color:var(--emerald);font-size:1.5rem;line-height:1;transition:transform .25s var(--ease)}
   .faq details[open] summary::after{transform:rotate(45deg)}
   .faq p{color:var(--muted);font-size:.95rem;line-height:1.6;padding:0 0 18px;margin:0}
-  footer a{color:var(--paper);text-decoration:none}footer a:hover{color:var(--emerald)}
+
+  /* ===== cta band ===== */
+  .band{text-align:center;background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(0,184,136,.02));border:1px solid rgba(0,184,136,.28);border-radius:22px;padding:clamp(36px,7vw,64px);box-shadow:0 50px 110px -60px rgba(0,184,136,.55)}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--line);padding:clamp(34px,6vw,56px) var(--px) 34px;text-align:center}
+  .foot-nav{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:center;margin-bottom:26px;list-style:none}
+  .foot-nav a{font-family:"Archivo",sans-serif;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-nav a:hover{color:var(--emerald)}
+  .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2}
+  .foot-meta a{color:var(--paper);text-decoration:none}.foot-meta a:hover{color:var(--emerald)}
 </style>
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
 
   <header class="bar">
-    <img class="logo logo-full" src="/assets/logo-sm.png" alt="social2scale">
+    <div class="brand">
+      <img class="logo logo-full" src="/assets/logo-sm.png" alt="social2scale">
       <img class="logo logo-s2s" src="/assets/logo-s2s-sm.png" alt="social2scale" hidden>
-    <a class="cta" id="cta-top" href="#" data-cta-url="#">Strategie-Call</a>
+    </div>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="#fuer-wen">Für wen</a></li>
+        <li><a href="#ueber-uns">Über uns</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a class="nav-cta" id="cta-top" href="#" data-cta-url="#">Strategie-Call</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
   </header>
+
+  <div class="nav-scrim" id="nav-scrim" hidden></div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
+    <a class="m-link" href="#leistungen">Leistungen</a>
+    <a class="m-link" href="#ablauf">Ablauf</a>
+    <a class="m-link" href="#fuer-wen">Für wen</a>
+    <a class="m-link" href="#ueber-uns">Über uns</a>
+    <a class="m-link" href="#faq">FAQ</a>
+    <a class="m-cta" id="cta-menu" href="#" data-cta-url="#">Strategie-Call buchen →</a>
+    <p class="m-foot">Powered by PEAKING</p>
+  </nav>
 
   <main>
     <section class="hero" id="hero">
+      <span class="glow" aria-hidden="true"></span>
+      <span class="grow-line" aria-hidden="true"></span>
       <div class="wrap">
-        <p class="eyebrow r">Premium Social-Growth · Coaches, Experten &amp; B2B</p>
+        <p class="eyebrow r"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
         <h1 class="r" style="animation-delay:.1s">Wir bauen das <em>System</em>, das dich planbar skaliert.</h1>
         <p class="sub r" style="animation-delay:.2s">Du hast (noch) keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b> System statt Zufall.</p>
         <div class="cta-row r" style="animation-delay:.3s">
@@ -135,9 +244,21 @@
       </div>
     </section>
 
+    <section class="trust" aria-label="Unsere Stärken">
+      <div class="wrap">
+        <div class="row reveal">
+          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</div>
+          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</div>
+          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in PEAKING</div>
+          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Von null bis Wachstum</div>
+        </div>
+      </div>
+    </section>
+
     <section class="blk" id="leistungen"><div class="wrap reveal">
       <span class="klabel">Was wir machen</span>
       <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
+      <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
       <div class="grid3">
         <div class="card"><div class="n">01</div><h3>Setup</h3><p>Wir bauen deinen kompletten Social-Auftritt professionell auf — Profile, Branding, Strategie.</p></div>
         <div class="card"><div class="n">02</div><h3>Betreuung</h3><p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot — echte Menschen.</p></div>
@@ -145,7 +266,19 @@
       </div>
     </div></section>
 
-    <section class="blk"><div class="wrap reveal">
+    <section class="blk" id="ablauf"><div class="wrap reveal">
+      <span class="klabel">So läuft's ab</span>
+      <h2>Dein Weg zu <em>planbarem</em> Wachstum.</h2>
+      <p class="lead">Vier klare Schritte — vom ersten Gespräch bis zur laufenden Skalierung.</p>
+      <div class="steps">
+        <div class="step"><div class="mark">01</div><div class="body"><h3>Strategie-Call</h3><p>Wir verstehen dein Ziel, deine Zielgruppe und deinen Status quo — und zeigen dir, wie dein System aussieht.</p></div></div>
+        <div class="step"><div class="mark">02</div><div class="body"><h3>Setup &amp; Onboarding</h3><p>Wir bauen Profile, Branding und Content-Strategie auf und richten deine PEAKING-Plattform ein.</p></div></div>
+        <div class="step"><div class="mark">03</div><div class="body"><h3>Content &amp; Betreuung</h3><p>Laufende Produktion und persönliche Betreuung. Du gibst die Richtung vor, wir setzen um.</p></div></div>
+        <div class="step"><div class="mark">04</div><div class="body"><h3>Skalierung &amp; Reporting</h3><p>Reichweite, Leads und Umsatz wachsen — jeden Fortschritt verfolgst du transparent in PEAKING.</p></div></div>
+      </div>
+    </div></section>
+
+    <section class="blk" id="fuer-wen"><div class="wrap reveal">
       <span class="klabel">Für wen</span>
       <h2>Für die, die <em>endlich</em> sichtbar werden wollen.</h2>
       <div class="grid3">
@@ -155,7 +288,23 @@
       </div>
     </div></section>
 
-    <section class="blk"><div class="wrap reveal">
+    <section class="blk" id="ergebnisse"><div class="wrap reveal">
+      <span class="klabel">Ergebnisse</span>
+      <h2>Wachstum, das man <em>sieht</em>.</h2>
+      <p class="lead">Was unser System bewegt — sobald die ersten Wochen laufen.</p>
+      <div class="stats">
+        <div class="stat"><div class="num"><em>+218%</em></div><div class="lbl">Reichweite*</div></div>
+        <div class="stat"><div class="num"><em>47</em></div><div class="lbl">Leads / Monat*</div></div>
+        <div class="stat"><div class="num">0&nbsp;→&nbsp;<em>1</em></div><div class="lbl">Von unsichtbar zu sichtbar*</div></div>
+      </div>
+      <div class="quote">
+        <blockquote>„Endlich ein Team, das den ganzen Social-Aufbau abnimmt — und ich sehe in PEAKING genau, was es bringt."</blockquote>
+        <div class="by">— Platzhalter-Stimme · echtes Testimonial folgt</div>
+      </div>
+      <p class="ph-note"><b>*</b> Platzhalter — echte Kundenergebnisse einsetzen.</p>
+    </div></section>
+
+    <section class="blk" id="ueber-uns"><div class="wrap reveal">
       <span class="klabel">Die Gründer</span>
       <h2>Zwei, die <em>anpacken</em>.</h2>
       <div class="founders">
@@ -165,13 +314,14 @@
       <!-- TODO: echte Fotos von Sebi & Phil statt Platzhalter -->
     </div></section>
 
-    <section class="blk"><div class="wrap reveal">
+    <section class="blk" id="faq"><div class="wrap reveal">
       <span class="klabel">Häufige Fragen</span>
       <h2>Gut zu <em>wissen</em>.</h2>
       <div class="faq">
         <details><summary>Was, wenn ich noch gar keinen Social-Auftritt habe?</summary><p>Perfekt — genau dafür sind wir da. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content.</p></details>
         <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. Reichweite &amp; Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in PEAKING.</p></details>
         <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um.</p></details>
+        <details><summary>Was ist PEAKING?</summary><p>PEAKING ist unsere Plattform, in der du dein Wachstum transparent verfolgst — Reichweite, Leads und Fortschritt an einem Ort, statt Zahlen aus zehn Tools zusammenzusuchen.</p></details>
         <details><summary>Was kostet das?</summary><p>Das hängt von Ziel und Umfang ab. Im unverbindlichen Strategie-Call zeigen wir dir, wie dein System aussieht — inklusive Pakete &amp; Preise.</p></details>
       </div>
     </div></section>
@@ -180,21 +330,60 @@
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2 style="margin-top:10px">Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="sub" style="color:var(--muted);max-width:44ch;margin:16px auto 0">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
+        <p class="lead" style="max-width:44ch;margin-top:16px">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
         <p style="margin-top:30px"><a class="btn btn-primary" id="cta-bottom" href="#" data-cta-url="#">Strategie-Call buchen →</a></p>
       </div>
     </div></section>
   </main>
 
   <footer>
-    <span>© <span id="yr"></span> social2scale · Powered by PEAKING</span> &nbsp;·&nbsp;
-    <a href="impressum/">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz/">Datenschutz</a> &nbsp;·&nbsp;
-    <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+    <ul class="foot-nav">
+      <li><a href="#leistungen">Leistungen</a></li>
+      <li><a href="#ablauf">Ablauf</a></li>
+      <li><a href="#fuer-wen">Für wen</a></li>
+      <li><a href="#ueber-uns">Über uns</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <p class="foot-meta">
+      © <span id="yr"></span> social2scale · Powered by PEAKING<br>
+      <a href="impressum/">Impressum</a> &nbsp;·&nbsp; <a href="datenschutz/">Datenschutz</a> &nbsp;·&nbsp;
+      <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+    </p>
   </footer>
 
   <script>
     document.getElementById('yr').textContent=new Date().getFullYear();
-    ['cta','cta-top','cta-bottom'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
+
+    // wire real CTA urls (placeholder until Calendly link arrives)
+    ['cta','cta-top','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
+
+    // ===== burger / mobile menu =====
+    (function(){
+      var burger=document.getElementById('burger');
+      var menu=document.getElementById('mobile-menu');
+      var scrim=document.getElementById('nav-scrim');
+      if(!burger||!menu||!scrim)return;
+      function open(){
+        menu.hidden=false;scrim.hidden=false;
+        requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
+        burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
+        document.body.classList.add('nav-open');
+      }
+      function close(){
+        menu.classList.remove('open');scrim.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
+        document.body.classList.remove('nav-open');
+        var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
+        menu.addEventListener('transitionend',hide);
+      }
+      function toggle(){burger.getAttribute('aria-expanded')==='true'?close():open();}
+      burger.addEventListener('click',toggle);
+      scrim.addEventListener('click',close);
+      menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true')close();});
+    })();
+
+    // ===== scroll reveal =====
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
     else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
