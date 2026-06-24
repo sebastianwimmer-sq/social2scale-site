@@ -10,9 +10,10 @@
 <meta name="theme-color" content="#000000">
 <title>Ergebnisse — social2scale</title>
 <meta name="description" content="Was das social2scale-System bewegt: Reichweite, Leads und Umsatz — transparent messbar in PEAKING.">
-<meta property="og:title" content="social2scale — Premium Social-Growth">
-<meta property="og:description" content="Wir bauen dein Wachstum — System statt Zufall.">
-<meta property="og:url" content="https://social2scale.com/">
+<link rel="canonical" href="https://social2scale.com/results/">
+<meta property="og:title" content="Ergebnisse — social2scale | Wachstum, das man sieht">
+<meta property="og:description" content="Reichweite, Leads und Umsatz — als System gebaut und live messbar in PEAKING. Wachstum statt Zufall.">
+<meta property="og:url" content="https://social2scale.com/results/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -419,102 +420,122 @@
   @media (max-width:680px){.foot-grid{grid-template-columns:1fr;gap:var(--s-6)}}
 
   /* ============================================================
-     .rs-* — Ergebnisse / Results page (scoped, proof-driven)
-     Reuse tokens only: --emerald/--teal, --surf-grad, --s-*, depth.
+     ERGEBNISSE — page-scoped EDITORIAL layer (.rs-*)
+     Same editorial language as /for-you/: mono № running-head labels,
+     oversized magnetic Fraunces hero, big un-boxed stat row, numbered
+     editorial rows (outline numerals in a fixed track — NOT cards),
+     a full-bleed Fraunces pull-quote, hairline rhythm, restrained
+     emerald accents. Reuses tokens (--emerald/--teal/--surf-grad/--s-*).
      ============================================================ */
 
-  /* ---- 1) editorial hero ---- */
-  .rs-hero{padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-7),5vw,var(--s-9))}
-  .rs-hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.7rem,1rem+6.4vw,6.2rem);line-height:.96;letter-spacing:-.03em;max-width:16ch;margin-top:var(--s-5);font-variation-settings:"opsz" 144}
-  .rs-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .rs-hero .lead{font-size:clamp(1.08rem,1rem+.5vw,1.32rem);max-width:50ch;color:var(--muted)}
+  /* — mono running-head / marginalia label (shared with for-you) — */
+  .rs-rh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:var(--s-3)}
+  .rs-rh b{color:var(--emerald);font-weight:400}
+  .rs-rh::before{content:"";width:22px;height:1px;background:var(--line-3);display:inline-block;flex:0 0 auto}
+
+  /* — editorial hero — */
+  .rs-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),8vw,var(--s-11)) 0 clamp(var(--s-7),5vw,var(--s-9));border-top:0}
+  .rs-hero .rs-rh{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .rs-hero h1{font-family:"Fraunces",serif;font-weight:580;font-size:clamp(3.4rem,1.1rem+5.7vw,6.4rem);line-height:.95;letter-spacing:-.038em;max-width:14ch;font-variation-settings:"opsz" 144}
+  .rs-hero h1 em{font-style:italic;font-weight:520;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .rs-hero .lead{max-width:54ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));font-size:clamp(1.0625rem,1rem+.42vw,1.25rem);color:var(--muted)}
   .rs-hero .lead b{color:var(--paper);font-weight:600}
 
-  /* ---- 2) BIG hero stat band — the dominant proof ---- */
-  .rs-statband{position:relative;overflow:hidden;border:1px solid rgba(0,184,136,.30);border-radius:24px;box-shadow:var(--depth-lg);
-    background:
-      radial-gradient(120% 150% at 8% 0%,rgba(0,184,136,.26),transparent 56%),
-      radial-gradient(120% 150% at 96% 100%,rgba(31,166,224,.22),transparent 58%),
-      var(--surf-grad)}
-  .rs-statband::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 72%,transparent)}
-  .rs-statband-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--s-4);padding:clamp(22px,3vw,32px) clamp(24px,4vw,44px) 0}
-  .rs-statband-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
-  .rs-statband-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald)}
-  .rs-statband-head .meta{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
-  .rs-bigstats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:clamp(20px,3vw,32px) clamp(8px,2vw,20px) clamp(24px,3vw,36px)}
-  .rs-bigstat{position:relative;padding:clamp(18px,2.4vw,28px) clamp(16px,2.6vw,32px)}
-  .rs-bigstat + .rs-bigstat{border-left:1px solid var(--line)}
-  .rs-bigstat .v{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(3rem,1.6rem+5vw,6rem);line-height:.86;letter-spacing:-.035em;color:var(--emerald);font-variation-settings:"opsz" 144}
-  .rs-bigstat .v sup{font-size:.34em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em;-webkit-text-fill-color:var(--teal)}
-  .rs-bigstat .l{font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--paper);margin-top:var(--s-4)}
-  .rs-bigstat .s{font-family:"Hanken Grotesk",sans-serif;font-size:.92rem;color:var(--muted);margin-top:var(--s-2);line-height:1.5;max-width:24ch}
-  @media (max-width:760px){
-    .rs-bigstats{grid-template-columns:1fr}
-    .rs-bigstat + .rs-bigstat{border-left:0;border-top:1px solid var(--line)}
-    .rs-bigstat{padding:var(--s-6) clamp(16px,5vw,28px)}
+  /* — generic editorial block — */
+  .rs-blk{padding:var(--section-y) 0;border-top:1px solid var(--line)}
+  .rs-blk-head{margin-bottom:clamp(var(--s-7),5vw,var(--s-9));max-width:32ch}
+  .rs-blk-head h2{margin-top:var(--s-4)}
+  .rs-blk-head .lead{margin-top:var(--s-5)}
+
+  /* — 2) BIG editorial stat row — three huge Fraunces numbers, NOT boxed.
+     Dramatic scale contrast: numerals dominate, tiny mono labels beneath,
+     separated only by hairlines (top + bottom + between). — */
+  .rs-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .rs-stat{padding:clamp(var(--s-7),4vw,var(--s-9)) var(--s-6) clamp(var(--s-7),4vw,var(--s-9)) 0}
+  .rs-stat + .rs-stat{border-left:1px solid var(--line);padding-left:clamp(var(--s-5),3vw,var(--s-7))}
+  .rs-stat .v{font-family:"Fraunces",serif;font-weight:470;font-size:clamp(3.4rem,1.6rem+6vw,7rem);line-height:.84;letter-spacing:-.04em;color:var(--paper);font-variation-settings:"opsz" 144}
+  .rs-stat .v em{font-style:normal;color:var(--emerald)}
+  .rs-stat .v sup{font-size:.26em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em;-webkit-text-fill-color:var(--teal)}
+  .rs-stat .l{font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:clamp(var(--s-4),2vw,var(--s-5))}
+  .rs-stat .s{font-family:"Hanken Grotesk",sans-serif;font-size:.96rem;color:var(--muted);margin-top:var(--s-3);line-height:1.55;max-width:26ch}
+  @media (max-width:680px){
+    .rs-stats{grid-template-columns:1fr}
+    .rs-stat{padding:clamp(var(--s-6),7vw,var(--s-7)) 0}
+    .rs-stat + .rs-stat{border-left:0;border-top:1px solid var(--line);padding-left:0}
   }
 
-  /* ---- 3) case-study blocks — aurora cards, situation→action→result ---- */
-  .rs-cases{display:grid;gap:var(--s-4);margin-top:0}
-  .rs-case{position:relative;display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(24px,4vw,48px);align-items:center;
-    border-radius:20px;padding:clamp(26px,3.4vw,44px);
-    background:
-      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.20),transparent 58%),
-      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.16),transparent 60%),
-      var(--surf-grad);
-    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
-    transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease),background .3s var(--ease)}
-  .rs-case:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-3px);
-    background:
-      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.28),transparent 58%),
-      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.22),transparent 60%),
-      var(--surf-grad-hover)}
-  .rs-case .pill{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 13px;border-radius:100px}
-  .rs-case h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.4rem,1.1rem+1vw,1.9rem);letter-spacing:-.018em;margin-top:var(--s-4)}
-  .rs-narr{list-style:none;margin-top:var(--s-5);display:flex;flex-direction:column;gap:var(--s-4)}
-  .rs-narr li{display:grid;grid-template-columns:minmax(78px,90px) 1fr;gap:var(--s-4);align-items:baseline}
+  /* — 3) case studies as numbered editorial ROWS (same pattern as for-you).
+     Fixed numeral track → big outline numeral can never overflow into copy.
+     One stacked column: kicker → headline → Vorher/Aufbau/Ergebnis line →
+     highlighted result metric. Hairline-separated, no card chrome. — */
+  .rs-rows{display:grid;gap:0;border-top:1px solid var(--line-2)}
+  .rs-row{position:relative;display:grid;
+    grid-template-columns:clamp(72px,9vw,132px) minmax(0,1fr) auto;
+    gap:clamp(var(--s-5),3vw,var(--s-7));align-items:start;
+    padding:clamp(var(--s-6),3.4vw,var(--s-8)) clamp(var(--s-3),1.6vw,var(--s-5));
+    border-bottom:1px solid var(--line-2);transition:background .35s var(--ease)}
+  .rs-row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--emerald);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease);box-shadow:0 0 14px rgba(0,184,136,.5)}
+  .rs-row:hover{background:linear-gradient(90deg,rgba(0,184,136,.06),rgba(0,184,136,.012) 60%,transparent)}
+  .rs-row:hover::before{transform:scaleY(1)}
+  /* oversized index numeral — clamped to its fixed track, ~2× the row title */
+  .rs-num{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(3.5rem,2rem+3vw,6rem);line-height:.8;letter-spacing:-.045em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
+  .rs-row:hover .rs-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.1)}
+  .rs-rmain{min-width:0}
+  .rs-rkicker{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-3)}
+  .rs-rtitle{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.6rem,1.25rem+1.35vw,2.15rem);line-height:1.06;letter-spacing:-.022em;color:var(--paper)}
+  .rs-narr{list-style:none;margin-top:clamp(var(--s-4),2.4vw,var(--s-5));display:flex;flex-direction:column;gap:var(--s-3);max-width:56ch}
+  .rs-narr li{display:grid;grid-template-columns:minmax(74px,86px) 1fr;gap:var(--s-4);align-items:baseline}
   .rs-narr .k{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald)}
-  .rs-narr .t{font-size:1rem;color:var(--muted);line-height:1.6;max-width:50ch}
+  .rs-narr .t{font-size:1.0125rem;color:var(--muted);line-height:1.55}
   .rs-narr .t b{color:var(--paper);font-weight:600}
-  /* highlighted result metric panel on the right */
-  .rs-result{position:relative;border-radius:16px;padding:clamp(22px,2.6vw,30px);background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(31,166,224,.04));border:1px solid rgba(0,184,136,.30);box-shadow:var(--hi),0 1px 2px rgba(0,0,0,.4)}
-  .rs-result .rk{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
-  .rs-result .rv{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2.4rem,1.4rem+3vw,3.6rem);line-height:.9;letter-spacing:-.03em;color:var(--paper);margin-top:var(--s-3);font-variation-settings:"opsz" 144}
-  .rs-result .rv em{font-style:normal;color:var(--emerald)}
-  .rs-result .rv sup{font-size:.3em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em}
-  .rs-result .rs-sub{font-family:"Hanken Grotesk",sans-serif;font-size:.9rem;color:var(--muted);margin-top:var(--s-3);line-height:1.5}
+  /* highlighted result metric — editorial side note, hairline-bordered, not a card */
+  .rs-result{align-self:center;justify-self:end;min-width:clamp(150px,16vw,200px);padding:clamp(var(--s-4),1.6vw,var(--s-5)) 0 clamp(var(--s-4),1.6vw,var(--s-5)) clamp(var(--s-5),2.4vw,var(--s-6));border-left:1px solid var(--line-2)}
+  .rs-result .rk{font-family:"Archivo",sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .rs-result .rv{font-family:"Fraunces",serif;font-weight:470;font-size:clamp(2.4rem,1.5rem+2.6vw,3.4rem);line-height:.88;letter-spacing:-.035em;color:var(--emerald);margin-top:var(--s-3);font-variation-settings:"opsz" 144}
+  .rs-result .rv sup{font-size:.28em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.04em;-webkit-text-fill-color:var(--teal)}
+  .rs-result .rsub{font-family:"Hanken Grotesk",sans-serif;font-size:.86rem;color:var(--muted);margin-top:var(--s-3);line-height:1.5;max-width:22ch}
   @media (max-width:840px){
-    .rs-case{grid-template-columns:1fr;gap:var(--s-6)}
+    .rs-row{grid-template-columns:clamp(60px,14vw,92px) minmax(0,1fr);column-gap:clamp(var(--s-4),4vw,var(--s-5))}
+    .rs-result{grid-column:1 / -1;justify-self:start;border-left:0;border-top:1px solid var(--line-2);padding:var(--s-5) 0 0;margin-top:var(--s-5);min-width:0}
+    .rs-result .rv{margin-top:var(--s-2)}
+  }
+  @media (max-width:560px){
+    .rs-row{grid-template-columns:1fr;row-gap:var(--s-3)}
+    .rs-num{font-size:clamp(2.75rem,11vw,3.75rem)}
     .rs-narr li{grid-template-columns:1fr;gap:var(--s-1)}
   }
 
-  /* ---- 4) testimonial block — large editorial pull-quotes ---- */
-  .rs-quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4)}
-  .rs-quote{position:relative;border-radius:20px;padding:clamp(28px,3.6vw,44px);background:var(--surf-grad);border:1px solid var(--line-2);box-shadow:var(--depth);transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
-  .rs-quote:hover{border-color:var(--line-3);box-shadow:var(--depth-hover);transform:translateY(-3px)}
-  .rs-quote::before{content:"\201C";position:absolute;top:clamp(8px,1.4vw,18px);left:clamp(18px,2.6vw,30px);font-family:"Fraunces",serif;font-size:clamp(4rem,2rem+6vw,7rem);line-height:1;color:rgba(0,184,136,.20);pointer-events:none}
-  .rs-quote blockquote{position:relative;font-family:"Fraunces",serif;font-weight:430;font-style:italic;font-size:clamp(1.35rem,1rem+1.5vw,2.1rem);line-height:1.24;letter-spacing:-.02em;color:var(--paper);margin-top:clamp(20px,2.4vw,32px)}
-  .rs-quote .by{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.07em;color:var(--faint);margin-top:var(--s-5);display:flex;align-items:center;gap:var(--s-3)}
-  .rs-quote .by .av{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint);font-size:11px}
-  @media (max-width:760px){.rs-quotes{grid-template-columns:1fr}}
+  /* — 4) full-bleed editorial pull-quote testimonial (same as for-you) — */
+  .rs-quote{position:relative;overflow:hidden;border-top:1px solid var(--line)}
+  .rs-quote .wrap{padding-top:clamp(var(--s-9),9vw,var(--s-11));padding-bottom:clamp(var(--s-9),9vw,var(--s-11))}
+  .rs-quote::before{content:"\201E";position:absolute;top:clamp(-.1em,2vw,.1em);left:clamp(-.04em,1vw,.02em);font-family:"Fraunces",serif;font-style:italic;font-size:clamp(14rem,40vw,30rem);line-height:1;color:rgba(0,184,136,.05);pointer-events:none;z-index:0}
+  .rs-quote blockquote{position:relative;z-index:1;margin:0;font-family:"Fraunces",serif;font-style:italic;font-weight:450;font-size:clamp(2.4rem,1.2rem+3.8vw,4.6rem);line-height:1.08;letter-spacing:-.03em;color:var(--paper);max-width:20ch}
+  .rs-quote blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .rs-quote figcaption{position:relative;z-index:1;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);margin-top:clamp(var(--s-6),4vw,var(--s-7))}
 
-  /* ---- 5) "So messen wir" transparency block — PEAKING tie-in ---- */
-  .rs-measure{position:relative;overflow:hidden;border-radius:22px;padding:clamp(30px,4vw,56px);background:var(--grad-emerald);border:1px solid var(--line-2);box-shadow:var(--depth-lg)}
-  .rs-measure::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.55) 38%,rgba(31,166,224,.5) 70%,transparent)}
-  .rs-measure-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(28px,4vw,56px);align-items:center;position:relative;z-index:1}
-  .rs-measure h2{margin-top:var(--s-3)}
-  .rs-measure .lead{max-width:46ch}
-  .rs-mlist{list-style:none;display:flex;flex-direction:column;gap:var(--s-3)}
-  .rs-mlist li{display:flex;align-items:flex-start;gap:var(--s-4);padding:var(--s-4) 0;border-top:1px solid var(--line)}
-  .rs-mlist li:first-child{border-top:0}
-  .rs-mlist .ic{flex:0 0 auto;width:22px;height:22px;display:grid;place-items:center;margin-top:2px}
-  .rs-mlist .ic svg{width:15px;height:15px;stroke:var(--emerald);stroke-width:2.6;fill:none}
-  .rs-mlist .mt{font-family:"Hanken Grotesk",sans-serif;font-size:1.02rem;color:var(--paper);line-height:1.5}
-  .rs-mlist .mt span{display:block;color:var(--muted);font-size:.94rem;margin-top:2px}
-  @media (max-width:840px){.rs-measure-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+  /* — 5) "So messen wir" — short editorial transparency line, hairline cols — */
+  .rs-measure{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;border-top:1px solid var(--line-2);align-items:start}
+  .rs-mcol{padding:clamp(var(--s-6),4vw,var(--s-8)) clamp(var(--s-5),4vw,var(--s-8)) clamp(var(--s-6),4vw,var(--s-8)) 0}
+  .rs-mcol + .rs-mcol{border-left:1px solid var(--line-2);padding-left:clamp(var(--s-6),4vw,var(--s-8));padding-right:0}
+  .rs-mcol .mh{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.5rem,1.15rem+1.15vw,1.9rem);letter-spacing:-.02em;color:var(--paper)}
+  .rs-mcol .mintro{color:var(--muted);font-size:1.0625rem;line-height:1.55;margin-top:var(--s-3);max-width:42ch}
+  .rs-mcol .mintro b{color:var(--paper);font-weight:600}
+  .rs-mlist{list-style:none;display:flex;flex-direction:column;gap:clamp(var(--s-4),2vw,var(--s-5))}
+  .rs-mlist li{display:flex;align-items:flex-start;gap:var(--s-4);font-size:1.0625rem;line-height:1.5}
+  .rs-mlist li svg{width:18px;height:18px;flex:0 0 auto;margin-top:3px;stroke:var(--emerald);stroke-width:2.4;fill:none}
+  .rs-mlist .mt{color:var(--paper)}
+  .rs-mlist .mt span{display:block;color:var(--muted);font-size:.94rem;margin-top:2px;line-height:1.5}
+  @media (max-width:760px){
+    .rs-measure{grid-template-columns:1fr}
+    .rs-mcol{padding:clamp(var(--s-6),5vw,var(--s-7)) 0}
+    .rs-mcol + .rs-mcol{border-left:0;border-top:1px solid var(--line-2);padding-left:0}
+  }
 
-  /* shared placeholder note (reuses .ph-note pattern) */
-  .rs-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:var(--s-6)}
+  /* — closing CTA spacing (reuses .band) — */
+  .rs-close{padding:var(--section-y) 0;border-top:1px solid var(--line)}
+
+  /* shared placeholder note */
+  .rs-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:clamp(var(--s-5),3vw,var(--s-6))}
   .rs-note b{color:var(--emerald);font-weight:400}
 </style>
 </head>
@@ -569,91 +590,88 @@
 
   <main id="ergebnisse">
 
-    <!-- 1) editorial hero -->
-    <section class="blk rs-hero" style="border-top:0"><div class="wrap reveal">
-      <div class="head">
-        <span class="eyebrow"><span class="dot" aria-hidden="true"></span>Ergebnisse</span>
-        <h1>Wachstum, das man <em>sieht</em>.</h1>
-        <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in PEAKING.</p>
-      </div>
+    <!-- 1) Editorial hero — oversized Fraunces display vs tiny mono running head -->
+    <section class="rs-hero" aria-labelledby="rs-hero-h"><div class="wrap reveal">
+      <p class="rs-rh"><b>№ 01</b> — Ergebnisse</p>
+      <h1 id="rs-hero-h">Wachstum, das man <em>sieht</em>.</h1>
+      <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in PEAKING.</p>
     </div></section>
 
-    <!-- 2) BIG hero stat band — dominant proof -->
-    <section class="blk" style="border-top:0;padding-top:0"><div class="wrap reveal">
-      <div class="rs-statband">
-        <div class="rs-statband-head">
-          <span class="ttl"><span class="dot" aria-hidden="true"></span>Das bewegt unser System</span>
-          <span class="meta">Q · Wachstum gemessen in PEAKING</span>
+    <!-- 2) BIG editorial stat statement — three huge Fraunces numbers on hairlines, NOT cards -->
+    <section class="rs-blk" id="zahlen" aria-labelledby="rs-stats-h"><div class="wrap reveal">
+      <div class="rs-blk-head">
+        <p class="rs-rh"><b>№ 02</b> — Was unser System bewegt</p>
+        <h2 id="rs-stats-h">Drei Zahlen, ein <em>Ziel</em>.</h2>
+      </div>
+      <div class="rs-stats">
+        <div class="rs-stat">
+          <p class="v">+218<sup>*</sup><em>%</em></p>
+          <p class="l">Reichweite</p>
+          <p class="s">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
         </div>
-        <div class="rs-bigstats">
-          <div class="rs-bigstat">
-            <div class="v">+218<sup>*</sup></div>
-            <div class="l">% Reichweite</div>
-            <p class="s">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
-          </div>
-          <div class="rs-bigstat">
-            <div class="v">47<sup>*</sup></div>
-            <div class="l">Leads / Monat</div>
-            <p class="s">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
-          </div>
-          <div class="rs-bigstat">
-            <div class="v">€4,8k<sup>*</sup></div>
-            <div class="l">Umsatz / Monat</div>
-            <p class="s">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
-          </div>
+        <div class="rs-stat">
+          <p class="v">47<sup>*</sup></p>
+          <p class="l">Leads / Monat</p>
+          <p class="s">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
+        </div>
+        <div class="rs-stat">
+          <p class="v">€4,8k<sup>*</sup></p>
+          <p class="l">Umsatz / Monat</p>
+          <p class="s">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
         </div>
       </div>
       <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
     </div></section>
 
-    <!-- 3) case-study blocks — situation → action → result -->
-    <section class="blk"><div class="wrap reveal">
-      <div class="blk-head head">
-        <div class="ix"><b>02</b> / Fallstudien</div>
-        <h2>Vom Stillstand zu <em>planbarem</em> Wachstum.</h2>
-        <p class="lead">Wie unser System in der Praxis greift — Ausgangslage, was wir gebaut haben, und das messbare Ergebnis.</p>
+    <!-- 3) Case studies as numbered editorial rows (Vorher → Aufbau → Ergebnis) -->
+    <section class="rs-blk" id="fallstudien" aria-labelledby="rs-cases-h"><div class="wrap reveal">
+      <div class="rs-blk-head">
+        <p class="rs-rh"><b>№ 03</b> — Fallstudien</p>
+        <h2 id="rs-cases-h">Vom Stillstand zu <em>planbarem</em> Wachstum.</h2>
       </div>
+      <div class="rs-rows">
 
-      <div class="rs-cases">
-
-        <article class="rs-case">
-          <div>
-            <span class="pill">Coach</span>
-            <h3>Aus „posten ohne Plan" wurde ein Lead-Motor.</h3>
+        <article class="rs-row">
+          <span class="rs-num" aria-hidden="true">01</span>
+          <div class="rs-rmain">
+            <span class="rs-rkicker">Coach</span>
+            <h3 class="rs-rtitle">Aus „posten ohne Plan" wurde ein Lead-Motor.</h3>
             <ul class="rs-narr">
-              <li><span class="k">Vorher</span><span class="t">Unregelmäßige Posts, kaum Reichweite, <b>null planbare Anfragen</b> — sichtbar nur für die bestehenden Follower.</span></li>
+              <li><span class="k">Vorher</span><span class="t">Unregelmäßige Posts, kaum Reichweite, <b>null planbare Anfragen</b> — sichtbar nur für bestehende Follower.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Klare Content-Säulen, ein wiederholbares Format und ein Funnel, der Profilbesucher zu <b>Erstgesprächen</b> führt.</span></li>
-              <li><span class="k">Ergebnis</span><span class="t">Stetiger Zustrom an qualifizierten Leads — ohne Mehraufwand auf Seite des Coaches.</span></li>
+              <li><span class="k">Ergebnis</span><span class="t">Stetiger Zustrom qualifizierter Leads — ohne Mehraufwand für den Coach.</span></li>
             </ul>
           </div>
           <div class="rs-result">
-            <div class="rk">Ergebnis nach 90 Tagen</div>
-            <div class="rv">+<em>218</em><sup>*</sup>%</div>
-            <p class="rs-sub">Reichweite — bei gleichbleibendem Zeitaufwand.</p>
+            <p class="rk">nach 90 Tagen</p>
+            <p class="rv">+218<sup>*</sup>%</p>
+            <p class="rsub">Reichweite bei gleichem Zeitaufwand.</p>
           </div>
         </article>
 
-        <article class="rs-case">
-          <div>
-            <span class="pill">B2B</span>
-            <h3>Von unsichtbar zu fester Größe in der Nische.</h3>
+        <article class="rs-row">
+          <span class="rs-num" aria-hidden="true">02</span>
+          <div class="rs-rmain">
+            <span class="rs-rkicker">B2B</span>
+            <h3 class="rs-rtitle">Von unsichtbar zu fester Größe in der Nische.</h3>
             <ul class="rs-narr">
               <li><span class="k">Vorher</span><span class="t">Starkes Angebot, aber <b>kein Social-Auftritt</b> — Entscheider kannten die Marke schlicht nicht.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Positionierung, Expertise-Content und eine Distribution, die genau die <b>richtigen Entscheider</b> erreicht.</span></li>
-              <li><span class="k">Ergebnis</span><span class="t">Planbare qualifizierte Anfragen statt Kaltakquise — Pipeline aus eingehenden Leads.</span></li>
+              <li><span class="k">Ergebnis</span><span class="t">Planbare qualifizierte Anfragen statt Kaltakquise — eine Pipeline aus eingehenden Leads.</span></li>
             </ul>
           </div>
           <div class="rs-result">
-            <div class="rk">Qualifizierte Leads</div>
-            <div class="rv"><em>47</em><sup>*</sup></div>
-            <p class="rs-sub">pro Monat — direkt aus dem Social-Auftritt.</p>
+            <p class="rk">qualifiziert</p>
+            <p class="rv">47<sup>*</sup></p>
+            <p class="rsub">Leads / Monat aus dem Auftritt.</p>
           </div>
         </article>
 
-        <article class="rs-case">
-          <div>
-            <span class="pill">Experte</span>
-            <h3>Reichweite, die endlich Umsatz wird.</h3>
+        <article class="rs-row">
+          <span class="rs-num" aria-hidden="true">03</span>
+          <div class="rs-rmain">
+            <span class="rs-rkicker">Experte</span>
+            <h3 class="rs-rtitle">Reichweite, die endlich Umsatz wird.</h3>
             <ul class="rs-narr">
               <li><span class="k">Vorher</span><span class="t">Follower-Zahlen ohne Wirkung — viel Aufmerksamkeit, aber <b>kein messbarer Umsatzbeitrag</b>.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Content mit Verkaufslogik, klare Angebote und ein Weg vom Reel bis zur <b>Buchung</b>.</span></li>
@@ -661,9 +679,9 @@
             </ul>
           </div>
           <div class="rs-result">
-            <div class="rk">Umsatz / Monat</div>
-            <div class="rv"><em>€4,8k</em><sup>*</sup></div>
-            <p class="rs-sub">attribuierbar auf den Social-Auftritt.</p>
+            <p class="rk">attribuiert</p>
+            <p class="rv">€4,8k<sup>*</sup></p>
+            <p class="rsub">Umsatz / Monat aus Social.</p>
           </div>
         </article>
 
@@ -671,44 +689,37 @@
       <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
     </div></section>
 
-    <!-- 4) testimonials -->
-    <section class="blk"><div class="wrap reveal">
-      <div class="blk-head head">
-        <div class="ix"><b>03</b> / Stimmen</div>
-        <h2>Was Kund:innen über die <em>Zusammenarbeit</em> sagen.</h2>
-      </div>
-      <div class="rs-quotes">
-        <figure class="rs-quote">
-          <blockquote>Endlich ein Team, das den ganzen Social-Aufbau abnimmt — und ich sehe in PEAKING genau, was es bringt.</blockquote>
-          <figcaption class="by"><span class="av" aria-hidden="true">＂</span>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
-        </figure>
-        <figure class="rs-quote">
-          <blockquote>Zum ersten Mal fühlt sich mein Wachstum planbar an — System statt Zufall, mit Zahlen, die ich verstehe.</blockquote>
-          <figcaption class="by"><span class="av" aria-hidden="true">＂</span>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
-        </figure>
-      </div>
+    <!-- 4) Full-bleed editorial pull-quote testimonial -->
+    <section class="rs-quote" aria-label="Kundenstimme"><div class="wrap reveal">
+      <figure>
+        <blockquote>Zum ersten Mal fühlt sich mein Wachstum <em>planbar</em> an — System statt Zufall.</blockquote>
+        <figcaption>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
+      </figure>
     </div></section>
 
-    <!-- 5) So messen wir — PEAKING transparency tie-in -->
-    <section class="blk"><div class="wrap reveal">
+    <!-- 5) So messen wir — short editorial transparency line, two hairline columns -->
+    <section class="rs-blk" id="messung" aria-labelledby="rs-measure-h"><div class="wrap reveal">
+      <div class="rs-blk-head">
+        <p class="rs-rh"><b>№ 04</b> — Transparenz</p>
+        <h2 id="rs-measure-h">So <em>messen</em> wir Wachstum.</h2>
+      </div>
       <div class="rs-measure">
-        <div class="rs-measure-grid">
-          <div class="head">
-            <div class="ix"><b>04</b> / Transparenz</div>
-            <h2>So <em>messen</em> wir Wachstum.</h2>
-            <p class="lead">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
-          </div>
+        <div class="rs-mcol">
+          <p class="mh">Alles live &amp; transparent in PEAKING.</p>
+          <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
+        </div>
+        <div class="rs-mcol">
           <ul class="rs-mlist">
             <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               <span class="mt">Live-Dashboard statt Bauchgefühl<span>Reichweite, Leads und Umsatz an einem Ort — in Echtzeit einsehbar.</span></span>
             </li>
             <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               <span class="mt">Klare KPIs, die zählen<span>Wir messen Wachstum, das auf dein Geschäft einzahlt — nicht nur Vanity-Metriken.</span></span>
             </li>
             <li>
-              <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
               <span class="mt">Volle Nachvollziehbarkeit<span>Du siehst jederzeit, was wir tun und was es bringt — transparent von Tag eins.</span></span>
             </li>
           </ul>
@@ -716,8 +727,8 @@
       </div>
     </div></section>
 
-    <!-- 6) closing CTA band -->
-    <section class="blk"><div class="wrap reveal">
+    <!-- 6) Closing CTA — reuses existing .band -->
+    <section class="rs-close"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
@@ -788,50 +799,6 @@
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
     else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
-
-    // ===== growth panel: draw-in chart + Vorher/Nachher-Regler =====
-    (function(){
-      var panel=document.querySelector('.proof .panel');
-      if(!panel)return;
-      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // set exact curve length so the draw-in lands flush
-      var curve=panel.querySelector('.chart .curve');
-      if(curve&&curve.getTotalLength){var len=Math.ceil(curve.getTotalLength());panel.style.setProperty('--curve-len',len);}
-
-      // trigger draw-in once when panel scrolls into view
-      function draw(){panel.classList.add('drawn');}
-      if(reduce||!('IntersectionObserver' in window)){draw();}
-      else{var dob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){draw();dob.unobserve(e.target);}});},{threshold:.4});dob.observe(panel);}
-
-      // Vorher/Nachher-Regler — treibt Chart-Höhe + KPI-Zahlen + Status
-      var range=panel.querySelector('#growth-range');
-      var kReach=panel.querySelector('#kpi-reach'),kLeads=panel.querySelector('#kpi-leads'),kRev=panel.querySelector('#kpi-rev');
-      var stateEl=panel.querySelector('#rgl-state'),meta=panel.querySelector('#panel-meta');
-      var climb=Array.prototype.slice.call(panel.querySelectorAll('.panel-climb .cb'));
-      var bars=Array.prototype.slice.call(panel.querySelectorAll('.growth-scale .bar'));
-      var area=panel.querySelector('.growth-scale .area'),cv=panel.querySelector('.growth-scale .curve');
-      var ring=panel.querySelector('.growth-scale .node-ring'),dot=panel.querySelector('.growth-scale .node-dot');
-      var BASE=114,FH=[18,26,40,54,70,84,96],X=[14,54,94,134,174,214,254,294],YF=[104,96,82,66,48,34,22,12];
-      function state(p){return p<.12?'unsichtbar':p<.5?'wird sichtbar':p<.88?'wächst':'skaliert';}
-      function geo(p){ // direkte Geometrie statt transform — überall identisch
-        var pp=0.05+p*0.95;
-        bars.forEach(function(b,i){var h=FH[i]*pp;b.setAttribute('height',h.toFixed(1));b.setAttribute('y',(BASE-h).toFixed(1));});
-        var d='M'+X.map(function(x,i){return x+' '+(BASE-(BASE-YF[i])*pp).toFixed(1);}).join(' L');
-        if(cv)cv.setAttribute('d',d);
-        if(area)area.setAttribute('d',d+' L294 '+BASE+' L14 '+BASE+' Z');
-        var ny=(BASE-(BASE-12)*pp).toFixed(1);if(ring)ring.setAttribute('cy',ny);if(dot)dot.setAttribute('cy',ny);
-      }
-      function apply(p){
-        geo(p);
-        if(kReach)kReach.textContent='+'+Math.round(218*p)+'%';
-        if(kLeads)kLeads.textContent=Math.round(47*p);
-        if(kRev)kRev.textContent='€'+(4.8*p).toFixed(1).replace('.',',')+'k';
-        var s=state(p);if(stateEl)stateEl.textContent=s;if(meta)meta.textContent='Q · '+s;
-        var on=Math.round(p*climb.length);climb.forEach(function(c,i){c.classList.toggle('on',i<on);});
-      }
-      if(range){range.addEventListener('input',function(){apply(range.value/100);});apply(range.value/100);}
-    })();
 
     // ===== scrollspy nav-state (handmade touch) =====
     (function(){

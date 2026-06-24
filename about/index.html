@@ -9,12 +9,12 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#000000">
 <title>Über uns — Sebi &amp; Phil hinter social2scale</title>
-<meta name="description" content="Zwei Gründer, ein System: Sebi (Marke & Content) und Phil (Tech & Plattform) bauen Premium Social-Media-Growth für Coaches, Experten & B2B. Done-for-you, transparent via PEAKING — System statt Zufall.">
+<meta name="description" content="Zwei Gründer, Sebi und Phil, bauen euren Social-Auftritt selbst — von der Strategie bis zum letzten Post. Keine Agentur-Maschine: Done-for-you, alles messbar in PEAKING, System statt Zufall.">
 <link rel="canonical" href="https://social2scale.com/about/">
 <meta property="og:site_name" content="social2scale">
 <meta property="og:locale" content="de_DE">
 <meta property="og:title" content="Über uns — Sebi &amp; Phil hinter social2scale">
-<meta property="og:description" content="Zwei Gründer, ein System: Marke trifft Technik. Premium Social-Growth, done-for-you und transparent via PEAKING.">
+<meta property="og:description" content="Zwei Gründer, die selbst Hand anlegen — von der Strategie bis zum letzten Post. Done-for-you, alles messbar in PEAKING, System statt Zufall.">
 <meta property="og:url" content="https://social2scale.com/about/">
 <meta property="og:type" content="profile">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
@@ -23,11 +23,11 @@
 <meta property="og:image:alt" content="social2scale — Über uns">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Über uns — Sebi &amp; Phil hinter social2scale">
-<meta name="twitter:description" content="Zwei Gründer, ein System: Marke trifft Technik. Premium Social-Growth, done-for-you und transparent via PEAKING.">
+<meta name="twitter:description" content="Zwei Gründer, die selbst Hand anlegen — von der Strategie bis zum letzten Post. Done-for-you, alles messbar in PEAKING, System statt Zufall.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 <meta name="twitter:image:alt" content="social2scale — Über uns">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen — System statt Zufall, done-for-you und transparent via PEAKING.","email":"info@social2scale.com","areaServed":{"@type":"Country","name":"Germany"},"contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"info@social2scale.com","areaServed":"DE","availableLanguage":["German"]},"founder":[{"@type":"Person","name":"Sebi","jobTitle":"Mitgründer — Marke & Content","worksFor":{"@type":"Organization","name":"social2scale"}},{"@type":"Person","name":"Phil","jobTitle":"Mitgründer — Tech & Plattform","worksFor":{"@type":"Organization","name":"social2scale"}}],"sameAs":["https://peaking.world/"]}
+{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen — System statt Zufall, done-for-you und transparent via PEAKING.","email":"info@social2scale.com","areaServed":{"@type":"Country","name":"Germany"},"contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"info@social2scale.com","areaServed":"DE","availableLanguage":["German"]},"founder":[{"@type":"Person","name":"Sebi","jobTitle":"Gründer","worksFor":{"@type":"Organization","name":"social2scale"}},{"@type":"Person","name":"Phil","jobTitle":"Co-Founder","worksFor":{"@type":"Organization","name":"social2scale"}}],"sameAs":["https://peaking.world/"]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
@@ -421,77 +421,84 @@
   @media (max-width:680px){.foot-grid{grid-template-columns:1fr;gap:var(--s-6)}}
 
   /* ============================================================
-     ===== ABOUT PAGE — scoped overrides (.ab-*) ================
-     editorial, layered "Über uns" build for Sebi & Phil.
-     Reuses tokens (--emerald/--teal/--surf-grad/--s-*) + base
-     classes (.eyebrow/.lead/.band/.tag/.cell). No new fonts/colors.
+     ÜBER UNS — page-scoped EDITORIAL / MAGAZINE layer (.ab-*)
+     Mirrors the approved /for-you/ system (.fw-*): oversized
+     Fraunces display vs tiny mono running-head labels, a full-bleed
+     pull-quote break, numbered editorial rows on a fixed numeral
+     track (NOT cards), hairlines, restrained emerald accents,
+     generous + uneven rhythm. Reuses tokens (--emerald/--teal/
+     --surf-grad/--depth/--s-*) + base classes (.lead/.band).
      ============================================================ */
 
-  /* --- ab hero: bold editorial, big Fraunces, no centered template --- */
-  .ab-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-7),5vw,var(--s-9))}
-  .ab-hero .eyebrow{margin-bottom:var(--s-5)}
-  .ab-hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(3rem,1rem+7.4vw,7.6rem);line-height:.92;letter-spacing:-.032em;max-width:14ch;font-variation-settings:"opsz" 144}
-  .ab-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .ab-hero .lead{font-size:clamp(1.12rem,1rem+.6vw,1.4rem);max-width:50ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));color:var(--paper)}
-  .ab-hero .lead b{color:var(--emerald-soft);font-weight:600}
-  /* signature line — two names as a typographic mark, mono coordinate */
-  .ab-sig{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-3) var(--s-5);margin-top:clamp(var(--s-7),4vw,var(--s-8));font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
-  .ab-sig .nm{color:var(--paper);font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:1.5rem;letter-spacing:-.01em;text-transform:none}
-  .ab-sig .amp{color:var(--emerald);font-family:"Fraunces",serif;font-style:italic;font-size:1.5rem}
-  .ab-sig .ln{flex:1;min-width:40px;height:1px;background:var(--line-2)}
+  /* — mono running-head / marginalia label (matches .fw-rh) — */
+  .ab-rh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:var(--s-3)}
+  .ab-rh b{color:var(--emerald);font-weight:400}
+  .ab-rh::before{content:"";width:22px;height:1px;background:var(--line-3);display:inline-block;flex:0 0 auto}
 
-  /* --- ab mission: large pull-quote statement block, emerald accent --- */
-  .ab-mission{position:relative;padding:clamp(var(--s-8),6vw,var(--s-10)) 0;border-top:1px solid var(--line);
-    background:
-      radial-gradient(120% 130% at 88% 4%,rgba(0,184,136,.10),transparent 52%),
-      radial-gradient(120% 120% at 6% 98%,rgba(31,166,224,.09),transparent 55%),
-      linear-gradient(180deg,rgba(21,23,27,.55),rgba(10,11,13,.42))}
-  .ab-mission .ab-q{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:var(--s-6) var(--s-8);align-items:start}
-  .ab-mission .ab-q-side .ix{margin-bottom:var(--s-4)}
-  .ab-mission .ab-q-side p{font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--muted);line-height:1.5;max-width:22ch}
-  .ab-mission blockquote{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.7rem,1.1rem+2.4vw,3.3rem);line-height:1.16;letter-spacing:-.022em;color:var(--paper);max-width:20ch}
-  .ab-mission blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .ab-mission .ab-mark{font-family:"Fraunces",serif;font-style:italic;font-size:clamp(3rem,5vw,5rem);line-height:0;color:rgba(0,184,136,.35);display:block;height:0;transform:translateY(.4em)}
-  @media (max-width:760px){.ab-mission .ab-q{grid-template-columns:1fr;gap:var(--s-4)}.ab-mission blockquote{max-width:none}}
+  /* — editorial hero: oversized display, generous + uneven rhythm — */
+  .ab-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),8vw,var(--s-11)) 0 clamp(var(--s-7),5vw,var(--s-9));border-top:0}
+  .ab-hero .wrap{position:relative;z-index:1}
+  .ab-hero .ab-rh{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .ab-hero h1{font-family:"Fraunces",serif;font-weight:580;font-size:clamp(3.5rem,1.2rem+5.6vw,6.5rem);line-height:.95;letter-spacing:-.038em;max-width:15ch;font-variation-settings:"opsz" 144}
+  .ab-hero h1 em{font-style:italic;font-weight:520;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .ab-hero h1 .l2{display:block;color:var(--muted);font-weight:440;margin-top:.04em}
+  .ab-hero .lead{max-width:54ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));font-size:clamp(1.0625rem,1rem+.42vw,1.25rem);color:var(--muted)}
+  .ab-hero .lead b{color:var(--paper);font-weight:600}
+  .ab-hero .cta-row{margin-top:clamp(var(--s-6),4vw,var(--s-8))}
 
-  /* --- ab founders: rich profile cards with aurora depth --- */
-  .ab-founders{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
-  .ab-fcard{position:relative;overflow:hidden;display:flex;flex-direction:column;border-radius:20px;padding:clamp(28px,3.4vw,42px);
-    background:
-      radial-gradient(135% 120% at 0% 0%,rgba(0,184,136,.20),transparent 56%),
-      radial-gradient(135% 120% at 100% 100%,rgba(31,166,224,.16),transparent 60%),
-      var(--surf-grad);
-    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
-    transition:border-color .32s var(--ease),background .32s var(--ease),box-shadow .32s var(--ease),transform .32s var(--ease)}
-  .ab-fcard::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
-  .ab-fcard:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-4px);
-    background:
-      radial-gradient(135% 120% at 0% 0%,rgba(0,184,136,.28),transparent 56%),
-      radial-gradient(135% 120% at 100% 100%,rgba(31,166,224,.22),transparent 60%),
-      var(--surf-grad-hover)}
-  .ab-fhead{display:flex;align-items:center;gap:var(--s-5)}
-  .ab-pic{flex:0 0 auto;width:92px;height:92px;border-radius:18px;background:linear-gradient(180deg,var(--surface-3),var(--surface));border:1px solid var(--line-2);box-shadow:var(--pill-depth);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.06em;line-height:1.4;text-align:center}
-  .ab-fname h3{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.7rem,1.3rem+1vw,2.2rem);letter-spacing:-.02em;line-height:1}
-  .ab-pill{display:inline-flex;align-items:center;gap:var(--s-2);margin-top:var(--s-3);font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 12px;border-radius:100px}
-  .ab-lead-line{font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.12rem,1rem+.7vw,1.4rem);line-height:1.4;letter-spacing:-.01em;color:var(--paper);margin-top:var(--s-6)}
-  .ab-owns{list-style:none;margin-top:var(--s-6);display:flex;flex-direction:column;gap:var(--s-3)}
-  .ab-owns .ol{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-1)}
-  .ab-owns li{display:flex;align-items:flex-start;gap:var(--s-3);font-size:.98rem;color:var(--muted);line-height:1.5}
-  .ab-owns li .ck{flex:0 0 auto;width:18px;height:18px;margin-top:2px}
-  .ab-owns li .ck svg{width:14px;height:14px;stroke:var(--emerald);stroke-width:2.6;fill:none}
-  .ab-owns li b{color:var(--paper);font-weight:600}
-  .ab-pers{margin-top:var(--s-6);padding-top:var(--s-5);border-top:1px solid var(--line);font-size:.98rem;color:var(--muted);line-height:1.6}
-  .ab-pers b{color:var(--paper);font-weight:600}
-  @media (max-width:760px){.ab-founders{grid-template-columns:1fr}}
+  /* — generic editorial block + running head + headline (matches .fw-blk) — */
+  .ab-blk{padding:var(--section-y) 0;border-top:1px solid var(--line)}
+  .ab-blk-head{margin-bottom:clamp(var(--s-7),5vw,var(--s-9));max-width:34ch}
+  .ab-blk-head h2{margin-top:var(--s-4)}
 
-  /* --- ab principles: how we work, editorial cards --- */
-  .ab-princ{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s-4);margin-top:0}
-  .ab-pcard{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(26px,3vw,36px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
-  .ab-pcard:hover{border-color:rgba(0,184,136,.4);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
-  .ab-pcard .pn{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--emerald)}
-  .ab-pcard h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.35rem,1.1rem+.9vw,1.7rem);letter-spacing:-.016em;margin-top:var(--s-4)}
-  .ab-pcard p{font-size:.98rem;color:var(--muted);margin-top:var(--s-3);line-height:1.6;max-width:42ch}
-  @media (max-width:680px){.ab-princ{grid-template-columns:1fr}}
+  /* — full-bleed editorial pull-quote break (matches .fw-quote) — */
+  .ab-quote{border-top:1px solid var(--line);position:relative;overflow:hidden}
+  .ab-quote .wrap{padding-top:clamp(var(--s-9),9vw,var(--s-11));padding-bottom:clamp(var(--s-9),9vw,var(--s-11))}
+  .ab-quote::before{content:"„";position:absolute;top:clamp(-.1em,2vw,.1em);left:clamp(-.04em,1vw,.02em);font-family:"Fraunces",serif;font-style:italic;font-size:clamp(14rem,40vw,30rem);line-height:1;color:rgba(0,184,136,.05);pointer-events:none;z-index:0}
+  .ab-quote blockquote{position:relative;z-index:1;font-family:"Fraunces",serif;font-style:italic;font-weight:450;font-size:clamp(3rem,1.3rem+4.4vw,5.25rem);line-height:1.04;letter-spacing:-.034em;color:var(--paper);max-width:18ch}
+  .ab-quote blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .ab-quote .ab-rh{margin-top:clamp(var(--s-6),4vw,var(--s-7))}
+
+  /* — founders: two editorial blocks on a hairline, NOT uniform cards.
+       fixed name/label track left, human one-liner + photo placeholder right — */
+  .ab-founders{display:grid;gap:0;border-top:1px solid var(--line-2)}
+  .ab-frow{display:grid;grid-template-columns:minmax(0,1fr) clamp(120px,16vw,180px);
+    gap:clamp(var(--s-5),4vw,var(--s-8));align-items:center;
+    padding:clamp(var(--s-7),4vw,var(--s-9)) clamp(var(--s-3),1.6vw,var(--s-5));
+    border-bottom:1px solid var(--line-2)}
+  .ab-fmeta{display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap}
+  .ab-fname{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2.25rem,1.6rem+2.4vw,3.5rem);line-height:.95;letter-spacing:-.03em;color:var(--paper)}
+  .ab-frole{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald)}
+  .ab-fline{font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.25rem,1rem+1vw,1.75rem);line-height:1.3;letter-spacing:-.015em;color:var(--muted);max-width:34ch;margin-top:var(--s-4)}
+  /* photo placeholder — square plate, mono caption (keep "Foto Sebi/Phil") */
+  .ab-pic{aspect-ratio:1;width:100%;border-radius:18px;background:linear-gradient(180deg,var(--surface-3),var(--surface));border:1px solid var(--line-2);box-shadow:var(--pill-depth);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;line-height:1.5;text-align:center}
+  @media (max-width:680px){
+    .ab-frow{grid-template-columns:clamp(96px,28vw,132px) minmax(0,1fr);direction:rtl}
+    .ab-frow > *{direction:ltr}
+    .ab-pic{width:clamp(96px,28vw,132px)}
+    .ab-fname{font-size:clamp(2rem,9vw,2.75rem)}
+  }
+
+  /* — numbered editorial rows (how we work) — identical pattern to .fw-rows:
+       fixed numeral track so the oversized numeral never overflows the copy — */
+  .ab-rows{display:grid;gap:0;border-top:1px solid var(--line-2)}
+  .ab-row{position:relative;display:grid;
+    grid-template-columns:clamp(72px,9vw,132px) minmax(0,1fr);
+    gap:clamp(var(--s-5),3vw,var(--s-7));align-items:baseline;
+    padding:clamp(var(--s-6),3.2vw,var(--s-7)) clamp(var(--s-3),1.6vw,var(--s-5));
+    border-bottom:1px solid var(--line-2);transition:background .35s var(--ease)}
+  .ab-row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--emerald);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease);box-shadow:0 0 14px rgba(0,184,136,.5)}
+  .ab-row:hover{background:linear-gradient(90deg,rgba(0,184,136,.07),rgba(0,184,136,.015) 60%,transparent)}
+  .ab-row:hover::before{transform:scaleY(1)}
+  .ab-num{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(3.5rem,2rem+3vw,6rem);line-height:.8;letter-spacing:-.045em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
+  .ab-row:hover .ab-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.1)}
+  .ab-rmain{min-width:0}
+  .ab-rtitle{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.75rem,1.3rem+1.55vw,2.25rem);line-height:1.04;letter-spacing:-.022em;color:var(--paper)}
+  .ab-rbody{color:var(--muted);font-size:1.0625rem;line-height:1.6;max-width:54ch;margin-top:var(--s-3)}
+  @media (max-width:680px){
+    .ab-row{grid-template-columns:clamp(56px,15vw,80px) minmax(0,1fr);column-gap:clamp(var(--s-4),4vw,var(--s-5));row-gap:0}
+    .ab-num{font-size:clamp(2.75rem,10.5vw,3.75rem)}
+  }
 </style>
 </head>
 <body>
@@ -542,111 +549,104 @@
   </nav>
 
   <main>
-    <!-- 1 · editorial hero -->
+    <!-- 1. Editorial hero — oversized Fraunces display vs tiny mono running head -->
     <section class="ab-hero" id="ueber-uns" aria-labelledby="ab-heading"><div class="wrap reveal">
-      <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Über uns</p>
-      <h1 id="ab-heading">Zwei, die <em>anpacken</em>.</h1>
-      <p class="lead">Keine Agentur-Maschine. Zwei Gründer, die deinen Auftritt <b>selbst</b> in die Hand nehmen — Marke trifft Technik.</p>
-      <p class="ab-sig">
-        <span class="nm">Sebi</span><span class="amp">&amp;</span><span class="nm">Phil</span>
-        <span class="ln" aria-hidden="true"></span>
-        Gründer · social2scale
-      </p>
-    </div></section>
-
-    <!-- 2 · mission / warum wir das machen -->
-    <section class="ab-mission" aria-labelledby="ab-mission-h"><div class="wrap reveal">
-      <div class="ab-q">
-        <div class="ab-q-side">
-          <p class="ix"><b>01</b> Warum wir das machen</p>
-          <p>Wir haben es satt, dass guter Content im Zufall verpufft — und gute Leute unsichtbar bleiben.</p>
-        </div>
-        <blockquote id="ab-mission-h">
-          <span class="ab-mark" aria-hidden="true">&ldquo;</span>Wachstum auf Social ist kein Glück. Es ist ein <em>System</em> — Positionierung, Content und Technik, die zusammenarbeiten. Genau das bauen wir dir. Done-for-you, persönlich, mit echten Zahlen statt Bauchgefühl.
-        </blockquote>
+      <p class="ab-rh"><b>№ 01</b> — Über uns</p>
+      <h1 id="ab-heading">Wir bauen euren Auftritt,<span class="l2">als wär's unser <em>eigener</em>.</span></h1>
+      <p class="lead">Keine Agentur-Maschine. <b>Zwei Gründer, die selbst Hand anlegen</b> — von der Strategie bis zum letzten Post.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="cta-hero" href="#" data-cta-url="#">Strategie-Call buchen →</a>
+        <a class="textlink" href="#wie-wir-arbeiten">Wie wir arbeiten</a>
       </div>
     </div></section>
 
-    <!-- 3 · die zwei Gründer -->
-    <section class="blk" aria-labelledby="ab-founders-h"><div class="wrap reveal">
-      <div class="blk-head">
-        <p class="ix"><b>02</b> Die Gründer</p>
-        <h2 id="ab-founders-h">Sebi &amp; Phil — <em>zwei Hälften</em>, ein System.</h2>
-        <p class="lead">Marke und Technik in zwei Köpfen, die jeden Tag zusammen daran sitzen. Kein Hin-und-Her zwischen Abteilungen — du sprichst direkt mit denen, die es bauen.</p>
+    <!-- 2. Full editorial pull-quote break (brand POV) -->
+    <section class="ab-quote" aria-label="Leitsatz"><div class="wrap reveal">
+      <blockquote>Wachstum auf Social ist kein Glück.<br>Es wird <em>gebaut</em>.</blockquote>
+      <p class="ab-rh"><b>№ 02</b> — Unser Prinzip</p>
+    </div></section>
+
+    <!-- 3. Die zwei Gründer — two editorial blocks on hairlines, both neutral "Gründer" -->
+    <section class="ab-blk" aria-labelledby="ab-founders-h"><div class="wrap reveal">
+      <div class="ab-blk-head">
+        <p class="ab-rh"><b>№ 03</b> — Die Gründer</p>
+        <h2 id="ab-founders-h">Sebi &amp; Phil</h2>
+        <p class="lead">Zwei, die jeden Tag zusammen dran sitzen. Kein Account-Manager-Karussell — du sprichst direkt mit denen, die es bauen.</p>
       </div>
       <div class="ab-founders">
-        <!-- TODO echte Fotos: Sebi -->
-        <article class="ab-fcard">
-          <div class="ab-fhead">
-            <div class="ab-pic">Foto<br>Sebi</div>
-            <div class="ab-fname">
-              <h3>Sebi</h3>
-              <span class="ab-pill">Marke &amp; Content</span>
+
+        <!-- TODO echte Fotos -->
+        <article class="ab-frow">
+          <div class="ab-rmain">
+            <div class="ab-fmeta">
+              <span class="ab-fname">Sebi</span>
+              <span class="ab-frole">Gründer</span>
             </div>
+            <p class="ab-fline">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
           </div>
-          <p class="ab-lead-line">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
-          <ul class="ab-owns" aria-label="Sebis Verantwortung">
-            <li class="ol">Was Sebi besitzt</li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Positionierung &amp; Marke</b> — wofür du stehst, scharf gemacht.</span></li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Content-Strategie</b> — Hooks, Formate, roter Faden.</span></li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Redaktion &amp; Voice</b> — dein Auftritt klingt nach dir, nicht nach Agentur.</span></li>
-          </ul>
-          <p class="ab-pers">Christ, Vegetarier, Frühaufsteher. Baut seit Jahren Marken auf — und glaubt fest daran, dass <b>klar schlägt laut</b>.</p>
+          <div class="ab-pic" aria-hidden="true">Foto Sebi</div>
         </article>
 
-        <!-- TODO echte Fotos: Phil -->
-        <article class="ab-fcard">
-          <div class="ab-fhead">
-            <div class="ab-pic">Foto<br>Phil</div>
-            <div class="ab-fname">
-              <h3>Phil</h3>
-              <span class="ab-pill">Tech &amp; Plattform</span>
+        <!-- TODO echte Fotos -->
+        <article class="ab-frow">
+          <div class="ab-rmain">
+            <div class="ab-fmeta">
+              <span class="ab-fname">Phil</span>
+              <span class="ab-frole">Gründer</span>
             </div>
+            <p class="ab-fline">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
           </div>
-          <p class="ab-lead-line">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
-          <ul class="ab-owns" aria-label="Phils Verantwortung">
-            <li class="ol">Was Phil besitzt</li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>PEAKING-Plattform</b> — dein Wachstum in echten Zahlen, transparent.</span></li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Daten &amp; Reporting</b> — was wirkt, sehen wir schwarz auf weiß.</span></li>
-            <li><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span><span><b>Automatisierung</b> — Technik, die den Hebel hält, damit ihr skaliert.</span></li>
-          </ul>
-          <p class="ab-pers">Entwickler mit Hang zu sauberen Systemen. Baut die Infrastruktur, die aus Content <b>planbares Wachstum</b> macht.</p>
+          <div class="ab-pic" aria-hidden="true">Foto Phil</div>
         </article>
+
       </div>
     </div></section>
 
-    <!-- 4 · wie wir arbeiten -->
-    <section class="blk" aria-labelledby="ab-princ-h"><div class="wrap reveal">
-      <div class="blk-head">
-        <p class="ix"><b>03</b> Wie wir arbeiten</p>
+    <!-- 4. Wie wir arbeiten — numbered editorial rows (fixed numeral track) -->
+    <section class="ab-blk" id="wie-wir-arbeiten" aria-labelledby="ab-princ-h"><div class="wrap reveal">
+      <div class="ab-blk-head">
+        <p class="ab-rh"><b>№ 04</b> — Wie wir arbeiten</p>
         <h2 id="ab-princ-h">Vier Prinzipien, <em>keine Floskeln</em>.</h2>
       </div>
-      <div class="ab-princ">
-        <article class="ab-pcard">
-          <p class="pn">P—01</p>
-          <h3>Done-for-you</h3>
-          <p>Du musst nichts lernen, nichts selbst posten. Wir übernehmen — Strategie, Produktion, Veröffentlichung. Dein Job: du selbst sein.</p>
-        </article>
-        <article class="ab-pcard">
-          <p class="pn">P—02</p>
-          <h3>Transparenz via PEAKING</h3>
-          <p>Jeder Schritt sichtbar in echten Zahlen. Kein Reporting-Theater — du siehst, was wirkt, wann immer du willst.</p>
-        </article>
-        <article class="ab-pcard">
-          <p class="pn">P—03</p>
-          <h3>System statt Zufall</h3>
-          <p>Reichweite ist kein Glücksspiel. Wir bauen einen wiederholbaren Prozess, der unabhängig von einzelnen viralen Treffern wächst.</p>
-        </article>
-        <article class="ab-pcard">
-          <p class="pn">P—04</p>
-          <h3>Persönlich &amp; nah</h3>
-          <p>Zwei Gründer, kein Account-Manager-Karussell. Du sprichst direkt mit uns — und wir behandeln deine Marke wie unsere eigene.</p>
-        </article>
+      <div class="ab-rows">
+
+        <div class="ab-row">
+          <span class="ab-num" aria-hidden="true">01</span>
+          <div class="ab-rmain">
+            <h3 class="ab-rtitle">Done-for-you</h3>
+            <p class="ab-rbody">Du musst nichts lernen und nichts selbst posten — wir übernehmen Strategie, Produktion und Veröffentlichung.</p>
+          </div>
+        </div>
+
+        <div class="ab-row">
+          <span class="ab-num" aria-hidden="true">02</span>
+          <div class="ab-rmain">
+            <h3 class="ab-rtitle">Alles messbar in PEAKING</h3>
+            <p class="ab-rbody">Jeder Schritt sichtbar in echten Zahlen — du siehst schwarz auf weiß, was wirkt.</p>
+          </div>
+        </div>
+
+        <div class="ab-row">
+          <span class="ab-num" aria-hidden="true">03</span>
+          <div class="ab-rmain">
+            <h3 class="ab-rtitle">System statt Zufall</h3>
+            <p class="ab-rbody">Reichweite ist kein Glücksspiel — wir bauen einen Prozess, der auch ohne viralen Treffer wächst.</p>
+          </div>
+        </div>
+
+        <div class="ab-row">
+          <span class="ab-num" aria-hidden="true">04</span>
+          <div class="ab-rmain">
+            <h3 class="ab-rtitle">Persönlich &amp; nah</h3>
+            <p class="ab-rbody">Zwei Gründer, kein Zwischenmann — und wir behandeln deine Marke wie unsere eigene.</p>
+          </div>
+        </div>
+
       </div>
     </div></section>
 
-    <!-- 5 · closing cta -->
-    <section class="blk"><div class="wrap reveal">
+    <!-- 5. Closing CTA — reuses existing .band -->
+    <section class="ab-blk"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
@@ -684,7 +684,7 @@
     document.getElementById('yr').textContent=new Date().getFullYear();
 
     // wire real CTA urls (placeholder until Calendly link arrives)
-    ['cta','cta-top','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
+    ['cta','cta-top','cta-hero','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
 
     // ===== burger / mobile menu =====
     (function(){

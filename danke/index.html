@@ -138,6 +138,58 @@
   section.blk{padding:clamp(var(--s-8),6vw,var(--s-9)) 0;border-top:1px solid var(--line)}
   .blk-head{margin-bottom:var(--s-7);max-width:42ch}
 
+  /* ===== DEIN START — interactive momentum centerpiece ===== */
+  .start{position:relative;border-top:1px solid var(--line);padding:clamp(var(--s-8),6vw,var(--s-9)) 0}
+  .start .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(28px,4.5vw,52px);box-shadow:var(--depth-lg)}
+  .start .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
+  .start h2{max-width:18ch}
+  .start .lead{margin-top:var(--s-3)}
+  /* goal selector */
+  .goalpick{display:flex;flex-wrap:wrap;gap:var(--s-3);margin-top:var(--s-6)}
+  .goal{position:relative;flex:1 1 160px;min-width:140px;display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-1);text-align:left;cursor:pointer;font-family:"Archivo",sans-serif;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:14px;padding:16px 18px;color:var(--paper);box-shadow:var(--depth);transition:border-color .28s var(--ease),background .28s var(--ease),box-shadow .28s var(--ease),transform .28s var(--ease)}
+  .goal .gk{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);transition:color .28s var(--ease)}
+  .goal .gt{font-size:1.12rem;font-weight:700;letter-spacing:-.01em}
+  .goal:hover{border-color:var(--line-3);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
+  .goal[aria-pressed="true"]{border-color:rgba(0,184,136,.55);background:radial-gradient(120% 130% at 0% 0%,rgba(0,184,136,.20),transparent 58%),var(--surf-grad);box-shadow:var(--depth-hover),0 0 0 1px rgba(0,184,136,.30),0 18px 40px -22px rgba(0,184,136,.5)}
+  .goal[aria-pressed="true"] .gk{color:var(--emerald)}
+  .goal .dot{position:absolute;top:14px;right:14px;width:9px;height:9px;border-radius:50%;border:1px solid var(--line-3);background:transparent;transition:background .28s var(--ease),border-color .28s var(--ease),box-shadow .28s var(--ease)}
+  .goal[aria-pressed="true"] .dot{background:var(--emerald);border-color:var(--emerald);box-shadow:0 0 0 4px rgba(0,184,136,.18)}
+  /* growth visual */
+  .growth{margin-top:var(--s-6);background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(18px,2.6vw,26px);box-shadow:var(--depth);opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+  .growth.show{opacity:1;transform:none}
+  .growth .ghead{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap}
+  .growth .glabel{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.15rem,1rem+.6vw,1.5rem);letter-spacing:-.015em}
+  .growth .glabel b{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .growth .gtag{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .growth .chart{position:relative;margin-top:var(--s-4)}
+  .growth svg{display:block;width:100%;height:auto}
+  .growth .gline{fill:none;stroke:url(#startStroke);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .growth .garea{fill:url(#startFill);opacity:.9}
+  .growth .gtip{fill:var(--emerald)}
+  .growth .axis{display:flex;justify-content:space-between;margin-top:var(--s-2);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  /* draw animation (disabled under reduced-motion) */
+  .growth .gline{stroke-dasharray:var(--len,900);stroke-dashoffset:var(--len,900)}
+  .growth.draw .gline{transition:stroke-dashoffset 1.1s var(--ease)}
+  .growth.draw.run .gline{stroke-dashoffset:0}
+  .growth .garea{transition:opacity .8s var(--ease) .25s}
+  .growth.draw .garea{opacity:0}
+  .growth.draw.run .garea{opacity:.9}
+  /* commitment beat */
+  .commit{display:flex;align-items:center;gap:var(--s-3);margin-top:var(--s-5);font-family:"Archivo",sans-serif;font-weight:600;color:var(--emerald-soft);opacity:0;transform:translateY(8px);transition:opacity .45s var(--ease),transform .45s var(--ease)}
+  .commit.show{opacity:1;transform:none}
+  .commit .ck{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(0,184,136,.12);border:1px solid rgba(0,184,136,.4)}
+  .commit .ck svg{width:16px;height:16px}
+  .commit .ck path{stroke-dasharray:24;stroke-dashoffset:24}
+  .commit.show .ck path{animation:drawCheck .5s var(--ease) .1s forwards}
+  /* in-block CTA */
+  .start .cta-row{display:flex;flex-direction:column;align-items:flex-start;gap:var(--s-3);margin-top:var(--s-6)}
+  .start .cta-row .hint{font-size:.92rem;color:var(--muted)}
+  @media (prefers-reduced-motion:reduce){
+    .growth,.commit{opacity:1!important;transform:none!important}
+    .growth .gline{stroke-dashoffset:0!important;stroke-dasharray:none!important}
+    .growth .garea{opacity:.9!important}
+  }
+
   /* ===== steps — numbered editorial ===== */
   .steps{list-style:none;display:grid;gap:var(--s-4);counter-reset:step}
   .steps li{position:relative;display:flex;gap:var(--s-5);align-items:flex-start;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:16px;padding:clamp(22px,3vw,30px);box-shadow:var(--depth);transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
@@ -199,6 +251,69 @@
         <h1 id="hero-greet">Willkommen an Bord<span id="vorname-sep">, </span><span id="vorname">…</span>.</h1>
         <p class="sub">Dein Platz bei social2scale ist gesichert — <b>du hast gerade richtig gewählt.</b> Ab jetzt bauen wir dein Wachstum gemeinsam. Nur noch ein Schritt, dann legen wir los.</p>
         <p class="scrollhint">So geht&rsquo;s weiter<span aria-hidden="true">&darr;</span></p>
+      </div>
+    </section>
+
+    <!-- DEIN START — interaktiver Momentum-Block -->
+    <section class="start" id="start" aria-labelledby="start-h">
+      <div class="wrap reveal">
+        <p class="ix"><b>00</b> Dein Start</p>
+        <span class="klabel">Leg los</span>
+        <h2 id="start-h">Worauf willst du <em>als Erstes</em> los?</h2>
+        <div class="panel">
+          <div class="goalpick" role="group" aria-label="Dein erstes Ziel wählen">
+            <button type="button" class="goal" id="goal-reach" data-goal="reach" aria-pressed="false">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="gk">Sichtbarkeit</span>
+              <span class="gt">Reichweite</span>
+            </button>
+            <button type="button" class="goal" id="goal-leads" data-goal="leads" aria-pressed="false">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="gk">Anfragen</span>
+              <span class="gt">Leads</span>
+            </button>
+            <button type="button" class="goal" id="goal-revenue" data-goal="revenue" aria-pressed="false">
+              <span class="dot" aria-hidden="true"></span>
+              <span class="gk">Wachstum</span>
+              <span class="gt">Umsatz</span>
+            </button>
+          </div>
+
+          <figure class="growth" id="growth" role="group" aria-label="Beispielhafter Wachstumsverlauf">
+            <div class="ghead">
+              <figcaption class="glabel" id="growth-label">Deine <b>Reichweite</b>: heute &rarr; in 90 Tagen</figcaption>
+              <span class="gtag" aria-hidden="true">Beispielhafter Verlauf</span>
+            </div>
+            <div class="chart">
+              <svg id="growth-svg" viewBox="0 0 640 220" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="startStroke" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#1FC998"/>
+                    <stop offset="1" stop-color="#46BEEA"/>
+                  </linearGradient>
+                  <linearGradient id="startFill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="rgba(0,184,136,.30)"/>
+                    <stop offset="1" stop-color="rgba(0,184,136,0)"/>
+                  </linearGradient>
+                </defs>
+                <path class="garea" id="growth-area" d=""/>
+                <path class="gline" id="growth-line" d=""/>
+                <circle class="gtip" id="growth-tip" r="4.5" cx="0" cy="0"/>
+              </svg>
+            </div>
+            <div class="axis" aria-hidden="true"><span>Heute</span><span>In 90 Tagen</span></div>
+          </figure>
+
+          <p class="commit" id="commit" aria-live="polite">
+            <span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span id="commit-text">Ziel gesetzt &#x2713; &mdash; jetzt wird&rsquo;s gebaut.</span>
+          </p>
+
+          <div class="cta-row">
+            <a class="btn btn-primary" id="start-cta" href="#" data-call-url="#" data-cta-url="#">Kickoff buchen &mdash; wir starten deinen Weg <span class="arr">&rarr;</span></a>
+            <span class="hint">Zwei Minuten &mdash; dann legen wir gemeinsam los.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -298,10 +413,103 @@
       }
     }catch(e){}
     // CTA-/Onboarding-Hooks: data-call-url / data-form-url / data-cta-url anwenden
-    [['cta-call','data-call-url'],['cta-call','data-cta-url'],['cta-form','data-form-url']].forEach(function(x){
+    // #start-cta teilt sich denselben Kickoff-Hook wie #cta-call
+    [['cta-call','data-call-url'],['cta-call','data-cta-url'],
+     ['start-cta','data-call-url'],['start-cta','data-cta-url'],
+     ['cta-form','data-form-url']].forEach(function(x){
       var el=document.getElementById(x[0]);if(!el)return;
       var u=el.getAttribute(x[1]);if(u&&u!=='#')el.setAttribute('href',u);
     });
+    // ===== DEIN START — interaktiver Momentum-Block =====
+    (function(){
+      var W=640,H=220,PAD=14;                 // SVG-Koordinatensystem (viewBox)
+      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var growth=document.getElementById('growth');
+      var lineEl=document.getElementById('growth-line');
+      var areaEl=document.getElementById('growth-area');
+      var tipEl=document.getElementById('growth-tip');
+      var labelEl=document.getElementById('growth-label');
+      var commit=document.getElementById('commit');
+      var buttons=Array.prototype.slice.call(document.querySelectorAll('.goal'));
+      if(!growth||!lineEl||!buttons.length)return;
+
+      // Pro Ziel: Wortlaut + leicht abweichende Kurvenform (curve = Steilheit/Verlauf).
+      var GOALS={
+        reach:  {label:'Deine <b>Reichweite</b>: heute &rarr; in 90 Tagen', curve:0.40},
+        leads:  {label:'Deine <b>Leads</b>: heute &rarr; in 90 Tagen',      curve:0.62},
+        revenue:{label:'Dein <b>Umsatz</b>: heute &rarr; in 90 Tagen',      curve:0.82}
+      };
+
+      // Smooth ansteigende Kurve (heute niedrig links -> in 90 Tagen hoch rechts).
+      // bias verschiebt die Beschleunigung: kleiner = früher steil, größer = später steil.
+      function buildPath(bias){
+        var n=7,pts=[];
+        for(var i=0;i<=n;i++){
+          var t=i/n;
+          // ease-in/out je nach bias -> spürbar andere Form pro Ziel
+          var e=Math.pow(t,1+bias*1.6);
+          var x=PAD+t*(W-PAD*2);
+          var y=(H-PAD)-e*(H-PAD*2);
+          pts.push([x,y]);
+        }
+        // Catmull-Rom -> Bézier für eine weiche Linie
+        var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+        for(var j=0;j<pts.length-1;j++){
+          var p0=pts[j>0?j-1:0],p1=pts[j],p2=pts[j+1],p3=pts[j+2<pts.length?j+2:j+1];
+          var c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
+          var c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
+          d+=' C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+','+c2x.toFixed(1)+' '+c2y.toFixed(1)+','+p2[0].toFixed(1)+' '+p2[1].toFixed(1);
+        }
+        return {d:d,end:pts[pts.length-1]};
+      }
+
+      var firstPick=true;
+      function render(goal){
+        var cfg=GOALS[goal]||GOALS.reach;
+        var path=buildPath(cfg.curve);
+        lineEl.setAttribute('d',path.d);
+        areaEl.setAttribute('d',path.d+' L'+(W-PAD)+' '+(H-PAD)+' L'+PAD+' '+(H-PAD)+' Z');
+        tipEl.setAttribute('cx',path.end[0].toFixed(1));
+        tipEl.setAttribute('cy',path.end[1].toFixed(1));
+        labelEl.innerHTML=cfg.label;
+
+        // Draw-Animation (nur wenn Motion erlaubt)
+        if(!reduce){
+          var len=0;try{len=lineEl.getTotalLength();}catch(e){len=900;}
+          growth.style.setProperty('--len',len);
+          growth.classList.add('draw');
+          growth.classList.remove('run');
+          // Reflow erzwingen, damit die Transition jedes Mal neu startet
+          void lineEl.getBoundingClientRect();
+          requestAnimationFrame(function(){requestAnimationFrame(function(){growth.classList.add('run');});});
+        }
+        growth.classList.add('show');
+        commit.classList.add('show');
+        firstPick=false;
+      }
+
+      buttons.forEach(function(btn){
+        btn.addEventListener('click',function(){
+          buttons.forEach(function(b){b.setAttribute('aria-pressed', b===btn?'true':'false');});
+          render(btn.getAttribute('data-goal'));
+        });
+      });
+
+      // Default: "Reichweite" vorausgewählt — Kurve & Commitment direkt sichtbar,
+      // ohne Draw-Animation beim Laden (fühlt sich ruhiger an).
+      var def=document.getElementById('goal-reach');
+      if(def){
+        def.setAttribute('aria-pressed','true');
+        var cfg=GOALS.reach,path=buildPath(cfg.curve);
+        lineEl.setAttribute('d',path.d);
+        areaEl.setAttribute('d',path.d+' L'+(W-PAD)+' '+(H-PAD)+' L'+PAD+' '+(H-PAD)+' Z');
+        tipEl.setAttribute('cx',path.end[0].toFixed(1));
+        tipEl.setAttribute('cy',path.end[1].toFixed(1));
+        labelEl.innerHTML=cfg.label;
+        growth.classList.add('show');
+      }
+    })();
+
     // Scroll-Reveal
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){
