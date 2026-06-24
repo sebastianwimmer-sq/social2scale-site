@@ -74,19 +74,19 @@
      background-attachment:fixed keeps the wash consistent across the whole scrolling page. */
   body{
     background:
-      radial-gradient(78% 60% at 12% 8%,rgba(0,184,136,.22),transparent 56%),
-      radial-gradient(82% 66% at 92% 88%,rgba(20,140,200,.20),transparent 58%),
-      linear-gradient(150deg,#04140F 0%,#051018 52%,#03070C 100%);
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
     background-attachment:fixed;
-    background-color:#03070C;
+    background-color:#03080D;
     color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
   /* mobile: background-attachment:fixed is often ignored / janky — fall back to a large non-fixed wash that still reads as one continuous gradient over the page */
   @media (max-width:700px){
     body{
       background:
-        radial-gradient(120% 50% at 10% 2%,rgba(0,184,136,.20),transparent 54%),
-        radial-gradient(120% 55% at 95% 98%,rgba(20,140,200,.18),transparent 56%),
-        linear-gradient(160deg,#04140F 0%,#051018 55%,#03070C 100%);
+        radial-gradient(130% 55% at 8% 1%,rgba(0,184,136,.32),transparent 56%),
+        radial-gradient(130% 60% at 96% 99%,rgba(20,140,200,.28),transparent 58%),
+        linear-gradient(160deg,#04140F 0%,#05131C 55%,#03080D 100%);
       background-attachment:scroll;background-size:cover;background-repeat:no-repeat}
   }
   body.nav-open{overflow:hidden}
