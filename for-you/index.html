@@ -454,38 +454,38 @@
   .fw-blk-head{margin-bottom:clamp(var(--s-7),5vw,var(--s-9));max-width:30ch}
   .fw-blk-head h2{margin-top:var(--s-4)}
 
-  /* — numbered editorial rows (magazine TOC / feature list) — */
+  /* — numbered editorial rows (magazine TOC / feature list) —
+     Fixed numeral track (no fraction → numeral can never overflow into the
+     copy), then ONE stacked editorial column (kicker → headline → one benefit
+     line → tag), then the arrow. Title + body stacked = single scan path. */
   .fw-rows{display:grid;gap:0;border-top:1px solid var(--line-2)}
   .fw-row{position:relative;display:grid;
-    grid-template-columns:minmax(0,.62fr) minmax(0,1.55fr) minmax(0,.7fr) auto;
-    gap:clamp(var(--s-5),3vw,var(--s-8));align-items:center;
-    padding:clamp(var(--s-6),3.4vw,var(--s-8)) clamp(var(--s-3),1.6vw,var(--s-5));
+    grid-template-columns:clamp(72px,9vw,132px) minmax(0,1fr) auto;
+    gap:clamp(var(--s-5),3vw,var(--s-7));align-items:start;
+    padding:clamp(var(--s-6),3.2vw,var(--s-7)) clamp(var(--s-3),1.6vw,var(--s-5));
     border-bottom:1px solid var(--line-2);text-decoration:none;color:inherit;
     transition:background .35s var(--ease)}
   .fw-row::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--emerald);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease);box-shadow:0 0 14px rgba(0,184,136,.5)}
   .fw-row:hover{background:linear-gradient(90deg,rgba(0,184,136,.07),rgba(0,184,136,.015) 60%,transparent)}
   .fw-row:hover::before,.fw-row:focus-visible::before{transform:scaleY(1)}
   .fw-row:focus-visible{outline:none;background:linear-gradient(90deg,rgba(0,184,136,.08),transparent)}
-  /* oversized index numeral — real design element */
-  .fw-num{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(3.6rem,2rem+5vw,7.5rem);line-height:.82;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
+  /* oversized index numeral — clamped so it always fits its fixed track */
+  .fw-num{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(3rem,1.6rem+3.4vw,5.6rem);line-height:.82;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
   .fw-row:hover .fw-num,.fw-row:focus-visible .fw-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.1)}
-  .fw-rtitle{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.4rem,1.1rem+1.3vw,2.1rem);line-height:1.08;letter-spacing:-.02em;color:var(--paper)}
-  .fw-rkicker{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-3)}
-  .fw-rbody{color:var(--muted);font-size:1.02rem;line-height:1.62;max-width:48ch}
-  .fw-rtag{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--emerald);white-space:nowrap;align-self:start;padding-top:6px}
-  .fw-arrow{justify-self:end;width:46px;height:46px;border:1px solid var(--line-2);border-radius:50%;display:grid;place-items:center;flex:0 0 auto;transition:border-color .35s var(--ease),background .35s var(--ease)}
+  /* the stacked copy column */
+  .fw-rmain{min-width:0}
+  .fw-rkicker{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-2)}
+  .fw-rtitle{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.4rem,1.1rem+1.3vw,2.1rem);line-height:1.06;letter-spacing:-.02em;color:var(--paper)}
+  .fw-rbody{color:var(--muted);font-size:1.02rem;line-height:1.6;max-width:50ch;margin-top:var(--s-3)}
+  .fw-rtag{display:inline-block;font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--emerald);margin-top:var(--s-4)}
+  .fw-arrow{align-self:center;justify-self:end;width:46px;height:46px;border:1px solid var(--line-2);border-radius:50%;display:grid;place-items:center;flex:0 0 auto;transition:border-color .35s var(--ease),background .35s var(--ease)}
   .fw-arrow svg{width:18px;height:18px;stroke:var(--muted);stroke-width:2;fill:none;transition:transform .4s var(--ease),stroke .35s var(--ease)}
   .fw-row:hover .fw-arrow,.fw-row:focus-visible .fw-arrow{border-color:rgba(0,184,136,.5);background:rgba(0,184,136,.08)}
   .fw-row:hover .fw-arrow svg,.fw-row:focus-visible .fw-arrow svg{transform:translateX(5px);stroke:var(--emerald)}
-  @media (max-width:900px){
-    .fw-row{grid-template-columns:auto 1fr;grid-template-areas:"num title" "num body" "num tag";column-gap:clamp(var(--s-4),4vw,var(--s-6));row-gap:var(--s-3);align-items:start}
-    .fw-num{grid-area:num;font-size:clamp(3rem,10vw,4.4rem);align-self:start}
-    .fw-rmain{grid-area:title}.fw-rbody{grid-area:body}.fw-rtag{grid-area:tag;padding-top:0}
+  @media (max-width:680px){
+    .fw-row{grid-template-columns:clamp(56px,15vw,80px) minmax(0,1fr);column-gap:clamp(var(--s-4),4vw,var(--s-5));row-gap:0}
+    .fw-num{font-size:clamp(2.6rem,11vw,3.6rem)}
     .fw-arrow{display:none}
-  }
-  @media (max-width:480px){
-    .fw-row{grid-template-columns:1fr;grid-template-areas:"num" "title" "body" "tag";row-gap:var(--s-2)}
-    .fw-num{font-size:3.4rem}
   }
 
   /* — full-bleed editorial pull-quote break — */
@@ -571,7 +571,7 @@
     <section class="fw-hero" aria-labelledby="fw-hero-h"><div class="wrap reveal">
       <p class="fw-rh"><b>№ 01</b> — Für wen</p>
       <h1 id="fw-hero-h">Ihr seid <em>gut</em>.<span class="l2">Online merkt's nur keiner.</span></h1>
-      <p class="lead">Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird ein Auftritt, der <b>Reichweite, Leads und Umsatz</b> bringt. Erkennst du dich wieder?</p>
+      <p class="lead">Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird ein Auftritt, der <b>Reichweite, Leads und Umsatz</b> bringt.</p>
       <div class="cta-row">
         <a class="btn btn-primary" id="cta-hero" href="#" data-cta-url="#">Strategie-Call buchen →</a>
         <a class="textlink" href="#fuer-wen">Erkennst du dich wieder?</a>
@@ -591,9 +591,9 @@
           <div class="fw-rmain">
             <span class="fw-rkicker">B2B · ohne Auftritt</span>
             <h3 class="fw-rtitle">Firmen ohne Auftritt</h3>
+            <p class="fw-rbody">Ihr habt was drauf — online findet euch keiner. Wir bauen euren Auftritt, bis Anfragen von selbst kommen.</p>
+            <span class="fw-rtag">→ von 0 auf sichtbar</span>
           </div>
-          <p class="fw-rbody">Ihr habt richtig was drauf — online findet euch nur keiner. Wir bauen euren Auftritt von der ersten Story bis zu dem Punkt, an dem Anfragen von selbst reinkommen.</p>
-          <span class="fw-rtag">→ von 0 auf sichtbar</span>
           <span class="fw-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></span>
         </a>
 
@@ -602,9 +602,9 @@
           <div class="fw-rmain">
             <span class="fw-rkicker">Coaches · Experten</span>
             <h3 class="fw-rtitle">Coaches &amp; Experten</h3>
+            <p class="fw-rbody">Dein Wissen ist top — nur zu wenige kennen dich. Wir machen daraus Reichweite und echte Kund:innen.</p>
+            <span class="fw-rtag">→ Wissen wird Reichweite</span>
           </div>
-          <p class="fw-rbody">Du weißt, was du kannst. Nur zu wenige wissen, dass es dich gibt. Wir machen aus deinem Wissen Reichweite — und aus Reichweite echte Kund:innen.</p>
-          <span class="fw-rtag">→ Wissen wird Reichweite</span>
           <span class="fw-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></span>
         </a>
 
@@ -613,9 +613,9 @@
           <div class="fw-rmain">
             <span class="fw-rkicker">Scale · schon aktiv</span>
             <h3 class="fw-rtitle">Wachstums-Willige</h3>
+            <p class="fw-rbody">Schon aktiv, aber es ruckelt? Wir bringen System und Tempo rein — Wachstum wird planbar.</p>
+            <span class="fw-rtag">→ Tempo &amp; System</span>
           </div>
-          <p class="fw-rbody">Schon aktiv, aber es ruckelt. Wir bringen System und Tempo rein, damit Wachstum kein Zufall mehr ist, sondern planbar.</p>
-          <span class="fw-rtag">→ Tempo &amp; System</span>
           <span class="fw-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></svg></span>
         </a>
 

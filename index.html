@@ -175,13 +175,20 @@
 
   /* ===== proof section — relocated growth dashboard, full-bleed under hero ===== */
   .proof{position:relative;padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line);background:radial-gradient(110% 120% at 82% 0%,rgba(0,184,136,.08),transparent 50%),radial-gradient(110% 120% at 8% 100%,rgba(31,166,224,.07),transparent 52%),linear-gradient(180deg,rgba(21,23,27,.72) 0%,rgba(10,11,13,.55) 80%)}
-  .proof-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
+  .proof-grid{display:grid;grid-template-columns:.94fr 1.06fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
+  .proof-copy{max-width:46ch}
   .proof-copy .ix{margin-bottom:var(--s-4)}
-  .proof-h{margin-top:0}
-  .proof-visual{max-width:560px;width:100%;justify-self:end}
+  .proof-h{margin-top:0;font-size:clamp(2.1rem,1.5rem+2.4vw,3.4rem)}
+  /* left-column value lines — edged mono list, gives the empty column weight + rhythm */
+  .proof-points{list-style:none;margin:var(--s-6) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--s-3)}
+  .proof-points li{position:relative;font-family:"Archivo",sans-serif;font-size:clamp(1rem,.95rem+.3vw,1.18rem);font-weight:600;letter-spacing:-.01em;color:var(--paper);padding-left:var(--s-6);line-height:1.25}
+  .proof-points li::before{content:"";position:absolute;left:0;top:.18em;width:3px;height:1.05em;border-radius:2px;background:linear-gradient(180deg,var(--emerald),var(--teal));box-shadow:0 0 10px -2px rgba(0,184,136,.55)}
+  .proof-visual{max-width:580px;width:100%;justify-self:end}
   @media (max-width:880px){
     .proof-grid{grid-template-columns:1fr;gap:var(--s-7)}
-    .proof-visual{justify-self:stretch;max-width:560px;margin:0 auto;width:100%}
+    .proof-copy{max-width:none}
+    .proof-points{margin-top:var(--s-5)}
+    .proof-visual{justify-self:stretch;max-width:580px;margin:0 auto;width:100%}
   }
   .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
   .btn:hover{transform:translateY(-3px)}
@@ -195,23 +202,24 @@
   .textlink:hover::after{background:var(--paper)}
 
   /* ===== hero growth panel — stylised analytics dashboard (PEAKING-style) ===== */
-  .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:20px;
+  .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:22px;
     box-shadow:var(--depth-lg);overflow:hidden}
-  .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
-  /* corner index markers */
-  .panel .corner{position:absolute;width:9px;height:9px;border:1px solid var(--line-3);z-index:2;pointer-events:none}
-  .panel .corner.tl{top:10px;left:10px;border-right:0;border-bottom:0}
-  .panel .corner.tr{top:10px;right:10px;border-left:0;border-bottom:0}
-  .panel .corner.bl{bottom:10px;left:10px;border-right:0;border-top:0}
-  .panel .corner.br{bottom:10px;right:10px;border-left:0;border-top:0}
-  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-5) var(--s-5) var(--s-4);border-bottom:1px solid var(--line)}
+  /* emerald top-edge glow — a confident accent without flooding the panel */
+  .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--emerald) 35%,var(--teal) 65%,transparent);box-shadow:0 0 18px -2px rgba(0,184,136,.45)}
+  /* corner index markers — slightly larger + brighter for editorial drive */
+  .panel .corner{position:absolute;width:12px;height:12px;border:1.5px solid var(--line-3);z-index:2;pointer-events:none}
+  .panel .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0}
+  .panel .corner.tr{top:12px;right:12px;border-left:0;border-bottom:0}
+  .panel .corner.bl{bottom:12px;left:12px;border-right:0;border-top:0}
+  .panel .corner.br{bottom:12px;right:12px;border-left:0;border-top:0}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-6) var(--s-6) var(--s-5);border-bottom:1px solid var(--line)}
   .panel-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
   .panel-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald)}
   .panel-head .meta{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
   /* chart */
-  .chart{position:relative;padding:var(--s-5) var(--s-5) var(--s-4)}
-  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:var(--s-6);width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
-  .chart svg{display:block;width:100%;height:auto}
+  .chart{position:relative;padding:var(--s-5) var(--s-6) var(--s-6)}
+  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:calc(var(--s-6) + var(--s-4));width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
+  .chart svg{display:block;width:100%;height:auto;min-height:158px}
   .chart .grid-line{stroke:var(--line);stroke-width:1}
   .chart .area{fill:url(#areaFill)}
   .chart .curve{fill:none;stroke:url(#curveGrad);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
@@ -219,7 +227,7 @@
   .chart .bar.up{fill:rgba(0,184,136,.32)}
   .chart .node-dot{fill:var(--cyan)}
   .chart .node-ring{fill:none;stroke:var(--cyan);stroke-width:1.4;opacity:.5}
-  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-3);padding-left:var(--s-5);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
+  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-4);padding-left:var(--s-6);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
   /* panel tabs — kleine echte Interaktion (Reach / Leads / Umsatz) */
   .panel-tabs{display:flex;gap:var(--s-2);padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--line)}
   .ptab{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:linear-gradient(180deg,var(--surface-3),var(--surface-2));border:1px solid var(--line-2);border-radius:7px;box-shadow:var(--pill-depth);padding:7px 13px;cursor:pointer;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease)}
@@ -227,7 +235,7 @@
   .ptab[aria-selected="true"]{color:var(--emerald);border-color:rgba(0,184,136,.45);background:linear-gradient(180deg,rgba(0,184,136,.16),rgba(0,184,136,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(0,184,136,.12)}
   /* stat tiles — interaktiv (hover-lift, emerald-akzent, fokus, aktiv) */
   .panel-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
-  .pstat{position:relative;padding:var(--s-4) var(--s-4) var(--s-5);background:transparent;border:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
+  .pstat{position:relative;padding:var(--s-5) var(--s-4) var(--s-6);background:transparent;border:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
   .pstat + .pstat{border-left:1px solid var(--line)}
   .pstat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--emerald);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);box-shadow:0 0 10px rgba(0,184,136,.5)}
   .pstat:hover{background:rgba(0,184,136,.05);transform:translateY(-2px)}
@@ -251,23 +259,21 @@
     .chart .node-ring{opacity:.5}
     .pstat:hover{transform:none}
   }
-  /* climb-bar motif row */
-  .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
-  .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
   /* ===== Vorher/Nachher-Regler im Growth-Panel ===== */
   /* growth-scale: Balken/Kurve werden per JS-Geometrie gesetzt (kein SVG-transform → Safari-fest) */
-  .reglr{margin:var(--s-4) 0 var(--s-3)}
-  .reglr-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-2)}
-  .reglr-lbl{font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
+  .reglr{margin:0;padding:var(--s-6) var(--s-6) var(--s-5);border-bottom:1px solid var(--line)}
+  .reglr-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-4)}
+  .reglr-lbl{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.005em;color:var(--paper)}
+  .reglr-lbl::before{content:"";width:14px;height:14px;flex:none;border-radius:50%;border:1.5px solid var(--emerald);background:radial-gradient(circle,var(--emerald) 0 32%,transparent 40%);box-shadow:0 0 10px -1px rgba(0,184,136,.6);animation:reglrPulse 2.4s var(--ease) infinite}
+  @keyframes reglrPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:.78}}
+  @media (prefers-reduced-motion:reduce){.reglr-lbl::before{animation:none}}
   .reglr-state{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:3px 9px;border-radius:100px;white-space:nowrap}
-  .reglr-range{-webkit-appearance:none;appearance:none;display:block;width:calc(100% - 24px);height:6px;border-radius:100px;background:linear-gradient(90deg,var(--emerald),var(--teal));outline:none;cursor:pointer;margin:4px 12px}
+  .reglr-range{-webkit-appearance:none;appearance:none;display:block;width:calc(100% - 24px);height:7px;border-radius:100px;background:linear-gradient(90deg,var(--emerald),var(--teal));outline:none;cursor:pointer;margin:var(--s-2) 12px}
   .reglr-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--emerald);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 0 4px rgba(0,184,136,.18);cursor:grab;transition:transform .15s var(--ease)}
   .reglr-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.14)}
   .reglr-range::-moz-range-thumb{width:22px;height:22px;border:2px solid var(--emerald);border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:grab}
   .reglr-range:focus-visible{outline:2px solid var(--emerald);outline-offset:4px}
   .reglr-ends{display:flex;justify-content:space-between;margin-top:var(--s-2);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.05em;color:var(--faint)}
-  .panel-climb .cb.on{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.35))}
-  .panel-climb .cb.on:last-child{background:linear-gradient(180deg,var(--cyan),rgba(31,166,224,.35))}
   .panel-tag{position:absolute;z-index:3;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;color:var(--emerald);background:var(--emerald-ink);border:1px solid rgba(0,184,136,.4);border-radius:5px;padding:3px 7px}
   .panel-tag.t1{top:78px;right:24px}
 
@@ -473,8 +479,14 @@
       <div class="wrap">
         <div class="proof-grid reveal">
           <div class="proof-copy">
+            <p class="ix"><b>Live</b> · PEAKING</p>
             <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
-            <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools. Powered by PEAKING.</p>
+            <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools.</p>
+            <ul class="proof-points">
+              <li>Reichweite, die zählt</li>
+              <li>Leads statt Likes</li>
+              <li>Umsatz, schwarz auf weiß</li>
+            </ul>
           </div>
           <div class="proof-visual">
             <div class="panel">
@@ -543,13 +555,6 @@
                   <div class="pl">Umsatz / Mo*</div>
                   <div class="trend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</div>
                 </div>
-              </div>
-
-              <div class="panel-climb" aria-hidden="true">
-                <span class="cb" style="height:30%"></span><span class="cb" style="height:42%"></span>
-                <span class="cb on" style="height:55%"></span><span class="cb on" style="height:68%"></span>
-                <span class="cb on" style="height:80%"></span><span class="cb on" style="height:92%"></span>
-                <span class="cb on" style="height:100%"></span>
               </div>
             </div>
           </div>
@@ -737,7 +742,6 @@
       var range=panel.querySelector('#growth-range');
       var kReach=panel.querySelector('#kpi-reach'),kLeads=panel.querySelector('#kpi-leads'),kRev=panel.querySelector('#kpi-rev');
       var stateEl=panel.querySelector('#rgl-state'),meta=panel.querySelector('#panel-meta');
-      var climb=Array.prototype.slice.call(panel.querySelectorAll('.panel-climb .cb'));
       var bars=Array.prototype.slice.call(panel.querySelectorAll('.growth-scale .bar'));
       var area=panel.querySelector('.growth-scale .area'),cv=panel.querySelector('.growth-scale .curve');
       var ring=panel.querySelector('.growth-scale .node-ring'),dot=panel.querySelector('.growth-scale .node-dot');
@@ -757,7 +761,6 @@
         if(kLeads)kLeads.textContent=Math.round(47*p);
         if(kRev)kRev.textContent='€'+(4.8*p).toFixed(1).replace('.',',')+'k';
         var s=state(p);if(stateEl)stateEl.textContent=s;if(meta)meta.textContent='Q · '+s;
-        var on=Math.round(p*climb.length);climb.forEach(function(c,i){c.classList.toggle('on',i<on);});
       }
       if(range){range.addEventListener('input',function(){apply(range.value/100);});apply(range.value/100);}
     })();
