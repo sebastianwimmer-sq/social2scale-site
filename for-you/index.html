@@ -121,9 +121,9 @@
   .eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
   .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald);flex:0 0 auto}
   .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:block}
-  h2{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(2.2rem,1.4rem+2.8vw,3.6rem);line-height:1.04;letter-spacing:-.022em;margin-top:var(--s-3)}
+  h2{font-family:"Fraunces",serif;font-weight:470;font-size:clamp(2.5rem,1.4rem+2.75vw,3.5rem);line-height:1.02;letter-spacing:-.026em;margin-top:var(--s-3)}
   h2 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.02rem,.98rem+.3vw,1.15rem)}
+  .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.0625rem,1rem+.4vw,1.2rem)}
   .head{max-width:42ch}
 
   /* ===== sticky header + nav (flat, hairline) ===== */
@@ -441,11 +441,14 @@
   .fw-hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),8vw,var(--s-11)) 0 clamp(var(--s-7),5vw,var(--s-9));border-top:0}
   .fw-hero .wrap{position:relative;z-index:1}
   .fw-hero .fw-rh{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
-  .fw-hero h1{font-family:"Fraunces",serif;font-weight:560;font-size:clamp(3rem,1rem+8.2vw,8rem);line-height:.92;letter-spacing:-.035em;max-width:15ch;font-variation-settings:"opsz" 144}
-  .fw-hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  /* hero display — top of the modular scale (~1.5 ratio): commanding, dominates the fold.
+     Slope tuned so it climbs smoothly from 56px (360) → ~62px (768) → ~77px (1024) → ~100px (1440),
+     reaching its 104px max just past 1440 (no premature pinning, no mid-range jump). */
+  .fw-hero h1{font-family:"Fraunces",serif;font-weight:580;font-size:clamp(3.5rem,1.2rem+5.6vw,6.5rem);line-height:.95;letter-spacing:-.038em;max-width:15ch;font-variation-settings:"opsz" 144}
+  .fw-hero h1 em{font-style:italic;font-weight:520;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   /* second line of the headline pushed off-axis for editorial tension */
-  .fw-hero h1 .l2{display:block;color:var(--muted);font-weight:430;margin-top:.06em}
-  .fw-hero .lead{max-width:54ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));font-size:clamp(1.06rem,1rem+.5vw,1.28rem);color:var(--muted)}
+  .fw-hero h1 .l2{display:block;color:var(--muted);font-weight:440;margin-top:.04em}
+  .fw-hero .lead{max-width:54ch;margin-top:clamp(var(--s-6),3vw,var(--s-7));font-size:clamp(1.0625rem,1rem+.42vw,1.25rem);color:var(--muted)}
   .fw-hero .lead b{color:var(--paper);font-weight:600}
   .fw-hero .cta-row{margin-top:clamp(var(--s-6),4vw,var(--s-8))}
 
@@ -470,13 +473,16 @@
   .fw-row:hover::before,.fw-row:focus-visible::before{transform:scaleY(1)}
   .fw-row:focus-visible{outline:none;background:linear-gradient(90deg,rgba(0,184,136,.08),transparent)}
   /* oversized index numeral — clamped so it always fits its fixed track */
-  .fw-num{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(3rem,1.6rem+3.4vw,5.6rem);line-height:.82;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
+  /* oversized numeral — held at ~2× the row title across the whole range (matched slope),
+     so the big-numeral-vs-headline ratio stays constant instead of collapsing mid-range. */
+  .fw-num{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(3.5rem,2rem+3vw,6rem);line-height:.8;letter-spacing:-.045em;color:transparent;-webkit-text-stroke:1px var(--line-3);transition:-webkit-text-stroke-color .4s var(--ease),color .4s var(--ease)}
   .fw-row:hover .fw-num,.fw-row:focus-visible .fw-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.1)}
   /* the stacked copy column */
   .fw-rmain{min-width:0}
   .fw-rkicker{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-2)}
-  .fw-rtitle{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.4rem,1.1rem+1.3vw,2.1rem);line-height:1.06;letter-spacing:-.02em;color:var(--paper)}
-  .fw-rbody{color:var(--muted);font-size:1.02rem;line-height:1.6;max-width:50ch;margin-top:var(--s-3)}
+  /* row headline — substantial step above the benefit line + mono kicker (clear hierarchy) */
+  .fw-rtitle{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.75rem,1.3rem+1.55vw,2.25rem);line-height:1.04;letter-spacing:-.022em;color:var(--paper)}
+  .fw-rbody{color:var(--muted);font-size:1.0625rem;line-height:1.6;max-width:50ch;margin-top:var(--s-3)}
   .fw-rtag{display:inline-block;font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--emerald);margin-top:var(--s-4)}
   .fw-arrow{align-self:center;justify-self:end;width:46px;height:46px;border:1px solid var(--line-2);border-radius:50%;display:grid;place-items:center;flex:0 0 auto;transition:border-color .35s var(--ease),background .35s var(--ease)}
   .fw-arrow svg{width:18px;height:18px;stroke:var(--muted);stroke-width:2;fill:none;transition:transform .4s var(--ease),stroke .35s var(--ease)}
@@ -484,7 +490,7 @@
   .fw-row:hover .fw-arrow svg,.fw-row:focus-visible .fw-arrow svg{transform:translateX(5px);stroke:var(--emerald)}
   @media (max-width:680px){
     .fw-row{grid-template-columns:clamp(56px,15vw,80px) minmax(0,1fr);column-gap:clamp(var(--s-4),4vw,var(--s-5));row-gap:0}
-    .fw-num{font-size:clamp(2.6rem,11vw,3.6rem)}
+    .fw-num{font-size:clamp(2.75rem,10.5vw,3.75rem)}
     .fw-arrow{display:none}
   }
 
@@ -492,7 +498,8 @@
   .fw-quote{border-top:1px solid var(--line);position:relative;overflow:hidden}
   .fw-quote .wrap{padding-top:clamp(var(--s-9),9vw,var(--s-11));padding-bottom:clamp(var(--s-9),9vw,var(--s-11))}
   .fw-quote::before{content:"„";position:absolute;top:clamp(-.1em,2vw,.1em);left:clamp(-.04em,1vw,.02em);font-family:"Fraunces",serif;font-style:italic;font-size:clamp(14rem,40vw,30rem);line-height:1;color:rgba(0,184,136,.05);pointer-events:none;z-index:0}
-  .fw-quote blockquote{position:relative;z-index:1;font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(2.2rem,1rem+5vw,5rem);line-height:1.06;letter-spacing:-.03em;color:var(--paper);max-width:18ch}
+  /* pull-quote — confident display, one harmonious step below the hero (shared slope feel) */
+  .fw-quote blockquote{position:relative;z-index:1;font-family:"Fraunces",serif;font-style:italic;font-weight:450;font-size:clamp(3rem,1.3rem+4.4vw,5.25rem);line-height:1.04;letter-spacing:-.034em;color:var(--paper);max-width:18ch}
   .fw-quote blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .fw-quote .fw-rh{margin-top:clamp(var(--s-6),4vw,var(--s-7))}
 
@@ -500,10 +507,10 @@
   .fw-qual{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line-2)}
   .fw-qcol{padding:clamp(var(--s-6),4vw,var(--s-8)) clamp(var(--s-5),4vw,var(--s-8)) clamp(var(--s-6),4vw,var(--s-8)) 0}
   .fw-qcol + .fw-qcol{border-left:1px solid var(--line-2);padding-left:clamp(var(--s-6),4vw,var(--s-8));padding-right:0}
-  .fw-qcol .qh{font-family:"Fraunces",serif;font-weight:440;font-size:clamp(1.3rem,1rem+1vw,1.85rem);letter-spacing:-.018em;color:var(--paper)}
-  .fw-qcol .qintro{color:var(--muted);font-size:1rem;line-height:1.55;margin-top:var(--s-3);max-width:42ch}
+  .fw-qcol .qh{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.5rem,1.15rem+1.15vw,1.9rem);letter-spacing:-.02em;color:var(--paper)}
+  .fw-qcol .qintro{color:var(--muted);font-size:1.0625rem;line-height:1.55;margin-top:var(--s-3);max-width:42ch}
   .fw-qcol ul{list-style:none;margin-top:clamp(var(--s-5),3vw,var(--s-6));display:flex;flex-direction:column;gap:clamp(var(--s-4),2vw,var(--s-5))}
-  .fw-qcol li{display:flex;align-items:flex-start;gap:var(--s-4);font-size:1.04rem;line-height:1.5}
+  .fw-qcol li{display:flex;align-items:flex-start;gap:var(--s-4);font-size:1.0625rem;line-height:1.5}
   .fw-qcol li svg{width:18px;height:18px;flex:0 0 auto;margin-top:3px;stroke-width:2.4;fill:none}
   .fw-qcol.fit li{color:var(--paper)}
   .fw-qcol.fit li svg{stroke:var(--emerald)}

@@ -202,32 +202,29 @@
   .textlink:hover::after{background:var(--paper)}
 
   /* ===== hero growth panel — stylised analytics dashboard (PEAKING-style) ===== */
-  .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:22px;
-    box-shadow:var(--depth-lg);overflow:hidden}
-  /* emerald top-edge glow — a confident accent without flooding the panel */
-  .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--emerald) 35%,var(--teal) 65%,transparent);box-shadow:0 0 18px -2px rgba(0,184,136,.45)}
-  /* corner index markers — slightly larger + brighter for editorial drive */
-  .panel .corner{position:absolute;width:12px;height:12px;border:1.5px solid var(--line-3);z-index:2;pointer-events:none}
-  .panel .corner.tl{top:12px;left:12px;border-right:0;border-bottom:0}
-  .panel .corner.tr{top:12px;right:12px;border-left:0;border-bottom:0}
-  .panel .corner.bl{bottom:12px;left:12px;border-right:0;border-top:0}
-  .panel .corner.br{bottom:12px;right:12px;border-left:0;border-top:0}
-  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-6) var(--s-6) var(--s-5);border-bottom:1px solid var(--line)}
+  /* precise report frame: one crisp hairline border, even elevation, faint inner top highlight */
+  .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:16px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.4),0 32px 72px -34px rgba(0,0,0,.82);overflow:hidden}
+  /* thin emerald data-accent rule pinned to the very top edge — sharp, not fuzzy */
+  .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--emerald) 38%,var(--teal) 62%,transparent)}
+  /* consistent section padding token used by every block so edges align */
+  .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);padding:var(--s-5);border-bottom:1px solid var(--line)}
   .panel-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
-  .panel-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald)}
-  .panel-head .meta{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+  .panel-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px rgba(0,184,136,.8)}
+  .panel-head .meta{display:flex;align-items:center;gap:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+  .panel-head .meta .period{font-size:9px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line-2);border-radius:4px;padding:2px 6px}
   /* chart */
-  .chart{position:relative;padding:var(--s-5) var(--s-6) var(--s-6)}
-  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:calc(var(--s-6) + var(--s-4));width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
+  .chart{position:relative;padding:var(--s-5)}
+  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:calc(var(--s-5) + var(--s-4));width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
   .chart svg{display:block;width:100%;height:auto;min-height:158px}
-  .chart .grid-line{stroke:var(--line);stroke-width:1}
+  .chart .grid-line{stroke:var(--line);stroke-width:1;shape-rendering:crispEdges}
   .chart .area{fill:url(#areaFill)}
   .chart .curve{fill:none;stroke:url(#curveGrad);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
   .chart .bar{fill:var(--surface-3)}
   .chart .bar.up{fill:rgba(0,184,136,.32)}
   .chart .node-dot{fill:var(--cyan)}
   .chart .node-ring{fill:none;stroke:var(--cyan);stroke-width:1.4;opacity:.5}
-  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-4);padding-left:var(--s-6);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
+  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
   /* panel tabs — kleine echte Interaktion (Reach / Leads / Umsatz) */
   .panel-tabs{display:flex;gap:var(--s-2);padding:var(--s-4) var(--s-5);border-bottom:1px solid var(--line)}
   .ptab{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);background:linear-gradient(180deg,var(--surface-3),var(--surface-2));border:1px solid var(--line-2);border-radius:7px;box-shadow:var(--pill-depth);padding:7px 13px;cursor:pointer;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease)}
@@ -235,17 +232,18 @@
   .ptab[aria-selected="true"]{color:var(--emerald);border-color:rgba(0,184,136,.45);background:linear-gradient(180deg,rgba(0,184,136,.16),rgba(0,184,136,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(0,184,136,.12)}
   /* stat tiles — interaktiv (hover-lift, emerald-akzent, fokus, aktiv) */
   .panel-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
-  .pstat{position:relative;padding:var(--s-5) var(--s-4) var(--s-6);background:transparent;border:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
+  .pstat{position:relative;padding:var(--s-5);background:transparent;border:0;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;transition:background .25s var(--ease),transform .25s var(--ease)}
   .pstat + .pstat{border-left:1px solid var(--line)}
-  .pstat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--emerald);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease);box-shadow:0 0 10px rgba(0,184,136,.5)}
+  .pstat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--emerald);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
   .pstat:hover{background:rgba(0,184,136,.05);transform:translateY(-2px)}
   .pstat:hover::before,.pstat[aria-pressed="true"]::before{transform:scaleX(1)}
   .pstat[aria-pressed="true"]{background:rgba(0,184,136,.08)}
   .pstat:focus-visible{outline:2px solid var(--emerald);outline-offset:-2px;border-radius:6px}
-  .pstat .pv{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(1.35rem,1rem+1.1vw,1.7rem);line-height:1;letter-spacing:-.02em;color:var(--paper)}
+  /* data = JetBrains Mono on a shared baseline; emerald is the only accent */
+  .pstat .pv{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:clamp(1.2rem,.95rem+.9vw,1.5rem);line-height:1;letter-spacing:-.02em;color:var(--paper);font-variant-numeric:tabular-nums}
   .pstat .pv em{font-style:normal;color:var(--emerald)}
-  .pstat .pl{font-family:"Archivo",sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-2);line-height:1.3}
-  .pstat .trend{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--emerald);margin-top:var(--s-2);display:flex;align-items:center;gap:4px}
+  .pstat .pl{font-family:"Archivo",sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-3);line-height:1.3}
+  .pstat .trend{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.04em;color:var(--emerald);margin-top:var(--s-2);display:flex;align-items:center;gap:4px}
   .pstat .trend svg{width:9px;height:9px;stroke:var(--emerald);stroke-width:2.4;fill:none}
   /* chart draw-in (stroke-dashoffset), einmalig beim reveal */
   .chart .curve{stroke-dasharray:var(--curve-len,640);stroke-dashoffset:var(--curve-len,640);transition:stroke-dashoffset 1.5s var(--ease)}
@@ -261,14 +259,12 @@
   }
   /* ===== Vorher/Nachher-Regler im Growth-Panel ===== */
   /* growth-scale: Balken/Kurve werden per JS-Geometrie gesetzt (kein SVG-transform → Safari-fest) */
-  .reglr{margin:0;padding:var(--s-6) var(--s-6) var(--s-5);border-bottom:1px solid var(--line)}
+  .reglr{margin:0;padding:var(--s-5);border-bottom:1px solid var(--line)}
   .reglr-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-4)}
   .reglr-lbl{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.005em;color:var(--paper)}
-  .reglr-lbl::before{content:"";width:14px;height:14px;flex:none;border-radius:50%;border:1.5px solid var(--emerald);background:radial-gradient(circle,var(--emerald) 0 32%,transparent 40%);box-shadow:0 0 10px -1px rgba(0,184,136,.6);animation:reglrPulse 2.4s var(--ease) infinite}
-  @keyframes reglrPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.18);opacity:.78}}
-  @media (prefers-reduced-motion:reduce){.reglr-lbl::before{animation:none}}
+  .reglr-lbl::before{content:"";width:8px;height:8px;flex:none;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px rgba(0,184,136,.7)}
   .reglr-state{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:3px 9px;border-radius:100px;white-space:nowrap}
-  .reglr-range{-webkit-appearance:none;appearance:none;display:block;width:calc(100% - 24px);height:7px;border-radius:100px;background:linear-gradient(90deg,var(--emerald),var(--teal));outline:none;cursor:pointer;margin:var(--s-2) 12px}
+  .reglr-range{-webkit-appearance:none;appearance:none;display:block;width:100%;height:7px;border-radius:100px;background:linear-gradient(90deg,var(--emerald),var(--teal));outline:none;cursor:pointer;margin:var(--s-2) 0}
   .reglr-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--emerald);box-shadow:0 2px 8px rgba(0,0,0,.5),0 0 0 4px rgba(0,184,136,.18);cursor:grab;transition:transform .15s var(--ease)}
   .reglr-range::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.14)}
   .reglr-range::-moz-range-thumb{width:22px;height:22px;border:2px solid var(--emerald);border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.5);cursor:grab}
@@ -282,6 +278,11 @@
     .hero{padding-top:var(--s-7)}
     .hero-logo{width:clamp(280px,72vw,420px);margin-bottom:var(--s-6)}
     .panel-tag.t1{top:70px;right:16px}
+  }
+  /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
+  @media (max-width:560px){
+    .panel-stats{grid-template-columns:1fr}
+    .pstat + .pstat{border-left:0;border-top:1px solid var(--line)}
   }
 
   /* ===== trust strip — compact, editorial ===== */
@@ -490,11 +491,9 @@
           </div>
           <div class="proof-visual">
             <div class="panel">
-              <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
-              <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
               <div class="panel-head">
                 <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
-                <span class="meta" id="panel-meta">Q · 0 → skaliert</span>
+                <span class="meta"><span class="period" aria-hidden="true">8 WO</span><span id="panel-meta">Q · 0 → skaliert</span></span>
               </div>
 
               <div class="reglr">
