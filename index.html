@@ -335,6 +335,45 @@
   .step p{font-size:1rem;color:var(--muted);margin-top:var(--s-3);max-width:54ch;line-height:1.6}
   @media (max-width:560px){.step{grid-template-columns:1fr;gap:var(--s-2);padding:var(--s-5) 0}.step .num{font-size:2.6rem}}
 
+  /* ===== Weg: Scroll-Journey — wachsender Kreis + 1→4-Reel + Fortschrittsring ===== */
+  .weg{position:relative}
+  .weg-track{height:380vh}
+  .weg-sticky{position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));display:flex;align-items:center}
+  .weg-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:var(--s-8);align-items:center;width:100%}
+  .weg-copy h2{margin-top:var(--s-3)}
+  .weg-list{list-style:none;margin-top:var(--s-6);display:flex;flex-direction:column;gap:var(--s-4)}
+  .weg-list li{display:flex;align-items:center;gap:var(--s-3);font-family:"Archivo",sans-serif;font-size:clamp(1rem,.92rem+.5vw,1.3rem);font-weight:600;color:var(--faint);opacity:.4;transition:opacity .4s var(--ease),color .4s var(--ease),transform .4s var(--ease)}
+  .weg-list li .wn{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);transition:color .4s var(--ease)}
+  .weg-list li.is-on{opacity:1;color:var(--paper);transform:translateX(8px)}
+  .weg-list li.is-on .wn{color:var(--emerald)}
+  .weg-stage{position:relative;display:grid;place-items:center}
+  .weg-ring{width:clamp(280px,32vw,420px);height:auto;transform:rotate(-90deg)}
+  .weg-ring .rg-bg{fill:none;stroke:var(--line-2);stroke-width:2}
+  .weg-ring .rg-fg{fill:none;stroke:url(#wegGrad);stroke-width:4;stroke-linecap:round;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset .12s linear;filter:drop-shadow(0 0 8px rgba(0,184,136,.45))}
+  .weg-orb{position:absolute;top:50%;left:50%;width:clamp(190px,22vw,290px);height:clamp(190px,22vw,290px);border-radius:50%;overflow:hidden;
+    background:radial-gradient(circle at 36% 30%,rgba(0,184,136,.32),rgba(31,166,224,.14) 58%,transparent 76%),var(--surf-grad);
+    border:1px solid rgba(0,184,136,.4);box-shadow:0 36px 90px -32px rgba(0,184,136,.55),inset 0 1px 0 rgba(255,255,255,.14);
+    transform:translate(-50%,-50%) scale(var(--orb,.82));transition:transform .12s linear}
+  .weg-reel{position:absolute;top:0;left:0;width:100%;display:flex;flex-direction:column;transform:translateY(calc(var(--r,0) * -25%));transition:transform .12s linear}
+  .weg-reel span{height:clamp(190px,22vw,290px);display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:500;line-height:1;font-size:clamp(5.5rem,12vw,9.5rem);background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .weg-detail{position:relative;margin:var(--s-7) auto 0;max-width:560px;min-height:7em}
+  .wd{position:absolute;inset:0;text-align:center;opacity:0;transform:translateY(16px);transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
+  .wd.is-on{opacity:1;transform:none}
+  .wd h3{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.4rem,1.1rem+1vw,1.95rem);letter-spacing:-.015em}
+  .wd p{color:var(--muted);margin-top:var(--s-3);font-size:1.05rem;line-height:1.6}
+  @media (max-width:760px){
+    .weg-track{height:340vh}
+    .weg-grid{grid-template-columns:1fr;gap:var(--s-6);justify-items:center;text-align:center}
+    .weg-copy{text-align:center}
+    .weg-list{align-items:center}
+  }
+  /* Fallback / reduced-motion: kein Sticky, alle Schritte statisch untereinander */
+  .weg-static .weg-track{height:auto}
+  .weg-static .weg-sticky{position:static;height:auto;display:block;padding:var(--s-8) 0}
+  .weg-static .weg-detail{min-height:0;max-width:none}
+  .weg-static .wd{position:relative;inset:auto;opacity:1;transform:none;text-align:left;margin-top:var(--s-5)}
+  .weg-static .weg-orb{transform:translate(-50%,-50%) scale(1)}
+
   /* ===== für wen — asymmetric label/text rows ===== */
   .rows{display:grid;gap:0}
   .frow{display:grid;grid-template-columns:minmax(140px,260px) 1fr;gap:var(--s-6) var(--s-7);align-items:start;padding:var(--s-7) 0;border-top:1px solid var(--line)}
@@ -612,19 +651,39 @@
       </div>
     </div></section>
 
-    <section class="blk" id="ablauf"><div class="wrap reveal">
-      <div class="blk-head head">
-        <span class="klabel">So läuft's ab</span>
-        <h2>Dein Weg zu <em>planbarem</em> Wachstum.</h2>
-        <p class="lead">Vier klare Schritte — vom ersten Gespräch bis zur laufenden Skalierung.</p>
+    <section class="weg" id="ablauf" aria-label="Dein Weg zu planbarem Wachstum">
+      <div class="weg-track">
+        <div class="weg-sticky"><div class="wrap">
+          <div class="weg-grid">
+            <div class="weg-copy reveal">
+              <span class="klabel">So läuft's ab</span>
+              <h2>Dein Weg zu <em>planbarem</em> Wachstum.</h2>
+              <p class="lead">Vier Schritte — vom ersten Gespräch bis zur laufenden Skalierung. Scroll dich durch.</p>
+              <ol class="weg-list">
+                <li class="is-on" data-i="0"><span class="wn">01</span> Strategie-Call</li>
+                <li data-i="1"><span class="wn">02</span> Setup &amp; Onboarding</li>
+                <li data-i="2"><span class="wn">03</span> Content &amp; Betreuung</li>
+                <li data-i="3"><span class="wn">04</span> Skalierung &amp; Reporting</li>
+              </ol>
+            </div>
+            <div class="weg-stage">
+              <svg class="weg-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <defs><linearGradient id="wegGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00B888"/><stop offset="1" stop-color="#2FBEEA"/></linearGradient></defs>
+                <circle class="rg-bg" cx="110" cy="110" r="100"/>
+                <circle class="rg-fg" cx="110" cy="110" r="100"/>
+              </svg>
+              <div class="weg-orb" aria-hidden="true"><div class="weg-reel"><span>1</span><span>2</span><span>3</span><span>4</span></div></div>
+            </div>
+          </div>
+          <div class="weg-detail">
+            <div class="wd is-on" data-i="0"><h3>Strategie-Call</h3><p>Wir verstehen dein Ziel, deine Zielgruppe und deinen Status quo — und zeigen dir, wie dein System aussieht.</p></div>
+            <div class="wd" data-i="1"><h3>Setup &amp; Onboarding</h3><p>Wir bauen Profile, Branding und Content-Strategie auf und richten deine PEAKING-Plattform ein.</p></div>
+            <div class="wd" data-i="2"><h3>Content &amp; Betreuung</h3><p>Laufende Produktion und persönliche Betreuung. Du gibst die Richtung vor, wir setzen um.</p></div>
+            <div class="wd" data-i="3"><h3>Skalierung &amp; Reporting</h3><p>Reichweite, Leads und Umsatz wachsen — jeden Fortschritt verfolgst du transparent in PEAKING.</p></div>
+          </div>
+        </div></div>
       </div>
-      <div class="steps">
-        <div class="step"><div class="num">01</div><div class="st-body"><h3>Strategie-Call</h3><p>Wir verstehen dein Ziel, deine Zielgruppe und deinen Status quo — und zeigen dir, wie dein System aussieht.</p></div></div>
-        <div class="step"><div class="num">02</div><div class="st-body"><h3>Setup &amp; Onboarding</h3><p>Wir bauen Profile, Branding und Content-Strategie auf und richten deine PEAKING-Plattform ein.</p></div></div>
-        <div class="step"><div class="num">03</div><div class="st-body"><h3>Content &amp; Betreuung</h3><p>Laufende Produktion und persönliche Betreuung. Du gibst die Richtung vor, wir setzen um.</p></div></div>
-        <div class="step"><div class="num">04</div><div class="st-body"><h3>Skalierung &amp; Reporting</h3><p>Reichweite, Leads und Umsatz wachsen — jeden Fortschritt verfolgst du transparent in PEAKING.</p></div></div>
-      </div>
-    </div></section>
+    </section>
 
     <section class="blk" id="faq"><div class="wrap wrap-narrow reveal">
       <div class="blk-head head">
@@ -754,6 +813,37 @@
         var on=Math.round(p*climb.length);climb.forEach(function(c,i){c.classList.toggle('on',i<on);});
       }
       if(range){range.addEventListener('input',function(){apply(range.value/100);});apply(range.value/100);}
+    })();
+
+    // ===== Weg: Scroll-Journey (wachsender Kreis + 1→4-Reel) =====
+    (function(){
+      var sec=document.getElementById('ablauf'); if(!sec||sec.className.indexOf('weg')<0)return;
+      var track=sec.querySelector('.weg-track'),ring=sec.querySelector('.rg-fg');
+      var lis=Array.prototype.slice.call(sec.querySelectorAll('.weg-list li'));
+      var wds=Array.prototype.slice.call(sec.querySelectorAll('.wd'));
+      var CIRC=628;
+      function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches){sec.classList.add('weg-static');return;}
+      var last=-1;
+      function tick(){
+        var r=track.getBoundingClientRect();
+        var total=r.height-window.innerHeight;
+        var p=clamp((-r.top)/(total||1),0,1);
+        var reel=p*3;
+        sec.style.setProperty('--r',reel.toFixed(3));
+        sec.style.setProperty('--orb',(0.8+p*0.2).toFixed(3));
+        if(ring)ring.style.strokeDashoffset=(CIRC*(1-p)).toFixed(1);
+        var act=clamp(Math.round(reel),0,3);
+        if(act!==last){last=act;
+          lis.forEach(function(li,i){li.classList.toggle('is-on',i===act);});
+          wds.forEach(function(d,i){d.classList.toggle('is-on',i===act);});
+        }
+      }
+      var ticking=false;
+      function onScroll(){if(!ticking){requestAnimationFrame(function(){tick();ticking=false;});ticking=true;}}
+      window.addEventListener('scroll',onScroll,{passive:true});
+      window.addEventListener('resize',onScroll);
+      tick();
     })();
 
     // ===== scrollspy nav-state (handmade touch) =====
