@@ -116,16 +116,19 @@
     .burger{display:flex}
   }
 
-  /* ===== hero — left-aligned, editorial, type-first ===== */
-  .hero{position:relative;overflow:hidden;padding:var(--s-7) 0 var(--s-9)}
+  /* ===== hero — 2-col editorial, type-first left, growth-panel right ===== */
+  .hero{position:relative;overflow:hidden;padding:var(--s-8) 0 var(--s-9)}
   .hero .glow{position:absolute;top:-12%;right:-6%;width:46%;height:60%;pointer-events:none;z-index:0;
-    background:radial-gradient(closest-side,rgba(0,184,136,.10),transparent 72%);filter:blur(8px)}
+    background:radial-gradient(closest-side,rgba(0,184,136,.08),transparent 72%);filter:blur(8px)}
+  /* corner/index markers — technical hairline framing */
   .hero .wrap{position:relative;z-index:1}
-  .hero-logo{display:block;width:clamp(150px,18vw,210px);height:auto;mix-blend-mode:screen;margin-bottom:var(--s-5);opacity:.95}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(var(--s-7),5vw,var(--s-10));align-items:center}
+  .hero-copy{position:relative}
+  .hero-logo{display:block;width:clamp(150px,16vw,200px);height:auto;mix-blend-mode:screen;margin-bottom:var(--s-6);opacity:.95}
   .hero .eyebrow{margin-bottom:var(--s-5)}
-  .hero h1{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(3rem,1.2rem+7vw,6.6rem);line-height:.98;letter-spacing:-.028em;max-width:15ch;font-variation-settings:"opsz" 120}
-  .hero h1 em{font-style:italic;font-weight:450;color:var(--emerald)}
-  .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem+.5vw,1.32rem);margin-top:var(--s-6);max-width:52ch;line-height:1.6}
+  .hero h1{font-family:"Fraunces",serif;font-weight:520;font-size:clamp(3.3rem,1.1rem+8.4vw,7rem);line-height:.94;letter-spacing:-.032em;max-width:14ch;font-variation-settings:"opsz" 144}
+  .hero h1 em{font-style:italic;font-weight:480;color:var(--emerald)}
+  .hero .sub{color:var(--muted);font-size:clamp(1.12rem,1rem+.55vw,1.34rem);margin-top:var(--s-6);max-width:46ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
   .cta-row{display:flex;gap:var(--s-6);align-items:center;flex-wrap:wrap;margin-top:var(--s-7)}
   .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
@@ -142,9 +145,67 @@
   .peak::before{content:"";width:28px;height:1px;background:var(--line-3)}
   .peak b{color:var(--muted);font-weight:400}
 
+  /* ===== hero growth panel — stylised analytics dashboard (PEAKING-style) ===== */
+  .panel{position:relative;background:var(--surface);border:1px solid var(--line-2);border-radius:20px;
+    box-shadow:var(--hi),var(--shadow-lg);overflow:hidden}
+  .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
+  /* corner index markers */
+  .panel .corner{position:absolute;width:9px;height:9px;border:1px solid var(--line-3);z-index:2;pointer-events:none}
+  .panel .corner.tl{top:10px;left:10px;border-right:0;border-bottom:0}
+  .panel .corner.tr{top:10px;right:10px;border-left:0;border-bottom:0}
+  .panel .corner.bl{bottom:10px;left:10px;border-right:0;border-top:0}
+  .panel .corner.br{bottom:10px;right:10px;border-left:0;border-top:0}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);padding:var(--s-5) var(--s-5) var(--s-4);border-bottom:1px solid var(--line)}
+  .panel-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
+  .panel-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald)}
+  .panel-head .meta{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+  /* chart */
+  .chart{position:relative;padding:var(--s-5) var(--s-5) var(--s-4)}
+  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:var(--s-6);width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
+  .chart svg{display:block;width:100%;height:auto}
+  .chart .grid-line{stroke:var(--line);stroke-width:1}
+  .chart .area{fill:url(#areaFill)}
+  .chart .curve{fill:none;stroke:var(--emerald);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+  .chart .bar{fill:var(--surface-3)}
+  .chart .bar.up{fill:rgba(0,184,136,.32)}
+  .chart .node-dot{fill:var(--emerald)}
+  .chart .node-ring{fill:none;stroke:var(--emerald);stroke-width:1.4;opacity:.5}
+  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-3);padding-left:var(--s-5);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
+  /* stat tiles */
+  .panel-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+  .pstat{padding:var(--s-4) var(--s-4) var(--s-5)}
+  .pstat + .pstat{border-left:1px solid var(--line)}
+  .pstat .pv{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(1.35rem,1rem+1.1vw,1.7rem);line-height:1;letter-spacing:-.02em;color:var(--paper)}
+  .pstat .pv em{font-style:normal;color:var(--emerald)}
+  .pstat .pl{font-family:"Archivo",sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:var(--s-2);line-height:1.3}
+  .pstat .trend{font-family:"JetBrains Mono",monospace;font-size:9px;color:var(--emerald);margin-top:var(--s-2);display:flex;align-items:center;gap:4px}
+  .pstat .trend svg{width:9px;height:9px;stroke:var(--emerald);stroke-width:2.4;fill:none}
+  /* climb-bar motif row */
+  .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
+  .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
+  .panel-climb .cb.on{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.35))}
+  .panel-tag{position:absolute;z-index:3;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.06em;color:var(--emerald);background:var(--emerald-ink);border:1px solid rgba(0,184,136,.4);border-radius:5px;padding:3px 7px}
+  .panel-tag.t1{top:78px;right:24px}
+
+  /* hero responsive: stack panel under copy on tablet/mobile */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:var(--s-8)}
+    .hero h1{max-width:18ch}
+    .hero .sub{max-width:54ch}
+    .hero-visual{max-width:520px}
+  }
+  /* mobile: ONE logo only — hide hero wordmark, keep header s2s mark */
+  @media (max-width:700px){
+    .hero-logo{display:none}
+    .hero{padding-top:var(--s-7)}
+    .panel-tag.t1{top:70px;right:16px}
+  }
+
   /* ===== trust strip — compact, editorial ===== */
   .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .trust .row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5) var(--s-7);padding:var(--s-5) 0}
+  .trust .tlab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-right:var(--s-5);border-right:1px solid var(--line-2);align-self:stretch;display:flex;align-items:center}
+  @media (max-width:560px){.trust .tlab{border-right:0;padding-right:0;width:100%}}
   .trust .item{display:flex;align-items:center;gap:var(--s-3);font-size:.92rem;color:var(--muted);font-weight:500}
   .chk{flex:0 0 auto;width:18px;height:18px;display:grid;place-items:center}
   .chk svg{width:14px;height:14px;stroke:var(--emerald);stroke-width:2.6;fill:none}
@@ -153,6 +214,10 @@
   section.blk{padding:var(--section-y) 0;border-top:1px solid var(--line)}
   .trust + section.blk{border-top:0}
   .blk-head{margin-bottom:var(--s-8)}
+  /* section index marker — small technical mono coordinate above the label */
+  .ix{display:flex;align-items:center;gap:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--faint);margin-bottom:var(--s-4)}
+  .ix::after{content:"";flex:1;height:1px;background:var(--line);max-width:120px}
+  .ix b{color:var(--emerald);font-weight:400}
 
   /* ===== leistungen — bento (1 hero + 2 narrow) ===== */
   .bento{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s-4)}
@@ -167,6 +232,7 @@
   .cell-hero p{font-size:1.06rem;margin-top:var(--s-4);max-width:34ch}
   .cell-hero .spacer{flex:1}
   .cell-hero .tags{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-6)}
+  .cell-hero::after{content:"";position:absolute;top:18px;right:18px;width:10px;height:10px;border-top:1px solid var(--line-3);border-right:1px solid var(--line-3);pointer-events:none}
   .tag{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted);padding:6px 12px;border:1px solid var(--line-2);border-radius:100px}
   @media (max-width:760px){.bento{grid-template-columns:1fr}.cell-hero{grid-row:auto}}
 
@@ -280,21 +346,91 @@
     <section class="hero" id="hero">
       <span class="glow" aria-hidden="true"></span>
       <div class="wrap">
-        <img class="hero-logo r" src="/assets/wordmark.png" alt="social2scale">
-        <p class="eyebrow r" style="animation-delay:.06s"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
-        <h1 class="r" style="animation-delay:.1s">Wir bauen das <em>System</em>, das dich planbar skaliert.</h1>
-        <p class="sub r" style="animation-delay:.2s">Du hast (noch) keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b> System statt Zufall.</p>
-        <div class="cta-row r" style="animation-delay:.3s">
-          <a class="btn btn-primary" id="cta" href="#" data-cta-url="#">Strategie-Call buchen →</a>
-          <a class="textlink" href="#leistungen">Was wir machen</a>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <img class="hero-logo r" src="/assets/wordmark.png" alt="social2scale">
+            <p class="eyebrow r" style="animation-delay:.06s"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
+            <h1 class="r" style="animation-delay:.1s">Wir bauen das <em>System</em>, das dich planbar skaliert.</h1>
+            <p class="sub r" style="animation-delay:.2s">Du hast (noch) keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b> System statt Zufall.</p>
+            <div class="cta-row r" style="animation-delay:.3s">
+              <a class="btn btn-primary" id="cta" href="#" data-cta-url="#">Strategie-Call buchen →</a>
+              <a class="textlink" href="#leistungen">Was wir machen</a>
+            </div>
+            <p class="peak r" style="animation-delay:.4s">Plattform: Powered by <b>PEAKING</b></p>
+          </div>
+
+          <div class="hero-visual r" style="animation-delay:.34s">
+            <div class="panel" role="img" aria-label="Wachstums-Dashboard: Reichweite steigt um 218 Prozent, 47 Leads pro Monat, von 0 zu 1 sichtbar.">
+              <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+              <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+              <span class="panel-tag t1" aria-hidden="true">live · PEAKING</span>
+
+              <div class="panel-head">
+                <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
+                <span class="meta">Q · 0 → skaliert</span>
+              </div>
+
+              <div class="chart" aria-hidden="true">
+                <div class="ylab"><span>hoch</span><span>·</span><span>0</span></div>
+                <svg viewBox="0 0 320 130" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#00B888" stop-opacity=".22"/>
+                      <stop offset="100%" stop-color="#00B888" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <line class="grid-line" x1="0" y1="26" x2="320" y2="26"/>
+                  <line class="grid-line" x1="0" y1="65" x2="320" y2="65"/>
+                  <line class="grid-line" x1="0" y1="104" x2="320" y2="104"/>
+                  <rect class="bar" x="14" y="96" width="14" height="18"/>
+                  <rect class="bar" x="54" y="88" width="14" height="26"/>
+                  <rect class="bar up" x="94" y="74" width="14" height="40"/>
+                  <rect class="bar up" x="134" y="60" width="14" height="54"/>
+                  <rect class="bar up" x="174" y="44" width="14" height="70"/>
+                  <rect class="bar up" x="214" y="30" width="14" height="84"/>
+                  <rect class="bar up" x="254" y="18" width="14" height="96"/>
+                  <path class="area" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12 L294 114 L14 114 Z"/>
+                  <path class="curve" d="M14 104 L54 96 L94 82 L134 66 L174 48 L214 34 L254 22 L294 12"/>
+                  <circle class="node-ring" cx="294" cy="12" r="7"/>
+                  <circle class="node-dot" cx="294" cy="12" r="3.4"/>
+                </svg>
+                <div class="xlab"><span>W1</span><span>W4</span><span>W8</span><span>jetzt</span></div>
+              </div>
+
+              <div class="panel-stats">
+                <div class="pstat">
+                  <div class="pv"><em>+218%</em></div>
+                  <div class="pl">Reichweite</div>
+                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</div>
+                </div>
+                <div class="pstat">
+                  <div class="pv"><em>47</em></div>
+                  <div class="pl">Leads / Mo</div>
+                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>+12</div>
+                </div>
+                <div class="pstat">
+                  <div class="pv">0&nbsp;→&nbsp;<em>1</em></div>
+                  <div class="pl">Sichtbar</div>
+                  <div class="trend"><svg viewBox="0 0 24 24"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</div>
+                </div>
+              </div>
+
+              <div class="panel-climb" aria-hidden="true">
+                <span class="cb" style="height:30%"></span><span class="cb" style="height:42%"></span>
+                <span class="cb on" style="height:55%"></span><span class="cb on" style="height:68%"></span>
+                <span class="cb on" style="height:80%"></span><span class="cb on" style="height:92%"></span>
+                <span class="cb on" style="height:100%"></span>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="peak r" style="animation-delay:.4s">Plattform: Powered by <b>PEAKING</b></p>
       </div>
     </section>
 
     <section class="trust" aria-label="Unsere Stärken">
       <div class="wrap">
         <div class="row reveal">
+          <span class="tlab" aria-hidden="true">[ Standard ]</span>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</div>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</div>
           <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in PEAKING</div>
@@ -305,6 +441,7 @@
 
     <section class="blk" id="leistungen"><div class="wrap reveal">
       <div class="blk-head head">
+        <span class="ix"><b>01</b> / Leistungen</span>
         <span class="klabel">Was wir machen</span>
         <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
         <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
@@ -334,6 +471,7 @@
 
     <section class="blk" id="ablauf"><div class="wrap reveal">
       <div class="blk-head head">
+        <span class="ix"><b>02</b> / Ablauf</span>
         <span class="klabel">So läuft's ab</span>
         <h2>Dein Weg zu <em>planbarem</em> Wachstum.</h2>
         <p class="lead">Vier klare Schritte — vom ersten Gespräch bis zur laufenden Skalierung.</p>
@@ -348,6 +486,7 @@
 
     <section class="blk" id="fuer-wen"><div class="wrap reveal">
       <div class="blk-head head">
+        <span class="ix"><b>03</b> / Für wen</span>
         <span class="klabel">Für wen</span>
         <h2>Für die, die <em>endlich</em> sichtbar werden wollen.</h2>
       </div>
@@ -369,6 +508,7 @@
 
     <section class="blk" id="ergebnisse"><div class="wrap reveal">
       <div class="blk-head head">
+        <span class="ix"><b>04</b> / Ergebnisse</span>
         <span class="klabel">Ergebnisse</span>
         <h2>Wachstum, das man <em>sieht</em>.</h2>
         <p class="lead">Was unser System bewegt — sobald die ersten Wochen laufen.</p>
@@ -387,6 +527,7 @@
 
     <section class="blk" id="ueber-uns"><div class="wrap reveal">
       <div class="blk-head head">
+        <span class="ix"><b>05</b> / Über uns</span>
         <span class="klabel">Die Gründer</span>
         <h2>Zwei, die <em>anpacken</em>.</h2>
       </div>
@@ -399,6 +540,7 @@
 
     <section class="blk" id="faq"><div class="wrap wrap-narrow reveal">
       <div class="blk-head head">
+        <span class="ix"><b>06</b> / FAQ</span>
         <span class="klabel">Häufige Fragen</span>
         <h2>Gut zu <em>wissen</em>.</h2>
       </div>
