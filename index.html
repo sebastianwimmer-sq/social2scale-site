@@ -331,6 +331,21 @@
   .frow h3{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.5rem,1.2rem+1.2vw,2rem);letter-spacing:-.018em;margin-top:var(--s-3)}
   .frow .ftxt p{font-size:1.04rem;color:var(--muted);margin-top:var(--s-4);max-width:56ch;line-height:1.6}
   @media (max-width:680px){.frow{grid-template-columns:1fr;gap:var(--s-2);padding:var(--s-6) 0}}
+  /* Für-wen hervorgehoben: aus Hairline-Liste → prominente Aurora-Karten */
+  #fuer-wen .rows{gap:var(--s-4)}
+  #fuer-wen .frow{border-top:0;align-items:center;padding:clamp(24px,3vw,36px);border-radius:18px;
+    background:
+      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.22),transparent 58%),
+      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.17),transparent 60%),
+      var(--surf-grad);
+    border:1px solid rgba(0,184,136,.26);box-shadow:var(--depth);
+    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  #fuer-wen .frow:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-3px);
+    background:
+      radial-gradient(130% 130% at 0% 0%,rgba(0,184,136,.30),transparent 58%),
+      radial-gradient(130% 130% at 100% 100%,rgba(31,166,224,.23),transparent 60%),
+      var(--surf-grad-hover)}
+  #fuer-wen .ftag{display:inline-block;font-family:"Archivo",sans-serif;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:5px 12px;border-radius:100px}
 
   /* ===== ergebnisse — left stat row + pull-quote ===== */
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
@@ -459,7 +474,6 @@
       <div class="wrap">
         <div class="proof-grid reveal">
           <div class="proof-copy">
-            <span class="ix"><b>00</b> / Live</span>
             <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
             <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools. Powered by PEAKING.</p>
           </div>
@@ -555,7 +569,6 @@
 
     <section class="blk" id="leistungen"><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="ix"><b>01</b> / Leistungen</span>
         <span class="klabel">Was wir machen</span>
         <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
         <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
@@ -585,7 +598,6 @@
 
     <section class="blk" id="ablauf"><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="ix"><b>02</b> / Ablauf</span>
         <span class="klabel">So läuft's ab</span>
         <h2>Dein Weg zu <em>planbarem</em> Wachstum.</h2>
         <p class="lead">Vier klare Schritte — vom ersten Gespräch bis zur laufenden Skalierung.</p>
@@ -600,9 +612,9 @@
 
     <section class="blk" id="fuer-wen"><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="ix"><b>03</b> / Für wen</span>
         <span class="klabel">Für wen</span>
         <h2>Für die, die <em>endlich</em> sichtbar werden wollen.</h2>
+        <p class="lead">Drei Ausgangslagen, ein Ziel: aus „kennt uns keiner" wird planbares, sichtbares Wachstum. Findest du dich wieder?</p>
       </div>
       <div class="rows">
         <div class="frow">
@@ -622,7 +634,6 @@
 
     <section class="blk" id="ergebnisse"><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="ix"><b>04</b> / Ergebnisse</span>
         <span class="klabel">Ergebnisse</span>
         <h2>Wachstum, das man <em>sieht</em>.</h2>
         <p class="lead">Was unser System bewegt — sobald die ersten Wochen laufen.</p>
@@ -641,7 +652,6 @@
 
     <section class="blk" id="ueber-uns"><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="ix"><b>05</b> / Über uns</span>
         <span class="klabel">Die Gründer</span>
         <h2>Zwei, die <em>anpacken</em>.</h2>
       </div>
@@ -654,7 +664,6 @@
 
     <section class="blk" id="faq"><div class="wrap wrap-narrow reveal">
       <div class="blk-head head">
-        <span class="ix"><b>06</b> / FAQ</span>
         <span class="klabel">Häufige Fragen</span>
         <h2>Gut zu <em>wissen</em>.</h2>
       </div>
