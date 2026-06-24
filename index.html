@@ -90,6 +90,12 @@
       background-attachment:scroll;background-size:cover;background-repeat:no-repeat}
   }
   body.nav-open{overflow:hidden}
+  /* ===== s2s-Loader (Intro + Seitenwechsel) — kurze Marke, fadet weg ===== */
+  #loader{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#06170F 0%,#03080D 72%);transition:opacity .55s var(--ease),visibility .55s var(--ease)}
+  #loader img{width:clamp(84px,16vw,124px);height:auto;animation:s2sPulse 1.15s var(--ease) infinite}
+  #loader.done{opacity:0;visibility:hidden;pointer-events:none}
+  @keyframes s2sPulse{0%,100%{opacity:.42;transform:scale(.95)}50%{opacity:1;transform:scale(1.03)}}
+  @media (prefers-reduced-motion:reduce){#loader img{animation:none}#loader{transition:opacity .2s linear}}
   .skip{position:absolute;left:-9999px}.skip:focus-visible{left:16px;top:16px;z-index:200;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
   .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 var(--px)}
   .wrap-narrow{max-width:760px}
@@ -112,7 +118,7 @@
   .head{max-width:42ch}
 
   /* ===== sticky header + nav (flat, hairline) ===== */
-  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:120;background:rgba(10,11,13,.82);backdrop-filter:blur(14px) saturate(140%)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));backdrop-filter:blur(16px) saturate(150%)}
   /* header: freigestellte s2s-Bildmarke als Anchor links (transparent, kein schwarzer Kasten) */
   .bar .brand{flex:0 0 auto;display:flex;align-items:center;text-decoration:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
   .bar .brand img{height:30px;width:auto;display:block}
@@ -293,6 +299,18 @@
   .tag{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted);padding:6px 13px;border:1px solid var(--line-2);border-radius:100px;background:linear-gradient(180deg,var(--surface-3),var(--surface-2));box-shadow:var(--pill-depth);transition:border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
   .tag:hover{border-color:var(--line-3);color:var(--paper);transform:translateY(-1px)}
   @media (max-width:760px){.bento{grid-template-columns:1fr}.cell-hero{grid-row:auto}}
+  /* leistungen-Karten im Aurora-Gradient-Look (Emerald TL → Teal BR), passend zum Seiten-Wash */
+  #leistungen .cell{background:
+      radial-gradient(135% 130% at 0% 0%,rgba(0,184,136,.14),transparent 52%),
+      radial-gradient(135% 130% at 100% 100%,rgba(31,166,224,.12),transparent 56%),
+      var(--surf-grad);
+    border-color:rgba(0,184,136,.20)}
+  #leistungen .cell:hover{background:
+      radial-gradient(135% 130% at 0% 0%,rgba(0,184,136,.20),transparent 52%),
+      radial-gradient(135% 130% at 100% 100%,rgba(31,166,224,.16),transparent 56%),
+      var(--surf-grad-hover);
+    border-color:rgba(0,184,136,.44)}
+  #leistungen .cell-hero{border-color:rgba(0,184,136,.30)}
 
   /* ===== ablauf — large overlapping mono numbers, left editorial ===== */
   .steps{display:grid;gap:var(--s-2);margin-top:0}
@@ -371,6 +389,22 @@
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
+
+  <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.png" alt="" width="124" height="62"></div>
+  <script>
+  (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
+    function hide(){l.classList.add('done');}
+    window.addEventListener('load',function(){setTimeout(hide,Math.max(0,520-(Date.now()-t0)));});
+    setTimeout(hide,2600);
+    document.addEventListener('click',function(e){
+      var a=e.target.closest?e.target.closest('a'):null;if(!a)return;
+      var h=a.getAttribute('href')||'';
+      if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(mailto:|tel:)/i.test(h))return;
+      if(/^https?:\/\//i.test(h)&&h.indexOf('social2scale.com')===-1)return; /* externe Links: kein Loader */
+      l.classList.remove('done');
+    });
+  })();
+  </script>
 
   <header class="bar">
     <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
@@ -528,7 +562,7 @@
       </div>
       <div class="bento">
         <div class="cell cell-hero">
-          <div class="n">01 — Fundament</div>
+          <div class="n">Fundament</div>
           <h3>Setup</h3>
           <p>Wir bauen deinen kompletten Social-Auftritt professionell auf — Profile, Branding, Strategie.</p>
           <span class="spacer"></span>
@@ -537,12 +571,12 @@
           </div>
         </div>
         <div class="cell">
-          <div class="n">02</div>
+          <div class="n">Dein Team</div>
           <h3>Betreuung</h3>
           <p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot — echte Menschen.</p>
         </div>
         <div class="cell">
-          <div class="n">03</div>
+          <div class="n">Wachstum</div>
           <h3>Skalierung</h3>
           <p>Reichweite → Leads → Umsatz. Inklusive Ads &amp; Paid Growth, messbar in deiner PEAKING-Plattform.</p>
         </div>
