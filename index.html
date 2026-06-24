@@ -255,8 +255,7 @@
   .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
   .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
   /* ===== Vorher/Nachher-Regler im Growth-Panel ===== */
-  .chart .growth-scale{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(var(--p,1));transition:transform .09s linear}
-  .chart .growth-scale .curve{vector-effect:non-scaling-stroke}
+  /* growth-scale: Balken/Kurve werden per JS-Geometrie gesetzt (kein SVG-transform → Safari-fest) */
   .reglr{margin:var(--s-4) 0 var(--s-3)}
   .reglr-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-2)}
   .reglr-lbl{font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
@@ -405,7 +404,7 @@
   /* ===== footer — editorial, wordmark left, meta right ===== */
   footer{border-top:1px solid var(--line);padding:var(--s-9) 0 var(--s-6)}
   .foot-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:var(--s-7);align-items:start}
-  .foot-brand img{height:52px;width:auto;mix-blend-mode:screen;display:block}
+  .foot-brand img{height:52px;width:auto;display:block}
   .foot-brand p{font-family:"Hanken Grotesk",sans-serif;color:var(--muted);font-size:.98rem;margin-top:var(--s-4);max-width:34ch;line-height:1.6}
   .foot-nav{display:flex;flex-direction:column;gap:var(--s-3);list-style:none}
   .foot-nav a{font-family:"Archivo",sans-serif;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
@@ -710,7 +709,7 @@
   <footer><div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <img src="/assets/s2s.png" alt="social2scale" width="56" height="56">
+        <img src="/assets/s2s-t.png" alt="social2scale" width="104" height="52">
         <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
       </div>
       <ul class="foot-nav">
@@ -782,13 +781,24 @@
 
       // Vorher/Nachher-Regler — treibt Chart-Höhe + KPI-Zahlen + Status
       var range=panel.querySelector('#growth-range');
-      var scale=panel.querySelector('.growth-scale');
       var kReach=panel.querySelector('#kpi-reach'),kLeads=panel.querySelector('#kpi-leads'),kRev=panel.querySelector('#kpi-rev');
       var stateEl=panel.querySelector('#rgl-state'),meta=panel.querySelector('#panel-meta');
       var climb=Array.prototype.slice.call(panel.querySelectorAll('.panel-climb .cb'));
+      var bars=Array.prototype.slice.call(panel.querySelectorAll('.growth-scale .bar'));
+      var area=panel.querySelector('.growth-scale .area'),cv=panel.querySelector('.growth-scale .curve');
+      var ring=panel.querySelector('.growth-scale .node-ring'),dot=panel.querySelector('.growth-scale .node-dot');
+      var BASE=114,FH=[18,26,40,54,70,84,96],X=[14,54,94,134,174,214,254,294],YF=[104,96,82,66,48,34,22,12];
       function state(p){return p<.12?'unsichtbar':p<.5?'wird sichtbar':p<.88?'wächst':'skaliert';}
+      function geo(p){ // direkte Geometrie statt transform — überall identisch
+        var pp=0.05+p*0.95;
+        bars.forEach(function(b,i){var h=FH[i]*pp;b.setAttribute('height',h.toFixed(1));b.setAttribute('y',(BASE-h).toFixed(1));});
+        var d='M'+X.map(function(x,i){return x+' '+(BASE-(BASE-YF[i])*pp).toFixed(1);}).join(' L');
+        if(cv)cv.setAttribute('d',d);
+        if(area)area.setAttribute('d',d+' L294 '+BASE+' L14 '+BASE+' Z');
+        var ny=(BASE-(BASE-12)*pp).toFixed(1);if(ring)ring.setAttribute('cy',ny);if(dot)dot.setAttribute('cy',ny);
+      }
       function apply(p){
-        if(scale)scale.style.setProperty('--p',(0.06+p*0.94).toFixed(3));
+        geo(p);
         if(kReach)kReach.textContent='+'+Math.round(218*p)+'%';
         if(kLeads)kLeads.textContent=Math.round(47*p);
         if(kRev)kRev.textContent='€'+(4.8*p).toFixed(1).replace('.',',')+'k';
