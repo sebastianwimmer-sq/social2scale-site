@@ -548,7 +548,7 @@
      ============================================================ */
   .fw-personas{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--s-4)}
   .fw-pcard{position:relative;display:flex;flex-direction:column;overflow:hidden;
-    grid-column:span 6;
+    grid-column:span 4;
     padding:clamp(26px,3vw,38px);border-radius:20px;
     background:
       radial-gradient(135% 130% at 0% 0%,rgba(0,184,136,.20),transparent 58%),
@@ -591,7 +591,7 @@
   .fw-pline.pain .val{color:var(--muted)}
   .fw-pline.win .val{color:var(--paper);font-weight:500}
   .fw-pbody{min-width:0}
-  @media (max-width:780px){
+  @media (max-width:880px){
     .fw-personas{grid-template-columns:1fr;gap:var(--s-4)}
     .fw-pcard,.fw-pcard.lead{grid-column:auto}
   }
@@ -721,8 +721,8 @@
 
       <div class="fw-personas">
 
-        <!-- lead persona — Coaches (wide bento cell) -->
-        <article class="fw-pcard lead">
+        <!-- Coaches -->
+        <article class="fw-pcard">
           <span class="fw-pnum" aria-hidden="true">01</span>
           <div class="fw-phead">
             <span class="fw-picon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v9"/><circle cx="12" cy="16.5" r="3.5"/><path d="M5 6l2 2M19 6l-2 2"/></svg></span>
