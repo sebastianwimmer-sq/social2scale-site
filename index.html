@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="preload" as="image" href="/assets/wordmark-t.png" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-latin.woff2" crossorigin>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
@@ -473,7 +473,10 @@
     <section class="hero" id="hero">
       <div class="wrap">
         <div class="hero-center">
-          <img class="hero-logo r" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
+          <picture>
+            <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 680px">
+            <img class="hero-logo r" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
+          </picture>
           <p class="eyebrow r" style="animation-delay:.08s"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
           <h1 class="r" style="animation-delay:.14s">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</h1>
           <p class="sub r" style="animation-delay:.24s">Keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b> Done-for-you, persönlich betreut, messbar.</p>
