@@ -475,7 +475,7 @@
   /* — founders: two glass cards, editorial composition (offset 2nd card on
        desktop for an asymmetric, non-stacked feel). Each card pairs an
        emerald-tinted photo plate with name / role / human one-liner. — */
-  .ab-founders{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(var(--s-4),2.5vw,var(--s-6));align-items:start}
+  .ab-founders{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(var(--s-4),2.5vw,var(--s-6));align-items:stretch}
   .ab-fcard{position:relative;overflow:hidden;display:flex;flex-direction:column;
     background:
       radial-gradient(120% 100% at 8% 0%,rgba(0,184,136,.12),transparent 56%),
@@ -489,7 +489,7 @@
   .ab-fcard:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-4px)}
   .ab-fcard:hover::before{opacity:1}
   /* desktop: stagger the second card downward for editorial asymmetry */
-  @media (min-width:881px){.ab-fcard:nth-child(2){margin-top:clamp(var(--s-7),5vw,var(--s-9))}}
+  /* Founder-Cards auf gleicher Hoehe — kein Stagger */
   /* emerald-tinted photo plate — portrait, ready to drop a real photo into */
   .ab-pic{position:relative;overflow:hidden;aspect-ratio:4/5;width:100%;border-radius:16px;
     background:
@@ -664,24 +664,10 @@
     <section class="ab-blk" aria-labelledby="ab-founders-h"><div class="wrap reveal">
       <div class="ab-blk-head">
         <p class="ab-rh"><b>№ 04</b> — Die Gründer</p>
-        <h2 id="ab-founders-h">Sebi &amp; Philipp</h2>
+        <h2 id="ab-founders-h">Phil &amp; Sebi</h2>
         <p class="lead">Zwei, die jeden Tag zusammen dran sitzen — und deine Marke wie ihre eigene behandeln.</p>
       </div>
       <div class="ab-founders">
-
-        <!-- TODO echte Foto -->
-        <article class="ab-fcard">
-          <div class="ab-pic" aria-hidden="true">
-            <span class="mono">S</span>
-            <span class="cap">Foto Sebi</span>
-          </div>
-          <div class="ab-fmeta">
-            <h3 class="ab-fname">Sebastian</h3>
-            <span class="ab-frole">Gründer</span>
-          </div>
-          <p class="ab-fline">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
-          <p class="ab-fbio">Verantwortet Strategie, Positionierung und Content-Richtung — und sorgt dafür, dass jeder Auftritt sofort verstanden wird.</p>
-        </article>
 
         <!-- TODO echte Foto -->
         <article class="ab-fcard">
@@ -695,6 +681,20 @@
           </div>
           <p class="ab-fline">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
           <p class="ab-fbio">Hält Produktion, Zahlen und Wachstum zusammen — und macht in PEAKING sichtbar, was wirklich wirkt.</p>
+        </article>
+
+        <!-- TODO echte Foto -->
+        <article class="ab-fcard">
+          <div class="ab-pic" aria-hidden="true">
+            <span class="mono">S</span>
+            <span class="cap">Foto Sebi</span>
+          </div>
+          <div class="ab-fmeta">
+            <h3 class="ab-fname">Sebastian</h3>
+            <span class="ab-frole">Gründer</span>
+          </div>
+          <p class="ab-fline">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
+          <p class="ab-fbio">Verantwortet Strategie, Positionierung und Content-Richtung — und sorgt dafür, dass jeder Auftritt sofort verstanden wird.</p>
         </article>
 
       </div>
