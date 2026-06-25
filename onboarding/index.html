@@ -145,6 +145,7 @@
   .success h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.9rem,1.3rem + 2.4vw,2.8rem);line-height:1.08;letter-spacing:-.015em;margin-top:26px}
   .success h2 em{font-style:italic;color:var(--emerald)}
   .success p{color:var(--muted);font-size:1.05rem;margin-top:16px;max-width:44ch;margin-inline:auto}
+  .success .kickoff-wrap{margin-top:32px}
   .success .home{display:inline-block;margin-top:30px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--paper);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:2px;transition:color .25s,border-color .25s}
   .success .home:hover{color:var(--emerald);border-color:var(--emerald)}
 
@@ -370,8 +371,14 @@
       <div class="success-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#00B888" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h2>Danke — wir haben deine <em>Antworten</em>!</h2>
-      <p>Wir gehen alles in Ruhe durch und melden uns persönlich bei dir. Ab jetzt machen wir dein Wachstum zu unserem.</p>
+      <h2>Geschafft — jetzt dein <em>Kickoff</em>.</h2>
+      <p>Wir haben deine Antworten. Buch dir jetzt deinen Kickoff-Termin — da legen wir gemeinsam den Startplan für dein Wachstum fest.</p>
+      <div class="kickoff-wrap">
+        <a id="kickoff-cta" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="btn-label">Kickoff-Termin buchen</span>
+          <span class="arr" aria-hidden="true">→</span>
+        </a>
+      </div>
       <a class="home" href="https://social2scale.com/">Zurück zu social2scale →</a>
     </section>
   </main>
@@ -394,15 +401,16 @@
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // Prefill Vorname aus URL (?vorname= oder ?firstname=), z. B. von der Danke-Seite verlinkt
+    // Prefill aus URL — Digistore / Danke-Seite reichen Name + E-Mail per Query mit.
+    // Akzeptierte Param-Namen: Name (vorname|firstname|first_name|fname|name), E-Mail (email|mail)
     try {
       var p = new URLSearchParams(location.search);
-      var v = (p.get('vorname') || p.get('firstname') || '').trim().slice(0, 40);
+      var v = (p.get('vorname') || p.get('firstname') || p.get('first_name') || p.get('fname') || p.get('name') || '').trim().slice(0, 80);
       if (v) {
         var vn = document.getElementById('vorname');
         if (vn && !vn.value) vn.value = v;
       }
-      var em = (p.get('email') || '').trim().slice(0, 120);
+      var em = (p.get('email') || p.get('mail') || '').trim().slice(0, 120);
       if (em) { var ee = document.getElementById('email'); if (ee && !ee.value) ee.value = em; }
     } catch (e) {}
 
@@ -418,10 +426,12 @@
     }
 
     // Web3Forms submit via fetch → eigener Success-State
+    var KICKOFF_URL = 'https://cal.com/REPLACE-KICKOFF'; // ANPASSEN: echte Cal.com-Kickoff-URL
     var form = document.getElementById('onboarding-form');
     var btn = document.getElementById('submit-btn');
     var errEl = document.getElementById('form-error');
     var successEl = document.getElementById('success');
+    var kickoffCta = document.getElementById('kickoff-cta');
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -439,6 +449,7 @@
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
         .then(function (r) {
           if (r.ok && r.json && r.json.success) {
+            if (kickoffCta) kickoffCta.setAttribute('href', KICKOFF_URL);
             form.style.display = 'none';
             successEl.classList.add('show');
             try { successEl.focus(); } catch (e) {}

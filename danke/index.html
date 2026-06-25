@@ -16,8 +16,9 @@
 <noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
   </style></noscript>
 <!-- ============================================================
-   ANPASSEN (Sebi/Phil): [P4] #cta-call data-call-url (Kickoff-Kalender) ·
-   [P5] #cta-form data-form-url (Onboarding-Fragebogen) · [P8] #support data-support-mail
+   ANPASSEN (Sebi/Phil): [P5] #start-cta/#cta-call/#cta-form data-form-url
+   (Onboarding-Fragebogen — alle Primär-CTAs; Kickoff folgt auf Success-Seite) ·
+   [P8] #support data-support-mail
    ============================================================ -->
 <style>
   :root{
@@ -361,8 +362,8 @@
           </p>
 
           <div class="cta-row">
-            <a class="btn btn-primary" id="start-cta" href="#" data-call-url="#" data-cta-url="#">Kickoff buchen &mdash; wir starten deinen Weg <span class="arr">&rarr;</span></a>
-            <span class="hint">Zwei Minuten &mdash; dann legen wir gemeinsam los.</span>
+            <a class="btn btn-primary" id="start-cta" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen &mdash; los geht&rsquo;s <span class="arr">&rarr;</span></a>
+            <span class="hint">Schritt 1 von 2 &mdash; danach buchst du direkt deinen Kickoff-Termin.</span>
           </div>
         </div>
       </div>
@@ -380,15 +381,15 @@
           <li>
             <span class="num" aria-hidden="true">1</span>
             <div class="body">
-              <h3>Kickoff-Call buchen</h3>
-              <p>Wähl dir gleich unten deinen Termin für den Strategie-Call. Hier lernen wir uns kennen und legen die Richtung für deinen Auftritt fest.</p>
+              <h3>Kurzes Onboarding ausfüllen</h3>
+              <p>Ein paar Fragen zu dir, deinem Angebot und deinen Zielen — damit wir vom ersten Tag an passgenau für dich arbeiten. Das ist dein erster Schritt.</p>
             </div>
           </li>
           <li>
             <span class="num" aria-hidden="true">2</span>
             <div class="body">
-              <h3>Kurzes Onboarding ausfüllen</h3>
-              <p>Ein paar Fragen zu dir, deinem Angebot und deinen Zielen — damit wir vom ersten Tag an passgenau für dich arbeiten.</p>
+              <h3>Kickoff-Call buchen</h3>
+              <p>Direkt nach dem Onboarding buchst du deinen Termin für den Strategie-Call. Hier lernen wir uns kennen und legen die Richtung für deinen Auftritt fest.</p>
             </div>
           </li>
           <li>
@@ -406,12 +407,12 @@
     <section class="blk" aria-labelledby="cta-h">
       <div class="wrap reveal">
         <div class="band">
-          <span class="micro">Dein erster &amp; wichtigster Schritt</span>
-          <h2 id="cta-h">Sichere dir deinen <em>Kickoff-Call</em>.</h2>
-          <p class="lead">Zwei Minuten buchen — und wir starten so schnell wie möglich gemeinsam durch. Hier wird aus deinem Kauf echtes Wachstum.</p>
+          <span class="micro">Schritt 1 &rarr; Schritt 2</span>
+          <h2 id="cta-h">Dein erster Schritt: <em>Onboarding</em>.</h2>
+          <p class="lead">Fülle kurz das Onboarding aus — direkt danach buchst du deinen Kickoff-Termin. So haben wir vom Start weg alles, um passgenau für dich loszulegen.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" id="cta-call" href="#" data-call-url="#" data-cta-url="#">Kickoff-Call buchen <span class="arr">&rarr;</span></a>
-            <p class="quick">Lieber zuerst schriftlich? <a id="cta-form" href="../onboarding/" data-form-url="../onboarding/">Onboarding-Fragebogen ausfüllen</a></p>
+            <a class="btn btn-primary" id="cta-call" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen <span class="arr">&rarr;</span></a>
+            <p class="quick">Schritt 2 folgt direkt im Anschluss: <a id="cta-form" href="../onboarding/" data-form-url="../onboarding/">Onboarding-Fragebogen ausfüllen</a></p>
           </div>
         </div>
       </div>
@@ -491,10 +492,11 @@
         if(sepEl)sepEl.textContent='';
       }
     }catch(e){}
-    // CTA-/Onboarding-Hooks: data-call-url / data-form-url / data-cta-url anwenden
-    // #start-cta teilt sich denselben Kickoff-Hook wie #cta-call
-    [['cta-call','data-call-url'],['cta-call','data-cta-url'],
-     ['start-cta','data-call-url'],['start-cta','data-cta-url'],
+    // CTA-/Onboarding-Hooks: data-form-url anwenden
+    // Sequenz: alle Primär-CTAs führen zuerst ins Onboarding; der Kickoff folgt
+    // danach auf der Onboarding-Success-Seite.
+    [['cta-call','data-form-url'],
+     ['start-cta','data-form-url'],
      ['cta-form','data-form-url']].forEach(function(x){
       var el=document.getElementById(x[0]);if(!el)return;
       var u=el.getAttribute(x[1]);if(u&&u!=='#')el.setAttribute('href',u);
