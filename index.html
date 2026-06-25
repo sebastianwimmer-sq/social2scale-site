@@ -466,6 +466,16 @@
   #loader .ldr-bar::before{content:"";position:absolute;top:0;left:0;height:100%;width:42%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--emerald,#00B888),transparent);transform:translateX(-120%);animation:ldrSweep 1.05s ease-in-out infinite;will-change:transform}
   @keyframes ldrSweep{to{transform:translateX(316%)}}
   @media (prefers-reduced-motion:reduce){#loader .ldr-bar::before{animation:none;transform:none;width:100%;opacity:.45}}
+  
+  /* ===== Quick-Check: 30-Sek-Scan ob's passt ===== */
+  .qcheck{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
+  .qc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-5),3vw,var(--s-7));margin-top:var(--s-6)}
+  .qc-item{position:relative;padding-left:var(--s-4);border-left:2px solid;border-image:linear-gradient(180deg,var(--emerald),var(--teal)) 1}
+  .qc-lbl{display:block;font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
+  .qc-txt{margin-top:var(--s-3);font-size:clamp(1.02rem,.97rem + .35vw,1.18rem);line-height:1.5;color:var(--muted)}
+  .qc-txt b{color:var(--paper);font-weight:600}
+  .qc-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5);margin-top:clamp(var(--s-6),3.5vw,var(--s-7))}
+  @media (max-width:760px){.qc-grid{grid-template-columns:1fr;gap:var(--s-5)}}
   </style>
 </head>
 <body>
@@ -537,6 +547,31 @@
             <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</li>
             <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in PEAKING</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick-Check: 30-Sek-Scan ob's passt -->
+    <section class="qcheck" aria-labelledby="qcheck-h">
+      <div class="wrap reveal">
+        <p class="klabel" id="qcheck-h">Der 30-Sekunden-Check</p>
+        <div class="qc-grid">
+          <div class="qc-item">
+            <span class="qc-lbl">Für wen</span>
+            <p class="qc-txt">Coaches, Experten &amp; B2B — mit noch keinem oder schwachem Social-Auftritt.</p>
+          </div>
+          <div class="qc-item">
+            <span class="qc-lbl">Was wir machen</span>
+            <p class="qc-txt"><b>Done-for-you:</b> Profil, Content &amp; persönliche Betreuung. Wir bauen, du wächst.</p>
+          </div>
+          <div class="qc-item">
+            <span class="qc-lbl">So startet's</span>
+            <p class="qc-txt">Kurzes Erstgespräch → wir bauen dein System → Fortschritt live in PEAKING.</p>
+          </div>
+        </div>
+        <div class="qc-cta">
+          <a class="btn btn-primary" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+          <a class="textlink" href="#leistungen">Oder mehr erfahren</a>
         </div>
       </div>
     </section>
