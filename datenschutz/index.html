@@ -167,7 +167,7 @@
         <p class="klabel">Rechtliches</p>
         <h1>Datenschutz&shy;erklärung</h1>
         <p class="lead">Diese Erklärung informiert über Art, Umfang und Zweck der Verarbeitung personenbezogener Daten auf social2scale.com gemäß <em>Datenschutz-Grundverordnung (DSGVO)</em> und Bundesdatenschutzgesetz (BDSG).</p>
-        <p class="meta">Stand: <span class="ph">[Datum]</span></p>
+        <p class="meta">Stand: <span>Juni 2026</span></p>
 
         <nav class="toc" aria-label="Inhaltsverzeichnis">
           <p>Inhalt</p>
@@ -178,6 +178,9 @@
             <li><a href="#fonts">Schriftarten (selbst gehostet)</a></li>
             <li><a href="#formular">Onboarding-Formular</a></li>
             <li><a href="#web3forms">Formularversand (Web3Forms)</a></li>
+            <li><a href="#anfrage-form">Erstgespräch-Anfrage (Formular)</a></li>
+            <li><a href="#turnstile">Bot-Schutz (Cloudflare Turnstile)</a></li>
+            <li><a href="#worker-brevo">Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; Brevo)</a></li>
             <li><a href="#zahlung">Zahlungsabwicklung (Digistore24)</a></li>
             <li><a href="#speicherdauer">Speicherdauer</a></li>
             <li><a href="#rechte">Ihre Rechte als betroffene Person</a></li>
@@ -257,8 +260,38 @@
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung/-abwicklung); lit. f (effiziente, sichere Formularzustellung)</span>
       </div></section>
 
+      <section class="blk" id="anfrage-form"><div class="wrap reveal">
+        <h2><span class="n">07</span>Erstgespräch-Anfrage (<em>Formular</em>)</h2>
+        <p>Über das Anfrage-Formular (Seite „Erstgespräch anfragen") können Interessenten unverbindlich ein Erstgespräch anfragen. Wir verarbeiten die dabei angegebenen Daten ausschließlich, um Ihre Anfrage zu bearbeiten, Sie persönlich zurückzurufen und zu prüfen, ob eine Zusammenarbeit passt. Erhoben werden:</p>
+        <ul>
+          <li>Name</li>
+          <li>E-Mail-Adresse</li>
+          <li>Telefonnummer (für den Rückruf)</li>
+          <li>Business / Rolle</li>
+          <li>Angaben zu Status quo, Zielen und Budget-Rahmen (soweit ausgefüllt)</li>
+        </ul>
+        <p><b>Zweck:</b> Bearbeitung der Kontaktanfrage und Durchführung vorvertraglicher Maßnahmen (Erstgespräch). Die technische Übermittlung und Speicherung erfolgt über Cloudflare und Brevo (siehe folgende Abschnitte).</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie lit. f (berechtigtes Interesse an der Bearbeitung von Kontaktanfragen); freiwillige Zusatzangaben lit. a (Einwilligung)</span>
+      </div></section>
+
+      <section class="blk" id="turnstile"><div class="wrap reveal">
+        <h2><span class="n">08</span>Bot-Schutz (Cloudflare <em>Turnstile</em>)</h2>
+        <p>Zum Schutz unseres Anfrage-Formulars vor automatisiertem Missbrauch (Spam, Bots) setzen wir <b>Cloudflare Turnstile</b> ein, einen Dienst der Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA. Turnstile prüft im Hintergrund, ob die Eingabe von einem Menschen stammt.</p>
+        <p>Dabei können Informationen wie IP-Adresse, Browser- und Geräteangaben sowie Interaktionssignale verarbeitet werden; Turnstile kann hierfür ein technisch notwendiges Token bzw. einen Cookie verwenden. Eine Übermittlung in die USA ist möglich; Cloudflare stützt diese auf geeignete Garantien (EU-Standardvertragsklauseln / EU-US Data Privacy Framework).</p>
+        <p class="muted">Weitere Informationen: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare Datenschutz</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an Sicherheit und Schutz vor Missbrauch)</span>
+      </div></section>
+
+      <section class="blk" id="worker-brevo"><div class="wrap reveal">
+        <h2><span class="n">09</span>Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; <em>Brevo</em>)</h2>
+        <p>Beim Absenden des Anfrage-Formulars werden die Daten an eine Verarbeitungsfunktion (<b>Cloudflare Worker</b>, Cloudflare, Inc., USA) übermittelt, die die Eingaben prüft und weiterleitet. Zur Missbrauchsabwehr (Rate-Limit) wird dabei auch Ihre IP-Adresse verarbeitet.</p>
+        <p>Zur Benachrichtigung und Verwaltung der Anfrage nutzen wir <b>Brevo</b> (Sendinblue GmbH, Köpenicker Straße 126, 10179 Berlin, bzw. Brevo SAS, 106 boulevard Haussmann, 75008 Paris, Frankreich). Brevo legt aus Ihren Angaben einen Kontakt an und stellt uns die Anfrage per E-Mail zu.</p>
+        <p class="muted">Mit Cloudflare und Brevo bestehen bzw. werden Verträge zur Auftragsverarbeitung nach Art. 28 DSGVO geschlossen. <span class="ph">[Status AV-Verträge Cloudflare &amp; Brevo prüfen/bestätigen.]</span> Datenschutzhinweise: <a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank" rel="noopener noreferrer">Brevo</a> · <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie lit. f (sichere, effiziente Bearbeitung von Anfragen)</span>
+      </div></section>
+
       <section class="blk" id="zahlung"><div class="wrap reveal">
-        <h2><span class="n">07</span>Zahlungsabwicklung (Digistore24)</h2>
+        <h2><span class="n">10</span>Zahlungsabwicklung (Digistore24)</h2>
         <p>Der Kauf unserer Leistungen erfolgt vor dem Erreichen dieser Website über den Zahlungs- und Vertriebsdienstleister <b>Digistore24</b> (Digistore24 GmbH, St.-Godehard-Straße 32, 31139 Hildesheim, Deutschland). Digistore24 tritt dabei als Reseller/Zahlungsabwickler auf.</p>
         <p>Die zur Zahlung erforderlichen Daten (z. B. Name, E-Mail-Adresse, Rechnungs- und Zahlungsdaten) werden direkt bei Digistore24 erhoben und dort in eigener Verantwortung verarbeitet. Wir erhalten von Digistore24 die zur Auftrags- und Kundenverwaltung notwendigen Informationen.</p>
         <p class="muted">Einzelheiten zur Datenverarbeitung durch Digistore24 finden Sie in deren Datenschutzerklärung: <a href="https://www.digistore24.com/page/privacy" target="_blank" rel="noopener noreferrer">Digistore24 Datenschutz</a>.</p>
@@ -266,13 +299,13 @@
       </div></section>
 
       <section class="blk" id="speicherdauer"><div class="wrap reveal">
-        <h2><span class="n">08</span>Speicherdauer</h2>
+        <h2><span class="n">11</span>Speicherdauer</h2>
         <p>Wir verarbeiten und speichern personenbezogene Daten nur so lange, wie es für die Erreichung des jeweiligen Zwecks erforderlich ist oder wie es gesetzliche Aufbewahrungsfristen vorsehen (z. B. handels- und steuerrechtliche Fristen von bis zu 10 Jahren).</p>
         <p>Server-Logfiles werden durch den Hoster regelmäßig nach kurzer Zeit gelöscht oder anonymisiert. Anfragedaten aus dem Formular löschen wir, sobald sie für die Bearbeitung Ihrer Anfrage bzw. die Vertragsabwicklung nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
       </div></section>
 
       <section class="blk" id="rechte"><div class="wrap reveal">
-        <h2><span class="n">09</span>Ihre <em>Rechte</em></h2>
+        <h2><span class="n">12</span>Ihre <em>Rechte</em></h2>
         <p>Als betroffene Person stehen Ihnen nach der DSGVO insbesondere folgende Rechte zu:</p>
         <ul>
           <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
@@ -287,13 +320,13 @@
       </div></section>
 
       <section class="blk" id="beschwerde"><div class="wrap reveal">
-        <h2><span class="n">10</span>Beschwerde&shy;recht</h2>
+        <h2><span class="n">13</span>Beschwerde&shy;recht</h2>
         <p>Unbeschadet anderweitiger Rechtsbehelfe steht Ihnen gemäß Art. 77 DSGVO ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen die DSGVO verstößt.</p>
         <p class="muted">Zuständig ist in der Regel die Aufsichtsbehörde Ihres gewöhnlichen Aufenthaltsorts oder die des Verantwortlichen. <span class="ph">[Zuständige Landesdatenschutzbehörde des Verantwortlichen ergänzen.]</span></p>
       </div></section>
 
       <section class="blk" id="sonstiges"><div class="wrap reveal">
-        <h2><span class="n">11</span>Automatisierte Entscheidung &amp; Aktualität</h2>
+        <h2><span class="n">14</span>Automatisierte Entscheidung &amp; Aktualität</h2>
         <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne des Art. 22 DSGVO findet nicht statt.</p>
         <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die jeweils aktuelle Fassung.</p>
       </div></section>
