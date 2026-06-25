@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="mask-icon" href="/favicon.svg" color="#00B888">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https: https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#03080D">
 <title>Onboarding — social2scale</title>
 <meta name="description" content="Erzähl uns kurz von dir — dann legen wir los.">
 <link rel="stylesheet" href="/fonts.css">
+<noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}</style></noscript>
 <!-- ============================================================
    ANPASSEN (Sebi/Phil):
    [W3F]  Web3Forms Access Key  →  <input name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
@@ -150,7 +150,9 @@
   footer{border-top:1px solid var(--line);padding:26px var(--px);text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
   footer a{color:var(--paper);text-decoration:none}
   footer a:hover{color:var(--emerald)}
-</style>
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  </style>
 </head>
 <body>
   <a class="skip" href="#onboarding-form">Direkt zum Fragebogen</a>

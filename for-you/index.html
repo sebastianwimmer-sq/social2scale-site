@@ -4,10 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="mask-icon" href="/favicon.svg" color="#00B888">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#03080D">
 <title>Für wen — social2scale | Social-Growth für B2B, Coaches & Experten</title>
 <meta name="description" content="Für wen ist social2scale? Für Firmen ohne Auftritt, Coaches & Experten mit zu wenig Sichtbarkeit und Wachstums-Willige. Ihr seid gut — online merkt's nur keiner. Wir bauen Reichweite, Leads und Umsatz, done-for-you.">
 <link rel="canonical" href="https://social2scale.com/for-you/">
@@ -32,6 +31,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Für wen ist social2scale gemacht?","acceptedAnswer":{"@type":"Answer","text":"Für Firmen ohne Auftritt, die online schlicht keiner findet; für Coaches und Experten mit Wissen, aber zu wenig Reichweite; und für Wachstums-Willige, die schon aktiv sind, aber bei denen es ruckelt. Aus „kennt uns keiner“ wird ein Auftritt, der Reichweite, Leads und Umsatz bringt."}},{"@type":"Question","name":"Was, wenn ich noch keinen Social-Auftritt habe?","acceptedAnswer":{"@type":"Answer","text":"Genau dafür sind wir da. Wir bauen deinen Auftritt von null — von der Positionierung über das Profil bis zum laufenden Content. Du brauchst keine Vorarbeit."}},{"@type":"Question","name":"Wie wird Wachstum messbar gemacht?","acceptedAnswer":{"@type":"Answer","text":"Reichweite, Leads und Umsatz-Wirkung werden in PEAKING getrackt. Du siehst jederzeit, was dein Auftritt bewirkt — System statt Bauchgefühl."}}]}
 </script>
 <link rel="stylesheet" href="/fonts.css">
+<noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}</style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
 <style>
   :root{
@@ -127,7 +127,7 @@
   .head{max-width:42ch}
 
   /* ===== sticky header + nav (flat, hairline) ===== */
-  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));backdrop-filter:blur(16px) saturate(150%)}
+  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
   /* header: freigestellte s2s-Bildmarke als Anchor links (transparent, kein schwarzer Kasten) */
   .bar .brand{flex:0 0 auto;display:flex;align-items:center;text-decoration:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
   .bar .brand img{height:30px;width:auto;display:block}
@@ -151,7 +151,7 @@
   .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
   /* mobile overlay menu */
-  .nav-scrim{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s var(--ease)}
+  .nav-scrim{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s var(--ease)}
   .nav-scrim.open{opacity:1;visibility:visible}
   .mobile-menu{position:fixed;top:0;right:0;z-index:115;width:min(86vw,360px);height:100dvh;padding:calc(var(--header-h) + 26px) 30px 40px;background:var(--surface);border-left:1px solid var(--line-2);box-shadow:-30px 0 80px -30px rgba(0,0,0,.9);display:flex;flex-direction:column;gap:6px;transform:translateX(105%);transition:transform .42s var(--ease);overflow-y:auto}
   .mobile-menu.open{transform:none}
@@ -524,7 +524,9 @@
     .fw-qcol{padding:clamp(var(--s-6),5vw,var(--s-7)) 0}
     .fw-qcol + .fw-qcol{border-left:0;border-top:1px solid var(--line-2);padding-left:0}
   }
-</style>
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  </style>
 </head>
 <body>
   <a class="skip" href="#fuer-wen">Zum Inhalt</a>
@@ -533,8 +535,8 @@
   <script>
   (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
     function hide(){l.classList.add('done');}
-    window.addEventListener('load',function(){setTimeout(hide,Math.max(0,520-(Date.now()-t0)));});
-    setTimeout(hide,2600);
+    window.addEventListener('load',function(){setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
+    setTimeout(hide,1500);
     document.addEventListener('click',function(e){
       var a=e.target.closest?e.target.closest('a'):null;if(!a)return;
       var h=a.getAttribute('href')||'';

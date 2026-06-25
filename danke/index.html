@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="mask-icon" href="/favicon.svg" color="#00B888">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex,nofollow">
@@ -12,6 +11,7 @@
 <title>Willkommen an Bord — social2scale</title>
 <meta name="description" content="Willkommen an Bord. Dein Wachstum startet jetzt.">
 <link rel="stylesheet" href="/fonts.css">
+<noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}</style></noscript>
 <!-- ============================================================
    ANPASSEN (Sebi/Phil): [P4] #cta-call data-call-url (Kickoff-Kalender) ·
    [P5] #cta-form data-form-url (Onboarding-Fragebogen) · [P8] #support data-support-mail
@@ -105,7 +105,7 @@
   .ix b{color:var(--emerald);font-weight:400}
 
   /* ===== minimal brand header (focused — no marketing nav) ===== */
-  .bar{display:flex;align-items:center;justify-content:center;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));backdrop-filter:blur(16px) saturate(150%)}
+  .bar{display:flex;align-items:center;justify-content:center;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
   .bar .brand{flex:0 0 auto;display:flex;align-items:center;text-decoration:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
   .bar .brand img{height:30px;width:auto;display:block}
   .bar .brand:hover{opacity:.82;transform:translateY(-1px)}
@@ -224,7 +224,9 @@
   .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2;text-align:center}
   .foot-meta a{color:var(--muted);text-decoration:none}.foot-meta a:hover{color:var(--paper)}
   .foot-meta .sep{color:var(--line-3);margin:0 6px}
-</style>
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  </style>
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
@@ -233,8 +235,8 @@
   <script>
   (function(){if('scrollRestoration' in history)history.scrollRestoration='manual';var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
     function hide(){l.classList.add('done');}
-    window.addEventListener('load',function(){if(!location.hash)window.scrollTo(0,0);setTimeout(hide,Math.max(0,520-(Date.now()-t0)));});
-    setTimeout(hide,2600);
+    window.addEventListener('load',function(){if(!location.hash)window.scrollTo(0,0);setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
+    setTimeout(hide,1500);
   })();
   </script>
 
