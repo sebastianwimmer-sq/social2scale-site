@@ -179,6 +179,21 @@
   /* ===== Back-to-Home Pill · BACKHOME ===== */
   .backhome{position:absolute;top:16px;left:var(--px);z-index:6;display:inline-flex;align-items:center;gap:6px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
   .backhome:hover{color:var(--paper);border-color:rgba(0,184,136,.45);transform:translateX(-2px)}
+  
+  /* ===== Ziel-Chips + Turnstile · CHIPS ===== */
+  .chip-prompt{font-family:"Archivo",sans-serif;font-size:14px;color:var(--paper);margin-bottom:14px}
+  .chip-prompt .hint{color:var(--faint);font-weight:400;font-size:12.5px}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{position:relative;cursor:pointer}
+  .chip input{position:absolute;opacity:0;width:0;height:0}
+  .chip span{display:inline-flex;align-items:center;font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:500;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:999px;padding:9px 15px;transition:color .18s var(--ease),border-color .18s var(--ease),background .18s var(--ease),transform .12s var(--ease)}
+  .chip:hover span{border-color:var(--line-2);color:var(--paper)}
+  .chip input:checked+span{color:var(--emerald-ink);background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));border-color:transparent;font-weight:600}
+  .chip input:focus-visible+span{outline:2px solid var(--emerald-soft);outline-offset:2px}
+  .chip input:active+span{transform:scale(.96)}
+  .ts-wrap{display:flex;justify-content:center;margin:22px 0 4px}
+  .ts-wrap .cf-turnstile{max-width:100%}
+  #goal-other-wrap[hidden]{display:none}
   </style>
 </head>
 <body>
@@ -223,7 +238,7 @@
             </div>
             <div class="field">
               <label for="phone">Telefon — für deinen Rückruf <span class="req" aria-hidden="true">*</span></label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel" required placeholder="+49 …">
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" pattern="[0-9+()/ .\-]{6,}" title="Bitte eine gültige Telefonnummer (mind. 6 Ziffern)" required placeholder="+49 …">
             </div>
             <div class="field">
               <label for="business">Business / Rolle <span class="req" aria-hidden="true">*</span></label>
@@ -257,9 +272,19 @@
         <legend class="klabel">03 — Ziel</legend>
         <p class="gtitle">Wohin soll die <em>Reise</em>?</p>
         <div class="card">
-          <div class="field full">
-            <label for="goal">Dein größtes Ziel oder Bottleneck? <span class="req" aria-hidden="true">*</span></label>
-            <textarea id="goal" name="goal" required placeholder="z. B. planbar Leads über Instagram, sichtbar werden in meiner Nische, aus 5k auf 50k Follower skalieren …"></textarea>
+          <p class="chip-prompt">Was trifft auf dich zu? <span class="hint">— mehrere möglich, einfach antippen</span></p>
+          <div class="chips" role="group" aria-label="Deine Ziele und Pain-Points">
+            <label class="chip"><input type="checkbox" name="goalpick" value="Mehr Sichtbarkeit & Reichweite"><span>Mehr Sichtbarkeit &amp; Reichweite</span></label>
+            <label class="chip"><input type="checkbox" name="goalpick" value="Planbar mehr Leads & Anfragen"><span>Planbar mehr Leads &amp; Anfragen</span></label>
+            <label class="chip"><input type="checkbox" name="goalpick" value="Kein / schwacher Social-Auftritt"><span>Kein / schwacher Auftritt</span></label>
+            <label class="chip"><input type="checkbox" name="goalpick" value="Keine Zeit für Content"><span>Keine Zeit für Content</span></label>
+            <label class="chip"><input type="checkbox" name="goalpick" value="Personal Brand stärken"><span>Personal Brand stärken</span></label>
+            <label class="chip"><input type="checkbox" name="goalpick" value="Mehr Umsatz aus Social"><span>Mehr Umsatz aus Social</span></label>
+            <label class="chip"><input type="checkbox" id="goal-other-toggle" name="goalpick" value="Anderes"><span>Anderes …</span></label>
+          </div>
+          <div class="field full" id="goal-other-wrap" hidden>
+            <label for="goal">Erzähl kurz, worum's geht</label>
+            <textarea id="goal" name="goal" placeholder="Dein Ziel oder Bottleneck in einem Satz …"></textarea>
           </div>
         </div>
       </fieldset>
@@ -294,7 +319,9 @@
         </div>
       </fieldset>
 
-      <div class="cf-turnstile" data-sitekey="0x4AAAAAADqwI4cSayZDteOs" data-theme="dark" data-language="de" style="margin:18px 0"></div>
+      <div class="ts-wrap">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADqwI4cSayZDteOs" data-theme="dark" data-language="de" data-size="flexible"></div>
+      </div>
 
       <div class="submit-wrap">
         <button type="submit" class="btn btn-primary" id="submit-btn">
@@ -339,6 +366,16 @@
 
     const ENDPOINT = 'https://s2s-anfrage.peaking.workers.dev/';
     var loadedAt = Date.now();
+
+    // "Anderes …"-Chip blendet das Freitext-Feld ein
+    (function () {
+      var t = document.getElementById('goal-other-toggle');
+      var w = document.getElementById('goal-other-wrap');
+      if (t && w) t.addEventListener('change', function () {
+        w.hidden = !t.checked;
+        if (t.checked) { var g = document.getElementById('goal'); if (g) g.focus(); }
+      });
+    })();
 
     // Prefill Name/E-Mail aus URL (?name= / ?email=), z. B. von der Landingpage verlinkt
     try {
@@ -388,13 +425,22 @@
         if (!form.reportValidity()) return;
 
         function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+        // Ziele: gewaehlte Chips (+ optionaler Anderes-Freitext) -> goal
+        var picks = Array.prototype.slice.call(document.querySelectorAll('input[name="goalpick"]:checked')).map(function (c) { return c.value; });
+        var otherTxt = val('goal');
+        if (picks.length === 0 && !otherTxt) {
+          if (errEl) errEl.textContent = 'Bitte wähl mindestens ein Ziel (oder „Anderes …").';
+          return;
+        }
+        var goalCombined = picks.filter(function (p) { return p !== 'Anderes'; }).join(', ');
+        if (otherTxt) goalCombined += (goalCombined ? ' · ' : '') + otherTxt;
         var payload = {
           name: val('name'),
           email: val('email'),
           phone: val('phone'),
           business: val('business'),
           status: val('status'),
-          goal: val('goal'),
+          goal: goalCombined,
           budget: val('budget')
         };
 
