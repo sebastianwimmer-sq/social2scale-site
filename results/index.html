@@ -552,7 +552,7 @@
   <script>
   (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
     function hide(){l.classList.add('done');}
-    window.addEventListener('load',function(){setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
+    window.addEventListener('load',function(){if((((performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{}).type)==='reload'&&location.hash){history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(function(){window.scrollTo({top:0,behavior:'instant'});});}setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
     setTimeout(hide,1500);
     document.addEventListener('click',function(e){
       var a=e.target.closest?e.target.closest('a'):null;if(!a)return;

@@ -6,6 +6,6 @@ compatibility_date = "2024-11-01"
 #   wrangler secret put BREVO_API_KEY
 [vars]
 ALLOW_ORIGIN  = "https://social2scale.com"
-BREVO_LIST_ID = "REPLACE_WITH_LIST_ID"
+BREVO_LIST_ID = "7"
 NOTIFY_TO     = "info@social2scale.com"
 NOTIFY_FROM   = "info@social2scale.com"
