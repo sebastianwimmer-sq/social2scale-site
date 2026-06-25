@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<!-- ANPASSEN: Worker-Origin in CSP (connect-src) + ENDPOINT im Script ersetzen -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://s2s-anfrage.PLACEHOLDER.workers.dev; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://s2s-anfrage.peaking.workers.dev; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#03080D">
@@ -14,27 +13,6 @@
 <meta name="description" content="Kurze Anfrage für dein kostenloses Erstgespräch mit social2scale. Wir melden uns persönlich bei dir — kein Instant-Booking.">
 <link rel="stylesheet" href="/fonts.css">
 <noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
-  /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
-  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
-    .bar, header.top{
-      -webkit-backdrop-filter:blur(22px) saturate(185%);
-      backdrop-filter:blur(22px) saturate(185%);
-      background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.68),rgba(7,11,14,.55));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 1px 0 rgba(0,0,0,.22),0 16px 36px -26px rgba(0,0,0,.85);
-    }
-    .mobile-menu{
-      -webkit-backdrop-filter:blur(26px) saturate(180%);
-      backdrop-filter:blur(26px) saturate(180%);
-      background:radial-gradient(120% 80% at 18% 0%,rgba(255,255,255,.08),transparent 48%),linear-gradient(180deg,rgba(12,20,17,.78),rgba(7,11,14,.72));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
-    }
-    .nav-cta,.m-cta{-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
-  }
-  .nav-cta{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px -16px rgba(0,0,0,.7)}
-  .nav-cta:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(0,184,136,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -14px rgba(0,184,136,.4);transform:translateY(-1px)}
-  .nav-cta:active{transform:scale(.97)}
-  .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
-  .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
   </style></noscript>
 <style>
   :root{
@@ -165,6 +143,28 @@
   footer a:hover{color:var(--emerald)}
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  
+    /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
+  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    .bar, header.top{
+      -webkit-backdrop-filter:blur(22px) saturate(185%);
+      backdrop-filter:blur(22px) saturate(185%);
+      background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.68),rgba(7,11,14,.55));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 1px 0 rgba(0,0,0,.22),0 16px 36px -26px rgba(0,0,0,.85);
+    }
+    .mobile-menu{
+      -webkit-backdrop-filter:blur(26px) saturate(180%);
+      backdrop-filter:blur(26px) saturate(180%);
+      background:radial-gradient(120% 80% at 18% 0%,rgba(255,255,255,.08),transparent 48%),linear-gradient(180deg,rgba(12,20,17,.78),rgba(7,11,14,.72));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
+    }
+    .nav-cta,.m-cta{-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+  }
+  .nav-cta{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px -16px rgba(0,0,0,.7)}
+  .nav-cta:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(0,184,136,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -14px rgba(0,184,136,.4);transform:translateY(-1px)}
+  .nav-cta:active{transform:scale(.97)}
+  .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
+  .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
   </style>
 </head>
 <body>
@@ -312,8 +312,7 @@
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // ANPASSEN: echte Worker-URL
-    const ENDPOINT = 'https://s2s-anfrage.PLACEHOLDER.workers.dev/';
+    const ENDPOINT = 'https://s2s-anfrage.peaking.workers.dev/';
     var loadedAt = Date.now();
 
     // Prefill Name/E-Mail aus URL (?name= / ?email=), z. B. von der Landingpage verlinkt
