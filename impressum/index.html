@@ -96,10 +96,19 @@
   @media (max-width:520px){.data dl{grid-template-columns:1fr;gap:2px 0}.data dt{padding-top:12px}.data dt:first-child{padding-top:0}}
   .ph{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--emerald-soft);background:rgba(0,184,136,.10);border:1px dashed rgba(0,184,136,.40);border-radius:5px;padding:1px 7px;max-width:100%;overflow-wrap:anywhere}
 
-  footer{border-top:1px solid var(--line);padding:30px var(--px) 40px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);line-height:2}
-  footer a{color:var(--paper);text-decoration:none}
-  footer a:hover{color:var(--emerald-soft)}
-  footer nav{display:flex;flex-direction:column;gap:4px;align-items:center;margin-top:14px}
+  /* ===== Footer (lean · Liquid-Glass) ===== */
+  .site-footer{position:relative;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-top:56px}
+  .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
+  .foot-inner{max-width:720px;margin:0 auto;padding:36px var(--px) 44px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+  .foot-id{display:flex;align-items:center;gap:12px}
+  .foot-id img{height:30px;width:auto;display:block}
+  .foot-id .foot-tag{font-family:"Archivo",sans-serif;font-size:12px;font-weight:500;color:var(--muted);max-width:24ch;line-height:1.45}
+  .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:500}
+  .foot-links a{color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-links a:hover{color:var(--paper)}
+  .foot-meta{max-width:720px;margin:0 auto;padding:0 var(--px) 36px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.9}
+  .foot-meta .pk{color:var(--emerald-soft)}
+  @media (max-width:560px){.foot-inner{flex-direction:column;align-items:flex-start;gap:18px}}
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
   
@@ -246,13 +255,19 @@
     </article>
   </main>
 
-  <footer>
-    <span>© <span id="yr"></span> social2scale · Powered by PEAKING</span><br>
-    <a href="mailto:info@social2scale.com">info@social2scale.com</a>
-    <nav aria-label="Rechtliche Seiten">
-      <a href="../impressum/">Impressum</a>
-      <a href="../datenschutz/">Datenschutz</a>
-    </nav>
+  <footer class="site-footer">
+    <div class="foot-inner">
+      <div class="foot-id">
+        <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
+        <span class="foot-tag">Premium Social-Growth für Coaches &amp; Experten.</span>
+      </div>
+      <nav class="foot-links" aria-label="Rechtliche Seiten">
+        <a href="../impressum/">Impressum</a>
+        <a href="../datenschutz/">Datenschutz</a>
+        <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </nav>
+    </div>
+    <p class="foot-meta">© <span id="yr"></span> social2scale · Powered by <span class="pk">PEAKING</span></p>
   </footer>
 
   <script>

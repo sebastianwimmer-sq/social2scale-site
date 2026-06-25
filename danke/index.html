@@ -223,10 +223,28 @@
   .support a:hover{color:var(--emerald);border-color:var(--emerald)}
 
   /* ===== footer ===== */
-  footer{border-top:1px solid var(--line);padding:var(--s-7) 0 var(--s-6);margin-top:var(--s-4)}
-  .foot-meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:2;text-align:center}
-  .foot-meta a{color:var(--muted);text-decoration:none}.foot-meta a:hover{color:var(--paper)}
-  .foot-meta .sep{color:var(--line-3);margin:0 6px}
+  /* ===== Footer (editorial · Liquid-Glass) ===== */
+  .site-footer{position:relative;margin-top:var(--s-8);border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+  .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
+  .site-footer .wrap{padding-top:var(--s-8);padding-bottom:var(--s-6)}
+  .foot-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:var(--s-7);align-items:start}
+  .foot-brand img{height:46px;width:auto;display:block}
+  .foot-brand .brand{display:inline-flex;text-decoration:none}
+  .foot-brand p{font-family:"Hanken Grotesk",sans-serif;color:var(--muted);font-size:.96rem;margin-top:var(--s-4);max-width:34ch;line-height:1.6}
+  .foot-brand .foot-mail{display:inline-flex;align-items:center;gap:var(--s-2);margin-top:var(--s-5);font-family:"Archivo",sans-serif;font-size:14px;font-weight:600;color:var(--paper);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-brand .foot-mail:hover{color:var(--emerald-soft)}
+  .foot-brand .foot-mail::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
+  .foot-col-title{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-4)}
+  .foot-col ul{display:flex;flex-direction:column;gap:var(--s-3);list-style:none}
+  .foot-col a{font-family:"Archivo",sans-serif;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-col a:hover{color:var(--paper)}
+  .foot-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4);margin-top:var(--s-7);padding-top:var(--s-5);border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.9}
+  .foot-bottom .foot-legal{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4)}
+  .foot-bottom a{color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-bottom a:hover{color:var(--paper)}
+  .foot-bottom .pk{color:var(--emerald-soft)}
+  @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6)}.foot-brand{grid-column:1 / -1}}
+  @media (max-width:480px){.foot-top{grid-template-columns:1fr}.foot-bottom{flex-direction:column;align-items:flex-start;gap:var(--s-3)}}
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
   
@@ -419,13 +437,41 @@
     </section>
   </main>
 
-  <footer>
-    <p class="foot-meta">
-      &copy; <span id="yr"></span> social2scale <span class="sep">·</span> Powered by PEAKING
-      <span class="sep">·</span> <a href="../impressum/">Impressum</a>
-      <span class="sep">·</span> <a href="../datenschutz/">Datenschutz</a>
-    </p>
-  </footer>
+  <footer class="site-footer"><div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="92" height="46"></a>
+        <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
+        <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </div>
+      <nav class="foot-col" aria-label="Footer-Navigation">
+        <p class="foot-col-title">Agentur</p>
+        <ul>
+          <li><a href="/#leistungen">Leistungen</a></li>
+          <li><a href="/#ablauf">Ablauf</a></li>
+          <li><a href="/for-you/">Für wen</a></li>
+          <li><a href="/results/">Ergebnisse</a></li>
+          <li><a href="/about/">Über uns</a></li>
+        </ul>
+      </nav>
+      <nav class="foot-col" aria-label="Rechtliches">
+        <p class="foot-col-title">Rechtliches</p>
+        <ul>
+          <li><a href="../impressum/">Impressum</a></li>
+          <li><a href="../datenschutz/">Datenschutz</a></li>
+          <li><a href="mailto:info@social2scale.com">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> social2scale · Powered by <span class="pk">PEAKING</span></span>
+      <span class="foot-legal">
+        <a href="../impressum/">Impressum</a>
+        <a href="../datenschutz/">Datenschutz</a>
+        <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </span>
+    </div>
+  </div></footer>
 
   <script>
     document.getElementById('yr').textContent=new Date().getFullYear();
