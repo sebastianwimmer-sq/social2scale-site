@@ -538,7 +538,7 @@
   <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.png" alt="" width="124" height="62"><div class="ldr-bar" aria-hidden="true"></div></div>
   <script>
   (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
-    function hide(){l.classList.add('done');}
+    function hide(){l.classList.add('done');}window.addEventListener('pageshow',function(e){if(e.persisted)hide();});
     window.addEventListener('load',function(){setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
     setTimeout(hide,1200);
     document.addEventListener('click',function(e){
