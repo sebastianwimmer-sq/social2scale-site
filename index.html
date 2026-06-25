@@ -362,7 +362,7 @@
     background:radial-gradient(circle at 36% 30%,rgba(0,184,136,.32),rgba(31,166,224,.14) 58%,transparent 76%),var(--surf-grad);
     border:1px solid rgba(0,184,136,.4);box-shadow:0 36px 90px -32px rgba(0,184,136,.55),inset 0 1px 0 rgba(255,255,255,.14);
     transform:translate(-50%,-50%) scale(var(--orb,.82));transition:transform .12s linear;will-change:transform}
-  .weg-reel{position:absolute;top:0;left:0;width:100%;display:flex;flex-direction:column;transform:translateY(calc(var(--r,0) * -20%));transition:transform .45s var(--ease);will-change:transform}
+  .weg-reel{position:absolute;top:0;left:0;width:100%;display:flex;flex-direction:column;transform:translateY(calc(var(--r,0) * -20%));transition:transform .1s linear;will-change:transform}
   .weg-reel span{height:clamp(190px,22vw,290px);display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:500;line-height:1;font-size:clamp(5.5rem,12vw,9.5rem);background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .weg-reel span.go{-webkit-text-fill-color:initial;color:initial;background:none;font-size:clamp(4rem,9vw,7rem)}
   .weg-detail{position:relative;margin:var(--s-7) auto 0;max-width:560px;min-height:7em}
@@ -854,11 +854,11 @@
         var p=clamp((-r.top)/(total||1),0,1);
         sec.style.setProperty('--orb',(0.8+p*0.2).toFixed(3));
         if(ring)ring.style.strokeDashoffset=(CIRC*(1-p)).toFixed(1);
+        sec.style.setProperty('--r',(p*4).toFixed(3));   // Reel laeuft KONTINUIERLICH mit dem Scroll (smooth, wie Wachstum)
         var launch=p>0.92;
         var step=clamp(Math.round(p*3),0,3);
         var detail=launch?4:step;            // 0–3 = Schritte, 4 = Rakete
         if(detail!==last){last=detail;
-          sec.style.setProperty('--r',detail);          // Reel rastet auf den Schritt ein: 1→2→3→4→🚀, synchron zur Liste links
           sec.classList.toggle('is-launch',launch);
           lis.forEach(function(li,i){li.classList.toggle('is-on',i===step);});
           wds.forEach(function(d,i){d.classList.toggle('is-on',i===detail);});
