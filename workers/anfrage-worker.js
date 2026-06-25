@@ -43,6 +43,23 @@ async function verifyTurnstile(token, ip, secret) {
   }
 }
 
+async function verifyEmailDomain(email) {
+  try {
+    var domain = String(email).split('@')[1];
+    if (!domain) return false;
+    async function hasRecords(type) {
+      var r = await fetch('https://cloudflare-dns.com/dns-query?name=' + encodeURIComponent(domain) + '&type=' + type, { headers: { accept: 'application/dns-json' } });
+      var j = await r.json();
+      return Array.isArray(j.Answer) && j.Answer.length > 0;
+    }
+    if (await hasRecords('MX')) return true;   // hat Mailserver
+    if (await hasRecords('A')) return true;     // Fallback: Domain existiert
+    return false;                               // definitiv weder MX noch A -> Fake
+  } catch (_) {
+    return true;                                // fail-open: bei Lookup-Fehler NICHT blocken
+  }
+}
+
 export default {
   async fetch(request, env) {
     const allow = env.ALLOW_ORIGIN || 'https://social2scale.com';
@@ -87,6 +104,8 @@ export default {
 
     const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
     if (!name || !emailOk || !phone) return json({ ok: false, error: 'missing_fields' }, 422, cd);
+
+    if (!(await verifyEmailDomain(email))) return json({ ok: false, error: 'email_domain' }, 422, cd);
 
     const key = env.BREVO_API_KEY;
     if (!key) return json({ ok: false, error: 'not_configured' }, 503, cd);
