@@ -251,17 +251,23 @@
   .nav-cta:active{transform:scale(.97)}
   .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
   .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
+  
+  /* ===== Loader-Progressbar (leichtgewichtig, transform-Sweep) · LDR-BAR ===== */
+  #loader .ldr-bar{position:absolute;left:50%;top:calc(50% + 54px);transform:translateX(-50%);width:124px;height:3px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+  #loader .ldr-bar::before{content:"";position:absolute;top:0;left:0;height:100%;width:42%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--emerald,#00B888),transparent);transform:translateX(-120%);animation:ldrSweep 1.05s ease-in-out infinite;will-change:transform}
+  @keyframes ldrSweep{to{transform:translateX(316%)}}
+  @media (prefers-reduced-motion:reduce){#loader .ldr-bar::before{animation:none;transform:none;width:100%;opacity:.45}}
   </style>
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
 
-  <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.png" alt="" width="124" height="62"></div>
+  <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.png" alt="" width="124" height="62"><div class="ldr-bar" aria-hidden="true"></div></div>
   <script>
   (function(){if('scrollRestoration' in history)history.scrollRestoration='manual';var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
     function hide(){l.classList.add('done');}
     window.addEventListener('load',function(){if(!location.hash)window.scrollTo(0,0);setTimeout(hide,Math.max(0,140-(Date.now()-t0)));});
-    setTimeout(hide,1500);
+    setTimeout(hide,1200);
   })();
   </script>
 
