@@ -555,6 +555,91 @@
   .rs-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:clamp(var(--s-5),3vw,var(--s-6))}
   .rs-note b{color:var(--emerald);font-weight:400}
 
+  /* ============================================================
+     PEAK additions — glass metric cards (mono tabular-nums, the
+     landing "growth panel" data language), glass PEAKING panel,
+     and premium glass testimonial cards. Reuses tokens only.
+     ============================================================ */
+
+  /* — 2b) metric highlight row: 4 glass result cards, mono tabular-num values
+     (the same data language as the landing growth panel: JetBrains Mono +
+     font-variant-numeric:tabular-nums + emerald accent on the figure). — */
+  .rs-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s-4)}
+  .rs-mcard{position:relative;overflow:hidden;display:flex;flex-direction:column;
+    background:radial-gradient(130% 120% at 0% 0%,rgba(0,184,136,.16),transparent 56%),
+      radial-gradient(130% 120% at 100% 100%,rgba(31,166,224,.13),transparent 60%),var(--surf-grad);
+    border:1px solid rgba(0,184,136,.24);border-radius:18px;
+    padding:clamp(var(--s-5),2.4vw,var(--s-6));box-shadow:var(--depth);
+    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .rs-mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--emerald) 40%,var(--teal) 70%,transparent);opacity:.7}
+  .rs-mcard:hover{border-color:rgba(0,184,136,.5);box-shadow:var(--depth-hover);transform:translateY(-3px);
+    background:radial-gradient(130% 120% at 0% 0%,rgba(0,184,136,.24),transparent 56%),
+      radial-gradient(130% 120% at 100% 100%,rgba(31,166,224,.19),transparent 60%),var(--surf-grad-hover)}
+  .rs-mcard .mk{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .rs-mcard .mv{font-family:"JetBrains Mono",monospace;font-weight:600;font-variant-numeric:tabular-nums;
+    font-size:clamp(1.9rem,1.2rem+1.9vw,2.7rem);line-height:1;letter-spacing:-.03em;color:var(--paper);margin-top:var(--s-5)}
+  .rs-mcard .mv em{font-style:normal;color:var(--emerald)}
+  .rs-mcard .mv sup{font-size:.34em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.05em}
+  .rs-mcard .ms{font-family:"Hanken Grotesk",sans-serif;font-size:.92rem;color:var(--muted);margin-top:var(--s-4);line-height:1.5}
+  .rs-mcard .mtrend{display:inline-flex;align-items:center;gap:5px;margin-top:var(--s-4);
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.06em;color:var(--emerald)}
+  .rs-mcard .mtrend svg{width:10px;height:10px;stroke:var(--emerald);stroke-width:2.4;fill:none}
+  @media (max-width:880px){.rs-metrics{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:420px){.rs-metrics{grid-template-columns:1fr}}
+
+  /* — 5b) PEAKING live-panel reference — glass report frame echoing the landing
+     growth panel: hairline emerald top rule, mono meta, tabular-num KPI strip. — */
+  .rs-peak{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
+  .rs-peak-copy{max-width:44ch}
+  .rs-peak-copy .mh{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.6rem,1.2rem+1.4vw,2.2rem);letter-spacing:-.02em;color:var(--paper);margin-top:var(--s-4)}
+  .rs-peak-copy .mintro{color:var(--muted);font-size:1.0625rem;line-height:1.6;margin-top:var(--s-4);max-width:42ch}
+  .rs-peak-copy .mintro b{color:var(--paper);font-weight:600}
+  .rs-peak-points{list-style:none;margin:var(--s-6) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--s-3)}
+  .rs-peak-points li{position:relative;padding-left:var(--s-6);font-family:"Archivo",sans-serif;font-size:1.02rem;font-weight:600;letter-spacing:-.01em;color:var(--paper);line-height:1.3}
+  .rs-peak-points li::before{content:"";position:absolute;left:0;top:.18em;width:3px;height:1.05em;border-radius:2px;background:linear-gradient(180deg,var(--emerald),var(--teal));box-shadow:0 0 10px -2px rgba(0,184,136,.55)}
+  .rs-rep{position:relative;overflow:hidden;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:16px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.4),0 32px 72px -34px rgba(0,0,0,.82);max-width:560px;width:100%;justify-self:end}
+  .rs-rep::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--emerald) 38%,var(--teal) 62%,transparent)}
+  .rs-rep-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-4);padding:var(--s-5);border-bottom:1px solid var(--line)}
+  .rs-rep-head .ttl{font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:var(--s-2)}
+  .rs-rep-head .ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px rgba(0,184,136,.8)}
+  .rs-rep-head .meta{display:flex;align-items:center;gap:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--faint)}
+  .rs-rep-head .meta .period{font-size:9px;letter-spacing:.1em;color:var(--muted);border:1px solid var(--line-2);border-radius:4px;padding:2px 6px}
+  /* mono sparkline rows */
+  .rs-rep-rows{padding:var(--s-5);display:flex;flex-direction:column;gap:var(--s-5)}
+  .rs-rep-line{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--s-4)}
+  .rs-rep-line .rl{font-family:"Archivo",sans-serif;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .rs-rep-line .rfig{font-family:"JetBrains Mono",monospace;font-weight:600;font-variant-numeric:tabular-nums;font-size:1.05rem;letter-spacing:-.02em;color:var(--paper);text-align:right}
+  .rs-rep-line .rfig em{font-style:normal;color:var(--emerald)}
+  .rs-spark{grid-column:1 / -1;display:flex;align-items:flex-end;gap:4px;height:30px;margin-top:var(--s-3)}
+  .rs-spark .sb{flex:1;border-radius:2px 2px 0 0;background:var(--surface-3);min-height:4px}
+  .rs-spark .sb.up{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.3))}
+  .rs-spark .sb:last-child{background:linear-gradient(180deg,var(--cyan),rgba(31,166,224,.35))}
+  .rs-rep-foot{display:flex;align-items:center;gap:var(--s-2);padding:var(--s-4) var(--s-5);border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.06em;color:var(--faint)}
+  .rs-rep-foot b{color:var(--emerald-soft);font-weight:400}
+  @media (max-width:880px){
+    .rs-peak{grid-template-columns:1fr;gap:var(--s-7)}
+    .rs-peak-copy{max-width:none}
+    .rs-rep{justify-self:stretch;max-width:560px;margin:0 auto}
+  }
+
+  /* — 4b) premium glass testimonial cards (3-up), Fraunces quote — */
+  .rs-voices{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
+  .rs-voice{position:relative;display:flex;flex-direction:column;
+    background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;
+    padding:clamp(var(--s-6),3vw,var(--s-7));box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72);
+    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .rs-voice:hover{border-color:rgba(0,184,136,.4);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
+  .rs-voice .vq{font-family:"Fraunces",serif;font-weight:430;font-style:italic;font-size:clamp(1.18rem,1.05rem+.5vw,1.4rem);line-height:1.3;letter-spacing:-.015em;color:var(--paper)}
+  .rs-voice .vq em{font-style:italic;color:var(--emerald)}
+  .rs-voice .vby{display:flex;align-items:center;gap:var(--s-3);margin-top:auto;padding-top:clamp(var(--s-5),2.4vw,var(--s-6))}
+  .rs-voice .vav{width:38px;height:38px;flex:0 0 auto;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);
+    display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
+  .rs-voice .vmeta{min-width:0}
+  .rs-voice .vname{font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--paper)}
+  .rs-voice .vrole{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--faint);margin-top:2px}
+  @media (max-width:880px){.rs-voices{grid-template-columns:1fr;gap:var(--s-4)}}
+
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
   
     /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
@@ -644,28 +729,43 @@
       <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in PEAKING.</p>
     </div></section>
 
-    <!-- 2) BIG editorial stat statement — three huge Fraunces numbers on hairlines, NOT cards -->
+    <!-- 2) Metric highlight row — 4 glass result cards, mono tabular-num values
+         (same data language as the landing growth panel). Values = PLACEHOLDERS. -->
     <section class="rs-blk" id="zahlen" aria-labelledby="rs-stats-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 02</b> — Was unser System bewegt</p>
-        <h2 id="rs-stats-h">Drei Zahlen, ein <em>Ziel</em>.</h2>
+        <h2 id="rs-stats-h">Wachstum in <em>Zahlen</em>.</h2>
+        <p class="lead">Vier Kennzahlen, die zählen — Reichweite, Leads, Umsatz und Sichtbarkeit. Live in PEAKING, statt Bauchgefühl.</p>
       </div>
-      <div class="rs-stats">
-        <div class="rs-stat">
-          <p class="v">+218<sup>*</sup><em>%</em></p>
-          <p class="l">Reichweite</p>
-          <p class="s">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
-        </div>
-        <div class="rs-stat">
-          <p class="v">47<sup>*</sup></p>
-          <p class="l">Leads / Monat</p>
-          <p class="s">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
-        </div>
-        <div class="rs-stat">
-          <p class="v">€4,8k<sup>*</sup></p>
-          <p class="l">Umsatz / Monat</p>
-          <p class="s">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
-        </div>
+      <div class="rs-metrics">
+        <!-- Platzhalter — echte Werte -->
+        <article class="rs-mcard">
+          <p class="mk">Reichweite</p>
+          <p class="mv"><em>+218</em><sup>*</sup>%</p>
+          <p class="ms">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</span>
+        </article>
+        <!-- Platzhalter — echte Werte -->
+        <article class="rs-mcard">
+          <p class="mk">Leads / Monat</p>
+          <p class="mv"><em>47</em><sup>*</sup></p>
+          <p class="ms">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>wächst</span>
+        </article>
+        <!-- Platzhalter — echte Werte -->
+        <article class="rs-mcard">
+          <p class="mk">Umsatz / Monat</p>
+          <p class="mv">€<em>4,8</em>k<sup>*</sup></p>
+          <p class="ms">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</span>
+        </article>
+        <!-- Platzhalter — echte Werte -->
+        <article class="rs-mcard">
+          <p class="mk">Sichtbarkeit</p>
+          <p class="mv"><em>3,1</em>×<sup>*</sup></p>
+          <p class="ms">So viel öfter taucht die Marke bei den richtigen Leuten auf.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</span>
+        </article>
       </div>
       <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
     </div></section>
@@ -740,20 +840,100 @@
     <section class="rs-quote" aria-label="Kundenstimme"><div class="wrap reveal">
       <figure>
         <blockquote>Zum ersten Mal fühlt sich mein Wachstum <em>planbar</em> an — System statt Zufall.</blockquote>
+        <!-- Platzhalter-Stimme -->
         <figcaption>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
       </figure>
     </div></section>
 
-    <!-- 5) So messen wir — short editorial transparency line, two hairline columns -->
+    <!-- 5) PEAKING live-panel reference — results tracked live in the platform -->
+    <section class="rs-blk" id="peaking" aria-labelledby="rs-peak-h"><div class="wrap reveal">
+      <div class="rs-peak">
+        <div class="rs-peak-copy">
+          <p class="rs-rh"><b>№ 04</b> — Live in PEAKING</p>
+          <p class="mh">Jeden Fortschritt live in <em>PEAKING</em>.</p>
+          <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
+          <ul class="rs-peak-points">
+            <li>Reichweite, die zählt</li>
+            <li>Leads statt Likes</li>
+            <li>Umsatz, schwarz auf weiß</li>
+          </ul>
+        </div>
+        <div class="rs-rep" role="img" aria-label="Beispielhafter PEAKING-Growth-Report mit Reichweite, Leads und Umsatz — Platzhalter-Werte.">
+          <div class="rs-rep-head">
+            <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
+            <span class="meta"><span class="period">8 WO</span><span>0 → skaliert</span></span>
+          </div>
+          <div class="rs-rep-rows" aria-hidden="true">
+            <!-- Platzhalter — echte Werte -->
+            <div class="rs-rep-line">
+              <span class="rl">Reichweite</span>
+              <span class="rfig"><em>+218</em>%</span>
+              <div class="rs-spark"><span class="sb" style="height:24%"></span><span class="sb" style="height:33%"></span><span class="sb up" style="height:48%"></span><span class="sb up" style="height:60%"></span><span class="sb up" style="height:78%"></span><span class="sb up" style="height:92%"></span></div>
+            </div>
+            <!-- Platzhalter — echte Werte -->
+            <div class="rs-rep-line">
+              <span class="rl">Leads / Mo</span>
+              <span class="rfig"><em>47</em></span>
+              <div class="rs-spark"><span class="sb" style="height:20%"></span><span class="sb" style="height:30%"></span><span class="sb up" style="height:42%"></span><span class="sb up" style="height:55%"></span><span class="sb up" style="height:70%"></span><span class="sb up" style="height:88%"></span></div>
+            </div>
+            <!-- Platzhalter — echte Werte -->
+            <div class="rs-rep-line">
+              <span class="rl">Umsatz / Mo</span>
+              <span class="rfig">€<em>4,8</em>k</span>
+              <div class="rs-spark"><span class="sb" style="height:18%"></span><span class="sb" style="height:28%"></span><span class="sb up" style="height:40%"></span><span class="sb up" style="height:58%"></span><span class="sb up" style="height:74%"></span><span class="sb" style="height:96%"></span></div>
+            </div>
+          </div>
+          <div class="rs-rep-foot"><b>●</b> live · synchronisiert mit PEAKING</div>
+        </div>
+      </div>
+      <p class="rs-note"><b>*</b> Beispielhafter Report — Platzhalter-Werte, echte Kundendaten laufen live ein.</p>
+    </div></section>
+
+    <!-- 6) Kundenstimmen — premium glass quote cards (3-up) -->
+    <section class="rs-blk" id="stimmen" aria-labelledby="rs-voices-h"><div class="wrap reveal">
+      <div class="rs-blk-head">
+        <p class="rs-rh"><b>№ 05</b> — Stimmen</p>
+        <h2 id="rs-voices-h">Was Kund:innen <em>sagen</em>.</h2>
+      </div>
+      <div class="rs-voices">
+        <!-- Platzhalter-Stimme -->
+        <figure class="rs-voice">
+          <blockquote class="vq">„Zum ersten Mal fühlt sich mein Wachstum <em>planbar</em> an — ich sehe genau, was wirkt."</blockquote>
+          <figcaption class="vby">
+            <span class="vav" aria-hidden="true">??</span>
+            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">Coach · Platzhalter</span></span>
+          </figcaption>
+        </figure>
+        <!-- Platzhalter-Stimme -->
+        <figure class="rs-voice">
+          <blockquote class="vq">„Vom leeren Profil zu <em>echten Anfragen</em> — das Team hat alles übernommen."</blockquote>
+          <figcaption class="vby">
+            <span class="vav" aria-hidden="true">??</span>
+            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">B2B · Platzhalter</span></span>
+          </figcaption>
+        </figure>
+        <!-- Platzhalter-Stimme -->
+        <figure class="rs-voice">
+          <blockquote class="vq">„Endlich Reichweite, die <em>Umsatz</em> wird — und Zahlen, denen ich vertraue."</blockquote>
+          <figcaption class="vby">
+            <span class="vav" aria-hidden="true">??</span>
+            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">Experte · Platzhalter</span></span>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="rs-note"><b>*</b> Platzhalter-Stimmen — echte Testimonials folgen. Keine erfundenen Personen oder Bewertungen.</p>
+    </div></section>
+
+    <!-- 7) So messen wir — short editorial transparency line, two hairline columns -->
     <section class="rs-blk" id="messung" aria-labelledby="rs-measure-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 04</b> — Transparenz</p>
+        <p class="rs-rh"><b>№ 06</b> — Transparenz</p>
         <h2 id="rs-measure-h">So <em>messen</em> wir Wachstum.</h2>
       </div>
       <div class="rs-measure">
         <div class="rs-mcol">
-          <p class="mh">Alles live &amp; transparent in PEAKING.</p>
-          <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
+          <p class="mh">Klar definierte KPIs, keine Vanity-Metriken.</p>
+          <p class="mintro">Wir messen Wachstum, das auf dein Geschäft einzahlt — und legen jeden Schritt offen. <b>Volle Nachvollziehbarkeit von Tag eins.</b></p>
         </div>
         <div class="rs-mcol">
           <ul class="rs-mlist">
@@ -774,7 +954,7 @@
       </div>
     </div></section>
 
-    <!-- 6) Closing CTA — reuses existing .band -->
+    <!-- 8) Closing CTA — reuses existing .band -->
     <section class="rs-close"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
