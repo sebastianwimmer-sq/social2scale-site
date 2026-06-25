@@ -22,8 +22,8 @@ In `wrangler.toml` `BREVO_LIST_ID = "REPLACE_WITH_LIST_ID"` durch eure echte Zah
 
 **3. API-Key als Secret setzen** (kommt NICHT in den Code/ins Repo)
 ```bash
-wrangler secret put BREVO_API_KEY
-# Prompt: euren Brevo-API-Key einfügen + Enter
+wrangler secret put BREVO_API_KEY      # Brevo-API-Key einfügen + Enter
+wrangler secret put TURNSTILE_SECRET   # Turnstile Secret Key einfügen + Enter
 ```
 
 **4. Deployen**

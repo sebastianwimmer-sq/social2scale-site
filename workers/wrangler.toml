@@ -9,3 +9,14 @@ ALLOW_ORIGIN  = "https://social2scale.com"
 BREVO_LIST_ID = "7"
 NOTIFY_TO     = "info@social2scale.com"
 NOTIFY_FROM   = "info@social2scale.com"
+
+# Secrets (NICHT hier, via CLI):  wrangler secret put BREVO_API_KEY  /  wrangler secret put TURNSTILE_SECRET
+
+# Rate-Limit pro IP — Cloudflare Rate Limiting API (8 Anfragen / 60s).
+# Falls dein Account das (noch) nicht unterstuetzt und `wrangler deploy` meckert:
+# einfach diesen Block auskommentieren — der Worker laeuft auch ohne (Turnstile + Honeypot schuetzen weiter).
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 8, period = 60 }

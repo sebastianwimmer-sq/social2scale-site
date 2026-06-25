@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <!-- ANPASSEN: Worker-Origin in CSP (connect-src) + ENDPOINT im Script ersetzen -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://s2s-anfrage.PLACEHOLDER.workers.dev; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://s2s-anfrage.PLACEHOLDER.workers.dev; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#03080D">
@@ -279,6 +279,8 @@
         </div>
       </fieldset>
 
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADqwI4cSayZDteOs" data-theme="dark" data-language="de" style="margin:18px 0"></div>
+
       <div class="submit-wrap">
         <button type="submit" class="btn btn-primary" id="submit-btn">
           <span class="spin" aria-hidden="true"></span>
@@ -306,11 +308,13 @@
     Fragen? <a href="mailto:info@social2scale.com">info@social2scale.com</a>
   </footer>
 
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
 
     // ANPASSEN: echte Worker-URL
     const ENDPOINT = 'https://s2s-anfrage.PLACEHOLDER.workers.dev/';
+    var loadedAt = Date.now();
 
     // Prefill Name/E-Mail aus URL (?name= / ?email=), z. B. von der Landingpage verlinkt
     try {
@@ -369,6 +373,15 @@
           goal: val('goal'),
           budget: val('budget')
         };
+
+        // Turnstile-Token + Ausfuellzeit fuer den Bot-Schutz im Worker
+        var tsTok = (document.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
+        if (window.turnstile && !tsTok) {
+          if (errEl) errEl.textContent = 'Bitte kurz bestätigen, dass du kein Bot bist.';
+          return;
+        }
+        payload.turnstile = tsTok;
+        payload.elapsed = Date.now() - loadedAt;
 
         if (btn) { btn.classList.add('loading'); btn.disabled = true; }
 

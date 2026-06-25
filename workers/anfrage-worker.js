@@ -28,6 +28,21 @@ function esc(s) {
   return String(s).replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]));
 }
 
+async function verifyTurnstile(token, ip, secret) {
+  if (!token) return false;
+  try {
+    const body = new URLSearchParams();
+    body.append('secret', secret);
+    body.append('response', token);
+    if (ip && ip !== 'anon') body.append('remoteip', ip);
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body });
+    const j = await r.json();
+    return !!j.success;
+  } catch (_) {
+    return false;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const allow = env.ALLOW_ORIGIN || 'https://social2scale.com';
@@ -41,6 +56,25 @@ export default {
 
     // Honeypot: Bots füllen das versteckte Feld → still als Erfolg verwerfen
     if (data.website) return json({ ok: true }, 200, cd);
+
+    const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+
+    // Rate-Limit pro IP (falls Binding gesetzt) — gegen Flooding
+    if (env.RATE_LIMITER) {
+      try {
+        const { success } = await env.RATE_LIMITER.limit({ key: ip });
+        if (!success) return json({ ok: false, error: 'rate_limited' }, 429, cd);
+      } catch (_) { /* Binding fehlt/fehlerhaft → nicht blockieren */ }
+    }
+
+    // Mindest-Ausfüllzeit: Bots sind zu schnell → still verwerfen
+    if (data.elapsed != null && Number(data.elapsed) < 1500) return json({ ok: true }, 200, cd);
+
+    // Turnstile-Verifikation (falls Secret gesetzt) — Bot-Challenge
+    if (env.TURNSTILE_SECRET) {
+      const ok = await verifyTurnstile((data.turnstile || '').toString(), ip, env.TURNSTILE_SECRET);
+      if (!ok) return json({ ok: false, error: 'captcha' }, 403, cd);
+    }
 
     const clip = (v, n) => (v == null ? '' : String(v)).trim().slice(0, n);
     const name = clip(data.name, 120);
