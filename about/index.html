@@ -507,6 +507,10 @@
   .ab-frole{font-family:"Archivo",sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:4px 11px;border-radius:100px}
   .ab-fline{font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.1rem,.95rem + .8vw,1.4rem);line-height:1.32;letter-spacing:-.015em;color:var(--muted);margin-top:var(--s-4)}
   .ab-fbio{font-size:1rem;color:var(--muted);line-height:1.6;margin-top:var(--s-4);max-width:42ch}
+  .ab-fsocial{display:inline-flex;align-items:center;gap:7px;margin-top:var(--s-4);font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .ab-fsocial svg{width:17px;height:17px;stroke:var(--emerald);stroke-width:1.7;fill:none}
+  .ab-fsocial:hover{color:var(--paper)}
+  .ab-fsocial:hover svg{stroke:var(--emerald-soft)}
   @media (max-width:880px){
     .ab-founders{grid-template-columns:1fr;gap:var(--s-5)}
     .ab-pic{aspect-ratio:16/10}
@@ -677,10 +681,10 @@
           </div>
           <div class="ab-fmeta">
             <h3 class="ab-fname">Philipp</h3>
-            <span class="ab-frole">Gründer</span>
+            <span class="ab-frole">Gründer · Technik &amp; Vertrieb</span>
           </div>
           <p class="ab-fline">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
-          <p class="ab-fbio">Hält Produktion, Zahlen und Wachstum zusammen — und macht in PEAKING sichtbar, was wirklich wirkt.</p>
+          <p class="ab-fbio">Hält Technik, Vertrieb und die Systeme dahinter zusammen — damit aus Reichweite planbares, messbares Wachstum wird. Jeder Fortschritt sichtbar in PEAKING.</p>
         </article>
 
         <!-- TODO echte Foto -->
@@ -691,10 +695,12 @@
           </div>
           <div class="ab-fmeta">
             <h3 class="ab-fname">Sebastian</h3>
-            <span class="ab-frole">Gründer</span>
+            <span class="ab-frole">Gründer · Content &amp; Reichweite</span>
           </div>
           <p class="ab-fline">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
-          <p class="ab-fbio">Verantwortet Strategie, Positionierung und Content-Richtung — und sorgt dafür, dass jeder Auftritt sofort verstanden wird.</p>
+          <p class="ab-fbio">Baut als <b>@vegetarianhulk</b> selbst eine Community auf — und bringt diese Praxis direkt in deinen Auftritt: Positionierung, Content und Reichweite, die sofort verstanden wird.</p>
+          <!-- ANPASSEN: Insta-Handle/URL bestätigen -->
+          <a class="ab-fsocial" href="https://instagram.com/vegetarianhulk" target="_blank" rel="noopener noreferrer" aria-label="Sebi auf Instagram, @vegetarianhulk"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg><span>@vegetarianhulk</span></a>
         </article>
 
       </div>
