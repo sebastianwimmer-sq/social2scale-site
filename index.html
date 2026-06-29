@@ -987,5 +987,67 @@
     els.forEach(function(e){ io.observe(e); });
   })();
   </script>
+  <style>
+  /* ── Bild-/Scroll-Effekte: 3D-Schrift + scroll-getriebene Helligkeit ── */
+  .hero h1 em,.proof-h em,.band em{
+    text-shadow:0 1px 0 rgba(0,200,150,.45),0 2px 0 rgba(0,170,126,.34),0 3px 0 rgba(0,140,104,.24),0 5px 12px rgba(0,0,0,.5);
+  }
+  .hero h1{text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45)}
+  /* Tilt-Wrapper – nur der Container kippt; Kinder behalten ihre .r-Entrance */
+  .hero{perspective:1200px}
+  .hero .hero-center{transform-style:preserve-3d;transition:transform .45s cubic-bezier(.16,1,.3,1);will-change:transform}
+  /* Scroll-Helligkeit: Foto-Layer lesen --photb / --phots (per JS pro Frame) */
+  .hero-bg,.sec-bg{filter:brightness(var(--photb,1)) saturate(var(--phots,1));will-change:filter}
+  .band.has-photo::before{filter:brightness(var(--photb,1)) saturate(var(--phots,1))}
+  @media (prefers-reduced-motion:reduce){
+    .hero .hero-center{transform:none!important}
+    .hero-bg,.sec-bg,.band.has-photo::before{filter:none!important}
+  }
+  @media (hover:none){.hero .hero-center{transform:none!important}}
+  </style>
+  <script>
+  /* Scroll-getriebene Helligkeit der Foto-Layer + 3D-Pointer-Tilt im Hero.
+     Progressive Enhancement; respektiert prefers-reduced-motion. */
+  (function(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var photos = [].slice.call(document.querySelectorAll('.hero-bg,.sec-bg,.band.has-photo'));
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var ticking = false;
+    function frame(){
+      ticking = false;
+      var center = vh/2;
+      for (var i=0;i<photos.length;i++){
+        var el = photos[i], r = el.getBoundingClientRect();
+        if (r.bottom < -240 || r.top > vh+240) continue;            /* außer Sicht → skip */
+        var mid = r.top + r.height/2;
+        var d = Math.min(1, Math.abs(mid-center)/(vh*0.78));         /* 0 = zentriert, 1 = Rand */
+        el.style.setProperty('--photb', (1.10 - d*0.34).toFixed(3)); /* 1.10 Fokus → 0.76 Rand */
+        el.style.setProperty('--phots', (1.12 - d*0.22).toFixed(3)); /* satter im Fokus */
+      }
+    }
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', function(){ vh = window.innerHeight||document.documentElement.clientHeight; onScroll(); }, {passive:true});
+    frame();
+
+    /* 3D-Tilt im Hero – nur Zeiger-Geräte (Maus/Trackpad) */
+    var hero = document.getElementById('hero');
+    var hc = hero && hero.querySelector('.hero-center');
+    if (hc && matchMedia('(hover:hover) and (pointer:fine)').matches){
+      var raf = 0;
+      hero.addEventListener('pointermove', function(ev){
+        if (raf) return;
+        var r = hero.getBoundingClientRect();
+        var px = (ev.clientX - r.left)/r.width - .5;
+        var py = (ev.clientY - r.top)/r.height - .5;
+        raf = requestAnimationFrame(function(){
+          raf = 0;
+          hc.style.transform = 'rotateY('+(px*6).toFixed(2)+'deg) rotateX('+(-py*5).toFixed(2)+'deg)';
+        });
+      }, {passive:true});
+      hero.addEventListener('pointerleave', function(){ hc.style.transform=''; });
+    }
+  })();
+  </script>
 </body>
 </html>
