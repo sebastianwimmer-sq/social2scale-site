@@ -137,6 +137,11 @@
   @media (prefers-reduced-motion:reduce){.bar .brand img{animation:none;will-change:auto}.bar .brand:hover img{transform:scale(1.04)}}
 
   .nav{display:flex;align-items:center;gap:var(--s-6);margin-left:auto}
+.nav-login{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--emerald,#00B888);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .25s var(--ease)}
+.nav-login:hover{opacity:.78}
+.nav-login svg{width:14px;height:14px}
+.foot-ig{display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--line-2,rgba(255,255,255,.14));border-radius:10px;color:var(--paper,#F2F3F1);transition:border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
+.foot-ig:hover{border-color:rgba(0,184,136,.55);color:#28C281;transform:translateY(-2px)}
   .nav-links{display:flex;align-items:center;gap:var(--s-6);list-style:none}
   .nav-links a{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.01em;color:var(--muted);text-decoration:none;position:relative;padding:6px 0;transition:color .25s var(--ease)}
   .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--emerald);transition:width .3s var(--ease)}
@@ -528,6 +533,7 @@
         <li><a href="/about/">Über uns</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
+      <a class="nav-login" href="https://closing.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
@@ -543,6 +549,7 @@
     <a class="m-link" href="/results/">Ergebnisse</a>
     <a class="m-link" href="/about/">Über uns</a>
     <a class="m-link" href="#faq">FAQ</a>
+    <a class="m-link" href="https://closing.social2scale.com" style="color:var(--emerald,#00B888);font-weight:600">Login · Mein Bereich</a>
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
     <p class="m-foot">Powered by PEAKING</p>
   </nav>
@@ -791,10 +798,16 @@
         <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="104" height="52"></a>
         <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
         <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
+        <div class="foot-social" style="display:flex;gap:.6rem;margin-top:.9rem">
+          <a class="foot-ig" href="https://instagram.com/social2scale" target="_blank" rel="noopener" aria-label="social2scale auf Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          </a>
+        </div>
       </div>
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
         <ul>
+          <li><a href="https://closing.social2scale.com">Login · Mein Bereich</a></li>
           <li><a href="#leistungen">Leistungen</a></li>
           <li><a href="#ablauf">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
