@@ -151,6 +151,25 @@ export default {
       });
     } catch (_) { /* nicht fatal */ }
 
+    // 3) Lead zusätzlich ins CRM (Eingänge) spiegeln — non-fatal.
+    //    Lead ist über Brevo + Founder-Mail bereits gesichert; das CRM ist der Komfort-Spiegel.
+    try {
+      const md =
+        '# Erstgespräch-Anfrage\n\n' +
+        '- **Name:** ' + name + '\n' +
+        '- **E-Mail:** ' + email + '\n' +
+        '- **Telefon:** ' + phone + '\n' +
+        (business ? '- **Business / Rolle:** ' + business + '\n' : '') +
+        (status ? '- **Status:** ' + status + '\n' : '') +
+        (budget ? '- **Budget:** ' + budget + '\n' : '') +
+        (goal ? '\n**Ziel / Bottleneck:**\n' + goal + '\n' : '');
+      await fetch('https://closing.social2scale.com/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'anfrage', name: name, email: email, payload: md, website: '' }),
+      });
+    } catch (_) { /* nicht fatal — Lead ist via Brevo + Mail gesichert */ }
+
     return json({ ok: true }, 200, cd);
   },
 };
