@@ -170,6 +170,14 @@
 
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
+  /* Hero-Hintergrundfoto, dunkel überscrimt → Text bleibt knackig, Foto gibt Tiefe */
+  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.58),rgba(3,8,13,.80) 58%,#03080D 100%),url(/assets/workspace.webp) center 55%/cover no-repeat}
+  .hero>.wrap{position:relative;z-index:1}
+  /* CTA-Karte mit Creator-Foto als Hintergrund */
+  .band.has-photo{position:relative;overflow:hidden}
+  .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(165deg,rgba(4,20,15,.80),rgba(3,8,13,.90)),url(/assets/creator.webp) center/cover no-repeat}
+  .band.has-photo>*{position:relative;z-index:1}
+  @media (prefers-reduced-motion:reduce){.hero-bg{background-attachment:scroll}}
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
   /* the ONE prominent brand mark — large centered wordmark */
@@ -529,6 +537,7 @@
 
   <main>
     <section class="hero" id="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
       <div class="wrap">
         <div class="hero-center">
           <picture>
@@ -548,15 +557,6 @@
             <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in PEAKING</li>
           </ul>
         </div>
-      </div>
-    </section>
-
-    <!-- Atmosphäre: echtes Workspace-Foto -->
-    <section class="atmos">
-      <div class="wrap" style="margin-top:clamp(1.5rem,4vw,3rem);margin-bottom:clamp(1.5rem,4vw,3rem);">
-        <figure style="margin:0;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);">
-          <img src="/assets/workspace.webp" alt="Arbeitsplatz mit Smartphone, Laptop und Kaffee im warmen Abendlicht" width="1024" height="576" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;">
-        </figure>
       </div>
     </section>
 
@@ -681,15 +681,6 @@
       </div>
     </section>
 
-    <!-- Atmosphäre: Creator bei der Arbeit -->
-    <section class="atmos">
-      <div class="wrap" style="margin-top:clamp(1.5rem,4vw,3rem);margin-bottom:clamp(1.5rem,4vw,3rem);">
-        <figure style="margin:0;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);">
-          <img src="/assets/creator.webp" alt="Creator analysiert seine Social-Media-Performance am Smartphone" width="1672" height="941" loading="lazy" decoding="async" style="display:block;width:100%;height:auto;">
-        </figure>
-      </div>
-    </section>
-
     <section class="blk" id="leistungen"><div class="wrap reveal">
       <div class="blk-head head">
         <span class="klabel">Was wir machen</span>
@@ -769,7 +760,7 @@
     </div></section>
 
     <section class="blk"><div class="wrap reveal">
-      <div class="band">
+      <div class="band has-photo">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
