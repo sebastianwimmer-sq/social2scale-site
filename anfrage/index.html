@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://s2s-anfrage.peaking.workers.dev; frame-src https://challenges.cloudflare.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://cal.eu https://www.cal.eu https://app.cal.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://challenges.cloudflare.com https://s2s-anfrage.peaking.workers.dev https://cal.eu https://www.cal.eu https://app.cal.com; frame-src https://challenges.cloudflare.com https://cal.eu https://www.cal.eu https://app.cal.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#03080D">
@@ -137,6 +137,8 @@
   .success p{color:var(--muted);font-size:1.05rem;margin-top:16px;max-width:44ch;margin-inline:auto}
   .success .home{display:inline-block;margin-top:30px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--paper);text-decoration:none;border-bottom:1px solid var(--line-2);padding-bottom:2px;transition:color .25s,border-color .25s}
   .success .home:hover{color:var(--emerald);border-color:var(--emerald)}
+  .cal-inline{min-height:560px;width:100%;max-width:760px;margin:30px auto 6px;overflow:hidden;border-radius:16px;border:1px solid var(--line);background:rgba(12,12,14,.5)}
+  .cal-inline iframe{border-radius:16px}
 
   /* ===== Footer (lean · Liquid-Glass) ===== */
   .site-footer{position:relative;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-top:56px}
@@ -339,9 +341,10 @@
       <div class="success-mark" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#00B888" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h2>Danke! Wir melden uns <em>persönlich</em>.</h2>
-      <p>Wir melden uns innerhalb von 24 h persönlich bei dir.</p>
-      <a class="home" href="https://social2scale.com/">Zurück zu social2scale →</a>
+      <h2>Danke! Wähle direkt deinen <em>Termin</em>.</h2>
+      <p>Such dir unten einen Slot fürs unverbindliche Erstgespräch — den Rest besprechen wir persönlich.</p>
+      <div id="cal-inline" class="cal-inline" aria-label="Terminkalender Erstgespräch"></div>
+      <a class="home" href="https://cal.eu/social2scale/social2scale-erstgesprach" target="_blank" rel="noopener noreferrer">Kalender lädt nicht? Hier direkt buchen →</a>
     </section>
   </main>
 
@@ -407,6 +410,7 @@
       if (form) form.style.display = 'none';
       if (successEl) {
         successEl.classList.add('show');
+        try { window.s2sInitCal && window.s2sInitCal(); } catch (e) {}
         try { successEl.focus(); } catch (e) {}
         try { successEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
       }
@@ -498,6 +502,26 @@
     b.addEventListener('click',function(){window.scrollTo({top:0,behavior:rm?'auto':'smooth'});});
     upd();
   })();
+  </script>
+  <script>
+  /* Cal.com (EU) Inline-Embed — wird erst beim Erfolg via window.s2sInitCal gestartet. */
+  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://www.cal.eu/embed/embed.js", "init");
+  var s2sCalInited = false;
+  window.s2sInitCal = function () {
+    if (s2sCalInited) return;
+    s2sCalInited = true;
+    Cal("init", "erstgespraech", { origin: "https://www.cal.eu" });
+    Cal.ns.erstgespraech("inline", {
+      elementOrSelector: "#cal-inline",
+      calLink: "social2scale/social2scale-erstgesprach",
+      layout: "month_view"
+    });
+    Cal.ns.erstgespraech("ui", {
+      theme: "dark",
+      hideEventTypeDetails: false,
+      cssVarsPerTheme: { dark: { "cal-brand": "#00B888" } }
+    });
+  };
   </script>
 </body>
 </html>
