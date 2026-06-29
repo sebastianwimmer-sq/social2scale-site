@@ -177,6 +177,14 @@
   .band.has-photo{position:relative;overflow:hidden}
   .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(165deg,rgba(4,20,15,.80),rgba(3,8,13,.90)),url(/assets/creator.webp) center/cover no-repeat}
   .band.has-photo>*{position:relative;z-index:1}
+  /* Wiederverwendbare Section-Hintergrundfotos (dunkel überscrimt, Text obenauf) */
+  .photo-sec{position:relative;overflow:hidden}
+  .photo-sec>*:not(.sec-bg){position:relative;z-index:1}
+  .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  .sec-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.84),rgba(3,8,13,.92))}
+  .sec-bg.growth{background-image:url(/assets/growth.webp)}
+  .sec-bg.collab{background-image:url(/assets/collab.webp)}
+  .sec-bg.flat{background-image:url(/assets/flat.webp)}
   @media (prefers-reduced-motion:reduce){.hero-bg{background-attachment:scroll}}
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
@@ -585,7 +593,8 @@
       </div>
     </section>
 
-    <section class="proof" id="proof" aria-labelledby="proof-h">
+    <section class="proof photo-sec" id="proof" aria-labelledby="proof-h">
+      <div class="sec-bg growth" aria-hidden="true"></div>
       <div class="wrap">
         <div class="proof-grid reveal">
           <div class="proof-copy">
@@ -681,7 +690,7 @@
       </div>
     </section>
 
-    <section class="blk" id="leistungen"><div class="wrap reveal">
+    <section class="blk photo-sec" id="leistungen"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
       <div class="blk-head head">
         <span class="klabel">Was wir machen</span>
         <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
@@ -710,7 +719,8 @@
       </div>
     </div></section>
 
-    <section class="weg" id="ablauf" aria-label="Dein Weg zu planbarem Wachstum">
+    <section class="weg photo-sec" id="ablauf" aria-label="Dein Weg zu planbarem Wachstum">
+      <div class="sec-bg collab" aria-hidden="true"></div>
       <div class="weg-track">
         <div class="weg-sticky"><div class="wrap">
           <div class="weg-grid">
