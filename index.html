@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="preload" as="image" type="image/webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -37,7 +37,7 @@
   :root{
     /* ===== surfaces: dark-grey stack (no pure #000 except topbar) ===== */
     --ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --surface-3:#23252A;
-    --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --paper:#F2F3F1; --muted:#A4A6A1; --faint:#8E918B;
     --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
     /* second accent — Teal/Cyan flow (Aurora dual-tone), used tastefully alongside emerald */
     --teal:#1FA6E0; --cyan:#2FBEEA;
@@ -1041,8 +1041,6 @@
   <script>
     document.getElementById('yr').textContent=new Date().getFullYear();
 
-    // wire real CTA urls (placeholder until Calendly link arrives)
-    ['cta','cta-top','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
 
     // ===== burger / mobile menu =====
     (function(){
