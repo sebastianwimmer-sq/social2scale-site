@@ -18,3 +18,13 @@ database_id = "ddb630bc-a9c8-48ba-95bd-9c3843d0846e"
 # Secrets via CLI (NICHT hier eintragen):
 #   npx wrangler secret put BREVO_API_KEY
 #   npx wrangler secret put TURNSTILE_SECRET
+
+# Browser Rendering — am 15.07. auf diesem Account verifiziert (Wegwerf-Worker
+# s2s-browser-probe: puppeteer.launch(env.BROWSER) -> echtes PNG zurueck).
+[browser]
+binding = "BROWSER"
+
+# Generierte Bilder. Eigener Bucket, NICHT s2s-logos (das sind Kundinnen-Assets).
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "s2s-free"

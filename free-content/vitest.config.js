@@ -15,6 +15,8 @@ export default defineWorkersConfig({
         miniflare: {
           // Lokale D1 im Test — die produktive DB wird NIE angefasst.
           d1Databases: { DB: 'test-db' },
+          // Lokaler R2 im Test — der produktive Bucket wird NIE angefasst.
+          r2Buckets: ['IMAGES'],
         },
       },
     },
