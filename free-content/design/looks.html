@@ -31,6 +31,27 @@
     --ff-body: "Plus Jakarta Sans", sans-serif;
     background: var(--paper);
   }
+  /* ── PROBE: Look-B-STRUKTUR in hellen Paletten ──
+     Sebi hat B gewaehlt. B ist aber ein Typo-/Layout-System, keine Farbe — die Palette
+     kommt pro Lead aus ihren Antworten. Wenn eine Coachin "ruhig/hell" angibt, darf sie
+     kein Anthrazit bekommen. Also: haelt Bs Struktur auch hell? */
+  .look-b-hell {
+    --paper: #F4F0E9; --ink: #23201C; --ink-soft: #6B645A; --accent: #C2410C;
+    --rule: rgba(35,32,28,.14);
+    --ff-display: "Space Grotesk", sans-serif; --ff-body: "Plus Jakarta Sans", sans-serif;
+    background: var(--paper);
+  }
+  .look-b-hell .head { letter-spacing: -.045em; font-weight: 700; }
+  .look-b-hell .head em { font-style: normal; color: var(--accent); }
+  .look-b-salbei {
+    --paper: #EDF1EC; --ink: #1B241F; --ink-soft: #5F6B62; --accent: #2F6F5E;
+    --rule: rgba(27,36,31,.14);
+    --ff-display: "Space Grotesk", sans-serif; --ff-body: "Plus Jakarta Sans", sans-serif;
+    background: var(--paper);
+  }
+  .look-b-salbei .head { letter-spacing: -.045em; font-weight: 700; }
+  .look-b-salbei .head em { font-style: normal; color: var(--accent); }
+
   /* ── Look C · „Klar" ── hell, luftig, Serif-Akzent. Fuer hell/freundlich. */
   .look-c {
     --paper: #FBFBFC;
@@ -272,5 +293,13 @@
   // Wasserzeichen-Vergleich an EINEM Look, damit der Unterschied isoliert sichtbar ist
   html += `<div class="label">Wasserzeichen · dezent</div><div id="wm-soft">${slide(LOOKS[0], "wm-soft")}</div>`;
   html += `<div class="label">Wasserzeichen · prominent</div><div id="wm-loud">${slide(LOOKS[0], "wm-loud")}</div>`;
+
+  // Probe: haelt die Look-B-Struktur auch in hellen Paletten? (Sebi hat B gewaehlt,
+  // aber die Palette kommt pro Lead aus ihren Antworten.)
+  const bHell   = { id: "b-hell",   eyebrow: "Klartext", head: 'Dein Feed ist<br>kein <em>Tagebuch</em>.', sub: "Warum Konsistenz mehr zieht als Kreativität." };
+  const bSalbei = { id: "b-salbei", eyebrow: "Klartext", head: 'Dein Feed ist<br>kein <em>Tagebuch</em>.', sub: "Warum Konsistenz mehr zieht als Kreativität." };
+  html += `<div class="label">Probe · B-Struktur, helle Palette</div><div id="b-hell">${slide(bHell, "wm-soft")}</div>`;
+  html += `<div class="label">Probe · B-Struktur, Salbei</div><div id="b-salbei">${slide(bSalbei, "wm-soft")}</div>`;
+  html += `<div class="label">Probe · B-Struktur hell, Profil</div><div id="pb-hell">${profile(bHell, "wm-soft")}</div>`;
   stage.innerHTML = html;
 </script>

@@ -7,7 +7,7 @@ const path = '/private/tmp/claude-501/-Users-sebastianwimmer/487ef944-dd9f-43f7-
   await p.evaluate(() => document.fonts.ready);   // Font-Race: sonst rendert es Fallback
   await p.waitForTimeout(600);
 
-  const ziele = ['p-a','s-a','p-b','s-b','p-c','s-c','wm-soft','wm-loud'];
+  const ziele = ['p-a','s-a','p-b','s-b','p-c','s-c','wm-soft','wm-loud','b-hell','b-salbei','pb-hell'];
   for (const id of ziele) {
     const el = await p.$('#' + id + ' .frame');
     if (!el) { console.log('FEHLT: ' + id); continue; }
