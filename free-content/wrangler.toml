@@ -1,0 +1,20 @@
+name = "s2s-free-content"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ALLOW_ORIGIN  = "https://social2scale.com"
+NOTIFY_TO     = "info@social2scale.com"
+NOTIFY_FROM   = "info@social2scale.com"
+PUBLIC_ORIGIN = "https://start.social2scale.com"
+
+# Geteilt mit dem CRM — dieselbe DB, damit Leads in den CRM-Eingängen landen.
+[[d1_databases]]
+binding = "DB"
+database_name = "s2s-crm"
+database_id = "ddb630bc-a9c8-48ba-95bd-9c3843d0846e"
+
+# Secrets via CLI (NICHT hier eintragen):
+#   npx wrangler secret put BREVO_API_KEY
+#   npx wrangler secret put TURNSTILE_SECRET
