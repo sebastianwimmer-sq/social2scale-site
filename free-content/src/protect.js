@@ -2,6 +2,13 @@
  * Bot-Schichten 1-4 (Spec §7). Portiert aus workers/anfrage-worker.js —
  * dort erprobt, hier nicht neu erfunden.
  * Entscheidet nur ja/nein und kennt keine Leads.
+ *
+ * ABWEICHUNG vom Original (bewusst, nicht vergessen):
+ * verifyTurnstile prueft hier zusaetzlich res.ok. Das Original tut das nicht —
+ * dort haette eine HTTP-Fehlerantwort mit `{success:true}` im Body ein `true`
+ * zurueckgegeben. Fail-closed hielt dort nur zufaellig, weil echte
+ * Cloudflare-Fehlerseiten HTML sind und .json() darum in den catch laeuft.
+ * Mit dem Check ist fail-closed Absicht statt Zufall.
  */
 
 import { MIN_ELAPSED_MS } from './constants.js';
