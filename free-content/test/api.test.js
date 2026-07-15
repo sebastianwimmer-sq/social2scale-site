@@ -9,6 +9,7 @@ import {
 } from '../src/protect.js';
 import { RATE_LIMIT_PER_IP_PER_HOUR } from '../src/constants.js';
 import SCHEMA_SQL from './schema.sql?raw';
+import { buildConfirmMail } from '../src/mail.js';
 
 describe('health', () => {
   it('antwortet mit ok', async () => {
@@ -269,5 +270,30 @@ describe('protect: Rate-Limit', () => {
     const res = await registerAttempt(env.DB, '1.1.1.1', T0);
     expect(res.ok).toBe(false);
     expect(res.reason).toBe('ip');
+  });
+});
+
+describe('mail: Bestaetigungsmail', () => {
+  const lead = { name: 'Sebi', token: 'abc123', handle: 'sebi.wimmer' };
+
+  it('traegt Sebis Framing im Betreff', () => {
+    const mail = buildConfirmMail(lead, 'https://start.social2scale.com');
+    expect(mail.subject).toContain('Nur noch ein Klick');
+  });
+
+  it('enthaelt den korrekten Bestaetigungslink', () => {
+    const mail = buildConfirmMail(lead, 'https://start.social2scale.com');
+    expect(mail.htmlContent).toContain('https://start.social2scale.com/c/abc123');
+  });
+
+  it('spricht sie mit Vornamen an', () => {
+    expect(buildConfirmMail(lead, 'https://x.de').htmlContent).toContain('Sebi');
+  });
+
+  it('escaped HTML im Namen (XSS)', () => {
+    const boese = { ...lead, name: '<script>alert(1)</script>' };
+    const html = buildConfirmMail(boese, 'https://x.de').htmlContent;
+    expect(html).not.toContain('<script>');
+    expect(html).toContain('&lt;script&gt;');
   });
 });
