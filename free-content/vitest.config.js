@@ -13,10 +13,14 @@ export default defineWorkersConfig({
       workers: {
         wrangler: { configPath: './wrangler.toml' },
         miniflare: {
-          // Lokale D1 im Test — die produktive DB wird NIE angefasst.
+          // Lokale D1 im Test — lenkt die database_id aus wrangler.toml auf eine
+          // Test-DB um. DIESE Zeile ist noetig: ohne sie zeigt das Binding auf die
+          // produktive s2s-crm.
           d1Databases: { DB: 'test-db' },
-          // Lokaler R2 im Test — der produktive Bucket wird NIE angefasst.
-          r2Buckets: ['IMAGES'],
+          // Bewusst KEIN r2Buckets-Eintrag: vitest-pool-workers materialisiert die
+          // Bindings automatisch aus wrangler.toml, und Miniflare simuliert R2
+          // immer lokal. Ein Eintrag hier waere tote Konfiguration, die so aussieht,
+          // als wuerde sie schuetzen. (Verifiziert gegen die Cloudflare-Doku, 15.07.)
         },
       },
     },
