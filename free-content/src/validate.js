@@ -30,3 +30,22 @@ export function normalizeEmail(raw) {
 
   return `${localNorm}@${domainNorm}`;
 }
+
+const HANDLE_PATTERN = /^[a-z0-9._]{1,30}$/;
+
+/**
+ * Bildet '@Name', 'name' und eine Profil-URL auf EINEN Schluessel ab.
+ * Gibt '' zurueck, wenn kein gueltiger Instagram-Handle erkennbar ist.
+ */
+export function normalizeHandle(raw) {
+  let handle = String(raw ?? '').trim().toLowerCase();
+  if (!handle) return '';
+
+  const fromUrl = handle.match(/instagram\.com\/([^/?#\s]+)/);
+  if (fromUrl) handle = fromUrl[1];
+
+  handle = handle.replace(/^@+/, '').replace(/[/?#].*$/, '').trim();
+  if (!HANDLE_PATTERN.test(handle)) return '';
+
+  return handle;
+}

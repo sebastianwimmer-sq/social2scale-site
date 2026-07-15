@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeEmail } from '../src/validate.js';
+import { normalizeEmail, normalizeHandle } from '../src/validate.js';
 
 describe('normalizeEmail', () => {
   it('trimmt und schreibt klein', () => {
@@ -41,5 +41,40 @@ describe('normalizeEmail', () => {
       normalizeEmail('se.bi+a+b@googlemail.com'),
     ]);
     expect(keys.size).toBe(1);
+  });
+});
+
+describe('normalizeHandle', () => {
+  it('entfernt das fuehrende @ und schreibt klein', () => {
+    expect(normalizeHandle('@Sebi.Wimmer')).toBe('sebi.wimmer');
+  });
+
+  it('akzeptiert den nackten Handle', () => {
+    expect(normalizeHandle('  sebi_wimmer  ')).toBe('sebi_wimmer');
+  });
+
+  it('zieht den Handle aus einer Profil-URL', () => {
+    expect(normalizeHandle('https://www.instagram.com/sebi.wimmer/')).toBe('sebi.wimmer');
+    expect(normalizeHandle('instagram.com/sebi.wimmer?igsh=abc')).toBe('sebi.wimmer');
+  });
+
+  it('alle Schreibweisen ergeben denselben Schluessel', () => {
+    const keys = new Set([
+      normalizeHandle('@Sebi.Wimmer'),
+      normalizeHandle('sebi.wimmer'),
+      normalizeHandle('https://instagram.com/Sebi.Wimmer/'),
+    ]);
+    expect(keys.size).toBe(1);
+  });
+
+  it('gibt bei ungueltigen Handles einen leeren String zurueck', () => {
+    // IG erlaubt nur a-z 0-9 . _ und maximal 30 Zeichen.
+    for (const bad of ['', '   ', 'hat leerzeichen', 'ümlaut', 'a'.repeat(31), '@@', null, undefined]) {
+      expect(normalizeHandle(bad)).toBe('');
+    }
+  });
+
+  it('akzeptiert genau 30 Zeichen', () => {
+    expect(normalizeHandle('a'.repeat(30))).toBe('a'.repeat(30));
   });
 });
