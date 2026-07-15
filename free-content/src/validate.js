@@ -3,6 +3,9 @@
  * Keine Bindings, kein I/O — damit trivial testbar.
  */
 
+import { DISPOSABLE_DOMAINS } from './disposable.js';
+import { FIELD_LIMITS } from './constants.js';
+
 const GMAIL_DOMAINS = new Set(['gmail.com', 'googlemail.com']);
 
 /**
@@ -59,4 +62,64 @@ export function normalizeHandle(raw) {
   // der nie eingegeben wurde ('some/random?query' -> 'some').
   const handle = input.replace(/^@+/, '');
   return HANDLE_PATTERN.test(handle) ? handle : '';
+}
+
+/** true, wenn die Domain auf der Wegwerf-Liste steht. */
+export function isDisposable(email) {
+  const norm = normalizeEmail(email);
+  if (!norm) return false;
+  return DISPOSABLE_DOMAINS.has(norm.split('@')[1]);
+}
+
+function clip(value, max) {
+  return String(value ?? '').trim().slice(0, max);
+}
+
+/**
+ * Validiert + normalisiert eine Formular-Eingabe.
+ * Gibt { ok:true, value } oder { ok:false, error } zurueck.
+ * error ist ein stabiler Schluessel (kein Text) — die UI uebersetzt ihn.
+ */
+export function validateSubmission(input) {
+  const raw = input ?? {};
+
+  const name = clip(raw.name, FIELD_LIMITS.name);
+  if (!name) return { ok: false, error: 'name' };
+
+  const email = clip(raw.email, FIELD_LIMITS.email);
+  const emailNorm = normalizeEmail(email);
+  if (!emailNorm) return { ok: false, error: 'email' };
+  if (isDisposable(emailNorm)) return { ok: false, error: 'disposable' };
+
+  const handle = clip(raw.handle, FIELD_LIMITS.handle);
+  const handleNorm = normalizeHandle(handle);
+  if (!handleNorm) return { ok: false, error: 'handle' };
+
+  const branche = clip(raw.branche, FIELD_LIMITS.branche);
+  if (!branche) return { ok: false, error: 'branche' };
+
+  const ziel = clip(raw.ziel, FIELD_LIMITS.ziel);
+  if (!ziel) return { ok: false, error: 'ziel' };
+
+  const stimmung = clip(raw.stimmung, FIELD_LIMITS.stimmung);
+  if (!stimmung) return { ok: false, error: 'stimmung' };
+
+  if (raw.consent !== true) return { ok: false, error: 'consent' };
+
+  return {
+    ok: true,
+    value: {
+      name,
+      email: email.toLowerCase(),
+      emailNorm,
+      handle: handleNorm,
+      handleNorm,
+      branche,
+      ziel,
+      stimmung,
+      farbe: clip(raw.farbe, FIELD_LIMITS.farbe),
+      consent: true,
+      source: clip(raw.source, FIELD_LIMITS.source),
+    },
+  };
 }
