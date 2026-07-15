@@ -1,5 +1,5 @@
 import { env } from 'cloudflare:test';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { upsertLead, findByToken, confirmLead, cleanupExpired } from '../src/leads.js';
 import { validateSubmission } from '../src/validate.js';
 // Kein readFileSync: dieser Test laeuft in workerd, nicht in Node — node:fs ist
@@ -128,6 +128,46 @@ describe('upsertLead', () => {
     const r = await upsertLead(env.DB, clean({ branche: 'Neu' }), '1.1.1.1', NOW);
     expect(r.lead.branche).toBe('Neu');
   });
+
+  it('schickt bei laufendem Build den Link zur Build-Seite', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await env.DB.prepare("UPDATE free_leads SET status='building' WHERE id=?").bind(r.lead.id).run();
+    const again = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    expect(again.action).toBe('building');
+    expect(again.mail).toBe('result');
+  });
+
+  it('faengt das INSERT-Rennen ab und liefert resent statt einer 500', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+
+      // Der erste Lookup luegt EINMAL und meldet "nicht da" — exakt das Fenster,
+      // das zwei parallele Anfragen sehen. Alles andere laeuft gegen die echte DB,
+      // der INSERT rennt also wirklich in den UNIQUE-Index.
+      let gelogen = false;
+      const racingDb = {
+        prepare(sql) {
+          if (!gelogen && sql.includes('SELECT * FROM free_leads WHERE email_norm')) {
+            gelogen = true;
+            return { bind: () => ({ first: async () => null }) };
+          }
+          return env.DB.prepare(sql);
+        },
+      };
+
+      const r = await upsertLead(racingDb, clean(), '1.1.1.1', NOW);
+      expect(r.action).toBe('resent');
+      expect(r.mail).toBe('confirm');
+
+      const { results } = await env.DB.prepare('SELECT * FROM free_leads').all();
+      expect(results.length).toBe(1);
+      // Fehler wird nie verschluckt.
+      expect(spy.mock.calls.flat().join(' ')).toMatch(/INSERT-Rennen/);
+    } finally {
+      spy.mockRestore();
+    }
+  });
 });
 
 describe('confirmLead', () => {
@@ -154,6 +194,64 @@ describe('confirmLead', () => {
     const res = await confirmLead(env.DB, 'gibtsnicht', NOW);
     expect(res.ok).toBe(false);
     expect(res.reason).toBe('not_found');
+  });
+
+  it('laesst den Zweiten am selben Handle sauber auflaufen statt zu werfen', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      // Beide pending mit demselben Handle — laut Spec erlaubt (kein Griefing).
+      const a = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+      const b = await upsertLead(env.DB, clean({ email: 'zwei@firma.de' }), '2.2.2.2', NOW);
+      expect(b.action).toBe('created');
+
+      expect((await confirmLead(env.DB, a.lead.token, NOW)).ok).toBe(true);
+
+      // Der Zweite klickt einen ECHTEN Link: geordnete Absage, keine Exception.
+      const res = await confirmLead(env.DB, b.lead.token, NOW);
+      expect(res.ok).toBe(false);
+      expect(res.reason).toBe('handle_taken');
+      expect(spy.mock.calls.flat().join(' ')).toMatch(/Handle/);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+});
+
+// Diese Tests gehen absichtlich AM App-Code VORBEI und schreiben roh in die DB.
+// Sie sichern die DDL selbst ab: die Indizes sind das letzte Netz, falls die
+// Anwendungslogik je umgebaut wird. Fallen sie um, ist das Schema kaputt —
+// die 16 Verhaltenstests oben wuerden das NICHT bemerken.
+describe('DB-Backstop: die Indizes selbst', () => {
+  it('weist eine zweite Zeile mit gleicher email_norm ab', async () => {
+    await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await expect(
+      env.DB.prepare(
+        `INSERT INTO free_leads (name, email, email_norm, token, token_expires)
+         VALUES ('X','x@gmail.com','sebi@gmail.com','tok-backstop-1','2026-07-16 12:00:00')`
+      ).run()
+    ).rejects.toThrow(/UNIQUE constraint failed/i);
+  });
+
+  it('laesst denselben Handle auf PENDING-Zeilen zu (kein Griefing-Lock)', async () => {
+    await upsertLead(env.DB, clean(), '1.1.1.1', NOW); // pending, handle sebi.wimmer
+    await env.DB.prepare(
+      `INSERT INTO free_leads (name, email, email_norm, handle_norm, token, token_expires)
+       VALUES ('A','a@x.de','a@x.de','sebi.wimmer','tok-backstop-2','2026-07-16 12:00:00')`
+    ).run();
+    const { results } = await env.DB
+      .prepare("SELECT id FROM free_leads WHERE handle_norm = 'sebi.wimmer'").all();
+    expect(results.length).toBe(2);
+  });
+
+  it('sperrt denselben Handle, sobald eine Zeile bestaetigt ist', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await confirmLead(env.DB, r.lead.token, NOW);
+    await expect(
+      env.DB.prepare(
+        `INSERT INTO free_leads (name, email, email_norm, handle_norm, token, token_expires, confirmed_at)
+         VALUES ('B','b@x.de','b@x.de','sebi.wimmer','tok-backstop-3','2026-07-16 12:00:00','2026-07-15 12:00:00')`
+      ).run()
+    ).rejects.toThrow(/UNIQUE constraint failed/i);
   });
 });
 
