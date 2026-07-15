@@ -5,6 +5,7 @@ import { validateSubmission } from '../src/validate.js';
 // Kein readFileSync: dieser Test laeuft in workerd, nicht in Node — node:fs ist
 // dort gestubbt und wirft immer. Vites '?raw' inlined die Datei beim Build.
 import SCHEMA from './schema.sql?raw';
+import { splitSchema } from './helpers.js';
 
 const BASE = {
   name: 'Sebi',
