@@ -71,8 +71,17 @@ export function isDisposable(email) {
   return DISPOSABLE_DOMAINS.has(norm.split('@')[1]);
 }
 
+/**
+ * Trimmt und kappt einen String auf max Zeichen.
+ * Fehlt der Wert (null/undefined), ist das Ergebnis ''.
+ * Ist der Wert vorhanden, aber KEIN String, ist das Ergebnis null —
+ * das Feld wird dann abgelehnt statt stillschweigend gecastet zu werden.
+ * Ohne diese Grenze landete ['xss','payload'] als 'xss,payload' in der DB.
+ */
 function clip(value, max) {
-  return String(value ?? '').trim().slice(0, max);
+  if (value === null || value === undefined) return '';
+  if (typeof value !== 'string') return null;
+  return value.trim().slice(0, max);
 }
 
 /**
@@ -104,6 +113,13 @@ export function validateSubmission(input) {
   const stimmung = clip(raw.stimmung, FIELD_LIMITS.stimmung);
   if (!stimmung) return { ok: false, error: 'stimmung' };
 
+  // farbe und source sind optional: '' ist erlaubt, null (= kein String) nicht.
+  const farbe = clip(raw.farbe, FIELD_LIMITS.farbe);
+  if (farbe === null) return { ok: false, error: 'farbe' };
+
+  const source = clip(raw.source, FIELD_LIMITS.source);
+  if (source === null) return { ok: false, error: 'source' };
+
   if (raw.consent !== true) return { ok: false, error: 'consent' };
 
   return {
@@ -117,9 +133,9 @@ export function validateSubmission(input) {
       branche,
       ziel,
       stimmung,
-      farbe: clip(raw.farbe, FIELD_LIMITS.farbe),
+      farbe,
       consent: true,
-      source: clip(raw.source, FIELD_LIMITS.source),
+      source,
     },
   };
 }

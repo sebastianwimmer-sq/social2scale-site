@@ -162,4 +162,18 @@ describe('validateSubmission', () => {
     expect(r.ok).toBe(true);
     expect(r.value.farbe).toBe('');
   });
+
+  it('lehnt Nicht-Strings ab statt sie zu String zu machen', () => {
+    expect(validateSubmission({ ...gut, name: ['xss', 'payload'] }).error).toBe('name');
+    expect(validateSubmission({ ...gut, branche: { a: 1 } }).error).toBe('branche');
+    expect(validateSubmission({ ...gut, ziel: 42 }).error).toBe('ziel');
+    expect(validateSubmission({ ...gut, stimmung: true }).error).toBe('stimmung');
+  });
+
+  it('behandelt fehlende optionale Felder weiterhin als leer', () => {
+    const r = validateSubmission({ ...gut, farbe: undefined, source: undefined });
+    expect(r.ok).toBe(true);
+    expect(r.value.farbe).toBe('');
+    expect(r.value.source).toBe('');
+  });
 });
