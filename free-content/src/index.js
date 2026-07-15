@@ -70,6 +70,12 @@ async function handleSubmit(request, env, ctx, cors) {
   if (env.TURNSTILE_SECRET) {
     const ok = await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET);
     if (!ok) return json({ ok: false, error: 'captcha' }, 403, cors);
+  } else {
+    // Ohne Secret ist Schicht 1 — das eigentliche Bot-Gate — AUS. Ein vergessenes
+    // `wrangler secret put TURNSTILE_SECRET` darf nicht still passieren: dann kaeme
+    // jeder Bot durch, der den Honeypot meidet und lang genug wartet.
+    // /api/health meldet das mit, damit ein Fehl-Deploy beweisbar auffaellt.
+    console.error('[submit] TURNSTILE_SECRET fehlt — Bot-Gate ist AUS, Anfrage ungeprueft!');
   }
 
   const checked = validateSubmission(body);
@@ -192,7 +198,16 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
 
-    if (url.pathname === '/api/health') return json({ ok: true }, 200, cors);
+    // health meldet mit, ob die scharfen Schichten wirklich konfiguriert sind.
+    // Sonst kann ein Fehl-Deploy (vergessenes Secret) nicht auffallen — und genau
+    // das soll beweisbar sein, nicht Vertrauenssache. Das Live-Gate prueft es.
+    if (url.pathname === '/api/health') {
+      return json(
+        { ok: true, turnstile: !!env.TURNSTILE_SECRET, mail: !!env.BREVO_API_KEY },
+        200,
+        cors
+      );
+    }
 
     if (url.pathname === '/api/free-content') {
       if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405, cors);

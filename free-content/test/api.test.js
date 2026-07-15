@@ -35,7 +35,17 @@ describe('health', () => {
   it('antwortet mit ok', async () => {
     const res = await SELF.fetch('https://start.social2scale.com/api/health');
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true });
+    expect((await res.json()).ok).toBe(true);
+  });
+
+  it('meldet, ob die scharfen Schichten konfiguriert sind', async () => {
+    // Ein vergessenes Secret darf nicht still bleiben — das Live-Gate prueft genau das.
+    // Im Test sind beide Secrets bewusst nicht gesetzt, also muessen beide false sein.
+    const body = await (await SELF.fetch('https://start.social2scale.com/api/health')).json();
+    expect(body).toHaveProperty('turnstile');
+    expect(body).toHaveProperty('mail');
+    expect(body.turnstile).toBe(false);
+    expect(body.mail).toBe(false);
   });
 });
 

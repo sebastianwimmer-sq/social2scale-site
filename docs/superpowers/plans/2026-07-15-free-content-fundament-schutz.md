@@ -2249,6 +2249,19 @@ echo "== Free-Content Live-Gate =="
 
 pruefe "health" "200" "$(curl -s -o /dev/null -w '%{http_code}' "$BASE/api/health")"
 
+# Die WICHTIGSTE Zeile des Gates: ein vergessenes `wrangler secret put` schaltet das
+# Bot-Gate lautlos AUS — der Worker laeuft weiter, nur ungeschuetzt. Das faellt sonst
+# NIEMANDEM auf, bis der erste Bot durch ist.
+HEALTH="$(curl -s "$BASE/api/health")"
+case "$HEALTH" in
+  *'"turnstile":true'*) echo "  OK   Turnstile-Secret gesetzt (Bot-Gate scharf)" ;;
+  *) echo "  FAIL Turnstile-Secret FEHLT — Bot-Gate ist AUS! -> wrangler secret put TURNSTILE_SECRET"; FAILED=1 ;;
+esac
+case "$HEALTH" in
+  *'"mail":true'*) echo "  OK   Brevo-Key gesetzt (Bestaetigungsmails gehen raus)" ;;
+  *) echo "  FAIL Brevo-Key FEHLT — keine Mail, kein Lead! -> wrangler secret put BREVO_API_KEY"; FAILED=1 ;;
+esac
+
 # Turnstile ist live scharf -> ohne gueltiges Token muss 403 kommen.
 pruefe "ohne Turnstile -> 403" "403" \
   "$(code '{"name":"T","email":"t@gmail.com","handle":"@t.test","branche":"X","ziel":"Y","stimmung":"ruhig","consent":true,"elapsed":9000}')"
