@@ -6,7 +6,10 @@ import {
   isTooFast,
   verifyTurnstile,
   hasMailServer,
+  checkRateLimit,
+  logAttempt,
 } from '../src/protect.js';
+import SCHEMA_SQL from './schema.sql?raw';
 
 describe('health', () => {
   it('antwortet mit ok', async () => {
@@ -167,5 +170,51 @@ describe('protect: MX-Check faellt AUF (Schicht 4, nur Plausibilitaet)', () => {
     vi.stubGlobal('fetch', fetchMock);
     expect(await hasMailServer('keine-mail-adresse')).toBe(false);
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+});
+
+const T0 = new Date('2026-07-15T12:00:00Z');
+
+/**
+ * Zerlegt das Schema in einzeln ausfuehrbare Statements.
+ * Kommentarzeilen MUESSEN vor dem Whitespace-Collapse raus — sonst frisst ein
+ * einzeiliger `--`-Kommentar das gesamte folgende Statement.
+ */
+function splitSchema(sql) {
+  return sql
+    .split('\n')
+    .filter((line) => !line.trim().startsWith('--'))
+    .join('\n')
+    .split(';')
+    .map((s) => s.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+describe('protect: Rate-Limit', () => {
+  beforeEach(async () => {
+    await env.DB.exec('DROP TABLE IF EXISTS free_intake_log');
+    for (const stmt of splitSchema(SCHEMA_SQL)) await env.DB.exec(stmt);
+  });
+
+  it('laesst die ersten Versuche einer IP durch', async () => {
+    expect((await checkRateLimit(env.DB, '1.1.1.1', T0)).ok).toBe(true);
+  });
+
+  it('blockt ab dem 6. Versuch derselben IP innerhalb einer Stunde', async () => {
+    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
+    const res = await checkRateLimit(env.DB, '1.1.1.1', T0);
+    expect(res.ok).toBe(false);
+    expect(res.reason).toBe('ip');
+  });
+
+  it('laesst eine andere IP unbehelligt', async () => {
+    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
+    expect((await checkRateLimit(env.DB, '2.2.2.2', T0)).ok).toBe(true);
+  });
+
+  it('vergisst alte Versuche nach einer Stunde', async () => {
+    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
+    const spaeter = new Date('2026-07-15T13:30:00Z');
+    expect((await checkRateLimit(env.DB, '1.1.1.1', spaeter)).ok).toBe(true);
   });
 });

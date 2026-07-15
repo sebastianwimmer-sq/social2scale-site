@@ -38,3 +38,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_free_handle ON free_leads(handle_norm)
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_free_token   ON free_leads(token);
 CREATE INDEX        IF NOT EXISTS idx_free_cleanup ON free_leads(status, created_at);
+
+-- Rate-Limiting des oeffentlichen Free-Content-Eingangs (Muster: intake_log)
+CREATE TABLE IF NOT EXISTS free_intake_log (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  ip         TEXT NOT NULL DEFAULT 'unknown',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_free_log_created ON free_intake_log(created_at);
+CREATE INDEX IF NOT EXISTS idx_free_log_ip      ON free_intake_log(ip);

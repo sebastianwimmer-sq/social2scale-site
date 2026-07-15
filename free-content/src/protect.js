@@ -11,7 +11,7 @@
  * Mit dem Check ist fail-closed Absicht statt Zufall.
  */
 
-import { MIN_ELAPSED_MS } from './constants.js';
+import { MIN_ELAPSED_MS, RATE_LIMIT_PER_IP_PER_HOUR, RATE_LIMIT_GLOBAL_PER_HOUR } from './constants.js';
 
 /** Schicht 1: Turnstile serverseitig verifizieren. */
 export async function verifyTurnstile(token, ip, secret) {
@@ -77,4 +77,41 @@ export async function hasMailServer(email) {
     console.error('[protect] DNS-Lookup fehlgeschlagen:', err);
     return true; // fail-open: Lookup-Panne darf keine echten Leads killen
   }
+}
+
+function isoTs(date) {
+  return date.toISOString().replace('T', ' ').slice(0, 19);
+}
+
+/** Schicht 6: Rate-Limit pro IP + globaler Deckel (Muster: intake_log). */
+export async function checkRateLimit(db, ip, now = new Date()) {
+  const since = isoTs(new Date(now.getTime() - 60 * 60 * 1000));
+
+  const perIp = await db
+    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE ip = ? AND created_at >= ?')
+    .bind(ip, since)
+    .first();
+  if ((perIp?.c ?? 0) >= RATE_LIMIT_PER_IP_PER_HOUR) return { ok: false, reason: 'ip' };
+
+  const global = await db
+    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE created_at >= ?')
+    .bind(since)
+    .first();
+  if ((global?.c ?? 0) >= RATE_LIMIT_GLOBAL_PER_HOUR) return { ok: false, reason: 'global' };
+
+  return { ok: true };
+}
+
+/** Versuch protokollieren + opportunistisch aufraeumen (wie intake_log). */
+export async function logAttempt(db, ip, now = new Date()) {
+  const cutoff = isoTs(new Date(now.getTime() - 24 * 60 * 60 * 1000));
+  try {
+    await db.prepare('DELETE FROM free_intake_log WHERE created_at < ?').bind(cutoff).run();
+  } catch (err) {
+    console.error('[protect] Aufraeumen des Rate-Limit-Logs fehlgeschlagen:', err);
+  }
+  await db
+    .prepare('INSERT INTO free_intake_log (ip, created_at) VALUES (?, ?)')
+    .bind(ip, isoTs(now))
+    .run();
 }
