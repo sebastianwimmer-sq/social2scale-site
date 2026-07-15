@@ -1849,7 +1849,7 @@ Erwartung: FAIL — Route liefert 404.
 import { validateSubmission } from './validate.js';
 import {
   verifyTurnstile, isHoneypotTripped, isTooFast, hasMailServer,
-  checkRateLimit, logAttempt,
+  registerAttempt,
 } from './protect.js';
 import { upsertLead, cleanupExpired } from './leads.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
@@ -1901,7 +1901,18 @@ async function handleSubmit(request, env, ctx, cors) {
 
   const ip = request.headers.get('CF-Connecting-IP') || 'anon';
 
-  const limited = await checkRateLimit(env.DB, ip);
+  // registerAttempt schreibt ZUERST und urteilt dann — nur so haelt der Deckel
+  // gegen einen parallelen Burst (Task 7). Es zaehlt auch abgelehnte Versuche mit;
+  // das ist gewollt, ein Angriff soll in der Tabelle sichtbar sein.
+  // Wirft, wenn D1 nicht schreiben kann -> bewusst fail-closed (503), denn ohne
+  // Zaehlung gibt es keinen Deckel.
+  let limited;
+  try {
+    limited = await registerAttempt(env.DB, ip);
+  } catch (err) {
+    console.error('[submit] Rate-Limit-Zaehlung fehlgeschlagen:', err);
+    return json({ ok: false, error: 'backend' }, 503, cors);
+  }
   if (!limited.ok) return json({ ok: false, error: 'rate_limited' }, 429, cors);
 
   if (!(await hasMailServer(checked.value.emailNorm))) {
@@ -1909,7 +1920,6 @@ async function handleSubmit(request, env, ctx, cors) {
   }
 
   const { lead, action, mail } = await upsertLead(env.DB, checked.value, ip);
-  await logAttempt(env.DB, ip);
 
   // Mailversand + Aufraeumen blockieren die Antwort nicht.
   if (mail === 'confirm') {
