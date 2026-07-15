@@ -11,8 +11,11 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
-import { upsertLead, cleanupExpired } from './leads.js';
+import { upsertLead, confirmLead, cleanupExpired } from './leads.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
+
+const FORMULAR_URL = 'https://social2scale.com/free-content/';
+const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
 
 /**
  * EINE Antwort fuer JEDEN Lead-Ausgang — created, resent, renewed, retry, ready,
@@ -120,6 +123,68 @@ async function handleSubmit(request, env, ctx, cors) {
   return json(NEUTRAL, 200, cors);
 }
 
+function htmlPage(title, body) {
+  return new Response(
+    '<!doctype html><html lang="de"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      `<title>${title}</title></head><body><main><h1>${title}</h1>${body}</main></body></html>`,
+    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+  );
+}
+
+/**
+ * Sackgassen sind verboten (Spec §9): sie hat gerade ihre Mail bestaetigt, jeder
+ * Fehlerfall muss ihr sagen was sie JETZT tun kann — nicht was schiefging.
+ * Die Texte nennen die Handlung, nicht die Ursache (Spec §6, Zielgruppen-Haertung).
+ */
+const CONFIRM_FEHLER = {
+  used: {
+    title: 'Diesen Link hast du schon benutzt',
+    body:
+      '<p>Kein Problem — trag dich einfach nochmal ein, dann schicken wir dir einen frischen Link.</p>' +
+      `<p><a href="${FORMULAR_URL}">Nochmal eintragen</a></p>`,
+  },
+  expired: {
+    title: 'Dieser Link ist nicht mehr gültig',
+    body:
+      '<p>Links gelten 24 Stunden. Trag dich nochmal ein, dann bekommst du sofort einen neuen.</p>' +
+      `<p><a href="${FORMULAR_URL}">Neuen Link holen</a></p>`,
+  },
+  not_found: {
+    title: 'Diesen Link kennen wir nicht mehr',
+    body:
+      '<p>Vielleicht ein Tippfehler beim Kopieren? Trag dich einfach nochmal ein.</p>' +
+      `<p><a href="${FORMULAR_URL}">Nochmal eintragen</a></p>`,
+  },
+  // Zwei noch unbestaetigte Leads duerfen denselben Handle haben (kein Griefing) —
+  // bestaetigt aber nur einer. Der Zweite darf KEINEN 500 sehen.
+  handle_taken: {
+    title: 'Diesen Account hat schon jemand angemeldet',
+    body:
+      '<p>Für <strong>diesen Instagram-Account</strong> läuft bereits ein Free Content. ' +
+      'Wenn das dein Account ist, melde dich kurz bei uns — wir klären das in zwei Minuten.</p>' +
+      `<p><a href="${ANFRAGE_URL}">Kurz melden</a></p>`,
+  },
+};
+
+async function handleConfirm(token, env) {
+  let res;
+  try {
+    res = await confirmLead(env.DB, token);
+  } catch (err) {
+    console.error('[confirm] Bestaetigung fehlgeschlagen:', err);
+    return htmlPage(CONFIRM_FEHLER.not_found.title, CONFIRM_FEHLER.not_found.body);
+  }
+
+  if (!res.ok) {
+    const fehler = CONFIRM_FEHLER[res.reason] ?? CONFIRM_FEHLER.not_found;
+    return htmlPage(fehler.title, fehler.body);
+  }
+
+  // Plan 2 haengt hier die Generierung ein: ctx.waitUntil(generate(env, res.lead)).
+  return new Response(null, { status: 302, headers: { Location: `/r/${token}` } });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -132,6 +197,19 @@ export default {
     if (url.pathname === '/api/free-content') {
       if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405, cors);
       return handleSubmit(request, env, ctx, cors);
+    }
+
+    // Token ist server-generierter Hex — alles andere ist gar kein Token von uns.
+    // Das Muster haelt zugleich Fremdes aus dem HTML der Fehlerseiten.
+    const confirmMatch = url.pathname.match(/^\/c\/([a-f0-9]{8,128})$/);
+    if (confirmMatch) return handleConfirm(confirmMatch[1], env);
+    if (url.pathname.startsWith('/c/')) {
+      return htmlPage(CONFIRM_FEHLER.not_found.title, CONFIRM_FEHLER.not_found.body);
+    }
+
+    // Platzhalter — Plan 2 ersetzt das durch Build- und Ergebnisseite.
+    if (/^\/r\/[a-f0-9]{8,128}$/.test(url.pathname)) {
+      return htmlPage('Dein Free Content', '<p>Wird gebaut (Plan 2).</p>');
     }
 
     return json({ ok: false, error: 'not_found' }, 404, cors);

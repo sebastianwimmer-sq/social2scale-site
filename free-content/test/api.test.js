@@ -140,3 +140,90 @@ describe('POST /api/free-content', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('GET /c/:token — Bestaetigung', () => {
+  beforeEach(async () => {
+    await resetTables(env.DB, SCHEMA_SQL, TABELLEN);
+  });
+
+  async function tokenAnlegen() {
+    await post(GUELTIG);
+    const row = await env.DB.prepare('SELECT token FROM free_leads').first();
+    return row.token;
+  }
+
+  const hole = (token) =>
+    SELF.fetch(`https://start.social2scale.com/c/${token}`, { redirect: 'manual' });
+
+  it('bestaetigt und leitet auf die Ergebnisseite weiter', async () => {
+    const token = await tokenAnlegen();
+    const res = await hole(token);
+    expect(res.status).toBe(302);
+    expect(res.headers.get('Location')).toBe(`/r/${token}`);
+
+    const lead = await env.DB.prepare('SELECT * FROM free_leads WHERE token = ?').bind(token).first();
+    expect(lead.status).toBe('confirmed');
+    expect(lead.confirmed_at).toBeTruthy();
+    expect(lead.token_used_at).toBeTruthy();
+  });
+
+  it('lehnt denselben Token beim zweiten Mal ab, ohne Sackgasse', async () => {
+    const token = await tokenAnlegen();
+    await hole(token);
+    const zweiter = await hole(token);
+    expect(zweiter.status).toBe(200);
+    const html = await zweiter.text();
+    expect(html).toContain('schon benutzt');
+    // Spec §9: jede Fehlerseite bietet einen Ausweg.
+    expect(html).toContain('/free-content/');
+  });
+
+  it('lehnt einen abgelaufenen Token ab und bietet einen neuen an', async () => {
+    const token = await tokenAnlegen();
+    await env.DB.prepare("UPDATE free_leads SET token_expires = '2020-01-01 00:00:00'").run();
+    const res = await hole(token);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('nicht mehr g');
+    expect(html).toContain('/free-content/');
+  });
+
+  it('lehnt einen unbekannten Token ab', async () => {
+    const res = await hole('gibtsnichtabc123');
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('kennen wir nicht');
+    expect(html).toContain('/free-content/');
+  });
+
+  it('zeigt eine echte Seite statt 500, wenn der Handle schon bestaetigt ist', async () => {
+    // Zwei pending Leads duerfen denselben Handle haben (kein Griefing) — bestaetigt
+    // aber nur einer. Der Zweite darf KEINEN 500 sehen.
+    const ersterToken = await tokenAnlegen();
+    await post({ ...GUELTIG, email: 'zweite@firma.de' }, '8.8.8.8');
+    const zweiterToken = (
+      await env.DB.prepare("SELECT token FROM free_leads WHERE email_norm = 'zweite@firma.de'").first()
+    ).token;
+
+    expect(await (await hole(ersterToken)).status).toBe(302);
+
+    const res = await hole(zweiterToken);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('Account');
+    expect(html).not.toContain('Internal');
+  });
+
+  it('escaped nichts Fremdes in die Fehlerseite', async () => {
+    const res = await hole('%3Cscript%3Ealert(1)%3C/script%3E');
+    const html = await res.text();
+    expect(html).not.toContain('<script>alert(1)</script>');
+  });
+
+  it('liefert eine Platzhalter-Ergebnisseite unter /r/:token', async () => {
+    const token = await tokenAnlegen();
+    const res = await SELF.fetch(`https://start.social2scale.com/r/${token}`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('text/html');
+  });
+});
