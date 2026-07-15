@@ -19,6 +19,10 @@ export async function verifyTurnstile(token, ip, secret) {
       method: 'POST',
       body,
     });
+    if (!res.ok) {
+      console.error('[protect] Turnstile antwortete mit HTTP', res.status);
+      return false; // fail-closed: kaputte Antwort ist kein Freifahrtschein
+    }
     const data = await res.json();
     return !!data.success;
   } catch (err) {
@@ -27,9 +31,14 @@ export async function verifyTurnstile(token, ip, secret) {
   }
 }
 
-/** Schicht 2: Bots fuellen das versteckte Feld aus. */
+/**
+ * Schicht 2: Bots fuellen das versteckte Feld aus.
+ * Kein .trim() — wie im Original (anfrage-worker.js:75 `if (data.website)`):
+ * das Feld ist versteckt, kein Mensch fuellt es je aus. Jeder nicht-leere
+ * Wert (auch reine Leerzeichen) ist ein Bot.
+ */
 export function isHoneypotTripped(body) {
-  return !!String(body?.website ?? '').trim();
+  return !!body?.website;
 }
 
 /** Schicht 3: Menschen brauchen laenger als MIN_ELAPSED_MS. */
