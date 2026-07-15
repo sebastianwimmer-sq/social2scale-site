@@ -77,4 +77,18 @@ describe('normalizeHandle', () => {
   it('akzeptiert genau 30 Zeichen', () => {
     expect(normalizeHandle('a'.repeat(30))).toBe('a'.repeat(30));
   });
+
+  it('lehnt eine nackte Domain ohne Handle ab', () => {
+    expect(normalizeHandle('instagram.com')).toBe('');
+    expect(normalizeHandle('https://www.instagram.com')).toBe('');
+  });
+
+  it('lehnt eine URL mit ungueltigem Pfad-Segment ab statt sie zurechtzustutzen', () => {
+    expect(normalizeHandle('instagram.com/has space')).toBe('');
+  });
+
+  it('erfindet aus beliebigem Text keinen Handle', () => {
+    expect(normalizeHandle('some/random?query')).toBe('');
+    expect(normalizeHandle('notinstagram.com/user')).toBe('');
+  });
 });
