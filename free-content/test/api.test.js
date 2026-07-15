@@ -1,14 +1,13 @@
 import { env, SELF } from 'cloudflare:test';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { readFileSync } from 'node:fs';
 import {
   isHoneypotTripped,
   isTooFast,
   verifyTurnstile,
   hasMailServer,
-  checkRateLimit,
-  logAttempt,
+  registerAttempt,
 } from '../src/protect.js';
+import { RATE_LIMIT_PER_IP_PER_HOUR } from '../src/constants.js';
 import SCHEMA_SQL from './schema.sql?raw';
 
 describe('health', () => {
@@ -190,6 +189,19 @@ function splitSchema(sql) {
     .filter(Boolean);
 }
 
+/** Sekunden vor T0 — fuer die Fenster-Grenze auf die Sekunde genau. */
+const vorT0 = (sekunden) => new Date(T0.getTime() - sekunden * 1000);
+
+/** Deckel gerade so ausschoepfen: N Versuche, alle erlaubt. */
+async function schoepfeAus(ip, zeitpunkt) {
+  for (let i = 0; i < RATE_LIMIT_PER_IP_PER_HOUR; i++) {
+    await registerAttempt(env.DB, ip, zeitpunkt);
+  }
+}
+
+const zaehleLog = async () =>
+  (await env.DB.prepare('SELECT COUNT(*) AS c FROM free_intake_log').first()).c;
+
 describe('protect: Rate-Limit', () => {
   beforeEach(async () => {
     await env.DB.exec('DROP TABLE IF EXISTS free_intake_log');
@@ -197,24 +209,65 @@ describe('protect: Rate-Limit', () => {
   });
 
   it('laesst die ersten Versuche einer IP durch', async () => {
-    expect((await checkRateLimit(env.DB, '1.1.1.1', T0)).ok).toBe(true);
+    expect((await registerAttempt(env.DB, '1.1.1.1', T0)).ok).toBe(true);
+  });
+
+  it('laesst genau RATE_LIMIT_PER_IP_PER_HOUR Versuche durch', async () => {
+    for (let i = 0; i < RATE_LIMIT_PER_IP_PER_HOUR; i++) {
+      expect((await registerAttempt(env.DB, '1.1.1.1', T0)).ok).toBe(true);
+    }
   });
 
   it('blockt ab dem 6. Versuch derselben IP innerhalb einer Stunde', async () => {
-    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
-    const res = await checkRateLimit(env.DB, '1.1.1.1', T0);
+    await schoepfeAus('1.1.1.1', T0);
+    const res = await registerAttempt(env.DB, '1.1.1.1', T0);
     expect(res.ok).toBe(false);
     expect(res.reason).toBe('ip');
   });
 
   it('laesst eine andere IP unbehelligt', async () => {
-    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
-    expect((await checkRateLimit(env.DB, '2.2.2.2', T0)).ok).toBe(true);
+    await schoepfeAus('1.1.1.1', T0);
+    expect((await registerAttempt(env.DB, '2.2.2.2', T0)).ok).toBe(true);
   });
 
   it('vergisst alte Versuche nach einer Stunde', async () => {
-    for (let i = 0; i < 5; i++) await logAttempt(env.DB, '1.1.1.1', T0);
+    await schoepfeAus('1.1.1.1', T0);
     const spaeter = new Date('2026-07-15T13:30:00Z');
-    expect((await checkRateLimit(env.DB, '1.1.1.1', spaeter)).ok).toBe(true);
+    expect((await registerAttempt(env.DB, '1.1.1.1', spaeter)).ok).toBe(true);
+  });
+
+  /**
+   * Der Grund fuer "erst schreiben, dann zaehlen": mit "erst zaehlen, dann
+   * schreiben" lesen alle 20 denselben veralteten Zaehler und kommen ALLE durch.
+   * Genau dieser Burst ist der Verkehr, gegen den ein Deckel existiert.
+   */
+  it('laesst bei 20 parallelen Anfragen derselben IP hoechstens den Deckel durch', async () => {
+    const res = await Promise.all(
+      Array.from({ length: 20 }, () => registerAttempt(env.DB, '1.1.1.1', T0))
+    );
+    expect(res.filter((r) => r.ok).length).toBeLessThanOrEqual(RATE_LIMIT_PER_IP_PER_HOUR);
+  });
+
+  it('protokolliert auch abgewiesene Versuche (ein Burst soll sichtbar bleiben)', async () => {
+    await schoepfeAus('1.1.1.1', T0);
+    expect((await registerAttempt(env.DB, '1.1.1.1', T0)).ok).toBe(false);
+    expect(await zaehleLog()).toBe(RATE_LIMIT_PER_IP_PER_HOUR + 1);
+  });
+
+  /**
+   * Die Fenster-Grenze in BEIDE Richtungen festnageln — einseitig getestet
+   * driftet die Konvention zurueck. Gleiche Konvention wie leads.js:
+   * exakt eine Stunde alt = ausserhalb des Fensters.
+   */
+  it('zaehlt Versuche von exakt 60 Minuten nicht mehr mit (Grenze wie leads.js)', async () => {
+    await schoepfeAus('1.1.1.1', vorT0(60 * 60));
+    expect((await registerAttempt(env.DB, '1.1.1.1', T0)).ok).toBe(true);
+  });
+
+  it('zaehlt Versuche von 59:59 noch mit', async () => {
+    await schoepfeAus('1.1.1.1', vorT0(59 * 60 + 59));
+    const res = await registerAttempt(env.DB, '1.1.1.1', T0);
+    expect(res.ok).toBe(false);
+    expect(res.reason).toBe('ip');
   });
 });

@@ -1,6 +1,6 @@
 /**
- * Bot-Schichten 1-4 (Spec §7). Portiert aus workers/anfrage-worker.js —
- * dort erprobt, hier nicht neu erfunden.
+ * Bot-Schichten 1-4 + 6 (Spec §7). Schichten 1-4 portiert aus
+ * workers/anfrage-worker.js — dort erprobt, hier nicht neu erfunden.
  * Entscheidet nur ja/nein und kennt keine Leads.
  *
  * ABWEICHUNG vom Original (bewusst, nicht vergessen):
@@ -11,7 +11,12 @@
  * Mit dem Check ist fail-closed Absicht statt Zufall.
  */
 
-import { MIN_ELAPSED_MS, RATE_LIMIT_PER_IP_PER_HOUR, RATE_LIMIT_GLOBAL_PER_HOUR } from './constants.js';
+import {
+  MIN_ELAPSED_MS,
+  RATE_LIMIT_PER_IP_PER_HOUR,
+  RATE_LIMIT_GLOBAL_PER_HOUR,
+  RATE_LIMIT_LOG_RETENTION_HOURS,
+} from './constants.js';
 
 /** Schicht 1: Turnstile serverseitig verifizieren. */
 export async function verifyTurnstile(token, ip, secret) {
@@ -79,39 +84,61 @@ export async function hasMailServer(email) {
   }
 }
 
-function isoTs(date) {
+const HOUR_MS = 60 * 60 * 1000;
+
+function iso(date) {
   return date.toISOString().replace('T', ' ').slice(0, 19);
 }
 
-/** Schicht 6: Rate-Limit pro IP + globaler Deckel (Muster: intake_log). */
-export async function checkRateLimit(db, ip, now = new Date()) {
-  const since = isoTs(new Date(now.getTime() - 60 * 60 * 1000));
-
-  const perIp = await db
-    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE ip = ? AND created_at >= ?')
-    .bind(ip, since)
-    .first();
-  if ((perIp?.c ?? 0) >= RATE_LIMIT_PER_IP_PER_HOUR) return { ok: false, reason: 'ip' };
-
-  const global = await db
-    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE created_at >= ?')
-    .bind(since)
-    .first();
-  if ((global?.c ?? 0) >= RATE_LIMIT_GLOBAL_PER_HOUR) return { ok: false, reason: 'global' };
-
-  return { ok: true };
-}
-
-/** Versuch protokollieren + opportunistisch aufraeumen (wie intake_log). */
-export async function logAttempt(db, ip, now = new Date()) {
-  const cutoff = isoTs(new Date(now.getTime() - 24 * 60 * 60 * 1000));
+/**
+ * Schicht 6: Rate-Limit pro IP + globaler Deckel (Muster: intake_log).
+ *
+ * EIN Aufruf pro Anfrage: protokolliert den Versuch UND faellt das Urteil.
+ * Bewusst NICHT in "erst pruefen" + "spaeter protokollieren" getrennt — zwischen
+ * zwei solchen Aufrufen laege ein Fenster, in dem nichts den Deckel haelt.
+ *
+ * Reihenfolge ist Absicht: erst INSERT, dann COUNT. D1 serialisiert Schreib-
+ * vorgaenge, der eigene INSERT ist also committed, bevor der eigene COUNT laeuft
+ * — jede parallele Anfrage sieht darum einen anderen Zaehler und hoechstens
+ * RATE_LIMIT_PER_IP_PER_HOUR kommen durch. Andersherum (erst zaehlen, dann
+ * schreiben) lesen N parallele Anfragen alle denselben veralteten Zaehler,
+ * passieren alle den Check und der Deckel haelt genau nichts — ein umgehbarer
+ * Deckel ist kein Deckel (dieselbe Lektion wie in leads.js beim Resend-Deckel).
+ *
+ * Abgewiesene Versuche landen BEWUSST ebenfalls im Log und zaehlen weiter mit:
+ * ein Burst soll in der Tabelle sichtbar sein, und wer den Deckel reisst, soll
+ * sich nicht durch blosses Weiterballern wieder freizaehlen. Nicht "wegoptimieren".
+ */
+export async function registerAttempt(db, ip, now = new Date()) {
+  const cutoff = iso(new Date(now.getTime() - RATE_LIMIT_LOG_RETENTION_HOURS * HOUR_MS));
   try {
     await db.prepare('DELETE FROM free_intake_log WHERE created_at < ?').bind(cutoff).run();
   } catch (err) {
+    // Nicht fatal: ein misslungenes Aufraeumen darf nie eine echte Anfrage blockieren.
     console.error('[protect] Aufraeumen des Rate-Limit-Logs fehlgeschlagen:', err);
   }
+
   await db
     .prepare('INSERT INTO free_intake_log (ip, created_at) VALUES (?, ?)')
-    .bind(ip, isoTs(now))
+    .bind(ip, iso(now))
     .run();
+
+  // Fixe Breite ISO 'YYYY-MM-DD HH:MM:SS' -> Textvergleich == Zeitvergleich.
+  // Strikt '>' wie leads.js: exakt eine Stunde alt liegt AUSSERHALB des Fensters.
+  const fensterStart = iso(new Date(now.getTime() - HOUR_MS));
+
+  // Der eigene INSERT zaehlt mit -> '>' statt '>=': N Versuche erlaubt, N+1 nicht.
+  const proIp = await db
+    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE ip = ? AND created_at > ?')
+    .bind(ip, fensterStart)
+    .first();
+  if ((proIp?.c ?? 0) > RATE_LIMIT_PER_IP_PER_HOUR) return { ok: false, reason: 'ip' };
+
+  const gesamt = await db
+    .prepare('SELECT COUNT(*) AS c FROM free_intake_log WHERE created_at > ?')
+    .bind(fensterStart)
+    .first();
+  if ((gesamt?.c ?? 0) > RATE_LIMIT_GLOBAL_PER_HOUR) return { ok: false, reason: 'global' };
+
+  return { ok: true };
 }

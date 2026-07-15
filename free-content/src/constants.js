@@ -6,6 +6,8 @@ export const RESEND_MAX_PER_HOUR = 3;
 export const MIN_ELAPSED_MS = 1500;
 export const RATE_LIMIT_PER_IP_PER_HOUR = 5;
 export const RATE_LIMIT_GLOBAL_PER_HOUR = 300;
+/** Aufbewahrung von free_intake_log — nur fuers Aufraeumen, nicht fuers Zaehlen. */
+export const RATE_LIMIT_LOG_RETENTION_HOURS = 24;
 
 export const FIELD_LIMITS = {
   name: 120,
