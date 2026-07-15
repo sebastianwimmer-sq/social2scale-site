@@ -2071,6 +2071,14 @@ const CONFIRM_FEHLER = {
     body: '<p>Vielleicht ein Tippfehler beim Kopieren? Trag dich einfach nochmal ein.</p>' +
           '<p><a href="https://social2scale.com/free-content/">Nochmal eintragen</a></p>',
   },
+  // Zwei noch unbestaetigte Leads duerfen denselben Handle haben (kein Griefing) —
+  // bestaetigt aber nur einer. Der Zweite darf KEINEN 500 sehen (Spec §9), sondern das hier.
+  handle_taken: {
+    title: 'Diesen Account hat schon jemand angemeldet',
+    body: '<p>Für <strong>diesen Instagram-Account</strong> läuft bereits ein Free Content. ' +
+          'Wenn das dein Account ist, melde dich kurz bei uns — wir klären das in zwei Minuten.</p>' +
+          '<p><a href="https://social2scale.com/anfrage/">Kurz melden</a></p>',
+  },
 };
 
 async function handleConfirm(token, env) {
