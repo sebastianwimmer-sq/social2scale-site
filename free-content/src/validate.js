@@ -72,7 +72,28 @@ export function isDisposable(email) {
 }
 
 /**
- * Trimmt und kappt einen String auf max Zeichen.
+ * C0-Controls (inkl. NUL, TAB, CR, LF), DEL, C1-Controls und die
+ * Unicode-Zeilentrenner. Ein CR/LF in einem Feld ist entweder ein Angriff
+ * (Header-Injection, sobald der Wert in einem Mail-Betreff landet) oder ein
+ * kaputter Copy-Paste — beides darf sich nicht fortpflanzen.
+ */
+const CONTROL_CHARS = /[\u0000-\u001F\u007F-\u009F\u2028\u2029]/g;
+
+/**
+ * Entfernt Steuerzeichen und normalisiert Whitespace zu einfachen Leerzeichen.
+ * Bewusst STRIPPEN statt ABLEHNEN: unsere Nutzerinnen sind nicht technisch,
+ * eine Fehlermeldung, die sie nicht deuten koennen, kostet uns den Lead.
+ * 'Sebi\r\nWimmer' wird zu 'Sebi Wimmer' — nicht zu 'SebiWimmer'.
+ */
+export function stripControlChars(value) {
+  return String(value ?? '')
+    .replace(CONTROL_CHARS, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Saeubert, trimmt und kappt einen String auf max Zeichen.
  * Fehlt der Wert (null/undefined), ist das Ergebnis ''.
  * Ist der Wert vorhanden, aber KEIN String, ist das Ergebnis null —
  * das Feld wird dann abgelehnt statt stillschweigend gecastet zu werden.
@@ -81,7 +102,7 @@ export function isDisposable(email) {
 function clip(value, max) {
   if (value === null || value === undefined) return '';
   if (typeof value !== 'string') return null;
-  return value.trim().slice(0, max);
+  return stripControlChars(value).slice(0, max);
 }
 
 /**

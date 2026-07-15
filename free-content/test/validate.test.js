@@ -176,4 +176,41 @@ describe('validateSubmission', () => {
     expect(r.value.farbe).toBe('');
     expect(r.value.source).toBe('');
   });
+
+  /**
+   * Ein CR/LF im Namen landet ueber notifyFounders in einer Mail-Betreffzeile.
+   * Ob daraus eine Header-Injection wird, haengt sonst allein davon ab, wie
+   * Brevo Steuerzeichen behandelt — fremdes Verhalten, auf das wir nicht wetten.
+   * Deshalb: an der Grenze strippen. STRIPPEN, nicht ablehnen — eine Nutzerin,
+   * die den Fehler nicht deuten kann, ist ein verlorener Lead.
+   */
+  it('strippt CRLF aus dem Namen, statt die Eingabe abzulehnen', () => {
+    const r = validateSubmission({ ...gut, name: 'Sebi\r\nBcc: opfer@fremd.de' });
+    expect(r.ok).toBe(true);
+    expect(r.value.name).toBe('Sebi Bcc: opfer@fremd.de');
+    expect(r.value.name).not.toMatch(/[\r\n]/);
+  });
+
+  it('macht aus einem umgebrochenen Namen ein Leerzeichen, kein Zusammenkleben', () => {
+    expect(validateSubmission({ ...gut, name: 'Sebi\r\nWimmer' }).value.name).toBe('Sebi Wimmer');
+  });
+
+  it('entfernt Steuerzeichen aus allen Freitextfeldern', () => {
+    const r = validateSubmission({
+      ...gut,
+      name: 'Se\u0000bi',
+      branche: 'Fitness\tCoaching',
+      ziel: 'Mehr\nAnfragen',
+      stimmung: 'ru\u007Fhig',
+    });
+    expect(r.ok).toBe(true);
+    expect(r.value.name).toBe('Se bi');
+    expect(r.value.branche).toBe('Fitness Coaching');
+    expect(r.value.ziel).toBe('Mehr Anfragen');
+    expect(r.value.stimmung).toBe('ru hig');
+  });
+
+  it('laesst einen harmlosen Namen unveraendert', () => {
+    expect(validateSubmission({ ...gut, name: 'Anna-Lena Weiss' }).value.name).toBe('Anna-Lena Weiss');
+  });
 });

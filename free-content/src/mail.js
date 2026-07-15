@@ -4,12 +4,28 @@
  * kommt sie nicht an, stirbt er lautlos.
  */
 
+import { TOKEN_TTL_HOURS } from './constants.js';
+import { stripControlChars } from './validate.js';
+
 const BREVO_MAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
+/** Schuetzt den HTML-Body. Fuer Betreffzeilen ungeeignet — siehe subjectSafe(). */
 function esc(value) {
   return String(value ?? '').replace(/[<>&"]/g, (c) =>
     ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c])
   );
+}
+
+/**
+ * Schuetzt die Betreffzeile. Bewusst NICHT esc():
+ * Ein Betreff ist Klartext, kein HTML — esc() wuerde 'Mueller & Co' zu
+ * 'Mueller &amp; Co' entstellen und trotzdem kein CR/LF entfernen.
+ * Die echte Gefahr am Header-Sink ist Header-Injection, also Steuerzeichen.
+ * validate.js saeubert bereits an der Grenze; das hier ist die zweite Schicht,
+ * damit das naechste neue Feld nicht davon abhaengt, dass jemand daran denkt.
+ */
+function subjectSafe(value) {
+  return stripControlChars(value);
 }
 
 function firstName(name) {
@@ -27,7 +43,7 @@ export function buildConfirmMail(lead, publicOrigin) {
       <p>Hey ${vorname},</p>
       <p>dein Content wartet — <strong>ein Klick</strong> und wir bauen ihn live fuer dich:</p>
       <p><a href="${esc(link)}">Jetzt meinen Free Content ansehen</a></p>
-      <p>Der Link gilt 24 Stunden. Falls du das nicht warst, ignorier diese Mail einfach.</p>
+      <p>Der Link gilt ${TOKEN_TTL_HOURS} Stunden. Falls du das nicht warst, ignorier diese Mail einfach.</p>
       <p>— social2scale</p>
     `.trim(),
   };
@@ -77,18 +93,42 @@ async function send(env, to, name, mail) {
   }
 }
 
+/**
+ * Die Bauschritte liegen mit im try: sie greifen auf lead-Felder zu und laufen
+ * unter ctx.waitUntil fire-and-forget. Ein malformter Lead wuerde sonst werfen,
+ * BEVOR die Fehlerbehandlung in send() greift — und die Rejection verschwaende
+ * ungeloggt. Genau das stille Scheitern, gegen das dieses Modul existiert.
+ */
 export async function sendConfirmMail(env, lead) {
-  return send(env, lead.email, lead.name, buildConfirmMail(lead, env.PUBLIC_ORIGIN));
+  try {
+    return await send(env, lead.email, lead.name, buildConfirmMail(lead, env.PUBLIC_ORIGIN));
+  } catch (err) {
+    console.error('[mail] Bestaetigungsmail konnte nicht gebaut werden:', err);
+    return false;
+  }
 }
 
 export async function sendResultMail(env, lead) {
-  return send(env, lead.email, lead.name, buildResultMail(lead, env.PUBLIC_ORIGIN));
+  try {
+    return await send(env, lead.email, lead.name, buildResultMail(lead, env.PUBLIC_ORIGIN));
+  } catch (err) {
+    console.error('[mail] Ergebnismail konnte nicht gebaut werden:', err);
+    return false;
+  }
 }
 
 /** Founder-Benachrichtigung — non-fatal, aber niemals still. */
 export async function notifyFounders(env, lead, action) {
-  const mail = {
-    subject: `Free-Content-Lead: ${lead.name} (${action})`,
+  try {
+    await send(env, env.NOTIFY_TO, 'social2scale', buildFounderMail(lead, action));
+  } catch (err) {
+    console.error('[mail] Founder-Benachrichtigung fehlgeschlagen:', err);
+  }
+}
+
+function buildFounderMail(lead, action) {
+  return {
+    subject: subjectSafe(`Free-Content-Lead: ${lead.name} (${action})`),
     htmlContent: `
       <h2>Neuer Free-Content-Lead</h2>
       <ul>
@@ -103,5 +143,4 @@ export async function notifyFounders(env, lead, action) {
       </ul>
     `.trim(),
   };
-  await send(env, env.NOTIFY_TO, 'social2scale', mail);
 }
