@@ -1,0 +1,276 @@
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Grotesk:wght@500;700&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #1a1a1a; }
+
+  /* Jede Kachel ist exakt das IG-Format. Kein Skalieren, kein Schummeln. */
+  .frame { width: 1080px; height: 1350px; position: relative; overflow: hidden; }
+
+  /* ── Look A · „Ruhe" ── warm, editorial, viel Luft. Fuer Stimmung ruhig/natuerlich. */
+  .look-a {
+    --paper: #F4F0E9;
+    --ink: #23201C;
+    --ink-soft: #6B645A;
+    --accent: #7C6A52;
+    --rule: rgba(35,32,28,.14);
+    --ff-display: "Fraunces", serif;
+    --ff-body: "Plus Jakarta Sans", sans-serif;
+    background: var(--paper);
+  }
+  /* ── Look B · „Kante" ── dunkel, laut, hoher Kontrast. Fuer kraftvoll. */
+  .look-b {
+    --paper: #0E1013;
+    --ink: #F2F4F3;
+    --ink-soft: rgba(242,244,243,.62);
+    --accent: #D9FF3D;
+    --rule: rgba(242,244,243,.16);
+    --ff-display: "Space Grotesk", sans-serif;
+    --ff-body: "Plus Jakarta Sans", sans-serif;
+    background: var(--paper);
+  }
+  /* ── Look C · „Klar" ── hell, luftig, Serif-Akzent. Fuer hell/freundlich. */
+  .look-c {
+    --paper: #FBFBFC;
+    --ink: #14161A;
+    --ink-soft: #767C86;
+    --accent: #2F6F5E;
+    --rule: rgba(20,22,26,.10);
+    --ff-display: "Instrument Serif", serif;
+    --ff-body: "Plus Jakarta Sans", sans-serif;
+    background: var(--paper);
+  }
+
+  /* Film-Grain: gibt der Flaeche Koerper. Ohne das sieht jedes Rendering nach Screenshot aus. */
+  .grain::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .055;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ══ DIE SPERRE ══
+     Der Kern der Sache: unser Zeichen und IHR Handle sitzen in EINEM Element,
+     das zugleich die Grundlinie der Komposition traegt. Wer uns wegradiert,
+     nimmt ihren Namen und die Linie mit — das Loch sieht man sofort. */
+  .lock {
+    position: absolute; left: 88px; right: 88px; bottom: 76px;
+    display: flex; align-items: center; gap: 22px;
+    padding-top: 26px; border-top: 2px solid var(--rule);
+  }
+  .lock .handle {
+    font-family: var(--ff-body); font-weight: 600; font-size: 30px;
+    letter-spacing: -.01em; color: var(--ink); white-space: nowrap;
+  }
+  .lock .spacer { flex: 1; height: 2px; background: var(--rule); }
+  .lock .mark {
+    display: flex; align-items: center; gap: 11px; white-space: nowrap;
+    font-family: var(--ff-body); font-size: 21px; font-weight: 500; letter-spacing: .01em;
+  }
+  .lock .dot {
+    width: 13px; height: 13px; border-radius: 50%;
+    background: #00B888; box-shadow: 0 0 0 5px rgba(0,184,136,.16);
+    flex: none;
+  }
+
+  /* dezent: Marke tritt zurueck, Handle fuehrt */
+  .wm-soft .mark { color: var(--ink-soft); }
+  .wm-soft .mark b { font-weight: 700; color: var(--ink); }
+
+  /* prominent: die Sperre wird zur eigenen Flaeche und traegt die ganze Grundlinie */
+  .wm-loud {
+    background: var(--ink); border-radius: 20px; border-top: none;
+    padding: 24px 30px; left: 76px; right: 76px; bottom: 64px; gap: 20px;
+  }
+  .wm-loud .handle { color: var(--paper); font-size: 28px; }
+  .wm-loud .spacer { background: rgba(255,255,255,.18); }
+  .wm-loud .mark { color: rgba(255,255,255,.72); font-size: 22px; }
+  .wm-loud .mark b { color: #fff; font-weight: 700; }
+
+  /* ── Post-Slide ──
+     Headline unten verankert, nicht oben: sonst klafft die Mitte leer. Spannung
+     entsteht aus Kicker oben / Masse unten — Magazin-Cover-Prinzip. */
+  .slide { padding: 92px 88px 200px; height: 100%; display: flex; flex-direction: column; }
+  .slide-top { display: flex; align-items: baseline; justify-content: space-between; }
+  .eyebrow {
+    font-family: var(--ff-body); font-size: 19px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--accent);
+  }
+  /* Zaehler macht sofort klar: hier kommt noch was, wisch weiter. */
+  .idx {
+    font-family: var(--ff-body); font-size: 19px; font-weight: 600;
+    letter-spacing: .1em; color: var(--ink-soft);
+  }
+  .idx b { color: var(--ink); }
+  /* Die Regel bindet Kopf und Fuss zur Komposition zusammen. */
+  .rule-top { height: 2px; background: var(--rule); margin-top: 26px; }
+  .head {
+    font-family: var(--ff-display); color: var(--ink);
+    font-size: 104px; line-height: .96; letter-spacing: -.035em; font-weight: 600;
+  }
+  .look-b .head { letter-spacing: -.045em; font-weight: 700; }
+  .look-c .head { font-size: 112px; letter-spacing: -.02em; }
+  .head em { font-style: italic; color: var(--accent); }
+  .look-b .head em { font-style: normal; color: var(--accent); }
+  .sub {
+    font-family: var(--ff-body); font-size: 31px; line-height: 1.5;
+    color: var(--ink-soft); margin-top: 44px; max-width: 20ch;
+  }
+  .spacer-fill { flex: 1; }
+
+  /* ── Profil-Vorschau (Phone) ──
+     Muss auf den ersten Blick wie IHR Instagram aussehen — sonst faellt der
+     "das bin ja ICH"-Moment flach. Deshalb echte Handy-Proportion (~1:2), nicht Tablet. */
+  .phone-pad { padding: 66px 66px 168px; height: 100%; display: flex; align-items: center; justify-content: center; }
+  /* Double-Bezel: das Geraet sitzt in einer Schale, nicht flach auf der Flaeche */
+  .shell { padding: 10px; border-radius: 56px; background: var(--rule); }
+  .device {
+    width: 536px; border-radius: 47px; overflow: hidden;
+    background: var(--paper);
+    box-shadow: 0 40px 90px -30px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.22);
+  }
+  /* Statusleiste + Handle-Kopf: die zwei Details, die es sofort als IG lesbar machen */
+  .ios { display: flex; justify-content: space-between; padding: 20px 30px 4px;
+    font-family: var(--ff-body); font-size: 17px; font-weight: 600; color: var(--ink); }
+  .ios .rechts { letter-spacing: .12em; }
+  .ig-top { display: flex; align-items: center; gap: 10px; padding: 10px 26px 14px;
+    font-family: var(--ff-body); font-size: 21px; font-weight: 700; color: var(--ink);
+    border-bottom: 1px solid var(--rule); }
+  .prof { padding: 24px 26px 22px; }
+  .prof-top { display: flex; align-items: center; gap: 26px; }
+  .avatar {
+    width: 104px; height: 104px; border-radius: 50%; flex: none;
+    background: var(--accent); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-display); font-size: 42px; font-weight: 700;
+  }
+  .stats { display: flex; gap: 34px; }
+  .stat { text-align: center; font-family: var(--ff-body); }
+  .stat b { display: block; font-size: 23px; font-weight: 700; color: var(--ink); }
+  .stat span { font-size: 15px; color: var(--ink-soft); }
+  .bio { margin-top: 18px; font-family: var(--ff-body); }
+  .bio .n { font-size: 20px; font-weight: 700; color: var(--ink); }
+  .bio .l { font-size: 17px; line-height: 1.45; color: var(--ink-soft); margin-top: 3px; }
+  .bio .l b { color: var(--accent); font-weight: 600; }
+  /* Highlights: echtes IG-Element UND Teil des Pakets (render-brand.cjs baut die Cover).
+     Sie zeigen, dass hier ein ganzer Auftritt gedacht ist, nicht nur ein paar Posts. */
+  .hl { display: flex; gap: 18px; margin-top: 20px; }
+  .hl-i { text-align: center; font-family: var(--ff-body); font-size: 12px; color: var(--ink-soft); }
+  .hl-c {
+    width: 62px; height: 62px; border-radius: 50%; margin-bottom: 6px;
+    border: 2px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--ff-display); font-size: 20px; font-weight: 600;
+    background: color-mix(in oklab, var(--accent) 12%, var(--paper)); color: var(--accent);
+  }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 22px; }
+  .cell {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    padding: 10px; text-align: center;
+    font-family: var(--ff-display); font-size: 16px; line-height: 1.15; font-weight: 600;
+  }
+  .c-fill { background: var(--ink); color: var(--paper); }
+  .c-accent { background: var(--accent); color: var(--paper); }
+  .c-tint { background: color-mix(in oklab, var(--accent) 15%, var(--paper)); color: var(--ink); }
+  .c-line { background: var(--paper); color: var(--ink-soft); border: 2px solid var(--rule); }
+
+  .label {
+    color: #9aa; font: 600 15px "Plus Jakarta Sans", sans-serif; padding: 14px 4px 6px;
+    letter-spacing: .1em; text-transform: uppercase;
+  }
+</style>
+
+<div id="stage"></div>
+
+<script>
+  // Ein Lead als Beispiel. Spaeter kommen Handle/Bio/Palette aus ihren Formularangaben —
+  // das Template kennt nur Tokens, keine festen Farben.
+  const lead = {
+    handle: "praxisfunke",
+    name: "Dorothea Beekman",
+    bioA: "Coaching für Coaches",
+    bioB: "Aus Erfahrung wird Wirkung.",
+    initial: "D",
+  };
+
+  const LOOKS = [
+    { id: "a", name: "Ruhe",  eyebrow: "In 90 Tagen",  head: 'Sichtbar werden,<br>ohne dich zu <em>verbiegen</em>.', sub: "Die drei Fehler, die fast jede Coachin am Anfang macht." },
+    { id: "b", name: "Kante", eyebrow: "Klartext",     head: 'Dein Feed ist<br>kein <em>Tagebuch</em>.', sub: "Warum Konsistenz mehr zieht als Kreativität." },
+    { id: "c", name: "Klar",  eyebrow: "Für Coachinnen", head: 'Erst Klarheit.<br>Dann <em>Reichweite</em>.', sub: "Was du sagen musst, bevor dich jemand hört." },
+  ];
+
+  const CELLS = ["c-fill","c-tint","c-accent","c-line","c-fill","c-tint","c-accent","c-line","c-fill"];
+  const CELLTXT = ["Der Fehler #1","Warum jetzt?","3 Schritte","Zitat","Vorher / Nachher","Deine Frage?","Ergebnis","Team","Los geht's"];
+
+  function lock(wm) {
+    return `<div class="lock ${wm}">
+      <span class="handle">@${lead.handle}</span>
+      <span class="spacer"></span>
+      <span class="mark"><span class="dot"></span>erstellt mit <b>social2scale</b></span>
+    </div>`;
+  }
+
+  function slide(look, wm) {
+    return `<div class="frame grain look-${look.id} ${wm === 'wm-loud' ? '' : ''}">
+      <div class="slide">
+        <div class="slide-top">
+          <span class="eyebrow">${look.eyebrow}</span>
+          <span class="idx"><b>01</b> / 03</span>
+        </div>
+        <div class="rule-top"></div>
+        <div class="spacer-fill"></div>
+        <h1 class="head">${look.head}</h1>
+        <p class="sub">${look.sub}</p>
+      </div>
+      ${lock(wm)}
+    </div>`;
+  }
+
+  function profile(look, wm) {
+    const cells = CELLS.map((c, i) => `<div class="cell ${c}">${CELLTXT[i]}</div>`).join("");
+    return `<div class="frame grain look-${look.id}">
+      <div class="phone-pad">
+        <div class="shell"><div class="device">
+          <div class="ios"><span>9:41</span><span class="rechts">▮▮▮ ▰</span></div>
+          <div class="ig-top"><span>@${lead.handle}</span></div>
+          <div class="prof">
+            <div class="prof-top">
+              <div class="avatar">${lead.initial}</div>
+              <div class="stats">
+                <div class="stat"><b>9</b><span>Beiträge</span></div>
+                <div class="stat"><b>1.240</b><span>Follower</span></div>
+                <div class="stat"><b>318</b><span>Folgt</span></div>
+              </div>
+            </div>
+            <div class="bio">
+              <div class="n">${lead.name}</div>
+              <div class="l">${lead.bioA}<br><b>${lead.bioB}</b></div>
+            </div>
+            <div class="hl">
+              <div class="hl-i"><div class="hl-c">✳</div>Über mich</div>
+              <div class="hl-i"><div class="hl-c">◆</div>Angebot</div>
+              <div class="hl-i"><div class="hl-c">❞</div>Stimmen</div>
+              <div class="hl-i"><div class="hl-c">?</div>Fragen</div>
+            </div>
+            <div class="grid3">${cells}</div>
+          </div>
+        </div></div>
+      </div>
+      ${lock(wm)}
+    </div>`;
+  }
+
+  const stage = document.getElementById("stage");
+  let html = "";
+  for (const look of LOOKS) {
+    html += `<div class="label">Look ${look.id.toUpperCase()} · ${look.name} · Profil-Vorschau</div>`;
+    html += `<div id="p-${look.id}">${profile(look, "wm-soft")}</div>`;
+    html += `<div class="label">Look ${look.id.toUpperCase()} · ${look.name} · Post-Cover</div>`;
+    html += `<div id="s-${look.id}">${slide(look, "wm-soft")}</div>`;
+  }
+  // Wasserzeichen-Vergleich an EINEM Look, damit der Unterschied isoliert sichtbar ist
+  html += `<div class="label">Wasserzeichen · dezent</div><div id="wm-soft">${slide(LOOKS[0], "wm-soft")}</div>`;
+  html += `<div class="label">Wasserzeichen · prominent</div><div id="wm-loud">${slide(LOOKS[0], "wm-loud")}</div>`;
+  stage.innerHTML = html;
+</script>
