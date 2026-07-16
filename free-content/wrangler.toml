@@ -8,6 +8,7 @@ ALLOW_ORIGIN  = "https://social2scale.com"
 NOTIFY_TO     = "info@social2scale.com"
 NOTIFY_FROM   = "info@social2scale.com"
 PUBLIC_ORIGIN = "https://start.social2scale.com"
+AI_MODEL      = "claude-sonnet-5"
 
 # Geteilt mit dem CRM — dieselbe DB, damit Leads in den CRM-Eingängen landen.
 [[d1_databases]]
