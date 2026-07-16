@@ -110,4 +110,23 @@ describe('checkInput', () => {
       expect(checkInput({ branche, ziel: 'Mehr Anfragen' }).ok, branche).toBe(true);
     }
   });
+
+  it('lehnt Politisches ab — auch im Bindestrich-Kompositum', () => {
+    // Diese Kategorie hatte als EINZIGE keinen Test — und ausgerechnet ihr Kommentar
+    // behauptete in einer frueheren Runde ein Verhalten, das der Code nicht hatte.
+    // Ein Kommentar ohne Test ist eine Behauptung.
+    // Politisch heisst politisch, egal in welche Richtung: eine Kampagne setzt unser
+    // Logo unter eine politische Aussage.
+    for (const branche of ['AfD-nahe Beratung', 'Anti-AfD-Kampagne', 'Querdenken-Bewegung']) {
+      const r = checkInput({ branche, ziel: 'Reichweite' });
+      expect(r.ok, branche).toBe(false);
+      expect(r.grund, branche).toBe('politik');
+    }
+  });
+
+  it('haelt Politikberatung fuer legitim — das Wort allein ist kein Treffer', () => {
+    for (const branche of ['Politikberatung', 'Politische Bildung für Schulen']) {
+      expect(checkInput({ branche, ziel: 'Mehr Mandate' }).ok, branche).toBe(true);
+    }
+  });
 });
