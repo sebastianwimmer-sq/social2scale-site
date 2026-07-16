@@ -1382,6 +1382,25 @@ describe('generateFor', () => {
     expect(nach.status).toBe('failed');   // Sackgasse verboten: Status ist ehrlich
   });
 
+  it('alarmiert die Founder bei JEDER Ablehnung — sonst ist der Filter Leadvernichtung', async () => {
+    // Der Wortfilter ist bewusst streng (er kann `Drogen-Praevention` nicht von
+    // `Drogen-Verkauf` trennen). Das ist NUR vertretbar, weil ein Mensch jede
+    // Ablehnung sieht. Faellt der Alarm weg, verschwinden zu Unrecht Abgelehnte
+    // lautlos — und niemand erfaehrt es je.
+    const { lead } = await upsertLead(env.DB, { ...clean(), ziel: 'heilt Krebs in 4 Wochen' }, '1.1.1.1');
+    await confirmLead(env.DB, lead.token);
+
+    const f = vi.fn(async () => ({ ok: true, status: 200, text: async () => '' }));
+    vi.stubGlobal('fetch', f);
+    await generateFor(
+      { ...env, BREVO_API_KEY: 'test-key', NOTIFY_TO: 'info@social2scale.com', NOTIFY_FROM: 'info@social2scale.com' },
+      lead.token
+    );
+
+    const alarm = f.mock.calls.some((c) => String(c[1]?.body || '').includes('ABGELEHNT'));
+    expect(alarm).toBe(true);
+  });
+
   it('setzt bei einem Render-Fehler auf failed statt stillschweigend zu haengen', async () => {
     const token = await bestaetigterLead();
     // Kein BROWSER-Binding im Test -> renderAll wirft.
@@ -1556,6 +1575,16 @@ export async function generateFor(env, token) {
   if (!moderation.ok) {
     console.error('[generate] Thema abgelehnt:', moderation.grund, 'Lead', lead.id);
     await setzeSchritt(env.DB, token, 'failed', '');
+    // Founder-Alarm (Spec §5a) — und er ist NICHT optional: der Filter ist bewusst
+    // streng, weil eine Wortliste `Drogen-Praevention` nicht von `Drogen-Verkauf`
+    // trennen kann. Diese Strenge ist nur vertretbar, WEIL ein Mensch jede Ablehnung
+    // sieht und sich bei einer zu Unrecht Abgelehnten melden kann. Ohne den Alarm
+    // ist der Filter kein strenger Filter, sondern eine stille Leadvernichtung.
+    try {
+      await notifyFounders(env, lead, `ABGELEHNT (${moderation.grund}) — bitte pruefen`);
+    } catch (err) {
+      console.error('[generate] Founder-Alarm zur Ablehnung ging nicht raus:', err);
+    }
     return { ok: false, grund: 'moderation' };
   }
 
