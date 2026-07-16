@@ -11,24 +11,41 @@
  * Bewusst eine Wortliste statt KI: ein Moderations-Call waere eine weitere
  * Fehlerquelle im teuersten Pfad, und die Trefferliste hier ist ehrlich grob.
  * Sie faengt das Offensichtliche; den Rest faengt der Prompt.
+ *
+ * IM ZWEIFEL STRENG — und warum das die guenstigere Seite ist:
+ *
+ * Bindestrich-Komposita werden abgelehnt ('Anti-Drogen-Aufklaerung',
+ * 'Drogen-Praevention'). Absicht: eine Wortliste kann 'Drogen-Praevention'
+ * nicht von 'Drogen-Verkauf' trennen — beides ist "Drogen-" + Substantiv.
+ * Dasselbe bei 'Krebs-Beratungsstelle' vs. 'Krebs-Heilung'. Es gibt keine
+ * Regex, die beide Seiten richtig macht.
+ *
+ * Die Ablehnung loest einen Founder-Alarm aus (Spec §5a), ein Mensch schaut
+ * drauf und meldet sich bei einer zu Unrecht Abgelehnten. Ein durchgerutschter
+ * HWG-Verstoss mit unserem Logo loest gar nichts aus. Deshalb streng: ein
+ * Fehlalarm kostet eine E-Mail von einem Menschen, ein Durchrutscher kostet
+ * unseren Namen unter dem Rechtsproblem einer Fremden.
+ *
+ * Eine frueher hier eingebaute Bindestrich-Ausnahme machte den Bindestrich zur
+ * Umgehung: 'Schmerzfrei-Programm garantiert' lief damit durch — deutsche
+ * Coach-Standardsprache. Nicht wieder einbauen. Eine Ausnahmeliste fuer
+ * Negations-Praefixe ('Anti-', 'Kein-') waere dieselbe unmoegliche Trennung
+ * in neuem Kostuem.
  */
 
 /**
- * Wortgrenzen fuer deutsche Freitexte. NICHT \b verwenden:
+ * Wortgrenzen fuer deutsche Freitexte. Wie \b — mit EINER Korrektur:
+ * \w ist ASCII, damit zaehlt jeder Umlaut als Grenze. '\bkrebs\b' trifft
+ * deshalb in 'Krebsaerzte' (eine Onkologie-Praxis!), waehrend
+ * 'Krebsberatungsstelle' korrekt durchlaeuft. Umlaute und ss gehoeren also in
+ * die Grenz-Klasse — das ist reine Fehlalarm-Vermeidung ohne Kehrseite.
  *
- * 1. \b sieht '-' als Grenze. '\bdrogen\b' trifft damit mitten in
- *    'Anti-Drogen-Aufklaerung' — und wirft die Praeventions-Aufklaererin raus,
- *    weil sie benennt, WOGEGEN sie arbeitet. Der Bindestrich kehrt die
- *    Bedeutung um, genau deshalb darf er keine Grenze sein.
- * 2. \w ist ASCII. '\bkrebs\b' trifft deshalb auch in 'Krebsaerzte' (das 'ä'
- *    zaehlt als Grenze), waehrend 'Krebsberatungsstelle' korrekt durchlaeuft.
- *
- * Beide Faelle sind die Fehlalarm-Richtung: eine echte Kundin fliegt raus und
- * sagt uns nie, warum sie weg ist.
+ * Der Bindestrich gehoert NICHT hinein: er ist und bleibt eine Grenze,
+ * sonst ist jeder Trigger + '-' frei. Siehe Entscheidung oben.
  */
 const UMLAUT = 'äöüÄÖÜß';
-const VOR = `(?<![\\w${UMLAUT}-])`;
-const NACH = `(?![\\w${UMLAUT}-])`;
+const VOR = `(?<![\\w${UMLAUT}])`;
+const NACH = `(?![\\w${UMLAUT}])`;
 
 /** Ganzes Wort: vorne UND hinten begrenzt. */
 const wort = (alternativen) => new RegExp(`${VOR}(?:${alternativen})${NACH}`, 'i');
@@ -48,14 +65,16 @@ const MUSTER = [
       + '|schmerzfrei(?:e|es|er|en|em)?'
       + '|krebs|diagnose|therapier(?:e|st|t|en)',
   ) },
+  // 'hass[\s-]+auf': der Bindestrich ist hier Teil der Schreibweise, nicht der
+  // Grenze — 'Hass-auf Frauen' ist dieselbe Aussage wie 'Hass auf Frauen'.
   { grund: 'hass', re: new RegExp(
-      `${VOR}(?:hasse|hass auf)${NACH}.{0,20}${VOR}(?:auslaender|ausländer|juden|muslime|schwule|frauen|maenner|männer)${NACH}`
+      `${VOR}(?:hasse|hass[\\s-]+auf)${NACH}.{0,20}${VOR}(?:auslaender|ausländer|juden|muslime|schwule|frauen|maenner|männer)${NACH}`
       + `|${VOR}volksverhetz`, 'i',
   ) },
   { grund: 'sexuell',  re: stamm('escort|erotik|porno|sexcam|onlyfans|prostitu') },
-  // Bewusst OHNE Bindestrich-Ausnahme: 'Anti-AfD-Kampagne' ist politischer
-  // Content und bleibt draussen — anders als bei 'illegal' kehrt der
-  // Bindestrich die Kategorie hier nicht um.
+  // 'Anti-AfD-Kampagne' wird abgelehnt: der Bindestrich ist eine Wortgrenze,
+  // also greift der Stamm auch im Kompositum. Beabsichtigt — politischer
+  // Content bleibt draussen, in welche Richtung er auch zeigt.
   { grund: 'politik',  re: stamm('afd|npd|reichsbuerger|reichsbürger|querdenk') },
   { grund: 'illegal',  re: wort('drogen|kokain|waffen|betrug|geldwaesche|geldwäsche|schwarzarbeit') },
 ];

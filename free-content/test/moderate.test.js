@@ -53,16 +53,26 @@ describe('checkInput', () => {
     expect(checkInput({ branche: 'Ganzheitliche Beratung', ziel: 'Menschen erreichen' }).ok).toBe(true);
   });
 
-  it('wirft Bindestrich-Komposita nicht raus — sie kehren die Bedeutung oft um', () => {
-    // JS-\b behandelt '-' als Wortgrenze. Mit \bdrogen\b fliegt eine
-    // Praeventions-Aufklaererin raus, weil sie benennt, wogegen sie arbeitet.
-    const okFaelle = [
-      { branche: 'Anti-Drogen-Aufklärung', ziel: 'Jugendliche erreichen' },
-      { branche: 'Drogen-Prävention', ziel: 'Mehr Reichweite' },
-      { branche: 'Suchtberatung', ziel: 'Waffen-Verbot Kampagne begleiten' },
-      { branche: 'Betrugs-Prävention für Seniorinnen', ziel: 'Sichtbarer werden' },
-    ];
-    for (const f of okFaelle) expect(checkInput(f).ok, JSON.stringify(f)).toBe(true);
+  it('laesst einen Bindestrich nicht zur Umgehung werden', () => {
+    // Ein frueherer Fix hatte genau das geoeffnet: Trigger + Bindestrich = frei.
+    // "Schmerzfrei-Programm" ist deutsche Coach-Standardsprache, keine Umgehung.
+    for (const z of ['Schmerzfrei-Programm garantiert', 'Heilung-Garantie in 4 Wochen',
+                     'Drogen-Verkauf an Jugendliche', 'Hass-auf Frauen Kampagne']) {
+      expect(checkInput({ branche: 'Coaching', ziel: z }).ok, z).toBe(false);
+    }
+  });
+
+  it('lehnt Bindestrich-Komposita bewusst ab — der Founder-Alarm faengt das', () => {
+    // Dokumentiert die Entscheidung, nicht ein Versehen: strenger Filter + Mensch
+    // schlaegt schlauen Filter ohne Mensch. Eine Wortliste kann
+    // 'Drogen-Praevention' nicht von 'Drogen-Verkauf' trennen.
+    expect(checkInput({ branche: 'Anti-Drogen-Aufklärung', ziel: 'x' }).ok).toBe(false);
+  });
+
+  it('haelt den Umlaut-Fix — er hatte keinen Nachteil', () => {
+    // \w ist ASCII, also machte '\bkrebs\b' aus dem 'ä' eine Wortgrenze und
+    // warf eine Onkologie-Praxis raus.
+    expect(checkInput({ branche: 'Krebsärzte', ziel: 'Mehr Patienten' }).ok).toBe(true);
   });
 
   it('lehnt konjugierte Heilversprechen ab — "ich heile" ist der Normalfall, keine Umgehung', () => {
@@ -87,8 +97,14 @@ describe('checkInput', () => {
       'Heilerziehungspfleger',
       'Heilfasten',
       'Krebsberatungsstelle',
+      'Krebsärzte',
       'Geistiger Heiler',
       'Schmerzlinderung durch Massage',
+      'Waffenschmiede',
+      'Diagnostik-Praxis',
+      'Suchtberatung',
+      'Trauerbegleitung',
+      'Physiotherapie-Praxis',
     ];
     for (const branche of berufe) {
       expect(checkInput({ branche, ziel: 'Mehr Anfragen' }).ok, branche).toBe(true);
