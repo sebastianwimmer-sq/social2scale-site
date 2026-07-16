@@ -64,13 +64,26 @@ describe('derivePalettes', () => {
 
   it('nutzt ausschliesslich Farben aus den gerenderten Design-Belegen', () => {
     // Eine erfundene Palette ist eine, die nie jemand gesehen hat — und sie geht
-    // trotzdem an echte Besucherinnen raus. Diese Liste stammt aus design/.
+    // trotzdem an echte Besucherinnen raus. Genau so ist die geloeschte "tinte"-Welt
+    // entstanden. Diese Liste stammt aus design/.
     const BELEGT = new Set(['#0e1013','#14161a','#1b241f','#23201c','#2f6f5e','#5f6b62',
-      '#6b645a','#767c86','#7c6a52','#c2410c','#d9ff3d','#edf1ec','#f2f4f3','#f4f0e9','#fbfbfc']);
+      '#6b645a','#767c86','#c2410c','#d9ff3d','#edf1ec','#f2f4f3','#f4f0e9','#fbfbfc']);
+
+    // rgba() muss zurueckgerechnet werden: eine reine Hex-Pruefung SIEHT diese Werte
+    // nicht — und genau darin hatte tinte ihr unbelegtes #EFF2F4 versteckt
+    // (als rgba(239,242,244,.60)). Eine Pruefung, die wegschaut, ist keine.
+    const alsHex = (v) => {
+      const rgba = String(v).match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (!rgba) return String(v).toLowerCase();
+      return '#' + rgba.slice(1, 4).map((n) => Number(n).toString(16).padStart(2, '0')).join('');
+    };
+
     for (const s of ['ruhig','natuerlich','hell','freundlich','kraftvoll','dunkel','edel','']) {
       for (const p of derivePalettes(s, '')) {
-        for (const key of ['paper', 'ink', 'accent']) {
-          expect(BELEGT.has(p[key].toLowerCase()), `${p.id}.${key} = ${p[key]}`).toBe(true);
+        // Alle vier Farbwerte, nicht drei — "jede Farbe" heisst jede.
+        for (const key of ['paper', 'ink', 'accent', 'inkSoft', 'rule']) {
+          const hex = alsHex(p[key]);
+          expect(BELEGT.has(hex), `${p.id}.${key} = ${p[key]} → ${hex}`).toBe(true);
         }
       }
     }
