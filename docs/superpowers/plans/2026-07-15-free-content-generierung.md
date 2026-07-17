@@ -2053,6 +2053,15 @@ Erwartung: `(1080, 1350)`.
 
 **Und dann das Bild wirklich ansehen.** Prüfen: Steht ihr Handle drauf? Ist die Sperre da? Sieht es aus wie `design/pb-hell.png`? Ein Bild mit den richtigen Maßen kann trotzdem in der falschen Schrift gerendert sein — das sieht nur ein Mensch.
 
+🔴 **Der erste harte Bild-Check gilt NICHT dem Profil-Frame, sondern einem der LETZTEN**
+(`f-1-s3.jpg`): Die 8 Frames stapeln sich vertikal auf einer Seite, und beim Screenshot
+liegen 7 von 8 **unter** dem 1200×1400-Viewport. Ob `@cloudflare/puppeteer` unter-dem-Viewport
+korrekt erfasst (`captureBeyondViewport`), ist an der echten Instanz noch **nicht bewiesen** —
+`vorschau.mjs` hat es gekonnt, aber das war Playwright, nicht CF-Puppeteer. Wenn `f-1-s3.jpg`
+leer, abgeschnitten oder falsch dimensioniert ist, liegt genau hier der Fehler. Dann in
+`render.js` `captureBeyondViewport: true` setzen (oder je Frame den Viewport nachziehen) und
+neu rendern. **Erst wenn das letzte Frame stimmt, ist die Render-Pipeline bewiesen.**
+
 - [ ] **Step 7: Testdaten aufräumen**
 
 ```bash
