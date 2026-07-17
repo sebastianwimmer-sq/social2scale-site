@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS free_leads (
   r2_prefix     TEXT DEFAULT '',
   ip            TEXT DEFAULT '',
   status        TEXT NOT NULL DEFAULT 'pending',
+  build_step    TEXT NOT NULL DEFAULT '',
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
@@ -47,3 +48,21 @@ CREATE TABLE IF NOT EXISTS free_intake_log (
 );
 CREATE INDEX IF NOT EXISTS idx_free_log_created ON free_intake_log(created_at);
 CREATE INDEX IF NOT EXISTS idx_free_log_ip      ON free_intake_log(ip);
+
+-- Der CRM-Eingang. Task 9 spiegelt Leads hierher, damit sie ohne neues UI im CRM
+-- auftauchen. Hier bewusst OHNE den FOREIGN KEY auf clients: die Fixture kennt
+-- keine clients-Tabelle, und der Fremdschluessel ist nicht das, was wir testen.
+-- Die produktive Definition steht in _portal/schema.sql und bleibt unberuehrt.
+CREATE TABLE IF NOT EXISTS submissions (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  type       TEXT NOT NULL DEFAULT 'briefing',
+  client_id  INTEGER,
+  name       TEXT DEFAULT '',
+  email      TEXT DEFAULT '',
+  payload    TEXT DEFAULT '',
+  data       TEXT DEFAULT '{}',
+  logo_key   TEXT DEFAULT '',
+  rating     INTEGER,
+  status     TEXT NOT NULL DEFAULT 'new',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);

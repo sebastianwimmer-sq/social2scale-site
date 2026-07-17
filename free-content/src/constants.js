@@ -27,3 +27,11 @@ export const FIELD_LIMITS = {
   farbe: 40,
   source: 40,
 };
+
+/**
+ * Browser Rendering hat eine Grenze fuer gleichzeitige Sessions. Bei Andrang
+ * scheitert der erste Versuch und der zweite klappt — ohne Retry verliert sie
+ * ihre Bilder, weil zufaellig jemand anders gleichzeitig da war (Spec §9, §11).
+ */
+export const RENDER_VERSUCHE = 3;
+export const RENDER_BACKOFF_MS = 1500;
