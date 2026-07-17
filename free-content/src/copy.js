@@ -65,7 +65,9 @@ function formStimmt(c) {
   for (const k of ['eyebrow', 'head', 'headAccent', 'sub', 'bio']) {
     if (typeof c[k] !== 'string' || !c[k].trim()) return false;
   }
-  return Array.isArray(c.cells) && c.cells.length === 9 && c.cells.every((z) => typeof z === 'string');
+  // Genau 9 Zellen UND jede gefuellt: neun leere Strings passieren sonst die Pruefung
+  // und rendern ein blankes 3x3-Grid — dann lieber der Fallback aus ihren Angaben.
+  return Array.isArray(c.cells) && c.cells.length === 9 && c.cells.every((z) => typeof z === 'string' && z.trim());
 }
 
 /**

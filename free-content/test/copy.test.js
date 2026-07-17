@@ -84,6 +84,15 @@ describe('generateCopy', () => {
     expect(c.cells).toHaveLength(9);
   });
 
+  it('faellt zurueck, wenn die 9 Zellen leer sind — sonst rendert ein blankes Grid', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.stubGlobal('fetch', vi.fn(async () =>
+      antwort({ eyebrow: 'x', head: 'y', headAccent: 'z', sub: 'a', bio: 'b', cells: ['','','','','','','','',''] })));
+    const c = await generateCopy(envOk, clean);
+    // Fallback greift -> die Zellen tragen wieder echten Text.
+    expect(c.cells.every((z) => z.trim().length > 0)).toBe(true);
+  });
+
   it('faellt ohne API-Key zurueck, ohne zu werfen', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const f = vi.fn();
