@@ -47,6 +47,22 @@ describe('generateFor', () => {
     expect(r.grund).toBe('bereits_erzeugt');
   });
 
+  it('serialisiert zwei GLEICHZEITIGE Aufrufe — nur EINER kommt durch den Riegel', async () => {
+    // Der echte Riegel-Test: nicht sequenziell vorgesetzt, sondern zwei parallele
+    // Invocationen fuer denselben bestaetigten Lead. Der frueher hier stehende Read
+    // ("if generated_at") ist ein TOCTOU-Race: beide lesen NULL, beide bauen. Der
+    // atomare Claim (UPDATE ... WHERE generated_at IS NULL) laesst genau EINEN
+    // durch. Beide scheitern am Ende am Render (kein BROWSER im Test) — bewiesen
+    // wird aber die CLAIM-Schicht: genau einer prallt mit 'bereits_erzeugt' ab.
+    const token = await bestaetigterLead();
+    const [a, b] = await Promise.all([generateFor(env, token), generateFor(env, token)]);
+    const gruende = [a.grund, b.grund];
+    expect(gruende.filter((g) => g === 'bereits_erzeugt')).toHaveLength(1);   // genau einer am Riegel
+    expect(gruende.filter((g) => g !== 'bereits_erzeugt')).toHaveLength(1);   // genau einer kam durch
+    expect(a.ok).toBe(false);
+    expect(b.ok).toBe(false);
+  });
+
   it('lehnt Themen ab, die unser Logo nicht tragen darf', async () => {
     const { lead } = await upsertLead(env.DB, { ...clean(), ziel: 'heilt Krebs in 4 Wochen' }, '1.1.1.1');
     await confirmLead(env.DB, lead.token);
