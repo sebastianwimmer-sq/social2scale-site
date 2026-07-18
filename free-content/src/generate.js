@@ -159,6 +159,10 @@ export async function generateFor(env, token) {
       .bind(SCHRITTE.fertig, `free/${token}/`, token)
       .run();
 
+    const fertig = await findByToken(env.DB, token);
+    await mirrorToCrm(env.DB, fertig);
+    await notifyFounders(env, fertig, 'ready');
+
     return { ok: true };
   } catch (err) {
     // Nie still: ihre Stille verraet uns nichts, dieser Log schon.
@@ -195,4 +199,43 @@ export async function buildStatus(env, token) {
 
   const basis = { state: lead.status, step: lead.build_step || '', done, total: FRAME_IDS.length };
   return lead.status === 'ready' ? { ...basis, images } : basis;
+}
+
+/**
+ * Spiegelt den Lead als submissions-Zeile ins CRM.
+ *
+ * Kein neues UI noetig: das CRM zeigt submissions bereits an — die Zeile taucht
+ * automatisch im Eingang auf. Non-fatal: ein kaputter Spiegel darf ihre fertigen
+ * Bilder nicht kosten.
+ */
+export async function mirrorToCrm(db, lead) {
+  const md =
+    '# Free-Content-Lead\n\n' +
+    `- **Instagram:** @${lead.handle}\n` +
+    `- **Thema:** ${lead.branche}\n` +
+    `- **Ziel:** ${lead.ziel}\n` +
+    `- **Stimmung:** ${lead.stimmung}\n` +
+    (lead.farbe ? `- **Wunschfarbe:** ${lead.farbe}\n` : '') +
+    (lead.source ? `- **Kam über:** ${lead.source}\n` : '') +
+    `- **Bilder:** ${lead.r2_prefix || '(noch keine)'}\n`;
+
+  try {
+    await db
+      .prepare(
+        "INSERT INTO submissions (type, name, email, payload, data, status) VALUES ('free_content', ?, ?, ?, ?, 'new')"
+      )
+      .bind(
+        lead.name,
+        lead.email,
+        md,
+        JSON.stringify({
+          handle: lead.handle, branche: lead.branche, ziel: lead.ziel,
+          stimmung: lead.stimmung, farbe: lead.farbe, source: lead.source,
+          token: lead.token, r2_prefix: lead.r2_prefix,
+        })
+      )
+      .run();
+  } catch (err) {
+    console.error('[generate] CRM-Spiegel fehlgeschlagen, Lead', lead.id, err);
+  }
 }

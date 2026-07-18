@@ -167,3 +167,28 @@ describe('buildStatus', () => {
     expect(s.images.length).toBeGreaterThan(0);
   });
 });
+
+import { mirrorToCrm } from '../src/generate.js';
+
+describe('mirrorToCrm', () => {
+  it('legt eine Zeile an, die im CRM-Eingang auftaucht', async () => {
+    const token = await bestaetigterLead();
+    const lead = await findByToken(env.DB, token);
+    await mirrorToCrm(env.DB, lead);
+
+    const row = await env.DB.prepare("SELECT * FROM submissions WHERE type='free_content'").first();
+    expect(row).toBeTruthy();
+    expect(row.email).toBe(lead.email);
+    expect(row.name).toBe(lead.name);
+    expect(row.payload).toContain(lead.branche);
+    expect(row.payload).toContain(lead.handle);
+    expect(row.status).toBe('new');   // sonst sieht es niemand
+  });
+
+  it('kippt die Generierung nicht, wenn der Spiegel scheitert', async () => {
+    const token = await bestaetigterLead();
+    const lead = await findByToken(env.DB, token);
+    await env.DB.exec('DROP TABLE submissions');
+    await expect(mirrorToCrm(env.DB, lead)).resolves.toBeUndefined();
+  });
+});
