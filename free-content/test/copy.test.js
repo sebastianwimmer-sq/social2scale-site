@@ -23,15 +23,48 @@ describe('buildFallback', () => {
     pruefeCopyForm(buildFallback(clean));
   });
 
-  it('nutzt IHRE Angaben, nicht Platzhalter', () => {
-    const c = buildFallback(clean);
-    const alles = JSON.stringify(c).toLowerCase();
-    expect(alles).toContain('coaching für coaches'.toLowerCase());
-  });
-
   it('kippt nicht bei duennen Angaben', () => {
     pruefeCopyForm(buildFallback({ branche: '', ziel: '', stimmung: '', handle: 'x', name: '' }));
     pruefeCopyForm(buildFallback({}));
+  });
+
+  // §5a: Claudes HWG-Absicherung (der Compliance-System-Prompt) laeuft NUR im
+  // Claude-Pfad. Faellt Claude aus, greift nur noch Schicht 1 (moderate.js) —
+  // eine grobe Wortliste, die einen milden Gesundheitsclaim ohne Trigger-Wort
+  // NICHT faengt. Renderte der Fallback branche/ziel verbatim, laeuft ihr
+  // roher Claim ungefiltert unter unser Logo. Deshalb: branche/ziel duerfen
+  // NIE in der gerenderten Fallback-Copy auftauchen.
+  it('rendert einen claim-verdaechtigen "branche"-Text NICHT verbatim (§5a HWG)', () => {
+    const claimHaft = {
+      ...clean,
+      branche: 'Ernährung, die deinen Reizdarm beruhigt',
+      ziel: 'Menschen von ihren Schmerzen befreien',
+    };
+    const c = buildFallback(claimHaft);
+    const alles = JSON.stringify(c);
+    expect(alles).not.toContain('Reizdarm beruhigt');
+    expect(alles).not.toContain('Schmerzen befreien');
+  });
+
+  it('rendert branche/ziel generell nie verbatim, auch harmlose', () => {
+    const c = buildFallback(clean);
+    const alles = JSON.stringify(c);
+    expect(alles).not.toContain('Coaching für Coaches');
+    expect(alles).not.toContain('Mehr Anfragen über Instagram');
+  });
+
+  it('personalisiert weiterhin ueber Name/Handle — nur die claim-traechtigen Felder sind tabu', () => {
+    const c = buildFallback(clean);
+    const alles = JSON.stringify(c).toLowerCase();
+    // Name/Handle sind KEINE Claims — sie duerfen (muessen aber nicht) auftauchen.
+    // Wir pruefen hier nur, dass die Copy nicht komplett generisch-anonym ist:
+    // mindestens ein personalisiertes Feld enthaelt Name ODER Handle.
+    const personalisiert = alles.includes(clean.name.toLowerCase()) || alles.includes(clean.handle.toLowerCase());
+    expect(personalisiert).toBe(true);
+  });
+
+  it('bleibt komplett/valide, wenn Name und Handle leer sind', () => {
+    pruefeCopyForm(buildFallback({ ...clean, name: '', handle: '' }));
   });
 });
 

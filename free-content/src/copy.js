@@ -40,21 +40,32 @@ function clip(v, n) {
   return String(v ?? '').trim().slice(0, n);
 }
 
-/** Rein, kein Netz. Baut Texte aus IHREN Angaben. */
+/**
+ * Rein, kein Netz. Baut Texte OHNE ihre freien Angaben (§5a HWG).
+ *
+ * Claudes zweistufige HWG-Absicherung ist moderate.js (Schicht 1, grob) PLUS der
+ * Compliance-System-Prompt (Schicht 2, fein) — aber Schicht 2 existiert nur im
+ * Claude-Pfad. Faellt Claude aus, hat nur noch die grobe Wortliste geprueft, und
+ * die faengt bewusst nur Offensichtliches ("der Prompt faengt den Rest"). branche
+ * und ziel sind Freitext und damit claim-traechtig ("Ernährung, die deinen
+ * Reizdarm beruhigt" hat kein Trigger-Wort). Sie duerfen deshalb NIE verbatim in
+ * sichtbare Fallback-Copy — nur name/handle sind personenbezogen, nicht
+ * claim-foermig, und bleiben sicher.
+ */
 export function buildFallback(clean) {
-  const branche = clip(clean?.branche, 60) || 'dein Thema';
-  const ziel = clip(clean?.ziel, 80) || 'sichtbar werden';
+  const name = clip(clean?.name, 40);
+  const gruss = name ? `, ${name}` : '';
 
   return {
     eyebrow: 'Dein Vorgeschmack',
     head: 'So könnte dein Feed',
     headAccent: 'aussehen.',
-    sub: `${branche} — sichtbar, konsistent, nach dir.`.slice(0, 90),
-    bio: branche.slice(0, 40),
+    sub: `Dein Thema, dein Stil — bereit zum Posten${gruss}.`.slice(0, 90),
+    bio: 'Content für dein Thema — sichtbar, konsistent.'.slice(0, 40),
     cells: [
       'Dein Thema', 'Warum jetzt?', '3 Schritte',
       'Zitat', 'Vorher / Nachher', 'Deine Frage?',
-      'Einblick', 'Über dich', ziel.slice(0, 18),
+      'Einblick', 'Über dich', 'Nächster Schritt',
     ],
   };
 }
