@@ -11,7 +11,7 @@
  * seinen Bestaetigungslink anklickt, bekommt nie eine 500.
  */
 
-import { TOKEN_TTL_HOURS, RESEND_MAX_PER_HOUR, PENDING_TTL_DAYS } from './constants.js';
+import { TOKEN_TTL_HOURS, RESEND_MAX_PER_HOUR, PENDING_TTL_DAYS, BUILDING_TIMEOUT_MINUTES } from './constants.js';
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -234,4 +234,42 @@ export async function cleanupExpired(db, now = new Date()) {
     .bind(cutoff)
     .run();
   return res.meta?.changes ?? 0;
+}
+
+/**
+ * Spec §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem
+ * atomaren Claim in generate.js (setzt status='building' + generated_at) und
+ * markiereFehler laesst eine Zeile fuer immer bei 'building' haengen — nie
+ * retried, kein Founder-Alarm. reenter() (oben) behandelt 'building' als "laeuft
+ * noch" und schickt sie nur auf den Build-Screen zurueck: ohne diesen Sweep gibt
+ * es aus dieser Zeile keinen Ausweg.
+ *
+ * generated_at ist der verlaessliche Claim-Zeitstempel: der Claim setzt ihn
+ * atomar zu Beginn, und NUR markiereFehler loescht ihn wieder — eine Zeile, die
+ * noch 'building' ist, traegt also immer den echten Zeitpunkt des Claims. Aelter
+ * als BUILDING_TIMEOUT_MINUTES: mit an Sicherheit grenzender Wahrscheinlichkeit
+ * tot. Kippt auf 'failed' und loescht generated_at (derselbe Riegel-Freigabe-
+ * Mechanismus wie markiereFehler), damit reenter() sie als retrybar sieht.
+ *
+ * KEIN Alarm pro Zeile hier: ein Burst gekillter Worker wuerde die Founder sonst
+ * zuspammen. 'failed' ist bereits der ehrliche Zustand, der die Sackgasse
+ * beendet — der naechste Wiedereintritt macht daraus regulaer einen neuen
+ * Versuch.
+ *
+ * @returns {Promise<number>} Anzahl gekippter Zeilen
+ */
+export async function sweepStaleBuilding(db, now = new Date()) {
+  const cutoff = iso(new Date(now.getTime() - BUILDING_TIMEOUT_MINUTES * 60 * 1000));
+  const res = await db
+    .prepare(
+      `UPDATE free_leads SET status='failed', generated_at=NULL, build_step=''
+        WHERE status='building' AND generated_at < ?`
+    )
+    .bind(cutoff)
+    .run();
+  const anzahl = res.meta?.changes ?? 0;
+  if (anzahl > 0) {
+    console.error(`[leads] ${anzahl} haengengebliebene(n) Build(s) (>${BUILDING_TIMEOUT_MINUTES}min) auf 'failed' gesetzt`);
+  }
+  return anzahl;
 }

@@ -11,7 +11,7 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
-import { upsertLead, confirmLead, cleanupExpired } from './leads.js';
+import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './leads.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
@@ -125,6 +125,14 @@ async function handleSubmit(request, env, ctx, cors) {
   ctx.waitUntil(
     cleanupExpired(env.DB).catch((err) =>
       console.error('[submit] TTL-Aufraeumen fehlgeschlagen:', err)
+    )
+  );
+  // Opportunistisch bei jeder Anfrage: keine Cron-Route noetig, um die eine
+  // Spec-§9-Sackgasse (hart gekillter Worker laesst eine Zeile bei 'building'
+  // haengen) zu schliessen — der naechste Formular-Submit reicht.
+  ctx.waitUntil(
+    sweepStaleBuilding(env.DB).catch((err) =>
+      console.error('[submit] Stale-Building-Sweep fehlgeschlagen:', err)
     )
   );
 

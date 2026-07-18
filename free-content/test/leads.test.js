@@ -1,6 +1,7 @@
 import { env } from 'cloudflare:test';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { upsertLead, findByToken, confirmLead, cleanupExpired } from '../src/leads.js';
+import { upsertLead, findByToken, confirmLead, cleanupExpired, sweepStaleBuilding } from '../src/leads.js';
+import { BUILDING_TIMEOUT_MINUTES } from '../src/constants.js';
 import { validateSubmission } from '../src/validate.js';
 // Kein readFileSync: dieser Test laeuft in workerd, nicht in Node — node:fs ist
 // dort gestubbt und wirft immer. Vites '?raw' inlined die Datei beim Build.
@@ -269,5 +270,63 @@ describe('cleanupExpired', () => {
     await confirmLead(env.DB, r.lead.token, NOW);
     const weit = new Date('2026-08-20T12:00:00Z');
     expect(await cleanupExpired(env.DB, weit)).toBe(0);
+  });
+});
+
+// §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem atomaren
+// Claim (generate.js setzt status='building' + generated_at) und markiereFehler
+// laesst eine Zeile fuer immer bei 'building' haengen. sweepStaleBuilding erkennt
+// das ueber generated_at (vom Claim gesetzt, nur von markiereFehler geloescht —
+// eine 'building'-Zeile traegt also immer den echten Claim-Zeitstempel) und macht
+// sie retrybar, ohne pro Zeile zu alarmieren (sonst spammt ein Burst die Founder).
+describe('sweepStaleBuilding', () => {
+  async function alsBuilding(id, generatedAtIso) {
+    await env.DB
+      .prepare("UPDATE free_leads SET status='building', generated_at=? WHERE id=?")
+      .bind(generatedAtIso, id)
+      .run();
+  }
+
+  it('kippt eine haengengebliebene "building"-Zeile auf failed und gibt den Riegel frei', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    const laengstTot = new Date(NOW.getTime() - (BUILDING_TIMEOUT_MINUTES + 5) * 60 * 1000);
+    await alsBuilding(r.lead.id, laengstTot.toISOString().replace('T', ' ').slice(0, 19));
+
+    const anzahl = await sweepStaleBuilding(env.DB, NOW);
+    expect(anzahl).toBe(1);
+
+    const lead = await findByToken(env.DB, r.lead.token);
+    expect(lead.status).toBe('failed');
+    expect(lead.generated_at).toBeNull();
+  });
+
+  it('laesst eine gerade erst geclaimte "building"-Zeile in Ruhe (noch in Arbeit)', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await alsBuilding(r.lead.id, NOW.toISOString().replace('T', ' ').slice(0, 19));
+
+    const anzahl = await sweepStaleBuilding(env.DB, NOW);
+    expect(anzahl).toBe(0);
+
+    const lead = await findByToken(env.DB, r.lead.token);
+    expect(lead.status).toBe('building');
+    expect(lead.generated_at).not.toBeNull();
+  });
+
+  it('fasst eine fertige "ready"-Zeile nicht an', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    const laengstTot = new Date(NOW.getTime() - (BUILDING_TIMEOUT_MINUTES + 5) * 60 * 1000);
+    await env.DB
+      .prepare("UPDATE free_leads SET status='ready', generated_at=? WHERE id=?")
+      .bind(laengstTot.toISOString().replace('T', ' ').slice(0, 19), r.lead.id)
+      .run();
+
+    expect(await sweepStaleBuilding(env.DB, NOW)).toBe(0);
+    const lead = await findByToken(env.DB, r.lead.token);
+    expect(lead.status).toBe('ready');
+  });
+
+  it('fasst eine "pending"-Zeile nicht an (kein generated_at, kein building)', async () => {
+    await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    expect(await sweepStaleBuilding(env.DB, NOW)).toBe(0);
   });
 });

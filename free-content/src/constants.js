@@ -35,3 +35,13 @@ export const FIELD_LIMITS = {
  */
 export const RENDER_VERSUCHE = 3;
 export const RENDER_BACKOFF_MS = 1500;
+
+/**
+ * Spec §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem
+ * atomaren Claim (status='building') und markiereFehler laesst eine Zeile fuer
+ * immer bei 'building' haengen — nie retried, kein Alarm. Claude + 8 Renders
+ * dauern 20-40s; 15 Minuten liegen weit jenseits jedes legitimen Baus, eine
+ * 'building'-Zeile aelter als das ist mit an Sicherheit grenzender
+ * Wahrscheinlichkeit tot (leads.js sweepStaleBuilding).
+ */
+export const BUILDING_TIMEOUT_MINUTES = 15;
