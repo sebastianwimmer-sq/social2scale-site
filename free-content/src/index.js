@@ -13,6 +13,8 @@ import {
 } from './protect.js';
 import { upsertLead, confirmLead, cleanupExpired } from './leads.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
+import { generateFor, buildStatus } from './generate.js';
+import { r2Key } from './render.js';
 
 const FORMULAR_URL = 'https://social2scale.com/free-content/';
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
@@ -173,7 +175,7 @@ const CONFIRM_FEHLER = {
   },
 };
 
-async function handleConfirm(token, env) {
+async function handleConfirm(token, env, ctx) {
   let res;
   try {
     res = await confirmLead(env.DB, token);
@@ -187,7 +189,14 @@ async function handleConfirm(token, env) {
     return htmlPage(fehler.title, fehler.body);
   }
 
-  // Plan 2 haengt hier die Generierung ein: ctx.waitUntil(generate(env, res.lead)).
+  // Nicht blockieren: Claude + 8 Renderings dauern 20-40 s. Sie sieht sofort den
+  // Build-Screen, der Fortschritt kommt ueber /api/status (Spec §6).
+  ctx.waitUntil(
+    generateFor(env, token).then((r) => {
+      if (!r.ok) console.error('[confirm] Generierung nicht gelaufen:', r.grund, token);
+    })
+  );
+
   return new Response(null, { status: 302, headers: { Location: `/r/${token}` } });
 }
 
@@ -217,9 +226,47 @@ export default {
     // Token ist server-generierter Hex — alles andere ist gar kein Token von uns.
     // Das Muster haelt zugleich Fremdes aus dem HTML der Fehlerseiten.
     const confirmMatch = url.pathname.match(/^\/c\/([a-f0-9]{8,128})$/);
-    if (confirmMatch) return handleConfirm(confirmMatch[1], env);
+    if (confirmMatch) return handleConfirm(confirmMatch[1], env, ctx);
     if (url.pathname.startsWith('/c/')) {
       return htmlPage(CONFIRM_FEHLER.not_found.title, CONFIRM_FEHLER.not_found.body);
+    }
+
+    // Anders als /c/: hier ist ein unbekannter oder falsch geformter Token kein
+    // Fehlerfall, sondern ein legitimes 'not_found' (der Build-Screen pollt das,
+    // bevor er weiss ob der Token echt ist) — daher bewusst kein striktes Hex-Muster,
+    // nur ein sicherer Zeichensatz mit Laengengrenze gegen ReDoS/Muell.
+    const statusMatch = url.pathname.match(/^\/api\/status\/([a-zA-Z0-9_-]{1,128})$/);
+    if (statusMatch) {
+      try {
+        return json(await buildStatus(env, statusMatch[1]), 200, cors);
+      } catch (err) {
+        console.error('[status] Stand nicht lesbar:', err);
+        return json({ ok: false, error: 'backend' }, 503, cors);
+      }
+    }
+
+    // Bilder. Zeichensatz haelt Schraegstriche/Punkte/Prozent-Encoding fern (die
+    // Escape-Versuche matchen den Pfad erst gar nicht), r2Key saeubert zusaetzlich
+    // Token und Namen — niemand bricht aus seinem eigenen Ordner aus.
+    const imgMatch = url.pathname.match(/^\/img\/([a-zA-Z0-9_-]{1,128})\/([a-zA-Z0-9_-]+)\.jpg$/);
+    if (imgMatch) {
+      try {
+        const obj = await env.IMAGES.get(r2Key(imgMatch[1], imgMatch[2]));
+        if (!obj) return new Response('Nicht gefunden', { status: 404 });
+        // Buffern statt obj.body streamen: ein einzelner Screenshot ist klein, und
+        // ein ungelesener R2-Stream ueber die Service-Binding-Grenze bleibt sonst
+        // offen (Test-Harness meckert dann beim Aufraeumen der isolierten Storage).
+        return new Response(await obj.arrayBuffer(), {
+          headers: {
+            'Content-Type': 'image/jpeg',
+            // Bilder aendern sich nach dem Rendern nie — ein Jahr ist ehrlich.
+            'Cache-Control': 'public, max-age=31536000, immutable',
+          },
+        });
+      } catch (err) {
+        console.error('[img] Bild nicht lesbar:', err);
+        return new Response('Nicht gefunden', { status: 404 });
+      }
     }
 
     // Platzhalter — Plan 2 ersetzt das durch Build- und Ergebnisseite.

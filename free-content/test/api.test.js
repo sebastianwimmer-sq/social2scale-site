@@ -237,3 +237,48 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(res.headers.get('Content-Type')).toContain('text/html');
   });
 });
+
+describe('GET /api/status/:token', () => {
+  beforeEach(async () => {
+    await resetTables(env.DB, SCHEMA_SQL, TABELLEN);
+  });
+
+  it('meldet unbekannte Token, ohne zu kippen', async () => {
+    const res = await SELF.fetch('https://start.social2scale.com/api/status/gibtsnicht');
+    expect(res.status).toBe(200);
+    expect((await res.json()).state).toBe('not_found');
+  });
+
+  it('liefert den Stand mit echtem Zaehler', async () => {
+    await post(GUELTIG);
+    const { token } = await env.DB.prepare('SELECT token FROM free_leads').first();
+    const s = await (await SELF.fetch(`https://start.social2scale.com/api/status/${token}`)).json();
+    expect(s.total).toBe(8);
+    expect(s.done).toBe(0);
+    expect(s).toHaveProperty('step');
+  });
+});
+
+describe('GET /img/:token/:name', () => {
+  beforeEach(async () => {
+    await resetTables(env.DB, SCHEMA_SQL, TABELLEN);
+  });
+
+  it('liefert ein abgelegtes Bild aus', async () => {
+    await env.IMAGES.put('free/abc123/f-0-profil.jpg', 'BILD');
+    const res = await SELF.fetch('https://start.social2scale.com/img/abc123/f-0-profil.jpg');
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('image/jpeg');
+  });
+
+  it('meldet fehlende Bilder als 404 statt zu kippen', async () => {
+    const res = await SELF.fetch('https://start.social2scale.com/img/abc123/gibtsnicht.jpg');
+    expect(res.status).toBe(404);
+  });
+
+  it('laesst niemanden aus dem eigenen Ordner ausbrechen', async () => {
+    await env.IMAGES.put('free/geheim/f-0-profil.jpg', 'FREMD');
+    const res = await SELF.fetch('https://start.social2scale.com/img/abc/..%2F..%2Fgeheim%2Ff-0-profil.jpg');
+    expect(res.status).toBe(404);
+  });
+});
