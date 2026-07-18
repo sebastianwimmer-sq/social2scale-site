@@ -248,7 +248,7 @@ export default {
     // Bilder. Zeichensatz haelt Schraegstriche/Punkte/Prozent-Encoding fern (die
     // Escape-Versuche matchen den Pfad erst gar nicht), r2Key saeubert zusaetzlich
     // Token und Namen — niemand bricht aus seinem eigenen Ordner aus.
-    const imgMatch = url.pathname.match(/^\/img\/([a-zA-Z0-9_-]{1,128})\/([a-zA-Z0-9_-]+)\.jpg$/);
+    const imgMatch = url.pathname.match(/^\/img\/([a-zA-Z0-9_-]{1,128})\/([a-zA-Z0-9_-]{1,64})\.jpg$/);
     if (imgMatch) {
       try {
         const obj = await env.IMAGES.get(r2Key(imgMatch[1], imgMatch[2]));
