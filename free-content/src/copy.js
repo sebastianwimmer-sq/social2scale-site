@@ -61,7 +61,7 @@ export function buildFallback(clean) {
     head: 'So könnte dein Feed',
     headAccent: 'aussehen.',
     sub: `Dein Thema, dein Stil — bereit zum Posten${gruss}.`.slice(0, 90),
-    bio: 'Content für dein Thema — sichtbar, konsistent.'.slice(0, 40),
+    bio: 'Dein Feed — sichtbar, konsistent.'.slice(0, 40),
     cells: [
       'Dein Thema', 'Warum jetzt?', '3 Schritte',
       'Zitat', 'Vorher / Nachher', 'Deine Frage?',
