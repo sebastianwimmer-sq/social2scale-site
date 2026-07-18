@@ -154,12 +154,22 @@ export async function generateFor(env, token) {
     await mitRetry(() => renderAll(env, token, clean, copy, palettes));
 
     // generated_at ist bereits vom Claim gesetzt — hier nur der Abschluss.
+    // r2_prefix EINMAL berechnen und in UPDATE und Spiegel gleich verwenden,
+    // damit die beiden nie auseinanderdriften.
+    const r2Prefix = `free/${token}/`;
     await env.DB
       .prepare("UPDATE free_leads SET status='ready', build_step=?, r2_prefix=? WHERE token=?")
-      .bind(SCHRITTE.fertig, `free/${token}/`, token)
+      .bind(SCHRITTE.fertig, r2Prefix, token)
       .run();
 
-    const fertig = await findByToken(env.DB, token);
+    // KEIN Re-Fetch: 'ready' ist bereits committed. Ein erneutes findByToken hier
+    // ist ein bares db.prepare().first() ohne eigenen Schutz — wirft es bei einem
+    // transienten D1-Ruckler, faellt der Lauf in den aeusseren catch, markiereFehler
+    // kippt die Zeile auf 'failed' zurueck und feuert einen falschen Alarm, obwohl
+    // ihre 8 Bilder laengst in R2 liegen. Genau die Falle, die dieser Task vermeiden
+    // soll. Alle Felder liegen bereits vor: lead (oben gelesen) + die zwei, die wir
+    // gerade selbst gesetzt haben.
+    const fertig = { ...lead, status: 'ready', r2_prefix: r2Prefix };
     await mirrorToCrm(env.DB, fertig);
     await notifyFounders(env, fertig, 'ready');
 

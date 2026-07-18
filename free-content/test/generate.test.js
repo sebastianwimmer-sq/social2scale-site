@@ -191,4 +191,23 @@ describe('mirrorToCrm', () => {
     await env.DB.exec('DROP TABLE submissions');
     await expect(mirrorToCrm(env.DB, lead)).resolves.toBeUndefined();
   });
+
+  it('laesst den bereits fertigen Lead auf ready, wenn der Spiegel scheitert', async () => {
+    // Der Integrations-Punkt: mirrorToCrm laeuft NACH dem committeten status='ready'
+    // (generate.js). Kein BROWSER-Binding im Test -> generateFor erreicht die echte
+    // Erfolgsstrecke nicht, also wird der reale Nach-Ready-Block hier direkt
+    // gestellt: Lead steht auf 'ready', der Spiegel kippt (Tabelle weg) — und der
+    // Status MUSS 'ready' bleiben. Ihre 8 Bilder liegen in R2; ein kaputter Spiegel
+    // darf sie nie in ein falsches 'failed' zuruecksetzen.
+    const token = await bestaetigterLead();
+    await env.DB.prepare("UPDATE free_leads SET status='ready', r2_prefix=? WHERE token=?")
+      .bind(`free/${token}/`, token).run();
+    const lead = await findByToken(env.DB, token);
+
+    await env.DB.exec('DROP TABLE submissions');
+    await expect(mirrorToCrm(env.DB, lead)).resolves.toBeUndefined();
+
+    const nach = await findByToken(env.DB, token);
+    expect(nach.status).toBe('ready');   // Spiegel kaputt, Status bleibt ehrlich ready
+  });
 });
