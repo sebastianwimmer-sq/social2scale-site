@@ -5,6 +5,21 @@ import { splitSchema } from './helpers.js';
 import { generateFor, buildStatus } from '../src/generate.js';
 import { upsertLead, confirmLead, findByToken } from '../src/leads.js';
 import { validateSubmission } from '../src/validate.js';
+import { FRAME_IDS } from '../src/templates/frames.js';
+
+// Browser Rendering laeuft nicht in Miniflare. renderAll wird deshalb gemockt —
+// aber STEUERBAR: der Default WIRFT (wie der echte no-BROWSER-Fall), damit die
+// Fehlerpfad-Tests (Render-Fehler, Retry, Alarm) unveraendert gelten. Nur der eine
+// Erfolgsstrecken-Test schaltet ihn per mockImplementationOnce auf Erfolg.
+const renderMock = vi.hoisted(() =>
+  vi.fn(async () => {
+    throw new Error('kein BROWSER-Binding (Default im Test)');
+  })
+);
+vi.mock('../src/render.js', async (importActual) => {
+  const echt = await importActual();
+  return { ...echt, renderAll: renderMock };
+});
 
 const BASE = {
   name: 'Dorothea', email: 'do@gmail.com', handle: '@praxisfunke',
@@ -192,22 +207,26 @@ describe('mirrorToCrm', () => {
     await expect(mirrorToCrm(env.DB, lead)).resolves.toBeUndefined();
   });
 
-  it('laesst den bereits fertigen Lead auf ready, wenn der Spiegel scheitert', async () => {
-    // Der Integrations-Punkt: mirrorToCrm laeuft NACH dem committeten status='ready'
-    // (generate.js). Kein BROWSER-Binding im Test -> generateFor erreicht die echte
-    // Erfolgsstrecke nicht, also wird der reale Nach-Ready-Block hier direkt
-    // gestellt: Lead steht auf 'ready', der Spiegel kippt (Tabelle weg) — und der
-    // Status MUSS 'ready' bleiben. Ihre 8 Bilder liegen in R2; ein kaputter Spiegel
-    // darf sie nie in ein falsches 'failed' zuruecksetzen.
+  it('laesst den fertigen Lead auf ready, wenn der Spiegel scheitert — durch generateFor', async () => {
+    // ECHTER Integrationstest durch generateFor (renderAll gestubbt, Bilder landen in R2).
+    // Der Spiegel kippt (submissions-Tabelle weg) NACH dem committeten status='ready'.
+    // Beweis: der aeussere catch von generateFor darf einen fertigen Lead NICHT auf
+    // 'failed' zuruecksetzen. Ihre 8 Bilder liegen in R2 — sie duerfen nie "fehlgeschlagen"
+    // heissen. Dieser Test wuerde mit dem alten ungeschuetzten Re-Fetch ROT.
     const token = await bestaetigterLead();
-    await env.DB.prepare("UPDATE free_leads SET status='ready', r2_prefix=? WHERE token=?")
-      .bind(`free/${token}/`, token).run();
-    const lead = await findByToken(env.DB, token);
+    // renderAll gelingt EINMAL und legt die 8 Bilder in R2 (wie der echte Lauf).
+    renderMock.mockImplementationOnce(async (env, tok) => {
+      const keys = FRAME_IDS.map((id) => `free/${tok}/${id}.jpg`);
+      for (const k of keys) await env.IMAGES.put(k, 'BILD');
+      return keys;
+    });
+    await env.DB.exec('DROP TABLE submissions');   // Spiegel wird gleich scheitern
 
-    await env.DB.exec('DROP TABLE submissions');
-    await expect(mirrorToCrm(env.DB, lead)).resolves.toBeUndefined();
+    const r = await generateFor(env, token);
 
+    expect(r.ok).toBe(true);   // trotz kaputtem Spiegel: Erfolg
     const nach = await findByToken(env.DB, token);
-    expect(nach.status).toBe('ready');   // Spiegel kaputt, Status bleibt ehrlich ready
+    expect(nach.status).toBe('ready');            // NICHT failed
+    expect(nach.generated_at).toBeTruthy();        // Riegel bleibt gesetzt
   });
 });
