@@ -143,6 +143,9 @@
   .paid svg{width:17px;height:17px}
   .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s-3);margin-top:var(--s-7);animation:upIn .7s var(--ease) .5s both}
   .hero .cta-row .rea{font-size:.98rem;color:var(--muted)}
+  .hero .ds-line{margin-top:var(--s-4);font-size:.95rem;color:var(--muted);animation:upIn .7s var(--ease) .44s both}
+  .hero .ds-line a{color:var(--paper);text-decoration:none;border-bottom:1px solid var(--line-2);transition:color .25s var(--ease),border-color .25s var(--ease)}
+  .hero .ds-line a:hover{color:var(--emerald);border-color:var(--emerald)}
   .steps .body a.inl{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.4);transition:color .25s var(--ease),border-color .25s var(--ease)}
   .steps .body a.inl:hover{color:var(--emerald);border-color:var(--emerald)}
   /* ===== blocks ===== */
@@ -252,7 +255,7 @@
   .foot-bottom a:hover{color:var(--paper)}
   .foot-bottom .pk{color:var(--emerald-soft)}
   /* Digistore24-Pflichthinweis (Produktgenehmigung: kostenpflichtiges Produkt) */
-  .foot-ds{margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.7}
+  .foot-ds{margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--muted);line-height:1.7}
   .foot-ds a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;transition:color .2s var(--ease)}
   .foot-ds a:hover{color:var(--paper)}
   @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6)}.foot-brand{grid-column:1 / -1}}
@@ -313,6 +316,7 @@
         <span class="paid"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Zahlung bestätigt</span>
         <h1 id="hero-greet">Willkommen an Bord<span id="vorname-sep">, </span><span id="vorname">…</span>.</h1>
         <p class="sub">Dein Platz bei social2scale ist gesichert — <b>du hast gerade richtig gewählt.</b> Ab jetzt bauen wir dein Wachstum gemeinsam. Nur noch ein Schritt, dann legen wir los.</p>
+        <p class="ds-line">Die Abbuchung erfolgt durch <a href="https://www.digistore24.com" rel="nofollow noopener" target="_blank">Digistore24</a>.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="start-cta" href="../onboarding/" data-form-url="../onboarding/">Onboarding starten <span class="arr">&rarr;</span></a>
           <p class="rea">Zwei Minuten &mdash; danach buchst du direkt deinen Kickoff-Termin.</p>
