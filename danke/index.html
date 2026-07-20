@@ -138,6 +138,13 @@
   .scrollhint{margin-top:var(--s-7);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);animation:upIn .7s var(--ease) .5s both}
   .scrollhint span{display:block;margin-top:6px;font-size:16px;color:var(--emerald);animation:nudge 1.6s var(--ease) infinite}
 
+  /* ===== redesign 20.07: dezente Bestätigung + Hero-CTA ===== */
+  .paid{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald-soft);animation:upIn .6s var(--ease) .12s both}
+  .paid svg{width:17px;height:17px}
+  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s-3);margin-top:var(--s-7);animation:upIn .7s var(--ease) .5s both}
+  .hero .cta-row .rea{font-size:.98rem;color:var(--muted)}
+  .steps .body a.inl{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.4);transition:color .25s var(--ease),border-color .25s var(--ease)}
+  .steps .body a.inl:hover{color:var(--emerald);border-color:var(--emerald)}
   /* ===== blocks ===== */
   section.blk{padding:clamp(var(--s-8),6vw,var(--s-9)) 0;border-top:1px solid var(--line)}
   .blk-head{margin-bottom:var(--s-7);max-width:42ch}
@@ -303,81 +310,22 @@
     <section class="hero" id="hero">
       <div class="celebrate" aria-hidden="true"></div>
       <div class="wrap">
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" stroke="#00B888" stroke-width="1.6"/><path d="M7 12.5l3.2 3.2L17 8.5" stroke="#00B888" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Zahlung erfolgreich</span>
+        <span class="paid"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Zahlung bestätigt</span>
         <h1 id="hero-greet">Willkommen an Bord<span id="vorname-sep">, </span><span id="vorname">…</span>.</h1>
         <p class="sub">Dein Platz bei social2scale ist gesichert — <b>du hast gerade richtig gewählt.</b> Ab jetzt bauen wir dein Wachstum gemeinsam. Nur noch ein Schritt, dann legen wir los.</p>
-        <p class="scrollhint">So geht&rsquo;s weiter<span aria-hidden="true">&darr;</span></p>
-      </div>
-    </section>
-
-    <!-- DEIN START — interaktiver Momentum-Block -->
-    <section class="start" id="start" aria-labelledby="start-h">
-      <div class="wrap reveal">
-        <p class="ix"><b>00</b> Dein Start</p>
-        <span class="klabel">Leg los</span>
-        <h2 id="start-h">Worauf willst du <em>als Erstes</em> los?</h2>
-        <div class="panel">
-          <div class="goalpick" role="group" aria-label="Dein erstes Ziel wählen">
-            <button type="button" class="goal" id="goal-reach" data-goal="reach" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Sichtbarkeit</span>
-              <span class="gt">Reichweite</span>
-            </button>
-            <button type="button" class="goal" id="goal-leads" data-goal="leads" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Anfragen</span>
-              <span class="gt">Leads</span>
-            </button>
-            <button type="button" class="goal" id="goal-revenue" data-goal="revenue" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Wachstum</span>
-              <span class="gt">Umsatz</span>
-            </button>
-          </div>
-
-          <figure class="growth" id="growth" role="group" aria-label="Beispielhafter Wachstumsverlauf">
-            <div class="ghead">
-              <figcaption class="glabel" id="growth-label">Deine <b>Reichweite</b>: heute &rarr; in 90 Tagen</figcaption>
-              <span class="gtag" aria-hidden="true">Beispielhafter Verlauf</span>
-            </div>
-            <div class="chart">
-              <svg id="growth-svg" viewBox="0 0 640 220" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                <defs>
-                  <linearGradient id="startStroke" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#1FC998"/>
-                    <stop offset="1" stop-color="#46BEEA"/>
-                  </linearGradient>
-                  <linearGradient id="startFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stop-color="rgba(0,184,136,.30)"/>
-                    <stop offset="1" stop-color="rgba(0,184,136,0)"/>
-                  </linearGradient>
-                </defs>
-                <path class="garea" id="growth-area" d=""/>
-                <path class="gline" id="growth-line" d=""/>
-                <circle class="gtip" id="growth-tip" r="4.5" cx="0" cy="0"/>
-              </svg>
-            </div>
-            <div class="axis" aria-hidden="true"><span>Heute</span><span>In 90 Tagen</span></div>
-          </figure>
-
-          <p class="commit" id="commit" aria-live="polite">
-            <span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span id="commit-text">Ziel gesetzt &#x2713; &mdash; jetzt wird&rsquo;s gebaut.</span>
-          </p>
-
-          <div class="cta-row">
-            <a class="btn btn-primary" id="start-cta" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen &mdash; los geht&rsquo;s <span class="arr">&rarr;</span></a>
-            <span class="hint">Schritt 1 von 2 &mdash; danach buchst du direkt deinen Kickoff-Termin.</span>
-          </div>
+        <div class="cta-row">
+          <a class="btn btn-primary" id="start-cta" href="../onboarding/" data-form-url="../onboarding/">Onboarding starten <span class="arr">&rarr;</span></a>
+          <p class="rea">Zwei Minuten &mdash; danach buchst du direkt deinen Kickoff-Termin.</p>
         </div>
+        <p class="scrollhint">So läuft&rsquo;s ab<span aria-hidden="true">&darr;</span></p>
       </div>
     </section>
+
 
     <!-- SO GEHT'S WEITER -->
     <section class="blk" aria-labelledby="steps-h">
       <div class="wrap reveal">
         <div class="blk-head">
-          <p class="ix"><b>01</b> Dein Start</p>
           <span class="klabel">So geht&rsquo;s weiter</span>
           <h2 id="steps-h">Drei Schritte — <em>dann läuft&rsquo;s</em>.</h2>
         </div>
@@ -399,8 +347,8 @@
           <li>
             <span class="num" aria-hidden="true">3</span>
             <div class="body">
-              <h3>Wir legen los &mdash; du verfolgst alles in PEAKING</h3>
-              <p>Wir bauen, betreuen und skalieren deinen Auftritt. Reichweite, Leads und Fortschritt siehst du jederzeit transparent in PEAKING.</p>
+              <h3>Wir bauen &mdash; und alles landet in deinem s2s&#8209;Bereich</h3>
+              <p>Deinen fertigen Auftritt, alle Inhalte und deinen Fortschritt findest du gebündelt in deinem persönlichen Bereich auf <a class="inl" href="https://mein.social2scale.com">mein.social2scale.com</a> &mdash; jederzeit, an einem Ort.</p>
             </div>
           </li>
         </ol>
@@ -411,12 +359,11 @@
     <section class="blk" aria-labelledby="cta-h">
       <div class="wrap reveal">
         <div class="band">
-          <span class="micro">Schritt 1 &rarr; Schritt 2</span>
-          <h2 id="cta-h">Dein erster Schritt: <em>Onboarding</em>.</h2>
-          <p class="lead">Fülle kurz das Onboarding aus — direkt danach buchst du deinen Kickoff-Termin. So haben wir vom Start weg alles, um passgenau für dich loszulegen.</p>
+          <h2 id="cta-h">Bereit? Dann <em>leg los</em>.</h2>
+          <p class="lead">Ein kurzes Onboarding &mdash; und wir haben vom ersten Tag an alles, um passgenau für dich zu bauen.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" id="cta-call" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen <span class="arr">&rarr;</span></a>
-            <p class="quick">Schritt 2 folgt direkt im Anschluss: <a id="cta-form" href="../onboarding/" data-form-url="../onboarding/">Onboarding-Fragebogen ausfüllen</a></p>
+            <a class="btn btn-primary" id="cta-call" href="../onboarding/" data-form-url="../onboarding/">Onboarding starten <span class="arr">&rarr;</span></a>
+            <p class="quick">Dauert zwei Minuten. Der Kickoff-Termin folgt direkt danach.</p>
           </div>
         </div>
       </div>
@@ -426,12 +373,11 @@
     <section class="blk" aria-labelledby="founder-h">
       <div class="wrap reveal">
         <div class="blk-head">
-          <p class="ix"><b>02</b> Persönlich von uns</p>
           <span class="klabel">Schön, dass du da bist</span>
           <h2 id="founder-h">Wir freuen uns <em>riesig</em>.</h2>
         </div>
         <div class="founder">
-          <div class="pic" aria-hidden="true">Foto<br>Sebi&amp;Phil</div>
+          <div class="pic" aria-hidden="true">S&amp;P</div>
           <div>
             <p>Hey<span id="vorname2"></span>, <b>wir sind Sebi &amp; Phil</b>. <span class="m">Danke für dein Vertrauen — wir freuen uns riesig, dich an Bord zu haben. Wir nehmen deinen Auftrag so ernst wie unseren eigenen und machen dein Wachstum ab jetzt zu unserem.</span></p>
             <div class="sig">— Sebi &amp; Phil</div>
@@ -469,7 +415,7 @@
       </nav>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="yr"></span> social2scale · Powered by <span class="pk">PEAKING</span></span>
+      <span>© <span id="yr"></span> social2scale</span>
       <span class="foot-legal">
         <a href="../impressum/">Impressum</a>
         <a href="../datenschutz/">Datenschutz</a>
