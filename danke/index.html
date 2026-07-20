@@ -244,6 +244,10 @@
   .foot-bottom a{color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
   .foot-bottom a:hover{color:var(--paper)}
   .foot-bottom .pk{color:var(--emerald-soft)}
+  /* Digistore24-Pflichthinweis (Produktgenehmigung: kostenpflichtiges Produkt) */
+  .foot-ds{margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.7}
+  .foot-ds a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;transition:color .2s var(--ease)}
+  .foot-ds a:hover{color:var(--paper)}
   @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6)}.foot-brand{grid-column:1 / -1}}
   @media (max-width:480px){.foot-top{grid-template-columns:1fr}.foot-bottom{flex-direction:column;align-items:flex-start;gap:var(--s-3)}}
 
@@ -472,6 +476,7 @@
         <a href="mailto:info@social2scale.com">info@social2scale.com</a>
       </span>
     </div>
+    <div class="foot-ds">Die Abbuchung erfolgt durch <a href="https://www.digistore24.com" rel="nofollow noopener" target="_blank">Digistore24</a>.</div>
   </div></footer>
 
   <script>
