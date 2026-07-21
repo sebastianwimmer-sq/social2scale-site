@@ -136,7 +136,7 @@ async function reenter(db, clean, ip, now, existing) {
          farbe=?, source=?, token=?, token_expires=?, token_used_at=NULL,
          resend_count = CASE WHEN last_sent_at IS NULL OR last_sent_at <= ?
                              THEN 1 ELSE resend_count + 1 END,
-         last_sent_at=?, ip=?, status='pending'
+         last_sent_at=?, ip=?, status='pending', fail_reason=''
        WHERE id=?
          AND (last_sent_at IS NULL OR last_sent_at <= ? OR resend_count < ?)`
     )
@@ -262,7 +262,7 @@ export async function sweepStaleBuilding(db, now = new Date()) {
   const cutoff = iso(new Date(now.getTime() - BUILDING_TIMEOUT_MINUTES * 60 * 1000));
   const res = await db
     .prepare(
-      `UPDATE free_leads SET status='failed', generated_at=NULL, build_step=''
+      `UPDATE free_leads SET status='failed', generated_at=NULL, build_step='', fail_reason=''
         WHERE status='building' AND generated_at < ?`
     )
     .bind(cutoff)

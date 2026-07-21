@@ -110,6 +110,23 @@ describe('upsertLead', () => {
     expect(again.mail).toBe('confirm');
   });
 
+  // Reachable-Bug-Regression: ein moderation-Reject darf einen NEUEN Versuch
+  // nicht vorbelasten. Ohne Reset traegt die Zeile fail_reason='moderation' in
+  // den naechsten Build hinein — stirbt der Worker diesmal an Infra statt an
+  // Moderation, zeigt sweepStaleBuilding() faelschlich die alte, nicht-retrybare
+  // Moderation-Meldung statt der echten (retrybaren) Infra-Absage.
+  it('setzt fail_reason beim Wiedereintritt nach Moderation-Reject zurueck', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await env.DB
+      .prepare("UPDATE free_leads SET status='failed', fail_reason='moderation' WHERE id=?")
+      .bind(r.lead.id)
+      .run();
+
+    const again = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    expect(again.action).toBe('retry');
+    expect(again.lead.fail_reason).toBe('');
+  });
+
   it('sperrt einen bereits bestaetigten Handle fuer andere Mails', async () => {
     const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
     await confirmLead(env.DB, r.lead.token, NOW);
@@ -298,6 +315,27 @@ describe('sweepStaleBuilding', () => {
     const lead = await findByToken(env.DB, r.lead.token);
     expect(lead.status).toBe('failed');
     expect(lead.generated_at).toBeNull();
+  });
+
+  // Reachable-Bug-Regression: eine gesweepte Zeile hat KEINE bekannte Ursache
+  // (der Worker wurde hart gekillt) — eine stale fail_reason='moderation' aus
+  // einem FRUEHEREN Versuch wuerde das Build-Screen faelschlich "kein Retry"
+  // zeigen, obwohl der Sweep-Fall immer retrybar ist (reason:'render').
+  it('setzt fail_reason einer gesweepten Zeile zurueck (kein stale moderation-Reject)', async () => {
+    const r = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await env.DB
+      .prepare("UPDATE free_leads SET fail_reason='moderation' WHERE id=?")
+      .bind(r.lead.id)
+      .run();
+    const laengstTot = new Date(NOW.getTime() - (BUILDING_TIMEOUT_MINUTES + 5) * 60 * 1000);
+    await alsBuilding(r.lead.id, laengstTot.toISOString().replace('T', ' ').slice(0, 19));
+
+    const anzahl = await sweepStaleBuilding(env.DB, NOW);
+    expect(anzahl).toBe(1);
+
+    const lead = await findByToken(env.DB, r.lead.token);
+    expect(lead.status).toBe('failed');
+    expect(lead.fail_reason).toBe('');
   });
 
   it('laesst eine gerade erst geclaimte "building"-Zeile in Ruhe (noch in Arbeit)', async () => {
