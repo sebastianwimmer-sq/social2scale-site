@@ -67,3 +67,13 @@ CREATE TABLE IF NOT EXISTS submissions (
   status     TEXT NOT NULL DEFAULT 'new',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- v15 · Free-Content: leichtes Funnel-Tracking (entered/confirmed/ready/cta)
+-- Minimal: nur Event-Name, Lead-Token als lose Referenz, Zeitstempel.
+CREATE TABLE IF NOT EXISTS funnel_events (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  event      TEXT NOT NULL,
+  token      TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_funnel_event ON funnel_events(event);

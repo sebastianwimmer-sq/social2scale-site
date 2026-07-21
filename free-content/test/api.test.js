@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import SCHEMA_SQL from './schema.sql?raw';
 import { resetTables } from './helpers.js';
 
-const TABELLEN = ['free_leads', 'free_intake_log'];
+const TABELLEN = ['free_leads', 'free_intake_log', 'funnel_events'];
 
 const GUELTIG = {
   name: 'Sebi',
@@ -59,6 +59,16 @@ describe('POST /api/free-content', () => {
     expect(res.status).toBe(200);
     expect((await res.json()).ok).toBe(true);
     expect((await zeilen()).length).toBe(1);
+  });
+
+  it('trackt ein "entered"-Funnel-Event bei neu angelegtem Lead', async () => {
+    await post(GUELTIG);
+    const lead = await env.DB.prepare('SELECT token FROM free_leads').first();
+    const events = await env.DB.prepare(
+      "SELECT event, token FROM funnel_events WHERE event = 'entered'"
+    ).all();
+    expect(events.results.length).toBe(1);
+    expect(events.results[0].token).toBe(lead.token);
   });
 
   it('verwirft Honeypot-Treffer still und legt NICHTS an', async () => {
@@ -175,6 +185,26 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(lead.status).toBe('confirmed');
     expect(lead.confirmed_at).toBeTruthy();
     expect(lead.token_used_at).toBeTruthy();
+  });
+
+  it('trackt ein "confirmed"-Funnel-Event bei erfolgreicher Bestaetigung', async () => {
+    const token = await tokenAnlegen();
+    await hole(token);
+    const events = await env.DB.prepare(
+      "SELECT event, token FROM funnel_events WHERE event = 'confirmed'"
+    ).all();
+    expect(events.results.length).toBe(1);
+    expect(events.results[0].token).toBe(token);
+  });
+
+  it('trackt bei einer abgelehnten Bestaetigung (schon benutzt) KEIN "confirmed"', async () => {
+    const token = await tokenAnlegen();
+    await hole(token);
+    await hole(token);
+    const events = await env.DB.prepare(
+      "SELECT COUNT(*) c FROM funnel_events WHERE event = 'confirmed'"
+    ).first();
+    expect(events.c).toBe(1);
   });
 
   it('lehnt denselben Token beim zweiten Mal ab, ohne Sackgasse', async () => {

@@ -15,10 +15,18 @@ import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './l
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
+import { track } from './track.js';
 import { formPage } from './pages/form.js';
 import { resultPage } from './pages/result.js';
 
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
+
+// Beacon-Events (Spec Plan 3 Task 6): 'cta_call' wird bereits von reveal.js per
+// navigator.sendBeacon geschickt (Task 4) — die Allowlist MUSS ihn kennen.
+const TRACK_EVENTS = ['entered', 'confirmed', 'ready', 'cta_call', 'cta_save'];
+// Derselbe Zeichensatz/Laengenrahmen wie /api/status/:token — ein Token ist hier
+// nur eine lose Referenz, kein Datenzugriffs-Schluessel.
+const TOKEN_RE = /^[a-zA-Z0-9_-]{1,128}$/;
 
 /**
  * EINE Antwort fuer JEDEN Lead-Ausgang — created, resent, renewed, retry, ready,
@@ -121,7 +129,10 @@ async function handleSubmit(request, env, ctx, cors) {
   } else if (mail === 'result') {
     ctx.waitUntil(sendResultMail(env, lead));
   }
-  if (action === 'created') ctx.waitUntil(notifyFounders(env, lead, action));
+  if (action === 'created') {
+    ctx.waitUntil(notifyFounders(env, lead, action));
+    ctx.waitUntil(track(env, { event: 'entered', token: lead.token }));
+  }
 
   ctx.waitUntil(
     cleanupExpired(env.DB).catch((err) =>
@@ -205,6 +216,8 @@ async function handleConfirm(token, env, ctx) {
     return htmlPage(fehler.title, fehler.body);
   }
 
+  ctx.waitUntil(track(env, { event: 'confirmed', token }));
+
   // Nicht blockieren: Claude + 8 Renderings dauern 20-40 s. Sie sieht sofort den
   // Build-Screen, der Fortschritt kommt ueber /api/status (Spec §6).
   ctx.waitUntil(
@@ -237,6 +250,20 @@ export default {
     if (url.pathname === '/api/free-content') {
       if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405, cors);
       return handleSubmit(request, env, ctx, cors);
+    }
+
+    // Beacon-Endpunkt (navigator.sendBeacon, siehe reveal.js). IMMER 204 — ein
+    // Beacon hat keine Antwort-Behandlung, und ein Fehlercode hier wuerde nur in
+    // der Konsole der Besucherin landen, ohne dass irgendjemand reagieren kann.
+    // Unbekanntes 'e'/'t' wird verworfen statt geschrieben, aber die Antwort bleibt
+    // gleich — sonst koennte man per Statuscode erraten, welche Events existieren.
+    if (url.pathname === '/api/track') {
+      const e = url.searchParams.get('e') || '';
+      const t = url.searchParams.get('t') || '';
+      if (TRACK_EVENTS.includes(e) && (t === '' || TOKEN_RE.test(t))) {
+        ctx.waitUntil(track(env, { event: e, token: t }));
+      }
+      return new Response(null, { status: 204 });
     }
 
     // Formular-Seite: der Worker liefert sie jetzt selbst statt an eine
