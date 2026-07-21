@@ -18,13 +18,23 @@
  * showReveal() ausloest.
  *
  * showReveal() ist jetzt echt ausgebaut (Plan 3 Task 4, siehe reveal.js) —
- * showError() bleibt bewusst MINIMAL (Plan 3 Task 5 baut das echte
- * Fehler-Erlebnis aus).
+ * showError() (Plan 3 Task 5) zeigt eine handlungsorientierte, grundabhaengige
+ * Fehlerkarte statt endlos zu pollen: keine Sackgassen (Spec §9).
+ *
+ * nextAction() ist die reine Poller-Entscheidung, ausgelagert nach poller.js
+ * (result.js selbst bleibt <400 Zeilen) und hier re-exportiert, damit sie
+ * unveraendert per `import { nextAction } from './result.js'` testbar bleibt
+ * (test/pages.test.js) UND per `.toString()` in PAGE_SCRIPT eingebettet wird —
+ * der Browser fuehrt so exakt dieselbe, getestete Funktion aus, keine zweite
+ * driftende Kopie.
  */
 
 import { htmlDoc } from './shell.js';
 import { STEPS, TILE_LABELS, FRAME_IDS, ERROR_COPY, REVEAL } from './copy.js';
 import { REVEAL_STYLE, REVEAL_SCRIPT, revealMarkup } from './reveal.js';
+import { nextAction, BUILDING_TIMEOUT_MS } from './poller.js';
+
+export { nextAction };
 
 /** Nur die ersten drei Grid-Kacheln bekommen ein echtes Foto (s. copy.js TILE_LABELS). */
 const GRID_FRAME_IDS = ['f-0-s1', 'f-0-s2', 'f-0-s3'];
@@ -282,15 +292,22 @@ const PAGE_SCRIPT = `
     revealSection();
   }
 
-  // ── Minimal (Plan 3 Task 5 baut die volle, grundabhaengige Fehlerseite aus) ──
-  function showError(reason) {
-    console.error('[build] Fehlerzustand:', reason);
-    errEl.innerHTML = '<h3>' + ERROR_TEXT.title + '</h3><p>' + ERROR_TEXT.body + '</p>' +
-      '<a href="mailto:info@social2scale.com">Kurz melden</a>';
+  // ── Handlungsorientierte Fehlerkarte (Plan 3 Task 5, Spec §9): die Handlung
+  //    benennen, nicht die Ursache. reason waehlt die Kopie aus ERROR_COPY;
+  //    ohne Eintrag (unbekannter Grund) faellt sie auf render/not_found zurueck,
+  //    je nachdem ob ein Retry sinnvoll ist. ──
+  function showError(reason, retry) {
+    console.error('[build] Fehlerzustand:', reason, 'retry:', retry);
+    const copy = ERROR_COPY[reason] || (retry ? ERROR_COPY.render : ERROR_COPY.not_found);
+    const cta = copy.ctaHref ? '<a href="' + copy.ctaHref + '">' + copy.ctaLabel + '</a>' : '';
+    errEl.innerHTML = '<h3>' + copy.title + '</h3><p>' + copy.body + '</p>' + cta;
     errEl.style.display = 'flex';
   }
 
+  ${nextAction.toString()}
+
   // ── Poller: ersetzt den Auto-Play-Zeitstrahl des Prototyps durch den echten Stand ──
+  const pollStartedAt = Date.now();
   let pollTimer = null;
   async function poll() {
     let data;
@@ -304,8 +321,11 @@ const PAGE_SCRIPT = `
     }
     if (typeof data.total === 'number' && data.total > 0) total = data.total;
     render(data.done || 0, data.step, data.images);
-    if (data.state === 'ready') { clearInterval(pollTimer); showReveal(); return; }
-    if (data.state === 'failed' || data.state === 'not_found') { clearInterval(pollTimer); showError(data.state); return; }
+    const action = nextAction(data, Date.now() - pollStartedAt);
+    if (action.kind === 'poll') return;
+    clearInterval(pollTimer);
+    if (action.kind === 'reveal') { showReveal(); return; }
+    showError(action.reason, action.retry);
   }
   poll();
   pollTimer = setInterval(poll, POLL_INTERVAL_MS);
@@ -361,7 +381,8 @@ export function resultPage(token) {
     `const IMG_BASE=${JSON.stringify(imgBase)};` +
     `const AVATAR_FRAME_ID=${JSON.stringify(AVATAR_FRAME_ID)};` +
     `const TOTAL_DEFAULT=${JSON.stringify(FRAME_IDS.length)};` +
-    `const ERROR_TEXT=${JSON.stringify(ERROR_COPY.default)};`;
+    `const ERROR_COPY=${JSON.stringify(ERROR_COPY)};` +
+    `const BUILDING_TIMEOUT_MS=${JSON.stringify(BUILDING_TIMEOUT_MS)};`;
   const body = `${pageMarkup()}<script>${bootstrap}${PAGE_SCRIPT}${REVEAL_SCRIPT}</script>`;
 
   return htmlDoc({ title: 'Dein Feed entsteht · social2scale', head, body });

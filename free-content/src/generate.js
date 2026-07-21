@@ -62,12 +62,21 @@ async function setzeSchritt(db, token, status, step) {
  * muss die Sperre zurueck, sonst ist ein 'failed'-Lead fuer immer blockiert und
  * der Retry-Pfad (leads.js reenter: status='failed' -> neuer Token) liefe gegen
  * einen gesetzten Riegel und bekaeme nur 'bereits_erzeugt'.
+ *
+ * `grund` (Plan 3 Task 5) landet zusaetzlich in fail_reason (migrate-v14.sql):
+ * ohne diese Spalte kollabieren Moderationsablehnung und Render-Fehler auf
+ * denselben Status 'failed' und der Build-Screen kann eine Sackgassen-Kopie
+ * ("nochmal versuchen") nicht von einer echten Ablehnung unterscheiden — bei
+ * einer Ablehnung waere "nochmal" dasselbe Thema, also derselbe Reject: eine
+ * Schleife statt eines Auswegs.
  */
-async function markiereFehler(db, token) {
+async function markiereFehler(db, token, grund = '') {
   try {
     await db
-      .prepare("UPDATE free_leads SET status='failed', build_step='', generated_at=NULL WHERE token = ?")
-      .bind(token)
+      .prepare(
+        "UPDATE free_leads SET status='failed', build_step='', generated_at=NULL, fail_reason=? WHERE token = ?"
+      )
+      .bind(grund, token)
       .run();
   } catch (err) {
     console.error('[generate] Fehlerstatus konnte nicht geschrieben werden:', err);
@@ -128,7 +137,7 @@ export async function generateFor(env, token) {
   const moderation = checkInput(clean);
   if (!moderation.ok) {
     console.error('[generate] Thema abgelehnt:', moderation.grund, 'Lead', lead.id);
-    await markiereFehler(env.DB, token);
+    await markiereFehler(env.DB, token, 'moderation');
     // Founder-Alarm (Spec §5a) — und er ist NICHT optional: der Filter ist bewusst
     // streng, weil eine Wortliste `Drogen-Praevention` nicht von `Drogen-Verkauf`
     // trennen kann. Diese Strenge ist nur vertretbar, WEIL ein Mensch jede Ablehnung
@@ -177,7 +186,7 @@ export async function generateFor(env, token) {
   } catch (err) {
     // Nie still: ihre Stille verraet uns nichts, dieser Log schon.
     console.error('[generate] Generierung endgueltig fehlgeschlagen, Lead', lead.id, err);
-    await markiereFehler(env.DB, token);
+    await markiereFehler(env.DB, token, 'render');
     // Founder-Alarm (Spec §9): sie hat bestaetigt und bekommt nichts. Wenn WIR das
     // nicht erfahren, erfaehrt es niemand — sie meldet sich nicht, sie hoert auf.
     try {
@@ -208,7 +217,12 @@ export async function buildStatus(env, token) {
   }
 
   const basis = { state: lead.status, step: lead.build_step || '', done, total: FRAME_IDS.length };
-  return lead.status === 'ready' ? { ...basis, images } : basis;
+  if (lead.status === 'ready') return { ...basis, images };
+  // grund (Moderation vs. Render, siehe markiereFehler oben) macht den Build-Screen
+  // faehig, eine Sackgasse ("nochmal" bei abgelehntem Thema = derselbe Reject) von
+  // einem echten Retry-Fall zu unterscheiden (Plan 3 Task 5).
+  if (lead.status === 'failed') return { ...basis, grund: lead.fail_reason || '' };
+  return basis;
 }
 
 /**

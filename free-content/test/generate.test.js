@@ -86,6 +86,11 @@ describe('generateFor', () => {
     expect(r.grund).toBe('moderation');
     const nach = await findByToken(env.DB, lead.token);
     expect(nach.status).toBe('failed');   // Sackgasse verboten: Status ist ehrlich
+    expect(nach.fail_reason).toBe('moderation');   // Plan 3 Task 5: Grund persistiert
+
+    const status = await buildStatus(env, lead.token);
+    expect(status.state).toBe('failed');
+    expect(status.grund).toBe('moderation');   // Build-Screen kann Moderation von Render unterscheiden
   });
 
   it('alarmiert die Founder bei JEDER Ablehnung — sonst ist der Filter Leadvernichtung', async () => {
@@ -112,8 +117,14 @@ describe('generateFor', () => {
     // Kein BROWSER-Binding im Test -> renderAll wirft.
     const r = await generateFor(env, token);
     expect(r.ok).toBe(false);
+    expect(r.grund).toBe('render');
     const nach = await findByToken(env.DB, token);
     expect(nach.status).toBe('failed');
+    expect(nach.fail_reason).toBe('render');   // Plan 3 Task 5: unterscheidbar von 'moderation'
+
+    const status = await buildStatus(env, token);
+    expect(status.state).toBe('failed');
+    expect(status.grund).toBe('render');   // -> Build-Screen darf Retry anbieten
   });
 
   it('gibt beim Rendern nicht nach dem ersten Versuch auf (Spec §9)', async () => {

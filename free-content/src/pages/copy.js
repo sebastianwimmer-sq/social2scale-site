@@ -38,23 +38,48 @@ export const TILE_LABELS = [
   'Einblick', 'Über dich', 'Nächster Schritt',
 ];
 
+/** Ziel des Erstgespraechs bei einer Moderationsablehnung — dieselbe Adresse wie
+ *  in reveal.js/index.js (ANFRAGE_URL), hier nicht importiert, um copy.js frei
+ *  von Modulabhaengigkeiten zu halten (reiner Text-/Struktur-Baustein). */
+const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
+
 /**
- * Minimaler, handlungsorientierter Fehlertext (Platzhalter fuer diesen Task —
- * Plan 3 Task 5 baut die volle, grundabhaengige Kopie aus).
+ * Handlungsorientierte Fehlerkopie (Spec §9: die Handlung benennen, nicht die
+ * Ursache) — ein Eintrag pro `reason` aus `nextAction()` (result.js).
  *
- * WICHTIG fuer Task 5: buildStatus() (generate.js) liefert AKTUELL nur
- * state:'failed' fuer JEDEN Fehlerfall. Moderationsablehnungen und technisches
- * Scheitern landen beide ueber markiereFehler() auf demselben DB-Status
- * 'failed' — es gibt keinen eigenen state:'moderation', der Grund ('moderation'
- * vs. 'render' vs. 'db') existiert nur im Rueckgabewert von generateFor(),
- * nicht im gepollten Status. Eine Unterscheidung im Build-Screen braucht
- * entweder ein zusaetzliches DB-Feld oder bleibt bei einer einzigen,
- * grundneutralen Fehlermeldung.
+ * `buildStatus()` (generate.js) liefert state:'failed' fuer JEDEN Fehlerfall,
+ * unterscheidet aber ueber `grund`/fail_reason (migrate-v14.sql) Moderation von
+ * Render-Fehlern. Der Unterschied ist NICHT kosmetisch: eine Ablehnung ist eine
+ * Entscheidung ueber das THEMA — "nochmal versuchen" wuerde dasselbe Thema
+ * wieder einreichen und denselben Reject bekommen, also eine Schleife statt
+ * eines Auswegs. Ein Render-Fehler ist transient — Retry ist hier die richtige
+ * Handlung, aber NICHT durch Neuladen von /c/<token> (der Token kann bereits
+ * verbraucht sein), sondern ueber einen frischen Eintritt am Formular.
  */
 export const ERROR_COPY = {
-  default: {
-    title: 'Puh, da ist etwas schiefgelaufen.',
-    body: 'Meld dich kurz bei uns — wir kümmern uns sofort persönlich darum.',
+  moderation: {
+    title: 'Lass uns kurz persönlich sprechen.',
+    body: 'Dieses Thema können wir leider nicht automatisch aufbauen — lass uns kurz persönlich sprechen.',
+    ctaHref: ANFRAGE_URL,
+    ctaLabel: 'Kurz sprechen',
+  },
+  render: {
+    title: 'Nicht deine Schuld.',
+    body: "Da ist beim Bauen etwas schiefgelaufen — nicht deine Schuld. Probier's gleich nochmal.",
+    ctaHref: '/',
+    ctaLabel: 'Nochmal eintragen',
+  },
+  not_found: {
+    title: 'Diesen Link kennen wir nicht.',
+    body: 'Trag dich einfach nochmal ein — dauert nur eine Minute.',
+    ctaHref: '/',
+    ctaLabel: 'Zum Formular',
+  },
+  timeout: {
+    title: 'Das dauert länger als sonst.',
+    body: 'Wir schicken dir das Ergebnis per Mail, sobald es fertig ist.',
+    ctaHref: '',
+    ctaLabel: '',
   },
 };
 
