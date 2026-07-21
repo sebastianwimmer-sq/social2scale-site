@@ -9,6 +9,9 @@ NOTIFY_TO     = "info@social2scale.com"
 NOTIFY_FROM   = "info@social2scale.com"
 PUBLIC_ORIGIN = "https://start.social2scale.com"
 AI_MODEL      = "claude-sonnet-5"
+# Public (kein Secret) — steht so im Formular-HTML. Bestaetigt am 19.07. beim
+# Live-Gate von Plan 2 (Task 10).
+TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
 
 # Geteilt mit dem CRM — dieselbe DB, damit Leads in den CRM-Eingängen landen.
 [[d1_databases]]

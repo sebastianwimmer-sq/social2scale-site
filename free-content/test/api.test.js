@@ -185,7 +185,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     const html = await zweiter.text();
     expect(html).toContain('schon benutzt');
     // Spec §9: jede Fehlerseite bietet einen Ausweg.
-    expect(html).toContain('/free-content/');
+    expect(html).toContain('start.social2scale.com/');
   });
 
   it('lehnt einen abgelaufenen Token ab und bietet einen neuen an', async () => {
@@ -195,7 +195,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('nicht mehr g');
-    expect(html).toContain('/free-content/');
+    expect(html).toContain('start.social2scale.com/');
   });
 
   it('lehnt einen unbekannten Token ab', async () => {
@@ -203,7 +203,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('kennen wir nicht');
-    expect(html).toContain('/free-content/');
+    expect(html).toContain('start.social2scale.com/');
   });
 
   it('zeigt eine echte Seite statt 500, wenn der Handle schon bestaetigt ist', async () => {

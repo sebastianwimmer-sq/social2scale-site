@@ -15,8 +15,8 @@ import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './l
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
+import { formPage } from './pages/form.js';
 
-const FORMULAR_URL = 'https://social2scale.com/free-content/';
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
 
 /**
@@ -152,48 +152,55 @@ function htmlPage(title, body) {
  * Sackgassen sind verboten (Spec §9): sie hat gerade ihre Mail bestaetigt, jeder
  * Fehlerfall muss ihr sagen was sie JETZT tun kann — nicht was schiefging.
  * Die Texte nennen die Handlung, nicht die Ursache (Spec §6, Zielgruppen-Haertung).
+ * Als Funktion statt Konstante: das Formular liegt jetzt am Worker selbst
+ * (`/`, env.PUBLIC_ORIGIN) statt an der frueheren statischen `/free-content/`-Seite.
  */
-const CONFIRM_FEHLER = {
-  used: {
-    title: 'Diesen Link hast du schon benutzt',
-    body:
-      '<p>Kein Problem — trag dich einfach nochmal ein, dann schicken wir dir einen frischen Link.</p>' +
-      `<p><a href="${FORMULAR_URL}">Nochmal eintragen</a></p>`,
-  },
-  expired: {
-    title: 'Dieser Link ist nicht mehr gültig',
-    body:
-      '<p>Links gelten 24 Stunden. Trag dich nochmal ein, dann bekommst du sofort einen neuen.</p>' +
-      `<p><a href="${FORMULAR_URL}">Neuen Link holen</a></p>`,
-  },
-  not_found: {
-    title: 'Diesen Link kennen wir nicht mehr',
-    body:
-      '<p>Vielleicht ein Tippfehler beim Kopieren? Trag dich einfach nochmal ein.</p>' +
-      `<p><a href="${FORMULAR_URL}">Nochmal eintragen</a></p>`,
-  },
-  // Zwei noch unbestaetigte Leads duerfen denselben Handle haben (kein Griefing) —
-  // bestaetigt aber nur einer. Der Zweite darf KEINEN 500 sehen.
-  handle_taken: {
-    title: 'Diesen Account hat schon jemand angemeldet',
-    body:
-      '<p>Für <strong>diesen Instagram-Account</strong> läuft bereits ein Free Content. ' +
-      'Wenn das dein Account ist, melde dich kurz bei uns — wir klären das in zwei Minuten.</p>' +
-      `<p><a href="${ANFRAGE_URL}">Kurz melden</a></p>`,
-  },
-};
+function confirmFehler(formularUrl, anfrageUrl) {
+  return {
+    used: {
+      title: 'Diesen Link hast du schon benutzt',
+      body:
+        '<p>Kein Problem — trag dich einfach nochmal ein, dann schicken wir dir einen frischen Link.</p>' +
+        `<p><a href="${formularUrl}">Nochmal eintragen</a></p>`,
+    },
+    expired: {
+      title: 'Dieser Link ist nicht mehr gültig',
+      body:
+        '<p>Links gelten 24 Stunden. Trag dich nochmal ein, dann bekommst du sofort einen neuen.</p>' +
+        `<p><a href="${formularUrl}">Neuen Link holen</a></p>`,
+    },
+    not_found: {
+      title: 'Diesen Link kennen wir nicht mehr',
+      body:
+        '<p>Vielleicht ein Tippfehler beim Kopieren? Trag dich einfach nochmal ein.</p>' +
+        `<p><a href="${formularUrl}">Nochmal eintragen</a></p>`,
+    },
+    // Zwei noch unbestaetigte Leads duerfen denselben Handle haben (kein Griefing) —
+    // bestaetigt aber nur einer. Der Zweite darf KEINEN 500 sehen.
+    handle_taken: {
+      title: 'Diesen Account hat schon jemand angemeldet',
+      body:
+        '<p>Für <strong>diesen Instagram-Account</strong> läuft bereits ein Free Content. ' +
+        'Wenn das dein Account ist, melde dich kurz bei uns — wir klären das in zwei Minuten.</p>' +
+        `<p><a href="${anfrageUrl}">Kurz melden</a></p>`,
+    },
+  };
+}
 
 async function handleConfirm(token, env, ctx) {
+  const formularUrl = `${env.PUBLIC_ORIGIN || 'https://start.social2scale.com'}/`;
+  const fehlerSeiten = confirmFehler(formularUrl, ANFRAGE_URL);
+
   let res;
   try {
     res = await confirmLead(env.DB, token);
   } catch (err) {
     console.error('[confirm] Bestaetigung fehlgeschlagen:', err);
-    return htmlPage(CONFIRM_FEHLER.not_found.title, CONFIRM_FEHLER.not_found.body);
+    return htmlPage(fehlerSeiten.not_found.title, fehlerSeiten.not_found.body);
   }
 
   if (!res.ok) {
-    const fehler = CONFIRM_FEHLER[res.reason] ?? CONFIRM_FEHLER.not_found;
+    const fehler = fehlerSeiten[res.reason] ?? fehlerSeiten.not_found;
     return htmlPage(fehler.title, fehler.body);
   }
 
@@ -231,12 +238,20 @@ export default {
       return handleSubmit(request, env, ctx, cors);
     }
 
+    // Formular-Seite: der Worker liefert sie jetzt selbst statt an eine
+    // statische Seite zu verweisen (Plan 3).
+    if (url.pathname === '/' && request.method === 'GET') {
+      return formPage(env);
+    }
+
     // Token ist server-generierter Hex — alles andere ist gar kein Token von uns.
     // Das Muster haelt zugleich Fremdes aus dem HTML der Fehlerseiten.
     const confirmMatch = url.pathname.match(/^\/c\/([a-f0-9]{8,128})$/);
     if (confirmMatch) return handleConfirm(confirmMatch[1], env, ctx);
     if (url.pathname.startsWith('/c/')) {
-      return htmlPage(CONFIRM_FEHLER.not_found.title, CONFIRM_FEHLER.not_found.body);
+      const formularUrl = `${env.PUBLIC_ORIGIN || 'https://start.social2scale.com'}/`;
+      const nichtGefunden = confirmFehler(formularUrl, ANFRAGE_URL).not_found;
+      return htmlPage(nichtGefunden.title, nichtGefunden.body);
     }
 
     // Anders als /c/: hier ist ein unbekannter oder falsch geformter Token kein

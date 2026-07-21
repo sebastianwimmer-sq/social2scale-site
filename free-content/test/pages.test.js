@@ -1,0 +1,20 @@
+import { env, createExecutionContext, waitOnExecutionContext } from 'cloudflare:test';
+import { describe, it, expect } from 'vitest';
+import worker from '../src/index.js';
+
+describe('Formular-Seite', () => {
+  it('GET / liefert HTML mit Formular, gehosteten Assets und Turnstile', async () => {
+    const req = new Request('https://start.social2scale.com/');
+    const ctx = createExecutionContext();
+    const res = await worker.fetch(req, env, ctx);
+    await waitOnExecutionContext(ctx);
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toContain('text/html');
+    const html = await res.text();
+    expect(html).toContain('/api/free-content');                 // postet richtig
+    expect(html).toContain('social2scale.com/fonts/hanken');     // gehostete Schrift
+    expect(html).toContain('0x4AAAAAAD5FwCxWtZhzGlpX');           // Turnstile-Sitekey
+    expect(html).not.toContain('base64');                        // KEINE eingebetteten Assets
+    expect(html).toContain('Beispiel-Vorschau');                 // Vorschau-Hinweis
+  });
+});
