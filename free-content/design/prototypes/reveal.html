@@ -1,0 +1,186 @@
+<title>s2s Free-Content · Reveal</title>
+<style>
+  @font-face { font-family: "Hanken Grotesk"; font-weight: 400 600; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__HANKEN__) format("woff2"); }
+  @font-face { font-family: "Archivo"; font-weight: 400 800; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__ARCHIVO__) format("woff2"); }
+  @font-face { font-family: "Fraunces"; font-weight: 300 600; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__FRAUNCES__) format("woff2"); }
+  :root {
+    --bg-0: #03080D; --ink: #F2F3F1; --muted: #A4A6A1; --faint: #8E918B;
+    --emerald: #00B888; --emerald-soft: #1FC998; --teal: #1FA6E0; --cyan: #46BEEA; --emerald-ink: #04201A;
+    --accent-flow: linear-gradient(135deg, var(--emerald-soft) 0%, var(--emerald) 52%, var(--teal) 100%);
+    --line: rgba(242,243,241,.10); --line-2: rgba(242,243,241,.16);
+    --ff-body: "Hanken Grotesk", system-ui, sans-serif;
+    --ff-label: "Archivo", sans-serif;
+    --ff-serif: "Fraunces", Georgia, serif;
+    --ff-ios: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --ease: cubic-bezier(.16,1,.3,1); --ease-spring: cubic-bezier(.32,.72,0,1);
+    /* Farbwelt WARM (default) */
+    --t-dark: #1a1512; --t-accent: #C2410C; --t-tint: #EAD9CE; --t-paper: #F4F0E9; --t-ink: #23201C;
+  }
+  :root.kuehl {
+    --t-dark: #0F1D1A; --t-accent: #1FA6E0; --t-tint: #CFE0E4; --t-paper: #EDF3F4; --t-ink: #16292B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-0); color: var(--ink); font-family: var(--ff-body); -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden; }
+
+  .cosmos { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    background: radial-gradient(95% 75% at 14% 6%, rgba(0,184,136,.34), transparent 55%), radial-gradient(98% 82% at 90% 92%, rgba(20,140,200,.30), transparent 56%), linear-gradient(150deg, #04140F 0%, #05131C 52%, #03080D 100%); }
+  .orb { position: absolute; border-radius: 50%; filter: blur(75px); opacity: .5; will-change: transform; }
+  .orb-a { width: 56vmax; height: 56vmax; left: -16vmax; top: -20vmax; background: radial-gradient(circle, rgba(0,184,136,.34), transparent 66%); animation: driftA 24s ease-in-out infinite; }
+  .orb-b { width: 48vmax; height: 48vmax; right: -16vmax; bottom: -18vmax; background: radial-gradient(circle, rgba(20,140,200,.32), transparent 64%); animation: driftB 29s ease-in-out infinite; }
+  @keyframes driftA { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(8vmax,6vmax) scale(1.12)} }
+  @keyframes driftB { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-7vmax,-5vmax) scale(1.1)} }
+  .vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(120% 100% at 50% 34%, transparent 44%, rgba(3,8,13,.7) 100%); }
+
+  .stage { position: relative; z-index: 2; max-width: 34rem; margin: 0 auto; padding: 2.4rem 1.25rem 4rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+  .eyebrow { font-family: var(--ff-label); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); display: inline-flex; align-items: center; gap: .55rem; }
+  .eyebrow .dot { width: 22px; height: 1.5px; border-radius: 2px; background: var(--accent-flow); box-shadow: 0 0 8px rgba(0,184,136,.45); }
+  h1 { font-family: var(--ff-serif); font-weight: 500; font-size: clamp(2rem, 1.5rem + 3vw, 3.2rem); line-height: 1.02; letter-spacing: -.025em; margin: 1rem 0 .5rem; text-wrap: balance; }
+  h1 em { font-style: italic; font-weight: 440; background: var(--accent-flow); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .sub { font-size: 1rem; color: var(--muted); max-width: 30ch; margin: 0 auto; }
+
+  /* Reveal-Animationen beim Laden */
+  .rv { opacity: 0; transform: translateY(28px); filter: blur(10px); transition: opacity .9s var(--ease), transform 1s var(--ease-spring), filter .9s var(--ease); }
+  .rv.in { opacity: 1; transform: none; filter: none; }
+
+  .space { perspective: 1500px; margin: 2rem 0 1.6rem; }
+  .phone { position: relative; width: min(74vw, 280px); aspect-ratio: 300 / 600; border-radius: 50px; padding: 10px; background: linear-gradient(150deg, #23262B, #0B0D10 60%); box-shadow: 0 0 0 1.5px #2b2e33, 0 2px 2px rgba(255,255,255,.08) inset, 0 60px 120px -45px rgba(0,0,0,.9), 0 0 80px -14px rgba(0,184,136,.18), 0 0 90px -20px rgba(31,166,224,.14); }
+  .ios { position: relative; height: 100%; border-radius: 40px; overflow: hidden; background: #000; font-family: var(--ff-ios); display: flex; flex-direction: column; }
+  .island { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 78px; height: 22px; background: #000; border-radius: 13px; z-index: 40; }
+  .statusbar { display: flex; align-items: center; justify-content: space-between; padding: 11px 20px 2px; color: #fff; font-size: 11px; font-weight: 600; }
+  .statusbar .sys { display: flex; align-items: center; gap: 4px; }
+  .statusbar { font-variant-numeric: tabular-nums; }
+  .home-ind { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 100px; height: 5px; border-radius: 3px; background: rgba(255,255,255,.9); z-index: 40; }
+  .ig { flex: 1; background: #000; color: #fff; display: flex; flex-direction: column; text-align: left; }
+  .ig-top { display: flex; align-items: center; padding: 5px 13px 7px; font-size: 14px; font-weight: 700; }
+  .ig-top .chev { font-size: 9px; margin-left: 4px; }
+  .ig-top .sp { margin-left: auto; font-size: 15px; letter-spacing: 2px; }
+  .ig-prof { display: flex; align-items: center; gap: 18px; padding: 2px 14px 7px; }
+  .ig-av { width: 56px; height: 56px; border-radius: 50%; flex: none; padding: 2px; background: linear-gradient(45deg,#F58529,#DD2A7B,#8134AF); }
+  .ig-av > div { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, var(--emerald), #0E1319); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; color: #04130D; border: 2px solid #000; }
+  .ig-stats { display: flex; flex: 1; justify-content: space-around; }
+  .ig-stat { text-align: center; }
+  .ig-stat b { display: block; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ig-stat span { font-size: 11px; color: rgba(255,255,255,.85); }
+  .ig-meta { padding: 0 14px 8px; }
+  .ig-meta .n { font-size: 12.5px; font-weight: 700; }
+  .ig-meta .b { font-size: 12.5px; color: rgba(255,255,255,.9); line-height: 1.35; }
+  .ig-meta .b .link { color: #6AB4F0; }
+  .ig-tabs { display: flex; border-top: .5px solid rgba(255,255,255,.14); }
+  .ig-tabs .tab { flex: 1; text-align: center; padding: 8px 0; opacity: .5; font-size: 15px; }
+  .ig-tabs .tab.act { opacity: 1; border-bottom: 1.5px solid #fff; }
+  .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: #000; }
+  .tile { aspect-ratio: 1; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 6px; text-align: center; font-family: var(--ff-label); font-weight: 600; font-size: 8px; line-height: 1.2; transition: background .6s var(--ease), color .6s var(--ease); }
+  /* dezentes Wasserzeichen quer über den Feed */
+  .grid::after { content: "social2scale · vorschau"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--ff-label); font-weight: 700; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.16); transform: rotate(-18deg); pointer-events: none; z-index: 5; }
+  .t-dark { background: var(--t-dark); color: var(--t-paper); } .t-accent { background: var(--t-accent); color: #fff; }
+  .t-tint { background: var(--t-tint); color: var(--t-ink); } .t-paper { background: var(--t-paper); color: var(--t-ink); }
+
+  /* Farbwelt-Umschalter */
+  .switcher { display: inline-flex; gap: 4px; padding: 4px; border-radius: 100px; background: rgba(242,243,241,.05); border: 1px solid var(--line); margin-bottom: 2.2rem; }
+  .switcher button { font-family: var(--ff-label); font-weight: 700; font-size: 12.5px; letter-spacing: .02em; color: var(--muted); background: transparent; border: 0; padding: .55rem 1.1rem; border-radius: 100px; cursor: pointer; display: inline-flex; align-items: center; gap: .5rem; transition: color .3s var(--ease), background .4s var(--ease); }
+  .switcher button .sw { width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.3); }
+  .switcher button.act { color: var(--emerald-ink); background: var(--accent-flow); }
+  .switcher button.act .sw { border-color: rgba(4,32,26,.35); }
+  .sw-warm { background: linear-gradient(135deg,#EAD9CE,#C2410C); }
+  .sw-kuehl { background: linear-gradient(135deg,#CFE0E4,#1FA6E0); }
+
+  .offer { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; }
+  .offer h2 { font-family: var(--ff-serif); font-weight: 480; font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.1rem); letter-spacing: -.02em; line-height: 1.08; }
+  .offer .p { color: var(--muted); font-size: .96rem; max-width: 32ch; }
+  .cta { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--ff-label); font-weight: 700; font-size: 15px; letter-spacing: .01em; text-decoration: none; padding: 1rem 1.1rem 1rem 1.5rem; border-radius: 100px; color: var(--emerald-ink); background: var(--accent-flow); box-shadow: 0 16px 40px -16px rgba(0,184,136,.6), 0 16px 40px -20px rgba(31,166,224,.45), inset 0 1px 0 rgba(255,255,255,.3); transition: transform .4s var(--ease-spring); }
+  .cta:active { transform: scale(.97); }
+  .cta .ic { width: 30px; height: 30px; border-radius: 50%; background: rgba(4,32,26,.16); display: flex; align-items: center; justify-content: center; font-size: 15px; transition: transform .4s var(--ease-spring); }
+  .cta:hover .ic { transform: translate(3px,-1px); }
+  .cta2 { font-family: var(--ff-label); font-weight: 600; font-size: 14px; color: var(--ink); text-decoration: none; padding: .8rem 1.3rem; border-radius: 100px; border: 1px solid var(--line-2); background: rgba(242,243,241,.04); transition: border-color .3s var(--ease), background .3s var(--ease); }
+  .cta2:hover { border-color: rgba(0,184,136,.4); background: rgba(0,184,136,.08); }
+  .wm-note { font-size: .8rem; color: var(--faint); max-width: 34ch; margin-top: .3rem; line-height: 1.5; }
+
+  .scrollhint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 5; font-family: var(--ff-label); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); display: flex; flex-direction: column; align-items: center; gap: 6px; animation: bob 2s var(--ease) infinite; }
+  .scrollhint .arw { width: 1px; height: 20px; background: linear-gradient(var(--emerald-soft), transparent); }
+  @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; } .rv { opacity: 1; transform: none; filter: none; } .orb { opacity: .3; } }
+</style>
+
+<div class="cosmos"><div class="orb orb-a"></div><div class="orb orb-b"></div></div>
+<div class="vignette"></div>
+
+<div class="stage">
+  <span class="eyebrow rv"><span class="dot"></span>Plan 3 · der Payoff</span>
+  <h1 class="rv">Fertig. Das ist <em>dein Feed</em>, @praxisfunke.</h1>
+  <p class="sub rv">Zwei Farbwelten, fertig zum Posten. Wähl deine — und nimm sie mit.</p>
+
+  <div class="space rv">
+    <div class="phone">
+      <div class="ios">
+        <div class="island"></div>
+        <div class="statusbar"><span id="clock">15:07</span><span class="sys">
+          <svg width="16" height="10" viewBox="0 0 17 11" fill="#fff"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+          <svg width="15" height="10" viewBox="0 0 16 11" fill="#fff"><path d="M8 2.2c2.1 0 4 .8 5.4 2.1l1.3-1.4C13 1.2 10.6.2 8 .2S3 1.2 1.3 2.9l1.3 1.4C4 3 5.9 2.2 8 2.2zm0 3.3c1.1 0 2.2.4 3 1.2l1.3-1.4C11.9 4 10 3.2 8 3.2s-3.9.8-5.3 2.1L4 6.7c.8-.8 1.9-1.2 3-1.2zm0 3.2c.6 0 1.1.2 1.5.6L8 11l-1.5-1.4c.4-.4.9-.6 1.5-.6z"/></svg>
+          <svg width="23" height="11" viewBox="0 0 25 12"><rect x="1" y="1" width="20" height="10" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="#fff"/><rect x="22.5" y="4" width="1.5" height="4" rx=".75" fill="#fff" fill-opacity=".5"/></svg>
+        </span></div>
+        <div class="ig">
+          <div class="ig-top">praxisfunke<span class="chev">▾</span><span class="sp">⋯</span></div>
+          <div class="ig-prof">
+            <div class="ig-av"><div>P</div></div>
+            <div class="ig-stats">
+              <div class="ig-stat"><b>9</b><span>Beiträge</span></div>
+              <div class="ig-stat"><b>1.276</b><span>Follower</span></div>
+              <div class="ig-stat"><b>318</b><span>Gefolgt</span></div>
+            </div>
+          </div>
+          <div class="ig-meta"><div class="n">Praxis Funke</div><div class="b">Physiotherapie &amp; Bewegung · München<br><span class="link">praxisfunke.de</span></div></div>
+          <div class="ig-tabs"><div class="tab act">▦</div><div class="tab">▷</div><div class="tab">☆</div></div>
+          <div class="grid" id="grid"></div>
+        </div>
+        <div class="home-ind"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="switcher rv" id="switcher">
+    <button class="act" data-welt="warm"><span class="sw sw-warm"></span>Warm</button>
+    <button data-welt="kuehl"><span class="sw sw-kuehl"></span>Kühl</button>
+  </div>
+
+  <div class="offer">
+    <h2 class="rv">Nimm deinen Feed mit — <em>ohne Wasserzeichen</em>.</h2>
+    <p class="p rv">Die Vorschau gehört dir sofort. Der volle Feed — ohne Wasserzeichen, mit allen Vorlagen, Texten &amp; beiden Farbwelten als fertige Vorlagen — kommt mit deinem Paket.</p>
+    <a class="cta rv" href="#">Vollen Feed freischalten <span class="ic">→</span></a>
+    <a class="cta2 rv" href="#">Vorschau kostenlos speichern</a>
+    <p class="wm-note rv">Deine Gratis-Vorschau trägt ein dezentes s2s-Wasserzeichen. Kein Kauf nötig, um sie zu behalten.</p>
+  </div>
+</div>
+
+<div class="scrollhint" id="hint"><span>scroll</span><span class="arw"></span></div>
+
+<script>
+  const CELLS = [
+    { c: 't-dark', t: 'Dein Thema' }, { c: 't-tint', t: 'Warum jetzt?' }, { c: 't-accent', t: '3 Schritte' },
+    { c: 't-paper', t: 'Zitat' }, { c: 't-dark', t: 'Vorher / Nachher' }, { c: 't-tint', t: 'Deine Frage?' },
+    { c: 't-accent', t: 'Einblick' }, { c: 't-paper', t: 'Über dich' }, { c: 't-dark', t: 'Nächster Schritt' },
+  ];
+  const grid = document.getElementById('grid');
+  CELLS.forEach((k) => { const el = document.createElement('div'); el.className = 'tile ' + k.c; el.textContent = k.t; grid.appendChild(el); });
+
+  // Live-Uhrzeit
+  function tickClock() { const d = new Date(); document.getElementById('clock').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  tickClock(); setInterval(tickClock, 15000);
+
+  // Farbwelt-Umschalter (die „2 Farben"-Auswahl aus dem Ur-Konzept)
+  document.getElementById('switcher').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    document.querySelectorAll('#switcher button').forEach((x) => x.classList.toggle('act', x === b));
+    document.documentElement.classList.toggle('kuehl', b.dataset.welt === 'kuehl');
+  });
+
+  // Reveal beim Laden + beim Reinscrollen (IntersectionObserver, kein Scroll-Listener)
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .18 });
+  const rvs = [...document.querySelectorAll('.rv')];
+  rvs.forEach((el, i) => { io.observe(el); });
+  // die obersten sofort gestaffelt zeigen
+  rvs.slice(0, 4).forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 130));
+  // Scroll-Hinweis ausblenden, sobald gescrollt
+  addEventListener('scroll', () => { document.getElementById('hint').style.opacity = scrollY > 40 ? '0' : '1'; }, { passive: true });
+</script>

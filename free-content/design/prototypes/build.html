@@ -1,0 +1,312 @@
+<title>s2s Free-Content · Build-Screen</title>
+<style>
+  /* ── Marken-Schriften der Hero-Page (self-hosted, hier eingebettet) ── */
+  @font-face { font-family: "Hanken Grotesk"; font-weight: 400 600; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__HANKEN__) format("woff2"); }
+  @font-face { font-family: "Archivo"; font-weight: 400 800; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__ARCHIVO__) format("woff2"); }
+  @font-face { font-family: "Fraunces"; font-weight: 300 600; font-style: normal; font-display: block; src: url(data:font/woff2;base64,__FRAUNCES__) format("woff2"); }
+  :root {
+    /* Hero-Palette 1:1 */
+    --bg-0: #03080D; --ink: #F2F3F1; --muted: #A4A6A1; --faint: #8E918B;
+    --emerald: #00B888; --emerald-soft: #1FC998; --teal: #1FA6E0; --cyan: #46BEEA;
+    --emerald-ink: #04201A;
+    --accent-flow: linear-gradient(135deg, var(--emerald-soft) 0%, var(--emerald) 52%, var(--teal) 100%);
+    --line: rgba(242,243,241,.10);
+    --ff-body: "Hanken Grotesk", system-ui, sans-serif;
+    --ff-label: "Archivo", sans-serif;
+    --ff-serif: "Fraunces", Georgia, serif;
+    --ff-ios: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --ease: cubic-bezier(.16,1,.3,1); --ease-spring: cubic-bezier(.32,.72,0,1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-0); color: var(--ink); font-family: var(--ff-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.6; }
+
+  /* ── Hintergrund = Hero-Wash (Emerald oben-links + Teal unten-rechts) + driftende Orbs ── */
+  .cosmos { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    background:
+      radial-gradient(95% 75% at 14% 6%, rgba(0,184,136,.34), transparent 55%),
+      radial-gradient(98% 82% at 90% 92%, rgba(20,140,200,.30), transparent 56%),
+      linear-gradient(150deg, #04140F 0%, #05131C 52%, #03080D 100%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(75px); opacity: .5; will-change: transform; }
+  .orb-a { width: 56vmax; height: 56vmax; left: -16vmax; top: -20vmax; background: radial-gradient(circle, rgba(0,184,136,.36), transparent 66%); animation: driftA 24s ease-in-out infinite; }
+  .orb-b { width: 48vmax; height: 48vmax; right: -16vmax; bottom: -18vmax; background: radial-gradient(circle, rgba(20,140,200,.34), transparent 64%); animation: driftB 29s ease-in-out infinite; }
+  @keyframes driftA { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(8vmax,6vmax) scale(1.12)} }
+  @keyframes driftB { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-7vmax,-5vmax) scale(1.1)} }
+  #dust { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .vignette { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(120% 100% at 50% 34%, transparent 44%, rgba(3,8,13,.7) 100%); }
+
+  .stage { position: relative; z-index: 2; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1.25rem 2.4rem; gap: 1.4rem; }
+  .caption { max-width: 34rem; text-align: center; display: flex; flex-direction: column; gap: .5rem; }
+  .caption .kick { font-family: var(--ff-label); font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); }
+  .caption h2 { font-family: var(--ff-serif); font-weight: 460; font-size: clamp(1.4rem, 1.1rem + 1.6vw, 2rem); letter-spacing: -.02em; line-height: 1.08; }
+  .caption h2 em { font-style: italic; font-weight: 420; background: var(--accent-flow); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .caption p { font-size: .9rem; color: var(--muted); line-height: 1.5; }
+
+  .space { perspective: 1600px; perspective-origin: 50% 42%; padding: .5rem 0 1rem; }
+
+  /* ── Echtes iPhone ── */
+  .phone { position: relative; width: min(80vw, 300px); aspect-ratio: 300 / 620; border-radius: 52px; padding: 11px; will-change: transform; transform-style: preserve-3d;
+    background: linear-gradient(150deg, #23262B, #0B0D10 60%);
+    box-shadow: 0 0 0 1.5px #2b2e33, 0 2px 2px rgba(255,255,255,.08) inset, 0 70px 130px -45px rgba(0,0,0,.9), 0 0 80px -14px rgba(0,184,136,.16), 0 0 90px -20px rgba(31,166,224,.14); }
+  .phone::after { content: ""; position: absolute; left: 50%; bottom: -42px; width: 60%; height: 26px; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(0,184,136,.24), rgba(31,166,224,.12), transparent 72%); filter: blur(12px); animation: breathe 5s var(--ease) infinite; }
+  @keyframes breathe { 0%,100%{opacity:.45; transform:translateX(-50%) scale(1)} 50%{opacity:.8; transform:translateX(-50%) scale(1.12)} }
+  .ios { position: relative; height: 100%; border-radius: 42px; overflow: hidden; background: #000; font-family: var(--ff-ios); display: flex; flex-direction: column; }
+  .island { position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 82px; height: 24px; background: #000; border-radius: 14px; z-index: 40; }
+  .statusbar { position: relative; z-index: 30; display: flex; align-items: center; justify-content: space-between; padding: 12px 22px 2px; color: #fff; font-size: 12px; font-weight: 600; }
+  .statusbar .time { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+  .statusbar .sys { display: flex; align-items: center; gap: 5px; }
+  .statusbar .sys svg { display: block; }
+  .home-ind { position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%); width: 108px; height: 5px; border-radius: 3px; background: rgba(255,255,255,.9); z-index: 40; }
+
+  /* ── Instagram-Profil (deutsch) ── */
+  .ig { flex: 1; background: #000; color: #fff; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .ig-top { display: flex; align-items: center; gap: 6px; padding: 6px 14px 8px; }
+  .ig-top .name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+  .ig-top .name .chev { font-size: 10px; opacity: .9; }
+  .ig-top .sp { margin-left: auto; display: flex; gap: 16px; opacity: .95; }
+  .ig-prof { display: flex; align-items: center; gap: 20px; padding: 2px 16px 8px; }
+  .ig-av { width: 62px; height: 62px; border-radius: 50%; flex: none; padding: 2px; background: linear-gradient(45deg,#F58529,#DD2A7B,#8134AF); }
+  .ig-av > div { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, var(--emerald), #0E1319); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 24px; color: #04130D; border: 2px solid #000; }
+  .ig-stats { display: flex; gap: 20px; flex: 1; justify-content: space-around; }
+  .ig-stat { text-align: center; }
+  .ig-stat b { display: block; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ig-stat span { font-size: 12px; color: rgba(255,255,255,.85); }
+  .ig-meta { padding: 0 16px; }
+  .ig-meta .n { font-size: 13px; font-weight: 700; }
+  .ig-meta .b { font-size: 13px; color: rgba(255,255,255,.9); line-height: 1.35; }
+  .ig-meta .b .link { color: #6AB4F0; }
+  .ig-btns { display: flex; gap: 6px; padding: 10px 16px 12px; }
+  .ig-btns button { flex: 1; font-family: var(--ff-ios); font-size: 13px; font-weight: 600; color: #fff; background: #363638; border: 0; border-radius: 9px; padding: 7px 0; }
+  .ig-tabs { display: flex; border-top: .5px solid rgba(255,255,255,.14); }
+  .ig-tabs .tab { flex: 1; display: flex; align-items: center; justify-content: center; padding: 9px 0; opacity: .5; }
+  .ig-tabs .tab.act { opacity: 1; border-bottom: 1.5px solid #fff; }
+
+  .grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5px; background: #000; position: relative; }
+  .tile { aspect-ratio: 1; position: relative; overflow: hidden; background: #0c0c0c; }
+  .tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(0,184,136,.12) 50%, transparent 80%); background-size: 220% 100%; animation: shimmer 1.5s linear infinite; }
+  .tile.done::before { animation: none; opacity: 0; }
+  .tile .fill { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 6px; text-align: center; font-family: var(--ff-label); font-weight: 600; font-size: 8.5px; letter-spacing: .01em; line-height: 1.2; opacity: 0; transform: scale(1.08); filter: blur(6px); transition: opacity .5s var(--ease), transform .6s var(--ease-spring), filter .5s var(--ease); }
+  .tile.done .fill { opacity: 1; transform: scale(1); filter: blur(0); }
+  .tile.land { z-index: 3; }
+  .tile.land::after { content: ""; position: absolute; inset: 0; box-shadow: 0 0 0 1.5px rgba(0,184,136,.95), 0 0 22px 5px rgba(0,184,136,.55); animation: ring .7s var(--ease) forwards; }
+  @keyframes ring { 0%{opacity:1; transform:scale(.92)} 100%{opacity:0; transform:scale(1.14)} }
+  .t-dark { background: #1a1512; color: #F4F0E9; } .t-accent { background: #C2410C; color: #F4F0E9; }
+  .t-tint { background: #EAD9CE; color: #23201C; } .t-line { background: #F4F0E9; color: #6B645A; }
+  .sweep { position: absolute; inset: 0; z-index: 4; pointer-events: none; background: linear-gradient(180deg, transparent, rgba(31,201,152,.16), transparent); height: 40%; animation: sweep 2.4s var(--ease) infinite; }
+  @keyframes sweep { 0%{transform:translateY(-120%)} 100%{transform:translateY(320%)} }
+
+  /* ── s2s-Live-Activity ── */
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; padding: 9px 14px calc(13px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, rgba(4,10,14,.05), rgba(4,10,14,.88) 55%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,184,136,.24); border-radius: 22px 22px 42px 42px; }
+  .sheet .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .sheet .mark { width: 18px; height: 18px; border-radius: 6px; background: var(--accent-flow); display: flex; align-items: center; justify-content: center; font-family: var(--ff-label); font-weight: 800; font-size: 9px; color: var(--emerald-ink); }
+  .sheet .brand { font-family: var(--ff-label); font-weight: 600; font-size: 12.5px; letter-spacing: -.005em; }
+  .sheet .eq { margin-left: auto; display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+  .sheet .eq i { width: 2.5px; background: var(--emerald-soft); border-radius: 2px; height: 40%; animation: eq 1s ease-in-out infinite; }
+  .sheet .eq i:nth-child(2){ animation-delay: .18s; background: var(--teal) } .sheet .eq i:nth-child(3){ animation-delay: .36s } .sheet .eq i:nth-child(4){ animation-delay: .54s; background: var(--teal) }
+  @keyframes eq { 0%,100%{height:30%} 50%{height:100%} }
+  .sheet .track { height: 3px; border-radius: 3px; background: rgba(242,243,241,.12); overflow: hidden; }
+  .sheet .fillbar { height: 100%; border-radius: 3px; background: var(--accent-flow); transform-origin: left; transform: scaleX(0); transition: transform .8s var(--ease-spring); box-shadow: 0 0 10px rgba(0,184,136,.5); }
+  .sheet .row2 { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; font-family: var(--ff-body); font-size: 12px; }
+  .sheet .step { color: var(--ink); font-weight: 500; position: relative; overflow: hidden; height: 16px; }
+  .sheet .step span { display: block; transition: transform .4s var(--ease), opacity .4s var(--ease); }
+  .sheet .count { color: var(--faint); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .bloom { position: absolute; inset: 0; z-index: 25; pointer-events: none; opacity: 0; background: radial-gradient(circle at 50% 60%, rgba(0,184,136,.5), rgba(31,166,224,.28) 40%, transparent 60%); }
+  .bloom.fire { animation: bloom 1.6s var(--ease) forwards; }
+  @keyframes bloom { 0%{opacity:0; transform:scale(.55)} 28%{opacity:.95} 100%{opacity:0; transform:scale(1.6)} }
+
+  .controls { display: flex; gap: .7rem; align-items: center; margin-top: .4rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; font-family: var(--ff-label); font-weight: 700; font-size: .8rem; letter-spacing: .01em; color: var(--ink); background: rgba(242,243,241,.06); border: 1px solid var(--line); padding: .58rem 1.05rem .58rem .9rem; border-radius: 100px; transition: transform .4s var(--ease-spring), background .3s var(--ease), border-color .3s var(--ease); }
+  .btn:hover { background: rgba(0,184,136,.12); border-color: rgba(0,184,136,.4); }
+  .btn:active { transform: scale(.96); }
+  .btn .ic { width: 21px; height: 21px; border-radius: 50%; background: rgba(0,184,136,.16); display: flex; align-items: center; justify-content: center; font-size: .78rem; color: var(--emerald-soft); }
+  .btn.on { background: rgba(0,184,136,.16); border-color: rgba(0,184,136,.45); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+    .tile .fill { opacity: 1; transform: none; filter: none; } .sweep { display: none; } .orb { opacity: .3; }
+  }
+</style>
+
+<div class="cosmos" id="cosmos">
+  <div class="orb orb-a"></div><div class="orb orb-b"></div>
+  <canvas id="dust"></canvas>
+</div>
+<div class="vignette"></div>
+
+<div class="stage">
+  <div class="caption">
+    <span class="kick">Plan 3 · der emotionale Kern</span>
+    <h2>Genau das sieht sie <em>nach der Bestätigung</em>.</h2>
+    <p>Ihr echtes Instagram-Profil, live gebaut. Die Wartezeit (~15–40&nbsp;s) ist das Produkt. Ton anschalten, dann „Nochmal ansehen“.</p>
+  </div>
+
+  <div class="space">
+    <div class="phone" id="phone">
+      <div class="ios">
+        <div class="island"></div>
+        <div class="statusbar">
+          <span class="time" id="clock">9:41</span>
+          <span class="sys">
+            <svg width="17" height="11" viewBox="0 0 17 11" fill="#fff"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
+            <svg width="16" height="11" viewBox="0 0 16 11" fill="#fff"><path d="M8 2.2c2.1 0 4 .8 5.4 2.1l1.3-1.4C13 1.2 10.6.2 8 .2S3 1.2 1.3 2.9l1.3 1.4C4 3 5.9 2.2 8 2.2zm0 3.3c1.1 0 2.2.4 3 1.2l1.3-1.4C11.9 4 10 3.2 8 3.2s-3.9.8-5.3 2.1L4 6.7c.8-.8 1.9-1.2 3-1.2zm0 3.2c.6 0 1.1.2 1.5.6L8 11l-1.5-1.4c.4-.4.9-.6 1.5-.6z"/></svg>
+            <svg width="25" height="12" viewBox="0 0 25 12"><rect x="1" y="1" width="20" height="10" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="#fff"/><rect x="22.5" y="4" width="1.5" height="4" rx=".75" fill="#fff" fill-opacity=".5"/></svg>
+          </span>
+        </div>
+
+        <div class="ig">
+          <div class="ig-top">
+            <span class="name">praxisfunke <span class="chev">▾</span></span>
+            <span class="sp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </span>
+          </div>
+          <div class="ig-prof">
+            <div class="ig-av"><div>P</div></div>
+            <div class="ig-stats">
+              <div class="ig-stat"><b>9</b><span>Beiträge</span></div>
+              <div class="ig-stat"><b id="followers">1.240</b><span>Follower</span></div>
+              <div class="ig-stat"><b>318</b><span>Gefolgt</span></div>
+            </div>
+          </div>
+          <div class="ig-meta">
+            <div class="n">Praxis Funke</div>
+            <div class="b">Physiotherapie &amp; Bewegung · München<br><span class="link">praxisfunke.de</span></div>
+          </div>
+          <div class="ig-btns"><button class="pri">Profil bearbeiten</button><button>Teilen</button></div>
+          <div class="ig-tabs">
+            <div class="tab act"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/></svg></div>
+            <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M9 8l6 4-6 4V8z" fill="#fff"/></svg></div>
+            <div class="tab"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9 2.6.9-5.5-4-3.9 5.5-.8L12 3z"/></svg></div>
+          </div>
+          <div class="grid" id="grid"><div class="sweep" id="sweep"></div></div>
+        </div>
+
+        <div class="sheet" id="sheet">
+          <div class="row1">
+            <span class="mark">s2</span><span class="brand">social2scale baut deinen Feed</span>
+            <span class="eq" id="eq"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <div class="track"><div class="fillbar" id="fill"></div></div>
+          <div class="row2">
+            <span class="step" id="step"><span id="stepText">Wir lesen deine Marke …</span></span>
+            <span class="count" id="count">0 / 8</span>
+          </div>
+        </div>
+
+        <div class="bloom" id="bloom"></div>
+        <div class="home-ind"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="sound"><span class="ic" id="soundIc">♪</span><span id="soundLabel">Ton an</span></button>
+    <button class="btn" id="replay"><span class="ic">↻</span>Nochmal ansehen</button>
+  </div>
+</div>
+
+<script>
+  const TILES = [
+    { c: 't-dark', t: 'Dein Thema' }, { c: 't-tint', t: 'Warum jetzt?' }, { c: 't-accent', t: '3 Schritte' },
+    { c: 't-line', t: 'Zitat' }, { c: 't-dark', t: 'Vorher / Nachher' }, { c: 't-tint', t: 'Deine Frage?' },
+    { c: 't-accent', t: 'Einblick' }, { c: 't-line', t: 'Über dich' }, { c: 't-dark', t: 'Nächster Schritt' },
+  ];
+  const TILE_COUNT = TILES.length, TOTAL = 8;
+  const STEPS = [
+    { at: 0, text: 'Wir lesen deine Marke …' }, { at: 1, text: 'Deine Texte entstehen …' },
+    { at: 3, text: 'Deine Farbwelten entstehen …' }, { at: 5, text: 'Wir setzen deinen Feed …' },
+    { at: 8, text: 'Fertig — scroll dich rein.' },
+  ];
+  const $ = (id) => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Live-Uhrzeit in der Statusleiste ──
+  function tickClock() { const d = new Date(); $('clock').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  tickClock(); setInterval(tickClock, 15000);
+
+  // ── Follower wachsen mit (illustrativ — wir scrapen kein echtes IG) ──
+  const FOLLOW_BASE = 1240; let follow = FOLLOW_BASE;
+  const fmt = (n) => n.toLocaleString('de-DE');
+  function bumpFollowers(n) { follow += n; $('followers').textContent = fmt(follow); }
+
+  const grid = $('grid');
+  TILES.forEach((k) => { const el = document.createElement('div'); el.className = 'tile'; el.innerHTML = `<div class="fill ${k.c}">${k.t}</div>`; grid.appendChild(el); });
+  const tiles = [...grid.querySelectorAll('.tile')];
+  let progress = 0;
+
+  // ── WebAudio ──
+  let actx = null, master = null, ambientNodes = null, soundOn = false;
+  function ensureAudio() { if (actx) return; actx = new (window.AudioContext || window.webkitAudioContext)(); master = actx.createGain(); master.gain.value = .85; master.connect(actx.destination); }
+  function pop() {
+    if (!soundOn || !actx) return;
+    const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(430 + (Math.random() * 40 - 20), t); o.frequency.exponentialRampToValueAtTime(150, t + .11);
+    g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.26, t + .006); g.gain.exponentialRampToValueAtTime(.0001, t + .17);
+    o.connect(g); g.connect(master); o.start(t); o.stop(t + .2);
+  }
+  function chord() {
+    if (!soundOn || !actx) return; const t = actx.currentTime;
+    [0, 4, 7, 11, 14].forEach((s, k) => { const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = 196 * Math.pow(2, s / 12); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.14, t + .05 + k * .05); g.gain.exponentialRampToValueAtTime(.0001, t + 1.9); o.connect(g); g.connect(master); o.start(t); o.stop(t + 2); });
+  }
+  function ambientStart() { if (!soundOn || !actx || ambientNodes) return; const g = actx.createGain(); g.gain.value = .06; g.connect(master); const a = actx.createOscillator(), b = actx.createOscillator(); a.type = 'sine'; a.frequency.value = 49; b.type = 'sine'; b.frequency.value = 49.5; a.connect(g); b.connect(g); a.start(); b.start(); ambientNodes = { a, b }; }
+  function ambientStop() { if (ambientNodes) { ambientNodes.a.stop(); ambientNodes.b.stop(); ambientNodes = null; } }
+  $('sound').addEventListener('click', () => {
+    ensureAudio(); if (actx.state === 'suspended') actx.resume();
+    soundOn = !soundOn; $('sound').classList.toggle('on', soundOn);
+    $('soundLabel').textContent = soundOn ? 'Ton aus' : 'Ton an'; $('soundIc').textContent = soundOn ? '♫' : '♪';
+    if (soundOn) ambientStart(); else ambientStop();
+  });
+
+  // ── Render ──
+  let lastFilled = 0;
+  function setStep(text) {
+    const el = $('stepText'); if (el.textContent === text) return;
+    el.style.transform = 'translateY(-100%)'; el.style.opacity = '0';
+    setTimeout(() => { el.textContent = text; el.style.transition = 'none'; el.style.transform = 'translateY(100%)'; requestAnimationFrame(() => { el.style.transition = ''; el.style.transform = 'translateY(0)'; el.style.opacity = '1'; }); }, reduce ? 0 : 200);
+  }
+  function render(done) {
+    const filled = Math.round((done / TOTAL) * TILE_COUNT);
+    progress = done / TOTAL;
+    $('fill').style.transform = `scaleX(${progress})`;
+    $('count').textContent = `${done} / ${TOTAL}`;
+    tiles.forEach((t, i) => { const isDone = i < filled, wasDone = t.classList.contains('done'); t.classList.toggle('done', isDone); if (isDone && !wasDone && !reduce) { t.classList.add('land'); setTimeout(() => t.classList.remove('land'), 700); } });
+    if (filled > lastFilled) { for (let i = lastFilled; i < filled; i++) { pop(); bumpFollowers(3 + Math.round(Math.random() * 5)); } } lastFilled = filled;
+    setStep(([...STEPS].reverse().find((s) => done >= s.at) || STEPS[0]).text);
+    const fertig = done >= TOTAL;
+    $('sweep').style.display = fertig ? 'none' : '';
+    $('eq').style.opacity = fertig ? '0' : '1';
+    if (fertig) { bumpFollowers(11); $('bloom').classList.remove('fire'); void $('bloom').offsetWidth; $('bloom').classList.add('fire'); chord(); }
+  }
+
+  // ── Auto-Play (LIVE: /api/status/:token-Poller ersetzt das 1:1) ──
+  let timers = [];
+  function play() {
+    timers.forEach(clearTimeout); timers = []; lastFilled = 0; follow = FOLLOW_BASE; $('followers').textContent = fmt(follow); $('sweep').style.display = ''; render(0);
+    if (reduce) { render(TOTAL); return; }
+    const beats = [1000, 1900, 2900, 3800, 4800, 5900, 7000, 8000];
+    beats.forEach((ms, i) => timers.push(setTimeout(() => render(i + 1), ms)));
+    timers.push(setTimeout(play, 8000 + 6000));
+  }
+  $('replay').addEventListener('click', play);
+
+  // ── rAF: Schweben + Staub ──
+  const phone = $('phone'); let px = 0, py = 0;
+  addEventListener('pointermove', (e) => { px = (e.clientX / innerWidth - .5) * 2; py = (e.clientY / innerHeight - .5) * 2; });
+  const cv = $('dust'), c2 = cv.getContext('2d'); let dpr = 1, dust = [];
+  function sizeCanvas() { dpr = Math.min(devicePixelRatio || 1, 2); cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; c2.setTransform(dpr, 0, 0, dpr, 0, 0); const n = Math.round(Math.min(innerWidth, 900) / 18); dust = Array.from({ length: n }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, z: Math.random(), vx: (Math.random() - .5) * .12, vy: -0.05 - Math.random() * .11 })); }
+  sizeCanvas(); addEventListener('resize', sizeCanvas);
+  let t0 = null;
+  function loop(ts) {
+    if (t0 === null) t0 = ts; const t = (ts - t0) / 1000;
+    const ry = Math.sin(t * .5) * 3.2 + px * 5, rx = -Math.cos(t * .4) * 2.2 - py * 3.5;
+    const zoom = 0.975 + progress * 0.03, lift = progress >= 1 ? -6 : 0;
+    phone.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(${Math.sin(t*.8)*3 + lift}px) scale(${zoom})`;
+    c2.clearRect(0, 0, innerWidth, innerHeight);
+    for (const p of dust) { p.x += p.vx * (0.4 + p.z); p.y += p.vy * (0.4 + p.z); if (p.y < -5) { p.y = innerHeight + 5; p.x = Math.random() * innerWidth; } if (p.x < -5) p.x = innerWidth + 5; if (p.x > innerWidth + 5) p.x = -5; c2.globalAlpha = 0.07 + p.z * 0.24; c2.fillStyle = p.z > .62 ? 'rgba(31,166,224,1)' : (p.z > .32 ? 'rgba(31,201,152,1)' : 'rgba(242,243,241,1)'); c2.beginPath(); c2.arc(p.x, p.y, 0.4 + p.z * 1.5, 0, 7); c2.fill(); }
+    c2.globalAlpha = 1; requestAnimationFrame(loop);
+  }
+  if (!reduce) requestAnimationFrame(loop); else cv.style.display = 'none';
+  play();
+</script>
