@@ -57,3 +57,26 @@ export const ERROR_COPY = {
     body: 'Meld dich kurz bei uns — wir kümmern uns sofort persönlich darum.',
   },
 };
+
+/**
+ * Reveal-Copy (Plan 3 Task 4) — ergebnis-/loesungsorientiert aufgebaut:
+ * Ergebnis rahmen (head/headAccent: "Das ist dein Feed") -> das echte Problem
+ * benennen (offerSub: monatlich konsistent posten schafft kaum jemand allein)
+ * -> das Paket als Loesung -> CTA. Basis: design/prototypes/reveal.html,
+ * offerHead/offerSub neu formuliert (Prototyp hatte dort nur den frueheren
+ * "Feed freischalten"-Digistore-Aufhaenger, den es in Plan 3 noch nicht gibt).
+ */
+export const REVEAL = {
+  eyebrow: 'social2scale · dein Ergebnis',
+  head: 'Fertig. Das ist',
+  headAccent: 'dein Feed.',
+  sub: 'Zwei Farbwelten, fertig zum Posten. Wähl deine — und sieh, wie sie wirkt.',
+  offerHead: 'Und in vier Wochen wieder?',
+  offerSub:
+    'Diese Vorschau zeigt, was für deine Marke möglich ist — aber monatlich konsistent posten ' +
+    'schafft kaum jemand allein. Dein Paket übernimmt genau das: beide Farbwelten, alle Vorlagen ' +
+    'und Texte, jeden Monat neu, ohne Wasserzeichen.',
+  ctaPrimary: 'Erstgespräch buchen',
+  ctaSecondary: 'Vorschau speichern',
+  wmNote: 'Deine Gratis-Vorschau trägt ein dezentes s2s-Wasserzeichen. Kein Kauf nötig, um sie zu behalten.',
+};

@@ -17,12 +17,14 @@
  * sobald `images` mitkommt — praktisch also erst im selben Poll, der auch
  * showReveal() ausloest.
  *
- * showReveal()/showError() sind hier bewusst MINIMAL (Plan 3 Task 4/5 bauen
- * das echte Reveal- bzw. Fehler-Erlebnis aus).
+ * showReveal() ist jetzt echt ausgebaut (Plan 3 Task 4, siehe reveal.js) —
+ * showError() bleibt bewusst MINIMAL (Plan 3 Task 5 baut das echte
+ * Fehler-Erlebnis aus).
  */
 
 import { htmlDoc } from './shell.js';
-import { STEPS, TILE_LABELS, FRAME_IDS, ERROR_COPY } from './copy.js';
+import { STEPS, TILE_LABELS, FRAME_IDS, ERROR_COPY, REVEAL } from './copy.js';
+import { REVEAL_STYLE, REVEAL_SCRIPT, revealMarkup } from './reveal.js';
 
 /** Nur die ersten drei Grid-Kacheln bekommen ein echtes Foto (s. copy.js TILE_LABELS). */
 const GRID_FRAME_IDS = ['f-0-s1', 'f-0-s2', 'f-0-s3'];
@@ -195,7 +197,8 @@ function pageMarkup() {
       </div>
     </div>
   </div>
-</div>`;
+</div>
+${revealMarkup(REVEAL)}`;
 }
 
 // Token/URLs kommen server-seitig als vorgefertigte Literale rein (kein
@@ -271,11 +274,12 @@ const PAGE_SCRIPT = `
     eqEl.style.opacity = fertig ? '0' : '1';
   }
 
-  // ── Minimal (Plan 3 Task 4 baut das echte Reveal-Erlebnis aus) ──
+  // ── Fertig: Bloom auf dem Build-Handy + das echte Reveal darunter einblenden ──
   function showReveal() {
     setStep('Fertig — scroll dich rein.');
     eqEl.style.opacity = '0';
     if (!reduce) { bloomEl.classList.remove('fire'); void bloomEl.offsetWidth; bloomEl.classList.add('fire'); }
+    revealSection();
   }
 
   // ── Minimal (Plan 3 Task 5 baut die volle, grundabhaengige Fehlerseite aus) ──
@@ -350,7 +354,7 @@ export function resultPage(token) {
   const statusUrl = `/api/status/${token}`;
   const imgBase = `/img/${token}/`;
 
-  const head = `<style>${PAGE_STYLE}</style>`;
+  const head = `<style>${PAGE_STYLE}${REVEAL_STYLE}</style>`;
   const bootstrap =
     `const TOKEN=${JSON.stringify(token)};` +
     `const STATUS_URL=${JSON.stringify(statusUrl)};` +
@@ -358,7 +362,7 @@ export function resultPage(token) {
     `const AVATAR_FRAME_ID=${JSON.stringify(AVATAR_FRAME_ID)};` +
     `const TOTAL_DEFAULT=${JSON.stringify(FRAME_IDS.length)};` +
     `const ERROR_TEXT=${JSON.stringify(ERROR_COPY.default)};`;
-  const body = `${pageMarkup()}<script>${bootstrap}${PAGE_SCRIPT}</script>`;
+  const body = `${pageMarkup()}<script>${bootstrap}${PAGE_SCRIPT}${REVEAL_SCRIPT}</script>`;
 
   return htmlDoc({ title: 'Dein Feed entsteht · social2scale', head, body });
 }

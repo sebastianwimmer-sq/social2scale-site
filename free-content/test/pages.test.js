@@ -32,4 +32,19 @@ describe('Build-Screen /r/:token', () => {
     expect(html).not.toContain('Wird gebaut (Plan 2)');   // Platzhalter ersetzt
     expect(html).not.toContain('base64');
   });
+
+  it('Reveal-Markup ist in /r/:token vorhanden (versteckt bis ready) mit beiden CTAs', async () => {
+    const html = await (
+      await worker.fetch(
+        new Request('https://start.social2scale.com/r/deadbeefdead'),
+        env,
+        createExecutionContext()
+      )
+    ).text();
+    expect(html).toContain('https://social2scale.com/anfrage/'); // primärer CTA-Ziel
+    expect(html).toContain('Vorschau speichern'); // sekundärer CTA
+    expect(html).toContain('Beispiel-Vorschau'); // Vorschau-Hinweis auch im Reveal
+    expect(html).toMatch(/f-1-|Welt|Farbwelt/); // Farbwelt-Switcher-Anker
+    expect(html).toMatch(/<section id="reveal" hidden>/); // versteckt bis showReveal()
+  });
 });

@@ -122,21 +122,24 @@ const TOTAL_FRAMES = 8;
 const TINY_JPEG_BASE64 =
   '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=';
 
+// Alle 8 Frames (beide Farbwelten) — buildStatus() liefert bei ready IMMER den
+// vollen Satz (renderAll laeuft vollstaendig durch, bevor die DB-Zeile auf
+// 'ready' kippt, siehe generate.test.js), also spiegelt der Fixture das.
+const ALL_FRAME_KEYS = [
+  `free/${RESULT_TOKEN}/f-0-profil.jpg`,
+  `free/${RESULT_TOKEN}/f-0-s1.jpg`,
+  `free/${RESULT_TOKEN}/f-0-s2.jpg`,
+  `free/${RESULT_TOKEN}/f-0-s3.jpg`,
+  `free/${RESULT_TOKEN}/f-1-profil.jpg`,
+  `free/${RESULT_TOKEN}/f-1-s1.jpg`,
+  `free/${RESULT_TOKEN}/f-1-s2.jpg`,
+  `free/${RESULT_TOKEN}/f-1-s3.jpg`,
+];
+
 function statusPayload(pollIndex) {
   const done = Math.min(pollIndex, TOTAL_FRAMES);
   if (done >= TOTAL_FRAMES) {
-    return {
-      state: 'ready',
-      step: 'Fertig.',
-      done: TOTAL_FRAMES,
-      total: TOTAL_FRAMES,
-      images: [
-        `free/${RESULT_TOKEN}/f-0-profil.jpg`,
-        `free/${RESULT_TOKEN}/f-0-s1.jpg`,
-        `free/${RESULT_TOKEN}/f-0-s2.jpg`,
-        `free/${RESULT_TOKEN}/f-0-s3.jpg`,
-      ],
-    };
+    return { state: 'ready', step: 'Fertig.', done: TOTAL_FRAMES, total: TOTAL_FRAMES, images: ALL_FRAME_KEYS };
   }
   return { state: 'building', step: `Baue … (${done}/${TOTAL_FRAMES})`, done, total: TOTAL_FRAMES };
 }
@@ -202,12 +205,54 @@ async function checkBuildScreen(browser) {
 
     const screenshotPath = fileURLToPath(new URL('_smoke-build-390.png', SCREENSHOT_DIR));
     await page.screenshot({ path: screenshotPath, fullPage: false });
+
+    const revealScreenshotPath = fileURLToPath(new URL('_smoke-reveal-390.png', SCREENSHOT_DIR));
+    try {
+      // Reveal blendet ein: hidden faellt weg, Bilder der aktiven (0.) Farbwelt laden.
+      await page.waitForFunction(
+        () => document.getElementById('reveal') && !document.getElementById('reveal').hidden,
+        { timeout: 5000 }
+      );
+      await page.waitForFunction(
+        () => document.querySelectorAll('#reveal .rv-tile img.loaded').length >= 3,
+        { timeout: 5000 }
+      );
+      const avatarSrcA = await page.locator('#rv-avatar').getAttribute('src');
+      if (!avatarSrcA || !avatarSrcA.includes('/f-0-profil.jpg')) {
+        problems.push(`Reveal zeigt nicht Farbwelt A initial: ${avatarSrcA}`);
+      }
+
+      // Farbwelt-Switcher tauscht auf Welt B (f-1-*).
+      await page.locator('#rv-switcher button[data-welt="1"]').scrollIntoViewIfNeeded();
+      await page.locator('#rv-switcher button[data-welt="1"]').click();
+      await page.waitForFunction(
+        () => (document.getElementById('rv-avatar')?.getAttribute('src') || '').includes('/f-1-profil.jpg'),
+        { timeout: 5000 }
+      );
+      const tileSrcB = await page.locator('#reveal .rv-tile img').first().getAttribute('src');
+      if (!tileSrcB || !tileSrcB.includes('/f-1-s1.jpg')) {
+        problems.push(`Farbwelt-Switcher tauschte die Grid-Bilder nicht auf f-1-: ${tileSrcB}`);
+      }
+
+      // Beide CTAs sind da und zeigen auf das Richtige.
+      const primaryHref = await page.locator('#rv-cta-primary').getAttribute('href');
+      if (primaryHref !== 'https://social2scale.com/anfrage/') {
+        problems.push(`Primärer CTA zeigt auf das Falsche: ${primaryHref}`);
+      }
+      const secondaryVisible = await page.locator('#rv-cta-download').isVisible();
+      if (!secondaryVisible) problems.push('Sekundärer CTA ("Vorschau speichern") nicht sichtbar');
+
+      await page.screenshot({ path: revealScreenshotPath, fullPage: false });
+    } catch (err) {
+      problems.push(`Reveal-Zustand fehlerhaft: ${err.message}`);
+    }
+
     await page.close();
 
     if (consoleErrors.length) problems.push(`Konsolen-Fehler: ${consoleErrors.join(' | ')}`);
     if (pageErrors.length) problems.push(`Seiten-Fehler: ${pageErrors.join(' | ')}`);
 
-    return { viewport: 'build-390', problems, screenshotPath };
+    return { viewport: 'build-390', problems, screenshotPath: revealScreenshotPath };
   });
 }
 
