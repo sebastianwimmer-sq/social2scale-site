@@ -13,8 +13,10 @@ import { writeFile, mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createServer } from 'node:http';
 
 import { formPage } from '../src/pages/form.js';
+import { resultPage } from '../src/pages/result.js';
 
 // Robuster Playwright-Resolver: lokal → Homebrew → graceful skip
 let chromium;
@@ -104,6 +106,111 @@ async function checkViewport(browser, fileUrl, viewport) {
   return { viewport: viewport.label, problems, screenshotPath };
 }
 
+/**
+ * Build-Screen-Smoke (`/r/:token`, Plan 3 Task 3): laedt die echte
+ * `resultPage(token)`-Seite ueber einen lokalen HTTP-Server (KEIN file://
+ * — der Poller macht einen echten `fetch()`, und file://-Seiten duerfen aus
+ * Browser-Sicherheitsgruenden keine anderen file://-URLs fetchen), faengt
+ * `/api/status/:token` mit Playwright `route` ab und fuettert es durch die
+ * States 0→8 (building → ready), dann `/img/...` mit einem winzigen echten
+ * JPEG. Prueft: Kacheln fuellen sich mit echten Bildern, showReveal() feuert.
+ */
+const RESULT_TOKEN = 'smoketest0123456789abcdef01';
+const TOTAL_FRAMES = 8;
+// Kleinstes gueltiges 1x1-JPEG (weit verbreitetes Test-Fixture) — nur fuer
+// diesen lokalen Smoke-Test, landet nie im ausgelieferten Seiten-HTML.
+const TINY_JPEG_BASE64 =
+  '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=';
+
+function statusPayload(pollIndex) {
+  const done = Math.min(pollIndex, TOTAL_FRAMES);
+  if (done >= TOTAL_FRAMES) {
+    return {
+      state: 'ready',
+      step: 'Fertig.',
+      done: TOTAL_FRAMES,
+      total: TOTAL_FRAMES,
+      images: [
+        `free/${RESULT_TOKEN}/f-0-profil.jpg`,
+        `free/${RESULT_TOKEN}/f-0-s1.jpg`,
+        `free/${RESULT_TOKEN}/f-0-s2.jpg`,
+        `free/${RESULT_TOKEN}/f-0-s3.jpg`,
+      ],
+    };
+  }
+  return { state: 'building', step: `Baue … (${done}/${TOTAL_FRAMES})`, done, total: TOTAL_FRAMES };
+}
+
+/** Startet einen lokalen HTTP-Server nur fuer die Dauer von `fn` und gibt seine Basis-URL mit. */
+async function withLocalServer(html, fn) {
+  const server = createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(html);
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const { port } = server.address();
+    return await fn(`http://127.0.0.1:${port}/`);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+}
+
+async function checkBuildScreen(browser) {
+  const html = await resultPage(RESULT_TOKEN).text();
+  const consoleErrors = [];
+  const pageErrors = [];
+
+  return withLocalServer(html, async (baseUrl) => {
+    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+    page.on('console', (msg) => {
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
+    });
+    page.on('pageerror', (err) => pageErrors.push(String(err)));
+
+    let pollIndex = 0;
+    await page.route('**/api/status/**', async (route) => {
+      const body = statusPayload(pollIndex);
+      pollIndex++;
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+    });
+    await page.route('**/img/**', async (route) => {
+      await route.fulfill({ status: 200, contentType: 'image/jpeg', body: Buffer.from(TINY_JPEG_BASE64, 'base64') });
+    });
+
+    await page.goto(baseUrl);
+
+    const problems = [];
+    try {
+      // Kacheln fuellen sich mit echten Bildern (das Grid pollt alle 1.5s,
+      // 8 States brauchen also ~12s — grosszuegiges Timeout).
+      await page.waitForFunction(
+        () => document.querySelectorAll('.tile.done[data-real="1"]').length >= 3,
+        { timeout: 25000 }
+      );
+    } catch (err) {
+      problems.push(`Kacheln fuellten sich nicht mit echten Bildern: ${err.message}`);
+    }
+
+    try {
+      await page.waitForFunction(() => document.getElementById('bloom').classList.contains('fire'), {
+        timeout: 5000,
+      });
+    } catch (err) {
+      problems.push(`showReveal() feuerte nicht: ${err.message}`);
+    }
+
+    const screenshotPath = fileURLToPath(new URL('_smoke-build-390.png', SCREENSHOT_DIR));
+    await page.screenshot({ path: screenshotPath, fullPage: false });
+    await page.close();
+
+    if (consoleErrors.length) problems.push(`Konsolen-Fehler: ${consoleErrors.join(' | ')}`);
+    if (pageErrors.length) problems.push(`Seiten-Fehler: ${pageErrors.join(' | ')}`);
+
+    return { viewport: 'build-390', problems, screenshotPath };
+  });
+}
+
 async function main() {
   const filePath = await buildTempHtmlFile();
   const fileUrl = `file://${filePath}`;
@@ -115,6 +222,7 @@ async function main() {
       // eslint-disable-next-line no-await-in-loop
       results.push(await checkViewport(browser, fileUrl, viewport));
     }
+    results.push(await checkBuildScreen(browser));
 
     let failed = false;
     for (const r of results) {

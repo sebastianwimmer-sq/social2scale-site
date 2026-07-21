@@ -18,3 +18,18 @@ describe('Formular-Seite', () => {
     expect(html).toContain('Beispiel-Vorschau');                 // Vorschau-Hinweis
   });
 });
+
+describe('Build-Screen /r/:token', () => {
+  it('GET /r/:token liefert Build-Screen-HTML, das /api/status pollt', async () => {
+    const req = new Request('https://start.social2scale.com/r/deadbeefdead');
+    const ctx = createExecutionContext();
+    const res = await worker.fetch(req, env, ctx);
+    await waitOnExecutionContext(ctx);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain('/api/status/deadbeefdead');   // pollt den richtigen Token
+    expect(html).toContain('/img/deadbeefdead/');         // Bild-Pfad-Präfix
+    expect(html).not.toContain('Wird gebaut (Plan 2)');   // Platzhalter ersetzt
+    expect(html).not.toContain('base64');
+  });
+});

@@ -16,6 +16,7 @@ import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
 import { formPage } from './pages/form.js';
+import { resultPage } from './pages/result.js';
 
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
 
@@ -292,10 +293,10 @@ export default {
       }
     }
 
-    // Platzhalter — Plan 2 ersetzt das durch Build- und Ergebnisseite.
-    if (/^\/r\/[a-f0-9]{8,128}$/.test(url.pathname)) {
-      return htmlPage('Dein Free Content', '<p>Wird gebaut (Plan 2).</p>');
-    }
+    // Build-/Ergebnisseite (Plan 3): pollt /api/status/:token selbst,
+    // kein Server-seitiger Datenzugriff hier noetig.
+    const resultMatch = url.pathname.match(/^\/r\/([a-f0-9]{8,128})$/);
+    if (resultMatch) return resultPage(resultMatch[1]);
 
     return json({ ok: false, error: 'not_found' }, 404, cors);
   },
