@@ -13,11 +13,26 @@ import { writeFile, mkdtemp } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import pw from '/opt/homebrew/lib/node_modules/playwright/index.js';
 
 import { formPage } from '../src/pages/form.js';
 
-const { chromium } = pw;
+// Robuster Playwright-Resolver: lokal → Homebrew → graceful skip
+let chromium;
+try {
+  // Versuche lokale Installation
+  const pw = await import('playwright');
+  chromium = pw.chromium;
+} catch (err1) {
+  try {
+    // Fallback auf Homebrew-Installation
+    const pw = await import('/opt/homebrew/lib/node_modules/playwright/index.js');
+    chromium = pw.default.chromium;
+  } catch (err2) {
+    // Beide fehlgeschlagen — graceful skip
+    console.warn('[smoke] playwright nicht gefunden — Rendering-Smoke uebersprungen. Optional installieren: npm i -D playwright');
+    process.exit(0);
+  }
+}
 
 const VIEWPORTS = [
   { width: 390, height: 844, label: '390' },
