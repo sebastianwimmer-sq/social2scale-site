@@ -285,10 +285,15 @@ const PAGE_SCRIPT = `
   }
 
   // ── Fertig: Bloom auf dem Build-Handy + das echte Reveal darunter einblenden ──
+  let readyBeaconFired = false;
   function showReveal() {
     setStep('Fertig — scroll dich rein.');
     eqEl.style.opacity = '0';
     if (!reduce) { bloomEl.classList.remove('fire'); void bloomEl.offsetWidth; bloomEl.classList.add('fire'); }
+    if (!readyBeaconFired) {
+      readyBeaconFired = true;
+      navigator.sendBeacon('/api/track?e=ready&t=' + TOKEN);
+    }
     revealSection();
   }
 

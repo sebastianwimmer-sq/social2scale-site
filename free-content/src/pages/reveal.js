@@ -232,6 +232,7 @@ export const REVEAL_SCRIPT = `
     if (!el) return;
     el.addEventListener('click', (e) => {
       e.preventDefault();
+      navigator.sendBeacon('/api/track?e=cta_save&t=' + TOKEN);
       ['profil', 's1', 's2', 's3'].forEach((slot, i) => {
         setTimeout(() => {
           const a = document.createElement('a');
