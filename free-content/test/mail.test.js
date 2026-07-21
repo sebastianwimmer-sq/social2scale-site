@@ -36,6 +36,21 @@ describe('mail: Bestaetigungsmail', () => {
     const html = buildConfirmMail(lead, 'https://x.de').htmlContent;
     expect(html).toContain(`${TOKEN_TTL_HOURS} Stunden`);
   });
+
+  /**
+   * Produktions-Template (design/prototypes/confirm-email.html): gehostete
+   * Bilder statt base64 (Gmail zeigt kein base64-Inline-Bild), Impressum-Pflicht
+   * im Footer, Platzhalter vollstaendig ersetzt.
+   */
+  it('Bestaetigungsmail: gehostete Bilder, Confirm-Link, Vorname, kein base64', () => {
+    const { htmlContent } = buildConfirmMail({ name: 'Sabine', token: 'abc123' }, 'https://start.social2scale.com');
+    expect(htmlContent).toContain('Sabine');
+    expect(htmlContent).toContain('https://start.social2scale.com/c/abc123');
+    expect(htmlContent).toContain('social2scale.com/assets/sig-wordmark.png'); // gehostet
+    expect(htmlContent).not.toContain('base64');
+    expect(htmlContent).toContain('Philipp Libowicz'); // Impressum-Pflicht
+    expect(htmlContent).not.toContain('{{VORNAME}}'); // Platzhalter ersetzt
+  });
 });
 
 describe('mail: Ergebnismail', () => {

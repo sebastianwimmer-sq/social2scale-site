@@ -4,8 +4,8 @@
  * kommt sie nicht an, stirbt er lautlos.
  */
 
-import { TOKEN_TTL_HOURS } from './constants.js';
 import { stripControlChars } from './validate.js';
+import { confirmMailHtml } from './pages/confirm-email.js';
 
 const BREVO_MAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
@@ -28,24 +28,21 @@ function subjectSafe(value) {
   return stripControlChars(value);
 }
 
-function firstName(name) {
-  return String(name ?? '').trim().split(/\s+/)[0] || 'du';
+function firstName(name, fallback = 'du') {
+  return String(name ?? '').trim().split(/\s+/)[0] || fallback;
 }
 
-/** Reine Funktion — deshalb ohne Netzwerk testbar. */
+/**
+ * Reine Funktion — deshalb ohne Netzwerk testbar.
+ * Markup kommt aus pages/confirm-email.js (Quelle: design/prototypes/confirm-email.html).
+ */
 export function buildConfirmMail(lead, publicOrigin) {
   const link = `${publicOrigin}/c/${encodeURIComponent(lead.token)}`;
-  const vorname = esc(firstName(lead.name));
+  const vorname = esc(firstName(lead.name, 'schön'));
 
   return {
     subject: 'Nur noch ein Klick bis zu deinem ersten s2s Free Content',
-    htmlContent: `
-      <p>Hey ${vorname},</p>
-      <p>dein Content wartet — <strong>ein Klick</strong> und wir bauen ihn live fuer dich:</p>
-      <p><a href="${esc(link)}">Jetzt meinen Free Content ansehen</a></p>
-      <p>Der Link gilt ${TOKEN_TTL_HOURS} Stunden. Falls du das nicht warst, ignorier diese Mail einfach.</p>
-      <p>— social2scale</p>
-    `.trim(),
+    htmlContent: confirmMailHtml(vorname, esc(link)),
   };
 }
 
