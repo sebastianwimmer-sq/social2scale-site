@@ -48,35 +48,33 @@ export const REVEAL_STYLE = `
   .rv{opacity:0;transform:translateY(28px);filter:blur(10px);transition:opacity .9s var(--e-out),transform 1s var(--e-spring),filter .9s var(--e-out)}
   .rv.in{opacity:1;transform:none;filter:none}
 
-  .rv-space{perspective:1500px;margin:2rem 0 1.6rem}
-  .rv-phone{position:relative;width:min(74vw,280px);aspect-ratio:300/600;border-radius:50px;padding:10px;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 60px 120px -45px rgba(0,0,0,.9),0 0 80px -14px rgba(0,184,136,.18),0 0 90px -20px rgba(31,166,224,.14)}
-  .rv-ios{position:relative;height:100%;border-radius:40px;overflow:hidden;background:#000;font-family:var(--ff-ios);display:flex;flex-direction:column}
-  .rv-island{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:78px;height:22px;background:#000;border-radius:13px;z-index:40}
-  .rv-statusbar{display:flex;align-items:center;justify-content:space-between;padding:11px 20px 2px;color:#fff;font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
-  .rv-statusbar .sys{display:flex;align-items:center;gap:4px}
-  .rv-home-ind{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:100px;height:5px;border-radius:3px;background:rgba(255,255,255,.9);z-index:40}
-  .rv-ig{flex:1;background:#000;color:#fff;display:flex;flex-direction:column;text-align:left}
-  .rv-ig-top{display:flex;align-items:center;padding:5px 13px 7px;font-size:14px;font-weight:700}
-  .rv-ig-top .chev{font-size:9px;margin-left:4px}
-  .rv-ig-top .sp{margin-left:auto;font-size:15px;letter-spacing:2px}
-  .rv-ig-prof{display:flex;align-items:center;gap:18px;padding:2px 14px 7px}
-  .rv-ig-av{width:56px;height:56px;border-radius:50%;flex:none;padding:2px;background:linear-gradient(45deg,#F58529,#DD2A7B,#8134AF);overflow:hidden}
-  .rv-ig-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;opacity:0;transition:opacity .5s var(--e-out)}
-  .rv-ig-av img.loaded{opacity:1}
-  .rv-ig-stats{display:flex;flex:1;justify-content:space-around}
-  .rv-ig-stat{text-align:center}
-  .rv-ig-stat b{display:block;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
-  .rv-ig-stat span{font-size:11px;color:rgba(255,255,255,.85)}
-  .rv-ig-meta{padding:0 14px 8px}
-  .rv-ig-meta .n{font-size:12.5px;font-weight:700}
-  .rv-ig-meta .b{font-size:12.5px;color:rgba(255,255,255,.9);line-height:1.35}
-  .rv-ig-tabs{display:flex;border-top:.5px solid rgba(255,255,255,.14)}
-  .rv-ig-tabs .tab{flex:1;text-align:center;padding:8px 0;opacity:.5;font-size:15px}
-  .rv-ig-tabs .tab.act{opacity:1;border-bottom:1.5px solid #fff}
-  .rv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:#000}
-  .rv-tile{aspect-ratio:1;position:relative;overflow:hidden;background:#0c0c0c}
-  .rv-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--e-out)}
-  .rv-tile img.loaded{opacity:1}
+  .rv-hero{margin:1.8rem 0 1.3rem;width:100%;display:flex;justify-content:center}
+  .rv-shot-frame{width:min(76vw,318px);border-radius:26px;padding:7px;line-height:0;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 55px 110px -42px rgba(0,0,0,.9),0 0 78px -14px rgba(0,184,136,.2),0 0 88px -20px rgba(31,166,224,.15)}
+  .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:20px;background:#0c0c0c;opacity:0;transition:opacity .55s var(--e-out)}
+  .rv-shot.loaded{opacity:1}
+  /* Aussen VERTIKAL (durch die 3 Posts scrollen), innen HORIZONTAL (Slides
+     swipen) — kein horizontal-in-horizontal (Spec §6). */
+  .rv-posts-wrap{display:flex;flex-direction:column;align-items:center;gap:1.1rem;margin:.6rem 0 2.4rem;width:100%}
+  .rv-posts-label{font-family:var(--ff-label);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .rv-posts-stack{display:flex;flex-direction:column;gap:2.2rem;width:100%;max-width:min(94vw,352px)}
+  .rv-post{display:flex;flex-direction:column;gap:.7rem;width:100%}
+  .rv-post-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+  .rv-post-n{font-family:var(--ff-serif);font-weight:500;font-size:1.05rem;letter-spacing:-.015em;color:var(--ink)}
+  .rv-post-swipe{font-family:var(--ff-label);font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+  /* Inneres Karussell: 3 Slides, scroll-snap, EIN Slide pro Ansicht. */
+  .rv-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;width:100%;border-radius:16px;background:#0c0c0c;box-shadow:0 18px 40px -22px rgba(0,0,0,.85),0 0 0 1.5px #23262b,0 0 60px -18px rgba(0,184,136,.14);scrollbar-width:none}
+  .rv-track::-webkit-scrollbar{display:none}
+  .rv-slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1080/1350;line-height:0;background:#0c0c0c}
+  .rv-slide img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .5s var(--e-out)}
+  .rv-slide img.loaded{opacity:1}
+  .rv-dots{display:flex;gap:6px;justify-content:center;align-items:center;height:10px}
+  .rv-dot{width:6px;height:6px;border-radius:50%;background:rgba(244,245,243,.22);transition:background .3s var(--e-out),transform .3s var(--e-out)}
+  .rv-dot.act{background:var(--flow);transform:scale(1.3);box-shadow:0 0 8px rgba(0,184,136,.5)}
+  .rv-post-cap{display:flex;flex-direction:column;gap:9px;text-align:left;margin-top:.15rem}
+  .rv-cap-text{font-size:.82rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;max-height:7.5em;overflow-y:auto;scrollbar-width:thin;padding-right:2px}
+  .rv-cap-copy{align-self:flex-start;font-family:var(--ff-label);font-weight:600;font-size:12px;letter-spacing:.01em;color:var(--emerald-soft);background:rgba(0,184,136,.1);border:1px solid rgba(0,184,136,.25);border-radius:100px;padding:.5rem 1.05rem;cursor:pointer;transition:background .3s var(--e-out),color .3s var(--e-out)}
+  .rv-cap-copy:hover{background:rgba(0,184,136,.18)}
+  .rv-cap-copy.done{color:var(--emerald-ink);background:var(--flow);border-color:transparent}
 
   .rv-switcher{display:inline-flex;gap:4px;padding:4px;border-radius:100px;background:rgba(244,245,243,.05);border:1px solid var(--hair);margin-bottom:2.2rem}
   .rv-switcher button{font-family:var(--ff-label);font-weight:700;font-size:12.5px;letter-spacing:.02em;color:var(--muted);background:transparent;border:0;padding:.55rem 1.1rem;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;transition:color .3s var(--e-out),background .4s var(--e-out)}
@@ -86,9 +84,17 @@ export const REVEAL_STYLE = `
   .rv-sw-a{background:linear-gradient(135deg,#EAD9CE,#C2410C)}
   .rv-sw-b{background:linear-gradient(135deg,#CFE0E4,#1FA6E0)}
 
-  .rv-offer{display:flex;flex-direction:column;align-items:center;gap:1rem;width:100%}
-  .rv-offer h3{font-family:var(--ff-serif);font-weight:480;font-size:clamp(1.5rem,1.2rem + 1.6vw,2.1rem);letter-spacing:-.02em;line-height:1.08}
-  .rv-offer .p{color:var(--muted);font-size:.96rem;max-width:34ch}
+  .rv-offer{display:flex;flex-direction:column;align-items:center;gap:.9rem;width:100%}
+  .rv-offer h3{font-family:var(--ff-serif);font-weight:480;font-size:clamp(1.5rem,1.2rem + 1.6vw,2.1rem);letter-spacing:-.02em;line-height:1.08;text-wrap:balance}
+  .rv-lead{color:var(--muted);font-size:1rem;line-height:1.5;max-width:30ch;margin:0 auto .2rem;text-wrap:balance}
+  .rv-values{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin:.3rem auto 1.2rem;padding:0;text-align:left;width:max-content;max-width:100%}
+  .rv-values li{display:flex;align-items:center;gap:.65rem;font-size:.94rem;color:var(--ink);line-height:1.3}
+  .rv-values .ck{width:19px;height:19px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,184,136,.16);color:var(--emerald-soft);font-size:11px;font-weight:800}
+  .rv-actions{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:.1rem}
+  .rv-cta-share{display:inline-flex;align-items:center;gap:.5rem}
+  .rv-cta-share svg{opacity:.85}
+  .rv-contact{font-family:var(--ff-label);font-weight:600;font-size:13.5px;letter-spacing:.01em;color:var(--emerald-soft);text-decoration:none;margin-top:.7rem;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid transparent;transition:border-color .3s var(--e-out)}
+  .rv-contact:hover{border-color:rgba(31,201,152,.5)}
   .rv-cta{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--ff-label);font-weight:700;font-size:15px;letter-spacing:.01em;text-decoration:none;padding:1rem 1.1rem 1rem 1.5rem;border-radius:100px;color:var(--emerald-ink);background:var(--flow);box-shadow:0 16px 40px -16px rgba(0,184,136,.6),0 16px 40px -20px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .4s var(--e-spring)}
   .rv-cta:active{transform:scale(.97)}
   .rv-cta .ic{width:30px;height:30px;border-radius:50%;background:rgba(4,32,26,.16);display:flex;align-items:center;justify-content:center;font-size:15px;transition:transform .4s var(--e-spring)}
@@ -97,6 +103,7 @@ export const REVEAL_STYLE = `
   .rv-cta2:hover{border-color:rgba(0,184,136,.4);background:rgba(0,184,136,.08)}
   .rv-wm,.rv-disclaimer{font-size:.8rem;color:var(--faint);max-width:34ch;margin-top:.3rem;line-height:1.5}
 
+  .rv-scrollhint[hidden]{display:none}
   .rv-scrollhint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--ff-label);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:6px;animation:rvbob 2s var(--e-out) infinite}
   .rv-scrollhint .arw{width:1px;height:20px;background:linear-gradient(var(--emerald-soft),transparent)}
   @keyframes rvbob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
@@ -112,45 +119,37 @@ export const REVEAL_STYLE = `
  * @returns {string} das versteckte `<section id="reveal" hidden>` Markup
  */
 export function revealMarkup(copy) {
+  // Drei Post-Bloecke, vertikal gestapelt; jeder ein eigenes horizontales
+  // Slide-Karussell (3 Slides). Bild-Quellen setzt rvApplyWorld() zur Laufzeit
+  // (world-abhaengig) — im Markup stehen nur data-post/data-slide als Vertrag.
+  const postsHtml = [1, 2, 3].map((p) => {
+    const capIdx = p - 1;
+    const slides = [1, 2, 3].map((s) =>
+      `<div class="rv-slide"><img data-post="${p}" data-slide="${s}" alt="Post ${p}, Slide ${s}" loading="lazy"></div>`
+    ).join('');
+    const dots = [1, 2, 3].map((s) =>
+      `<span class="rv-dot${s === 1 ? ' act' : ''}"></span>`
+    ).join('');
+    return `
+      <article class="rv-post rv" data-post="${p}">
+        <div class="rv-post-head"><span class="rv-post-n">Post ${p}</span><span class="rv-post-swipe">3 Slides · swipe →</span></div>
+        <div class="rv-track" data-post="${p}">${slides}</div>
+        <div class="rv-dots" data-post="${p}">${dots}</div>
+        <div class="rv-post-cap"><p class="rv-cap-text" data-cap="${capIdx}">Caption wird geladen …</p><button type="button" class="rv-cap-copy" data-cap="${capIdx}">Caption kopieren</button></div>
+      </article>`;
+  }).join('');
   return `
 <section id="reveal" hidden>
   <span class="rv-eyebrow rv"><span class="dot"></span>${esc(copy.eyebrow)}</span>
   <h2 class="rv-h2 rv">${esc(copy.head)} <em>${esc(copy.headAccent)}</em></h2>
   <p class="rv-sub rv">${esc(copy.sub)}</p>
 
-  <div class="rv-space rv">
-    <div class="rv-phone">
-      <div class="rv-ios">
-        <div class="rv-island"></div>
-        <div class="rv-statusbar">
-          <span id="rv-clock">9:41</span>
-          <span class="sys">
-            <svg width="16" height="10" viewBox="0 0 17 11" fill="#fff"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg>
-            <svg width="15" height="10" viewBox="0 0 16 11" fill="#fff"><path d="M8 2.2c2.1 0 4 .8 5.4 2.1l1.3-1.4C13 1.2 10.6.2 8 .2S3 1.2 1.3 2.9l1.3 1.4C4 3 5.9 2.2 8 2.2zm0 3.3c1.1 0 2.2.4 3 1.2l1.3-1.4C11.9 4 10 3.2 8 3.2s-3.9.8-5.3 2.1L4 6.7c.8-.8 1.9-1.2 3-1.2zm0 3.2c.6 0 1.1.2 1.5.6L8 11l-1.5-1.4c.4-.4.9-.6 1.5-.6z"/></svg>
-            <svg width="23" height="11" viewBox="0 0 25 12"><rect x="1" y="1" width="20" height="10" rx="3" fill="none" stroke="#fff" stroke-opacity=".5"/><rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="#fff"/><rect x="22.5" y="4" width="1.5" height="4" rx=".75" fill="#fff" fill-opacity=".5"/></svg>
-          </span>
-        </div>
-        <div class="rv-ig">
-          <div class="rv-ig-top">dein.profil<span class="chev">▾</span><span class="sp">⋯</span></div>
-          <div class="rv-ig-prof">
-            <div class="rv-ig-av"><img id="rv-avatar" alt="" loading="lazy"></div>
-            <div class="rv-ig-stats">
-              <div class="rv-ig-stat"><b>9</b><span>Beiträge</span></div>
-              <div class="rv-ig-stat"><b>1.2k</b><span>Follower</span></div>
-              <div class="rv-ig-stat"><b>318</b><span>Gefolgt</span></div>
-            </div>
-          </div>
-          <div class="rv-ig-meta"><div class="n">Dein Feed</div><div class="b">ist fertig, live.</div></div>
-          <div class="rv-ig-tabs"><div class="tab act">▦</div><div class="tab">▷</div><div class="tab">☆</div></div>
-          <div class="rv-grid" id="rv-grid">
-            <div class="rv-tile"><img data-slot="s1" alt="" loading="lazy"></div>
-            <div class="rv-tile"><img data-slot="s2" alt="" loading="lazy"></div>
-            <div class="rv-tile"><img data-slot="s3" alt="" loading="lazy"></div>
-          </div>
-        </div>
-        <div class="rv-home-ind"></div>
-      </div>
-    </div>
+  <!-- Held: das komplette, gerenderte Profil (f-<welt>-profil, 1080x1350). Es traegt
+       schon Handle, Avatar, Bio, Stats UND das 3x3-Raster in sich — genau darum wird
+       es NICHT mehr in einen Avatar-Kreis gequetscht (der fruehere "komische" Look),
+       sondern in echter 4:5-Groesse als Held gezeigt. -->
+  <div class="rv-hero rv">
+    <div class="rv-shot-frame"><img class="rv-shot" id="rv-shot" alt="Deine komplette Instagram-Vorschau" loading="lazy"></div>
   </div>
 
   <div class="rv-switcher rv" id="rv-switcher" role="group" aria-label="Farbwelt wählen">
@@ -158,18 +157,35 @@ export function revealMarkup(copy) {
     <button type="button" data-welt="1"><span class="sw rv-sw-b"></span>Farbwelt B</button>
   </div>
 
+  <!-- Die drei echten Posts als volle Instagram-Karussells: vertikal gestapelt
+       (durchscrollen), jeder ein horizontales 3-Slide-Karussell in wahrer
+       4:5-Groesse mit Dots + fertiger, sofort postbarer Caption + Kopieren.
+       So ist es echter Content, kein Vorschau-Teaser. -->
+  <div class="rv-posts-wrap rv">
+    <span class="rv-posts-label">Deine ersten Posts — fertig zum Posten</span>
+    <div class="rv-posts-stack" id="rv-posts">${postsHtml}
+    </div>
+  </div>
+
   <div class="rv-offer">
-    <h3 class="rv">${esc(copy.offerHead)}</h3>
-    <p class="p rv">${esc(copy.offerSub)}</p>
+    <h3 class="rv" id="rv-offer-head">${esc(copy.offerHead)}</h3>
+    <p class="rv-lead rv">${esc(copy.offerLead)}</p>
+    <ul class="rv-values rv">
+      ${copy.values.map((v) => `<li><span class="ck" aria-hidden="true">✓</span>${esc(v)}</li>`).join('')}
+    </ul>
     <a class="rv-cta rv" id="rv-cta-primary" href="${ANFRAGE_URL}">${esc(copy.ctaPrimary)} <span class="ic">→</span></a>
-    <!-- Digistore-CTA später -->
-    <a class="rv-cta2 rv" id="rv-cta-download" href="#">${esc(copy.ctaSecondary)}</a>
+    <!-- Digistore-Kauf-CTA später -->
+    <div class="rv-actions rv">
+      <button type="button" class="rv-cta2" id="rv-cta-download">${esc(copy.ctaSecondary)}</button>
+      <button type="button" class="rv-cta2 rv-cta-share" id="rv-cta-share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>${esc(copy.ctaShare)}</button>
+    </div>
+    <a class="rv-contact rv" id="rv-contact" href="${ANFRAGE_URL}">${esc(copy.contactLabel)} <span aria-hidden="true">→</span></a>
     <p class="rv-wm rv">${esc(copy.wmNote)}</p>
     <p class="rv-disclaimer rv">&lowast; Beispiel-Vorschau — deinen echten Feed gestalten wir danach persönlich mit dir.</p>
   </div>
 </section>
 
-<div class="rv-scrollhint" id="rv-hint"><span>scroll</span><span class="arw"></span></div>`;
+<div class="rv-scrollhint" id="rv-hint" hidden><span>scroll</span><span class="arw"></span></div>`;
 }
 
 /**
@@ -183,6 +199,18 @@ export function revealMarkup(copy) {
 export const REVEAL_SCRIPT = `
   let rvActiveWorld = 0;
 
+  // Vorname (kommt via /api/status -> applyIdentity in result.js) macht die
+  // Offer-Headline persoenlich. Ohne Namen bleibt der neutrale Text stehen.
+  function rvSetVorname(name) {
+    if (!name) return;
+    const h = document.getElementById('rv-offer-head');
+    if (h) h.textContent = 'Du willst mehr, ' + name + '?';
+  }
+
+  // Handle fuers Teilen (von applyIdentity gesetzt).
+  let rvHandle = '';
+  function rvSetHandle(h) { rvHandle = String(h || '').replace(/^@+/, ''); }
+
   function rvLoadImg(img, src) {
     img.classList.remove('loaded');
     img.onload = function () { img.classList.add('loaded'); };
@@ -192,13 +220,36 @@ export const REVEAL_SCRIPT = `
 
   function rvApplyWorld(world) {
     rvActiveWorld = world;
-    const avatar = $('rv-avatar');
-    if (avatar) rvLoadImg(avatar, IMG_BASE + 'f-' + world + '-profil.jpg');
-    document.querySelectorAll('#rv-grid img').forEach((img) => {
-      rvLoadImg(img, IMG_BASE + 'f-' + world + '-' + img.dataset.slot + '.jpg');
+    const shot = $('rv-shot');
+    if (shot) rvLoadImg(shot, IMG_BASE + 'f-' + world + '-profil.jpg');
+    // Tauscht die Quellen ALLER Slides in ALLEN 3 Post-Bloecken (world 0<->1).
+    document.querySelectorAll('#rv-posts img').forEach((img) => {
+      const src = IMG_BASE + 'f-' + world + '-p' + img.dataset.post + '-s' + img.dataset.slide + '.jpg';
+      rvLoadImg(img, src);
     });
     document.querySelectorAll('#rv-switcher button').forEach((b) => {
       b.classList.toggle('act', Number(b.dataset.welt) === world);
+    });
+  }
+
+  // Dots pro Post-Karussell: welche Slide gerade sichtbar ist. IntersectionObserver
+  // mit dem Track als root (kein Scroll-Listener-Churn, Spec §6). Beim Farbwelt-
+  // Wechsel bleiben Dots gueltig — nur die Bildquellen tauschen, nicht die Slides.
+  function rvWireDots() {
+    document.querySelectorAll('.rv-track').forEach((track) => {
+      const post = track.dataset.post;
+      const dotsWrap = document.querySelector('.rv-dots[data-post="' + post + '"]');
+      if (!dotsWrap) return;
+      const dots = [...dotsWrap.children];
+      const slides = [...track.querySelectorAll('.rv-slide')];
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const idx = slides.indexOf(e.target);
+          dots.forEach((d, i) => d.classList.toggle('act', i === idx));
+        });
+      }, { root: track, threshold: .6 });
+      slides.forEach((s) => io.observe(s));
     });
   }
 
@@ -225,23 +276,120 @@ export const REVEAL_SCRIPT = `
     });
   }
 
-  // Laedt die 4 Bilder (Profil + 3 Slides) der GERADE aktiven Farbwelt einzeln
-  // herunter (kein Zip/Canvas-Compose — <a download> je Bild reicht).
+  // Laedt EIN Bild herunter: das komplette Profil der aktiven Farbwelt (enthaelt
+  // Avatar, Bio, Raster). Frueher wurden 4 Dateien gleichzeitig getriggert — das
+  // blockieren Browser (nur die erste kommt durch, wirkt kaputt). Ueber fetch->Blob
+  // ist EIN Download zuverlaessig; Fallback: Bild im Tab oeffnen (lange druecken/speichern).
+  async function rvDownload(e) {
+    e.preventDefault();
+    try { if (navigator.sendBeacon) navigator.sendBeacon('/api/track?e=cta_save&t=' + TOKEN); } catch (err) {}
+    const src = IMG_BASE + 'f-' + rvActiveWorld + '-profil.jpg';
+    try {
+      const blob = await (await fetch(src)).blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'social2scale-vorschau.jpg';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+    } catch (err) {
+      console.error('[reveal] Download fehlgeschlagen, oeffne im Tab:', err);
+      window.open(src, '_blank');
+    }
+  }
   function rvWireDownload() {
     const el = $('rv-cta-download');
+    if (el) el.addEventListener('click', rvDownload);
+  }
+
+  // Teilen mit Followern (den Mehrwert in Kooperation posten -> Gespraechs-Aufhaenger).
+  // Web Share API mit Datei, wo unterstuetzt (Mobile); sonst Text+Link; sonst Fallback
+  // auf den Download, damit "Teilen" nie ins Leere klickt. Bricht NIE die Seite.
+  function rvBtnFlash(btn, msg) {
+    if (!btn) return;
+    const orig = btn.innerHTML;
+    btn.textContent = msg; btn.classList.add('done');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('done'); }, 2200);
+  }
+  async function rvShare() {
+    try { if (navigator.sendBeacon) navigator.sendBeacon('/api/track?e=cta_share&t=' + TOKEN); } catch (e) {}
+    const url = 'https://social2scale.com';
+    const at = rvHandle ? '@' + rvHandle + ' · ' : '';
+    // Link IN den Text: viele Plattformen (WhatsApp) verwerfen das url-Feld, sobald
+    // ein Bild dabei ist — im Text ueberlebt der Link garantiert (viraler Loop).
+    const text = at + 'Schau dir meinen neuen Feed an ✨ gebaut mit social2scale.\\n\\nWillst du auch so einen? Kostenlos testen: ' + url;
+    const src = IMG_BASE + 'f-share.jpg';   // gebrandete Share-Card (Gradient + Logo + QR)
+    const btn = $('rv-cta-share');
+    // MOBIL: natives Share-Sheet (Insta/TikTok/WhatsApp direkt). Desktop-Share mit
+    // Datei ist unzuverlaessig (macOS packt's als ZIP) — deshalb nur bei coarse pointer.
+    if (matchMedia('(pointer:coarse)').matches && navigator.canShare) {
+      try {
+        const blob = await (await fetch(src)).blob();
+        const file = new File([blob], 'social2scale-share.jpg', { type: 'image/jpeg' });
+        if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text, url }); return; }
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;   // Nutzer hat abgebrochen
+        console.error('[reveal] Native Share fehlgeschlagen:', err);
+      }
+    }
+    // DESKTOP: EIN sauberes Bild (Share-Card) speichern + Caption/Link in die
+    // Zwischenablage. Kein ZIP, kein Desktop-Share-Weirdness.
+    try {
+      const blob = await (await fetch(src)).blob();
+      const u = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = u; a.download = 'social2scale-share.jpg';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(u), 4000);
+    } catch (err) {
+      console.error('[reveal] Share-Card-Download fehlgeschlagen:', err);
+      window.open(src, '_blank');
+    }
+    try { await navigator.clipboard.writeText(text); } catch (e) {}
+    rvBtnFlash(btn, 'Bild gespeichert · Text kopiert ✓');
+  }
+  function rvWireShare() {
+    const el = $('rv-cta-share');
+    if (el) el.addEventListener('click', rvShare);
+  }
+
+  // Kontakt-CTA: dieselbe Absicht wie der primaere Ruf -> selber Beacon, dann navigieren.
+  function rvWireContact() {
+    const el = $('rv-contact');
     if (!el) return;
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      navigator.sendBeacon('/api/track?e=cta_save&t=' + TOKEN);
-      ['profil', 's1', 's2', 's3'].forEach((slot, i) => {
-        setTimeout(() => {
-          const a = document.createElement('a');
-          a.href = IMG_BASE + 'f-' + rvActiveWorld + '-' + slot + '.jpg';
-          a.download = 'social2scale-vorschau-' + slot + '.jpg';
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        }, i * 150);
+    el.addEventListener('click', () => {
+      try { if (navigator.sendBeacon) navigator.sendBeacon('/api/track?e=cta_call&t=' + TOKEN); } catch (err) {}
+    });
+  }
+
+  // Captions (farbwelt-unabhaengig) einmal holen und in die Post-Karten setzen.
+  // Fehlt die Datei, bleiben die Platzhalter — nie ein Fehlerzustand.
+  let rvCaptions = [];
+  async function rvLoadCaptions() {
+    try {
+      const res = await fetch('/api/content/' + TOKEN);
+      const data = await res.json();
+      if (Array.isArray(data.captions)) rvCaptions = data.captions;
+    } catch (err) {
+      console.error('[reveal] Captions nicht ladbar:', err);
+    }
+    document.querySelectorAll('.rv-cap-text').forEach((el) => {
+      const t = rvCaptions[Number(el.dataset.cap)];
+      el.textContent = t || 'Deine persönliche Caption gestalten wir im Paket mit dir.';
+    });
+  }
+  function rvWireCaptionCopy() {
+    document.querySelectorAll('.rv-cap-copy').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = rvCaptions[Number(btn.dataset.cap)];
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const was = btn.textContent;
+          btn.textContent = 'Kopiert ✓'; btn.classList.add('done');
+          setTimeout(() => { btn.textContent = was; btn.classList.remove('done'); }, 1800);
+          try { if (navigator.sendBeacon) navigator.sendBeacon('/api/track?e=cta_caption&t=' + TOKEN); } catch (e) {}
+        } catch (err) {
+          console.error('[reveal] Caption kopieren fehlgeschlagen:', err);
+        }
       });
     });
   }
@@ -261,10 +409,17 @@ export const REVEAL_SCRIPT = `
     const section = $('reveal');
     if (!section) return;
     section.hidden = false;
+    const hint = $('rv-hint');
+    if (hint) hint.hidden = false;   // Scroll-Hinweis erst JETZT (nicht schon waehrend des Bauens)
     rvApplyWorld(0);
+    rvWireDots();
     rvWireSwitcher();
     rvWirePrimaryCta();
     rvWireDownload();
+    rvWireShare();
+    rvWireContact();
+    rvWireCaptionCopy();
+    rvLoadCaptions();
     rvWireScrollHint();
 
     const rvs = [...section.querySelectorAll('.rv')];

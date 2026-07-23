@@ -116,6 +116,19 @@ const PAGE_STYLE = `
   /* Kurze Screens (SE & Landscape): Handy skaliert, Sheet passt sich an, nichts ueberlappt den Header */
   @media (max-height:780px) and (max-width:520px){ .device{width:min(40vw,140px)} .sheet-in{min-height:auto;padding:.9rem 1.3rem 1.15rem} h2{font-size:1.55rem;margin:.5rem 0 .75rem} .disclaimer{margin-top:.5rem;font-size:.66rem} .foot{margin-top:.85rem} .stage{padding:.1rem 0} }
   @media (max-height:650px) and (max-width:520px){ .device{width:min(33vw,112px)} h2{font-size:1.35rem} }
+  /* ── DESKTOP: 2-Spalten statt einer gequetschten Mitte-Spalte. Phone links,
+     Formular rechts, breiter, mit Luft. ── */
+  @media (min-width:900px){
+    .app{max-width:1060px;min-height:100dvh;display:grid;grid-template-columns:1.05fr .95fr;
+      grid-template-areas:"top top" "stage sheet";column-gap:4.5rem;row-gap:.5rem;align-content:center;padding:2rem 3rem}
+    .top{grid-area:top;padding:0 .25rem 1.4rem}
+    .stage{grid-area:stage;align-self:center;padding:0}
+    .device{width:min(100%,330px)}
+    .disclaimer{max-width:34ch}
+    .sheet{grid-area:sheet;align-self:center;margin:0;box-shadow:0 44px 100px -46px rgba(0,0,0,.75)}
+    .sheet-in{min-height:auto;padding:2.1rem 2.1rem 2.3rem}
+    .grab{display:none}
+  }
   @media (prefers-reduced-motion:reduce){.q.on>*{opacity:1;transform:none;filter:none}}
 `;
 

@@ -36,8 +36,9 @@ import { nextAction, BUILDING_TIMEOUT_MS } from './poller.js';
 
 export { nextAction };
 
-/** Nur die ersten drei Grid-Kacheln bekommen ein echtes Foto (s. copy.js TILE_LABELS). */
-const GRID_FRAME_IDS = ['f-0-s1', 'f-0-s2', 'f-0-s3'];
+/** Nur die ersten drei Grid-Kacheln bekommen ein echtes Foto (s. copy.js TILE_LABELS):
+ *  die erste Slide (Hook/Cover) jedes der 3 Posts. */
+const GRID_FRAME_IDS = ['f-0-p1-s1', 'f-0-p2-s1', 'f-0-p3-s1'];
 const AVATAR_FRAME_ID = 'f-0-profil';
 const CLASS_CYCLE = ['t-dark', 't-tint', 't-accent', 't-line'];
 
@@ -48,13 +49,30 @@ function esc(v) {
   );
 }
 
+const ASSET_BASE = 'https://social2scale.com/assets';
+
 const PAGE_STYLE = `
-  .stage{position:relative;z-index:2;min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 2.4rem;gap:1.4rem}
+  .brandbar{position:relative;z-index:2;display:flex;justify-content:center;padding:1.6rem 1.25rem .4rem}
+  .brandbar .wm-logo{height:22px;width:auto;max-width:158px;object-fit:contain;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  .stage{position:relative;z-index:2;min-height:calc(100dvh - 4rem);display:flex;flex-direction:column;align-items:center;padding:1.4rem 1.25rem 2.4rem;gap:1.4rem}
   .caption{max-width:34rem;text-align:center;display:flex;flex-direction:column;gap:.5rem}
   .caption .kick{font-family:var(--ff-label);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
   .caption h2{font-family:var(--ff-serif);font-weight:460;font-size:clamp(1.4rem,1.1rem + 1.6vw,2rem);letter-spacing:-.02em;line-height:1.08}
   .caption h2 em{font-style:italic;font-weight:420;background:var(--flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .caption p{font-size:.9rem;color:var(--muted);line-height:1.5}
+  /* Lade-Kreis: fuellt sich mit dem ECHTEN Fortschritt (done/total) + ein
+     kontinuierlich rotierender Akzentbogen, damit es auch zwischen den Polls
+     sichtbar "arbeitet" (Spannung + "es geht voran"). */
+  .ring{position:relative;width:116px;height:116px;margin:.1rem auto .2rem;z-index:2}
+  .ring svg{position:absolute;inset:0;width:100%;height:100%}
+  .ring-track{transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:rgba(244,245,243,.08);stroke-width:6}
+  .ring-fg{fill:none;stroke:var(--emerald-soft);stroke-width:6;stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset .8s var(--e-spring);filter:drop-shadow(0 0 7px rgba(31,201,152,.55))}
+  .ring-spin{animation:ringspin 1.3s linear infinite}
+  .ring-spin circle{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-dasharray:30 400;opacity:.9}
+  @keyframes ringspin{to{transform:rotate(360deg)}}
+  .ring-c{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--ff-label);font-weight:700;font-size:26px;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+  .ring-c i{font-style:normal;font-size:13px;color:var(--muted);margin-left:2px;transform:translateY(-.5em)}
   .space{perspective:1600px;perspective-origin:50% 42%;padding:.5rem 0 1rem}
   .phone{position:relative;width:min(80vw,300px);aspect-ratio:300/620;border-radius:52px;padding:11px;will-change:transform;transform-style:preserve-3d;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 70px 130px -45px rgba(0,0,0,.9),0 0 80px -14px rgba(0,184,136,.16),0 0 90px -20px rgba(31,166,224,.14)}
   .phone::after{content:"";position:absolute;left:50%;bottom:-42px;width:60%;height:26px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(0,184,136,.24),rgba(31,166,224,.12),transparent 72%);filter:blur(12px);animation:breathe 5s var(--e-out) infinite}
@@ -123,10 +141,23 @@ const PAGE_STYLE = `
   .err h3{font-family:var(--ff-serif);font-size:1.15rem;font-weight:460}
   .err p{font-size:.85rem;color:var(--muted);max-width:22ch;line-height:1.5}
   .err a{font-family:var(--ff-label);font-weight:700;font-size:.8rem;color:var(--emerald-ink);background:var(--flow);border-radius:100px;padding:.6rem 1.1rem;text-decoration:none}
+  .err a.err-contact{background:none;color:var(--emerald-soft);padding:.2rem;font-weight:600;font-size:.78rem;border-bottom:1px solid transparent}
+  .err a.err-contact:hover{border-color:rgba(31,201,152,.5)}
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
     .tile .fill{opacity:1;transform:none;filter:none}
     .sweep{display:none}
+  }
+  /* ── DESKTOP: Build-Screen 2-spaltig (Text + Kreis links, Phone rechts) statt
+     gequetschter Mitte-Spalte. ── */
+  @media (min-width:900px){
+    .stage{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
+      grid-template-areas:"cap phone" "ring phone";column-gap:4.5rem;align-content:center;
+      min-height:calc(100dvh - 4rem);padding:2rem 3rem;gap:0}
+    .caption{grid-area:cap;text-align:left;max-width:none;align-self:end;margin-bottom:1.4rem}
+    .ring{grid-area:ring;justify-self:start;align-self:start;margin:0}
+    .space{grid-area:phone;align-self:center;padding:0}
+    .phone{width:min(100%,330px)}
   }
 `;
 
@@ -140,11 +171,18 @@ function tilesHtml() {
 
 function pageMarkup() {
   return `
+<header class="brandbar"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="22"></header>
 <div class="stage">
   <div class="caption">
     <span class="kick">social2scale · live</span>
     <h2>Dein Feed entsteht <em>gerade</em>.</h2>
-    <p>Das dauert normalerweise 15–40 Sekunden. Bleib einfach hier.</p>
+    <p>Das dauert meist ein bis zwei Minuten — dein Feed baut sich Stück für Stück auf. Bleib dran.</p>
+  </div>
+
+  <div class="ring" id="ring" role="img" aria-label="Fortschritt">
+    <svg class="ring-track" viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring-fg" id="ringFg" cx="60" cy="60" r="52"/></svg>
+    <svg class="ring-spin" viewBox="0 0 120 120"><circle cx="60" cy="60" r="52"/></svg>
+    <div class="ring-c"><span id="ringPct">0</span><i>%</i></div>
   </div>
 
   <div class="space">
@@ -162,7 +200,7 @@ function pageMarkup() {
 
         <div class="ig">
           <div class="ig-top">
-            <span class="name">dein.profil <span class="chev">▾</span></span>
+            <span class="name"><span id="ig-handle">dein.profil</span> <span class="chev">▾</span></span>
             <span class="sp">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -220,7 +258,9 @@ const PAGE_SCRIPT = `
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const tiles = [...document.querySelectorAll('.tile')];
   const sweepEl = $('sweep'), eqEl = $('eq'), fillEl = $('fill'), countEl = $('count'),
-    avatarEl = $('avatar'), errEl = $('err'), bloomEl = $('bloom');
+    avatarEl = $('avatar'), errEl = $('err'), bloomEl = $('bloom'),
+    ringFgEl = $('ringFg'), ringPctEl = $('ringPct');
+  const RING_CIRC = 327;   // 2·π·52 (Radius des Fortschritts-Kreises)
 
   // ── Live-Uhrzeit in der Statusleiste ──
   function tickClock() { const d = new Date(); $('clock').textContent = d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); }
@@ -253,14 +293,36 @@ const PAGE_SCRIPT = `
     img.src = IMG_BASE + frame + '.jpg'; img.loading = 'lazy'; img.alt = '';
     tile.appendChild(img); tile.classList.add('done');
   }
-  function applyAvatar(images) {
-    if (avatarEl.dataset.real === '1') return;
-    const key = 'free/' + TOKEN + '/' + AVATAR_FRAME_ID + '.jpg';
-    if (images.indexOf(key) === -1) return;
-    avatarEl.dataset.real = '1'; avatarEl.innerHTML = '';
-    const img = document.createElement('img');
-    img.src = IMG_BASE + AVATAR_FRAME_ID + '.jpg'; img.loading = 'lazy'; img.alt = '';
-    avatarEl.appendChild(img);
+  // ── Identitaet aus dem Formular ins Chrome ziehen (@handle + Vorname), sobald
+  //    /api/status sie mitliefert. Einmalig — danach steht der echte Handle statt
+  //    "dein.profil" auf Build- UND Reveal-Handy. rvSetVorname lebt im Reveal-Scope. ──
+  let identityApplied = false;
+  function applyIdentity(data) {
+    if (identityApplied || !data) return;
+    const handle = String(data.handle || '').replace(/^@+/, '').trim();
+    if (!handle) return;
+    identityApplied = true;
+    const at = '@' + handle;
+    const ig = $('ig-handle'); if (ig) ig.textContent = at;
+    // Avatar = sauberer Initial (NICHT das ganze Profilbild in den Kreis quetschen).
+    const initial = (String(data.vorname || '').trim().charAt(0) || handle.charAt(0) || '?').toUpperCase();
+    const avInner = avatarEl && avatarEl.querySelector('div');
+    if (avInner) avInner.textContent = initial;
+    if (typeof rvSetVorname === 'function') rvSetVorname(String(data.vorname || '').trim());
+    if (typeof rvSetHandle === 'function') rvSetHandle(handle);
+
+    // Erstgespraech-/Kontakt-CTA mit ihren Formular-Daten vorbefuellen (das
+    // /anfrage-Formular liest ?name/?email/?ig) — sie tippt nichts doppelt.
+    const params = new URLSearchParams();
+    if (data.name) params.set('name', String(data.name));
+    if (data.email) params.set('email', String(data.email));
+    if (handle) params.set('ig', handle);
+    const q = params.toString();
+    if (q) {
+      const url = 'https://social2scale.com/anfrage/?' + q;
+      const p = $('rv-cta-primary'); if (p) p.href = url;
+      const c = $('rv-contact'); if (c) c.href = url;
+    }
   }
 
   let total = TOTAL_DEFAULT;
@@ -269,6 +331,8 @@ const PAGE_SCRIPT = `
     const progress = Math.min(1, done / total);
     fillEl.style.transform = 'scaleX(' + progress + ')';
     countEl.textContent = done + ' / ' + total;
+    if (ringFgEl) ringFgEl.style.strokeDashoffset = (RING_CIRC * (1 - progress)).toFixed(1);
+    if (ringPctEl) ringPctEl.textContent = Math.round(progress * 100);
     const filled = Math.round(progress * tiles.length);
     tiles.forEach((tile, i) => {
       const wasDone = tile.classList.contains('done');
@@ -277,7 +341,6 @@ const PAGE_SCRIPT = `
       if (isDone && !wasDone && !reduce) { tile.classList.add('land'); setTimeout(() => tile.classList.remove('land'), 700); }
       if (isDone && images) applyRealTile(tile, images);
     });
-    if (images) applyAvatar(images);
     setStep(step);
     const fertig = done >= total;
     sweepEl.style.display = fertig ? 'none' : '';
@@ -305,16 +368,36 @@ const PAGE_SCRIPT = `
     console.error('[build] Fehlerzustand:', reason, 'retry:', retry);
     const copy = ERROR_COPY[reason] || (retry ? ERROR_COPY.render : ERROR_COPY.not_found);
     const cta = copy.ctaHref ? '<a href="' + copy.ctaHref + '">' + copy.ctaLabel + '</a>' : '';
-    errEl.innerHTML = '<h3>' + copy.title + '</h3><p>' + copy.body + '</p>' + cta;
+    const contact = copy.contactHref ? '<a class="err-contact" href="' + copy.contactHref + '">' + copy.contactLabel + ' →</a>' : '';
+    errEl.innerHTML = '<h3>' + copy.title + '</h3><p>' + copy.body + '</p>' + cta + contact;
     errEl.style.display = 'flex';
   }
 
   ${nextAction.toString()}
 
+  // ── Mindest-Bauzeit: meldet der allererste Poll schon 'ready' (Wiedereintritt mit
+  //    fertiger Vorschau), fehlt der emotionale Aufbau. Dann spielen wir die
+  //    Bau-Animation EINMAL ueber MIN_BUILD_MS ab, bevor der Reveal kommt. ──
+  const MIN_BUILD_MS = 4200;
+  let scripted = false;
+  function runScriptedBuild(images) {
+    if (scripted) return; scripted = true;
+    const texte = ['Wir lesen deine Marke …', 'Deine Texte entstehen …', 'Deine Farbwelten entstehen …', 'Wir setzen deinen Feed …'];
+    const start = Date.now();
+    const iv = setInterval(() => {
+      const p = Math.min(1, (Date.now() - start) / MIN_BUILD_MS);
+      setStep(texte[Math.min(texte.length - 1, Math.floor(p * texte.length))]);
+      render(Math.round(p * total), null, images);
+      if (p >= 1) { clearInterval(iv); showReveal(); }
+    }, 140);
+  }
+
   // ── Poller: ersetzt den Auto-Play-Zeitstrahl des Prototyps durch den echten Stand ──
   const pollStartedAt = Date.now();
+  let pollCount = 0;
   let pollTimer = null;
   async function poll() {
+    pollCount++;
     let data;
     try {
       const res = await fetch(STATUS_URL);
@@ -325,11 +408,19 @@ const PAGE_SCRIPT = `
       return;
     }
     if (typeof data.total === 'number' && data.total > 0) total = data.total;
-    render(data.done || 0, data.step, data.images);
+    applyIdentity(data);
     const action = nextAction(data, Date.now() - pollStartedAt);
+    if (action.kind === 'reveal') {
+      clearInterval(pollTimer);
+      // Erster Poll schon fertig -> Animation einmal nachholen; sonst (echter Bau
+      // war zu sehen) direkt rein.
+      if (pollCount === 1) runScriptedBuild(data.images);
+      else { render(data.done || 0, data.step, data.images); showReveal(); }
+      return;
+    }
+    render(data.done || 0, data.step, data.images);
     if (action.kind === 'poll') return;
     clearInterval(pollTimer);
-    if (action.kind === 'reveal') { showReveal(); return; }
     showError(action.reason, action.retry);
   }
   poll();

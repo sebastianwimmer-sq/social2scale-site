@@ -65,9 +65,13 @@ export const ERROR_COPY = {
   },
   render: {
     title: 'Nicht deine Schuld.',
-    body: "Da ist beim Bauen etwas schiefgelaufen — nicht deine Schuld. Probier's gleich nochmal.",
+    body: "Da ist beim Bauen etwas schiefgelaufen — nicht deine Schuld. Probier's gleich nochmal, oder schreib uns direkt, dann kümmern wir uns persönlich drum.",
     ctaHref: '/',
     ctaLabel: 'Nochmal eintragen',
+    // Direkter Draht: eine gescheiterte Generierung ist der Moment, wo eine Kundin
+    // abspringt/sauer wird — ein Mensch, den sie sofort erreicht, faengt das ab.
+    contactHref: 'mailto:info@social2scale.com?subject=Meine%20Vorschau%20hat%20nicht%20geklappt',
+    contactLabel: 'Direkt an uns schreiben',
   },
   not_found: {
     title: 'Diesen Link kennen wir nicht.',
@@ -77,7 +81,7 @@ export const ERROR_COPY = {
   },
   timeout: {
     title: 'Das dauert länger als sonst.',
-    body: 'Wir schicken dir das Ergebnis per Mail, sobald es fertig ist.',
+    body: 'Dein Feed baut sich im Hintergrund fertig — lad diese Seite in einer Minute einfach nochmal, dann liegt er für dich bereit.',
     ctaHref: '',
     ctaLabel: '',
   },
@@ -92,16 +96,20 @@ export const ERROR_COPY = {
  * "Feed freischalten"-Digistore-Aufhaenger, den es in Plan 3 noch nicht gibt).
  */
 export const REVEAL = {
-  eyebrow: 'social2scale · dein Ergebnis',
+  eyebrow: 'social2scale · dein Freebie',
   head: 'Fertig. Das ist',
   headAccent: 'dein Feed.',
   sub: 'Zwei Farbwelten, fertig zum Posten. Wähl deine — und sieh, wie sie wirkt.',
-  offerHead: 'Und in vier Wochen wieder?',
-  offerSub:
-    'Diese Vorschau zeigt, was für deine Marke möglich ist — aber monatlich konsistent posten ' +
-    'schafft kaum jemand allein. Dein Paket übernimmt genau das: beide Farbwelten, alle Vorlagen ' +
-    'und Texte, jeden Monat neu, ohne Wasserzeichen.',
-  ctaPrimary: 'Erstgespräch buchen',
+  offerHead: 'Du willst mehr?',
+  offerLead: 'Das war ein Vorgeschmack. Deinen ganzen Auftritt ziehen wir exklusiv und von Hand auf — zugeschnitten auf dich.',
+  values: [
+    'Deine komplette Marken-Handschrift',
+    'Alle Texte, Hooks & Vorlagen — von uns gemacht',
+    'Ohne Wasserzeichen, bereit zum Posten',
+  ],
+  ctaPrimary: 'Lass uns starten',
   ctaSecondary: 'Vorschau speichern',
-  wmNote: 'Deine Gratis-Vorschau trägt ein dezentes s2s-Wasserzeichen. Kein Kauf nötig, um sie zu behalten.',
+  ctaShare: 'Mit Followern teilen',
+  contactLabel: 'Noch Fragen? Schreib uns direkt',
+  wmNote: 'Dein Freebie trägt ein dezentes s2s-Zeichen — behalt es, ganz ohne Kauf.',
 };

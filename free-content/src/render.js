@@ -26,7 +26,8 @@ export function r2Key(token, frameId) {
  * @returns {Promise<string[]>} R2-Keys in Render-Reihenfolge
  */
 export async function renderAll(env, token, clean, copy, palettes, onProgress) {
-  const html = buildPage(clean, copy, palettes);
+  // shareUrl = Funnel-Einstieg fuer den QR auf der Share-Card (viraler Loop).
+  const html = buildPage(clean, copy, palettes, env.PUBLIC_ORIGIN || 'https://social2scale.com');
   let browser;
   const keys = [];
 

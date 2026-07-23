@@ -215,7 +215,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     const html = await zweiter.text();
     expect(html).toContain('schon benutzt');
     // Spec §9: jede Fehlerseite bietet einen Ausweg.
-    expect(html).toContain('start.social2scale.com/');
+    expect(html).toContain(env.PUBLIC_ORIGIN + '/'); // Spec §9: Ausweg zum konfigurierten Formular
   });
 
   it('lehnt einen abgelaufenen Token ab und bietet einen neuen an', async () => {
@@ -225,7 +225,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('nicht mehr g');
-    expect(html).toContain('start.social2scale.com/');
+    expect(html).toContain(env.PUBLIC_ORIGIN + '/'); // Spec §9: Ausweg zum konfigurierten Formular
   });
 
   it('lehnt einen unbekannten Token ab', async () => {
@@ -233,7 +233,7 @@ describe('GET /c/:token — Bestaetigung', () => {
     expect(res.status).toBe(200);
     const html = await res.text();
     expect(html).toContain('kennen wir nicht');
-    expect(html).toContain('start.social2scale.com/');
+    expect(html).toContain(env.PUBLIC_ORIGIN + '/'); // Spec §9: Ausweg zum konfigurierten Formular
   });
 
   it('zeigt eine echte Seite statt 500, wenn der Handle schon bestaetigt ist', async () => {
@@ -283,7 +283,7 @@ describe('GET /api/status/:token', () => {
     await post(GUELTIG);
     const { token } = await env.DB.prepare('SELECT token FROM free_leads').first();
     const s = await (await SELF.fetch(`https://start.social2scale.com/api/status/${token}`)).json();
-    expect(s.total).toBe(8);
+    expect(s.total).toBe(21);
     expect(s.done).toBe(0);
     expect(s).toHaveProperty('step');
   });

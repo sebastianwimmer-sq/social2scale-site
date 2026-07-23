@@ -5,7 +5,7 @@
  */
 
 import { stripControlChars } from './validate.js';
-import { confirmMailHtml } from './pages/confirm-email.js';
+import { confirmMailHtml, resultMailHtml } from './pages/confirm-email.js';
 
 const BREVO_MAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
@@ -48,14 +48,10 @@ export function buildConfirmMail(lead, publicOrigin) {
 
 export function buildResultMail(lead, publicOrigin) {
   const link = `${publicOrigin}/r/${encodeURIComponent(lead.token)}`;
+  const vorname = esc(firstName(lead.name, 'schön'));
   return {
-    subject: 'Dein s2s Free Content liegt bereit',
-    htmlContent: `
-      <p>Hey ${esc(firstName(lead.name))},</p>
-      <p>hier geht's zu deinem Content:</p>
-      <p><a href="${esc(link)}">Meinen Free Content oeffnen</a></p>
-      <p>— social2scale</p>
-    `.trim(),
+    subject: 'Dein Feed ist fertig — sieh ihn dir an',
+    htmlContent: resultMailHtml(vorname, esc(link)),
   };
 }
 

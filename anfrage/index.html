@@ -387,6 +387,9 @@
       if (nm) { var nn = document.getElementById('name'); if (nn && !nn.value) nn.value = nm; }
       var em = (p.get('email') || '').trim().slice(0, 120);
       if (em) { var ee = document.getElementById('email'); if (ee && !ee.value) ee.value = em; }
+      // ?ig= (Instagram-Handle, z. B. aus der Free-Content-Vorschau) in die Ziel-Notiz
+      var ig = (p.get('ig') || '').trim().replace(/^@+/, '').slice(0, 40);
+      if (ig) { var gg = document.getElementById('goal'); if (gg && !gg.value) gg.value = 'Instagram: @' + ig + '\n'; }
     } catch (e) {}
 
     // Scroll-Reveal (prefers-reduced-motion-safe)

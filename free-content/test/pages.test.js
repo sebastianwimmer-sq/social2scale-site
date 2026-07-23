@@ -35,6 +35,25 @@ describe('Build-Screen /r/:token', () => {
     expect(html).not.toContain('base64');
   });
 
+  it('das ausgelieferte /r/-Inline-Script ist syntaktisch gueltiges JS', async () => {
+    // Regressionsschutz: bootstrap + PAGE_SCRIPT + REVEAL_SCRIPT werden als EIN
+    // <script> ausgeliefert. Ein Syntaxfehler dort (z. B. ein echter Zeilenumbruch
+    // in einem einfach gequoteten String, weil im Template-Literal \n statt \\n stand)
+    // bricht die GESAMTE Reveal-/Build-Logik im Browser — und rutscht an reinen
+    // Markup-Assertions vorbei. new Function() parst den Body (fuehrt ihn nicht aus)
+    // und wirft genau bei so einem Fehler.
+    const html = await (
+      await worker.fetch(
+        new Request('https://start.social2scale.com/r/deadbeefdead'),
+        env,
+        createExecutionContext()
+      )
+    ).text();
+    const m = html.match(/<script>([\s\S]*?)<\/script>/);
+    expect(m).not.toBeNull();
+    expect(() => new Function(m[1])).not.toThrow();
+  });
+
   it('Reveal-Markup ist in /r/:token vorhanden (versteckt bis ready) mit beiden CTAs', async () => {
     const html = await (
       await worker.fetch(
@@ -48,6 +67,61 @@ describe('Build-Screen /r/:token', () => {
     expect(html).toContain('Beispiel-Vorschau'); // Vorschau-Hinweis auch im Reveal
     expect(html).toMatch(/f-1-|Welt|Farbwelt/); // Farbwelt-Switcher-Anker
     expect(html).toMatch(/<section id="reveal" hidden>/); // versteckt bis showReveal()
+  });
+
+  it('Reveal zeigt 3 vertikal gestapelte Post-Karussells mit je 3 Slides, Dots und Caption+Kopieren', async () => {
+    const html = await (
+      await worker.fetch(
+        new Request('https://start.social2scale.com/r/deadbeefdead'),
+        env,
+        createExecutionContext()
+      )
+    ).text();
+
+    // 3 Post-Bloecke (vertikal gestapelt im rv-posts-stack)
+    expect(html).toContain('class="rv-posts-stack"');
+    expect(html).toContain('data-post="1"');
+    expect(html).toContain('data-post="2"');
+    expect(html).toContain('data-post="3"');
+
+    // Jeder Post = horizontales Slide-Karussell mit 3 Slides (data-post/data-slide-Vertrag).
+    expect(html).toContain('class="rv-track"');
+    for (const p of [1, 2, 3]) {
+      for (const s of [1, 2, 3]) {
+        expect(html).toContain(`data-post="${p}" data-slide="${s}"`);
+      }
+    }
+
+    // Dots-Indikator (● ○ ○) je Karussell — erste Slide aktiv.
+    expect(html).toContain('class="rv-dots"');
+    expect(html).toContain('class="rv-dot act"');
+
+    // Caption + Kopieren pro Post: eine Caption pro Post-Index 0..2.
+    expect(html).toContain('data-cap="0"');
+    expect(html).toContain('data-cap="1"');
+    expect(html).toContain('data-cap="2"');
+    expect(html.match(/class="rv-cap-copy" data-cap="\d"/g)?.length).toBe(3);
+
+    // Kein Rest der alten flachen Struktur mehr (data-slot / rv-post-shot).
+    expect(html).not.toContain('data-slot=');
+    expect(html).not.toContain('rv-post-shot');
+  });
+
+  it('Build-Screen zieht die 3 echten Kacheln aus der ersten Slide jedes Posts und pollt gegen total:21', async () => {
+    const html = await (
+      await worker.fetch(
+        new Request('https://start.social2scale.com/r/deadbeefdead'),
+        env,
+        createExecutionContext()
+      )
+    ).text();
+    // Erste Slide (Hook) jedes Posts als echte Build-Kachel.
+    expect(html).toContain('data-frame="f-0-p1-s1"');
+    expect(html).toContain('data-frame="f-0-p2-s1"');
+    expect(html).toContain('data-frame="f-0-p3-s1"');
+    // Gesamtzahl = FRAME_IDS.length (21 = 20 Feed-Frames + 1 Share-Card), nicht mehr hart 8.
+    expect(html).toContain('0 / 21');
+    expect(html).toContain('TOTAL_DEFAULT=21');
   });
 });
 

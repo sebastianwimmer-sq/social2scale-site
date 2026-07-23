@@ -156,11 +156,42 @@ export async function generateFor(env, token) {
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.texte);
     const copy = await generateCopy(env, clean);   // wirft nie, faellt zurueck
 
+    // Ist Claude die Ursache des Fallbacks (Guthaben leer / API-Fehler / falsch
+    // konfiguriert), bekommt die Kundin STILL generische Copy — das darf nicht
+    // unbemerkt bleiben. Founder-Alarm, damit Sebi das Guthaben/den Key pruefen kann.
+    // (ablehnen/falsche Form markiert copy.js bewusst NICHT — das ist kein Billing-Problem.)
+    if (copy?._fallback === 'no_key' || copy?._fallback === 'claude_error') {
+      console.error('[generate] Copy-Fallback wegen Claude:', copy._fallback, 'Lead', lead.id);
+      try {
+        await notifyFounders(env, lead, `⚠️ CLAUDE-FALLBACK (${copy._fallback}) — Kundin bekommt GENERISCHE Copy. Anthropic-Guthaben/API/Key pruefen!`);
+      } catch (e) {
+        console.error('[generate] Founder-Alarm (Claude-Fallback) ging nicht raus:', e);
+      }
+    }
+
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.farben);
     const palettes = derivePalettes(lead.stimmung, lead.farbe);
 
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.rendern);
     await mitRetry(() => renderAll(env, token, clean, copy, palettes));
+
+    // Captions (farbwelt-unabhaengig) neben die Bilder legen — der Reveal holt sie
+    // einmal von /api/content/:token. Struktur bleibt { captions: [3 strings] }
+    // (die Form, an der /api/content und der Reveal haengen), jetzt aber gefuellt
+    // aus posts[i].caption statt der frueheren Top-Level-captions. Non-fatal:
+    // fehlende Captions duerfen die fertigen Bilder nicht kosten.
+    const captions = Array.isArray(copy.posts)
+      ? copy.posts.map((post) => (typeof post?.caption === 'string' ? post.caption : ''))
+      : [];
+    try {
+      await env.IMAGES.put(
+        `free/${token}/content.json`,
+        JSON.stringify({ captions }),
+        { httpMetadata: { contentType: 'application/json' } }
+      );
+    } catch (err) {
+      console.error('[generate] Captions konnten nicht gespeichert werden:', err);
+    }
 
     // generated_at ist bereits vom Claim gesetzt — hier nur der Abschluss.
     // r2_prefix EINMAL berechnen und in UPDATE und Spiegel gleich verwenden,
@@ -209,14 +240,28 @@ export async function buildStatus(env, token) {
   let done = 0;
   let images = [];
   try {
-    const liste = await env.IMAGES.list({ prefix: `free/${token}/`, limit: FRAME_IDS.length });
-    images = (liste.objects || []).map((o) => o.key).sort();
+    // +5 Puffer, damit auch bei allen Frames + content.json nichts abgeschnitten wird.
+    const liste = await env.IMAGES.list({ prefix: `free/${token}/`, limit: FRAME_IDS.length + 5 });
+    // NUR .jpg-Frames zaehlen: content.json (die Captions) liegt im selben Prefix und
+    // wuerde den Fortschritt sonst faelschlich hochzaehlen (z. B. 21/21 bei 20 Bildern).
+    images = (liste.objects || []).map((o) => o.key).filter((k) => k.endsWith('.jpg')).sort();
     done = images.length;
   } catch (err) {
     console.error('[generate] R2 nicht lesbar:', err);
   }
 
-  const basis = { state: lead.status, step: lead.build_step || '', done, total: FRAME_IDS.length };
+  // handle/vorname treiben die Personalisierung des Vorschau-Chromes (@handle statt
+// "dein.profil", Vorname im Reveal). Nur diese zwei: der Handle ist ohnehin
+// oeffentlich, der Vorname ist ihr eigener — beides bekommt nur, wer ihren Token
+// hat (die Besucherin selbst, aus dem Mail-Redirect). E-Mail/Thema bleiben draussen.
+  // handle/vorname personalisieren das Chrome; name/email fuellen (nur ihre eigenen
+  // Angaben, hinter ihrem Token) den Erstgespraech-CTA vor, damit sie sie nicht
+  // erneut tippen muss.
+  const vorname = String(lead.name || '').trim().split(/\s+/)[0] || '';
+  const basis = {
+    state: lead.status, step: lead.build_step || '', done, total: FRAME_IDS.length,
+    handle: lead.handle || '', vorname, name: lead.name || '', email: lead.email || '',
+  };
   if (lead.status === 'ready') return { ...basis, images };
   // grund (Moderation vs. Render, siehe markiereFehler oben) macht den Build-Screen
   // faehig, eine Sackgasse ("nochmal" bei abgelehntem Thema = derselbe Reject) von

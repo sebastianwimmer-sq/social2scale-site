@@ -55,7 +55,14 @@ export const LOOK_CSS = `
 
   /* dezent: Marke tritt zurueck, Handle fuehrt */
   .wm-soft .mark { color: var(--ink-soft); }
-  .wm-soft .mark b { font-weight: 700; color: var(--ink); }
+  /* Echtes Logo-Asset (kein CSS-Text-Wordmark) — als Maske in die Ink-Farbe der
+     Farbwelt getoent, damit es auf hellen UND dunklen Frames sichtbar bleibt. */
+  .lock .wm-logo {
+    display: inline-block; width: 132px; height: 20px; vertical-align: middle;
+    background: var(--ink);
+    -webkit-mask: url(https://social2scale.com/assets/sig-wordmark.png) left center / contain no-repeat;
+            mask: url(https://social2scale.com/assets/sig-wordmark.png) left center / contain no-repeat;
+  }
 
   /* ── Post-Slide ──
      Headline unten verankert, nicht oben: sonst klafft die Mitte leer. Spannung
@@ -86,6 +93,32 @@ export const LOOK_CSS = `
     color: var(--ink-soft); margin-top: 44px; max-width: 20ch;
   }
   .spacer-fill { flex: 1; }
+
+  /* ── value-Slide (Slide 2) ──
+     Nummern-/punktbetont: die grosse Ziffer macht sofort klar, dass hier der Kern
+     kommt. Setzt sich bewusst vom Cover ab, damit ein Karussell nicht 3× gleich wirkt. */
+  .big-num {
+    font-family: var(--ff-display); font-weight: 700; color: var(--accent);
+    font-size: 260px; line-height: .78; letter-spacing: -.05em; margin-bottom: 10px;
+  }
+  .head-value { font-size: 84px; line-height: .98; }
+  .head-value em { font-style: normal; color: var(--accent); }
+
+  /* ── cta-Slide (Slide 3) ──
+     Ruhiger Abschluss: der Handle fuehrt gross, „Folge fuer mehr" als klare,
+     freundliche Handlung. Kein neues Statement-Gewicht mehr, das Karussell laeuft aus. */
+  .slide-cta .cta-handle {
+    font-family: var(--ff-display); font-weight: 700; color: var(--ink);
+    font-size: 72px; letter-spacing: -.03em; line-height: 1; word-break: break-word;
+  }
+  .head-cta { font-size: 88px; margin-top: 30px; }
+  .cta-follow {
+    align-self: flex-start; display: inline-flex; align-items: center; gap: 14px;
+    margin-top: 46px; padding: 22px 40px; border-radius: 999px;
+    font-family: var(--ff-body); font-weight: 600; font-size: 30px; letter-spacing: -.01em;
+    color: var(--paper); background: var(--accent);
+  }
+  .cta-follow .cta-plus { font-family: var(--ff-display); font-weight: 700; font-size: 34px; line-height: 1; }
 
   /* ── Profil-Vorschau (Phone) ──
      Muss auf den ersten Blick wie IHR Instagram aussehen — sonst faellt der
@@ -142,4 +175,49 @@ export const LOOK_CSS = `
   .c-accent { background: var(--accent); color: var(--paper); }
   .c-tint { background: color-mix(in oklab, var(--accent) 15%, var(--paper)); color: var(--ink); }
   .c-line { background: var(--paper); color: var(--ink-soft); border: 2px solid var(--rule); }
+
+  /* ── Share-Card (f-share) ── farbwelt-unabhaengig, s2s-Markenlook.
+     Eigene Farben inline (nicht die Kunden-Palette): der geteilte Post soll
+     als social2scale erkennbar sein. */
+  .share { background: #03080D; color: #F2F3F1; }
+  .share-grad {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(90% 68% at 12% 5%, rgba(0,184,136,.42), transparent 55%),
+      radial-gradient(96% 74% at 92% 97%, rgba(31,166,224,.36), transparent 56%),
+      linear-gradient(150deg, #04140F, #05131C 52%, #03080D);
+  }
+  .share-inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; padding: 100px 90px 88px; }
+  .share-logo { width: 232px; height: auto; display: block; }
+  .share-mid { margin-top: 82px; }
+  .share-eyebrow {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 25px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: #1FC998;
+  }
+  .share-head {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 104px;
+    line-height: .98; letter-spacing: -.04em; margin-top: 22px;
+  }
+  .share-head em {
+    font-style: normal;
+    background: linear-gradient(120deg, #1FC998, #1FA6E0);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .share-sub {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 31px; line-height: 1.45;
+    color: rgba(242,243,241,.82); margin-top: 32px; max-width: 22ch;
+  }
+  .share-sub b { color: #F2F3F1; font-weight: 700; }
+  .share-qr-wrap { margin-top: auto; display: flex; align-items: center; gap: 36px; }
+  .share-qr {
+    width: 240px; height: 240px; flex: none; background: #fff; border-radius: 30px;
+    padding: 24px; box-shadow: 0 34px 70px -22px rgba(0,0,0,.6);
+  }
+  .share-qr svg { display: block; width: 100%; height: 100%; }
+  .share-qr-cta {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 42px;
+    line-height: 1.12; letter-spacing: -.02em; color: #F2F3F1;
+  }
+  .share-qr-cta em { font-style: normal; color: #1FC998; }
+  .share-qr-cta .share-arrow { color: #1FC998; }
 `;

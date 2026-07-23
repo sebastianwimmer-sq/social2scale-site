@@ -159,6 +159,27 @@ describe('generateFor', () => {
     );
     expect(anAlarm).toBe(true);
   });
+
+  it('legt content.json mit 3 Captions aus posts ab', async () => {
+    // Ohne ANTHROPIC_API_KEY liefert generateCopy den Fallback — dessen posts
+    // tragen je eine Caption. content.json behaelt die Form { captions: [3] }.
+    const token = await bestaetigterLead();
+    renderMock.mockImplementationOnce(async (e, tok) => {
+      const keys = FRAME_IDS.map((id) => `free/${tok}/${id}.jpg`);
+      for (const k of keys) await e.IMAGES.put(k, 'BILD');
+      return keys;
+    });
+
+    const r = await generateFor(env, token);
+    expect(r.ok).toBe(true);
+
+    const obj = await env.IMAGES.get(`free/${token}/content.json`);
+    expect(obj).toBeTruthy();
+    const parsed = JSON.parse(await obj.text());
+    expect(Array.isArray(parsed.captions)).toBe(true);
+    expect(parsed.captions).toHaveLength(3);
+    expect(parsed.captions.every((s) => typeof s === 'string' && s.trim().length > 0)).toBe(true);
+  });
 });
 
 describe('buildStatus', () => {
@@ -170,7 +191,7 @@ describe('buildStatus', () => {
     const token = await bestaetigterLead();
     const s = await buildStatus(env, token);
     expect(s.state).toBe('confirmed');
-    expect(s.total).toBe(8);
+    expect(s.total).toBe(21);
     expect(s.done).toBe(0);
     expect(typeof s.step).toBe('string');
   });
@@ -178,7 +199,7 @@ describe('buildStatus', () => {
   it('zaehlt done aus den TATSAECHLICH in R2 liegenden Bildern', async () => {
     const token = await bestaetigterLead();
     await env.IMAGES.put(`free/${token}/f-0-profil.jpg`, 'x');
-    await env.IMAGES.put(`free/${token}/f-0-s1.jpg`, 'x');
+    await env.IMAGES.put(`free/${token}/f-0-p1-s1.jpg`, 'x');
     const s = await buildStatus(env, token);
     expect(s.done).toBe(2);   // echt gezaehlt, nicht geschaetzt
   });

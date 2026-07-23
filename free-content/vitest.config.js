@@ -11,7 +11,12 @@ export default defineWorkersConfig({
     },
     poolOptions: {
       workers: {
-        wrangler: { configPath: './wrangler.toml' },
+        // Test-Config = wrangler.toml OHNE [[queues.consumers]]. Grund: mit Consumer
+        // liefert Miniflare die im Confirm-Pfad gesendete Queue-Nachricht NACH dem
+        // Testlauf an queue() aus → generateFor laeuft gegen die abgeraeumte Test-D1
+        // ("no such table") und reisst das Isolated-Storage. So wird nur produziert
+        // (Nachricht abgelegt), nicht verarbeitet; die queue()-Logik testen wir separat.
+        wrangler: { configPath: './wrangler.test.toml' },
         miniflare: {
           // Lokale D1 im Test — lenkt die database_id aus wrangler.toml auf eine
           // Test-DB um. DIESE Zeile ist noetig: ohne sie zeigt das Binding auf die

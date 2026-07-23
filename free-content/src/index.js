@@ -23,7 +23,7 @@ const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
 
 // Beacon-Events (Spec Plan 3 Task 6): 'cta_call' wird bereits von reveal.js per
 // navigator.sendBeacon geschickt (Task 4) — die Allowlist MUSS ihn kennen.
-const TRACK_EVENTS = ['entered', 'confirmed', 'ready', 'cta_call', 'cta_save'];
+const TRACK_EVENTS = ['entered', 'confirmed', 'ready', 'cta_call', 'cta_save', 'cta_share', 'cta_caption'];
 // Derselbe Zeichensatz/Laengenrahmen wie /api/status/:token — ein Token ist hier
 // nur eine lose Referenz, kein Datenzugriffs-Schluessel.
 const TOKEN_RE = /^[a-zA-Z0-9_-]{1,128}$/;
@@ -73,14 +73,31 @@ async function handleSubmit(request, env, ctx, cors) {
   // Billige Schichten zuerst — ein Bot soll keine DB- oder DNS-Arbeit ausloesen.
   // Honeypot und Zu-schnell antworten bewusst wie ein Erfolg: der Bot soll nicht
   // lernen, woran er gescheitert ist.
-  if (isHoneypotTripped(body)) return json(NEUTRAL, 200, cors);
-  if (isTooFast(body)) return json(NEUTRAL, 200, cors);
+  // Diese zwei antworten der Besucherin bewusst wie ein Erfolg (Bot soll nicht lernen),
+  // werden aber SERVERSEITIG geloggt — sonst ist ein still verworfener echter Lead
+  // (z. B. eine zu schnell ausgefuellte Anfrage) nicht diagnostizierbar.
+  if (isHoneypotTripped(body)) {
+    console.error('[submit] Abgewiesen: Honeypot ausgeloest');
+    return json(NEUTRAL, 200, cors);
+  }
+  // Die Zu-schnell-Heuristik ist NUR ein Ersatz-Signal fuer den Fall, dass Turnstile
+  // gar nicht konfiguriert ist. Mit aktivem Turnstile (dem echten Menschbeweis, gleich
+  // darunter) wuerde sie sonst echte, schnell (z. B. per Autofill) ausfuellende
+  // Nutzerinnen STILL wegwerfen — genau der Bug, der einen echten Lead lautlos gekostet
+  // hat. Ist ein Turnstile-Secret gesetzt, entscheidet allein Turnstile.
+  if (!env.TURNSTILE_SECRET && isTooFast(body)) {
+    console.error('[submit] Abgewiesen: zu schnell (ohne Turnstile), elapsed=', body?.elapsed, 'ms');
+    return json(NEUTRAL, 200, cors);
+  }
 
   const ip = clientIp(request);
 
   if (env.TURNSTILE_SECRET) {
     const ok = await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET);
-    if (!ok) return json({ ok: false, error: 'captcha' }, 403, cors);
+    if (!ok) {
+      console.error('[submit] Abgewiesen: Turnstile ungueltig/fehlt (Token-Laenge=', String(body.turnstile || '').length, ')');
+      return json({ ok: false, error: 'captcha' }, 403, cors);
+    }
   } else {
     // Ohne Secret ist Schicht 1 — das eigentliche Bot-Gate — AUS. Ein vergessenes
     // `wrangler secret put TURNSTILE_SECRET` darf nicht still passieren: dann kaeme
@@ -90,7 +107,10 @@ async function handleSubmit(request, env, ctx, cors) {
   }
 
   const checked = validateSubmission(body);
-  if (!checked.ok) return json({ ok: false, error: checked.error }, 422, cors);
+  if (!checked.ok) {
+    console.error('[submit] Abgewiesen: Validierung —', checked.error);
+    return json({ ok: false, error: checked.error }, 422, cors);
+  }
 
   // registerAttempt schreibt ZUERST und urteilt dann — nur so haelt der Deckel gegen
   // einen parallelen Burst. Es zaehlt auch abgelehnte Versuche mit; das ist gewollt,
@@ -103,9 +123,13 @@ async function handleSubmit(request, env, ctx, cors) {
     console.error('[submit] Rate-Limit-Zaehlung fehlgeschlagen:', err);
     return json({ ok: false, error: 'backend' }, 503, cors);
   }
-  if (!limited.ok) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+  if (!limited.ok) {
+    console.error('[submit] Abgewiesen: Rate-Limit —', limited.reason, 'IP', ip);
+    return json({ ok: false, error: 'rate_limited' }, 429, cors);
+  }
 
   if (!(await hasMailServer(checked.value.emailNorm))) {
+    console.error('[submit] Abgewiesen: E-Mail-Domain ohne Mailserver —', checked.value.emailNorm);
     return json({ ok: false, error: 'email_domain' }, 422, cors);
   }
 
@@ -117,6 +141,16 @@ async function handleSubmit(request, env, ctx, cors) {
   } catch (err) {
     console.error('[submit] Lead konnte nicht gespeichert werden:', err);
     return json({ ok: false, error: 'backend' }, 503, cors);
+  }
+
+  // Handle schon von einem bestaetigten Lead belegt (Anti-Hijack, leads.js) -> action
+  // 'handle_taken', mail 'none'. Antwort bleibt bewusst NEUTRAL (Anti-Enumeration,
+  // Tests "keine Enumeration"). ABER serverseitig loggen, sonst ist genau dieser Fall
+  // (kein Lead, keine Mail, trotzdem "Schau ins Postfach") nicht diagnostizierbar —
+  // er hat heute eine Stunde Debugging gekostet. Ob dieser stille Ausgang bleibt oder
+  // eine klare Meldung bekommt, ist eine offene Produkt-/Datenschutz-Entscheidung.
+  if (action === 'handle_taken') {
+    console.error('[submit] Handle bereits von bestaetigtem Lead belegt (still, Anti-Enumeration):', checked.value.handleNorm);
   }
 
   // Mailversand und Aufraeumen duerfen die Antwort nicht aufhalten.
@@ -151,13 +185,34 @@ async function handleSubmit(request, env, ctx, cors) {
   return json(NEUTRAL, 200, cors);
 }
 
+// Gebrandete Info-/Fehlerseite (frueher eine nackte weisse Seite mit zwei Zeilen —
+// wirkte wie ein Bug). Selbe Markensprache wie das Erlebnis: dunkler Wash, Logo,
+// Fraunces-Headline, Emerald-Akzent. Gehostete Assets, kein base64.
 function htmlPage(title, body) {
-  return new Response(
-    '<!doctype html><html lang="de"><head><meta charset="utf-8">' +
-      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-      `<title>${title}</title></head><body><main><h1>${title}</h1>${body}</main></body></html>`,
-    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-  );
+  const html = `<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>${title} · social2scale</title>
+<style>
+  @font-face{font-family:"Fraunces";font-weight:300 600;font-style:normal;font-display:swap;src:url(https://social2scale.com/fonts/fraunces-normal-latin.woff2) format("woff2")}
+  @font-face{font-family:"Hanken Grotesk";font-weight:400 600;font-style:normal;font-display:swap;src:url(https://social2scale.com/fonts/hanken-latin.woff2) format("woff2")}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:2rem 1.25rem;font-family:"Hanken Grotesk",system-ui,sans-serif;color:#F4F5F3;line-height:1.55;
+    background:radial-gradient(86% 58% at 15% 2%,rgba(0,184,136,.22),transparent 55%),radial-gradient(84% 64% at 90% 98%,rgba(20,140,200,.18),transparent 58%),linear-gradient(150deg,#04140F,#05131C 52%,#03080D)}
+  main{width:100%;max-width:30rem;text-align:center;display:flex;flex-direction:column;align-items:center;gap:1rem}
+  .wm{height:22px;width:auto;margin-bottom:1rem;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:460;font-size:clamp(1.6rem,1.3rem+1.6vw,2.2rem);line-height:1.1;letter-spacing:-.02em;text-wrap:balance}
+  p{color:#9EA4A2;font-size:1rem}
+  a{display:inline-block;margin-top:.4rem;font-family:"Hanken Grotesk",sans-serif;font-weight:700;font-size:.95rem;color:#04201A;text-decoration:none;padding:.85rem 1.5rem;border-radius:100px;
+    background:linear-gradient(135deg,#1FC998,#00B888 52%,#1FA6E0);box-shadow:0 16px 40px -18px rgba(0,184,136,.6)}
+  strong{color:#F4F5F3}
+</style></head>
+<body><main>
+  <img class="wm" src="https://social2scale.com/assets/sig-wordmark.png" alt="social2scale">
+  <h1>${title}</h1>
+  ${body}
+</main></body></html>`;
+  return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
 }
 
 /**
@@ -218,11 +273,18 @@ async function handleConfirm(token, env, ctx) {
 
   ctx.waitUntil(track(env, { event: 'confirmed', token }));
 
-  // Nicht blockieren: Claude + 8 Renderings dauern 20-40 s. Sie sieht sofort den
-  // Build-Screen, der Fortschritt kommt ueber /api/status (Spec §6).
+  // Generierung an die QUEUE geben, NICHT ins waitUntil-Grace-Fenster des Confirm-
+  // Requests (~30s zu kurz fuer Claude-Copy + 20-Frame-Render → "waitUntil tasks
+  // cancelled", Lead blieb bei 'building' haengen). Der Consumer (queue()) hat volles
+  // Zeitbudget + Auto-Retry. Das Enqueue ist schnell und passt locker ins Grace-
+  // Fenster. Faellt die Queue-Sendung selbst aus, direkter Fallback (besser knapp als
+  // gar nicht). Sie sieht sofort den Build-Screen, Fortschritt kommt ueber /api/status.
   ctx.waitUntil(
-    generateFor(env, token).then((r) => {
-      if (!r.ok) console.error('[confirm] Generierung nicht gelaufen:', r.grund, token);
+    env.GEN_QUEUE.send({ token }).catch((err) => {
+      console.error('[confirm] Queue-Send fehlgeschlagen, direkter Fallback:', err);
+      return generateFor(env, token).then((r) => {
+        if (!r.ok) console.error('[confirm] Fallback-Generierung nicht gelaufen:', r.grund, token);
+      });
     })
   );
 
@@ -296,6 +358,24 @@ export default {
       }
     }
 
+    // Captions (farbwelt-unabhaengig) fuer den Reveal. Einmaliger Abruf, wenn fertig.
+    // Fehlt die Datei (alte Leads / Schreibpanne), antwortet es leer — der Reveal
+    // faellt dann auf seine eigenen Platzhalter zurueck, nie auf eine Fehlerseite.
+    const contentMatch = url.pathname.match(/^\/api\/content\/([a-zA-Z0-9_-]{1,128})$/);
+    if (contentMatch) {
+      try {
+        const obj = await env.IMAGES.get(`free/${contentMatch[1]}/content.json`);
+        if (!obj) return json({ captions: [] }, 200, cors);
+        return new Response(await obj.text(), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json', ...cors },
+        });
+      } catch (err) {
+        console.error('[content] Captions nicht lesbar:', err);
+        return json({ captions: [] }, 200, cors);
+      }
+    }
+
     // Bilder. Zeichensatz haelt Schraegstriche/Punkte/Prozent-Encoding fern (die
     // Escape-Versuche matchen den Pfad erst gar nicht), r2Key saeubert zusaetzlich
     // Token und Namen — niemand bricht aus seinem eigenen Ordner aus.
@@ -326,5 +406,34 @@ export default {
     if (resultMatch) return resultPage(resultMatch[1]);
 
     return json({ ok: false, error: 'not_found' }, 404, cors);
+  },
+
+  // Queue-Consumer: die eigentliche Generierung mit vollem Zeitbudget (statt im
+  // gecancelten waitUntil-Grace-Fenster). max_batch_size=1 → eine schwere Aufgabe
+  // pro Nachricht. Der atomare Riegel in generateFor verhindert Doppelgenerierung
+  // bei einem Retry.
+  async queue(batch, env, _ctx) {
+    for (const msg of batch.messages) {
+      const token = msg.body?.token;
+      if (!token) { msg.ack(); continue; }
+      try {
+        const r = await generateFor(env, token);
+        if (r.ok) {
+          // KEINE automatische Ergebnis-Mail hier: die Besucherin ist auf dem
+          // Build-Screen (sieht den Reveal live), eine Mail dazu waere redundant/spammig.
+          // Wiederkehrer bekommen ihre Mail ohnehin beim erneuten Eintragen (leads.js
+          // reenter -> mail:'result').
+          msg.ack();
+        } else if (['bereits_erzeugt', 'moderation', 'not_found', 'not_confirmed'].includes(r.grund)) {
+          msg.ack();   // kein sinnvoller Retry (schon erzeugt / Thema abgelehnt / kein Lead)
+        } else {
+          console.error('[queue] Generierung transient fehlgeschlagen, retry:', r.grund, token);
+          msg.retry();   // render/db → transient, nochmal
+        }
+      } catch (err) {
+        console.error('[queue] Unerwarteter Fehler, retry:', err, token);
+        msg.retry();
+      }
+    }
   },
 };
