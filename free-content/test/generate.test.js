@@ -160,6 +160,52 @@ describe('generateFor', () => {
     expect(anAlarm).toBe(true);
   });
 
+  it('alarmiert auch bei einem TEILausfall der Copy (Profil gut, einzelne Posts generisch)', async () => {
+    // Der bestehende Fallback-Alarm feuert nur beim TOTALausfall. Am 27.07. kam so
+    // die erste echte Interessentin mit 2 von 3 Platzhalter-Posts durch, ohne dass
+    // es jemand erfuhr — bemerkt wurde es erst beim zufaelligen Draufschauen.
+    const token = await bestaetigterLead();
+    const mails = [];
+    const kern = {
+      eyebrow: 'e', head: 'h', headAccent: 'a', sub: 's', bio: 'b',
+      cells: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+    };
+    const guterPost = {
+      slides: [
+        { kind: 'hook', eyebrow: 'e', head: 'h', headAccent: 'a', sub: 's' },
+        { kind: 'value', eyebrow: 'e', head: 'h', headAccent: 'a', sub: 's' },
+        { kind: 'cta', eyebrow: 'e', head: 'h', headAccent: 'a', sub: 's' },
+      ],
+      caption: 'echte Caption',
+    };
+    // Post 1 und 3 kaputt, Post 2 gut — exakt Reginas Fall.
+    const kaputt = { slides: [], caption: '' };
+    const postFolge = [kaputt, guterPost, kaputt];
+    let i = 0;
+
+    vi.stubGlobal('fetch', vi.fn(async (url, opts) => {
+      if (String(url).includes('anthropic.com')) {
+        const name = JSON.parse(opts.body).tool_choice.name;
+        const input = name === 'deliver_profile' ? kern : postFolge[i++];
+        return { ok: true, status: 200, json: async () => ({ content: [{ type: 'tool_use', name, input }] }) };
+      }
+      mails.push(JSON.parse(opts.body));         // Brevo
+      return { ok: true, status: 200, text: async () => '' };
+    }));
+
+    await generateFor(
+      {
+        ...env, ANTHROPIC_API_KEY: 'k', AI_MODEL: 'claude-test', BREVO_API_KEY: 'test-key',
+        NOTIFY_TO: 'info@social2scale.com', NOTIFY_FROM: 'info@social2scale.com',
+      },
+      token
+    );
+
+    const alarm = mails.find((m) => /TEIL-FALLBACK/.test(m.subject || ''));
+    expect(alarm, 'kein Alarm bei Teilausfall').toBeTruthy();
+    expect(alarm.subject).toContain('1, 3');   // sagt WELCHE Posts generisch sind
+  });
+
   it('legt content.json mit 3 Captions aus posts ab', async () => {
     // Ohne ANTHROPIC_API_KEY liefert generateCopy den Fallback — dessen posts
     // tragen je eine Caption. content.json behaelt die Form { captions: [3] }.

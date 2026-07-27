@@ -169,6 +169,23 @@ export async function generateFor(env, token) {
       }
     }
 
+    // TEILausfall: das Profil kam durch, aber einzelne Posts fielen auf den Fallback.
+    // Der Alarm oben feuert dafuer NICHT — genau so blieb am 27.07. unbemerkt, dass die
+    // erste echte Interessentin 2 von 3 Posts als Platzhalter bekam ("Der naechste Post
+    // ist schon in Arbeit."). Sie sah es fuenfmal an und klickte nichts.
+    if (Array.isArray(copy?._backfilled) && copy._backfilled.length) {
+      console.error('[generate] Teil-Fallback bei Posts', copy._backfilled.join(','), 'Lead', lead.id);
+      try {
+        await notifyFounders(
+          env,
+          lead,
+          `⚠️ TEIL-FALLBACK — Post ${copy._backfilled.join(', ')} generisch. Feed pruefen, ggf. neu erzeugen.`
+        );
+      } catch (e) {
+        console.error('[generate] Founder-Alarm (Teil-Fallback) ging nicht raus:', e);
+      }
+    }
+
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.farben);
     const palettes = derivePalettes(lead.stimmung, lead.farbe);
 
