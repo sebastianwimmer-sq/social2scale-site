@@ -204,8 +204,28 @@ git commit -m "feat(free-content): Alarm auch bei Teilausfall der Copy"
 - Test: `free-content/test/generate.test.js`
 
 **Interfaces:**
-- Produces: `mirrorToCrm(db, lead)` legt zusätzlich eine `clients`-Zeile an und setzt
-  `submissions.client_id`. Rückgabe bleibt `undefined`, wirft weiterhin nie.
+- Produces: `mirrorToCrm(db, lead, publicOrigin)` legt zusätzlich eine `clients`-Zeile an
+  und setzt `submissions.client_id`. Rückgabe bleibt `undefined`, wirft weiterhin nie.
+
+**🔴 Feldformate — am 27.07. beim Anlegen von Reginas Karte teuer gelernt.**
+Die CRM-Oberfläche (`_portal/admin.js:618`, `:1543`) liest diese Felder als
+Objekt-Listen. Nackte Strings erzeugen leere, kaputt aussehende Einträge:
+
+```js
+// accounts: {label, path, note} — admin.js liest a.path / a.label / a.note
+const kontoListe = (lead) => lead.handle
+  ? [{ label: 'Instagram', path: `https://instagram.com/${lead.handle}`, note: `@${lead.handle}` }]
+  : [];
+
+// deck_paths: {label, href} — rendert als klickbare Links auf der Karte.
+// Hier gehoert der Feed rein, damit Phil mit EINEM Klick sieht, was sie bekommen hat.
+const linkListe = (lead, feedUrl) => [
+  ...(feedUrl ? [{ label: '🎁 Ihr Free-Content-Feed', href: feedUrl }] : []),
+  ...(lead.handle ? [{ label: '📸 Instagram', href: `https://instagram.com/${lead.handle}` }] : []),
+];
+```
+`deck_paths` wird beim INSERT mit `JSON.stringify(linkListe(lead, feedUrl))` belegt
+statt mit `'[]'`.
 
 - [ ] **Schritt 1: Fehlschlagenden Test schreiben**
 
@@ -264,7 +284,7 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
                                 package, service, upsell, upsell_flag, logo_key, updated_at)
            VALUES (?, ?, 'briefing', ?, '', '[]', ?, ?, '', '', '', 0, '', datetime('now'))`
         )
-        .bind(lead.name, lead.branche || '', JSON.stringify([`@${lead.handle}`]), lead.email, notiz)
+        .bind(lead.name, lead.branche || '', JSON.stringify(kontoListe(lead)), lead.email, notiz)
         .run();
       clientId = angelegt.meta?.last_row_id ?? null;
     }
