@@ -10,6 +10,8 @@
  * fuer echte Kundinnen in HWG-Nischen. Bei Recht wird kopiert, nicht erfunden.
  */
 
+import { COPY_VERSUCHE, COPY_BACKOFF_MS } from './constants.js';
+
 const API = 'https://api.anthropic.com/v1/messages';
 // Die Copy war der wahre Flaschenhals der Wartezeit (~37s): EIN Call musste Profil
 // + 3 Posts × 3 Slides + 3 Captions am Stueck ausgeben. Jetzt wird sie auf 4
@@ -206,41 +208,67 @@ function formStimmt(c) {
  * der grosse statische Prefix wird EINMAL gecacht und von allen 4 parallelen Calls
  * (und allen Folge-Kundinnen) fuer ~10% der Input-Kosten wiederverwendet.
  */
-async function callClaude(env, tool, user, label) {
-  try {
-    const res = await fetch(API, {
-      method: 'POST',
-      headers: {
-        'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: env.AI_MODEL,
-        max_tokens: PER_CALL_TOKENS,
-        system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
-        tools: [{ ...tool, cache_control: { type: 'ephemeral' } }],
-        tool_choice: { type: 'tool', name: tool.name },
-        messages: [{ role: 'user', content: user }],
-      }),
-    });
-    if (!res.ok) {
-      console.error(`[copy] ${label}: Claude ${res.status}`, await res.text());
-      return null;
-    }
-    const data = await res.json();
-    const u = data?.usage;
-    if (u) console.error(`[copy] ${label} usage in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} out=${u.output_tokens}`);
-    const tu = (data?.content ?? []).find((b) => b.type === 'tool_use' && b.name === tool.name);
-    if (!tu || !tu.input || typeof tu.input !== 'object') {
-      console.error(`[copy] ${label}: kein tool_use. stop_reason:`, data?.stop_reason);
-      return null;
-    }
-    return tu.input;
-  } catch (err) {
-    console.error(`[copy] ${label}: Aufruf fehlgeschlagen:`, err);
+/**
+ * Transient = nochmal schicken hat echte Aussicht auf Erfolg: Auslastung (429/529),
+ * Serverfehler (5xx). Ein 4xx ist unser eigener kaputter Request — der kommt beim
+ * zweiten Mal genauso zurueck und kostet nur Wartezeit auf dem Build-Screen.
+ */
+function transient(status) {
+  return status === 429 || status >= 500;
+}
+
+/** Ein einzelner Claude-Call. Wirft bei transienten Fehlern, damit callClaude erneut darf. */
+async function einVersuch(env, tool, user, label) {
+  const res = await fetch(API, {
+    method: 'POST',
+    headers: {
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: env.AI_MODEL,
+      max_tokens: PER_CALL_TOKENS,
+      system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+      tools: [{ ...tool, cache_control: { type: 'ephemeral' } }],
+      tool_choice: { type: 'tool', name: tool.name },
+      messages: [{ role: 'user', content: user }],
+    }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    console.error(`[copy] ${label}: Claude ${res.status}`, text);
+    if (transient(res.status)) throw new Error(`Claude ${res.status}`);
     return null;
   }
+  const data = await res.json();
+  const u = data?.usage;
+  if (u) console.error(`[copy] ${label} usage in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} out=${u.output_tokens}`);
+  const tu = (data?.content ?? []).find((b) => b.type === 'tool_use' && b.name === tool.name);
+  if (!tu || !tu.input || typeof tu.input !== 'object') {
+    console.error(`[copy] ${label}: kein tool_use. stop_reason:`, data?.stop_reason);
+    return null;
+  }
+  return tu.input;
+}
+
+/**
+ * Wie mitRetry() fuer den Render (generate.js): ein Blip darf sie nicht ihren Text
+ * kosten. Gibt bei endgueltigem Scheitern null zurueck — WIRFT NIE, der Aufrufer
+ * entscheidet dann ueber Fallback bzw. Backfill.
+ */
+async function callClaude(env, tool, user, label) {
+  for (let versuch = 1; versuch <= COPY_VERSUCHE; versuch++) {
+    try {
+      return await einVersuch(env, tool, user, label);
+    } catch (err) {
+      console.error(`[copy] ${label}: Versuch ${versuch}/${COPY_VERSUCHE} fehlgeschlagen:`, err);
+      if (versuch < COPY_VERSUCHE) {
+        await new Promise((r) => setTimeout(r, COPY_BACKOFF_MS * versuch));
+      }
+    }
+  }
+  return null;
 }
 
 /**

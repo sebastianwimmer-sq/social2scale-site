@@ -190,6 +190,46 @@ describe('generateCopy', () => {
     expect(f).not.toHaveBeenCalled();   // kein sinnloser Call
   });
 
+  // Ein einzelner Claude-Blip (Netz weg, 529 overloaded) hat die Kundin bisher ihren
+  // ganzen personalisierten Text gekostet: callClaude gab null zurueck, das Profil galt
+  // als ausgefallen, sie bekam generische Fallback-Copy — bei ihrem einen Versuch, still.
+  // renderAll ist ueber mitRetry() abgesichert, der Copy-Call war es nicht.
+  it('wiederholt einen transienten Netzfehler — die Kundin bekommt echte Copy statt Fallback', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const gut = claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]);
+    let erster = true;
+    vi.stubGlobal('fetch', vi.fn(async (url, opts) => {
+      if (erster) { erster = false; throw new Error('netz weg'); }
+      return gut(url, opts);
+    }));
+    const c = await generateCopy(envOk, clean);
+    expect(c.eyebrow).toBe('In 90 Tagen');   // Claudes Text, nicht der Fallback
+    pruefeCopyForm(c);
+  });
+
+  it('wiederholt ein 529 (overloaded) — Claudes Auslastung darf ihren Text nicht kosten', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const gut = claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]);
+    let erster = true;
+    vi.stubGlobal('fetch', vi.fn(async (url, opts) => {
+      if (erster) { erster = false; return { ok: false, status: 529, text: async () => 'overloaded' }; }
+      return gut(url, opts);
+    }));
+    const c = await generateCopy(envOk, clean);
+    expect(c.eyebrow).toBe('In 90 Tagen');
+    pruefeCopyForm(c);
+  });
+
+  // Ein 400 ist unser Fehler (kaputter Request), kein Blip — nochmal schicken bringt
+  // dasselbe 400 und verbrennt nur Zeit, waehrend sie auf dem Build-Screen wartet.
+  it('wiederholt NICHT bei 400 — bleibt bei genau 4 Calls', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const f = vi.fn(async () => ({ ok: false, status: 400, text: async () => 'bad request' }));
+    vi.stubGlobal('fetch', f);
+    pruefeCopyForm(await generateCopy(envOk, clean));   // Fallback, aber vollstaendig
+    expect(f.mock.calls.length).toBe(4);
+  });
+
   it('feuert 4 parallele Calls, alle mit HWG-System + cache_control', async () => {
     const f = claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]);
     vi.stubGlobal('fetch', f);

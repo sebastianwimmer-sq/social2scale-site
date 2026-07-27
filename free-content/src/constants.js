@@ -37,6 +37,15 @@ export const RENDER_VERSUCHE = 3;
 export const RENDER_BACKOFF_MS = 1500;
 
 /**
+ * Dasselbe Argument fuer die Copy: ein einzelner Blip (Netz weg, 529 overloaded)
+ * hat sie bisher ihren kompletten personalisierten Text gekostet — sie bekam
+ * still generische Fallback-Copy bei ihrem einen Versuch. Zwei Versuche, kurzer
+ * Backoff: sie wartet auf dem Build-Screen, die Wall-Zeit zaehlt.
+ */
+export const COPY_VERSUCHE = 2;
+export const COPY_BACKOFF_MS = 600;
+
+/**
  * Spec §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem
  * atomaren Claim (status='building') und markiereFehler laesst eine Zeile fuer
  * immer bei 'building' haengen — nie retried, kein Alarm. Claude + 8 Renders
