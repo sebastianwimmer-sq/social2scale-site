@@ -249,4 +249,19 @@ describe('generateCopy', () => {
     const namen = f.mock.calls.map((c) => JSON.parse(c[1].body).tool_choice.name).sort();
     expect(namen).toEqual(['deliver_post', 'deliver_post', 'deliver_post', 'deliver_profile']);
   });
+
+  // Auf Sonnet 5 ist adaptives Denken AN, sobald `thinking` fehlt (auf 4.6 war es aus).
+  // max_tokens deckelt Denken UND Antwort zusammen — ohne dieses Feld risse der
+  // Tool-Call also mitten im Post ab, und zwar STILL: der Fallback faengt es auf und
+  // die Kundin bekommt generische Texte. Deshalb explizit abschalten, nicht implizit.
+  it('schaltet das Denken bei jedem Call explizit ab (sonst frisst es das Token-Budget)', async () => {
+    const f = claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]);
+    vi.stubGlobal('fetch', f);
+    await generateCopy(envOk, clean);
+    expect(f.mock.calls.length).toBe(4);
+    for (const call of f.mock.calls) {
+      const body = JSON.parse(call[1].body);
+      expect(body.thinking).toEqual({ type: 'disabled' });
+    }
+  });
 });

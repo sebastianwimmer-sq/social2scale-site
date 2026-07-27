@@ -18,7 +18,11 @@ const API = 'https://api.anthropic.com/v1/messages';
 // PARALLELE Calls gesplittet (Profil + je 1 Post) — jeder Call ist ~1/4 so gross,
 // die Wall-Zeit ist der langsamste statt der Summe. Darum reicht pro Call ein
 // kleineres Token-Budget.
-const PER_CALL_TOKENS = 1500;
+// 1500 waren auf Sonnet 4.6 knapp ausreichend. Sonnet 5 bringt einen neuen Tokenizer,
+// der denselben deutschen Text in spuerbar mehr Tokens zerlegt — bei gleichem Deckel
+// risse derselbe Post ploetzlich ab. Aufschlag mit Reserve; ungenutzte Tokens kosten
+// nichts, nur tatsaechlich erzeugte werden berechnet.
+const PER_CALL_TOKENS = 2200;
 
 const SYSTEM =
   'Du bist Senior-Content-Stratege der Premium-Agentur social2scale. Du schreibst Instagram-Content ' +
@@ -229,6 +233,11 @@ async function einVersuch(env, tool, user, label) {
     body: JSON.stringify({
       model: env.AI_MODEL,
       max_tokens: PER_CALL_TOKENS,
+      // Explizit AUS: auf Sonnet 5 denkt das Modell adaptiv, sobald dieses Feld fehlt.
+      // max_tokens deckelt Denken + Antwort gemeinsam -> der Tool-Call risse mitten im
+      // Post ab, aufgefangen vom Fallback, also unsichtbar. Wir wollen hier reine
+      // Ausgabe: die Struktur gibt das Tool-Schema vor, es gibt nichts zu ergruebeln.
+      thinking: { type: 'disabled' },
       system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
       tools: [{ ...tool, cache_control: { type: 'ephemeral' } }],
       tool_choice: { type: 'tool', name: tool.name },
