@@ -214,7 +214,7 @@ function pageMarkup(turnstileSiteKey) {
         <div class="field"><div class="field-in"><input type="email" id="f-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
         <div class="react" id="r-mail"></div>
         <div class="foot">
-          <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, schickt mir meine Gratis-Vorschau. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
+          <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
           <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
           <button class="back" data-go="4">Zurück</button>
