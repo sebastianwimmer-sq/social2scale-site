@@ -278,6 +278,30 @@ describe('mirrorToCrm', () => {
     expect(row.status).toBe('new');   // sonst sieht es niemand
   });
 
+  it('legt eine Kundenkarte an und haengt die Eingangszeile daran', async () => {
+    // Ohne Karte ist ein Lead im CRM unauffindbar — und die Closing-KI, die an der
+    // Karte haengt, kann gar nicht laufen. Genau das war am 27.07. der Zustand.
+    const token = await bestaetigterLead();
+    const lead = await findByToken(env.DB, token);
+    await mirrorToCrm(env.DB, lead, 'https://start.test');
+
+    const karte = await env.DB.prepare('SELECT * FROM clients WHERE contact=?').bind(lead.email).first();
+    expect(karte, 'keine Kundenkarte angelegt').toBeTruthy();
+    expect(karte.name).toBe(lead.name);
+    expect(karte.status).toBe('briefing');   // Stufe, die die Oberflaeche kennt
+    expect(karte.niche).toBe(lead.branche);
+    expect(karte.notes).toContain('Automatisch aus Free-Content-Funnel');
+
+    // Feldformate, die die CRM-Oberflaeche erwartet (admin.js liest a.path / d.href).
+    const konten = JSON.parse(karte.accounts);
+    expect(konten[0].path).toContain(lead.handle.replace(/^@/, ''));
+    const links = JSON.parse(karte.deck_paths);
+    expect(links.some((d) => d.href === `https://start.test/r/${token}`), 'Feed-Link fehlt').toBe(true);
+
+    const eingang = await env.DB.prepare("SELECT * FROM submissions WHERE type='free_content'").first();
+    expect(eingang.client_id).toBe(karte.id);
+  });
+
   it('kippt die Generierung nicht, wenn der Spiegel scheitert', async () => {
     const token = await bestaetigterLead();
     const lead = await findByToken(env.DB, token);

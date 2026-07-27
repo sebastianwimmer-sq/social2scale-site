@@ -77,3 +77,26 @@ CREATE TABLE IF NOT EXISTS funnel_events (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_funnel_event ON funnel_events(event);
+
+-- Kundenkarten. Aus der PRODUKTION uebernommen (27.07.2026), damit der Spiegel
+-- gegen dieselbe Form testet, die er live beschreibt. Nur die Spalten, die der
+-- Funnel anfasst, plus die NOT-NULL-Pflichtfelder.
+-- accounts:   JSON [{ "label": "...", "path": "...", "note": "..." }]
+-- deck_paths: JSON [{ "label": "...", "href": "..." }]
+CREATE TABLE IF NOT EXISTS clients (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  name       TEXT NOT NULL,
+  niche      TEXT DEFAULT '',
+  status     TEXT NOT NULL DEFAULT 'briefing',
+  accounts   TEXT DEFAULT '[]',
+  password   TEXT DEFAULT '',
+  deck_paths TEXT DEFAULT '[]',
+  contact    TEXT DEFAULT '',
+  notes      TEXT DEFAULT '',
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  package     TEXT DEFAULT '',
+  service     TEXT DEFAULT '',
+  upsell      TEXT DEFAULT '',
+  upsell_flag INTEGER DEFAULT 0,
+  logo_key    TEXT DEFAULT ''
+);

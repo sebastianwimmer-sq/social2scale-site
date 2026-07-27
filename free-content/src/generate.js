@@ -227,7 +227,7 @@ export async function generateFor(env, token) {
     // soll. Alle Felder liegen bereits vor: lead (oben gelesen) + die zwei, die wir
     // gerade selbst gesetzt haben.
     const fertig = { ...lead, status: 'ready', r2_prefix: r2Prefix };
-    await mirrorToCrm(env.DB, fertig);
+    await mirrorToCrm(env.DB, fertig, env.PUBLIC_ORIGIN);
     await notifyFounders(env, fertig, 'ready');
 
     return { ok: true };
@@ -294,23 +294,87 @@ export async function buildStatus(env, token) {
  * automatisch im Eingang auf. Non-fatal: ein kaputter Spiegel darf ihre fertigen
  * Bilder nicht kosten.
  */
-export async function mirrorToCrm(db, lead) {
+/** Instagram-Handle ohne fuehrendes @ — die Karte speichert ihn als Profil-URL. */
+function handlePur(lead) {
+  return String(lead.handle || '').replace(/^@+/, '');
+}
+
+/**
+ * Feldformate der CRM-Oberflaeche (`_portal/admin.js`): `accounts` wird als
+ * {label,path,note} gelesen, `deck_paths` als {label,href}. Nackte Strings ergeben
+ * dort leere, kaputt aussehende Zeilen — am 27.07. beim Anlegen der ersten Karte
+ * von Hand aufgefallen.
+ */
+function kontoListe(lead) {
+  const h = handlePur(lead);
+  return h ? [{ label: 'Instagram', path: `https://instagram.com/${h}`, note: `@${h}` }] : [];
+}
+
+function linkListe(lead, feedUrl) {
+  const h = handlePur(lead);
+  return [
+    ...(feedUrl ? [{ label: '🎁 Ihr Free-Content-Feed', href: feedUrl }] : []),
+    ...(h ? [{ label: '📸 Instagram', href: `https://instagram.com/${h}` }] : []),
+  ];
+}
+
+export async function mirrorToCrm(db, lead, publicOrigin = '') {
+  const feedUrl = publicOrigin ? `${publicOrigin}/r/${lead.token}` : '';
   const md =
     '# Free-Content-Lead\n\n' +
-    `- **Instagram:** @${lead.handle}\n` +
+    `- **Instagram:** @${handlePur(lead)}\n` +
     `- **Thema:** ${lead.branche}\n` +
     `- **Ziel:** ${lead.ziel}\n` +
     `- **Stimmung:** ${lead.stimmung}\n` +
     (lead.farbe ? `- **Wunschfarbe:** ${lead.farbe}\n` : '') +
     (lead.source ? `- **Kam über:** ${lead.source}\n` : '') +
+    (feedUrl ? `- **Ihr Feed:** ${feedUrl}\n` : '') +
     `- **Bilder:** ${lead.r2_prefix || '(noch keine)'}\n`;
+
+  // Kundenkarte: ohne sie ist der Lead im CRM unauffindbar (nur eine lose Zeile im
+  // Eingang) UND die Closing-KI kann nicht laufen — sie haengt an der Karte. Muster
+  // aus `_portal/_worker.js:1084`, wo das Portal dasselbe fuer Briefings tut, damit
+  // die Zeile aussieht wie jede andere. Stufe bewusst 'briefing': die Oberflaeche
+  // kennt keine Stufe davor und wuerde Unbekanntes beim ersten Speichern zurueckwerfen.
+  // Nicht-fatal: scheitert es, bleibt wenigstens der Eingang.
+  let clientId = null;
+  try {
+    const vorhanden = await db.prepare('SELECT id FROM clients WHERE contact=?').bind(lead.email).first();
+    if (vorhanden) {
+      clientId = vorhanden.id;
+    } else {
+      const notiz =
+        'Automatisch aus Free-Content-Funnel' +
+        (lead.ziel ? ` · Ziel: ${lead.ziel}` : '') +
+        (lead.stimmung ? ` · Stimmung: ${lead.stimmung}` : '');
+      const angelegt = await db
+        .prepare(
+          `INSERT INTO clients (name, niche, status, accounts, password, deck_paths, contact, notes,
+                                package, service, upsell, upsell_flag, logo_key, updated_at)
+           VALUES (?, ?, 'briefing', ?, '', ?, ?, ?, '', '', '', 0, '', datetime('now'))`
+        )
+        .bind(
+          lead.name,
+          lead.branche || '',
+          JSON.stringify(kontoListe(lead)),
+          JSON.stringify(linkListe(lead, feedUrl)),
+          lead.email,
+          notiz
+        )
+        .run();
+      clientId = angelegt.meta?.last_row_id ?? null;
+    }
+  } catch (err) {
+    console.error('[generate] Kundenkarte konnte nicht angelegt werden, Lead', lead.id, err);
+  }
 
   try {
     await db
       .prepare(
-        "INSERT INTO submissions (type, name, email, payload, data, status) VALUES ('free_content', ?, ?, ?, ?, 'new')"
+        "INSERT INTO submissions (type, client_id, name, email, payload, data, status) VALUES ('free_content', ?, ?, ?, ?, ?, 'new')"
       )
       .bind(
+        clientId,
         lead.name,
         lead.email,
         md,
