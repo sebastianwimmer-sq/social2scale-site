@@ -368,22 +368,43 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
     console.error('[generate] Kundenkarte konnte nicht angelegt werden, Lead', lead.id, err);
   }
 
+  const daten = JSON.stringify({
+    handle: lead.handle, branche: lead.branche, ziel: lead.ziel,
+    stimmung: lead.stimmung, farbe: lead.farbe, source: lead.source,
+    token: lead.token, r2_prefix: lead.r2_prefix,
+  });
+
+  // Eine ERNEUTE Generierung (Retry, manueller Neu-Anstoss) darf den Eingang nicht
+  // doppeln — am 27.07. live passiert, die Dublette musste von Hand geloescht werden.
+  //
+  // Schluessel ist die E-Mail, NICHT der Token im data-JSON: `data LIKE '%"token":"…"%'`
+  // scheitert auf D1 mit "LIKE or GLOB pattern too complex" (der 64-stellige Token
+  // sprengt die Musterlaenge). Der Fehler landete im catch, und angelegt wurde
+  // trotzdem — ein Schutz, der still nichts tut. free_leads hat einen eindeutigen
+  // Index auf die Mail, zwei Leads koennen sich also keine teilen.
+  try {
+    const schonDa = await db
+      .prepare("SELECT id FROM submissions WHERE type='free_content' AND email=?")
+      .bind(lead.email)
+      .first();
+    if (schonDa) {
+      await db
+        .prepare('UPDATE submissions SET payload=?, data=?, client_id=COALESCE(client_id, ?) WHERE id=?')
+        .bind(md, daten, clientId, schonDa.id)
+        .run();
+      return;
+    }
+  } catch (err) {
+    // Nicht-fatal: im Zweifel lieber eine Zeile zu viel als gar keine.
+    console.error('[generate] Dublettenpruefung fehlgeschlagen, lege neu an:', err);
+  }
+
   try {
     await db
       .prepare(
         "INSERT INTO submissions (type, client_id, name, email, payload, data, status) VALUES ('free_content', ?, ?, ?, ?, ?, 'new')"
       )
-      .bind(
-        clientId,
-        lead.name,
-        lead.email,
-        md,
-        JSON.stringify({
-          handle: lead.handle, branche: lead.branche, ziel: lead.ziel,
-          stimmung: lead.stimmung, farbe: lead.farbe, source: lead.source,
-          token: lead.token, r2_prefix: lead.r2_prefix,
-        })
-      )
+      .bind(clientId, lead.name, lead.email, md, daten)
       .run();
   } catch (err) {
     console.error('[generate] CRM-Spiegel fehlgeschlagen, Lead', lead.id, err);

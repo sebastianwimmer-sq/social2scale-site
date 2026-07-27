@@ -302,6 +302,24 @@ describe('mirrorToCrm', () => {
     expect(eingang.client_id).toBe(karte.id);
   });
 
+  it('legt bei erneuter Generierung KEINE zweite Eingangszeile an', async () => {
+    // Am 27.07. live passiert: die Neu-Generierung fuer die erste echte Interessentin
+    // legte eine zweite Zeile an, sie stand doppelt im Eingang und musste von Hand weg.
+    const token = await bestaetigterLead();
+    const lead = await findByToken(env.DB, token);
+
+    await mirrorToCrm(env.DB, lead, 'https://start.test');
+    await mirrorToCrm(env.DB, { ...lead, r2_prefix: 'free/neu/' }, 'https://start.test');
+
+    const eingaenge = await env.DB.prepare("SELECT * FROM submissions WHERE type='free_content'").all();
+    expect(eingaenge.results).toHaveLength(1);
+    // Der zweite Lauf AKTUALISIERT — die frischeren Angaben stehen drin.
+    expect(eingaenge.results[0].payload).toContain('free/neu/');
+
+    const karten = await env.DB.prepare('SELECT * FROM clients WHERE contact=?').bind(lead.email).all();
+    expect(karten.results).toHaveLength(1);
+  });
+
   it('kippt die Generierung nicht, wenn der Spiegel scheitert', async () => {
     const token = await bestaetigterLead();
     const lead = await findByToken(env.DB, token);
