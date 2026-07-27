@@ -654,6 +654,19 @@
   .qc-txt b{color:var(--paper);font-weight:600}
   .qc-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5);margin-top:clamp(var(--s-6),3.5vw,var(--s-7))}
   @media (max-width:760px){.qc-grid{grid-template-columns:1fr;gap:var(--s-5)}}
+
+  /* Gratis-Vorschau — der weiche Weg fuer alle, die noch nicht sprechen wollen.
+     BEWUSST ruhiger gehalten als .band: der Erstgespraech-Knopf bleibt das
+     einzige Emerald-Glow-Element der Seite (siehe Kommentar an .btn-primary).
+     Deshalb hier ein Rahmen-Knopf statt eines zweiten leuchtenden. */
+  .fb{padding:0 0 clamp(var(--s-6),4vw,var(--s-8))}
+  .fb-card{position:relative;border:1px solid var(--line-2);border-radius:24px;padding:clamp(28px,4.5vw,52px);background:linear-gradient(150deg,rgba(0,184,136,.07),rgba(31,166,224,.05) 58%,transparent)}
+  .fb-card::before{content:"";position:absolute;left:0;top:24px;bottom:24px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--emerald),var(--teal))}
+  .fb-card h2{max-width:20ch;margin-top:var(--s-3)}
+  .fb-card .lead{max-width:52ch}
+  .fb-note{margin-top:var(--s-5);font-size:.86rem;line-height:1.5;color:var(--faint);max-width:52ch}
+  .btn-ghost{background:transparent;color:var(--paper);border:1px solid var(--line-3);transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+  .btn-ghost:hover{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09)}
   </style>
 </head>
 <body>
@@ -980,6 +993,29 @@
       </div>
     </div></section>
 
+    <!-- ── Gratis-Vorschau (Free-Content-Funnel) ──────────────────────────────
+         DIE EINZIGE STELLE auf der Seite mit der Funnel-Adresse. Zieht der Funnel
+         auf start.social2scale.com um, wird sie hier geaendert — sonst nirgends.
+
+         Platzierung ist Absicht: NACH der FAQ, VOR dem Abschluss-CTA. Wer bis
+         hierher gelesen und noch nicht angefragt hat, bekommt den weichen Weg,
+         bevor er die Seite verlaesst — der Erstgespraech-CTA bleibt der letzte
+         Eindruck. Nicht in den Hero: dort gibt es genau einen Weg, ein zweiter
+         Knopf wuerde ihn kannibalisieren. -->
+    <section class="blk fb" id="gratis" aria-labelledby="fb-h">
+      <div class="wrap wrap-narrow reveal">
+        <div class="fb-card">
+          <p class="klabel">Kostenlos &middot; ohne Gespräch</p>
+          <h2 id="fb-h">Noch nicht bereit zu reden? Dann sieh es dir erst <em>an</em>.</h2>
+          <p class="lead">Drei Fragen beantworten, Mail bestätigen — und du siehst eine Vorschau, wie dein Instagram-Auftritt aussehen könnte. Kostenlos, ohne Verpflichtung.</p>
+          <div class="cta-row">
+            <a class="btn btn-ghost" href="https://s2s-free-content.peaking.workers.dev/">Gratis-Vorschau ansehen →</a>
+          </div>
+          <p class="fb-note">Ein Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit uns, von Hand.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="blk"><div class="wrap reveal">
       <div class="band has-photo">
         <span class="klabel">Bereit für planbares Wachstum?</span>
@@ -1015,6 +1051,9 @@
           <li><a href="/results/">Ergebnisse</a></li>
           <li><a href="/about/">Über uns</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <!-- Verweist auf die Sektion, NICHT direkt auf den Funnel: so bleibt die
+               Funnel-Adresse an genau einer Stelle im Dokument. -->
+          <li><a href="#gratis">Gratis-Vorschau</a></li>
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
