@@ -220,6 +220,7 @@ section.blk{scroll-margin-top:90px}
             <li><a href="#worker-brevo">Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; Brevo)</a></li>
             <li><a href="#zahlung">Zahlungsabwicklung (Digistore24)</a></li>
             <li><a href="#crm-portal">Kundenportal &amp; internes CRM (Cloudflare D1/R2, KI)</a></li>
+            <li><a href="#free-content">Gratis-Vorschau (Free Content)</a></li>
             <li><a href="#speicherdauer">Speicherdauer</a></li>
             <li><a href="#rechte">Ihre Rechte als betroffene Person</a></li>
             <li><a href="#beschwerde">Beschwerderecht bei der Aufsichtsbehörde</a></li>
@@ -350,14 +351,30 @@ section.blk{scroll-margin-top:90px}
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertrag / vorvertragliche Maßnahmen) sowie lit. f (berechtigtes Interesse an effizienter Kundenverwaltung)</span>
       </div></section>
 
+      <section class="blk" id="free-content"><div class="wrap reveal">
+        <h2><span class="n">12</span>Gratis-Vorschau (<em>Free Content</em>)</h2>
+        <p>Über die Gratis-Vorschau können Sie sich einen unverbindlichen Entwurf für Ihren Instagram-Auftritt erstellen lassen. Dafür verarbeiten wir die Angaben, die Sie im Formular machen:</p>
+        <ul>
+          <li>Name und E-Mail-Adresse</li>
+          <li>Ihr Instagram-Handle</li>
+          <li>Ihr Thema bzw. Ihre Branche, Ihr Ziel und die gewünschte Stimmung/Farbwelt</li>
+          <li>technische Daten zur Missbrauchsabwehr (z. B. IP-Adresse für Rate-Limits, Zeitpunkt der Eingabe)</li>
+        </ul>
+        <p><b>Bestätigung per E-Mail (Double-Opt-In):</b> Nach dem Absenden erhalten Sie eine E-Mail mit einem Bestätigungslink. Erst wenn Sie diesen anklicken, erstellen wir Ihre Vorschau. So stellen wir sicher, dass die Adresse Ihnen gehört. Bestätigen Sie nicht, verfällt der Link und wir löschen die Angaben.</p>
+        <p><b>Erstellung der Vorschau:</b> Aus Ihren Angaben erzeugen wir Texte (über <b>Anthropic Claude</b>, siehe oben) und daraus Bilder, die wir in einem Objektspeicher (<b>Cloudflare R2</b>) ablegen und Ihnen über einen persönlichen Link zugänglich machen. Der Betrieb läuft über einen <b>Cloudflare Worker</b>, der Versand über <b>Brevo</b>; Bot-Schutz über <b>Cloudflare Turnstile</b>. Zu allen genannten Diensten finden Sie die Einzelheiten in den vorstehenden Abschnitten.</p>
+        <p><b>Kontaktaufnahme:</b> Mit Ihrer Einwilligung im Formular melden wir uns im Anschluss bei Ihnen zu unserem Angebot. Ihre Angaben werden dazu in unser internes CRM (Abschnitt 11) übernommen und dort — wie dort beschrieben — auch KI-gestützt eingeschätzt. Sie können der weiteren Kontaktaufnahme jederzeit formlos widersprechen, etwa per E-Mail an <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <p class="muted">Ihre Vorschau wird <b>nicht</b> öffentlich gezeigt. Möchten wir sie als Beispiel verwenden, holen wir dafür vorher gesondert Ihre Einwilligung ein.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung, jederzeit mit Wirkung für die Zukunft widerrufbar) sowie lit. b (vorvertragliche Maßnahmen); für die Missbrauchsabwehr lit. f (berechtigtes Interesse an einem funktionsfähigen, missbrauchsfreien Angebot)</span>
+      </div></section>
+
       <section class="blk" id="speicherdauer"><div class="wrap reveal">
-        <h2><span class="n">12</span>Speicherdauer</h2>
+        <h2><span class="n">13</span>Speicherdauer</h2>
         <p>Wir verarbeiten und speichern personenbezogene Daten nur so lange, wie es für die Erreichung des jeweiligen Zwecks erforderlich ist oder wie es gesetzliche Aufbewahrungsfristen vorsehen (z. B. handels- und steuerrechtliche Fristen von bis zu 10 Jahren).</p>
         <p>Server-Logfiles werden durch den Hoster regelmäßig nach kurzer Zeit gelöscht oder anonymisiert. Anfragedaten aus dem Formular löschen wir, sobald sie für die Bearbeitung Ihrer Anfrage bzw. die Vertragsabwicklung nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
       </div></section>
 
       <section class="blk" id="rechte"><div class="wrap reveal">
-        <h2><span class="n">13</span>Ihre <em>Rechte</em></h2>
+        <h2><span class="n">14</span>Ihre <em>Rechte</em></h2>
         <p>Als betroffene Person stehen Ihnen nach der DSGVO insbesondere folgende Rechte zu:</p>
         <ul>
           <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
@@ -372,13 +389,13 @@ section.blk{scroll-margin-top:90px}
       </div></section>
 
       <section class="blk" id="beschwerde"><div class="wrap reveal">
-        <h2><span class="n">14</span>Beschwerde&shy;recht</h2>
+        <h2><span class="n">15</span>Beschwerde&shy;recht</h2>
         <p>Unbeschadet anderweitiger Rechtsbehelfe steht Ihnen gemäß Art. 77 DSGVO ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen die DSGVO verstößt.</p>
         <p class="muted">Zuständig ist in der Regel die Aufsichtsbehörde Ihres gewöhnlichen Aufenthaltsorts oder die des Verantwortlichen. Für den Verantwortlichen ist dies das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach (<a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer">www.lda.bayern.de</a>).</p>
       </div></section>
 
       <section class="blk" id="sonstiges"><div class="wrap reveal">
-        <h2><span class="n">15</span>Automatisierte Entscheidung &amp; Aktualität</h2>
+        <h2><span class="n">16</span>Automatisierte Entscheidung &amp; Aktualität</h2>
         <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne des Art. 22 DSGVO findet nicht statt.</p>
         <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die jeweils aktuelle Fassung.</p>
       </div></section>
