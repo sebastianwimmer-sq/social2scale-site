@@ -17,7 +17,9 @@ describe('Formular-Seite', () => {
     expect(html).toContain('social2scale.com/fonts/hanken');     // gehostete Schrift
     expect(html).toContain('0x4AAAAAAD5FwCxWtZhzGlpX');           // Turnstile-Sitekey
     expect(html).not.toContain('base64');                        // KEINE eingebetteten Assets
-    expect(html).toContain('Beispiel-Vorschau');                 // Vorschau-Hinweis
+    // Erwartungssteuerung MUSS da sein (dass es ein Entwurf ist) — der Wortlaut darf
+    // sich aendern, die Aussage nicht.
+    expect(html).toContain('Schnellentwurf');
   });
 });
 
@@ -64,7 +66,7 @@ describe('Build-Screen /r/:token', () => {
     ).text();
     expect(html).toContain('https://social2scale.com/anfrage/'); // primärer CTA-Ziel
     expect(html).toContain('Vorschau speichern'); // sekundärer CTA
-    expect(html).toContain('Beispiel-Vorschau'); // Vorschau-Hinweis auch im Reveal
+    expect(html).toContain('Schnellentwurf'); // Erwartungssteuerung auch im Reveal
     expect(html).toMatch(/f-1-|Welt|Farbwelt/); // Farbwelt-Switcher-Anker
     expect(html).toMatch(/<section id="reveal" hidden>/); // versteckt bis showReveal()
   });

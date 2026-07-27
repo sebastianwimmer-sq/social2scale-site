@@ -159,7 +159,7 @@ function pageMarkup(turnstileSiteKey) {
       </div></div>
       <div class="refl"></div>
     </div>
-    <p class="disclaimer">&lowast; Beispiel-Vorschau — deinen echten Feed gestalten wir danach persönlich mit dir.</p>
+    <p class="disclaimer">&lowast; Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit dir.</p>
   </div>
 
   <div class="sheet"><div class="sheet-in">

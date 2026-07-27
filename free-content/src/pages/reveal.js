@@ -261,7 +261,10 @@ export function revealMarkup(copy) {
     </div>
     <a class="rv-contact rv" id="rv-contact" href="${ANFRAGE_URL}">${esc(copy.contactLabel)} <span aria-hidden="true">→</span></a>
     <p class="rv-wm rv">${esc(copy.wmNote)}</p>
-    <p class="rv-disclaimer rv">&lowast; Beispiel-Vorschau — deinen echten Feed gestalten wir danach persönlich mit dir.</p>
+    <!-- Erwartungssteuerung, bewusst DEUTLICHER als vorher ("Beispiel-Vorschau" war
+         zu leise) — aber vorwaerts formuliert: erst klar sagen, was das hier ist,
+         dann was daraus wird. Kein Ergebnis- oder Reichweitenversprechen (UWG). -->
+    <p class="rv-disclaimer rv">&lowast; Das ist ein Schnellentwurf aus drei Antworten — bewusst grob. Dein echter Auftritt entsteht mit dir: von Hand, in deiner Sprache, ohne unser Zeichen.</p>
   </div>
   </div><!-- /rv-main-col -->
 </section>

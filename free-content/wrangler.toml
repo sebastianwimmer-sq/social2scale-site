@@ -5,7 +5,10 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 ALLOW_ORIGIN  = "https://social2scale.com"
-NOTIFY_TO     = "info@social2scale.com"
+# Persoenlich an beide, NICHT ans Sammelpostfach: eine Mail von info@ an info@
+# uebersieht man (bei der ersten echten Interessentin am 27.07. genau so passiert).
+# Komma-Liste, send() splittet sie auf.
+NOTIFY_TO     = "sebastian@social2scale.com, philipp@social2scale.com"
 NOTIFY_FROM   = "info@social2scale.com"
 # TEMP fuer den privaten Test (21.07.): auf die workers.dev-URL, damit die Mail-Links
 # erreichbar sind, OHNE die Domain anzufassen. Zurueck auf start.social2scale.com,

@@ -101,7 +101,12 @@ export const REVEAL = {
   headAccent: 'dein Feed.',
   sub: 'Zwei Farbwelten, fertig zum Posten. Wähl deine — und sieh, wie sie wirkt.',
   offerHead: 'Du willst mehr?',
-  offerLead: 'Das war ein Vorgeschmack. Deinen ganzen Auftritt ziehen wir exklusiv und von Hand auf — zugeschnitten auf dich.',
+  // Der Abstand zwischen gratis und gekauft ist das ARGUMENT, nicht die Ausrede.
+  // Frueher stand hier "Das war ein Vorgeschmack" — defensiv, und es nimmt dem
+  // eigenen Beweis die Kraft. Dieselbe Erwartungssteuerung, offensiv gedreht:
+  // erst benennen, was die Maschine in einer Minute geschafft hat, dann die Luecke
+  // als Versprechen aufmachen. Keine Ergebnis- oder Reichweitenversprechen (UWG).
+  offerLead: 'Das hier hat eine Maschine in unter einer Minute aus drei Antworten gebaut. Stell dir vor, was entsteht, wenn wir uns eine Stunde mit dir hinsetzen.',
   values: [
     'Deine komplette Marken-Handschrift',
     'Alle Texte, Hooks & Vorlagen — von uns gemacht',
