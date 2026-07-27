@@ -187,37 +187,67 @@ export const LOOK_CSS = `
       radial-gradient(96% 74% at 92% 97%, rgba(31,166,224,.36), transparent 56%),
       linear-gradient(150deg, #04140F, #05131C 52%, #03080D);
   }
-  .share-inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; padding: 100px 90px 88px; }
-  .share-logo { width: 232px; height: auto; display: block; }
-  .share-mid { margin-top: 82px; }
-  .share-eyebrow {
+  .share-inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; padding: 84px 90px 80px; }
+  /* Kopf: WESSEN Feed das ist (Handle = der Absender, nicht s2s). */
+  .share-top { display: flex; align-items: center; justify-content: space-between; }
+  .share-who { display: flex; flex-direction: column; gap: 8px; }
+  .share-at {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 44px;
+    letter-spacing: -.02em; color: #F2F3F1;
+  }
+  .share-plat {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 24px; font-weight: 500;
+    letter-spacing: .04em; color: rgba(242,243,241,.6);
+  }
+  .share-mark {
+    width: 92px; height: 92px; border-radius: 26px; display: block; object-fit: contain;
+    background: rgba(255,255,255,.05); padding: 12px; box-shadow: 0 0 0 1px rgba(255,255,255,.1);
+  }
+  /* Held: der ECHTE beste Hook der Kundin — der Star der Karte. */
+  .share-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .share-kicker {
     font-family: 'Plus Jakarta Sans', sans-serif; font-size: 25px; font-weight: 600;
-    letter-spacing: .22em; text-transform: uppercase; color: #1FC998;
+    letter-spacing: .2em; text-transform: uppercase; color: #1FC998;
+    display: inline-flex; align-items: center; gap: 18px;
   }
-  .share-head {
-    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 104px;
-    line-height: .98; letter-spacing: -.04em; margin-top: 22px;
+  .share-kicker::before {
+    content: ''; width: 54px; height: 3px; border-radius: 3px;
+    background: linear-gradient(90deg, #1FC998, #1FA6E0);
   }
-  .share-head em {
+  .share-hook {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 82px;
+    line-height: 1.0; letter-spacing: -.035em; margin-top: 30px; text-wrap: balance;
+  }
+  .share-hook em {
     font-style: normal;
     background: linear-gradient(120deg, #1FC998, #1FA6E0);
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .share-sub {
-    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 31px; line-height: 1.45;
-    color: rgba(242,243,241,.82); margin-top: 32px; max-width: 22ch;
+  .share-hooksub {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 30px; line-height: 1.4;
+    color: rgba(242,243,241,.72); margin-top: 34px; max-width: 26ch;
   }
-  .share-sub b { color: #F2F3F1; font-weight: 700; }
-  .share-qr-wrap { margin-top: auto; display: flex; align-items: center; gap: 36px; }
+  /* Signatur: s2s + QR, dezent unter dem Content, getrennt durch feine Linie. */
+  .share-foot {
+    margin-top: 56px; padding-top: 46px; border-top: 1.5px solid rgba(255,255,255,.13);
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+  }
+  .share-foot-l { display: flex; flex-direction: column; gap: 20px; }
+  .share-logo { width: 210px; height: auto; display: block; }
+  .share-foot-t {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: 30px; font-weight: 500;
+    line-height: 1.28; color: rgba(242,243,241,.82); max-width: 15ch;
+  }
+  .share-foot-t em { font-style: normal; font-weight: 700; color: #F2F3F1; }
+  .share-qr-wrap { flex: none; display: flex; flex-direction: column; align-items: center; gap: 16px; }
   .share-qr {
-    width: 240px; height: 240px; flex: none; background: #fff; border-radius: 30px;
-    padding: 24px; box-shadow: 0 34px 70px -22px rgba(0,0,0,.6);
+    width: 210px; height: 210px; background: #fff; border-radius: 28px;
+    padding: 20px; box-shadow: 0 34px 70px -22px rgba(0,0,0,.6);
   }
   .share-qr svg { display: block; width: 100%; height: 100%; }
-  .share-qr-cta {
-    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 42px;
-    line-height: 1.12; letter-spacing: -.02em; color: #F2F3F1;
+  .share-scan {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 34px;
+    letter-spacing: -.01em; color: #F2F3F1;
   }
-  .share-qr-cta em { font-style: normal; color: #1FC998; }
-  .share-qr-cta .share-arrow { color: #1FC998; }
+  .share-scan .share-arrow { color: #1FC998; }
 `;

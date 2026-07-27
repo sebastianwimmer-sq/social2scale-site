@@ -37,8 +37,25 @@ function esc(v) {
 }
 
 export const REVEAL_STYLE = `
-  #reveal{position:relative;z-index:2;max-width:34rem;margin:0 auto;padding:2.4rem 1.25rem 4rem;display:flex;flex-direction:column;align-items:center;text-align:center}
+  #reveal{position:relative;z-index:2;isolation:isolate;max-width:34rem;margin:0 auto;padding:2.4rem 1.25rem 4rem;display:flex;flex-direction:column;align-items:center;text-align:center;--rv-glow-1:rgba(194,65,12,.20);--rv-glow-2:rgba(0,184,136,.13);--rv-ped:rgba(194,65,12,.42)}
   #reveal[hidden]{display:none}
+
+  /* ── Reveal-EIGENES Licht, das MITSCROLLT ──────────────────────────────
+     Die globale .scene (shell.js) ist position:fixed und beleuchtet nur den
+     ersten Viewport — beim langen Reveal lag alles darunter auf totem Schwarz
+     ("tot"). Diese Ebene liegt ABSOLUT im #reveal, scrollt also mit und legt
+     drei weiche, farbwelt-getönte Licht-Pools unter Held, Posts und Angebot.
+     rvApplyWorld() tauscht die Töne beim Farbwelt-Wechsel -> das Reveal "lebt"
+     und zeigt jede Welt in ihrer echten Stimmung (wie die Share-Card). */
+  .rv-atmo{position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(90% 30vh at 50% 6vh,var(--rv-glow-1),transparent 68%),
+      radial-gradient(110% 40vh at 16% 30%,var(--rv-glow-2),transparent 70%),
+      radial-gradient(110% 40vh at 84% 50%,var(--rv-glow-1),transparent 70%),
+      radial-gradient(110% 40vh at 18% 71%,var(--rv-glow-2),transparent 70%),
+      radial-gradient(96% 42vh at 85% 92%,var(--rv-glow-1),transparent 72%),
+      linear-gradient(180deg,rgba(0,184,136,.055),rgba(31,166,224,.045));
+    transition:background 1.1s var(--e-out)}
   .rv-eyebrow{font-family:var(--ff-label);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:.55rem}
   .rv-eyebrow .dot{width:22px;height:1.5px;border-radius:2px;background:var(--flow);box-shadow:0 0 8px rgba(0,184,136,.45)}
   .rv-h2{font-family:var(--ff-serif);font-weight:500;font-size:clamp(2rem,1.5rem + 3vw,3.2rem);line-height:1.02;letter-spacing:-.025em;margin:1rem 0 .5rem;text-wrap:balance}
@@ -48,8 +65,14 @@ export const REVEAL_STYLE = `
   .rv{opacity:0;transform:translateY(28px);filter:blur(10px);transition:opacity .9s var(--e-out),transform 1s var(--e-spring),filter .9s var(--e-out)}
   .rv.in{opacity:1;transform:none;filter:none}
 
-  .rv-hero{margin:1.8rem 0 1.3rem;width:100%;display:flex;justify-content:center}
-  .rv-shot-frame{width:min(76vw,318px);border-radius:26px;padding:7px;line-height:0;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 55px 110px -42px rgba(0,0,0,.9),0 0 78px -14px rgba(0,184,136,.2),0 0 88px -20px rgba(31,166,224,.15)}
+  .rv-hero{position:relative;margin:1.8rem 0 1.3rem;width:100%;display:flex;justify-content:center}
+  /* Licht-Sockel: das Gerät steht auf beleuchtetem Boden (farbwelt-getönt),
+     statt im Nichts zu schweben. */
+  .rv-hero::after{content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);width:58%;height:30px;border-radius:50%;filter:blur(20px);background:radial-gradient(circle,var(--rv-ped),transparent 70%);z-index:-1;transition:background 1s var(--e-out)}
+  .rv-shot-frame{position:relative;width:min(76vw,318px);border-radius:26px;padding:7px;line-height:0;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 55px 110px -42px rgba(0,0,0,.9),0 0 78px -14px rgba(0,184,136,.2),0 0 88px -20px rgba(31,166,224,.15);animation:rvFloat 7.5s ease-in-out infinite}
+  /* Glas-Glanz: diagonaler Lichtstreif über dem Screen = echtes Display-Glas. */
+  .rv-shot-frame::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;z-index:2;mix-blend-mode:screen;background:linear-gradient(133deg,rgba(255,255,255,.17),rgba(255,255,255,.02) 26%,transparent 46%,transparent 72%,rgba(255,255,255,.07))}
+  @keyframes rvFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
   .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:20px;background:#0c0c0c;opacity:0;transition:opacity .55s var(--e-out)}
   .rv-shot.loaded{opacity:1}
   /* Aussen VERTIKAL (durch die 3 Posts scrollen), innen HORIZONTAL (Slides
@@ -61,6 +84,9 @@ export const REVEAL_STYLE = `
   .rv-post-head{display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
   .rv-post-n{font-family:var(--ff-serif);font-weight:500;font-size:1.05rem;letter-spacing:-.015em;color:var(--ink)}
   .rv-post-swipe{font-family:var(--ff-label);font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--faint)}
+  /* Der Pfeil nudged sanft nach rechts -> signalisiert die Wisch-Geste (Entdeckbarkeit). */
+  .rv-post-swipe .arw{display:inline-block;color:var(--emerald-soft);animation:rvSwipeArw 1.9s var(--e-out) infinite}
+  @keyframes rvSwipeArw{0%,100%{transform:translateX(0);opacity:.6}50%{transform:translateX(4px);opacity:1}}
   /* Inneres Karussell: 3 Slides, scroll-snap, EIN Slide pro Ansicht. */
   .rv-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;width:100%;border-radius:16px;background:#0c0c0c;box-shadow:0 18px 40px -22px rgba(0,0,0,.85),0 0 0 1.5px #23262b,0 0 60px -18px rgba(0,184,136,.14);scrollbar-width:none}
   .rv-track::-webkit-scrollbar{display:none}
@@ -108,6 +134,30 @@ export const REVEAL_STYLE = `
   .rv-scrollhint .arw{width:1px;height:20px;background:linear-gradient(var(--emerald-soft),transparent)}
   @keyframes rvbob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
 
+  /* Wrapper mobil unsichtbar -> Kinder fliessen exakt wie bisher (Layout unverändert). */
+  .rv-lead-col,.rv-main-col{display:contents}
+
+  /* ── Desktop-Split (>=900px): linke Spalte (Held+Switcher) bleibt sticht,
+     rechte Spalte (Posts+Angebot) scrollt daneben. Nutzt die Fläche, statt einer
+     einsamen zentrierten Spalte. ── */
+  @media (min-width:900px){
+    #reveal{max-width:64rem;display:grid;grid-template-columns:27rem 1fr;column-gap:3.5rem;align-items:start;text-align:left;padding-top:3.4rem}
+    .rv-lead-col{display:flex;flex-direction:column;align-items:flex-start;position:sticky;top:2.4rem;grid-column:1}
+    .rv-main-col{display:flex;flex-direction:column;grid-column:2;min-width:0}
+    .rv-sub{margin:0;max-width:28ch}
+    .rv-hero{justify-content:flex-start;margin:1.6rem 0 1.1rem}
+    .rv-shot-frame{width:min(23rem,100%)}
+    .rv-switcher{margin-bottom:0}
+    .rv-posts-wrap{align-items:flex-start;margin:0}
+    .rv-posts-stack{max-width:26rem}
+    .rv-offer{align-items:flex-start;text-align:left;margin-top:2.6rem}
+    .rv-offer h3{text-align:left}
+    .rv-lead{margin:0;max-width:40ch}
+    .rv-values{margin:.3rem 0 1.2rem}
+    .rv-actions{justify-content:flex-start}
+    .rv-scrollhint{display:none}
+  }
+
   @media (prefers-reduced-motion:reduce){
     #reveal *,#reveal *::before,#reveal *::after{animation:none!important;transition-duration:.01ms!important}
     .rv{opacity:1;transform:none;filter:none}
@@ -132,7 +182,7 @@ export function revealMarkup(copy) {
     ).join('');
     return `
       <article class="rv-post rv" data-post="${p}">
-        <div class="rv-post-head"><span class="rv-post-n">Post ${p}</span><span class="rv-post-swipe">3 Slides · swipe →</span></div>
+        <div class="rv-post-head"><span class="rv-post-n">Post ${p}</span><span class="rv-post-swipe">3 Slides · swipe <span class="arw" aria-hidden="true">→</span></span></div>
         <div class="rv-track" data-post="${p}">${slides}</div>
         <div class="rv-dots" data-post="${p}">${dots}</div>
         <div class="rv-post-cap"><p class="rv-cap-text" data-cap="${capIdx}">Caption wird geladen …</p><button type="button" class="rv-cap-copy" data-cap="${capIdx}">Caption kopieren</button></div>
@@ -140,6 +190,11 @@ export function revealMarkup(copy) {
   }).join('');
   return `
 <section id="reveal" hidden>
+  <div class="rv-atmo" aria-hidden="true"></div>
+  <!-- Wrapper rv-lead-col / rv-main-col sind mobil display:contents (Layout
+       unverändert), ab Desktop (>=900px) werden sie zu 2 Spalten: Held+Switcher
+       links sticky, Posts+Angebot rechts (Editorial-Split, nutzt die Fläche). -->
+  <div class="rv-lead-col">
   <span class="rv-eyebrow rv"><span class="dot"></span>${esc(copy.eyebrow)}</span>
   <h2 class="rv-h2 rv">${esc(copy.head)} <em>${esc(copy.headAccent)}</em></h2>
   <p class="rv-sub rv">${esc(copy.sub)}</p>
@@ -156,7 +211,9 @@ export function revealMarkup(copy) {
     <button class="act" type="button" data-welt="0"><span class="sw rv-sw-a"></span>Farbwelt A</button>
     <button type="button" data-welt="1"><span class="sw rv-sw-b"></span>Farbwelt B</button>
   </div>
+  </div><!-- /rv-lead-col -->
 
+  <div class="rv-main-col">
   <!-- Die drei echten Posts als volle Instagram-Karussells: vertikal gestapelt
        (durchscrollen), jeder ein horizontales 3-Slide-Karussell in wahrer
        4:5-Groesse mit Dots + fertiger, sofort postbarer Caption + Kopieren.
@@ -183,6 +240,7 @@ export function revealMarkup(copy) {
     <p class="rv-wm rv">${esc(copy.wmNote)}</p>
     <p class="rv-disclaimer rv">&lowast; Beispiel-Vorschau — deinen echten Feed gestalten wir danach persönlich mit dir.</p>
   </div>
+  </div><!-- /rv-main-col -->
 </section>
 
 <div class="rv-scrollhint" id="rv-hint" hidden><span>scroll</span><span class="arw"></span></div>`;
@@ -230,6 +288,18 @@ export const REVEAL_SCRIPT = `
     document.querySelectorAll('#rv-switcher button').forEach((b) => {
       b.classList.toggle('act', Number(b.dataset.welt) === world);
     });
+    // Der Wechsel LEUCHTET um: reveal-eigenes Licht + Sockel nehmen den Ton der
+    // gewählten Welt an (A warm/terracotta, B teal), die globale Szenen-Stimmung
+    // (--mood -> Orb) folgt markenkonform (emerald/teal). So ist der Switch ein
+    // sichtbarer "wow, es lebt"-Moment, nicht nur ein Bildtausch.
+    const R = $('reveal');
+    const warm = world === 0;
+    if (R) {
+      R.style.setProperty('--rv-glow-1', warm ? 'rgba(194,65,12,.20)' : 'rgba(31,166,224,.22)');
+      R.style.setProperty('--rv-glow-2', 'rgba(0,184,136,.13)');
+      R.style.setProperty('--rv-ped', warm ? 'rgba(194,65,12,.42)' : 'rgba(31,166,224,.44)');
+    }
+    try { document.documentElement.style.setProperty('--mood', warm ? '#00B888' : '#1FA6E0'); } catch (e) {}
   }
 
   // Dots pro Post-Karussell: welche Slide gerade sichtbar ist. IntersectionObserver
@@ -251,6 +321,34 @@ export const REVEAL_SCRIPT = `
       }, { root: track, threshold: .6 });
       slides.forEach((s) => io.observe(s));
     });
+  }
+
+  // Einmaliger Peek-Nudge auf dem ERSTEN Post: peekt kurz die 2. Slide an und
+  // gleitet zurueck, sobald die Karte sichtbar wird — lehrt die Wisch-Geste, ohne
+  // Text. Nur einmal, nur der erste Post (Rest kennt der Nutzer dann), nie bei
+  // reduzierter Bewegung. Scroll-Snap waehrend des Nudges kurz aus, sonst schnappt
+  // es sofort zurueck und der Peek ist unsichtbar.
+  function rvWireSwipeNudge() {
+    if (reduce) return;
+    const track = document.querySelector('.rv-track[data-post="1"]');
+    if (!track) return;
+    let getan = false;
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (!e.isIntersecting || getan) return;
+        getan = true; io.disconnect();
+        setTimeout(() => {
+          const w = track.clientWidth;
+          track.style.scrollSnapType = 'none';
+          track.scrollTo({ left: Math.round(w * 0.3), behavior: 'smooth' });
+          setTimeout(() => {
+            track.scrollTo({ left: 0, behavior: 'smooth' });
+            setTimeout(() => { track.style.scrollSnapType = ''; }, 650);
+          }, 640);
+        }, 500);
+      });
+    }, { threshold: 0.6 });
+    io.observe(track);
   }
 
   function rvWireSwitcher() {
@@ -413,6 +511,7 @@ export const REVEAL_SCRIPT = `
     if (hint) hint.hidden = false;   // Scroll-Hinweis erst JETZT (nicht schon waehrend des Bauens)
     rvApplyWorld(0);
     rvWireDots();
+    rvWireSwipeNudge();
     rvWireSwitcher();
     rvWirePrimaryCta();
     rvWireDownload();
@@ -433,5 +532,13 @@ export const REVEAL_SCRIPT = `
     rvs.forEach((el) => io.observe(el));
     // die obersten sofort gestaffelt zeigen (Blur-up), Rest beim Reinscrollen.
     rvs.slice(0, 4).forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 130));
+
+    // "Scroll dich rein" für den Nutzer erledigen: sanft ins Reveal ziehen, damit
+    // nicht der fertige 100%-Build-Screen als toter Rest oben stehen bleibt.
+    // Guard: NUR wenn er noch ganz oben ist (scrollY<40) — nie jemanden überfahren,
+    // der schon selbst scrollt. Bei reduzierter Bewegung: kein Auto-Scroll.
+    if (!reduce) setTimeout(() => {
+      if (window.scrollY < 40) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 1150);
   }
 `;

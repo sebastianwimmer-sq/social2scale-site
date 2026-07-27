@@ -90,12 +90,6 @@ describe('buildFallback', () => {
 describe('generateCopy', () => {
   const envOk = { ANTHROPIC_API_KEY: 'k', AI_MODEL: 'claude-test' };
 
-  // Claude liefert jetzt via tool_use (strukturierte Ausgabe) statt Text-JSON.
-  const antwort = (obj) => ({
-    ok: true, status: 200,
-    json: async () => ({ content: [{ type: 'tool_use', name: 'deliver_content', input: obj }] }),
-  });
-
   // Ein vollstaendiger, valider Post fuer die Claude-Pfad-Tests.
   const postFixture = (marke) => ({
     slides: [
@@ -105,37 +99,48 @@ describe('generateCopy', () => {
     ],
     caption: `${marke}-caption mit Hashtags #test`,
   });
+  // Profil-Kern OHNE posts (die kommen jetzt aus eigenen Calls).
   const kernOk = {
     eyebrow: 'In 90 Tagen', head: 'Sichtbar werden,', headAccent: 'ohne dich zu verbiegen.',
     sub: 'Die drei Fehler.', bio: 'Aus Erfahrung wird Wirkung.',
     cells: ['1','2','3','4','5','6','7','8','9'],
   };
 
+  // Router-Mock: generateCopy feuert 4 PARALLELE Calls (1 deliver_profile +
+  // 3 deliver_post). Der Mock liefert je nach angefordertem Tool die passende
+  // tool_use-Antwort; die Post-Calls bekommen posts[] der Reihe nach.
+  function claudeMock(profil, posts = []) {
+    let i = 0;
+    return vi.fn(async (_url, opts) => {
+      const name = JSON.parse(opts.body).tool_choice.name;
+      const input = name === 'deliver_profile' ? profil : (posts[i++] ?? postFixture('x'));
+      return { ok: true, status: 200, json: async () => ({ content: [{ type: 'tool_use', name, input }] }) };
+    });
+  }
+
   it('nutzt Claudes Text, wenn die Antwort brauchbar ist', async () => {
-    const echt = { ...kernOk, posts: [postFixture('p1'), postFixture('p2'), postFixture('p3')] };
-    vi.stubGlobal('fetch', vi.fn(async () => antwort(echt)));
+    vi.stubGlobal('fetch', claudeMock(kernOk, [postFixture('p1'), postFixture('p2'), postFixture('p3')]));
     const c = await generateCopy(envOk, clean);
     expect(c.eyebrow).toBe('In 90 Tagen');
     pruefeCopyForm(c);
   });
 
   it('nutzt Claudes eigene posts, wenn sie die Form haben', async () => {
-    const echt = { ...kernOk, posts: [postFixture('a'), postFixture('b'), postFixture('c')] };
-    vi.stubGlobal('fetch', vi.fn(async () => antwort(echt)));
+    vi.stubGlobal('fetch', claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]));
     const c = await generateCopy(envOk, clean);
     expect(c.posts).toHaveLength(3);
     expect(c.posts[0].slides[0].head).toBe('a-hook');   // NICHT der Fallback
     expect(c.posts[2].caption).toContain('c-caption');
   });
 
-  it('backfillt NUR die posts, wenn Claude sie verpatzt — Kern-Copy bleibt', async () => {
+  it('backfillt NUR den patzenden Post — Kern-Copy + gute Posts bleiben', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    // Kern gut, posts kaputt (leere Slides / fehlende Caption).
-    const echt = { ...kernOk, posts: [{ slides: [], caption: '' }] };
-    vi.stubGlobal('fetch', vi.fn(async () => antwort(echt)));
+    // Kern gut; Post 1 kaputt (leere Slides / keine Caption), Post 2/3 gut.
+    vi.stubGlobal('fetch', claudeMock(kernOk, [{ slides: [], caption: '' }, postFixture('b'), postFixture('c')]));
     const c = await generateCopy(envOk, clean);
     expect(c.eyebrow).toBe('In 90 Tagen');   // Kern-Copy NICHT weggeworfen
-    pruefePosts(c.posts);                      // posts aus dem Fallback
+    pruefePosts(c.posts);                      // alle 3 valide (Post 1 aus Fallback)
+    expect(c.posts[1].slides[0].head).toBe('b-hook');   // guter Post behalten
   });
 
   it('faellt zurueck, wenn Claude nicht erreichbar ist — nie eine kaputte Seite', async () => {
@@ -159,18 +164,19 @@ describe('generateCopy', () => {
     pruefeCopyForm(await generateCopy(envOk, clean));
   });
 
-  it('faellt zurueck, wenn Claude die falsche Form liefert', async () => {
+  it('faellt zurueck, wenn das Profil die falsche Form liefert', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     // 4 statt 9 Zellen — wuerde das Grid zerreissen
-    vi.stubGlobal('fetch', vi.fn(async () => antwort({ eyebrow: 'x', head: 'y', headAccent: 'z', sub: 'a', bio: 'b', cells: ['1','2','3','4'] })));
+    vi.stubGlobal('fetch', claudeMock({ eyebrow: 'x', head: 'y', headAccent: 'z', sub: 'a', bio: 'b', cells: ['1','2','3','4'] },
+      [postFixture('a'), postFixture('b'), postFixture('c')]));
     const c = await generateCopy(envOk, clean);
     expect(c.cells).toHaveLength(9);
   });
 
   it('faellt zurueck, wenn die 9 Zellen leer sind — sonst rendert ein blankes Grid', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.stubGlobal('fetch', vi.fn(async () =>
-      antwort({ eyebrow: 'x', head: 'y', headAccent: 'z', sub: 'a', bio: 'b', cells: ['','','','','','','','',''] })));
+    vi.stubGlobal('fetch', claudeMock({ eyebrow: 'x', head: 'y', headAccent: 'z', sub: 'a', bio: 'b', cells: ['','','','','','','','',''] },
+      [postFixture('a'), postFixture('b'), postFixture('c')]));
     const c = await generateCopy(envOk, clean);
     // Fallback greift -> die Zellen tragen wieder echten Text.
     expect(c.cells.every((z) => z.trim().length > 0)).toBe(true);
@@ -184,13 +190,23 @@ describe('generateCopy', () => {
     expect(f).not.toHaveBeenCalled();   // kein sinnloser Call
   });
 
-  it('schickt die HWG-Regeln mit — sie sind der Grund fuer den Prompt', async () => {
-    const f = vi.fn(async () => antwort({ eyebrow: 'a', head: 'b', headAccent: 'c', sub: 'd', bio: 'e', cells: Array(9).fill('x') }));
+  it('feuert 4 parallele Calls, alle mit HWG-System + cache_control', async () => {
+    const f = claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]);
     vi.stubGlobal('fetch', f);
     await generateCopy(envOk, clean);
-    const body = JSON.parse(f.mock.calls[0][1].body);
-    expect(body.system).toMatch(/HWG/);
-    expect(body.system).toMatch(/Heil/);
-    expect(body.model).toBe('claude-test');   // aus env, nicht hartkodiert
+    expect(f.mock.calls.length).toBe(4);   // 1 Profil + 3 Posts, parallel
+    // Jeder Call traegt System (HWG) + Caching auf System UND Tool.
+    for (const call of f.mock.calls) {
+      const body = JSON.parse(call[1].body);
+      const systemText = Array.isArray(body.system) ? body.system.map((b) => b.text).join('') : body.system;
+      expect(systemText).toMatch(/HWG/);
+      expect(systemText).toMatch(/Heil/);
+      expect(body.system[0].cache_control?.type).toBe('ephemeral');
+      expect(body.tools[0].cache_control?.type).toBe('ephemeral');
+      expect(body.model).toBe('claude-test');
+    }
+    // Genau ein Profil-Call, genau drei Post-Calls.
+    const namen = f.mock.calls.map((c) => JSON.parse(c[1].body).tool_choice.name).sort();
+    expect(namen).toEqual(['deliver_post', 'deliver_post', 'deliver_post', 'deliver_profile']);
   });
 });

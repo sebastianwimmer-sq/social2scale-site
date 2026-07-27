@@ -11,15 +11,21 @@
  */
 
 const API = 'https://api.anthropic.com/v1/messages';
-// Deutlich hoeher als frueher (1200): die Antwort traegt jetzt 3 Posts × 3 Slides
-// PLUS 3 fertige Captions — sonst schneidet Claude das JSON mittendrin ab und der
-// Parse scheitert (→ unnoetiger Fallback fuer eine eigentlich gute Antwort).
-const MAX_TOKENS = 4000;
+// Die Copy war der wahre Flaschenhals der Wartezeit (~37s): EIN Call musste Profil
+// + 3 Posts × 3 Slides + 3 Captions am Stueck ausgeben. Jetzt wird sie auf 4
+// PARALLELE Calls gesplittet (Profil + je 1 Post) — jeder Call ist ~1/4 so gross,
+// die Wall-Zeit ist der langsamste statt der Summe. Darum reicht pro Call ein
+// kleineres Token-Budget.
+const PER_CALL_TOKENS = 1500;
 
 const SYSTEM =
   'Du bist Senior-Content-Stratege der Premium-Agentur social2scale. Du schreibst Instagram-Content ' +
   'in DER STIMME DER KUNDIN — deutsch, Du-Form, konkret, ohne Floskeln, ohne Marketing-Sprech.\n\n' +
-  'HOOK fuer die erste Slide jedes Posts (waehle das passendste Muster):\n' +
+  'QUALITAETS-MESSLATTE (Premium, kein Fuelltext):\n' +
+  '- Beziehe dich KONKRET auf ihr Thema und ihr Ziel — nutze ihre Begriffe/ihre Welt, nie generische Platzhalter.\n' +
+  '- Jeder Post = EIN echter, sofort postbarer Gedanke, den genau SIE raushauen wuerde — keine Listicle-Fuellung.\n' +
+  '- Spannungsluecke vor Aufloesung. Spezifisch schlaegt allgemein. Ihre Stimme, nie Agentur-Sprech.\n\n' +
+  'HOOK fuer die erste Slide (kind "hook") jedes Posts (waehle das passendste Muster):\n' +
   '- Kontra-Intuition: „Dein Problem ist nicht zu wenig Disziplin. Es ist zu viel davon."\n' +
   '- Konkrete Zahl: „3 Saetze, die jedes schwierige Gespraech drehen."\n' +
   '- Offene Frage: „Warum bist du nach dem Urlaub mueder als davor?"\n' +
@@ -30,41 +36,45 @@ const SYSTEM =
   '- Umformulieren statt versprechen: NICHT „hilft gegen Schlafprobleme" → SONDERN „mein Abendritual sieht so aus". ' +
   'NICHT „reduziert Stress" → SONDERN „was mir an stressigen Tagen guttut".\n' +
   '- Bei Wellness-/Gesundheits-Themen: ausschliesslich Ich-Erleben und Einladung zum Ausprobieren — nie objektive Wirkaussagen.\n\n' +
-  'Wenn das Thema nicht seriös bewerbbar ist, antworte mit {"ablehnen":true}.\n\n' +
-  'Antworte IMMER NUR mit validem JSON — ohne Markdown-Zaeune, ohne Erklaerung:\n' +
-  '{"eyebrow":"…","head":"…","headAccent":"…","sub":"…","bio":"…","cells":["…" ×9],' +
-  '"posts":[{"slides":[{"kind":"hook","eyebrow":"…","head":"…","headAccent":"…","sub":"…"},' +
-  '{"kind":"value","eyebrow":"…","head":"…","headAccent":"…","sub":"…"},' +
-  '{"kind":"cta","eyebrow":"…","head":"…","headAccent":"…","sub":"…"}],"caption":"…"} ×3]}\n' +
-  '- eyebrow: 2-3 Woerter, Kicker ueber der Headline.\n' +
-  '- head + headAccent: die Headline in ZWEI Teilen. headAccent wird farbig gesetzt und ist die Pointe.\n' +
-  '- sub: ein Satz, max 90 Zeichen.\n' +
-  '- bio: ihre Instagram-Bio-Zeile, max 40 Zeichen.\n' +
-  '- cells: 9 kurze Post-Titel (je max 18 Zeichen) fuer ihr Feed-Raster.\n' +
-  '- posts: GENAU 3 Karussell-Posts. Jeder Post hat GENAU 3 Slides in DIESER Reihenfolge:\n' +
-  '  1) kind "hook": Spannung/Neugier (grosses Statement wie beim Cover, s. HOOK oben).\n' +
-  '  2) kind "value": DER konkrete Nutzen/Kern — knapp, punktbetont (eine grosse Kernaussage).\n' +
-  '  3) kind "cta": ruhiger Abschluss, sanfte Handlung (z. B. „Folge @' + '{handle} fuer mehr" / „Speicher dir das").\n' +
-  '  Jede Slide traegt eyebrow (2-3 Woerter), head + headAccent (Headline in zwei Teilen, ' +
-  'headAccent = farbige Pointe) und sub (ein Satz, max 90 Zeichen). Alle Felder gefuellt, nie leer.\n' +
-  '- caption: pro Post EINE fertige, sofort postbare Instagram-Bildunterschrift (inhaltlich zu den 3 Slides ' +
-  'des Posts passend). Aufbau: starke erste Zeile (Hook) → 2-4 kurze Zeilen Mehrwert im Ich-/Du-Ton → eine ' +
-  'sanfte Handlungsaufforderung → am Ende 4-6 relevante Hashtags. 400-700 Zeichen. Echte Umbrueche mit \\n.';
+  'Wenn das Thema nicht seriös bewerbbar ist, setze im Tool ablehnen=true.\n\n' +
+  'INHALT der Felder (die STRUKTUR gibt das Tool-Schema vor — du fuellst sie hochwertig):\n' +
+  '- eyebrow: 2-3 Woerter Kicker. head + headAccent: Headline in ZWEI Teilen, headAccent = farbige Pointe. sub: ein Satz, max 90 Zeichen.\n' +
+  '- bio: ihre Instagram-Bio-Zeile, max 40 Zeichen. cells: 9 kurze Feed-Raster-Titel (je max 18 Zeichen).\n' +
+  '- posts (GENAU 3 Karussells): je 3 Slides in der Reihenfolge hook → value → cta.\n' +
+  '  hook: Spannung/Neugier. value: DER konkrete Kern, EINE grosse Kernaussage. cta: ruhiger Abschluss, sanfte Handlung („Speicher dir das" / „Folge fuer mehr").\n' +
+  '  Jede Slide: eyebrow, head, headAccent, sub — alle gefuellt, nie leer.\n' +
+  '- caption pro Post: fertige, sofort postbare IG-Bildunterschrift, inhaltlich zu den 3 Slides. Aufbau: starke erste Zeile → 2-4 kurze Mehrwert-Zeilen (Ich-/Du-Ton) → sanfte Handlungsaufforderung → 4-6 relevante Hashtags. 400-700 Zeichen.';
 
 function clip(v, n) {
   return String(v ?? '').trim().slice(0, n);
 }
 
 /**
- * Tool-Schema fuer strukturierte Ausgabe. Statt Claude freies JSON schreiben zu
- * lassen (das bei der grossen Multi-Slide-Struktur regelmaessig ungueltig wird —
- * Markdown-Zaeune, rohe Zeilenumbrueche in Caption-Strings → JSON.parse scheitert →
- * generischer Fallback), zwingt tool_use Claude in dieses Schema; die API liefert
- * ein bereits valides Objekt.
+ * Tool-Schemata fuer strukturierte Ausgabe. Statt Claude freies JSON schreiben zu
+ * lassen (das bei Multi-Slide-Struktur regelmaessig ungueltig wird — Markdown-
+ * Zaeune, rohe Zeilenumbrueche in Caption-Strings → JSON.parse scheitert →
+ * generischer Fallback), zwingt tool_use Claude ins Schema; die API liefert ein
+ * bereits valides Objekt. Fuer die Parallelisierung ZWEI Tools statt einem:
+ * Profil-Kern in einem Call, jeder Post in einem eigenen Call.
  */
-const CONTENT_TOOL = {
-  name: 'deliver_content',
-  description: 'Liefert den fertigen, HWG-konformen Instagram-Content im geforderten Schema.',
+const SLIDE_SCHEMA = {
+  type: 'array', minItems: 3, maxItems: 3,
+  items: {
+    type: 'object',
+    properties: {
+      kind: { type: 'string', enum: ['hook', 'value', 'cta'] },
+      eyebrow: { type: 'string' },
+      head: { type: 'string' },
+      headAccent: { type: 'string' },
+      sub: { type: 'string' },
+    },
+    required: ['kind', 'eyebrow', 'head', 'headAccent', 'sub'],
+  },
+};
+
+const PROFILE_TOOL = {
+  name: 'deliver_profile',
+  description: 'Liefert den Profil-Kern (Reveal-Headline, Bio, 9 Feed-Raster-Titel), HWG-konform.',
   input_schema: {
     type: 'object',
     properties: {
@@ -75,32 +85,21 @@ const CONTENT_TOOL = {
       sub: { type: 'string' },
       bio: { type: 'string' },
       cells: { type: 'array', items: { type: 'string' }, minItems: 9, maxItems: 9 },
-      posts: {
-        type: 'array', minItems: 3, maxItems: 3,
-        items: {
-          type: 'object',
-          properties: {
-            slides: {
-              type: 'array', minItems: 3, maxItems: 3,
-              items: {
-                type: 'object',
-                properties: {
-                  kind: { type: 'string', enum: ['hook', 'value', 'cta'] },
-                  eyebrow: { type: 'string' },
-                  head: { type: 'string' },
-                  headAccent: { type: 'string' },
-                  sub: { type: 'string' },
-                },
-                required: ['kind', 'eyebrow', 'head', 'headAccent', 'sub'],
-              },
-            },
-            caption: { type: 'string' },
-          },
-          required: ['slides', 'caption'],
-        },
-      },
     },
-    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'cells', 'posts'],
+    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'cells'],
+  },
+};
+
+const POST_TOOL = {
+  name: 'deliver_post',
+  description: 'Liefert EIN Instagram-Karussell (3 Slides hook→value→cta) + fertige Caption, HWG-konform.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      slides: SLIDE_SCHEMA,
+      caption: { type: 'string' },
+    },
+    required: ['slides', 'caption'],
   },
 };
 
@@ -168,26 +167,25 @@ export function buildFallback(clean) {
  * (Kern-Copy bleibt), analog zur frueheren Captions-Logik. Jeder Post braucht 3
  * Slides mit gefuellten head/headAccent/sub und eine nicht-leere Caption.
  */
-function postsOk(posts) {
+function postOk(post) {
   return (
-    Array.isArray(posts) &&
-    posts.length === 3 &&
-    posts.every(
-      (post) =>
-        post &&
-        typeof post === 'object' &&
-        typeof post.caption === 'string' &&
-        post.caption.trim() &&
-        Array.isArray(post.slides) &&
-        post.slides.length === 3 &&
-        post.slides.every(
-          (s) =>
-            s &&
-            typeof s === 'object' &&
-            ['head', 'headAccent', 'sub'].every((k) => typeof s[k] === 'string' && s[k].trim())
-        )
+    post &&
+    typeof post === 'object' &&
+    typeof post.caption === 'string' &&
+    post.caption.trim() &&
+    Array.isArray(post.slides) &&
+    post.slides.length === 3 &&
+    post.slides.every(
+      (s) =>
+        s &&
+        typeof s === 'object' &&
+        ['head', 'headAccent', 'sub'].every((k) => typeof s[k] === 'string' && s[k].trim())
     )
   );
+}
+
+function postsOk(posts) {
+  return Array.isArray(posts) && posts.length === 3 && posts.every(postOk);
 }
 
 /** true, wenn Claudes Antwort die Form hat, auf die die Templates bauen. */
@@ -202,7 +200,52 @@ function formStimmt(c) {
 }
 
 /**
- * Versucht Claude, faellt sonst auf buildFallback zurueck. WIRFT NIE.
+ * EIN Claude-Call mit tool_use. Gibt das validierte Tool-Objekt zurueck oder null
+ * (jeder Fehler → null, damit der Aufrufer pro Teil entscheiden kann: Kern-Fallback
+ * vs. nur diesen Post backfillen). WIRFT NIE. System + Tool tragen cache_control:
+ * der grosse statische Prefix wird EINMAL gecacht und von allen 4 parallelen Calls
+ * (und allen Folge-Kundinnen) fuer ~10% der Input-Kosten wiederverwendet.
+ */
+async function callClaude(env, tool, user, label) {
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: {
+        'x-api-key': env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: env.AI_MODEL,
+        max_tokens: PER_CALL_TOKENS,
+        system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+        tools: [{ ...tool, cache_control: { type: 'ephemeral' } }],
+        tool_choice: { type: 'tool', name: tool.name },
+        messages: [{ role: 'user', content: user }],
+      }),
+    });
+    if (!res.ok) {
+      console.error(`[copy] ${label}: Claude ${res.status}`, await res.text());
+      return null;
+    }
+    const data = await res.json();
+    const u = data?.usage;
+    if (u) console.error(`[copy] ${label} usage in=${u.input_tokens} cache_read=${u.cache_read_input_tokens ?? 0} out=${u.output_tokens}`);
+    const tu = (data?.content ?? []).find((b) => b.type === 'tool_use' && b.name === tool.name);
+    if (!tu || !tu.input || typeof tu.input !== 'object') {
+      console.error(`[copy] ${label}: kein tool_use. stop_reason:`, data?.stop_reason);
+      return null;
+    }
+    return tu.input;
+  } catch (err) {
+    console.error(`[copy] ${label}: Aufruf fehlgeschlagen:`, err);
+    return null;
+  }
+}
+
+/**
+ * Versucht Claude (4 PARALLELE Calls: Profil + 3 Posts), faellt sonst auf
+ * buildFallback zurueck. WIRFT NIE.
  * @returns {Promise<object>} Copy
  */
 export async function generateCopy(env, clean) {
@@ -216,59 +259,50 @@ export async function generateCopy(env, clean) {
     return fb('no_key');
   }
 
-  const user =
+  const basis =
     `Kundin: ${clip(clean?.name, 60)} (@${clip(clean?.handle, 40)})\n` +
     `Thema: ${clip(clean?.branche, 200)}\n` +
     `Ziel: ${clip(clean?.ziel, 400)}\n` +
     `Stimmung: ${clip(clean?.stimmung, 40)}`;
 
-  try {
-    const res = await fetch(API, {
-      method: 'POST',
-      headers: {
-        'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: env.AI_MODEL,
-        max_tokens: MAX_TOKENS,
-        system: SYSTEM,
-        tools: [CONTENT_TOOL],
-        tool_choice: { type: 'tool', name: 'deliver_content' },
-        messages: [{ role: 'user', content: user }],
-      }),
-    });
+  // Drei feste Blickwinkel, damit die 3 unabhaengigen (parallelen) Post-Calls sich
+  // NICHT wiederholen — die Coherenz, die frueher der eine gemeinsame Call sicherte,
+  // steckt jetzt in diesen Vorgaben.
+  const winkel = [
+    'Post 1 von 3 — der AUFMACHER: die zentrale Ueberzeugung oder der groesste Irrtum in ihrem Thema. Kontra-intuitiver Hook.',
+    'Post 2 von 3 — das WIE: ein konkreter Weg, eine Methode oder ein Schritt aus ihrem Thema. Klar anderer Blickwinkel als Post 1.',
+    'Post 3 von 3 — PERSOENLICH: eine Erkenntnis oder kleine Geschichte aus ihrem Alltag zum Thema. Klar anderer Blickwinkel als Post 1 und 2.',
+  ];
 
-    if (!res.ok) {
-      console.error('[copy] Claude antwortete mit', res.status, await res.text());
-      return fb('claude_error');
-    }
+  // Alle 4 Calls gleichzeitig — Wall-Zeit = langsamster Call, nicht Summe.
+  const [prof, ...rohPosts] = await Promise.all([
+    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
+    ...winkel.map((w, i) => callClaude(env, POST_TOOL, basis + '\n\nAufgabe: Genau EIN Karussell (3 Slides hook→value→cta) + fertige Caption.\n' + w, `post${i + 1}`)),
+  ]);
 
-    const data = await res.json();
-    const toolUse = (data?.content ?? []).find((b) => b.type === 'tool_use' && b.name === 'deliver_content');
-    if (!toolUse || !toolUse.input || typeof toolUse.input !== 'object') {
-      console.error('[copy] Kein tool_use in der Antwort — Fallback. stop_reason:', data?.stop_reason);
-      return fb('claude_error');
-    }
-    const parsed = toolUse.input; // API-garantiert valides Objekt gemaess Schema
-
-    if (parsed?.ablehnen) {
-      console.error('[copy] Claude hat das Thema abgelehnt — nutze neutrale Fallback-Texte');
-      return buildFallback(clean);
-    }
-    if (!formStimmt(parsed)) {
-      console.error('[copy] Claudes Antwort hat die falsche Form — Fallback. Keys:', Object.keys(parsed || {}).join(','), 'cells:', Array.isArray(parsed?.cells) ? parsed.cells.length : 'n/a');
-      return buildFallback(clean);
-    }
-    // Kern-Copy ist gut — aber falls die Posts patzen (fehlende Slides, leere
-    // Felder, keine Caption), nur DIE backfillen, statt die ganze gute Antwort
-    // wegzuwerfen.
-    if (postsOk(parsed.posts)) return parsed;
-    console.error('[copy] posts fehlen/ungueltig — backfill. posts-Typ:', Array.isArray(parsed?.posts) ? `len ${parsed.posts.length}` : typeof parsed?.posts, 'erster-Post-Keys:', Object.keys(parsed?.posts?.[0] || {}).join(','));
-    return { ...parsed, posts: buildFallback(clean).posts };
-  } catch (err) {
-    console.error('[copy] Texte konnten nicht generiert werden:', err);
+  // Das Profil ist der Kern (Bio, Feed-Raster, Headline). Faellt es aus (API/Guthaben),
+  // ist das ein echtes Problem -> Founder-Alarm ueber den Marker.
+  if (!prof) {
+    console.error('[copy] Profil-Call ohne Ergebnis — Fallback.');
     return fb('claude_error');
   }
+  if (prof.ablehnen) {
+    console.error('[copy] Claude hat das Thema abgelehnt — nutze neutrale Fallback-Texte');
+    return buildFallback(clean);
+  }
+  if (!formStimmt(prof)) {
+    console.error('[copy] Profil hat die falsche Form — Fallback. Keys:', Object.keys(prof || {}).join(','), 'cells:', Array.isArray(prof?.cells) ? prof.cells.length : 'n/a');
+    return buildFallback(clean);
+  }
+
+  // Posts einzeln bewerten: gute uebernehmen, nur die patzenden aus dem Fallback
+  // backfillen (statt die ganze Antwort wegzuwerfen).
+  const fbPosts = buildFallback(clean).posts;
+  const posts = rohPosts.map((p, i) => {
+    if (postOk(p)) return p;
+    console.error(`[copy] post${i + 1} ungueltig — backfill. Keys:`, Object.keys(p || {}).join(','));
+    return fbPosts[i];
+  });
+
+  return { ...prof, posts };
 }

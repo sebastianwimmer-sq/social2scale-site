@@ -192,39 +192,69 @@ function profil(id, clean, copy, p) {
  * Kunden geposteten Post, scannt den QR (im Feed/Story sind Text-Links tot) und
  * landet im Funnel -> viraler Loop. shareUrl kommt aus env.PUBLIC_ORIGIN.
  */
-function shareFrame(clean, shareUrl) {
+function shareFrame(clean, copy, shareUrl) {
+  // Kundenbezug + Mehrwert: NICHT eine generische s2s-Anzeige, sondern der ECHTE
+  // beste Hook der Kundin als Held. Wenn SIE das teilt, zeigt es ihren stärksten
+  // Content (Proof, macht sie gut aussehen -> sie WILL teilen); s2s ist nur die
+  // dezente Signatur + QR drunter (viraler Loop). Hook = 1. Slide (kind:'hook')
+  // des 1. Posts; Fallback auf die Profil-Headline, nie leer.
+  const hook = (Array.isArray(copy?.posts) && copy.posts[0] && copy.posts[0].slides && copy.posts[0].slides[0]) || {};
+  const kicker = esc(hook.eyebrow || 'Der Post, der scrollen stoppt');
+  const head = esc(hook.head || copy?.head || 'Dein Content,');
+  const accent = esc(hook.headAccent || copy?.headAccent || 'der auffällt.');
+  const sub = esc(hook.sub || '');
   return `<div class="frame share grain" id="f-share">
     <div class="share-grad"></div>
     <div class="share-inner">
-      <img class="share-logo" src="https://social2scale.com/assets/sig-wordmark.png" alt="social2scale">
-      <div class="share-mid">
-        <span class="share-eyebrow">Gratis Instagram-Vorschau</span>
-        <h1 class="share-head">Auch dein Feed —<br><em>in Minuten.</em></h1>
-        <p class="share-sub">So sieht der Feed von <b>@${esc(clean.handle)}</b> aus, gebaut mit social2scale. Scan und bau deinen eigenen — gratis.</p>
+      <div class="share-top">
+        <div class="share-who">
+          <span class="share-at">@${esc(clean.handle)}</span>
+          <span class="share-plat">Instagram · frische Vorschau</span>
+        </div>
+        <img class="share-mark" src="https://social2scale.com/assets/sig-avatar.png" alt="social2scale">
       </div>
-      <div class="share-qr-wrap">
-        <div class="share-qr">${qrSvg(shareUrl, 240)}</div>
-        <div class="share-qr-cta">Scan &amp; starte<br><em>gratis</em> <span class="share-arrow">→</span></div>
+      <div class="share-hero">
+        <span class="share-kicker">${kicker}</span>
+        <h1 class="share-hook">${head} <em>${accent}</em></h1>
+        ${sub ? `<p class="share-hooksub">${sub}</p>` : ''}
+      </div>
+      <div class="share-foot">
+        <div class="share-foot-l">
+          <img class="share-logo" src="https://social2scale.com/assets/sig-wordmark.png" alt="social2scale">
+          <span class="share-foot-t">Auch dein Feed — <em>gratis in Minuten.</em></span>
+        </div>
+        <div class="share-qr-wrap">
+          <div class="share-qr">${qrSvg(shareUrl, 210)}</div>
+          <span class="share-scan">Scan <span class="share-arrow">→</span></span>
+        </div>
       </div>
     </div>
   </div>`;
 }
 
 /**
- * @returns {string} eine HTML-Seite mit allen 21 Frames (2 Farbwelten × [Profil +
+ * @returns {string} eine HTML-Seite mit den Frames (2 Farbwelten × [Profil +
  *   3 Posts × 3 Slides] + 1 Share-Card). copy.posts liegt immer wohlgeformt vor —
  *   Fallback/Backfill in copy.js garantieren 3 Posts mit je 3 Slides.
  * @param {string} [shareUrl] Ziel des QR auf der Share-Card (Funnel-Einstieg).
+ * @param {Set<string>} [onlyIds] Wenn gesetzt, werden NUR diese Frame-Ids gebaut.
+ *   render.js verteilt die 21 Frames so auf mehrere Seiten (je ~7), damit keine
+ *   Seite das volle DOM tragen muss (Speicher) und die Screenshots parallel laufen.
  */
-export function buildPage(clean, copy, palettes, shareUrl) {
+export function buildPage(clean, copy, palettes, shareUrl, onlyIds) {
+  const want = onlyIds ? (id) => onlyIds.has(id) : () => true;
   const posts = Array.isArray(copy.posts) ? copy.posts : [];
   const frames = palettes
     .map((p, w) => {
-      const profilFrame = profil(`f-${w}-profil`, clean, copy, p);
+      const profId = `f-${w}-profil`;
+      const profilFrame = want(profId) ? profil(profId, clean, copy, p) : '';
       const postFrames = posts
         .map((post, pi) =>
           (Array.isArray(post?.slides) ? post.slides : [])
-            .map((s, si) => slide(`f-${w}-p${pi + 1}-s${si + 1}`, clean, s, p, si + 1))
+            .map((s, si) => {
+              const id = `f-${w}-p${pi + 1}-s${si + 1}`;
+              return want(id) ? slide(id, clean, s, p, si + 1) : '';
+            })
             .join('')
         )
         .join('');
@@ -236,5 +266,5 @@ export function buildPage(clean, copy, palettes, shareUrl) {
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="${FONTS}" rel="stylesheet">
-<style>${LOOK_CSS}</style></head><body>${frames}${shareFrame(clean, shareUrl)}</body></html>`;
+<style>${LOOK_CSS}</style></head><body>${frames}${want('f-share') ? shareFrame(clean, copy, shareUrl) : ''}</body></html>`;
 }
