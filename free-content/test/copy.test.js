@@ -250,6 +250,26 @@ describe('generateCopy', () => {
     expect(namen).toEqual(['deliver_post', 'deliver_post', 'deliver_post', 'deliver_profile']);
   });
 
+  // Der Backfill rettet die Seite, versteckt aber, DASS etwas fehlte. Genau so bekam
+  // am 27.07. die erste echte Interessentin 2 von 3 Posts als Platzhalter, ohne dass
+  // jemand alarmiert wurde. Ohne diese Markierung kann generate.js es nicht wissen.
+  it('markiert, welche Posts aus dem Fallback stammen', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    // Post 1 und 3 kaputt, Post 2 gut — exakt der reale Fall.
+    vi.stubGlobal('fetch', claudeMock(kernOk, [
+      { slides: [], caption: '' }, postFixture('b'), { slides: [], caption: '' },
+    ]));
+    const c = await generateCopy(envOk, clean);
+    expect(c._backfilled).toEqual([1, 3]);
+    pruefePosts(c.posts);   // trotzdem 3 vollstaendige Posts — die Seite bleibt heil
+  });
+
+  it('markiert nichts, wenn alle Posts echt sind', async () => {
+    vi.stubGlobal('fetch', claudeMock(kernOk, [postFixture('a'), postFixture('b'), postFixture('c')]));
+    const c = await generateCopy(envOk, clean);
+    expect(c._backfilled ?? []).toEqual([]);
+  });
+
   // Auf Sonnet 5 ist adaptives Denken AN, sobald `thinking` fehlt (auf 4.6 war es aus).
   // max_tokens deckelt Denken UND Antwort zusammen — ohne dieses Feld risse der
   // Tool-Call also mitten im Post ab, und zwar STILL: der Fallback faengt es auf und

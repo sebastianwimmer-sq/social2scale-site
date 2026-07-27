@@ -335,11 +335,16 @@ export async function generateCopy(env, clean) {
   // Posts einzeln bewerten: gute uebernehmen, nur die patzenden aus dem Fallback
   // backfillen (statt die ganze Antwort wegzuwerfen).
   const fbPosts = buildFallback(clean).posts;
+  // Welche Posts gebackfillt wurden, muss NACH AUSSEN sichtbar sein: der Backfill
+  // haelt die Seite heil und versteckt damit, dass etwas fehlte. Am 27.07. bekam so
+  // die erste echte Interessentin 2 von 3 Posts als Platzhalter, ohne Alarm.
+  const backfilled = [];
   const posts = rohPosts.map((p, i) => {
     if (postOk(p)) return p;
     console.error(`[copy] post${i + 1} ungueltig — backfill. Keys:`, Object.keys(p || {}).join(','));
+    backfilled.push(i + 1);
     return fbPosts[i];
   });
 
-  return { ...prof, posts };
+  return { ...prof, posts, _backfilled: backfilled };
 }
