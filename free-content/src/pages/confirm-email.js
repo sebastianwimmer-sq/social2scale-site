@@ -105,6 +105,50 @@ const MAIL_SIG_FOOTER = `
 </body>
 </html>`;
 
+/** Schliesst Karte + Dokument ohne den kundenseitigen Rechtsfuss (fuer interne Mails). */
+const MAIL_CLOSE = `
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+/**
+ * INTERNE Benachrichtigung an Sebi & Phil. Gleicher dunkler Karten-Look wie die
+ * Kundinnen-Mails (damit sie nicht wie ein Systemfehler aussieht), aber ohne
+ * Impressum/Abmelde-Fuss — die gehoeren in Mails an Aussenstehende, nicht in eine
+ * interne Notiz.
+ *
+ * @param {string} titel - bereits escaped.
+ * @param {Array<[string,string]>} zeilen - [Label, Wert], Werte bereits escaped.
+ * @param {string} feedUrl - bereits escaped; leer = kein Knopf.
+ * @returns {string} vollstaendiges HTML-Dokument fuer den Mailversand.
+ */
+export function founderMailHtml(titel, zeilen, feedUrl) {
+  const liste = zeilen
+    .map(
+      ([label, wert]) =>
+        `<tr>
+           <td style="padding:0 14px 7px 0;font-family:Arial,sans-serif;font-size:9px;font-weight:700;color:#00C896;text-transform:uppercase;letter-spacing:1.3px;white-space:nowrap;vertical-align:top;">${label}</td>
+           <td style="padding:0 0 7px;font-family:-apple-system,Arial,sans-serif;font-size:14px;line-height:1.5;color:${PAPER};">${wert || '—'}</td>
+         </tr>`
+    )
+    .join('');
+
+  return (
+    mailHead(titel, titel) +
+    `
+          <h1 class="h1" style="margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:26px;line-height:1.15;color:${PAPER};">${titel}</h1>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:100%;">${liste}</table>` +
+    (feedUrl
+      ? `<div style="height:1px;line-height:1px;font-size:1px;background:rgba(255,255,255,0.09);margin:26px 0 22px;">&nbsp;</div>` +
+        mailCta(feedUrl, 'Ihren Feed ansehen')
+      : '') +
+    MAIL_CLOSE
+  );
+}
+
 /**
  * @param {string} vorname - bereits escaped (esc()).
  * @param {string} confirmUrl - bereits escaped (esc()).

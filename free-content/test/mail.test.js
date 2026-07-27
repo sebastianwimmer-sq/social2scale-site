@@ -166,6 +166,29 @@ describe('mail: send() — der Pfad, auf dem der Funnel stirbt', () => {
     expect(errorSpy).toHaveBeenCalled();
   });
 
+  // Die Benachrichtigung ging bisher an EINE Adresse — das Sammelpostfach, von dem
+  // aus sie auch verschickt wird. Mail von info@ an info@ uebersieht man; bei der
+  // ersten echten Interessentin am 27.07. ist sie genau so untergegangen.
+  it('schickt die Founder-Mail an alle konfigurierten Empfaenger', async () => {
+    const gesendet = [];
+    vi.stubGlobal('fetch', vi.fn(async (_u, o) => { gesendet.push(JSON.parse(o.body)); return brevoStub(); }));
+
+    await notifyFounders({ ...envOk, NOTIFY_TO: 'sebi@x.test, phil@x.test' }, lead, 'ready');
+
+    expect(gesendet[0].to.map((t) => t.email)).toEqual(['sebi@x.test', 'phil@x.test']);
+  });
+
+  it('haengt den Link zum fertigen Feed in die Founder-Mail', async () => {
+    // Ohne Link muesste man die Adresse von Hand zusammenbauen, um zu sehen, was die
+    // Kundin bekommen hat — und genau das tut dann niemand.
+    const gesendet = [];
+    vi.stubGlobal('fetch', vi.fn(async (_u, o) => { gesendet.push(JSON.parse(o.body)); return brevoStub(); }));
+
+    await notifyFounders(envOk, lead, 'ready');
+
+    expect(gesendet[0].htmlContent).toContain('https://start.social2scale.com/r/abc123');
+  });
+
   it('laesst notifyFounders nie werfen, loggt den Fehler aber', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => {
       throw new TypeError('network error');

@@ -5,7 +5,7 @@
  */
 
 import { stripControlChars } from './validate.js';
-import { confirmMailHtml, resultMailHtml } from './pages/confirm-email.js';
+import { confirmMailHtml, resultMailHtml, founderMailHtml } from './pages/confirm-email.js';
 
 const BREVO_MAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
@@ -70,7 +70,11 @@ async function send(env, to, name, mail) {
       },
       body: JSON.stringify({
         sender: { email: env.NOTIFY_FROM, name: 'social2scale' },
-        to: [{ email: to, name }],
+        // Komma-Liste erlaubt: die Founder-Benachrichtigung soll an Sebi UND Phil
+        // persoenlich gehen. Ging sie nur ans Sammelpostfach (von dem aus sie auch
+        // verschickt wird), uebersieht man sie — bei der ersten echten Interessentin
+        // am 27.07. genau so passiert.
+        to: String(to).split(',').map((e) => e.trim()).filter(Boolean).map((email) => ({ email, name })),
         subject: mail.subject,
         htmlContent: mail.htmlContent,
       }),
@@ -113,27 +117,32 @@ export async function sendResultMail(env, lead) {
 /** Founder-Benachrichtigung — non-fatal, aber niemals still. */
 export async function notifyFounders(env, lead, action) {
   try {
-    await send(env, env.NOTIFY_TO, 'social2scale', buildFounderMail(lead, action));
+    await send(env, env.NOTIFY_TO, 'social2scale', buildFounderMail(lead, action, env.PUBLIC_ORIGIN));
   } catch (err) {
     console.error('[mail] Founder-Benachrichtigung fehlgeschlagen:', err);
   }
 }
 
-function buildFounderMail(lead, action) {
+/**
+ * Interne Benachrichtigung. Der Link zum fertigen Feed ist der Kern: ohne ihn muesste
+ * man die Adresse von Hand zusammenbauen, um zu sehen, was die Kundin bekommen hat —
+ * und genau das tut dann niemand.
+ */
+function buildFounderMail(lead, action, publicOrigin = '') {
+  const feedUrl = publicOrigin && lead?.token ? `${publicOrigin}/r/${encodeURIComponent(lead.token)}` : '';
+  const handle = String(lead?.handle || '').replace(/^@+/, '');
+  const zeilen = [
+    ['Name', esc(lead.name)],
+    ['Mail', esc(lead.email)],
+    ['Handle', handle ? `@${esc(handle)}` : ''],
+    ['Thema', esc(lead.branche)],
+    ['Ziel', esc(lead.ziel)],
+    ['Stimmung', esc(lead.stimmung)],
+    ['Quelle', esc(lead.source)],
+    ['Status', esc(action)],
+  ];
   return {
     subject: subjectSafe(`Free-Content-Lead: ${lead.name} (${action})`),
-    htmlContent: `
-      <h2>Neuer Free-Content-Lead</h2>
-      <ul>
-        <li><b>Name:</b> ${esc(lead.name)}</li>
-        <li><b>E-Mail:</b> ${esc(lead.email)}</li>
-        <li><b>Handle:</b> @${esc(lead.handle)}</li>
-        <li><b>Branche:</b> ${esc(lead.branche)}</li>
-        <li><b>Ziel:</b> ${esc(lead.ziel)}</li>
-        <li><b>Stimmung:</b> ${esc(lead.stimmung)}</li>
-        <li><b>Quelle:</b> ${esc(lead.source)}</li>
-        <li><b>Aktion:</b> ${esc(action)}</li>
-      </ul>
-    `.trim(),
+    htmlContent: founderMailHtml(`Free-Content-Lead: ${esc(lead.name)}`, zeilen, esc(feedUrl)),
   };
 }
