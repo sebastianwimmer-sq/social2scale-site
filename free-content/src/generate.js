@@ -13,7 +13,7 @@ import { renderAll } from './render.js';
 import { findByToken } from './leads.js';
 import { notifyFounders } from './mail.js';
 import { FRAME_IDS } from './templates/frames.js';
-import { RENDER_VERSUCHE, RENDER_BACKOFF_MS } from './constants.js';
+import { RENDER_VERSUCHE, RENDER_BACKOFF_MS, FOLLOWUP_TAGE } from './constants.js';
 
 /** Was sie waehrend des Bauens liest. Ehrlich, nicht dekorativ. */
 const SCHRITTE = {
@@ -408,5 +408,42 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
       .run();
   } catch (err) {
     console.error('[generate] CRM-Spiegel fehlgeschlagen, Lead', lead.id, err);
+  }
+
+  // Ohne diese zwei Zeilen endet der Funnel im Nichts: der erste echte Lead lag
+  // einen ganzen Tag unangetastet im Eingang, weil niemand und nichts darauf
+  // reagierte. Das CRM hat beide Bausteine seit jeher — `activity` als Verlauf und
+  // `events` mit dem Typ 'follow_up' als Wiedervorlage. Sie wurden nur nie befuellt.
+  // Bewusst NUR beim ersten Mal (der Aktualisierungs-Zweig oben kehrt vorher um):
+  // eine Neu-Generierung ist kein neuer Lead und braucht keine zweite Wiedervorlage.
+  if (clientId) {
+    const wann = new Date(Date.now() + FOLLOWUP_TAGE * 86400000).toISOString().slice(0, 10);
+    try {
+      await db
+        .prepare('INSERT INTO activity (client_id, text) VALUES (?, ?)')
+        .bind(
+          clientId,
+          `Gratis-Vorschau erstellt${lead.branche ? ` · Thema: ${lead.branche}` : ''}` +
+            (feedUrl ? ` · ${feedUrl}` : '')
+        )
+        .run();
+    } catch (err) {
+      console.error('[generate] Verlaufseintrag fehlgeschlagen, Lead', lead.id, err);
+    }
+    try {
+      await db
+        .prepare(
+          "INSERT INTO events (client_id, title, date, time, type, note, done) VALUES (?, ?, ?, '', 'follow_up', ?, 0)"
+        )
+        .bind(
+          clientId,
+          `Nachfassen: Gratis-Vorschau ${lead.name}`,
+          wann,
+          `Hat sie ihre Vorschau angesehen? Feed: ${feedUrl || '(kein Link)'}`
+        )
+        .run();
+    } catch (err) {
+      console.error('[generate] Wiedervorlage fehlgeschlagen, Lead', lead.id, err);
+    }
   }
 }

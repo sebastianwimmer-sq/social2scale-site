@@ -46,6 +46,14 @@ export const COPY_VERSUCHE = 2;
 export const COPY_BACKOFF_MS = 600;
 
 /**
+ * Wiedervorlage nach einem fertigen Free-Content-Lead. Zwei Tage, weil sie ihre
+ * Vorschau meist nicht sofort ansieht (die erste echte Interessentin bestaetigte
+ * ihre Mail erst nach 15 Stunden). Frueher nachfassen heisst nachfassen, bevor
+ * sie ueberhaupt geschaut hat.
+ */
+export const FOLLOWUP_TAGE = 2;
+
+/**
  * Spec §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem
  * atomaren Claim (status='building') und markiereFehler laesst eine Zeile fuer
  * immer bei 'building' haengen — nie retried, kein Alarm. Claude + 8 Renders

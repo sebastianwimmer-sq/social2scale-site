@@ -302,6 +302,29 @@ describe('mirrorToCrm', () => {
     expect(eingang.client_id).toBe(karte.id);
   });
 
+  it('legt einen Verlaufseintrag und eine Wiedervorlage an — sonst passiert nach dem Lead nichts', async () => {
+    // Das CRM hat beide Bausteine seit jeher (events.type kennt 'follow_up',
+    // activity ist der Verlauf pro Kundin) — der Funnel hat sie nie befuellt.
+    // Ergebnis: der erste echte Lead lag einen ganzen Tag unangetastet da.
+    const token = await bestaetigterLead();
+    const lead = await findByToken(env.DB, token);
+    await mirrorToCrm(env.DB, lead, 'https://start.test');
+
+    const karte = await env.DB.prepare('SELECT id FROM clients WHERE contact=?').bind(lead.email).first();
+
+    const verlauf = await env.DB.prepare('SELECT * FROM activity WHERE client_id=?').bind(karte.id).first();
+    expect(verlauf, 'kein Verlaufseintrag').toBeTruthy();
+    expect(verlauf.text).toContain('Gratis-Vorschau');
+
+    const wv = await env.DB.prepare('SELECT * FROM events WHERE client_id=?').bind(karte.id).first();
+    expect(wv, 'keine Wiedervorlage').toBeTruthy();
+    expect(wv.type).toBe('follow_up');          // Typ, den die Oberflaeche kennt
+    expect(wv.done).toBe(0);                    // offen
+    expect(wv.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);  // Portal validiert genau das
+    expect(new Date(wv.date) > new Date(), 'Wiedervorlage liegt nicht in der Zukunft').toBe(true);
+    expect(wv.note).toContain('https://start.test/r/');   // Feed direkt aus der Wiedervorlage erreichbar
+  });
+
   it('legt bei erneuter Generierung KEINE zweite Eingangszeile an', async () => {
     // Am 27.07. live passiert: die Neu-Generierung fuer die erste echte Interessentin
     // legte eine zweite Zeile an, sie stand doppelt im Eingang und musste von Hand weg.

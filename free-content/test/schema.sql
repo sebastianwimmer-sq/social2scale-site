@@ -100,3 +100,24 @@ CREATE TABLE IF NOT EXISTS clients (
   upsell_flag INTEGER DEFAULT 0,
   logo_key    TEXT DEFAULT ''
 );
+
+-- Wiedervorlagen und Verlauf. Aus der PRODUKTION uebernommen (27.07.2026).
+-- events.type kennt: call | follow_up | deadline | note; date ist YYYY-MM-DD
+-- (das Portal validiert das per Regex, siehe _worker.js:3171).
+CREATE TABLE IF NOT EXISTS events (
+  id        INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id INTEGER,
+  title     TEXT NOT NULL,
+  date      TEXT NOT NULL,
+  time      TEXT DEFAULT '',
+  type      TEXT NOT NULL DEFAULT 'note',
+  note      TEXT DEFAULT '',
+  done      INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS activity (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  client_id  INTEGER NOT NULL,
+  text       TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
