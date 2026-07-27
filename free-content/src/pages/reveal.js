@@ -69,11 +69,15 @@ export const REVEAL_STYLE = `
   /* Licht-Sockel: das Gerät steht auf beleuchtetem Boden (farbwelt-getönt),
      statt im Nichts zu schweben. */
   .rv-hero::after{content:"";position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);width:58%;height:30px;border-radius:50%;filter:blur(20px);background:radial-gradient(circle,var(--rv-ped),transparent 70%);z-index:-1;transition:background 1s var(--e-out)}
-  .rv-shot-frame{position:relative;width:min(76vw,318px);border-radius:26px;padding:7px;line-height:0;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 55px 110px -42px rgba(0,0,0,.9),0 0 78px -14px rgba(0,184,136,.2),0 0 88px -20px rgba(31,166,224,.15);animation:rvFloat 7.5s ease-in-out infinite}
-  /* Glas-Glanz: diagonaler Lichtstreif über dem Screen = echtes Display-Glas. */
-  .rv-shot-frame::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;z-index:2;mix-blend-mode:screen;background:linear-gradient(133deg,rgba(255,255,255,.17),rgba(255,255,255,.02) 26%,transparent 46%,transparent 72%,rgba(255,255,255,.07))}
+  /* KEIN zweiter Geräterahmen: das gerenderte Bild IST bereits ein Handy-Mockup
+     (Rahmen, Statusleiste, Profil, 3x3-Raster). Es nochmal einzurahmen ergab ein
+     Handy IM Handy — ihr Feed schrumpfte auf ~40% der Breite, obwohl er der
+     Beweis ist. Jetzt: randlos und so gross wie die Spalte hergibt, getragen von
+     Schatten + farbwelt-getöntem Glühen. Aus demselben Grund faellt der
+     Display-Glasglanz weg (er lag als Schleier ueber ihrem Content). */
+  .rv-shot-frame{position:relative;width:min(100%,26rem);border-radius:22px;line-height:0;box-shadow:0 60px 120px -45px rgba(0,0,0,.95),0 0 92px -16px rgba(0,184,136,.2),0 0 104px -22px rgba(31,166,224,.15);animation:rvFloat 7.5s ease-in-out infinite}
   @keyframes rvFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-  .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:20px;background:#0c0c0c;opacity:0;transition:opacity .55s var(--e-out)}
+  .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:22px;background:#0c0c0c;opacity:0;transition:opacity .55s var(--e-out)}
   .rv-shot.loaded{opacity:1}
   /* Aussen VERTIKAL (durch die 3 Posts scrollen), innen HORIZONTAL (Slides
      swipen) — kein horizontal-in-horizontal (Spec §6). */
@@ -116,45 +120,64 @@ export const REVEAL_STYLE = `
   .rv-values{list-style:none;display:flex;flex-direction:column;gap:.55rem;margin:.3rem auto 1.2rem;padding:0;text-align:left;width:max-content;max-width:100%}
   .rv-values li{display:flex;align-items:center;gap:.65rem;font-size:.94rem;color:var(--ink);line-height:1.3}
   .rv-values .ck{width:19px;height:19px;flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(0,184,136,.16);color:var(--emerald-soft);font-size:11px;font-weight:800}
-  .rv-actions{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:.1rem}
+  /* RANGFOLGE am Schluss: hier standen vier gleich laute Handlungen nebeneinander
+     (starten / speichern / teilen / "schreib uns direkt") — und die letzte zeigte
+     sogar auf DASSELBE Ziel wie die primäre. Jetzt traegt nur noch der Primär-CTA
+     Emerald; speichern/teilen sind ruhige Zweitwege mit Abstand, der Kontakt-Link
+     ist reiner Text. Eine Seite, eine offensichtliche naechste Handlung. */
+  .rv-actions{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:1.15rem}
   .rv-cta-share{display:inline-flex;align-items:center;gap:.5rem}
   .rv-cta-share svg{opacity:.85}
-  .rv-contact{font-family:var(--ff-label);font-weight:600;font-size:13.5px;letter-spacing:.01em;color:var(--emerald-soft);text-decoration:none;margin-top:.7rem;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid transparent;transition:border-color .3s var(--e-out)}
-  .rv-contact:hover{border-color:rgba(31,201,152,.5)}
+  .rv-contact{font-family:var(--ff-label);font-weight:600;font-size:13px;letter-spacing:.01em;color:var(--muted);text-decoration:none;margin-top:1.1rem;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid transparent;transition:border-color .3s var(--e-out),color .3s var(--e-out)}
+  .rv-contact:hover{color:var(--ink);border-color:var(--hair-2)}
   .rv-cta{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--ff-label);font-weight:700;font-size:15px;letter-spacing:.01em;text-decoration:none;padding:1rem 1.1rem 1rem 1.5rem;border-radius:100px;color:var(--emerald-ink);background:var(--flow);box-shadow:0 16px 40px -16px rgba(0,184,136,.6),0 16px 40px -20px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .4s var(--e-spring)}
   .rv-cta:active{transform:scale(.97)}
   .rv-cta .ic{width:30px;height:30px;border-radius:50%;background:rgba(4,32,26,.16);display:flex;align-items:center;justify-content:center;font-size:15px;transition:transform .4s var(--e-spring)}
   .rv-cta:hover .ic{transform:translate(3px,-1px)}
-  .rv-cta2{font-family:var(--ff-label);font-weight:600;font-size:14px;color:var(--ink);text-decoration:none;padding:.8rem 1.3rem;border-radius:100px;border:1px solid var(--hair-2);background:rgba(244,245,243,.04);cursor:pointer;transition:border-color .3s var(--e-out),background .3s var(--e-out)}
-  .rv-cta2:hover{border-color:rgba(0,184,136,.4);background:rgba(0,184,136,.08)}
-  .rv-wm,.rv-disclaimer{font-size:.8rem;color:var(--faint);max-width:34ch;margin-top:.3rem;line-height:1.5}
+  .rv-cta2{font-family:var(--ff-label);font-weight:600;font-size:13.5px;color:var(--muted);text-decoration:none;padding:.75rem 1.25rem;border-radius:100px;border:1px solid var(--hair);background:rgba(244,245,243,.03);cursor:pointer;transition:border-color .3s var(--e-out),background .3s var(--e-out),color .3s var(--e-out)}
+  .rv-cta2:hover{color:var(--ink);border-color:var(--hair-2);background:rgba(244,245,243,.06)}
+  /* --faint auf dem dunklen Grund liegt bei ~4.3:1 und faellt damit unter AA fuer
+     Fliesstext dieser Groesse — ausgerechnet bei den zwei Saetzen, die die
+     Erwartung setzen (Wasserzeichen-Hinweis + "Beispiel-Vorschau"). --muted: ~7.9:1. */
+  .rv-wm,.rv-disclaimer{font-size:.8rem;color:var(--muted);max-width:38ch;margin-top:.45rem;line-height:1.55}
 
   .rv-scrollhint[hidden]{display:none}
   .rv-scrollhint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--ff-label);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:6px;animation:rvbob 2s var(--e-out) infinite}
   .rv-scrollhint .arw{width:1px;height:20px;background:linear-gradient(var(--emerald-soft),transparent)}
   @keyframes rvbob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
 
-  /* Wrapper mobil unsichtbar -> Kinder fliessen exakt wie bisher (Layout unverändert). */
+  /* Wrapper sind auf JEDER Breite unsichtbar -> die Kinder fliessen als eine
+     Folge (siehe Desktop-Kommentar unten). */
   .rv-lead-col,.rv-main-col{display:contents}
 
-  /* ── Desktop-Split (>=900px): linke Spalte (Held+Switcher) bleibt sticht,
-     rechte Spalte (Posts+Angebot) scrollt daneben. Nutzt die Fläche, statt einer
-     einsamen zentrierten Spalte. ── */
+  /* ── Desktop (>=900px): DREI AKTE statt Zwei-Spalten-Split ────────────────
+     Der frühere sticky-Split (Held+Switcher links, Posts+Angebot rechts) hatte
+     zwei Fehler: die linke Spalte war nach dem Switcher zu Ende und lief danach
+     über ~2000px als leeres Schwarz mit, und der Held (ihr KOMPLETTER Feed) war
+     mit ~190px schmaler als ein einzelner Post-Slide daneben — die wichtigste
+     Sache war die kleinste.
+     Jetzt liest sich die Seite als klare Folge:
+       Akt 1  Held gross und mittig (der Beweis, mit Farbwelt-Wahl darunter)
+       Akt 2  die drei Posts NEBENEINANDER (füllt die Breite, statt schmaler Spalte)
+       Akt 3  das Angebot, ruhig zentriert, mit genau einer primären Handlung. ── */
   @media (min-width:900px){
-    #reveal{max-width:64rem;display:grid;grid-template-columns:27rem 1fr;column-gap:3.5rem;align-items:start;text-align:left;padding-top:3.4rem}
-    .rv-lead-col{display:flex;flex-direction:column;align-items:flex-start;position:sticky;top:2.4rem;grid-column:1}
-    .rv-main-col{display:flex;flex-direction:column;grid-column:2;min-width:0}
-    .rv-sub{margin:0;max-width:28ch}
-    .rv-hero{justify-content:flex-start;margin:1.6rem 0 1.1rem}
-    .rv-shot-frame{width:min(23rem,100%)}
-    .rv-switcher{margin-bottom:0}
-    .rv-posts-wrap{align-items:flex-start;margin:0}
-    .rv-posts-stack{max-width:26rem}
-    .rv-offer{align-items:flex-start;text-align:left;margin-top:2.6rem}
-    .rv-offer h3{text-align:left}
-    .rv-lead{margin:0;max-width:40ch}
-    .rv-values{margin:.3rem 0 1.2rem}
-    .rv-actions{justify-content:flex-start}
+    #reveal{max-width:68rem;padding-top:3.6rem}
+    .rv-sub{max-width:34ch}
+    .rv-hero{margin:2.4rem 0 1.6rem}
+    .rv-shot-frame{width:min(100%,30rem)}
+    .rv-switcher{margin-bottom:3.2rem}
+    .rv-posts-wrap{gap:1.6rem;margin:0 0 3.4rem}
+    /* Drei Karussells nebeneinander, oben ausgerichtet — ungleich lange Captions
+       duerfen die Reihe nicht auseinanderziehen. */
+    .rv-posts-stack{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6rem;max-width:100%;align-items:start}
+    /* Nebeneinander gibt es Platz: die Caption laeuft ganz aus, statt im
+       7,5-Zeilen-Kasten mitten im Satz abzureissen (im schmalen Stapel fiel das
+       nicht auf, in der Dreierreihe liest es sich wie ein Fehler). Ungleich lange
+       Captions sind dank align-items:start unproblematisch. */
+    .rv-cap-text{max-height:none;overflow:visible}
+    .rv-offer{max-width:46rem;margin:0 auto}
+    /* 30ch reissen den Absatz auf Desktop in vier kurze Fetzen — hier ist Platz. */
+    .rv-lead{max-width:46ch}
     .rv-scrollhint{display:none}
   }
 
