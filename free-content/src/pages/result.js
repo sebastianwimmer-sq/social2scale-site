@@ -154,7 +154,10 @@ const PAGE_STYLE = `
     .stage{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;
       grid-template-areas:"cap phone" "ring phone";column-gap:4.5rem;align-content:center;
       min-height:calc(100dvh - 4rem);padding:2rem 3rem;gap:0}
-    .caption{grid-area:cap;text-align:left;max-width:none;align-self:end;margin-bottom:1.4rem}
+    /* max-width:none liess den Fliesstext die ganze Spalte fuellen — bei 1440 endete
+       die Zeile direkt an der Geraetekante. Eine Zeilenlaenge, die zum Lesen passt,
+       haelt die Luft zum Handy von selbst. */
+    .caption{grid-area:cap;text-align:left;max-width:42ch;align-self:end;margin-bottom:1.4rem}
     .ring{grid-area:ring;justify-self:start;align-self:start;margin:0}
     .space{grid-area:phone;align-self:center;padding:0}
     .phone{width:min(100%,330px)}
@@ -176,7 +179,7 @@ function pageMarkup() {
   <div class="caption">
     <span class="kick">social2scale · live</span>
     <h2>Dein Feed entsteht <em>gerade</em>.</h2>
-    <p>Das dauert meist ein bis zwei Minuten — dein Feed baut sich Stück für Stück auf. Bleib dran.</p>
+    <p>Das dauert meist unter einer Minute — dein Feed baut sich Stück für Stück auf. Bleib dran.</p>
   </div>
 
   <div class="ring" id="ring" role="img" aria-label="Fortschritt">

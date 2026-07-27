@@ -27,7 +27,9 @@ const PAGE_STYLE = `
 
   /* ── BUEHNE mit schwebendem Glas-iPhone ── */
   .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1400px;padding:.4rem 0}
-  .disclaimer{font-family:var(--ff-body);font-size:.72rem;line-height:1.45;color:var(--faint);text-align:center;max-width:30ch;margin-top:1rem}
+  /* --faint liegt auf dem dunklen Grund bei ~4.3:1 und damit unter AA fuer Text
+     dieser Groesse — ausgerechnet beim Satz, der die Erwartung setzt (wie im Reveal). */
+  .disclaimer{font-family:var(--ff-body);font-size:.72rem;line-height:1.45;color:var(--muted);text-align:center;max-width:30ch;margin-top:1rem}
   .device{position:relative;width:min(60%,232px);will-change:transform}
   /* Doppelrand: aeussere Metallschale */
   .device .shell{position:relative;border-radius:34px;padding:6px;background:linear-gradient(155deg,#31353c 0%,#15171b 38%,#080a0d 100%);
