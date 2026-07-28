@@ -9,6 +9,22 @@
 const FONT_BASE = 'https://social2scale.com/fonts';
 const ASSET_BASE = 'https://social2scale.com/assets';
 
+/**
+ * Der Funnel lieferte bis zum 28.07. GAR KEINE Sicherheits-Header — auf Seiten, die
+ * von der Besucherin stammende Texte rendern (Name, Handle, Captions) und seit dem
+ * 27.07. oeffentlich von der Startseite verlinkt sind.
+ *
+ * Bewusst OHNE Content-Security-Policy: die Seiten leben von Inline-Skripten und
+ * binden Turnstile ein. Eine zu enge CSP wuerde den Funnel stillegen — und ein
+ * kaputtes Formular kostet Leads, waehrend diese drei Header nichts kaputtmachen
+ * koennen. CSP gehoert sauber getestet nachgezogen, nicht nachts nebenbei.
+ */
+export const SICHERHEITS_HEADER = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
+
 const SHARED_STYLE = `
   @font-face { font-family:"Hanken Grotesk"; font-weight:400 600; font-style:normal; font-display:block; src:url(${FONT_BASE}/hanken-latin.woff2) format("woff2"); }
   @font-face { font-family:"Archivo"; font-weight:400 800; font-style:normal; font-display:block; src:url(${FONT_BASE}/archivo-latin.woff2) format("woff2"); }
@@ -76,6 +92,6 @@ export function htmlDoc({ title, head = '', body }) {
 
   return new Response(html, {
     status: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER },
   });
 }

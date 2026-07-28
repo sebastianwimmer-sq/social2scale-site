@@ -18,6 +18,7 @@ import { r2Key } from './render.js';
 import { track } from './track.js';
 import { formPage } from './pages/form.js';
 import { resultPage } from './pages/result.js';
+import { SICHERHEITS_HEADER } from './pages/shell.js';
 
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
 
@@ -212,7 +213,7 @@ function htmlPage(title, body) {
   <h1>${title}</h1>
   ${body}
 </main></body></html>`;
-  return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+  return new Response(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER } });
 }
 
 /**

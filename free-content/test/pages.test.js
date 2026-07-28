@@ -23,6 +23,24 @@ describe('Formular-Seite', () => {
   });
 });
 
+// Bis zum 28.07. lieferte der Funnel GAR KEINE Sicherheits-Header — auf Seiten,
+// die von der Besucherin stammende Texte rendern und seit dem 27.07. oeffentlich
+// von der Startseite verlinkt sind.
+describe('Sicherheits-Header', () => {
+  it('liegen auf den HTML-Seiten an', async () => {
+    for (const pfad of ['/', '/r/deadbeefdead']) {
+      const res = await worker.fetch(
+        new Request('https://start.social2scale.com' + pfad),
+        env,
+        createExecutionContext()
+      );
+      expect(res.headers.get('X-Content-Type-Options'), pfad).toBe('nosniff');
+      expect(res.headers.get('X-Frame-Options'), pfad).toBe('DENY');
+      expect(res.headers.get('Referrer-Policy'), pfad).toBe('strict-origin-when-cross-origin');
+    }
+  });
+});
+
 describe('Build-Screen /r/:token', () => {
   it('GET /r/:token liefert Build-Screen-HTML, das /api/status pollt', async () => {
     const req = new Request('https://start.social2scale.com/r/deadbeefdead');
