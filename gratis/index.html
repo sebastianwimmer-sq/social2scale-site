@@ -31,58 +31,101 @@
 <meta name="twitter:description" content="Drei Fragen, Mail bestätigen — und du siehst deine Instagram-Vorschau. Kostenlos, ohne Gespräch.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 
+<!-- Die Schriften der Marke. Ohne diese Zeile faellt die Seite auf die
+     Systemschrift zurueck und sieht aus wie eine fremde Website — genau das
+     war der Zustand vor dem 28.07.2026. -->
+<link rel="stylesheet" href="/fonts.css">
 <style>
+  /* Tokens 1:1 aus index.html — damit diese Seite nicht eigene Farben erfindet. */
   :root{
-    --bg:#03080D; --surface:#0a1119; --text:#eaf2ef; --muted:#8fa3a0;
-    --accent:#00B888; --accent-glow:rgba(0,184,136,.28); --line:rgba(255,255,255,.08);
+    --ink:#03080D; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --teal:#1FA6E0;
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
+    --ease:cubic-bezier(.16,1,.3,1);
+    color-scheme:dark;
   }
-  *{box-sizing:border-box}
-  html,body{margin:0;height:100%}
+  *{box-sizing:border-box;margin:0;padding:0}
+  ::selection{background:rgba(0,184,136,.30);color:var(--paper)}
+
+  /* Aurora-Doppelton wie auf der Startseite: Emerald oben links, Teal unten
+     rechts, ueber dunkler Diagonale. Vorher lag hier ein einzelner flacher
+     Radial-Verlauf — der Grund, warum die Seite "billig" wirkte. */
   body{
+    min-height:100dvh;
     background:
-      radial-gradient(120% 80% at 50% -10%, rgba(0,184,136,.12), transparent 60%),
-      var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    display:grid; place-items:center; min-height:100dvh; padding:2rem;
-    text-align:center; -webkit-font-smoothing:antialiased;
+      radial-gradient(120% 90% at 12% -10%, rgba(0,184,136,.16), transparent 58%),
+      radial-gradient(110% 90% at 88% 108%, rgba(31,166,224,.13), transparent 60%),
+      linear-gradient(165deg,#0A1114 0%,var(--ink) 62%);
+    color:var(--paper);
+    font-family:"Hanken Grotesk",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:grid;place-items:center;padding:clamp(24px,6vw,56px);text-align:center;
   }
-  .card{max-width:26rem; display:flex; flex-direction:column; align-items:center; gap:1.4rem}
-  .wordmark{height:26px; width:auto; opacity:.95}
+
+  .card{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,2.4vw,26px);max-width:34rem}
+  .wordmark{height:28px;width:auto;mix-blend-mode:screen}
+
+  .klabel{
+    font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+  }
+
   h1{
-    font-size:clamp(1.5rem,1.2rem+2vw,2.1rem); line-height:1.15; margin:0;
-    letter-spacing:-.02em; font-weight:650;
+    font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(2.1rem,1.3rem + 2.8vw,3.2rem);line-height:1.04;letter-spacing:-.025em;
+    font-variation-settings:"opsz" 144;
+    /* Umbruch erzwingen: einzeilig wirkt die Zeile klein, gestapelt entspricht
+       sie der Editorial-Typografie der uebrigen Seiten. */
+    max-width:15ch;
+    text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45);
   }
-  h1 em{font-style:normal; color:var(--accent)}
-  p{margin:0; color:var(--muted); font-size:1rem; line-height:1.5}
-  .spinner{
-    width:34px; height:34px; border-radius:50%;
-    border:2.5px solid var(--line); border-top-color:var(--accent);
-    animation:spin .8s linear infinite; box-shadow:0 0 22px var(--accent-glow);
+  h1 em{
+    font-style:italic;font-weight:400;
+    background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:var(--emerald);
   }
-  @keyframes spin{to{transform:rotate(360deg)}}
-  @media (prefers-reduced-motion:reduce){.spinner{animation:none}}
-  .go{
-    display:inline-block; margin-top:.4rem; padding:.85rem 1.5rem;
-    border:1px solid rgba(0,184,136,.5); border-radius:999px;
-    color:var(--accent); text-decoration:none; font-weight:600; font-size:.95rem;
-    transition:background .2s ease, border-color .2s ease;
+
+  p.lead{color:var(--muted);font-size:1.02rem;line-height:1.55;max-width:38ch}
+
+  /* Fortschritt als laufendes Licht statt rotierendem Kreis — dieselbe
+     Bildsprache wie der Build-Screen im Funnel. Nur transform, damit es
+     auf dem Compositor laeuft. */
+  .load{width:min(260px,64vw);height:2px;border-radius:2px;background:var(--line-2);overflow:hidden}
+  .load span{display:block;height:100%;width:38%;border-radius:2px;background:var(--accent-flow);animation:rutsch 1.4s var(--ease) infinite}
+  @keyframes rutsch{0%{transform:translateX(-110%)}100%{transform:translateX(380%)}}
+
+  /* Rahmen-Knopf wie in der Gratis-Sektion der Startseite. Bewusst KEIN
+     Emerald-Leuchten: das bleibt dem Erstgespraech-CTA vorbehalten. */
+  .btn{
+    display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;
+    letter-spacing:.02em;padding:16px 30px;border-radius:9px;text-decoration:none;
+    background:transparent;color:var(--paper);border:1px solid var(--line-3);
+    transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);
   }
-  .go:hover,.go:focus-visible{background:rgba(0,184,136,.1); border-color:var(--accent); outline:none}
-  .fine{font-size:.82rem; color:rgba(143,163,160,.7)}
+  .btn:hover,.btn:focus-visible{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09);transform:translateY(-2px);outline:none}
+
+  .fine{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);line-height:1.8}
+
+  @media (prefers-reduced-motion:reduce){
+    .load span{animation:none;width:100%}
+    .btn:hover,.btn:focus-visible{transform:none}
+  }
 </style>
 </head>
 <body>
   <main class="card">
-    <img class="wordmark" src="/assets/sig-wordmark.png" alt="social2scale" width="180" height="26">
-    <div class="spinner" role="status" aria-label="Wird geladen"></div>
-    <h1>Deine <em>Gratis-Vorschau</em> wird geöffnet …</h1>
-    <p>Einen Moment — wir leiten dich weiter. Falls nichts passiert:</p>
-    <a class="go" href="https://s2s-free-content.peaking.workers.dev/">Vorschau jetzt starten →</a>
-    <p class="fine">Drei Fragen, Mail bestätigen — kostenlos, ohne Gespräch.</p>
+    <img class="wordmark" src="/assets/sig-wordmark.png" alt="social2scale" width="180" height="28">
+    <p class="klabel">Kostenlos · ohne Gespräch</p>
+    <h1>Deine Vorschau wird <em>geöffnet</em>.</h1>
+    <p class="lead">Einen Moment — wir bringen dich hin. Falls nichts passiert, geht es auch von Hand:</p>
+    <div class="load" role="status" aria-label="Weiterleitung läuft"><span></span></div>
+    <a class="btn" href="https://s2s-free-content.peaking.workers.dev/">Vorschau jetzt starten →</a>
+    <p class="fine">Drei Fragen beantworten · Mail bestätigen · Vorschau ansehen</p>
   </main>
   <script>
-    // Sauberer Redirect ohne History-Eintrag (Back-Button springt nicht hierher zurueck).
+    // replace() statt href: kein Eintrag in der Historie, der Zurueck-Knopf
+    // fuehrt zurueck zu Instagram und nicht in eine Weiterleitungsschleife.
     location.replace("https://s2s-free-content.peaking.workers.dev/");
   </script>
 </body>
