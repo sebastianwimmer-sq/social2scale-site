@@ -63,6 +63,46 @@ entfernten Platzhalter-Stimmen · Schaufläche aus generierten Feeds.
 Stelle (`gratis/index.html`, dort dreimal: meta-refresh, JS, Fallback-Knopf).
 Beim Domain-Umzug ist das die einzige Datei, die geaendert werden muss.
 
+## 🔗 Payload-Vertrag Formular ↔ Backend
+
+Die einzige Stelle, an der sich die beiden Bereiche wirklich beruehren.
+`free-content/src/pages/form.js` (**extern**) baut das Objekt,
+`validate.js` / `leads.js` / `generate.js` (**intern**) lesen es.
+
+**Regel: Feldnamen aendern nur nach Absprache — auf beiden Seiten gleichzeitig.**
+Ein umbenanntes Feld faellt nicht auf, es kommt einfach leer an. Genau die Sorte
+Fehler, die still bleibt (siehe Learnings vom 27.07.: „wo ein Fallback existiert,
+ist ‚laeuft durch' kein Beweis").
+
+| Feld | Inhalt | Quelle im Formular |
+|---|---|---|
+| `name` | Name | `#f-name` |
+| `email` | E-Mail | `#f-mail` |
+| `handle` | Instagram-Handle, ohne `@` | `#f-handle` |
+| `branche` | ⚠️ enthaelt das **Thema**, nicht die Branche | `#f-thema` |
+| `ziel` | Ziel — **eigenes Feld**, nicht mit Thema zusammengelegt | `#f-ziel` |
+| `stimmung` | Stimmungs-Chip | `#stimmung .chip[aria-pressed=true]` |
+| `stand` | Wo die Interessentin heute steht | `#stand .chip[aria-pressed=true]` |
+| `farbe` | derzeit immer leer | — |
+| `consent` | Einwilligung Kontaktaufnahme (immer `true`) | Pflicht-Text |
+| `testimonialConsent` | freiwillige Einwilligung „darf oeffentlich gezeigt werden" | `#f-testimonial` |
+| `elapsed` | Millisekunden seit Formularstart (Bot-Erkennung) | — |
+| `turnstile` | Turnstile-Token | — |
+| `source` | fest `'formular'` | — |
+
+⚠️ **`branche` traegt das Thema.** Kein Fehler, aber eine Namensfalle: wer spaeter
+eine echte Branchenangabe erwartet, liegt daneben. Umbenennen waere sauberer,
+geht aber nur abgestimmt auf beiden Seiten.
+
+**Stand 28.07.2026 geprueft:** `form.js` sendet `ziel`, `stand` und
+`testimonialConsent`; `validate.js` und `leads.js` lesen alle drei unter genau
+diesen Namen. `generate.js` liest `testimonialConsent` bewusst nicht —
+Einwilligung ist Speicher- und Rechtsthema, keine Inhaltserzeugung.
+
+💡 **Offener Vorschlag:** ein Vertragstest, der fehlschlaegt, sobald `form.js`
+eines der Pflichtfelder nicht mehr sendet. Testdateien stehen unter „vorher
+ansagen" — also erst abstimmen, dann bauen.
+
 ## Besitz nach Bereich
 
 Damit man nicht bei jeder Datei nachfragen muss:
