@@ -26,15 +26,21 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
 </script>
-<!-- Service-Schema für die Ergebnis-/Proof-Seite. BEWUSST OHNE aggregateRating/review:
-     alle Kennzahlen auf dieser Seite sind Platzhalter — keine erfundenen Bewertungen/Sterne ausspielen. -->
+<!-- Service-Schema für die Ergebnisseite. BEWUSST OHNE aggregateRating/review:
+     es gibt keine echten Bewertungen, also werden auch keine ausgespielt.
+     Seit dem Umbau am 28.07.2026 nennt die Seite ueberhaupt keine Ergebniszahlen
+     mehr, sondern die Definitionen und den Messrhythmus — das Schema darf dem
+     nicht widersprechen. Sobald echte Kundenstimmen mit Einwilligung vorliegen,
+     koennen review-Eintraege ergaenzt werden. -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Service","name":"Social-Media-Growth as a Service","serviceType":"Social-Media-Growth & Content-System","provider":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/"},"areaServed":"DACH","audience":{"@type":"Audience","audienceType":"Coaches, Experten & B2B"},"description":"Messbares Social-Media-Wachstum: Reichweite, qualifizierte Leads und Umsatz — live nachvollziehbar in deinem persönlichen s2s-Bereich. Wir bauen Strategie, Content und Distribution als System statt Zufall.","url":"https://social2scale.com/results/","hasOfferCatalog":{"@type":"OfferCatalog","name":"Messbare Wachstums-Ergebnisse","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Reichweiten-Aufbau"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Lead-Generierung"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Umsatz-Wachstum durch Social"}}]}}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
   </style></noscript>
-<!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
+<!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly)
+     [P] erledigt 28.07.2026 — Platzhalter-Zahlen und Platzhalter-Stimmen sind raus,
+         die Seite zeigt jetzt Definitionen + Messrhythmus statt behaupteter Ergebnisse. -->
 <style>
   :root{
     /* ===== surfaces: dark-grey stack (no pure #000 except topbar) ===== */
@@ -523,13 +529,6 @@
     .rs-narr li{grid-template-columns:1fr;gap:var(--s-1)}
   }
 
-  /* — 4) full-bleed editorial pull-quote testimonial (same as for-you) — */
-  .rs-quote{position:relative;overflow:hidden;border-top:1px solid var(--line)}
-  .rs-quote .wrap{padding-top:clamp(var(--s-9),9vw,var(--s-11));padding-bottom:clamp(var(--s-9),9vw,var(--s-11))}
-  .rs-quote::before{content:"\201E";position:absolute;top:clamp(-.1em,2vw,.1em);left:clamp(-.04em,1vw,.02em);font-family:"Fraunces",serif;font-style:italic;font-size:clamp(14rem,40vw,30rem);line-height:1;color:rgba(0,184,136,.05);pointer-events:none;z-index:0}
-  .rs-quote blockquote{position:relative;z-index:1;margin:0;font-family:"Fraunces",serif;font-style:italic;font-weight:450;font-size:clamp(2.4rem,1.2rem + 3.8vw,4.6rem);line-height:1.08;letter-spacing:-.03em;color:var(--paper);max-width:20ch}
-  .rs-quote blockquote em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .rs-quote figcaption{position:relative;z-index:1;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);margin-top:clamp(var(--s-6),4vw,var(--s-7))}
 
   /* — 5) "So messen wir" — short editorial transparency line, hairline cols — */
   .rs-measure{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;border-top:1px solid var(--line-2);align-items:start}
@@ -577,8 +576,12 @@
     background:radial-gradient(130% 120% at 0% 0%,rgba(0,184,136,.24),transparent 56%),
       radial-gradient(130% 120% at 100% 100%,rgba(31,166,224,.19),transparent 60%),var(--surf-grad-hover)}
   .rs-mcard .mk{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  /* Traegt seit dem Umbau vom 28.07.2026 Woerter statt Zahlen ("Reichweite" statt
+     "+218%"). Die alte Groesse (bis 2.7rem) lief bei vier Spalten aus der Kachel,
+     darum kleiner plus Umbruchsicherung fuer schmale Viewports. */
   .rs-mcard .mv{font-family:"JetBrains Mono",monospace;font-weight:600;font-variant-numeric:tabular-nums;
-    font-size:clamp(1.9rem,1.2rem + 1.9vw,2.7rem);line-height:1;letter-spacing:-.03em;color:var(--paper);margin-top:var(--s-5)}
+    font-size:clamp(1.3rem,.85rem + 1.15vw,1.85rem);line-height:1.08;letter-spacing:-.03em;color:var(--paper);
+    margin-top:var(--s-5);overflow-wrap:anywhere}
   .rs-mcard .mv em{font-style:normal;color:var(--emerald)}
   .rs-mcard .mv sup{font-size:.34em;font-weight:600;color:var(--teal);vertical-align:super;margin-left:.05em}
   .rs-mcard .ms{font-family:"Hanken Grotesk",sans-serif;font-size:.92rem;color:var(--muted);margin-top:var(--s-4);line-height:1.5}
@@ -624,22 +627,8 @@
     .rs-rep{justify-self:stretch;max-width:560px;margin:0 auto}
   }
 
-  /* — 4b) premium glass testimonial cards (3-up), Fraunces quote — */
-  .rs-voices{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-4)}
-  .rs-voice{position:relative;display:flex;flex-direction:column;
-    background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;
-    padding:clamp(var(--s-6),3vw,var(--s-7));box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72);
-    transition:border-color .3s var(--ease),background .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
-  .rs-voice:hover{border-color:rgba(0,184,136,.4);background:var(--surf-grad-hover);box-shadow:var(--depth-hover);transform:translateY(-3px)}
-  .rs-voice .vq{font-family:"Fraunces",serif;font-weight:430;font-style:italic;font-size:clamp(1.18rem,1.05rem + .5vw,1.4rem);line-height:1.3;letter-spacing:-.015em;color:var(--paper)}
-  .rs-voice .vq em{font-style:italic;color:var(--emerald)}
-  .rs-voice .vby{display:flex;align-items:center;gap:var(--s-3);margin-top:auto;padding-top:clamp(var(--s-5),2.4vw,var(--s-6))}
-  .rs-voice .vav{width:38px;height:38px;flex:0 0 auto;border-radius:50%;background:var(--surface-3);border:1px solid var(--line-2);
-    display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
-  .rs-voice .vmeta{min-width:0}
-  .rs-voice .vname{font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;letter-spacing:.01em;color:var(--paper)}
-  .rs-voice .vrole{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;color:var(--faint);margin-top:2px}
-  @media (max-width:880px){.rs-voices{grid-template-columns:1fr;gap:var(--s-4)}}
+  /* CSS fuer Pull-Quote und Stimmen-Karten entfernt (28.07.2026): beide Sektionen
+     enthielten nur Platzhalter-Zitate und sind aus dem Markup geflogen. */
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
   
@@ -726,56 +715,63 @@
     <!-- 1) Editorial hero — oversized Fraunces display vs tiny mono running head -->
     <section class="rs-hero" aria-labelledby="rs-hero-h" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"><div class="wrap reveal">
       <p class="rs-rh"><b>№ 01</b> — Ergebnisse</p>
-      <h1 id="rs-hero-h">Wachstum, das man <em>sieht</em>.</h1>
-      <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in deinem s2s-Bereich.</p>
+      <h1 id="rs-hero-h">Wachstum, das man <em>nachrechnen</em> kann.</h1>
+      <p class="lead">Wir sind jung genug, um ehrlich zu sein: Hier stehen keine Erfolgszahlen fremder Kunden. Stattdessen steht hier, <b>woran wir uns messen lassen</b> — sauber definiert, in festem Takt, und zwar auch dann, wenn eine Zahl mal fällt.</p>
     </div></section>
 
-    <!-- 2) Metric highlight row — 4 glass result cards, mono tabular-num values
-         (same data language as the landing growth panel). Values = PLACEHOLDERS. -->
+    <!-- 2) Die vier Kennzahlen — definiert statt beziffert.
+         Vorher standen hier vier grosse Zahlen (+218%, 47, 4,8k, 3,1x) mit einer
+         Fussnote "Platzhalter". Das war ehrlich gekennzeichnet, sagte der
+         Besucherin aber vor allem eines: wir haben noch nichts vorzuweisen.
+         Jetzt traegt die Kachel die Definition der Kennzahl — inklusive der
+         Abgrenzung, was NICHT mitzaehlt. Das ist heute wahr und unterscheidet
+         uns von jedem, der Reichweite und Impressionen gleichsetzt. -->
     <section class="rs-blk" id="zahlen" aria-labelledby="rs-stats-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 02</b> — Was unser System bewegt</p>
-        <h2 id="rs-stats-h">Wachstum in <em>Zahlen</em>.</h2>
-        <p class="lead">Vier Kennzahlen, die zählen — Reichweite, Leads, Umsatz und Sichtbarkeit. Live in deinem s2s-Bereich, statt Bauchgefühl.</p>
+        <p class="rs-rh"><b>№ 02</b> — Woran wir uns messen lassen</p>
+        <h2 id="rs-stats-h">Vier Kennzahlen. <em>Sauber</em> definiert.</h2>
+        <p class="lead">Eine Zahl ist nur so viel wert wie ihre Definition. Deshalb steht hier zuerst, was wir messen — und was ausdrücklich nicht mitzählt.</p>
       </div>
       <div class="rs-metrics">
-        <!-- Platzhalter — echte Werte -->
         <article class="rs-mcard">
-          <p class="mk">Reichweite</p>
-          <p class="mv"><em>+218</em><sup>*</sup>%</p>
-          <p class="ms">Mehr Menschen, die dein Profil wirklich erreicht — Monat für Monat.</p>
-          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</span>
+          <p class="mk">Kennzahl 01</p>
+          <p class="mv"><em>Reichweite</em></p>
+          <p class="ms">Wie viele echte Konten deine Inhalte erreichen. <b>Nicht</b> Impressionen: wer dich dreimal sieht, zählt einmal.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>monatlich</span>
         </article>
-        <!-- Platzhalter — echte Werte -->
         <article class="rs-mcard">
-          <p class="mk">Leads / Monat</p>
-          <p class="mv"><em>47</em><sup>*</sup></p>
-          <p class="ms">Qualifizierte Anfragen, die direkt zu Gesprächen werden.</p>
-          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>wächst</span>
+          <p class="mk">Kennzahl 02</p>
+          <p class="mv"><em>Anfragen</em></p>
+          <p class="ms">Menschen, die von sich aus Kontakt aufnehmen. <b>Nicht</b> Likes, nicht Follower — ein volles Postfach ist kein voller Kalender.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>monatlich</span>
         </article>
-        <!-- Platzhalter — echte Werte -->
         <article class="rs-mcard">
-          <p class="mk">Umsatz / Monat</p>
-          <p class="mv">€<em>4,8</em>k<sup>*</sup></p>
-          <p class="ms">Sichtbarkeit, die am Ende auf dem Konto landet.</p>
-          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>aktiv</span>
+          <p class="mk">Kennzahl 03</p>
+          <p class="mv"><em>Umsatz</em></p>
+          <p class="ms">Nur was sich einem Kontaktweg zuordnen lässt. Was unklar bleibt, zählen wir <b>nicht</b> dazu — auch wenn die Zahl damit kleiner wird.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>monatlich</span>
         </article>
-        <!-- Platzhalter — echte Werte -->
         <article class="rs-mcard">
-          <p class="mk">Sichtbarkeit</p>
-          <p class="mv"><em>3,1</em>×<sup>*</sup></p>
-          <p class="ms">So viel öfter taucht die Marke bei den richtigen Leuten auf.</p>
-          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>steigend</span>
+          <p class="mk">Kennzahl 04</p>
+          <p class="mv"><em>Frequenz</em></p>
+          <p class="ms">Wie verlässlich veröffentlicht wird. Die einzige Größe, die <b>wir</b> vollständig in der Hand haben — und die Voraussetzung für alle anderen drei.</p>
+          <span class="mtrend"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 16 10 10 14 14 20 6"/></svg>wöchentlich</span>
         </article>
       </div>
-      <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
+      <p class="rs-note">Alle vier laufen in deinem s2s-Bereich zusammen — dieselben Definitionen, jeden Monat, ohne nachträgliches Zurechtlegen.</p>
     </div></section>
 
-    <!-- 3) Case studies as numbered editorial rows (Vorher → Aufbau → Ergebnis) -->
+    <!-- 3) Ausgangslagen statt Fallstudien.
+         Der Text war schon vorher allgemein gehalten und trifft zu — erfunden war
+         nur das Zahlen-Badge rechts. "Fallstudie" behauptet aber einen konkreten
+         Fall, "Ergebnis" ein eingetretenes Resultat. Beides ohne Beleg. Daher:
+         Ausgangslage / Aufbau / Zielbild — und das Badge nennt jetzt die
+         Kennzahl aus Abschnitt 02, auf die diese Lage einzahlt. -->
     <section class="rs-blk" id="fallstudien" aria-labelledby="rs-cases-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 03</b> — Fallstudien</p>
-        <h2 id="rs-cases-h">Vom Stillstand zu <em>planbarem</em> Wachstum.</h2>
+        <p class="rs-rh"><b>№ 03</b> — Ausgangslagen</p>
+        <h2 id="rs-cases-h">Drei Lagen, die wir <em>immer wieder</em> sehen.</h2>
+        <p class="lead">Keine Fallstudien — dafür ist es zu früh. Drei Muster, die uns in Erstgesprächen ständig begegnen, und was wir jeweils dagegen bauen.</p>
       </div>
       <div class="rs-rows">
 
@@ -787,13 +783,13 @@
             <ul class="rs-narr">
               <li><span class="k">Vorher</span><span class="t">Unregelmäßige Posts, kaum Reichweite, <b>null planbare Anfragen</b> — sichtbar nur für bestehende Follower.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Klare Content-Säulen, ein wiederholbares Format und ein Funnel, der Profilbesucher zu <b>Erstgesprächen</b> führt.</span></li>
-              <li><span class="k">Ergebnis</span><span class="t">Stetiger Zustrom qualifizierter Leads — ohne Mehraufwand für den Coach.</span></li>
+              <li><span class="k">Zielbild</span><span class="t">Stetiger Zustrom qualifizierter Anfragen — ohne Mehraufwand für den Coach.</span></li>
             </ul>
           </div>
           <div class="rs-result">
-            <p class="rk">nach 90 Tagen</p>
-            <p class="rv">+218<sup>*</sup>%</p>
-            <p class="rsub">Reichweite bei gleichem Zeitaufwand.</p>
+            <p class="rk">zahlt ein auf</p>
+            <p class="rv">Reichweite</p>
+            <p class="rsub">Kennzahl 01 — echte Konten, nicht Impressionen.</p>
           </div>
         </article>
 
@@ -805,13 +801,13 @@
             <ul class="rs-narr">
               <li><span class="k">Vorher</span><span class="t">Starkes Angebot, aber <b>kein Social-Auftritt</b> — Entscheider kannten die Marke schlicht nicht.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Positionierung, Expertise-Content und eine Distribution, die genau die <b>richtigen Entscheider</b> erreicht.</span></li>
-              <li><span class="k">Ergebnis</span><span class="t">Planbare qualifizierte Anfragen statt Kaltakquise — eine Pipeline aus eingehenden Leads.</span></li>
+              <li><span class="k">Zielbild</span><span class="t">Planbare qualifizierte Anfragen statt Kaltakquise — eingehend statt hinterhergelaufen.</span></li>
             </ul>
           </div>
           <div class="rs-result">
-            <p class="rk">qualifiziert</p>
-            <p class="rv">47<sup>*</sup></p>
-            <p class="rsub">Leads / Monat aus dem Auftritt.</p>
+            <p class="rk">zahlt ein auf</p>
+            <p class="rv">Anfragen</p>
+            <p class="rsub">Kennzahl 02 — Kontaktaufnahmen, nicht Likes.</p>
           </div>
         </article>
 
@@ -823,28 +819,25 @@
             <ul class="rs-narr">
               <li><span class="k">Vorher</span><span class="t">Follower-Zahlen ohne Wirkung — viel Aufmerksamkeit, aber <b>kein messbarer Umsatzbeitrag</b>.</span></li>
               <li><span class="k">Aufbau</span><span class="t">Content mit Verkaufslogik, klare Angebote und ein Weg vom Reel bis zur <b>Buchung</b>.</span></li>
-              <li><span class="k">Ergebnis</span><span class="t">Sichtbarkeit, die in monatlich wiederkehrenden Umsatz übersetzt — transparent nachvollziehbar.</span></li>
+              <li><span class="k">Zielbild</span><span class="t">Sichtbarkeit, die sich in wiederkehrenden Umsatz übersetzt — nachvollziehbar, nicht behauptet.</span></li>
             </ul>
           </div>
           <div class="rs-result">
-            <p class="rk">attribuiert</p>
-            <p class="rv">€4,8k<sup>*</sup></p>
-            <p class="rsub">Umsatz / Monat aus Social.</p>
+            <p class="rk">zahlt ein auf</p>
+            <p class="rv">Umsatz</p>
+            <p class="rsub">Kennzahl 03 — nur zugeordnet, nie geschätzt.</p>
           </div>
         </article>
 
       </div>
-      <p class="rs-note"><b>*</b> Platzhalter — echte Kundenergebnisse folgen.</p>
+      <p class="rs-note">Welche der drei Lagen deiner am nächsten kommt, klären wir im Erstgespräch — meist ist es eine Mischung.</p>
     </div></section>
 
-    <!-- 4) Full-bleed editorial pull-quote testimonial -->
-    <section class="rs-quote" aria-label="Kundenstimme"><div class="wrap reveal">
-      <figure>
-        <blockquote>Zum ersten Mal fühlt sich mein Wachstum <em>planbar</em> an — System statt Zufall.</blockquote>
-        <!-- Platzhalter-Stimme -->
-        <figcaption>— Platzhalter-Stimme · echtes Testimonial folgt</figcaption>
-      </figure>
-    </div></section>
+    <!-- Die Pull-Quote-Sektion stand hier mit einer erfundenen Kundenstimme
+         ("— Platzhalter-Stimme · echtes Testimonial folgt"). Ersatzlos entfernt:
+         eine als Platzhalter ausgewiesene Stimme erzeugt kein Vertrauen, sie
+         zeigt nur, dass keine echte da ist. Kommt zurueck, sobald eine Kundin
+         zugestimmt hat — mit Name, Rolle und dokumentierter Einwilligung. -->
 
     <!-- 5) PEAKING live-panel reference — results tracked live in the platform -->
     <section class="rs-blk" id="peaking" aria-labelledby="rs-peak-h"><div class="wrap reveal">
@@ -855,100 +848,85 @@
           <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>deinem s2s-Bereich</b> zusammen — dem persönlichen Bereich auf mein.social2scale.com, in dem wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
           <ul class="rs-peak-points">
             <li>Reichweite, die zählt</li>
-            <li>Leads statt Likes</li>
+            <li>Anfragen statt Likes</li>
             <li>Umsatz, schwarz auf weiß</li>
           </ul>
         </div>
-        <div class="rs-rep" role="img" aria-label="Beispielhafter s2s-Wachstums-Report mit Reichweite, Leads und Umsatz — Platzhalter-Werte.">
+        <!-- Beispielansicht der Oberflaeche, bewusst OHNE Zahlenwerte: die Zeilen
+             tragen jetzt die Messgroesse aus Abschnitt 02 statt erfundener Werte.
+             Die Sparklines bleiben — sie sind abstrakt und zeigen die Ansicht,
+             nicht ein behauptetes Ergebnis. -->
+        <div class="rs-rep" role="img" aria-label="Beispielansicht des s2s-Wachstums-Reports mit den Zeilen Reichweite, Anfragen und Umsatz.">
           <div class="rs-rep-head">
             <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
-            <span class="meta"><span class="period">8 WO</span><span>0 → skaliert</span></span>
+            <span class="meta"><span class="period">Beispiel</span><span>deine Ansicht</span></span>
           </div>
           <div class="rs-rep-rows" aria-hidden="true">
-            <!-- Platzhalter — echte Werte -->
             <div class="rs-rep-line">
               <span class="rl">Reichweite</span>
-              <span class="rfig"><em>+218</em>%</span>
+              <span class="rfig"><em>Konten</em></span>
               <div class="rs-spark"><span class="sb" style="height:24%"></span><span class="sb" style="height:33%"></span><span class="sb up" style="height:48%"></span><span class="sb up" style="height:60%"></span><span class="sb up" style="height:78%"></span><span class="sb up" style="height:92%"></span></div>
             </div>
-            <!-- Platzhalter — echte Werte -->
             <div class="rs-rep-line">
-              <span class="rl">Leads / Mo</span>
-              <span class="rfig"><em>47</em></span>
+              <span class="rl">Anfragen / Mo</span>
+              <span class="rfig"><em>Kontakte</em></span>
               <div class="rs-spark"><span class="sb" style="height:20%"></span><span class="sb" style="height:30%"></span><span class="sb up" style="height:42%"></span><span class="sb up" style="height:55%"></span><span class="sb up" style="height:70%"></span><span class="sb up" style="height:88%"></span></div>
             </div>
-            <!-- Platzhalter — echte Werte -->
             <div class="rs-rep-line">
               <span class="rl">Umsatz / Mo</span>
-              <span class="rfig">€<em>4,8</em>k</span>
+              <span class="rfig"><em>zugeordnet</em></span>
               <div class="rs-spark"><span class="sb" style="height:18%"></span><span class="sb" style="height:28%"></span><span class="sb up" style="height:40%"></span><span class="sb up" style="height:58%"></span><span class="sb up" style="height:74%"></span><span class="sb" style="height:96%"></span></div>
             </div>
           </div>
           <div class="rs-rep-foot"><b>●</b> live · in deinem s2s-Bereich</div>
         </div>
       </div>
-      <p class="rs-note"><b>*</b> Beispielhafter Report — Platzhalter-Werte, echte Kundendaten laufen live ein.</p>
+      <p class="rs-note">Beispielansicht der Oberfläche. Deine Zeilen füllen sich ab dem ersten Monat mit deinen Zahlen — dieselben vier Definitionen wie oben.</p>
     </div></section>
 
-    <!-- 6) Kundenstimmen — premium glass quote cards (3-up) -->
-    <section class="rs-blk" id="stimmen" aria-labelledby="rs-voices-h"><div class="wrap reveal">
-      <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 05</b> — Stimmen</p>
-        <h2 id="rs-voices-h">Was Kund:innen <em>sagen</em>.</h2>
-      </div>
-      <div class="rs-voices">
-        <!-- Platzhalter-Stimme -->
-        <figure class="rs-voice">
-          <blockquote class="vq">„Zum ersten Mal fühlt sich mein Wachstum <em>planbar</em> an — ich sehe genau, was wirkt."</blockquote>
-          <figcaption class="vby">
-            <span class="vav" aria-hidden="true">??</span>
-            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">Coach · Platzhalter</span></span>
-          </figcaption>
-        </figure>
-        <!-- Platzhalter-Stimme -->
-        <figure class="rs-voice">
-          <blockquote class="vq">„Vom leeren Profil zu <em>echten Anfragen</em> — das Team hat alles übernommen."</blockquote>
-          <figcaption class="vby">
-            <span class="vav" aria-hidden="true">??</span>
-            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">B2B · Platzhalter</span></span>
-          </figcaption>
-        </figure>
-        <!-- Platzhalter-Stimme -->
-        <figure class="rs-voice">
-          <blockquote class="vq">„Endlich Reichweite, die <em>Umsatz</em> wird — und Zahlen, denen ich vertraue."</blockquote>
-          <figcaption class="vby">
-            <span class="vav" aria-hidden="true">??</span>
-            <span class="vmeta"><span class="vname">Name folgt</span><span class="vrole">Experte · Platzhalter</span></span>
-          </figcaption>
-        </figure>
-      </div>
-      <p class="rs-note"><b>*</b> Platzhalter-Stimmen — echte Testimonials folgen. Keine erfundenen Personen oder Bewertungen.</p>
-    </div></section>
+    <!-- Die Sektion "Stimmen" stand hier mit drei erfundenen Zitaten
+         ("Name folgt · Coach · Platzhalter", Avatar "??"). Ersatzlos entfernt,
+         aus demselben Grund wie die Pull-Quote weiter oben. Sie kehrt zurueck,
+         wenn echte Stimmen mit dokumentierter Einwilligung vorliegen —
+         siehe Testimonial-Workflow im Backlog. -->
 
-    <!-- 7) So messen wir — short editorial transparency line, two hairline columns -->
+    <!-- 5) Der Messrhythmus — das Rueckgrat der Seite.
+         Vorher standen hier drei Punkte, die dreimal dasselbe sagten ("klare
+         KPIs", "keine Vanity-Metriken", "nachvollziehbar") und nach dem Umbau
+         von Abschnitt 02 nur noch Wiederholung gewesen waeren. Jetzt: wann
+         gemessen wird und was daraus folgt — die Information, die eine
+         Interessentin sonst nirgends bekommt.
+         🔴 VON SEBI/PHIL ZU BESTAETIGEN: Nullmessung vor dem Start, woechentliche
+         Frequenzpruefung, monatlicher Bericht. Falls der tatsaechliche Rhythmus
+         abweicht, hier anpassen — sonst ersetzt die Seite erfundene Zahlen durch
+         einen erfundenen Ablauf. -->
     <section class="rs-blk" id="messung" aria-labelledby="rs-measure-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 06</b> — Transparenz</p>
-        <h2 id="rs-measure-h">So <em>messen</em> wir Wachstum.</h2>
+        <p class="rs-rh"><b>№ 05</b> — Rhythmus</p>
+        <h2 id="rs-measure-h">Wann wir <em>messen</em> — und was daraus folgt.</h2>
       </div>
       <div class="rs-measure">
         <div class="rs-mcol">
-          <p class="mh">Klar definierte KPIs, keine Vanity-Metriken.</p>
-          <p class="mintro">Wir messen Wachstum, das auf dein Geschäft einzahlt — und legen jeden Schritt offen. <b>Volle Nachvollziehbarkeit von Tag eins.</b></p>
+          <p class="mh">Der Startpunkt entscheidet, ob eine Zahl etwas wert ist.</p>
+          <p class="mintro">Die meisten Berichte beginnen erst, wenn es gut aussieht. Wir schreiben auf, wo du stehst, <b>bevor</b> wir etwas ändern — und messen danach in festem Takt gegen genau diesen Stand.</p>
         </div>
         <div class="rs-mcol">
           <ul class="rs-mlist">
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="mt">Live-Dashboard statt Bauchgefühl<span>Reichweite, Leads und Umsatz an einem Ort — in Echtzeit einsehbar.</span></span>
+              <span class="mt">Vor dem Start: die Nullmessung<span>Reichweite, Anfragen und Frequenz im Ist-Zustand, festgehalten bevor wir anfangen. Ohne Startpunkt ist jede spätere Zahl eine Behauptung.</span></span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="mt">Klare KPIs, die zählen<span>Wir messen Wachstum, das auf dein Geschäft einzahlt — nicht nur Vanity-Metriken.</span></span>
+              <span class="mt">Wöchentlich: die Frequenz<span>Was veröffentlicht wurde und was nicht. Die einzige Größe, die vollständig bei uns liegt — und deshalb die, an der wir uns zuerst messen lassen.</span></span>
             </li>
             <li>
               <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-              <span class="mt">Volle Nachvollziehbarkeit<span>Du siehst jederzeit, was wir tun und was es bringt — transparent von Tag eins.</span></span>
+              <span class="mt">Monatlich: die vier Kennzahlen<span>Dieselben Definitionen wie oben, jeden Monat neu erhoben, im s2s-Bereich nachvollziehbar. Keine Definition wird nachträglich passend gemacht.</span></span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="mt">Auch wenn eine Zahl fällt<span>Ein Monat, in dem etwas nicht funktioniert hat, steht genauso im Bericht — mit dem, was wir daraus ändern. Das ist der Teil, den sonst niemand zeigt.</span></span>
             </li>
           </ul>
         </div>
