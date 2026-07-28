@@ -1,10 +1,14 @@
 # social2scale — KI-/Such-Crawler ausdrücklich willkommen.
 # Wir wollen in Google UND in KI-Antworten (ChatGPT, Claude, Perplexity, Gemini) sichtbar sein.
 # Maschinenlesbare Kurzbeschreibung der Seite: /llms.txt
+#
+# Bewusst KEIN Disallow für /anfrage/, /danke/, /onboarding/ und /gratis/:
+# diese Seiten tragen alle ein <meta name="robots" content="noindex"> im Kopf.
+# Ein Disallow bewirkt hier das Gegenteil — eine gesperrte Seite wird nicht
+# gelesen, Google findet das noindex also nie und kann die URL trotzdem
+# (inhaltslos) listen, sobald irgendwo ein Link darauf zeigt. Crawlen lassen
+# und per noindex draußen halten ist der Weg, der wirklich greift.
 User-agent: *
 Allow: /
-Disallow: /danke/
-Disallow: /onboarding/
-Disallow: /anfrage/
 
 Sitemap: https://social2scale.com/sitemap.xml
