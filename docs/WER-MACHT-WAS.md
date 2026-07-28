@@ -38,6 +38,31 @@ Diese Tabelle beim Start aktualisieren und committen. Leere Zeile = Ordner frei.
 | `~/social2scale-site` | `feat/free-content-funnel` | intern | Funnel-Motor, CRM-Anbindung, Follow-up | 28.07. |
 | `~/s2s-extern` | `feat/website-extern` | extern | Website, SEO, Nav, Funnel-Oberfläche | 28.07. |
 
+## Am 28.07. bereits erledigt — NICHT nochmal bauen
+
+Der eigentliche Ausloeser dieser Datei war doppelte Arbeit: beide Sessions haben
+gleichzeitig `/gratis/` gebaut. Damit das nicht wieder passiert, steht hier, was
+an der externen Flaeche fertig ist.
+
+| ✅ Erledigt | Commit | Anmerkung |
+|---|---|---|
+| `/gratis/` Weiterleitung | `9082155` | von der internen Session gebaut |
+| `HEAD /` liefert 200 statt 404 | `2d436c4` | intern |
+| Nav-Eintrag „Gratis" auf allen 4 Seiten mit Menü | `f638499` | extern |
+| `#gratis`-Knopf zeigt auf `/gratis/` | `f638499` | **Funnel-Adresse steht jetzt NUR in `gratis/index.html`** |
+| Burger-Umschaltpunkt 819 → 959px | `f638499` | Menüleiste brach zwischen 820 und 959px um |
+| SEO-Technik: llms.txt, Titel, Descriptions, sitemap-lastmod, robots | `4e6d4e7` | llms.txt nannte noch 3× PEAKING |
+| `/results/` ohne Platzhalterzahlen, mit Definitionen + Messrhythmus | `e478301`, `4c511d7` | Messrhythmus von Sebi gegengelesen |
+
+**Noch offen an der externen Fläche** (gehört der externen Session):
+Inhaltsstrang für Google (die Seite rankt für nichts außer dem eigenen Namen) ·
+Preistransparenz fehlt komplett · echte Referenzen der sechs Kundinnen statt der
+entfernten Platzhalter-Stimmen · Schaufläche aus generierten Feeds.
+
+**Nicht anfassen ohne Absprache:** die Funnel-Adresse. Sie steht an genau einer
+Stelle (`gratis/index.html`, dort dreimal: meta-refresh, JS, Fallback-Knopf).
+Beim Domain-Umzug ist das die einzige Datei, die geaendert werden muss.
+
 ## Besitz nach Bereich
 
 Damit man nicht bei jeder Datei nachfragen muss:
