@@ -99,9 +99,24 @@ geht aber nur abgestimmt auf beiden Seiten.
 diesen Namen. `generate.js` liest `testimonialConsent` bewusst nicht —
 Einwilligung ist Speicher- und Rechtsthema, keine Inhaltserzeugung.
 
-💡 **Offener Vorschlag:** ein Vertragstest, der fehlschlaegt, sobald `form.js`
-eines der Pflichtfelder nicht mehr sendet. Testdateien stehen unter „vorher
-ansagen" — also erst abstimmen, dann bauen.
+### Der Vertrag wird geprueft, nicht geglaubt
+
+```bash
+node scripts/payload-vertrag-pruefen.mjs
+```
+
+Liest den `payload`-Block aus `form.js` und gleicht ihn gegen `validate.js` und
+`leads.js` ab. Exit 1, sobald ein Pflichtfeld fehlt — und es meldet zusaetzlich
+neue, im Vertrag unbekannte Felder, was Umbenennungen direkt sichtbar macht
+(`ziel` fehlt + `zielsetzung` neu = jemand hat umbenannt).
+
+Das Skript liegt in `scripts/` (externe Session) und fasst keine fremden Dateien
+an: solange `free-content/` nur auf `feat/free-content-funnel` liegt, liest es
+per `git show` von dort; nach einem Merge findet es die Dateien direkt im
+Arbeitsverzeichnis. Beide Wege sind eingebaut.
+
+**Sinnvoll vor jedem Push**, der `form.js`, `validate.js` oder `leads.js`
+beruehrt — von welcher Session auch immer.
 
 ## Besitz nach Bereich
 
