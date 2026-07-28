@@ -103,6 +103,22 @@ describe('POST /api/free-content', () => {
     expect((await zeilen()).length).toBe(0);
   });
 
+  it('speichert stand (Passungsfrage) und testimonial_consent', async () => {
+    const res = await post({ ...GUELTIG, stand: 'Aktiv, will mehr', testimonialConsent: true });
+    expect(res.status).toBe(200);
+    const rows = await zeilen();
+    expect(rows.length).toBe(1);
+    expect(rows[0].stand).toBe('Aktiv, will mehr');
+    expect(rows[0].testimonial_consent).toBe(1);
+  });
+
+  it('testimonial_consent ist 0, wenn nicht ausdruecklich zugestimmt (Kopplungsverbot)', async () => {
+    await post(GUELTIG);
+    const rows = await zeilen();
+    expect(rows[0].testimonial_consent).toBe(0);
+    expect(rows[0].stand).toBe('');
+  });
+
   it('lehnt Wegwerf-Mails ab', async () => {
     const res = await post({ ...GUELTIG, email: 'x@mailinator.com' });
     expect(res.status).toBe(422);

@@ -25,6 +25,7 @@ export const FIELD_LIMITS = {
   ziel: 2000,
   stimmung: 40,
   farbe: 40,
+  stand: 60,
   source: 40,
 };
 

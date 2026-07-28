@@ -74,13 +74,14 @@ async function insertNew(db, clean, ip, now) {
       .prepare(
         `INSERT INTO free_leads
            (name, email, email_norm, handle, handle_norm, branche, ziel, stimmung,
-            farbe, consent, source, token, token_expires, resend_count, last_sent_at,
+            farbe, stand, consent, testimonial_consent, source, token, token_expires, resend_count, last_sent_at,
             ip, status, created_at)
-         VALUES (?,?,?,?,?,?,?,?,?,1,?,?,?,1,?,?, 'pending', ?)`
+         VALUES (?,?,?,?,?,?,?,?,?,?,1,?,?,?,?,1,?,?, 'pending', ?)`
       )
       .bind(
         clean.name, clean.email, clean.emailNorm, clean.handle, clean.handleNorm,
-        clean.branche, clean.ziel, clean.stimmung, clean.farbe, clean.source,
+        clean.branche, clean.ziel, clean.stimmung, clean.farbe, clean.stand,
+        clean.testimonialConsent ? 1 : 0, clean.source,
         token, iso(plusHours(now, TOKEN_TTL_HOURS)), iso(now), ip, iso(now)
       )
       .run();
@@ -133,7 +134,7 @@ async function reenter(db, clean, ip, now, existing) {
     .prepare(
       `UPDATE free_leads SET
          name=?, email=?, handle=?, handle_norm=?, branche=?, ziel=?, stimmung=?,
-         farbe=?, source=?, token=?, token_expires=?, token_used_at=NULL,
+         farbe=?, stand=?, testimonial_consent=?, source=?, token=?, token_expires=?, token_used_at=NULL,
          resend_count = CASE WHEN last_sent_at IS NULL OR last_sent_at <= ?
                              THEN 1 ELSE resend_count + 1 END,
          last_sent_at=?, ip=?, status='pending', fail_reason=''
@@ -142,7 +143,8 @@ async function reenter(db, clean, ip, now, existing) {
     )
     .bind(
       clean.name, clean.email, clean.handle, clean.handleNorm, clean.branche,
-      clean.ziel, clean.stimmung, clean.farbe, clean.source, token, expires,
+      clean.ziel, clean.stimmung, clean.farbe, clean.stand, clean.testimonialConsent ? 1 : 0,
+      clean.source, token, expires,
       windowStart, iso(now), ip, existing.id, windowStart, RESEND_MAX_PER_HOUR
     )
     .run();

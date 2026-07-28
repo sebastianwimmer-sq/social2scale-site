@@ -325,8 +325,10 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
     `- **Instagram:** @${handlePur(lead)}\n` +
     `- **Thema:** ${lead.branche}\n` +
     `- **Ziel:** ${lead.ziel}\n` +
+    (lead.stand ? `- **Wo sie heute steht:** ${lead.stand}\n` : '') +
     `- **Stimmung:** ${lead.stimmung}\n` +
     (lead.farbe ? `- **Wunschfarbe:** ${lead.farbe}\n` : '') +
+    (lead.testimonial_consent ? `- **✅ Testimonial-Einverständnis:** ja (Vorschau darf öffentlich gezeigt werden)\n` : '') +
     (lead.source ? `- **Kam über:** ${lead.source}\n` : '') +
     (feedUrl ? `- **Ihr Feed:** ${feedUrl}\n` : '') +
     `- **Bilder:** ${lead.r2_prefix || '(noch keine)'}\n`;
@@ -370,7 +372,8 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
 
   const daten = JSON.stringify({
     handle: lead.handle, branche: lead.branche, ziel: lead.ziel,
-    stimmung: lead.stimmung, farbe: lead.farbe, source: lead.source,
+    stimmung: lead.stimmung, farbe: lead.farbe, stand: lead.stand,
+    testimonial_consent: lead.testimonial_consent, source: lead.source,
     token: lead.token, r2_prefix: lead.r2_prefix,
   });
 

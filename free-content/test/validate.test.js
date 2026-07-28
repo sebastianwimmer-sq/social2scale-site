@@ -213,4 +213,34 @@ describe('validateSubmission', () => {
   it('laesst einen harmlosen Namen unveraendert', () => {
     expect(validateSubmission({ ...gut, name: 'Anna-Lena Weiss' }).value.name).toBe('Anna-Lena Weiss');
   });
+
+  it('haelt branche und ziel getrennt (kein Alias mehr)', () => {
+    const r = validateSubmission({ ...gut, branche: 'Yoga', ziel: 'Kurse fuellen' });
+    expect(r.value.branche).toBe('Yoga');
+    expect(r.value.ziel).toBe('Kurse fuellen');
+  });
+
+  it('stand ist optional: fehlt -> leerer String', () => {
+    expect(validateSubmission(gut).value.stand).toBe('');
+  });
+
+  it('uebernimmt stand, wenn gesetzt', () => {
+    expect(validateSubmission({ ...gut, stand: 'Ganz am Anfang' }).value.stand).toBe('Ganz am Anfang');
+  });
+
+  it('lehnt stand ab, wenn kein String (kein stilles Casten)', () => {
+    const r = validateSubmission({ ...gut, stand: ['x', 'y'] });
+    expect(r.ok).toBe(false);
+    expect(r.error).toBe('stand');
+  });
+
+  it('testimonialConsent ist ohne Zustimmung false', () => {
+    expect(validateSubmission(gut).value.testimonialConsent).toBe(false);
+  });
+
+  it('testimonialConsent nur bei echtem true (Kopplungsverbot: kein truthy-Cast)', () => {
+    expect(validateSubmission({ ...gut, testimonialConsent: true }).value.testimonialConsent).toBe(true);
+    expect(validateSubmission({ ...gut, testimonialConsent: 'yes' }).value.testimonialConsent).toBe(false);
+    expect(validateSubmission({ ...gut, testimonialConsent: 1 }).value.testimonialConsent).toBe(false);
+  });
 });

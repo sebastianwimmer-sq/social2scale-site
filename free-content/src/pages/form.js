@@ -112,6 +112,7 @@ const PAGE_STYLE = `
   .turnstile-wrap{display:flex;justify-content:center}
 
   .consent a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.35)}
+  .consent-opt{margin-top:8px;font-size:.74rem;opacity:.82;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
   .legal{margin-top:.9rem;text-align:center;font-family:var(--ff-label);font-size:10px;letter-spacing:.06em;color:var(--faint)}
   .legal a{color:var(--muted);text-decoration:none;transition:color .2s}
   .legal a:hover{color:var(--emerald-soft)}
@@ -140,7 +141,7 @@ function pageMarkup(turnstileSiteKey) {
   <div class="top">
     <img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="24">
     <span class="prog"><i id="bar"></i></span>
-    <span class="cnt" id="cnt">1/5</span>
+    <span class="cnt" id="cnt">1/7</span>
   </div>
 
   <div class="stage">
@@ -196,6 +197,26 @@ function pageMarkup(turnstileSiteKey) {
       </div>
 
       <div class="q" data-step="4">
+        <span class="eyebrow">Dein Ziel</span>
+        <h2>Was soll dein Auftritt <em>bewirken</em>?</h2>
+        <div class="field"><div class="field-in"><textarea id="f-ziel" placeholder="z.B. Mehr Anfragen von Wunschkunden — nicht nur Likes."></textarea></div></div>
+        <div class="react" id="r-ziel"></div>
+        <div class="foot"><button class="next" data-req="f-ziel" data-go="5"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="3">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="5">
+        <span class="eyebrow">Wo du stehst</span>
+        <h2>Wo stehst du <em>heute</em>?</h2>
+        <div class="chips" id="stand" role="group" aria-label="Wo du heute stehst">
+          <button class="chip" data-stand="Ganz am Anfang" aria-pressed="false"><span>Ganz am Anfang</span></button>
+          <button class="chip" data-stand="Poste unregelmäßig" aria-pressed="false"><span>Poste schon, aber unregelmäßig</span></button>
+          <button class="chip" data-stand="Aktiv, will mehr" aria-pressed="false"><span>Aktiv — will aufs nächste Level</span></button>
+        </div>
+        <div class="react" id="r-stand"></div>
+        <div class="foot"><button class="next" data-req="stand" data-go="6"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="4">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="6">
         <span class="eyebrow">Deine Stimmung</span>
         <h2>Welche <em>Stimmung</em> bist du?</h2>
         <div class="chips" id="stimmung" role="group" aria-label="Stimmung">
@@ -205,27 +226,28 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-mood="mutig" aria-pressed="false"><span>Kraftvoll &amp; mutig</span></button>
         </div>
         <div class="react" id="r-mood"></div>
-        <div class="foot"><button class="next" data-req="stimmung" data-go="5"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="3">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stimmung" data-go="7"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
       </div>
 
-      <div class="q" data-step="5">
+      <div class="q" data-step="7">
         <span class="eyebrow">Letzter Schritt</span>
         <h2>Fast fertig — <em>wohin damit</em>?</h2>
         <div class="field"><div class="field-in"><input type="email" id="f-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
         <div class="react" id="r-mail"></div>
         <div class="foot">
           <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
+          <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
           <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
-          <button class="back" data-go="4">Zurück</button>
+          <button class="back" data-go="6">Zurück</button>
         </div>
       </div>
 
-      <div class="q" data-step="6">
+      <div class="q" data-step="8">
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
-        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="5">E-Mail ändern</button></div>
+        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="7">E-Mail ändern</button></div>
       </div>
     </div>
     <p class="legal"><a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
@@ -238,7 +260,7 @@ function pageMarkup(turnstileSiteKey) {
 // wurde von reiner Navigation auf einen echten POST /api/free-content umgestellt.
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
-  const TOTAL=5; let step=0;
+  const TOTAL=7; let step=0;
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOODS={
@@ -253,7 +275,7 @@ const PAGE_SCRIPT = `
     $('#bar').style.transform=\`scaleX(\${s/TOTAL})\`;
     $('#cnt').textContent=\`\${s}/\${TOTAL}\`; $('#cnt').style.visibility=n===0?'hidden':'visible';
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
-    if(n===6){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
+    if(n===8){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
   function react(id,html,cls){const el=$(id);el.innerHTML=html;el.className='react show'+(cls?' '+cls:'');}
   function clr(id){$(id).className='react';}
@@ -263,6 +285,7 @@ const PAGE_SCRIPT = `
   $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, \${v}! Deine Vorschau wird persönlich.\`);}else clr('#r-name');});
   $('#f-handle').addEventListener('input',e=>{let v=e.target.value.trim().replace(/^@+/,'').replace(/\\s+/g,'');pvH.textContent=v||'dein.profil';if(v)bump(pvH);if(v.length>=3)react('#r-handle',\`@\${v} — sieht gut aus, das nehmen wir.\`);else clr('#r-handle');});
   $('#f-thema').addEventListener('input',e=>{const v=e.target.value.trim();pvB.textContent=v?v.slice(0,40)+(v.length>40?'…':''):' ';const tl=document.querySelectorAll('#pv-grid .pv-tile');if(v.length>8){['Dein Thema','Warum jetzt?','3 Schritte'].forEach((t,i)=>tl[i].textContent=t);react('#r-thema',\`Verstanden — daraus bauen wir deine Posts.\`);}else clr('#r-thema');});
+  $('#f-ziel').addEventListener('input',e=>{const v=e.target.value.trim();if(v.length>4)react('#r-ziel',\`Klares Ziel — darauf zahlt jeder Post ein.\`);else clr('#r-ziel');});
   document.querySelectorAll('#stimmung .chip').forEach(c=>c.addEventListener('click',()=>{
     document.querySelectorAll('#stimmung .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
     const m=MOODS[c.dataset.mood],R=document.documentElement.style;
@@ -271,6 +294,10 @@ const PAGE_SCRIPT = `
     tl.forEach((t,i)=>{t.classList.remove('empty','f1','f2','f3');t.classList.add(cls[i]);bump(t);if(!t.textContent.trim())t.textContent=lab[i];});
     bump(pvAv);react('#r-mood',\`\${m.word} — deine Farbwelt steht.\`);
   }));
+  document.querySelectorAll('#stand .chip').forEach(c=>c.addEventListener('click',()=>{
+    document.querySelectorAll('#stand .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
+    react('#r-stand',\`Alles klar — da holen wir dich genau ab.\`);
+  }));
 
   const DOM=['gmail.com','googlemail.com','web.de','gmx.de','gmx.net','t-online.de','hotmail.com','outlook.de','outlook.com','yahoo.de','yahoo.com','icloud.com','me.com'];
   function lev(a,b){const m=a.length,n=b.length,d=[...Array(m+1)].map((_,i)=>[i,...Array(n).fill(0)]);for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n];}
@@ -278,7 +305,7 @@ const PAGE_SCRIPT = `
   function validMail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(v.trim());}
   $('#f-mail').addEventListener('input',e=>{const v=e.target.value.trim(),s=suggest(v);if(s){react('#r-mail',\`Meintest du <b id="tf">\${s}</b>?\`,'warn');$('#tf').onclick=()=>{$('#f-mail').value=s;clr('#r-mail');$('#f-mail').focus();};}else if(validMail(v))react('#r-mail',\`Passt — dahin schicken wir deine Vorschau.\`);else clr('#r-mail');});
 
-  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
+  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
   document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const to=+b.dataset.go,req=b.dataset.req;
     if(b.classList.contains('next')&&!reqOk(req)){if(req==='f-mail')react('#r-mail','Bitte gib eine gültige E-Mail-Adresse ein.','warn');else{const el=document.getElementById(req)||qs[step].querySelector('input,textarea');if(el&&el.focus){el.closest('.field').style.background='linear-gradient(180deg,rgba(240,168,139,.7),rgba(240,168,139,.2))';el.focus();}}return;}
     show(to);});
@@ -302,6 +329,8 @@ const PAGE_SCRIPT = `
     email_domain:'Bitte prüf deine E-Mail-Adresse.',
     handle:'Bitte prüf deinen Instagram-Namen.',
     name:'Bitte gib deinen Namen ein.',
+    branche:'Bitte ergänze dein Thema.',
+    ziel:'Bitte ergänze dein Ziel.',
     consent:'Bitte bestätige die Einwilligung.',
     captcha:'Sicherheitscheck nicht bestanden — Seite neu laden und nochmal.',
     rate_limited:'Kurz warten und nochmal versuchen.',
@@ -317,10 +346,12 @@ const PAGE_SCRIPT = `
       email:$('#f-mail').value.trim(),
       handle:$('#f-handle').value.trim().replace(/^@+/,'').replace(/\\s+/g,''),
       branche:thema,
-      ziel:thema,
+      ziel:$('#f-ziel').value.trim(),
       stimmung:(document.querySelector('#stimmung .chip[aria-pressed=true]')||{}).dataset?.mood||'',
+      stand:(document.querySelector('#stand .chip[aria-pressed=true]')||{}).dataset?.stand||'',
       farbe:'',
       consent:true,
+      testimonialConsent:$('#f-testimonial').checked,
       elapsed:Date.now()-START,
       turnstile:turnstileToken(),
       source:'formular',
@@ -329,7 +360,7 @@ const PAGE_SCRIPT = `
       const res=await fetch('/api/free-content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;
       try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
-      if(res.ok&&data&&data.ok){show(6);return;}
+      if(res.ok&&data&&data.ok){show(8);return;}
       react('#r-mail',SUBMIT_FEHLER[data&&data.error]||'Kurz warten und nochmal versuchen.','warn');
       turnstileReset();
     }catch(err){

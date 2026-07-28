@@ -134,14 +134,23 @@ export function validateSubmission(input) {
   const stimmung = clip(raw.stimmung, FIELD_LIMITS.stimmung);
   if (!stimmung) return { ok: false, error: 'stimmung' };
 
-  // farbe und source sind optional: '' ist erlaubt, null (= kein String) nicht.
+  // farbe, stand und source sind optional: '' ist erlaubt, null (= kein String) nicht.
   const farbe = clip(raw.farbe, FIELD_LIMITS.farbe);
   if (farbe === null) return { ok: false, error: 'farbe' };
+
+  // Passungsfrage ("Wo stehst du heute?"): optional, damit ein aelterer Client ohne
+  // das Feld nicht scheitert. Das Formular fragt sie als Pflicht-3-Klick ab.
+  const stand = clip(raw.stand, FIELD_LIMITS.stand);
+  if (stand === null) return { ok: false, error: 'stand' };
 
   const source = clip(raw.source, FIELD_LIMITS.source);
   if (source === null) return { ok: false, error: 'source' };
 
   if (raw.consent !== true) return { ok: false, error: 'consent' };
+
+  // Separates, freiwilliges Testimonial-Einverstaendnis (DSGVO-Kopplungsverbot):
+  // NICHT an consent gekoppelt, Default false. Nur true, wenn ausdruecklich gesetzt.
+  const testimonialConsent = raw.testimonialConsent === true;
 
   return {
     ok: true,
@@ -155,7 +164,9 @@ export function validateSubmission(input) {
       ziel,
       stimmung,
       farbe,
+      stand,
       consent: true,
+      testimonialConsent,
       source,
     },
   };
