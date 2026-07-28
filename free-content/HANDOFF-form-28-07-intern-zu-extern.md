@@ -35,6 +35,30 @@ Tests stehen ohnehin auf „vorher ansagen").
 - **CSP von Report-Only auf scharf flippen** — vorher Turnstile-iframe/`frame-src` an der echten Seite gegenprüfen (rendert im Skript-Walk verzögert).
 - Kosmetik: Hinweis „In 60 Sekunden" ist bei 7 Steps evtl. optimistisch · auf kurzen Viewports rutscht der Weiter-Button bei Textarea-Steps (Thema/Ziel) unter den Fold.
 
+## 🔽 Downstream: `/results/` (extern) — wo die Testimonials zurückkommen
+Sebi 28.07.: Auf `/results/` sind die **Platzhalter-Stimmen ersatzlos entfernt**. Genau
+diese Lücke füllen später die **echten** Testimonials — und die entstehen aus dem
+`testimonial_consent`-Häkchen, das diese Session eingebaut hat. Damit spannt sich ein
+Datenfluss über die Bereichsgrenze:
+
+```
+Funnel-Formular (extern, form.js) ──Häkchen──▶ free_leads.testimonial_consent (intern, D1)
+                                                        │
+                            (Pipeline noch NICHT gebaut)│
+                                                        ▼
+                                          /results/ (extern) zeigt die Vorschau
+```
+
+- **Erfassung + Speicherung = intern.** Datenquelle: `free_leads WHERE testimonial_consent=1
+  AND status='ready'`. Die fertige Vorschau liegt in R2 unter `free_leads.r2_prefix`
+  (Bilder via `/img/<token>/<name>.jpg`). Einwilligungstext = **anonym** („anonym als
+  Beispiel zeigen") → auf `/results/` **keinen Namen/Handle** zeigen, nur die Vorschau.
+- **Anzeige = extern.** `/results/` rendert.
+- **Saubere Naht = die D1-Abfrage / ein kleiner Read-Endpunkt.** Wenn ihr `/results/`
+  mit echten Stimmen füllen wollt: sagt Bescheid, dann baue ich (intern) die
+  Datenseite (Query/Endpunkt für einwilligende, fertige Vorschauen); ihr rendert.
+  **Noch keine Einwilligungen aufgelaufen** — erst spec'en, wenn welche da sind.
+
 ## Empfehlung
 So stehen lassen (getestet + live). Nicht neu bauen — draufsetzen. Bei Konflikt:
 Worktrees teilen `.git`, meine Commits sind aus `~/s2s-extern` sofort sichtbar.
