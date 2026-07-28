@@ -49,6 +49,17 @@ describe('health', () => {
   });
 });
 
+describe('HEAD /', () => {
+  it('antwortet Monitoring/Crawlern mit 200 statt 404', async () => {
+    // Frueher matchte nur GET auf '/', HEAD fiel bis zur 404 durch — stoerte
+    // Uptime-Monitoring und Crawler. HEAD-Semantik: 200, aber ohne Body.
+    const res = await SELF.fetch('https://start.social2scale.com/', { method: 'HEAD' });
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('text/html');
+    expect(await res.text()).toBe('');
+  });
+});
+
 describe('POST /api/free-content', () => {
   beforeEach(async () => {
     await resetTables(env.DB, SCHEMA_SQL, TABELLEN);

@@ -329,6 +329,17 @@ export default {
       return new Response(null, { status: 204 });
     }
 
+    // HEAD / — Monitoring und Crawler pruefen die Wurzel oft per HEAD. Ohne diesen
+    // Zweig fiele HEAD bis zur abschliessenden 404 durch (der GET-Zweig unten matcht
+    // nur GET). Antwort ohne Body (HEAD-Semantik verlangt genau das), aber mit
+    // denselben Sicherheits-Headern wie die ausgelieferte Seite.
+    if (url.pathname === '/' && request.method === 'HEAD') {
+      return new Response(null, {
+        status: 200,
+        headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER },
+      });
+    }
+
     // Formular-Seite: der Worker liefert sie jetzt selbst statt an eine
     // statische Seite zu verweisen (Plan 3).
     if (url.pathname === '/' && request.method === 'GET') {
