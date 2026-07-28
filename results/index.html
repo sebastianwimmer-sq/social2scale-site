@@ -162,7 +162,8 @@
   .mobile-menu .m-cta{margin-top:24px;text-align:center;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:16px 24px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 14px 34px -14px rgba(0,184,136,.6),0 14px 34px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3)}
   .mobile-menu .m-foot{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);padding-top:26px}
 
-  @media (max-width:819px){
+  /* Umschaltpunkt zum Burger-Menue: 959 statt 819 — siehe Kommentar in index.html */
+  @media (max-width:959px){
     .nav-links,.nav>.nav-cta{display:none}
     .burger{display:flex}
   }
@@ -700,6 +701,7 @@
         <li><a href="/results/" aria-current="true">Ergebnisse</a></li>
         <li><a href="/about/">Über uns</a></li>
         <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/#gratis">Gratis</a></li>
       </ul>
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
@@ -716,6 +718,7 @@
     <a class="m-link" href="/results/">Ergebnisse</a>
     <a class="m-link" href="/about/">Über uns</a>
     <a class="m-link" href="/#faq">FAQ</a>
+    <a class="m-link" href="/#gratis">Gratis-Vorschau</a>
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
 
   <main id="ergebnisse">
@@ -982,6 +985,7 @@
           <li><a href="/results/">Ergebnisse</a></li>
           <li><a href="/about/">Über uns</a></li>
           <li><a href="/#faq">FAQ</a></li>
+          <li><a href="/#gratis">Gratis-Vorschau</a></li>
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
