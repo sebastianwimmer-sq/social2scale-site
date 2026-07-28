@@ -125,6 +125,13 @@ export function validateSubmission(input) {
   const handleNorm = normalizeHandle(handle);
   if (!handleNorm) return { ok: false, error: 'handle' };
 
+  // ⚠️ NAMENSFALLE an der Vertragsgrenze (form.js/extern ↔ Motor/intern):
+  // Das Formular fragt nach dem "Thema", der Payload-Schluessel UND die DB-Spalte
+  // heissen aber `branche` (`form.js` schickt `branche: thema`). Kein Fehler, nur ein
+  // Legacy-Name. BEWUSST nicht umbenannt: der Name steckt in form.js → validate → leads
+  // → DB-Spalte → mirrorToCrm → _portal; eine Live-Spalten-Umbenennung waere Risiko ohne
+  // Gegenwert. Wer hier liest: `branche` == das Freitext-"Thema" der Kundin. Siehe
+  // docs/WER-MACHT-WAS.md und HANDOFF-form-28-07. Umbenennen = beidseitige Absprache.
   const branche = clip(raw.branche, FIELD_LIMITS.branche);
   if (!branche) return { ok: false, error: 'branche' };
 
