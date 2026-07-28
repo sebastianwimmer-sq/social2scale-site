@@ -19,10 +19,33 @@ const ASSET_BASE = 'https://social2scale.com/assets';
  * kaputtes Formular kostet Leads, waehrend diese drei Header nichts kaputtmachen
  * koennen. CSP gehoert sauber getestet nachgezogen, nicht nachts nebenbei.
  */
+// Content-Security-Policy fuer die Besucher-Seiten (Formular, Bestaetigung, Build,
+// Reveal). Erlaubt genau die realen Quellen:
+//  - inline <script>/<style> (der Funnel lebt davon)  -> 'unsafe-inline'
+//  - Turnstile (Bot-Gate)   -> script/connect/frame challenges.cloudflare.com
+//  - Fonts + Wordmark + Feed-Bilder liegen auf social2scale.com bzw. same-origin (R2 /img/)
+// Bewusst ZUERST als Report-Only ausgeliefert: eine zu enge CSP legt den Funnel
+// still, Report-Only blockiert NIE und meldet Verstoesse nur in der Konsole. Nach
+// dem Gegentest an der echten Seite (Turnstile/R2/Fonts) wird auf durchsetzend geflippt.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https://social2scale.com",
+  "font-src 'self' https://social2scale.com",
+  "connect-src 'self' https://challenges.cloudflare.com",
+  "frame-src https://challenges.cloudflare.com",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+].join('; ');
+
 export const SICHERHEITS_HEADER = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Content-Security-Policy-Report-Only': CSP,
 };
 
 const SHARED_STYLE = `
