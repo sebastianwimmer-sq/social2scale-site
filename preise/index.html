@@ -32,7 +32,7 @@
 <!-- Geteilte Shell: Tokens, Loader, Typo-Rollen, Header/Nav, Footer.
      MUSS vor dem <style>-Block stehen, damit seiten-eigene Regeln gewinnen. -->
 <link rel="stylesheet" href="/s2s.css">
-<noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
+<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
   </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) -->
 <style>
@@ -418,7 +418,7 @@
   .pr-time-when{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
   .pr-time-what{margin-top:var(--s-3);font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.05rem,.98rem + .4vw,1.3rem);line-height:1.2;letter-spacing:-.015em}
   .pr-time-bar{margin-top:var(--s-5);height:6px;border-radius:99px;background:var(--line);overflow:hidden}
-  .pr-time-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--emerald),var(--teal))}
+  .pr-time-bar i{display:block;width:100%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--emerald),var(--teal))}
   .pr-time-you{margin-top:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--muted)}
   .pr-time-step.is-zero .pr-time-you{color:var(--emerald)}
   .pr-time-label{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:clamp(var(--s-6),3vw,var(--s-7))}
@@ -520,7 +520,7 @@
         <h2 id="pr-wege">Wie viel willst du <em>abgeben</em>?</h2>
       </div>
 
-      <div class="pr-ways">
+      <div class="pr-ways stagger">
         <article class="pr-way is-lead">
           <p class="pr-way-tag">Alles abgeben</p>
           <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
@@ -535,7 +535,7 @@
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir">
               <h4>Wir machen</h4>
-              <ul>
+              <ul class="stagger">
             <li>Profil aufbauen</li>
             <li>Branding und Positionierung</li>
             <li>Zehn Beiträge im Monat</li>
@@ -562,7 +562,7 @@
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir">
               <h4>Wir machen</h4>
-              <ul>
+              <ul class="stagger">
             <li>Zehn Beiträge im Monat</li>
             <li>Veröffentlichen nach Plan</li>
             <li>Hashtag-Strategie je Beitrag</li>
@@ -589,7 +589,7 @@
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir">
               <h4>Wir machen</h4>
-              <ul>
+              <ul class="stagger">
             <li>Profil aufbauen</li>
             <li>Branding und Positionierung</li>
             <li>Neun Beiträge gestalten</li>
@@ -610,23 +610,23 @@
       </div>
 
       <p class="pr-time-label">Dein Aufwand beim Weg „Alles abgeben"</p>
-      <div class="pr-time">
+      <div class="pr-time stagger">
         <div class="pr-time-step is-done">
           <p class="pr-time-when">Monat 1</p>
           <p class="pr-time-what">Dein Profil entsteht.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: gering"><i style="width:28%"></i></div>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: gering"><i class="fillbar" style="--fill:.28"></i></div>
           <p class="pr-time-you">ein Briefing, etwa 30 Minuten</p>
         </div>
         <div class="pr-time-step is-zero">
           <p class="pr-time-when">Monat 2</p>
           <p class="pr-time-what">Die ersten Beiträge laufen.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i style="width:0"></i></div>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>
           <p class="pr-time-you">nichts</p>
         </div>
         <div class="pr-time-step is-zero">
           <p class="pr-time-when">ab Monat 3</p>
           <p class="pr-time-what">Es läuft weiter.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i style="width:0"></i></div>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>
           <p class="pr-time-you">nichts</p>
         </div>
       </div>
@@ -635,7 +635,7 @@
 
       <div class="pr-calc">
         <p class="pr-calc-line">Zehn Beiträge im Monat. Je Beitrag: Idee, Text, Gestaltung, Hashtags, Veröffentlichung. Rechne mit <b>45 bis 90 Minuten</b> — macht <b>7,5 bis 15 Stunden</b> im Monat.</p>
-        <div class="pr-calc-grid">
+        <div class="pr-calc-grid stagger">
           <div><span class="l">Dein Stundensatz 60 €</span><span class="v">450 – 900 €</span></div>
           <div><span class="l">Dein Stundensatz 80 €</span><span class="v">600 – 1.200 €</span></div>
           <div><span class="l">Dein Stundensatz 120 €</span><span class="v">900 – 1.800 €</span></div>
@@ -652,7 +652,7 @@
       </div>
       <div class="pr-why-grid">
         <p class="pr-why-lead">Wir liegen über dem, was ein Freelancer nimmt, und unter dem, was eine Agentur mit Projektleitung, Account-Management und Praktikanten kostet. Der Grund ist derselbe: <b>die Arbeit machen wir selbst.</b></p>
-        <div class="pr-why-scale">
+        <div class="pr-why-scale stagger">
           <div><span class="l">Freelancer</span><span class="v">400 – 900 €</span></div>
           <div class="is-us"><span class="l">wir</span><span class="v">446 – 822 €</span></div>
           <div><span class="l">Agentur, Schnitt</span><span class="v">800 – 2.500 €</span></div>

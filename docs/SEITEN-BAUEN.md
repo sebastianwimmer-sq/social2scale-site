@@ -68,6 +68,50 @@ Die Reihenfolge im `<head>` ist bindend: `fonts.css` → `s2s.css` → `<style>`
 Stünde `s2s.css` nach dem Inline-Block, würden geteilte Regeln die
 seiten-eigenen überschreiben und Layouts kippen.
 
+## Bewegung (Motion-System)
+
+Alles liegt in `s2s.css` und steht damit **jeder** Seite zur Verfügung. Bis zum
+29.07.2026 hatte nur `index.html` eigene Animationen — die anderen vier Seiten
+hatten null. Deshalb wirkten sie statisch, egal wie gut sie gesetzt waren.
+
+### Die drei Bausteine
+
+| Klasse | Was sie tut | Wann benutzen |
+|---|---|---|
+| `.reveal` | Element blendet beim Einscrollen ein (10 px Versatz, Blur 5→0, 0,5 s) | um jede Sektion, wie bisher |
+| `.stagger` | Kinder erscheinen **nacheinander** statt gleichzeitig | wenn die *Menge* das Argument ist — Listen, Karten, Schritte |
+| `.fillbar` | wächst per `scaleX` von 0 auf `--fill` | wenn eine Größe etwas **bedeutet** |
+
+```html
+<div class="wrap reveal">
+  <ul class="stagger">…</ul>                        <!-- erscheint nacheinander -->
+  <div class="bar"><i class="fillbar" style="--fill:.28"></i></div>
+</div>
+```
+
+`.stagger` und `.fillbar` brauchen **kein eigenes JavaScript**: sie hängen per
+CSS am umgebenden `.reveal.on`, das der vorhandene Beobachter ohnehin setzt.
+
+### Regeln
+
+- Nur `transform`, `opacity` und `filter` animieren — nie `width`, `height`,
+  `top` oder `margin`. Layoutgebundene Eigenschaften zwingen den Browser bei
+  jedem Bild zu einer Neuberechnung.
+- **Bewegung muss etwas bedeuten.** Der Balken, der den eigenen Aufwand zeigt,
+  darf wachsen. Ein Element, das nur hüpft, weil es kann, macht eine Seite für
+  1.547 € billiger, nicht besser.
+- `prefers-reduced-motion` schaltet alles ab — steht bereits in `s2s.css`,
+  nichts nachzurüsten.
+
+### Zwei Fallen, beide schon einmal zugeschnappt
+
+1. **Der `<noscript>`-Notfallstil muss `filter:none` zurücksetzen.** Er setzte
+   nur `opacity` und `transform` — mit dem neuen Startzustand wäre ohne
+   JavaScript die halbe Seite unscharf gewesen. Auf allen elf Seiten korrigiert.
+2. **Der visuelle Test darf keine Stile überschreiben, sondern muss `.on`
+   setzen.** Sonst lösen die gestaffelten Kinder nie auf und die Unschärfe
+   landet in den Basisbildern.
+
 ## Niemals
 
 - Navigation oder Footer direkt in einer HTML-Datei ändern. Der nächste

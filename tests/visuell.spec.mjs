@@ -17,12 +17,21 @@ for (const seite of SEITEN) {
 
       // Loader wegblenden und Reveals aufloesen: beide sind zeitabhaengig und
       // wuerden sonst bei jedem Lauf ein anderes Bild ergeben.
+      //
+      // WICHTIG: nicht die Stile ueberschreiben, sondern die .on-Klasse setzen,
+      // die der echte Beobachter auch setzt. Nur so loesen auch die gestaffelten
+      // Kinder (.stagger > *) und die Fuellbalken (.fillbar) auf — sie haengen
+      // per CSS am umgebenden .reveal.on. Die frueher benutzte Variante setzte
+      // nur opacity und transform und haette die neue Unschaerfe im Startzustand
+      // in die Basisbilder gebacken.
       await page.evaluate(() => {
         const l = document.getElementById('loader');
         if (l) l.style.display = 'none';
-        document.querySelectorAll('.reveal, .r').forEach((e) => {
+        document.querySelectorAll('.reveal').forEach((e) => e.classList.add('on'));
+        document.querySelectorAll('.r').forEach((e) => {
           e.style.opacity = '1';
           e.style.transform = 'none';
+          e.style.animation = 'none';
         });
       });
       await page.waitForTimeout(600);
