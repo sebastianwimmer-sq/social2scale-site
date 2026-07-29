@@ -423,14 +423,17 @@
   <header class="bar">
     <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
+      <!-- SHELL:NAV -->
       <ul class="nav-links">
         <li><a href="/#leistungen">Leistungen</a></li>
         <li><a href="/#ablauf">Ablauf</a></li>
         <li><a href="/for-you/">Für wen</a></li>
-        <li><a href="/about/">Über uns</a></li>
+        <li><a href="/results/">Ergebnisse</a></li>
+        <li><a href="/about/" aria-current="page">Über uns</a></li>
         <li><a href="/#faq">FAQ</a></li>
         <li><a href="/#gratis">Gratis</a></li>
       </ul>
+<!-- /SHELL:NAV -->
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
@@ -440,12 +443,16 @@
 
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
+    <!-- SHELL:MOBIL -->
     <a class="m-link" href="/#leistungen">Leistungen</a>
     <a class="m-link" href="/#ablauf">Ablauf</a>
     <a class="m-link" href="/for-you/">Für wen</a>
-    <a class="m-link" href="/about/">Über uns</a>
+    <a class="m-link" href="/results/">Ergebnisse</a>
+    <a class="m-link" href="/about/" aria-current="page">Über uns</a>
     <a class="m-link" href="/#faq">FAQ</a>
     <a class="m-link" href="/#gratis">Gratis-Vorschau</a>
+    <a class="m-link" href="https://mein.social2scale.com" style="color:var(--emerald,#00B888);font-weight:600">Login · Mein Bereich</a>
+<!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
 
   <main>
@@ -591,12 +598,16 @@
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
         <ul>
+          <!-- SHELL:FOOTER -->
+          <li><a href="https://mein.social2scale.com">Login · Mein Bereich</a></li>
           <li><a href="/#leistungen">Leistungen</a></li>
           <li><a href="/#ablauf">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
+          <li><a href="/results/">Ergebnisse</a></li>
           <li><a href="/about/">Über uns</a></li>
           <li><a href="/#faq">FAQ</a></li>
           <li><a href="/#gratis">Gratis-Vorschau</a></li>
+<!-- /SHELL:FOOTER -->
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
