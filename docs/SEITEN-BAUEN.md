@@ -77,3 +77,28 @@ seiten-eigenen überschreiben und Layouts kippen.
   localhost, alle Assets scheitern. Entfernt am 28.07.2026 (`a366449`).
 - Dateien im Repo ablegen, die niemand sehen soll. `.nojekyll` bedeutet:
   **alles** ist öffentlich abrufbar.
+
+## 🟡 Offen: interne Dateien werden mit ausgeliefert
+
+Weil `.nojekyll` im Root liegt, gibt GitHub Pages jede Datei roh heraus —
+auch `docs/`, `lib/`, `scripts/`, `package.json` und `playwright.config.mjs`.
+Nachgeprüft am 29.07.2026: alle liefern HTTP 200.
+
+Betroffen ist unter anderem `docs/domain-umzug-cloudflare.md` mit dem
+DNS-Bestand und dem Umzugs-Runbook. Die DNS-Werte selbst sind ohnehin
+öffentlich (`dig TXT social2scale.com` zeigt dasselbe) — unangenehm ist, dass
+interne Runbooks und Specs mit sehr offener Innensicht auf der Marketing-Domain
+liegen.
+
+**Vorläufig** hält `robots.txt` sie aus Such- und KI-Antworten heraus. Das
+verhindert keinen Direktaufruf.
+
+**Richtig gelöst** wäre es auf einem dieser Wege — beides ändert den
+Auslieferungsweg der Live-Seite und gehört deshalb bewusst entschieden, nicht
+nebenbei gemacht:
+1. `.nojekyll` entfernen, `_config.yml` mit `exclude:` anlegen. Jekyll reicht
+   HTML ohne Front-Matter unverändert durch, das Risiko ist gering — aber es
+   ist eine Änderung am Deploy einer laufenden Seite.
+2. Interne Dokumente in ein nicht veröffentlichtes Repo verschieben. Sauberste
+   Trennung, macht aber die Abstimmung zwischen den Sessions umständlicher,
+   weil `WER-MACHT-WAS.md` dann nicht mehr neben dem Code liegt.

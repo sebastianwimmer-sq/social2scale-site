@@ -8,7 +8,21 @@
 # gelesen, Google findet das noindex also nie und kann die URL trotzdem
 # (inhaltslos) listen, sobald irgendwo ein Link darauf zeigt. Crawlen lassen
 # und per noindex draußen halten ist der Weg, der wirklich greift.
+#
+# Disallow dagegen SCHON für die Entwicklungsdateien unten. Der Unterschied:
+# bei HTML-Seiten ist noindex das bessere Werkzeug, weil man ein <meta> setzen
+# kann. Bei .md, .mjs und .json geht das nicht — dort ist Disallow das einzige
+# Mittel. Es verhindert keinen Direktaufruf, nur die Aufnahme in Such- und
+# KI-Antworten. Der eigentliche Fix wäre, diese Dateien gar nicht erst
+# auszuliefern; siehe docs/SEITEN-BAUEN.md.
 User-agent: *
 Allow: /
+Disallow: /docs/
+Disallow: /lib/
+Disallow: /scripts/
+Disallow: /tests/
+Disallow: /workers/
+Disallow: /package.json
+Disallow: /playwright.config.mjs
 
 Sitemap: https://social2scale.com/sitemap.xml
