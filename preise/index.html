@@ -392,6 +392,47 @@
     .pr-calc-grid div,.pr-why-scale div{flex-direction:column;gap:var(--s-2);align-items:flex-start}
   }
 
+
+  /* ===== Du / Wir — der No-Brainer wird sichtbar, nicht behauptet =====
+     Die Asymmetrie IST das Argument: links ein Punkt, rechts sechs. Wer scannt,
+     sieht in einer Sekunde, wie viel liegen bleibt. */
+  .pr-split{margin-top:clamp(var(--s-5),2.6vw,var(--s-6));display:grid;grid-template-columns:minmax(0,1fr) 1px minmax(0,1.35fr);gap:clamp(var(--s-4),2.4vw,var(--s-6));align-items:start}
+  .pr-split-rule{background:linear-gradient(180deg,transparent,var(--line-2) 18%,var(--line-2) 82%,transparent);align-self:stretch}
+  .pr-split h4{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .pr-split .wir h4{color:var(--emerald)}
+  .pr-split ul{list-style:none;margin-top:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
+  .pr-split li{position:relative;padding-left:var(--s-5);font-size:.95rem;line-height:1.5;color:var(--muted)}
+  .pr-split li::before{content:"";position:absolute;left:0;top:.52em;width:6px;height:6px;border-radius:50%;background:var(--line-3)}
+  .pr-split .wir li::before{background:var(--emerald);box-shadow:0 0 8px -1px rgba(0,184,136,.7)}
+  .pr-split .du li{color:var(--paper)}
+  .pr-split .du .nix{color:var(--faint);font-style:italic}
+
+  /* ===== Aufwands-Zeitstrahl — dein Anteil schrumpft auf null ===== */
+  .pr-time{margin-top:clamp(var(--s-6),3vw,var(--s-7));display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-4),2.4vw,var(--s-6))}
+  .pr-time-step{position:relative;padding-top:var(--s-6)}
+  /* Linie durch alle drei Schritte, Knoten je Schritt */
+  .pr-time-step::before{content:"";position:absolute;left:0;right:calc(-1 * clamp(var(--s-4),2.4vw,var(--s-6)));top:5px;height:1px;background:var(--line-2)}
+  .pr-time-step:last-child::before{right:0}
+  .pr-time-step::after{content:"";position:absolute;left:0;top:0;width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--line-3)}
+  .pr-time-step.is-done::after{background:var(--emerald);border-color:var(--emerald);box-shadow:0 0 12px -2px rgba(0,184,136,.8)}
+  .pr-time-when{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .pr-time-what{margin-top:var(--s-3);font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.05rem,.98rem + .4vw,1.3rem);line-height:1.2;letter-spacing:-.015em}
+  .pr-time-bar{margin-top:var(--s-5);height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+  .pr-time-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--emerald),var(--teal))}
+  .pr-time-you{margin-top:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--muted)}
+  .pr-time-step.is-zero .pr-time-you{color:var(--emerald)}
+  .pr-time-label{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+
+  @media (max-width:760px){
+    .pr-split{grid-template-columns:1fr;gap:var(--s-5)}
+    .pr-split-rule{height:1px;width:100%;background:var(--line-2)}
+    .pr-time{grid-template-columns:1fr;gap:var(--s-5)}
+    .pr-time-step::before{left:5px;right:auto;top:11px;bottom:calc(-1 * var(--s-5));width:1px;height:auto}
+    .pr-time-step:last-child::before{display:none}
+    .pr-time-step{padding-top:0;padding-left:var(--s-6)}
+    .pr-time-step::after{top:2px}
+  }
+
   /* Auf dem Handy EINSPALTIG. Die zweispaltige Fassung liess eine 2,5rem breite
      Nummernspalte stehen — der Text quetschte sich in den Rest, lief bis an den
      rechten Rand und brach mitten in Wortgruppen um. Die Nummer sitzt jetzt als
@@ -484,6 +525,26 @@
           <p class="pr-way-tag">Alles abgeben</p>
           <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
           <p class="pr-way-t">Im ersten Monat entsteht dein Profil. Danach läuft es — zehn Beiträge im Monat, veröffentlicht, Anfragen landen bei dir. Du hörst von uns, wenn etwas zu entscheiden ist.</p>
+          <div class="pr-split">
+            <div class="du">
+              <h4>Du machst</h4>
+              <ul>
+            <li>Ein Briefing geben. Einmal.</li>
+              </ul>
+            </div>
+            <div class="pr-split-rule" aria-hidden="true"></div>
+            <div class="wir">
+              <h4>Wir machen</h4>
+              <ul>
+            <li>Profil aufbauen</li>
+            <li>Branding und Positionierung</li>
+            <li>Zehn Beiträge im Monat</li>
+            <li>Veröffentlichen nach Plan</li>
+            <li>Hashtag-Strategie je Beitrag</li>
+            <li>Anfragen sammeln und weiterleiten</li>
+              </ul>
+            </div>
+          </div>
           <p class="pr-way-p"><span class="ab">ab</span> 1.547,00 €<span class="dann">einmalig, danach 464,10 € im Monat</span></p>
         </article>
 
@@ -491,6 +552,25 @@
           <p class="pr-way-tag">Laufendes abgeben</p>
           <h3 class="pr-way-h">Dein Profil steht schon.</h3>
           <p class="pr-way-t">Wir übernehmen ab jetzt die Beiträge. Du postest nichts mehr selbst.</p>
+          <div class="pr-split">
+            <div class="du">
+              <h4>Du machst</h4>
+              <ul>
+            <li class="nix">Nichts — dein Profil steht ja schon.</li>
+              </ul>
+            </div>
+            <div class="pr-split-rule" aria-hidden="true"></div>
+            <div class="wir">
+              <h4>Wir machen</h4>
+              <ul>
+            <li>Zehn Beiträge im Monat</li>
+            <li>Veröffentlichen nach Plan</li>
+            <li>Hashtag-Strategie je Beitrag</li>
+            <li>Anfragen weiterleiten</li>
+            <li>Monatlicher Kurz-Report</li>
+              </ul>
+            </div>
+          </div>
           <p class="pr-way-p"><span class="ab">ab</span> 523,60 €<span class="dann">im Monat</span></p>
         </article>
 
@@ -498,6 +578,25 @@
           <p class="pr-way-tag">Einmal Starthilfe</p>
           <h3 class="pr-way-h">Danach machst du weiter.</h3>
           <p class="pr-way-t">Profil, Branding und die ersten Beiträge — und du hast eine Vorlage, mit der du selbst arbeiten kannst.</p>
+          <div class="pr-split">
+            <div class="du">
+              <h4>Du machst</h4>
+              <ul>
+            <li>Ein Briefing geben</li>
+            <li>Danach selbst posten</li>
+              </ul>
+            </div>
+            <div class="pr-split-rule" aria-hidden="true"></div>
+            <div class="wir">
+              <h4>Wir machen</h4>
+              <ul>
+            <li>Profil aufbauen</li>
+            <li>Branding und Positionierung</li>
+            <li>Neun Beiträge gestalten</li>
+            <li>Hashtag-Strategie</li>
+              </ul>
+            </div>
+          </div>
           <p class="pr-way-p"><span class="ab">ab</span> 446,25 €<span class="dann">einmalig</span></p>
         </article>
       </div>
@@ -506,9 +605,33 @@
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 03</b> — Einordnung</p>
-        <h2 id="pr-rechnung">Was es kostet, es <em>selbst</em> zu machen.</h2>
-        <p class="lead">Nicht als Drohung, sondern als Rechnung. Setz deine eigene Zahl ein.</p>
+        <h2 id="pr-rechnung">Was es dich kostet — an <em>Zeit</em> und an Geld.</h2>
+        <p class="lead">Nicht als Drohung, sondern als Rechnung. Beim ersten Weg sieht die Zeitseite so aus:</p>
       </div>
+
+      <p class="pr-time-label">Dein Aufwand beim Weg „Alles abgeben"</p>
+      <div class="pr-time">
+        <div class="pr-time-step is-done">
+          <p class="pr-time-when">Monat 1</p>
+          <p class="pr-time-what">Dein Profil entsteht.</p>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: gering"><i style="width:28%"></i></div>
+          <p class="pr-time-you">ein Briefing, etwa 30 Minuten</p>
+        </div>
+        <div class="pr-time-step is-zero">
+          <p class="pr-time-when">Monat 2</p>
+          <p class="pr-time-what">Die ersten Beiträge laufen.</p>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i style="width:0"></i></div>
+          <p class="pr-time-you">nichts</p>
+        </div>
+        <div class="pr-time-step is-zero">
+          <p class="pr-time-when">ab Monat 3</p>
+          <p class="pr-time-what">Es läuft weiter.</p>
+          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i style="width:0"></i></div>
+          <p class="pr-time-you">nichts</p>
+        </div>
+      </div>
+
+      <p class="pr-time-label" style="margin-top:clamp(var(--s-7),4vw,var(--s-8))">Und wenn du es selbst machst</p>
 
       <div class="pr-calc">
         <p class="pr-calc-line">Zehn Beiträge im Monat. Je Beitrag: Idee, Text, Gestaltung, Hashtags, Veröffentlichung. Rechne mit <b>45 bis 90 Minuten</b> — macht <b>7,5 bis 15 Stunden</b> im Monat.</p>
