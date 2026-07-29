@@ -39,12 +39,15 @@
 <!-- Geteilte Shell: Tokens, Loader, Typo-Rollen, Header/Nav, Footer.
      MUSS vor dem <style>-Block stehen, damit seiten-eigene Regeln gewinnen. -->
 <link rel="stylesheet" href="/s2s.css">
-<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
+<!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
+<script src="/s2s.js" defer></script>
+<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
   </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly)
      [P] erledigt 28.07.2026 — Platzhalter-Zahlen und Platzhalter-Stimmen sind raus,
          die Seite zeigt jetzt Definitionen + Messrhythmus statt behaupteter Ergebnisse. -->
 <style>
+  .rs-hero-bg{position:absolute;inset:-22% 0;z-index:0;background-size:cover!important;background-position:center!important}
   /* Tokens, Dark-Hardening, Aurora-Wash, Loader, Typo-Rollen und Header/Nav
      stehen jetzt in /s2s.css — dort aendern, nicht hier. */
 
@@ -519,9 +522,9 @@
   <main id="ergebnisse">
 
     <!-- 1) Editorial hero — oversized Fraunces display vs tiny mono running head -->
-    <section class="rs-hero" aria-labelledby="rs-hero-h" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"><div class="wrap reveal">
+    <section class="rs-hero" aria-labelledby="rs-hero-h" style="position:relative;overflow:hidden"><div class="rs-hero-bg" aria-hidden="true" data-parallax="0.3" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"></div><div class="wrap reveal" style="position:relative;z-index:1">
       <p class="rs-rh"><b>№ 01</b> — Ergebnisse</p>
-      <h1 id="rs-hero-h">Wachstum, das man <em>nachrechnen</em> kann.</h1>
+      <h1 id="rs-hero-h" class="wipe">Wachstum, das man <em>nachrechnen</em> kann.</h1>
       <p class="lead">Wir sind jung genug, um ehrlich zu sein: Hier stehen keine Erfolgszahlen fremder Kunden. Stattdessen steht hier, <b>woran wir uns messen lassen</b> — sauber definiert, in festem Takt, und zwar auch dann, wenn eine Zahl mal fällt.</p>
     </div></section>
 
@@ -535,7 +538,7 @@
     <section class="rs-blk" id="zahlen" aria-labelledby="rs-stats-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 02</b> — Woran wir uns messen lassen</p>
-        <h2 id="rs-stats-h">Vier Kennzahlen. <em>Sauber</em> definiert.</h2>
+        <h2 id="rs-stats-h" class="wipe">Vier Kennzahlen. <em>Sauber</em> definiert.</h2>
         <p class="lead">Eine Zahl ist nur so viel wert wie ihre Definition. Deshalb steht hier zuerst, was wir messen — und was ausdrücklich nicht mitzählt.</p>
       </div>
       <div class="rs-metrics stagger">
@@ -576,13 +579,13 @@
     <section class="rs-blk" id="fallstudien" aria-labelledby="rs-cases-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 03</b> — Ausgangslagen</p>
-        <h2 id="rs-cases-h">Drei Lagen, die wir <em>immer wieder</em> sehen.</h2>
+        <h2 id="rs-cases-h" class="wipe">Drei Lagen, die wir <em>immer wieder</em> sehen.</h2>
         <p class="lead">Keine Fallstudien — dafür ist es zu früh. Drei Muster, die uns in Erstgesprächen ständig begegnen, und was wir jeweils dagegen bauen.</p>
       </div>
       <div class="rs-rows stagger">
 
         <article class="rs-row">
-          <span class="rs-num" aria-hidden="true">01</span>
+          <span class="rs-num from-left" aria-hidden="true">01</span>
           <div class="rs-rmain">
             <span class="rs-rkicker">Coach</span>
             <h3 class="rs-rtitle">Aus „posten ohne Plan" wurde ein Lead-Motor.</h3>
@@ -600,7 +603,7 @@
         </article>
 
         <article class="rs-row">
-          <span class="rs-num" aria-hidden="true">02</span>
+          <span class="rs-num from-left" aria-hidden="true">02</span>
           <div class="rs-rmain">
             <span class="rs-rkicker">B2B</span>
             <h3 class="rs-rtitle">Von unsichtbar zu fester Größe in der Nische.</h3>
@@ -618,7 +621,7 @@
         </article>
 
         <article class="rs-row">
-          <span class="rs-num" aria-hidden="true">03</span>
+          <span class="rs-num from-left" aria-hidden="true">03</span>
           <div class="rs-rmain">
             <span class="rs-rkicker">Experte</span>
             <h3 class="rs-rtitle">Reichweite, die endlich Umsatz wird.</h3>
@@ -720,7 +723,7 @@
     <section class="rs-blk" id="messung" aria-labelledby="rs-measure-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 05</b> — Rhythmus</p>
-        <h2 id="rs-measure-h">Wann wir <em>messen</em> — und was daraus folgt.</h2>
+        <h2 id="rs-measure-h" class="wipe">Wann wir <em>messen</em> — und was daraus folgt.</h2>
       </div>
       <div class="rs-measure">
         <div class="rs-mcol">

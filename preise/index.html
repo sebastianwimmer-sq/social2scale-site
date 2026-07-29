@@ -32,7 +32,9 @@
 <!-- Geteilte Shell: Tokens, Loader, Typo-Rollen, Header/Nav, Footer.
      MUSS vor dem <style>-Block stehen, damit seiten-eigene Regeln gewinnen. -->
 <link rel="stylesheet" href="/s2s.css">
-<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
+<!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
+<script src="/s2s.js" defer></script>
+<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
   </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) -->
 <style>
@@ -269,7 +271,7 @@
   .pr-hero{padding:clamp(var(--s-9),8vw,var(--s-11)) 0 clamp(var(--s-7),4vw,var(--s-8))}
   /* Foto mit dunklem Schleier — dieselbe Technik wie auf /results/ und /about/.
      Ohne Bild war die Preisseite die einzige komplett flache Seite der Site. */
-  .pr-hero-bg{position:absolute;inset:0;z-index:0;
+  .pr-hero-bg{position:absolute;inset:-22% 0;z-index:0;
     background:linear-gradient(168deg,rgba(3,8,13,.66),rgba(3,8,13,.86) 62%,#03080D 100%),
       url(/assets/workspace.webp) center/cover no-repeat}
   .pr-rh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:var(--s-3)}
@@ -508,16 +510,16 @@
 
   <main>
 
-    <section class="pr-hero" id="preise" aria-labelledby="pr-h" style="position:relative;overflow:hidden"><div class="pr-hero-bg" aria-hidden="true"></div><div class="wrap reveal" style="position:relative;z-index:1">
+    <section class="pr-hero" id="preise" aria-labelledby="pr-h" style="position:relative;overflow:hidden"><div class="pr-hero-bg" aria-hidden="true" data-parallax="0.3"></div><div class="wrap reveal" style="position:relative;z-index:1">
       <p class="pr-rh"><b>№ 01</b> — Preise</p>
-      <h1 id="pr-h">Drei Wege. <em>Einer</em> passt zu dir.</h1>
+      <h1 id="pr-h" class="wipe">Drei Wege. <em>Einer</em> passt zu dir.</h1>
       <p class="lead">Wie viel du abgibst, entscheidest du. Alles andere machen wir — Sebi und Phil, persönlich, ohne Team dazwischen.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-wege"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 02</b> — Entscheidung</p>
-        <h2 id="pr-wege">Wie viel willst du <em>abgeben</em>?</h2>
+        <h2 id="pr-wege" class="wipe">Wie viel willst du <em>abgeben</em>?</h2>
       </div>
 
       <div class="pr-ways stagger">
@@ -526,14 +528,14 @@
           <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
           <p class="pr-way-t">Im ersten Monat entsteht dein Profil. Danach läuft es — zehn Beiträge im Monat, veröffentlicht, Anfragen landen bei dir. Du hörst von uns, wenn etwas zu entscheiden ist.</p>
           <div class="pr-split">
-            <div class="du">
+            <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
             <li>Ein Briefing geben. Einmal.</li>
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir">
+            <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
             <li>Profil aufbauen</li>
@@ -553,14 +555,14 @@
           <h3 class="pr-way-h">Dein Profil steht schon.</h3>
           <p class="pr-way-t">Wir übernehmen ab jetzt die Beiträge. Du postest nichts mehr selbst.</p>
           <div class="pr-split">
-            <div class="du">
+            <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
             <li class="nix">Nichts — dein Profil steht ja schon.</li>
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir">
+            <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
             <li>Zehn Beiträge im Monat</li>
@@ -579,7 +581,7 @@
           <h3 class="pr-way-h">Danach machst du weiter.</h3>
           <p class="pr-way-t">Profil, Branding und die ersten Beiträge — und du hast eine Vorlage, mit der du selbst arbeiten kannst.</p>
           <div class="pr-split">
-            <div class="du">
+            <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
             <li>Ein Briefing geben</li>
@@ -587,7 +589,7 @@
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir">
+            <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
             <li>Profil aufbauen</li>
@@ -605,7 +607,7 @@
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 03</b> — Einordnung</p>
-        <h2 id="pr-rechnung">Was es dich kostet — an <em>Zeit</em> und an Geld.</h2>
+        <h2 id="pr-rechnung" class="wipe">Was es dich kostet — an <em>Zeit</em> und an Geld.</h2>
         <p class="lead">Nicht als Drohung, sondern als Rechnung. Beim ersten Weg sieht die Zeitseite so aus:</p>
       </div>
 
@@ -648,7 +650,7 @@
     <section class="pr-blk pr-why" aria-labelledby="pr-warum"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 04</b> — Warum nicht billiger</p>
-        <h2 id="pr-warum">Zwei Leute. <em>Keine</em> Zwischenebene.</h2>
+        <h2 id="pr-warum" class="wipe">Zwei Leute. <em>Keine</em> Zwischenebene.</h2>
       </div>
       <div class="pr-why-grid">
         <p class="pr-why-lead">Wir liegen über dem, was ein Freelancer nimmt, und unter dem, was eine Agentur mit Projektleitung, Account-Management und Praktikanten kostet. Der Grund ist derselbe: <b>die Arbeit machen wir selbst.</b></p>
@@ -665,7 +667,7 @@
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 05</b> — Für die, die vergleichen</p>
-        <h2 id="pr-detail">Alle sieben Pakete im <em>Detail</em>.</h2>
+        <h2 id="pr-detail" class="wipe">Alle sieben Pakete im <em>Detail</em>.</h2>
       </div>
 
       <details class="pr-details">
@@ -754,7 +756,7 @@
     <section class="pr-blk" aria-labelledby="pr-cta"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Unsicher, welcher Weg passt?</span>
-        <h2 id="pr-cta">Dann lass uns kurz <em>reden</em>.</h2>
+        <h2 id="pr-cta" class="wipe">Dann lass uns kurz <em>reden</em>.</h2>
         <p class="lead">Ein Gespräch, kein Termin-Marathon. Wir sagen dir auch, wenn du noch keins der drei brauchst.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>

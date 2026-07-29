@@ -70,7 +70,9 @@ seiten-eigenen überschreiben und Layouts kippen.
 
 ## Bewegung (Motion-System)
 
-Alles liegt in `s2s.css` und steht damit **jeder** Seite zur Verfügung. Bis zum
+Alles liegt in `s2s.css` und `s2s.js` und steht damit **jeder** Seite zur Verfügung.
+`s2s.js` ist das Verhaltens-Gegenstück zur Shell — ein einziger Scroll-Zuhörer,
+gedrosselt über `requestAnimationFrame`. Bis zum
 29.07.2026 hatte nur `index.html` eigene Animationen — die anderen vier Seiten
 hatten null. Deshalb wirkten sie statisch, egal wie gut sie gesetzt waren.
 
@@ -82,6 +84,9 @@ hatten null. Deshalb wirkten sie statisch, egal wie gut sie gesetzt waren.
 | `.stagger` | Kinder erscheinen **nacheinander** statt gleichzeitig | wenn die *Menge* das Argument ist — Listen, Karten, Schritte |
 | `.fillbar` | wächst per `scaleX` von 0 auf `--fill` | wenn eine Größe etwas **bedeutet** |
 | `.grow` | Kinder wachsen per `scaleY` von unten, gestaffelt | Balken und Diagramme, wo die **Höhe** die Aussage ist |
+| `.wipe` | Überschrift wischt per `clip-path` von unten auf | große Überschriften. Eigener Beobachter, braucht kein `.reveal` |
+| `.from-left` / `.from-right` | Eintritt seitlich statt von unten | wenn eine Gegenüberstellung eine Richtung hat |
+| `data-parallax="0.3"` | Hintergrund scrollt langsamer | Hero-Bilder. Elternteil braucht `overflow:hidden`, das Bild `inset:-22% 0` |
 
 ```html
 <div class="wrap reveal">

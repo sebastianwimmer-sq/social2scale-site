@@ -110,6 +110,40 @@
   .stagger > *{opacity:0;transform:translateY(8px);filter:blur(4px);
     transition:opacity .45s var(--ease),transform .45s var(--ease),filter .45s var(--ease)}
   .reveal.on .stagger > *{opacity:1;transform:none;filter:none}
+  /* ===== Leiste verdichtet sich beim Scrollen =====
+     Oben transparent und hoch, ab 24px gescrollt kompakter und dichter, mit
+     Haarlinie. Die Klasse setzt s2s.js. Vorher sah die Leiste nach 3000px
+     genauso aus wie ganz oben — sie reagierte auf gar nichts. */
+  .bar{transition:min-height .35s var(--ease),background-color .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
+  .bar.is-scrolled{min-height:56px;border-bottom-color:var(--line-2);box-shadow:0 10px 30px -22px rgba(0,0,0,.9)}
+  .bar .brand img{transition:transform .35s var(--ease)}
+  .bar.is-scrolled .brand img{transform:scale(.86)}
+  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    .bar.is-scrolled{-webkit-backdrop-filter:blur(26px) saturate(200%);backdrop-filter:blur(26px) saturate(200%)}
+  }
+
+  /* ===== Parallax =====
+     Das Element traegt data-parallax="0.4" und wird von s2s.js verschoben.
+     Nur translate3d, damit es auf dem Compositor bleibt. Der Elternteil muss
+     overflow:hidden haben, sonst schaut das Bild oben oder unten heraus. */
+  [data-parallax]{will-change:transform}
+
+  /* ===== Ueberschrift wischt auf =====
+     clip-path von unten nach oben statt eines Faders. Bewusst NICHT in Zeilen
+     zerlegt: die Ueberschriften enthalten <em> mit Verlaufsfuellung, und ein
+     Aufsplitten in Woerter wuerde die zerstoeren. */
+  .wipe{clip-path:inset(0 0 105% 0);transform:translateY(8px);
+    transition:clip-path .85s var(--ease),transform .85s var(--ease)}
+  .wipe.on{clip-path:inset(0 0 -5% 0);transform:none}
+
+  /* ===== Richtungen =====
+     Standardmaessig kommt alles von unten. Diese Klassen brechen das auf, damit
+     eine Seite nicht wie eine Rolltreppe wirkt. */
+  .from-left{transform:translateX(-18px) translateY(0)}
+  .from-right{transform:translateX(18px) translateY(0)}
+  .reveal.on .from-left,.reveal.on .from-right,
+  .from-left.on,.from-right.on{transform:none}
+
   /* Saeulen wachsen von unten — fuer Balken und Diagramme, wo die HOEHE die
      Aussage ist. scaleY statt height, damit kein Layout neu berechnet wird;
      die height am Element bleibt der Zielwert. */
@@ -137,6 +171,10 @@
   @media (prefers-reduced-motion:reduce){
     .r,.reveal,.stagger > *{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
     .grow > *{transform:none!important;transition:none!important}
+    .wipe{clip-path:none!important;transform:none!important;transition:none!important}
+    .from-left,.from-right{transform:none!important}
+    .bar,.bar .brand img{transition:none!important}
+    [data-parallax]{transform:none!important;will-change:auto}
     .fillbar{transition:none!important;transform:scaleX(var(--fill,1))!important}
   }
 

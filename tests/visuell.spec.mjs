@@ -28,6 +28,16 @@ for (const seite of SEITEN) {
         const l = document.getElementById('loader');
         if (l) l.style.display = 'none';
         document.querySelectorAll('.reveal').forEach((e) => e.classList.add('on'));
+        // Ueberschriften-Wisch hat einen EIGENEN Beobachter — ohne .on bliebe
+        // die Ueberschrift abgeschnitten im Bild stehen.
+        document.querySelectorAll('.wipe').forEach((e) => e.classList.add('on'));
+        // Parallax stillegen: Playwright scrollt beim Vollseiten-Bild, das
+        // wuerde den Hintergrund je nach Zeitpunkt anders verschieben und den
+        // Vergleich launisch machen.
+        document.querySelectorAll('[data-parallax]').forEach((e) => {
+          e.removeAttribute('data-parallax');
+          e.style.transform = 'none';
+        });
         document.querySelectorAll('.r').forEach((e) => {
           e.style.opacity = '1';
           e.style.transform = 'none';
