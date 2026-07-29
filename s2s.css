@@ -173,7 +173,10 @@
      die Menueleiste auf zwei Zeilen um — schon vor dem Gratis-Eintrag, mit ihm
      dann auch bei 900px. 1024px bleibt einzeilig und behaelt die Leiste. */
   @media (max-width:959px){
-    .nav-links,.nav>.nav-cta{display:none}
+    /* Login raus, sobald der Burger uebernimmt: er steht im Mobil-Menue.
+       Der Gratis-Link bleibt — er ist die Handlung fuer Interessentinnen und
+       soll ohne Umweg ueber das Menue erreichbar sein. */
+    .nav-links,.nav>.nav-cta,.nav-login{display:none}
     .burger{display:flex}
   }
 
