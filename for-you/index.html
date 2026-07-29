@@ -40,137 +40,8 @@
   </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
 <style>
-  :root{
-    /* ===== surfaces: dark-grey stack (no pure #000 except topbar) ===== */
-    --ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --surface-3:#23252A;
-    --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
-    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
-    /* second accent — Teal/Cyan flow (Aurora dual-tone), used tastefully alongside emerald */
-    --teal:#1FA6E0; --cyan:#2FBEEA;
-    /* gradient-text for headline em-words: emerald → teal */
-    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
-    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
-    --hi:inset 0 1px 0 rgba(255,255,255,.05);
-    --hi-2:inset 0 1px 0 rgba(255,255,255,.07);
-    --shadow:0 18px 44px -24px rgba(0,0,0,.62);
-    --shadow-lg:0 40px 90px -40px rgba(0,0,0,.85);
-    --ease:cubic-bezier(.16,1,.3,1);
-
-    /* ===== depth: materiell gebaute Flächen (surface-gradient + inset-highlight + cast-shadow) ===== */
-    --surf-grad:linear-gradient(180deg,#202227 0%,var(--surface-2) 38%,var(--surface) 100%);
-    --surf-grad-hover:linear-gradient(180deg,#24262c 0%,var(--surface-3) 42%,var(--surface-2) 100%);
-    --depth:var(--hi-2),0 1px 2px rgba(0,0,0,.4),0 14px 30px -18px rgba(0,0,0,.6);
-    --depth-hover:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 26px 52px -22px rgba(0,0,0,.7);
-    --depth-lg:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88);
-    --pill-depth:inset 0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.4);
-    /* dezenter dunkler Verlauf mit Aurora-Touch (Emerald→Teal) — nur für ausgewählte Sektionen */
-    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.12),transparent 52%),radial-gradient(120% 130% at 14% 96%,rgba(31,166,224,.10),transparent 56%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
-
-    /* ===== 8pt spacing scale — single source of truth, no stray px ===== */
-    --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px;
-    --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px; --s-11:160px;
-    --section-y:clamp(var(--s-8),5vw + var(--s-6),var(--s-11));
-
-    --px:clamp(20px,5vw,56px); --header-h:68px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  /* ===== Fix-Dark Hardening — dunkel in JEDEM OS-Modus (Dark-Audit) ===== */
-  :root{color-scheme:dark}
-  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,textarea:-webkit-autofill,select:-webkit-autofill{-webkit-text-fill-color:#F2F3F1;caret-color:#F2F3F1;-webkit-box-shadow:0 0 0 1000px #16161A inset;box-shadow:0 0 0 1000px #16161A inset;transition:background-color 9999s ease-out 0s}
-  *{scrollbar-color:#7C7E78 transparent;scrollbar-width:thin}
-  ::-webkit-scrollbar{width:11px;height:11px}
-  ::-webkit-scrollbar-track{background:#000}
-  ::-webkit-scrollbar-thumb{background:#2a2a2e;border-radius:7px;border:2px solid #000}
-  ::-webkit-scrollbar-thumb:hover{background:#37373c}
-  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
-  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 14px)}
-  /* ===== site-wide Aurora wash (Option B · Dual-Tone) =====
-     two soft radials — Emerald (top-left) → Teal (bottom-right) — over a dark diagonal base.
-     background-attachment:fixed keeps the wash consistent across the whole scrolling page. */
-  body{
-    background:
-      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
-      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
-      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
-    background-attachment:fixed;
-    background-color:#03080D;
-    color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
-  /* mobile: background-attachment:fixed is often ignored / janky — fall back to a large non-fixed wash that still reads as one continuous gradient over the page */
-  @media (max-width:700px){
-    body{
-      background:
-        radial-gradient(130% 55% at 8% 1%,rgba(0,184,136,.32),transparent 56%),
-        radial-gradient(130% 60% at 96% 99%,rgba(20,140,200,.28),transparent 58%),
-        linear-gradient(160deg,#04140F 0%,#05131C 55%,#03080D 100%);
-      background-attachment:scroll;background-size:cover;background-repeat:no-repeat}
-  }
-  body.nav-open{overflow:hidden}
-  /* ===== s2s-Loader (Intro + Seitenwechsel) — kurze Marke, fadet weg ===== */
-  #loader{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#06170F 0%,#03080D 72%);transition:opacity .55s var(--ease),visibility .55s var(--ease)}
-  #loader img{width:clamp(84px,16vw,124px);height:auto;animation:s2sPulse 1.15s var(--ease) infinite}
-  #loader.done{opacity:0;visibility:hidden;pointer-events:none}
-  @keyframes s2sPulse{0%,100%{opacity:.42;transform:scale(.95)}50%{opacity:1;transform:scale(1.03)}}
-  @media (prefers-reduced-motion:reduce){#loader img{animation:none}#loader{transition:opacity .2s linear}}
-  .skip{position:absolute;left:-9999px}.skip:focus-visible{left:16px;top:16px;z-index:200;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
-  .wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 var(--px)}
-  .wrap-narrow{max-width:760px}
-  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;border-radius:4px}
-
-  @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
-  .r{opacity:0;animation:upIn .7s var(--ease) forwards}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-  .reveal.on{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){.r,.reveal{opacity:1!important;transform:none!important;animation:none!important}}
-
-  /* ===== shared type roles ===== */
-  .eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald);flex:0 0 auto}
-  .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:block}
-  h2{font-family:"Fraunces",serif;font-weight:470;font-size:clamp(2.5rem,1.4rem + 2.75vw,3.5rem);line-height:1.02;letter-spacing:-.026em;margin-top:var(--s-3)}
-  h2 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.0625rem,1rem + .4vw,1.2rem)}
-  .head{max-width:42ch}
-
-  /* ===== sticky header + nav (flat, hairline) ===== */
-  .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
-  /* header: freigestellte s2s-Bildmarke als Anchor links (transparent, kein schwarzer Kasten) */
-  .bar .brand{flex:0 0 auto;display:flex;align-items:center;text-decoration:none;transition:opacity .25s var(--ease),transform .25s var(--ease)}
-  .bar .brand img{height:30px;width:auto;display:block}
-  .bar .brand:hover{opacity:.82;transform:translateY(-1px)}
-
-  .nav{display:flex;align-items:center;gap:var(--s-6);margin-left:auto}
-  .nav-links{display:flex;align-items:center;gap:var(--s-6);list-style:none}
-  .nav-links a{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.01em;color:var(--muted);text-decoration:none;position:relative;padding:6px 0;transition:color .25s var(--ease)}
-  .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--emerald);transition:width .3s var(--ease)}
-  .nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--paper)}
-  .nav-links a:hover::after,.nav-links a[aria-current="true"]::after{width:100%}
-  .nav-cta{font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:10px 18px;border-radius:8px;text-decoration:none;background:linear-gradient(180deg,var(--surface-3),var(--surface-2));color:var(--paper);border:1px solid var(--line-2);box-shadow:var(--pill-depth);transition:border-color .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),transform .25s var(--ease)}
-  .nav-cta:hover{border-color:var(--line-3);background:linear-gradient(180deg,#26282e,var(--surface-3));box-shadow:var(--hi-2),0 4px 10px -2px rgba(0,0,0,.5);transform:translateY(-1px)}
-
-  /* burger */
-  .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;padding:0 10px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);cursor:pointer;margin-left:auto;transition:border-color .25s var(--ease)}
-  .burger:hover{border-color:var(--line-3)}
-  .burger span{display:block;height:2px;width:100%;background:var(--paper);border-radius:2px;transition:transform .3s var(--ease),opacity .2s var(--ease)}
-  .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-  .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-  .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-  /* mobile overlay menu */
-  .nav-scrim{position:fixed;inset:0;z-index:110;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility .3s var(--ease)}
-  .nav-scrim.open{opacity:1;visibility:visible}
-  .mobile-menu{position:fixed;top:0;right:0;z-index:115;width:min(86vw,360px);height:100dvh;padding:calc(var(--header-h) + 26px) 30px 40px;background:var(--surface);border-left:1px solid var(--line-2);box-shadow:-30px 0 80px -30px rgba(0,0,0,.9);display:flex;flex-direction:column;gap:6px;transform:translateX(105%);transition:transform .42s var(--ease);overflow-y:auto}
-  .mobile-menu.open{transform:none}
-  .mobile-menu a.m-link{font-family:"Fraunces",serif;font-weight:430;font-size:1.5rem;letter-spacing:-.015em;color:var(--paper);text-decoration:none;padding:15px 0;border-bottom:1px solid var(--line);transition:color .2s var(--ease),padding-left .25s var(--ease)}
-  .mobile-menu a.m-link:hover{color:var(--emerald);padding-left:8px}
-  .mobile-menu .m-cta{margin-top:24px;text-align:center;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:16px 24px;border-radius:10px;text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 14px 34px -14px rgba(0,184,136,.6),0 14px 34px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3)}
-  .mobile-menu .m-foot{margin-top:auto;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);padding-top:26px}
-
-  /* Umschaltpunkt zum Burger-Menue: 959 statt 819 — siehe Kommentar in index.html */
-  @media (max-width:959px){
-    .nav-links,.nav>.nav-cta{display:none}
-    .burger{display:flex}
-  }
+  /* Tokens, Dark-Hardening, Aurora-Wash, Loader, Typo-Rollen und Header/Nav
+     stehen jetzt in /s2s.css — dort aendern, nicht hier. */
 
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
@@ -409,26 +280,6 @@
   /* ===== footer — editorial, wordmark left, meta right ===== */
   /* ===== Footer (editorial · Liquid-Glass) ===== */
   .site-footer{position:relative;margin-top:var(--s-9);border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
-  .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
-  .site-footer .wrap{padding-top:var(--s-9);padding-bottom:var(--s-6)}
-  .foot-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:var(--s-7);align-items:start}
-  .foot-brand img{height:52px;width:auto;display:block}
-  .foot-brand .brand{display:inline-flex;text-decoration:none}
-  .foot-brand p{font-family:"Hanken Grotesk",sans-serif;color:var(--muted);font-size:.98rem;margin-top:var(--s-4);max-width:34ch;line-height:1.6}
-  .foot-brand .foot-mail{display:inline-flex;align-items:center;gap:var(--s-2);margin-top:var(--s-5);font-family:"Archivo",sans-serif;font-size:14px;font-weight:600;color:var(--paper);text-decoration:none;transition:color .2s var(--ease)}
-  .foot-brand .foot-mail:hover{color:var(--emerald-soft)}
-  .foot-brand .foot-mail::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 10px var(--emerald)}
-  .foot-col-title{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-bottom:var(--s-4)}
-  .foot-col ul{display:flex;flex-direction:column;gap:var(--s-3);list-style:none}
-  .foot-col a{font-family:"Archivo",sans-serif;font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
-  .foot-col a:hover{color:var(--paper)}
-  .foot-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4);margin-top:var(--s-8);padding-top:var(--s-5);border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.9}
-  .foot-bottom .foot-legal{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4)}
-  .foot-bottom a{color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
-  .foot-bottom a:hover{color:var(--paper)}
-  .foot-bottom .pk{color:var(--emerald-soft)}
-  @media (max-width:760px){.foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6)}.foot-brand{grid-column:1 / -1}}
-  @media (max-width:480px){.foot-top{grid-template-columns:1fr}.foot-bottom{flex-direction:column;align-items:flex-start;gap:var(--s-3)}}
 
   /* ============================================================
      FÜR WEN — page-scoped EDITORIAL / MAGAZINE layer (.fw-*)
@@ -616,33 +467,7 @@
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}.fw-pcard:hover,.fw-mrow:hover{transform:none}}
   
-    /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
-  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
-    .bar, header.top{
-      -webkit-backdrop-filter:blur(22px) saturate(185%);
-      backdrop-filter:blur(22px) saturate(185%);
-      background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.68),rgba(7,11,14,.55));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 1px 0 rgba(0,0,0,.22),0 16px 36px -26px rgba(0,0,0,.85);
-    }
-    .mobile-menu{
-      -webkit-backdrop-filter:blur(26px) saturate(180%);
-      backdrop-filter:blur(26px) saturate(180%);
-      background:radial-gradient(120% 80% at 18% 0%,rgba(255,255,255,.08),transparent 48%),linear-gradient(180deg,rgba(12,20,17,.78),rgba(7,11,14,.72));
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
-    }
-    .nav-cta,.m-cta{-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
-  }
-  .nav-cta{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px -16px rgba(0,0,0,.7)}
-  .nav-cta:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(0,184,136,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -14px rgba(0,184,136,.4);transform:translateY(-1px)}
-  .nav-cta:active{transform:scale(.97)}
-  .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
-  .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
-  
-  /* ===== Loader-Progressbar (leichtgewichtig, transform-Sweep) · LDR-BAR ===== */
-  #loader .ldr-bar{position:absolute;left:50%;top:calc(50% + 54px);transform:translateX(-50%);width:124px;height:3px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
-  #loader .ldr-bar::before{content:"";position:absolute;top:0;left:0;height:100%;width:42%;border-radius:99px;background:linear-gradient(90deg,transparent,var(--emerald,#00B888),transparent);transform:translateX(-120%);animation:ldrSweep 1.05s ease-in-out infinite;will-change:transform}
-  @keyframes ldrSweep{to{transform:translateX(316%)}}
-  @media (prefers-reduced-motion:reduce){#loader .ldr-bar::before{animation:none;transform:none;width:100%;opacity:.45}}
+  /* Liquid Glass und Loader-Progressbar stehen jetzt in /s2s.css. */
   </style>
 </head>
 <body>
