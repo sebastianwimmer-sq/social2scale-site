@@ -314,9 +314,21 @@
   .pr-drivers h3{font-family:"Archivo",sans-serif;font-size:14px;font-weight:700;letter-spacing:.01em;color:var(--paper)}
   .pr-drivers p{margin-top:var(--s-3);color:var(--muted);font-size:.95rem;line-height:1.6}
 
+  /* Auf dem Handy EINSPALTIG. Die zweispaltige Fassung liess eine 2,5rem breite
+     Nummernspalte stehen — der Text quetschte sich in den Rest, lief bis an den
+     rechten Rand und brach mitten in Wortgruppen um. Die Nummer sitzt jetzt als
+     eigene kleine Zeile ueber dem Namen. */
   @media (max-width:760px){
-    .pr-row{grid-template-columns:2.5rem 1fr;gap:var(--s-4)}
-    .pr-price{grid-column:2;text-align:left;margin-top:var(--s-4)}
+    .pr-row{grid-template-columns:1fr;gap:var(--s-2);padding:var(--s-6) 0}
+    .pr-num{padding-top:0;font-size:11px;letter-spacing:.18em}
+    .pr-what{max-width:none;margin-top:var(--s-3)}
+    .pr-price{text-align:left;margin-top:var(--s-5)}
+    .pr-price .p{font-size:1.35rem}
+    .pr-row.is-best{padding-left:var(--s-4);background:linear-gradient(90deg,rgba(0,184,136,.07),transparent 88%)}
+    .pr-row.is-best::before{top:var(--s-5);bottom:var(--s-5)}
+    /* Gruppentitel: enger gesperrt, damit "KOMPLETT — AUFBAU UND BETREUUNG IN
+       EINEM" nicht auf zwei Zeilen zerfaellt */
+    .pr-group-title{letter-spacing:.12em;font-size:10.5px}
     .pr-drivers{grid-template-columns:1fr}
     .pr-market div{flex-direction:column;gap:var(--s-2);align-items:flex-start}
   }
