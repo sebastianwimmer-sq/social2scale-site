@@ -344,6 +344,20 @@
     .rs-narr li{grid-template-columns:1fr;gap:var(--s-1)}
   }
 
+  /* — Voller Bruch zwischen Abschnitt 03 und 04. Ersetzt rhythmisch die
+       entfernte Pull-Quote: dunkles Foto unter Schleier, eine grosse
+       Fraunces-Zeile, sonst nichts. Der Kontrastwechsel ist der Zweck. — */
+  .rs-break{position:relative;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .rs-break-bg{position:absolute;inset:0;z-index:0;
+    background:linear-gradient(172deg,rgba(3,8,13,.72),rgba(3,8,13,.90) 58%,#03080D 100%),
+      url(/assets/workspace-portrait.webp) center 30%/cover no-repeat}
+  .rs-break .wrap{position:relative;z-index:1;padding-top:clamp(var(--s-9),9vw,var(--s-11));padding-bottom:clamp(var(--s-9),9vw,var(--s-11))}
+  .rs-break-kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
+  .rs-break-line{font-family:"Fraunces",serif;font-weight:420;font-size:clamp(1.9rem,1rem + 3.4vw,4rem);line-height:1.06;letter-spacing:-.028em;margin-top:var(--s-5);max-width:20ch;
+    font-variation-settings:"opsz" 144;text-shadow:0 1px 0 rgba(255,255,255,.04),0 18px 40px rgba(0,0,0,.5)}
+  .rs-break-line em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .rs-break-sub{margin-top:var(--s-5);color:var(--muted);font-size:clamp(1rem,.96rem + .3vw,1.15rem);line-height:1.6;max-width:44ch}
+
   /* — 5) "So messen wir" — short editorial transparency line, hairline cols — */
   .rs-measure{display:grid;grid-template-columns:.9fr 1.1fr;gap:0;border-top:1px solid var(--line-2);align-items:start}
   .rs-mcol{padding:clamp(var(--s-6),4vw,var(--s-8)) clamp(var(--s-5),4vw,var(--s-8)) clamp(var(--s-6),4vw,var(--s-8)) 0}
@@ -628,11 +642,20 @@
       <p class="rs-note">Welche der drei Lagen deiner am nächsten kommt, klären wir im Erstgespräch — meist ist es eine Mischung.</p>
     </div></section>
 
-    <!-- Die Pull-Quote-Sektion stand hier mit einer erfundenen Kundenstimme
-         ("— Platzhalter-Stimme · echtes Testimonial folgt"). Ersatzlos entfernt:
-         eine als Platzhalter ausgewiesene Stimme erzeugt kein Vertrauen, sie
-         zeigt nur, dass keine echte da ist. Kommt zurueck, sobald eine Kundin
-         zugestimmt hat — mit Name, Rolle und dokumentierter Einwilligung. -->
+    <!-- Hier stand eine erfundene Kundenstimme ("— Platzhalter-Stimme"). Sie ist
+         raus und kommt erst mit echter Einwilligung zurueck. Der VISUELLE Bruch,
+         den sie erzeugt hat, fehlte der Seite danach aber: zwischen Abschnitt 03
+         und 04 lief alles gleichfoermig durch. Jetzt traegt eine eigene Aussage
+         diesen Bruch — keine fremde Stimme, sondern der Satz, der uns von
+         anderen unterscheidet. Er wird in Abschnitt 05 ausgefuehrt. -->
+    <section class="rs-break" aria-label="Unser Versprechen zur Messung">
+      <div class="rs-break-bg" aria-hidden="true"></div>
+      <div class="wrap reveal">
+        <p class="rs-break-kicker">Was uns von anderen unterscheidet</p>
+        <p class="rs-break-line">Auch ein Monat, in dem etwas <em>nicht</em> funktioniert hat, steht im Bericht.</p>
+        <p class="rs-break-sub">Mit dem, was wir daraus ändern. Das ist der Teil, den sonst niemand zeigt.</p>
+      </div>
+    </section>
 
     <!-- 5) PEAKING live-panel reference — results tracked live in the platform -->
     <section class="rs-blk" id="peaking" aria-labelledby="rs-peak-h"><div class="wrap reveal">
