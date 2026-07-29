@@ -507,6 +507,7 @@
   <header class="bar">
     <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
+      <!-- SHELL:NAV -->
       <ul class="nav-links">
         <li><a href="#leistungen">Leistungen</a></li>
         <li><a href="#ablauf">Ablauf</a></li>
@@ -514,13 +515,9 @@
         <li><a href="/results/">Ergebnisse</a></li>
         <li><a href="/about/">Über uns</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <!-- Weicher Einstieg neben dem harten CTA: wer noch nicht reden will,
-             findet hier den Weg. Verweist auf die Sektion, nicht auf den Funnel.
-             Kurzes Label mit Absicht: "Gratis-Vorschau" liess das Menue bei 1024px
-             auf zwei Zeilen umbrechen. Im Mobil-Menue und im Footer steht die
-             lange Form, dort ist Platz. -->
         <li><a href="#gratis">Gratis</a></li>
       </ul>
+<!-- /SHELL:NAV -->
       <a class="nav-login" href="https://mein.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
@@ -531,6 +528,7 @@
 
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
+    <!-- SHELL:MOBIL -->
     <a class="m-link" href="#leistungen">Leistungen</a>
     <a class="m-link" href="#ablauf">Ablauf</a>
     <a class="m-link" href="/for-you/">Für wen</a>
@@ -539,6 +537,7 @@
     <a class="m-link" href="#faq">FAQ</a>
     <a class="m-link" href="#gratis">Gratis-Vorschau</a>
     <a class="m-link" href="https://mein.social2scale.com" style="color:var(--emerald,#00B888);font-weight:600">Login · Mein Bereich</a>
+<!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
 
   <main>
@@ -869,6 +868,7 @@
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
         <ul>
+          <!-- SHELL:FOOTER -->
           <li><a href="https://mein.social2scale.com">Login · Mein Bereich</a></li>
           <li><a href="#leistungen">Leistungen</a></li>
           <li><a href="#ablauf">Ablauf</a></li>
@@ -876,9 +876,8 @@
           <li><a href="/results/">Ergebnisse</a></li>
           <li><a href="/about/">Über uns</a></li>
           <li><a href="#faq">FAQ</a></li>
-          <!-- Verweist auf die Sektion, NICHT direkt auf den Funnel: so bleibt die
-               Funnel-Adresse an genau einer Stelle im Dokument. -->
           <li><a href="#gratis">Gratis-Vorschau</a></li>
+<!-- /SHELL:FOOTER -->
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
