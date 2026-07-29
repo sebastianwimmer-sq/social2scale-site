@@ -110,14 +110,21 @@
   .stagger > *{opacity:0;transform:translateY(8px);filter:blur(4px);
     transition:opacity .45s var(--ease),transform .45s var(--ease),filter .45s var(--ease)}
   .reveal.on .stagger > *{opacity:1;transform:none;filter:none}
-  .reveal.on .stagger > *:nth-child(1){transition-delay:.04s}
-  .reveal.on .stagger > *:nth-child(2){transition-delay:.10s}
-  .reveal.on .stagger > *:nth-child(3){transition-delay:.16s}
-  .reveal.on .stagger > *:nth-child(4){transition-delay:.22s}
-  .reveal.on .stagger > *:nth-child(5){transition-delay:.28s}
-  .reveal.on .stagger > *:nth-child(6){transition-delay:.34s}
-  .reveal.on .stagger > *:nth-child(7){transition-delay:.40s}
-  .reveal.on .stagger > *:nth-child(8){transition-delay:.46s}
+  /* Saeulen wachsen von unten — fuer Balken und Diagramme, wo die HOEHE die
+     Aussage ist. scaleY statt height, damit kein Layout neu berechnet wird;
+     die height am Element bleibt der Zielwert. */
+  .grow > *{transform:scaleY(0);transform-origin:bottom center;transition:transform .55s var(--ease)}
+  .reveal.on .grow > *{transform:scaleY(1)}
+
+  /* Eine Verzoegerungsleiter fuer beide Staffelungen. */
+  .reveal.on .stagger > *:nth-child(1),.reveal.on .grow > *:nth-child(1){transition-delay:.04s}
+  .reveal.on .stagger > *:nth-child(2),.reveal.on .grow > *:nth-child(2){transition-delay:.10s}
+  .reveal.on .stagger > *:nth-child(3),.reveal.on .grow > *:nth-child(3){transition-delay:.16s}
+  .reveal.on .stagger > *:nth-child(4),.reveal.on .grow > *:nth-child(4){transition-delay:.22s}
+  .reveal.on .stagger > *:nth-child(5),.reveal.on .grow > *:nth-child(5){transition-delay:.28s}
+  .reveal.on .stagger > *:nth-child(6),.reveal.on .grow > *:nth-child(6){transition-delay:.34s}
+  .reveal.on .stagger > *:nth-child(7),.reveal.on .grow > *:nth-child(7){transition-delay:.40s}
+  .reveal.on .stagger > *:nth-child(8),.reveal.on .grow > *:nth-child(8){transition-delay:.46s}
 
   /* ===== Fuellbalken =====
      Waechst ueber scaleX, NICHT ueber width — width waere layoutgebunden und
@@ -129,6 +136,7 @@
 
   @media (prefers-reduced-motion:reduce){
     .r,.reveal,.stagger > *{opacity:1!important;transform:none!important;filter:none!important;animation:none!important;transition:none!important}
+    .grow > *{transform:none!important;transition:none!important}
     .fillbar{transition:none!important;transform:scaleX(var(--fill,1))!important}
   }
 

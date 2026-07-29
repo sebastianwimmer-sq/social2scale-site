@@ -81,6 +81,7 @@ hatten null. Deshalb wirkten sie statisch, egal wie gut sie gesetzt waren.
 | `.reveal` | Element blendet beim Einscrollen ein (10 px Versatz, Blur 5→0, 0,5 s) | um jede Sektion, wie bisher |
 | `.stagger` | Kinder erscheinen **nacheinander** statt gleichzeitig | wenn die *Menge* das Argument ist — Listen, Karten, Schritte |
 | `.fillbar` | wächst per `scaleX` von 0 auf `--fill` | wenn eine Größe etwas **bedeutet** |
+| `.grow` | Kinder wachsen per `scaleY` von unten, gestaffelt | Balken und Diagramme, wo die **Höhe** die Aussage ist |
 
 ```html
 <div class="wrap reveal">
