@@ -13,6 +13,7 @@ import { navigation, mobilMenue, fusszeile } from '../lib/shell.mjs';
 
 const SEITEN = [
   { datei: 'index.html', aktiv: 'start' },
+  { datei: 'preise/index.html', aktiv: 'preise' },
   { datei: 'about/index.html', aktiv: 'about' },
   { datei: 'for-you/index.html', aktiv: 'for-you' },
   { datei: 'results/index.html', aktiv: 'results' },

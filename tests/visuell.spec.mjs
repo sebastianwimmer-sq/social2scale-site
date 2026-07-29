@@ -5,6 +5,7 @@ const SEITEN = [
   { name: 'about', pfad: '/about/' },
   { name: 'fuer-wen', pfad: '/for-you/' },
   { name: 'ergebnisse', pfad: '/results/' },
+  { name: 'preise', pfad: '/preise/' },
 ];
 const BREITEN = [390, 768, 1024, 1440];
 

@@ -16,6 +16,7 @@ SEITEN=(
   "/:index.html"
   "/for-you/:for-you/index.html"
   "/results/:results/index.html"
+  "/preise/:preise/index.html"
   "/about/:about/index.html"
   "/impressum/:impressum/index.html"
   "/datenschutz/:datenschutz/index.html"

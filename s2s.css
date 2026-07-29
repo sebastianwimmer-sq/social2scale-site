@@ -121,6 +121,13 @@
 .foot-ig{display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--line-2,rgba(255,255,255,.14));border-radius:10px;color:var(--paper,#F2F3F1);transition:border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
 .foot-ig:hover{border-color:rgba(0,184,136,.55);color:#28C281;transform:translateY(-2px)}
   .nav-links{display:flex;align-items:center;gap:var(--s-6);list-style:none}
+  /* Mit acht Menuepunkten (seit "Preise") braucht die Leiste bei 1024px genau
+     11px mehr, als sie hat — bei 224px reinem Abstand zwischen den Punkten.
+     Statt den Burger-Umschaltpunkt hochzuziehen (1024 ist eine sehr haeufige
+     Breite) wird hier nur der Abstand enger gesetzt. Gemessen, nicht geraten. */
+  @media (min-width:960px) and (max-width:1119px){
+    .nav-links{gap:var(--s-5)}
+  }
   .nav-links a{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:500;letter-spacing:.01em;color:var(--muted);text-decoration:none;position:relative;padding:6px 0;transition:color .25s var(--ease)}
   .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--emerald);transition:width .3s var(--ease)}
   .nav-links a:hover,.nav-links a[aria-current="true"]{color:var(--paper)}
