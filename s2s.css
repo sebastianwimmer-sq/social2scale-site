@@ -115,12 +115,28 @@
   @media (prefers-reduced-motion:reduce){.bar .brand img{animation:none;will-change:auto}.bar .brand:hover img{transform:scale(1.04)}}
 
   .nav{display:flex;align-items:center;gap:var(--s-6);margin-left:auto}
-.nav-login{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--emerald,#00B888);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .25s var(--ease)}
+/* Gedaempft statt Emerald: Login ist Werkzeug fuer Bestandskundinnen, der
+     Gratis-Link daneben ist die Handlung fuer Interessentinnen. Zwei gruene
+     Elemente nebeneinander haben um dieselbe Aufmerksamkeit konkurriert. */
+  .nav-login{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:opacity .25s var(--ease)}
 .nav-login:hover{opacity:.78}
 .nav-login svg{width:14px;height:14px}
 .foot-ig{display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border:1px solid var(--line-2,rgba(255,255,255,.14));border-radius:10px;color:var(--paper,#F2F3F1);transition:border-color .25s var(--ease),color .25s var(--ease),transform .25s var(--ease)}
 .foot-ig:hover{border-color:rgba(0,184,136,.55);color:#28C281;transform:translateY(-2px)}
   .nav-links{display:flex;align-items:center;gap:var(--s-6);list-style:none}
+  /* Dritte Ebene der Leiste. Als Knopf sah sie aus wie der Erstgespraech-Knopf
+     daneben — zwei gleich laute Kaesten ohne Hierarchie. Jetzt ein Textlink in
+     Emerald: faellt auf, ist aber erkennbar keine Schaltflaeche.
+     Reihenfolge der Lautstaerke: Menuepunkte gedaempft, dieser Link farbig,
+     der CTA als Flaeche. */
+  .nav-soft{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;
+    font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+    color:var(--emerald);text-decoration:none;white-space:nowrap;
+    transition:opacity .25s var(--ease),gap .25s var(--ease)}
+  .nav-soft::after{content:"\2192";font-size:1.05em;transition:transform .25s var(--ease)}
+  .nav-soft:hover{opacity:.82}
+  .nav-soft:hover::after{transform:translateX(3px)}
+
   /* Mit acht Menuepunkten (seit "Preise") braucht die Leiste bei 1024px genau
      11px mehr, als sie hat — bei 224px reinem Abstand zwischen den Punkten.
      Statt den Burger-Umschaltpunkt hochzuziehen (1024 ist eine sehr haeufige
