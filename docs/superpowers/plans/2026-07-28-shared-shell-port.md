@@ -11,8 +11,12 @@
 ## Globale Vorgaben
 
 - **Arbeitsordner:** `~/s2s-extern`, Branch `feat/website-extern`. **Niemals** in `~/social2scale-site` arbeiten — der gehört der internen Session (siehe `docs/WER-MACHT-WAS.md`).
-- **Testbefehl immer:** `NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test`
-  (Es gibt keine lokale Installation; `@playwright/test` liegt global unter `/opt/homebrew/lib/node_modules`.)
+- **Testbefehl immer:** `npx --no-install playwright test`
+  Voraussetzung: einmalig `ln -sfn /opt/homebrew/lib/node_modules ~/s2s-extern/node_modules`.
+  ⚠️ **`NODE_PATH` hilft hier nicht** — die Variable wirkt nur bei CommonJS, nicht bei
+  ESM-Importen. Ohne die Verknüpfung scheitert der Lauf mit
+  „Cannot find package '@playwright/test'". `node_modules/` ist bereits in
+  `.gitignore`; die Verknüpfung landet also nicht im Repo.
 - **Schwelle:** `maxDiffPixelRatio: 0.001` — 0,1 % abweichende Pixel. Darüber = Rückbau, kein Weiterbauen.
 - **Prüfbreiten:** 390 · 768 · 1024 · 1440. **Browser: chromium UND webkit.** WebKit ist Pflicht, nicht Kür — die CSP-Falle vom 28.07. war in Chromium unsichtbar.
 - **Kein `upgrade-insecure-requests`** in irgendeiner CSP-Meta. Am 28.07. entfernt (`a366449`), darf nicht zurückkommen.
@@ -31,10 +35,10 @@ Muss **vor jeder Änderung** stehen. Ohne Basisbilder vom heutigen Zustand ist j
 - Anlegen: `playwright.config.mjs`
 - Anlegen: `tests/visuell.spec.mjs`
 - Anlegen: `.gitignore` (erweitern, falls vorhanden)
-- Erzeugt: `tests/basis/*.png` (Basisbilder, werden committet)
+- Erzeugt: `tests/basis/*.png` (Basisbilder, bleiben LOKAL — nicht ins Repo)
 
 **Schnittstellen:**
-- Erzeugt: das Kommando `NODE_PATH=… npx --no-install playwright test`, das alle folgenden Aufgaben als Tor benutzen.
+- Erzeugt: das Kommando `npx --no-install playwright test`, das alle folgenden Aufgaben als Tor benutzen.
 - Erzeugt: Basisbilder unter `tests/basis/`, benannt `<seite>-<breite>-<projectName>.png`.
 
 - [ ] **Schritt 1: `package.json` anlegen**
@@ -54,7 +58,7 @@ Nur nötig, damit Node die `.mjs`-Dateien als Module liest. Keine Abhängigkeite
 ```js
 // Visueller Regressionsschutz fuer den Shell-Port.
 // Es gibt bewusst keine lokale Installation: @playwright/test liegt global.
-// Aufruf: NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+// Aufruf: npx --no-install playwright test
 export default {
   testDir: './tests',
   // Basisbilder neben den Tests, nach Browser getrennt.
@@ -120,38 +124,57 @@ for (const seite of SEITEN) {
 }
 ```
 
-- [ ] **Schritt 4: Erster Lauf — legt die Basisbilder an**
+- [ ] **Schritt 4: Verknüpfung auf die globalen Pakete legen**
 
 ```bash
 cd ~/s2s-extern
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+ln -sfn /opt/homebrew/lib/node_modules ~/s2s-extern/node_modules
+node -e "import('@playwright/test').then(()=>console.log('aufloesbar')).catch(e=>console.log('FEHLER',e.message))"
+```
+
+Erwartet: `aufloesbar`
+
+- [ ] **Schritt 5: Erster Lauf — legt die Basisbilder an**
+
+```bash
+cd ~/s2s-extern
+npx --no-install playwright test
 ```
 
 Erwartet: **32 Tests schlagen fehl** mit „A snapshot doesn't exist … writing actual." Das ist das normale Verhalten beim ersten Lauf — Playwright legt dabei die Basisbilder an.
 
-- [ ] **Schritt 5: Zweiter Lauf — muss grün sein**
+- [ ] **Schritt 6: Zweiter Lauf — muss grün sein**
 
 ```bash
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`. Ist er nicht grün, ist etwas im Bild zeitabhängig (Animation, Zufallswert) — dann in Schritt 3 ruhigstellen, **nicht** die Schwelle erhöhen.
 
-- [ ] **Schritt 6: Testrückstände von der Verfolgung ausschließen**
+- [ ] **Schritt 7: Testrückstände von der Verfolgung ausschließen**
 
-`.gitignore` anlegen bzw. ergänzen:
+`.gitignore` ergänzen:
 
 ```gitignore
+node_modules
 test-results/
 playwright-report/
+tests/basis/
 ```
 
-Die Basisbilder unter `tests/basis/` werden **committet** — sie sind der Vergleichsmaßstab.
+⚠️ **Die Basisbilder gehören NICHT ins Repo.** 32 Vollseiten-Aufnahmen sind rund
+65 MB, und hier liegt `.nojekyll` — GitHub Pages liefert dann jede Datei roh aus,
+die Bilder wären unter `social2scale.com/tests/basis/…` öffentlich abrufbar.
+Sie bleiben lokal; wie man sie neu erzeugt, steht in `docs/SEITEN-BAUEN.md`.
 
-- [ ] **Schritt 7: Committen**
+⚠️ **`node_modules` ohne Schrägstrich** eintragen. Die Regel `node_modules/`
+greift nicht bei einer Verknüpfung — Git behandelt sie als Datei, nicht als
+Ordner, und würde sie mitcommitten.
+
+- [ ] **Schritt 8: Committen**
 
 ```bash
-git add package.json playwright.config.mjs tests/ .gitignore
+git add package.json playwright.config.mjs tests/visuell.spec.mjs .gitignore docs/SEITEN-BAUEN.md
 git commit -m "test: visuelles Sicherungsnetz fuer den Shell-Port
 
 32 Basisbilder (4 Seiten x 4 Breiten x chromium/webkit) vom Stand vor dem
@@ -225,7 +248,7 @@ Entferne die in Schritt 2 gelisteten Regeln sowie die zugehörigen Kommentar-Üb
 - [ ] **Schritt 4: Nach jeder Datei prüfen**
 
 ```bash
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`. Schlägt ein Test fehl, war die entfernte Regel doch nicht tot → Änderung rückgängig machen, nicht nachjustieren.
@@ -309,7 +332,7 @@ Die Reihenfolge ist nicht kosmetisch: stünde `s2s.css` nach dem Inline-Block, w
 - [ ] **Schritt 3: Prüfen, dass jetzt doppelt geladen wird — aber nichts kaputt ist**
 
 ```bash
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`. Die Regeln stehen jetzt zweimal (inline und in `s2s.css`), was optisch nichts ändert. Ist es hier schon rot, stimmt die Reihenfolge im `<head>` nicht.
@@ -331,7 +354,7 @@ Entferne aus dem Inline-`<style>` genau die Blöcke, die in Schritt 1 nach `s2s.
 - [ ] **Schritt 6: Prüfen**
 
 ```bash
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`.
@@ -531,7 +554,7 @@ fertig — 1 Datei(en) geaendert.
 - [ ] **Schritt 5: Prüfen**
 
 ```bash
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`. Rot bedeutet: das erzeugte Markup weicht vom Bestand ab — dann `lib/shell.mjs` angleichen, **nicht** das Basisbild neu schreiben.
@@ -581,7 +604,7 @@ Genau wie in Aufgabe 4, Schritt 3: `SHELL:NAV`, `SHELL:MOBIL`, `SHELL:FOOTER`.
 
 ```bash
 node scripts/build-pages.mjs
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `aktualisiert: for-you/index.html` und danach `32 passed`.
@@ -597,7 +620,7 @@ git commit -m "refactor(shell): for-you auf die gemeinsame Shell"
 
 ```bash
 node scripts/build-pages.mjs
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 git add results/index.html
 git commit -m "refactor(shell): results auf die gemeinsame Shell"
 ```
@@ -633,7 +656,7 @@ Erwartet: `href="#faq"` auf der Startseite, `href="/#faq"` auf `about/`.
 
 ```bash
 node scripts/build-pages.mjs
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: `32 passed`.
@@ -652,7 +675,7 @@ Erwartet: jede Datei meldet mindestens 2 Treffer (Nav + Footer). Danach zurückn
 ```bash
 sed -i '' "s/text: 'Fragen'/text: 'FAQ'/" lib/shell.mjs
 node scripts/build-pages.mjs
-NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test
+npx --no-install playwright test
 ```
 
 Erwartet: wieder `32 passed`.
@@ -688,7 +711,7 @@ Ein Bauschritt, den niemand kennt, wird umgangen — und dann stehen Menüpunkte
 
 1. `lib/shell.mjs` bearbeiten — das ist die einzige Stelle.
 2. `node scripts/build-pages.mjs`
-3. `NODE_PATH=/opt/homebrew/lib/node_modules npx --no-install playwright test`
+3. `npx --no-install playwright test`
 4. Ist der visuelle Vergleich rot und die Änderung war beabsichtigt:
    `… playwright test --update-snapshots` und die neuen Bilder mitcommitten.
    Ist sie **nicht** beabsichtigt: zurücknehmen.

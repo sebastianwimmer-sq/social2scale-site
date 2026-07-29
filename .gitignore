@@ -3,5 +3,16 @@
 .env.*
 *.key
 *.pem
+node_modules
 node_modules/
 .wrangler/
+
+# Testrückstände und Basisbilder des visuellen Vergleichs.
+#
+# Die Basisbilder bleiben BEWUSST lokal: 32 Vollseiten-Aufnahmen sind rund
+# 65 MB, und dieses Repo wird von GitHub Pages ausgeliefert — mit .nojekyll
+# wäre jede Datei unter social2scale.com/tests/basis/… öffentlich abrufbar.
+# Wie man sie neu erzeugt, steht in docs/SEITEN-BAUEN.md.
+test-results/
+playwright-report/
+tests/basis/
