@@ -2,6 +2,49 @@
 
 **Datum:** 28.07.2026 · **Bereich:** externe Fläche (`~/s2s-extern`, Branch `feat/website-extern`)
 
+---
+
+## 🛑 Korrektur vom 29.07.2026 — Teil 1 dieses Specs ist überholt
+
+**Der Inhaltsstrang (Abschnitt 1) wird vorerst NICHT gebaut.** Die Begründung
+darin beruhte auf einer Annahme, die der Prüfung nicht standhält.
+
+Ich hatte behauptet, es gebe eine Lücke — bei den Compliance-Themen sei „die
+Schnittmenge unbesetzt, nicht das Thema". **Das ist falsch.** Eine Prüfung aller
+vier Richtungen am 29.07. ergab: jede ist besetzt, und zwar von Gegnern, gegen
+die eine neue Domain nicht gewinnt.
+
+| Richtung | Wer die Ergebnisse hält |
+|---|---|
+| Preise | agenturfinder · unaice · welikesocialmedia · nexaviral · social-media-agentur.net |
+| HWG für Coaches | StaySana · onwalt · aktivKANZLEI · impulse.de — **Kanzleien** |
+| Impressumspflicht Instagram | e-recht24 · easyRechtssicher · zerodox · juris.media — **Kanzleien** |
+| Feed-Vorschau-Tool | GridPeek · Publer · CarouselMaker · aicarousels · App-Store-Apps |
+| Social-Media-KPIs | omt.de · agorapulse · Lazi Akademie · reelzz |
+
+**Die Unterscheidung, auf die es ankommt:** starke Konkurrenz spricht *für*
+Nachfrage, nicht dagegen. Das Hindernis ist die **Rankingfähigkeit**.
+`social2scale.com` ist wenige Monate alt, hat kaum Verlinkungen und keine
+thematische Autorität. Bei Rechtsthemen gewichtet Google Expertise zusätzlich
+streng — dort gegen Anwaltskanzleien anzutreten ist aussichtslos.
+
+Realistisch bringen sechs Artikel in diesem Umfeld frühestens in 6–12 Monaten
+messbaren Traffic. Das spricht nicht gegen Inhalte, aber es widerlegt die
+Kernaussage dieses Specs: **Content ist derzeit nicht der schnellste Hebel für
+Leads.** Schneller wirken der Instagram-Bio-Link (selbst gesteuerter Traffic),
+die Preistransparenz (Conversion statt Traffic) und der Funnel mit seiner
+teilbaren Share-Karte.
+
+**Was gültig bleibt:** Abschnitt 2 und 3 — die gemeinsame Shell. Sie ist am
+29.07. gebaut, geprüft und live (Phase 1+2, Commits bis `cbe8a50`). Jeder
+künftige Inhalt profitiert davon, unabhängig davon, wann er kommt.
+
+🔑 **Learning:** Die Nachfrage- und Wettbewerbsprüfung gehört **vor** den Spec,
+nicht danach. Ich habe hier eine Strategie begründet und erst anschließend
+geprüft, ob ihre Prämisse stimmt.
+
+---
+
 ## Ausgangslage
 
 Das SEO-Audit vom 28.07. ergab 72/100. Die Technik ist besser als bei den meisten
@@ -191,8 +234,10 @@ wird, damit sie nicht vergessen wird.
 
 ## 7 · Offene Punkte
 
-1. **Nachweis der Suchnachfrage.** Die Themenauswahl beruht auf Websuche, nicht auf
-   Volumendaten. Vor Phase 3 mit einem Keyword-Werkzeug gegenprüfen.
+1. ~~**Nachweis der Suchnachfrage.**~~ Am 29.07. geprüft — siehe Korrektur ganz
+   oben. Ergebnis: alle geprüften Richtungen sind besetzt, Phase 3 ist geparkt.
+   Wieder aufnehmen lohnt erst mit echten Volumendaten (Search Console, Ahrefs,
+   Sistrix) statt mit Websuche als Ersatz.
 2. **Preisangaben brauchen Sebis und Phils Freigabe.** Ohne Entscheidung, was
    gezeigt wird (Ab-Preise, Spannen oder Rahmen), bleibt die Preisseite unvollständig.
 3. **Rechtstexte fachlich prüfen lassen.** Strang C berührt HWG und UWG. Inhalte
