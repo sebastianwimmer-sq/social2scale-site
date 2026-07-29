@@ -128,6 +128,7 @@ Damit man nicht bei jeder Datei nachfragen muss:
 | Funnel-Oberfläche | **extern** | `free-content/src/pages/`, `free-content/src/templates/`, `free-content/design/` |
 | Funnel-Motor | **intern** | `free-content/src/generate.js`, `index.js`, `leads.js`, `mail.js`, `copy.js`, `render.js`, `moderate.js`, `disposable.js` |
 | Infrastruktur | **intern** | `wrangler.toml`, `workers/`, `~/social2scale-clients/_portal` |
+| Shell und Bauschritt | **extern** | `s2s.css`, `lib/shell.mjs`, `scripts/build-pages.mjs`, `tests/`, `playwright.config.mjs` — Ablauf: `docs/SEITEN-BAUEN.md` |
 | Vorher ansagen | beide | `free-content/src/constants.js`, `package.json`, Testdateien |
 
 ⚠️ **Falle:** `free-content/src/copy.js` (Claude-Texterzeugung = Motor, **intern**) und

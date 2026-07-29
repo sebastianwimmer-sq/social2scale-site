@@ -46,7 +46,32 @@ einem Commit aus erzeugen, dessen Aussehen du überprüft hast.
 Die Schwelle in `playwright.config.mjs` bleibt, wo sie ist. Sie hochzusetzen,
 damit ein Test grün wird, macht die Absicherung wertlos.
 
+## Menüpunkt ändern, hinzufügen, entfernen
+
+1. `lib/shell.mjs` bearbeiten — das ist die einzige Stelle.
+2. `node scripts/build-pages.mjs`
+3. `npx --no-install playwright test`
+4. Ist der Vergleich rot und die Änderung war beabsichtigt:
+   `npx --no-install playwright test --update-snapshots`.
+
+Die Marker `<!-- SHELL:NAV -->`, `<!-- SHELL:MOBIL -->` und
+`<!-- SHELL:FOOTER -->` in den HTML-Dateien nicht entfernen — ohne sie
+überspringt der Bauschritt die Seite kommentarlos.
+
+## Geteiltes CSS
+
+`s2s.css` enthält Tokens, Dark-Hardening, Aurora-Wash, Loader, Typo-Rollen,
+Header/Nav und Footer. Seiten-eigenes CSS bleibt im `<style>`-Block der
+jeweiligen Seite — **nicht** in `s2s.css`.
+
+Die Reihenfolge im `<head>` ist bindend: `fonts.css` → `s2s.css` → `<style>`.
+Stünde `s2s.css` nach dem Inline-Block, würden geteilte Regeln die
+seiten-eigenen überschreiben und Layouts kippen.
+
 ## Niemals
+
+- Navigation oder Footer direkt in einer HTML-Datei ändern. Der nächste
+  Bauschritt überschreibt es kommentarlos.
 
 - `upgrade-insecure-requests` in eine CSP zurückschreiben — bricht Safari auf
   localhost, alle Assets scheitern. Entfernt am 28.07.2026 (`a366449`).
