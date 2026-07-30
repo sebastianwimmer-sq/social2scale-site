@@ -435,6 +435,51 @@
     .pr-time-step::after{top:2px}
   }
 
+
+  /* ===== Verhaeltnis-Balken =====
+     Traegt die Aussage, die die Liste darunter nur aufzaehlt: wie viel bleibt
+     bei dir, wie viel geht an uns. Der emeraldfarbene Teil waechst beim
+     Einscrollen von rechts auf seinen Anteil. Nur scaleX — kein Layout.
+     Ersetzt die Punktliste, die generisch war und nicht zur Zeichensprache
+     der Seite passte (dort: grosse Geister-Nummern, Haarlinien, Mono-Index). */
+  .pr-ratio{margin-top:clamp(var(--s-5),2.6vw,var(--s-6))}
+  .pr-ratio-bar{position:relative;height:38px;border-radius:10px;overflow:hidden;
+    border:1px solid var(--line-2);background:var(--surface-3)}
+  .pr-ratio-bar i{position:absolute;right:0;top:0;bottom:0;
+    width:calc(100% - var(--du,.15) * 100%);
+    background:linear-gradient(90deg,rgba(0,184,136,.28),rgba(31,166,224,.20));
+    border-left:1px solid rgba(0,184,136,.5);
+    transform:scaleX(0);transform-origin:right center;
+    transition:transform 1.1s var(--ease) .15s}
+  .reveal.on .pr-ratio-bar i{transform:scaleX(1)}
+  .pr-ratio-bar span{position:absolute;top:50%;transform:translateY(-50%);
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    opacity:0;transition:opacity .5s var(--ease) .9s}
+  .reveal.on .pr-ratio-bar span{opacity:1}
+  .pr-ratio-bar .l-du{left:12px;color:var(--faint)}
+  .pr-ratio-bar .l-wir{right:12px;color:var(--emerald)}
+  .pr-ratio-note{margin-top:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint)}
+
+  /* ===== Aufgaben als Haarlinien-Zeilen mit Mono-Index =====
+     Dieselbe Sprache wie die Tarif-Liste weiter unten. Keine
+     Aufzaehlungspunkte — die sind das Erkennungsmerkmal jeder
+     Standard-Landingpage. */
+  .pr-split ul{list-style:none;margin-top:var(--s-4);display:block}
+  .pr-split li{position:relative;padding:var(--s-3) 0;font-size:.95rem;line-height:1.45;color:var(--muted);
+    border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:var(--s-4)}
+  .pr-split li::before{content:none}
+  .pr-split li .ix{flex:0 0 auto;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--line-3)}
+  .pr-split .wir li .ix{color:rgba(0,184,136,.6)}
+  .pr-split .du li{color:var(--paper)}
+  .pr-split .du .nix{color:var(--faint);font-style:italic}
+
+  /* ===== Zeitstrahl: die Linie zeichnet sich von links ===== */
+  .pr-time-step::before{transform:scaleX(0);transform-origin:left center;
+    transition:transform .9s var(--ease)}
+  .reveal.on .pr-time-step::before{transform:scaleX(1)}
+  .reveal.on .pr-time-step:nth-child(2)::before{transition-delay:.25s}
+  .reveal.on .pr-time-step:nth-child(3)::before{transition-delay:.5s}
+
   /* Auf dem Handy EINSPALTIG. Die zweispaltige Fassung liess eine 2,5rem breite
      Nummernspalte stehen — der Text quetschte sich in den Rest, lief bis an den
      rechten Rand und brach mitten in Wortgruppen um. Die Nummer sitzt jetzt als
@@ -479,12 +524,13 @@
     <nav class="nav" aria-label="Hauptnavigation">
       <!-- SHELL:NAV -->
       <ul class="nav-links">
-        <li><a href="/preise/" aria-current="page">Preise</a></li>
-        <li><a href="/#ablauf">Ablauf</a></li>
-        <li><a href="/for-you/">Für wen</a></li>
-        <li><a href="/results/">Ergebnisse</a></li>
-        <li><a href="/about/">Über uns</a></li>
-      </ul>
+        
+              <li><span class="ix">01</span><span><a href="/preise/" aria-current="page">Preise</a></span></li>
+              <li><span class="ix">02</span><span><a href="/#ablauf">Ablauf</a></span></li>
+              <li><span class="ix">03</span><span><a href="/for-you/">Für wen</a></span></li>
+              <li><span class="ix">04</span><span><a href="/results/">Ergebnisse</a></span></li>
+              <li><span class="ix">05</span><span><a href="/about/">Über uns</a></span></li>
+              </ul>
       <a class="nav-soft" href="/#gratis">Gratis-Vorschau</a>
       <a class="nav-login" href="https://mein.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
 <!-- /SHELL:NAV -->
@@ -527,23 +573,29 @@
           <p class="pr-way-tag">Alles abgeben</p>
           <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
           <p class="pr-way-t">Im ersten Monat entsteht dein Profil. Danach läuft es — zehn Beiträge im Monat, veröffentlicht, Anfragen landen bei dir. Du hörst von uns, wenn etwas zu entscheiden ist.</p>
+          <div class="pr-ratio">
+            <div class="pr-ratio-bar" style="--du:.15" role="img" aria-label="1 Aufgabe bei dir · 6 bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
+            <p class="pr-ratio-note">1 Aufgabe bei dir · 6 bei uns</p>
+          </div>
           <div class="pr-split">
             <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
-            <li>Ein Briefing geben. Einmal.</li>
+            
+              <li><span class="ix">01</span><span>Ein Briefing geben. Einmal.</span></li>
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
-            <li>Profil aufbauen</li>
-            <li>Branding und Positionierung</li>
-            <li>Zehn Beiträge im Monat</li>
-            <li>Veröffentlichen nach Plan</li>
-            <li>Hashtag-Strategie je Beitrag</li>
-            <li>Anfragen sammeln und weiterleiten</li>
+            
+              <li><span class="ix">01</span><span>Profil aufbauen</span></li>
+              <li><span class="ix">02</span><span>Branding und Positionierung</span></li>
+              <li><span class="ix">03</span><span>Zehn Beiträge im Monat</span></li>
+              <li><span class="ix">04</span><span>Veröffentlichen nach Plan</span></li>
+              <li><span class="ix">05</span><span>Hashtag-Strategie je Beitrag</span></li>
+              <li><span class="ix">06</span><span>Anfragen sammeln und weiterleiten</span></li>
               </ul>
             </div>
           </div>
@@ -554,22 +606,28 @@
           <p class="pr-way-tag">Laufendes abgeben</p>
           <h3 class="pr-way-h">Dein Profil steht schon.</h3>
           <p class="pr-way-t">Wir übernehmen ab jetzt die Beiträge. Du postest nichts mehr selbst.</p>
+          <div class="pr-ratio">
+            <div class="pr-ratio-bar" style="--du:.10" role="img" aria-label="nichts bei dir · 5 Aufgaben bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
+            <p class="pr-ratio-note">nichts bei dir · 5 Aufgaben bei uns</p>
+          </div>
           <div class="pr-split">
             <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
-            <li class="nix">Nichts — dein Profil steht ja schon.</li>
+            
+              <li class="nix"><span class="ix">01</span><span>Nichts — dein Profil steht ja schon.</span></li>
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
-            <li>Zehn Beiträge im Monat</li>
-            <li>Veröffentlichen nach Plan</li>
-            <li>Hashtag-Strategie je Beitrag</li>
-            <li>Anfragen weiterleiten</li>
-            <li>Monatlicher Kurz-Report</li>
+            
+              <li><span class="ix">01</span><span>Zehn Beiträge im Monat</span></li>
+              <li><span class="ix">02</span><span>Veröffentlichen nach Plan</span></li>
+              <li><span class="ix">03</span><span>Hashtag-Strategie je Beitrag</span></li>
+              <li><span class="ix">04</span><span>Anfragen weiterleiten</span></li>
+              <li><span class="ix">05</span><span>Monatlicher Kurz-Report</span></li>
               </ul>
             </div>
           </div>
@@ -580,22 +638,28 @@
           <p class="pr-way-tag">Einmal Starthilfe</p>
           <h3 class="pr-way-h">Danach machst du weiter.</h3>
           <p class="pr-way-t">Profil, Branding und die ersten Beiträge — und du hast eine Vorlage, mit der du selbst arbeiten kannst.</p>
+          <div class="pr-ratio">
+            <div class="pr-ratio-bar" style="--du:.34" role="img" aria-label="2 Aufgaben bei dir · 4 bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
+            <p class="pr-ratio-note">2 Aufgaben bei dir · 4 bei uns</p>
+          </div>
           <div class="pr-split">
             <div class="du from-left">
               <h4>Du machst</h4>
               <ul>
-            <li>Ein Briefing geben</li>
-            <li>Danach selbst posten</li>
+            
+              <li><span class="ix">01</span><span>Ein Briefing geben</span></li>
+              <li><span class="ix">02</span><span>Danach selbst posten</span></li>
               </ul>
             </div>
             <div class="pr-split-rule" aria-hidden="true"></div>
             <div class="wir from-right">
               <h4>Wir machen</h4>
               <ul class="stagger">
-            <li>Profil aufbauen</li>
-            <li>Branding und Positionierung</li>
-            <li>Neun Beiträge gestalten</li>
-            <li>Hashtag-Strategie</li>
+            
+              <li><span class="ix">01</span><span>Profil aufbauen</span></li>
+              <li><span class="ix">02</span><span>Branding und Positionierung</span></li>
+              <li><span class="ix">03</span><span>Neun Beiträge gestalten</span></li>
+              <li><span class="ix">04</span><span>Hashtag-Strategie</span></li>
               </ul>
             </div>
           </div>
@@ -795,10 +859,11 @@
       <nav class="foot-col" aria-label="Rechtliches">
         <p class="foot-col-title">Rechtliches</p>
         <ul>
-          <li><a href="/impressum/">Impressum</a></li>
-          <li><a href="/datenschutz/">Datenschutz</a></li>
-          <li><a href="mailto:info@social2scale.com">Kontakt</a></li>
-        </ul>
+          
+              <li><span class="ix">01</span><span><a href="/impressum/">Impressum</a></span></li>
+              <li><span class="ix">02</span><span><a href="/datenschutz/">Datenschutz</a></span></li>
+              <li><span class="ix">03</span><span><a href="mailto:info@social2scale.com">Kontakt</a></span></li>
+              </ul>
       </nav>
     </div>
     <div class="foot-bottom">
