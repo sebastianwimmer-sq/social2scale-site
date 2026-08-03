@@ -38,6 +38,38 @@ for (const seite of SEITEN) {
           e.removeAttribute('data-parallax');
           e.style.transform = 'none';
         });
+        // Angepinnte Szenen aufloesen: Playwright scrollt beim Vollseiten-Bild
+        // durch den 300vh hohen Track, und je nach Zeitpunkt waere eine andere
+        // Tafel aktiv. Aufgeloest sieht die Szene aus wie auf dem Handy —
+        // alle Tafeln gestapelt, deterministisch.
+        document.querySelectorAll('[data-scene]').forEach((szene) => {
+          const track = szene.querySelector('[data-scene-track]');
+          if (track) track.style.height = 'auto';
+          const pin = szene.querySelector('.pr-scene-pin');
+          if (pin) {
+            pin.style.position = 'static';
+            pin.style.height = 'auto';
+            pin.style.display = 'block';
+            pin.style.overflow = 'visible';
+          }
+          const grid = szene.querySelector('.pr-scene-grid');
+          if (grid) grid.style.display = 'block';
+          const nav = szene.querySelector('.pr-scene-nav');
+          if (nav) nav.style.display = 'none';
+          const panels = szene.querySelector('.pr-scene-panels');
+          if (panels) {
+            panels.style.position = 'static';
+            panels.style.height = 'auto';
+            panels.style.display = 'grid';
+            panels.style.gap = '16px';
+          }
+          szene.querySelectorAll('[data-scene-panel]').forEach((t) => {
+            t.style.position = 'static';
+            t.style.opacity = '1';
+            t.style.transform = 'none';
+            t.style.overflow = 'visible';
+          });
+        });
         document.querySelectorAll('.r').forEach((e) => {
           e.style.opacity = '1';
           e.style.transform = 'none';

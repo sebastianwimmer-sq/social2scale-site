@@ -87,6 +87,29 @@ hatten null. Deshalb wirkten sie statisch, egal wie gut sie gesetzt waren.
 | `.wipe` | Überschrift wischt per `clip-path` von unten auf | große Überschriften. Eigener Beobachter, braucht kein `.reveal` |
 | `.from-left` / `.from-right` | Eintritt seitlich statt von unten | wenn eine Gegenüberstellung eine Richtung hat |
 | `data-parallax="0.3"` | Hintergrund scrollt langsamer | Hero-Bilder. Elternteil braucht `overflow:hidden`, das Bild `inset:-22% 0` |
+| `data-scene` | **Angepinnte Szene** — bleibt stehen, Schritte schalten beim Scrollen | wenn mehrere Zustände nacheinander erzählt werden |
+
+### Angepinnte Szene bauen
+
+```html
+<div class="…-scene" data-scene>
+  <div class="…-track" data-scene-track>        <!-- height:300vh = Scrollstrecke -->
+    <div class="…-pin">                          <!-- position:sticky, 100vh -->
+      <li data-scene-step="0">…</li>             <!-- bekommt .is-active -->
+      <article data-scene-panel="0">…</article>  <!-- bekommt .is-active -->
+```
+
+Der Treiber in `s2s.js` setzt `--p` (0–1) auf die Szene und `.is-active` auf den
+jeweiligen Schritt und seine Tafel. `--p` lässt sich direkt in CSS benutzen, etwa
+für einen Fortschrittsfaden: `height:calc(var(--p) * 100%)`.
+
+⚠️ **Auf dem Handy nicht anpinnen.** Unter 960 px wird der Track auf `height:auto`
+gesetzt und die Tafeln stapeln sich — angepinnte Szenen kosten auf kleinen
+Schirmen mehr, als sie bringen.
+
+⚠️ **Der visuelle Test muss die Szene auflösen.** Playwright scrollt beim
+Vollseiten-Bild durch den Track; je nach Zeitpunkt wäre eine andere Tafel aktiv
+und der Vergleich launisch. Steht in `tests/visuell.spec.mjs`.
 
 ```html
 <div class="wrap reveal">

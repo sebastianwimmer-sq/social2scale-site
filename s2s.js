@@ -38,6 +38,42 @@
     });
   }
 
+  // ---------- 4) Angepinnte Szenen ----------
+  // Dieselbe Technik wie die Phasen-Buehne der Startseite: ein hoher Track gibt
+  // die Scrollstrecke, ein sticky Fenster darin bleibt stehen, und der
+  // Fortschritt 0..1 schaltet die Schritte. Hier generisch, damit jede Seite
+  // eine Szene bauen kann:
+  //   <section data-scene>
+  //     <div class="…-track"><div class="…-pin">
+  //       <x data-scene-step="0"> … <x data-scene-panel="0">
+  // Der Treiber setzt --p auf die Szene und .is-active auf Schritt und Tafel.
+  var szenen = [].slice.call(document.querySelectorAll('[data-scene]')).map(function (el) {
+    return {
+      el: el,
+      track: el.querySelector('[data-scene-track]') || el,
+      schritte: [].slice.call(el.querySelectorAll('[data-scene-step]')),
+      tafeln: [].slice.call(el.querySelectorAll('[data-scene-panel]')),
+      letzter: -1,
+    };
+  });
+
+  function szeneZeichnen(s) {
+    var box = s.track.getBoundingClientRect();
+    var strecke = box.height - window.innerHeight;
+    if (strecke <= 0) return;
+    var p = Math.min(1, Math.max(0, -box.top / strecke));
+    s.el.style.setProperty('--p', p.toFixed(4));
+
+    var anzahl = s.schritte.length || 1;
+    // Etwas Vorlauf, damit der letzte Schritt nicht erst am allerletzten Pixel
+    // aktiv wird: der Fortschritt wird auf 0..anzahl gestreckt und gedeckelt.
+    var idx = Math.min(anzahl - 1, Math.floor(p * anzahl * 1.04));
+    if (idx === s.letzter) return;
+    s.letzter = idx;
+    s.schritte.forEach(function (e, i) { e.classList.toggle('is-active', i === idx); });
+    s.tafeln.forEach(function (e, i) { e.classList.toggle('is-active', i === idx); });
+  }
+
   function zeichne() {
     var y = window.pageYOffset;
 
@@ -45,6 +81,8 @@
       if (y > 24) bar.classList.add('is-scrolled');
       else bar.classList.remove('is-scrolled');
     }
+
+    for (var s = 0; s < szenen.length; s++) szeneZeichnen(szenen[s]);
 
     for (var i = 0; i < sichtbar.length; i++) {
       var el = sichtbar[i];

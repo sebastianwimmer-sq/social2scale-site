@@ -480,6 +480,89 @@
   .reveal.on .pr-time-step:nth-child(2)::before{transition-delay:.25s}
   .reveal.on .pr-time-step:nth-child(3)::before{transition-delay:.5s}
 
+
+  /* ===== Angepinnte Szene: die drei Wege =====
+     Dieselbe Technik wie die Phasen-Buehne der Startseite: ein hoher Track gibt
+     die Scrollstrecke, das sticky Fenster darin bleibt stehen. Der Treiber in
+     s2s.js setzt .is-active auf Schritt und Tafel.
+     Auf dem Handy wird NICHT angepinnt — dort stapeln sich alle drei Tafeln
+     untereinander, wie vorher. Angepinnte Szenen auf kleinen Schirmen kosten
+     mehr, als sie bringen. */
+  .pr-scene-track{height:300vh}
+  .pr-scene-pin{position:sticky;top:var(--header-h);height:calc(100vh - var(--header-h));
+    display:flex;align-items:center;overflow:hidden}
+  .pr-scene-grid{width:100%;max-width:1240px;margin:0 auto;padding:0 var(--px);
+    display:grid;grid-template-columns:minmax(0,.68fr) minmax(0,1fr);gap:clamp(var(--s-6),4vw,var(--s-9));align-items:center}
+
+  /* Links: der Index der drei Wege */
+  .pr-scene-nav{list-style:none;display:flex;flex-direction:column;gap:var(--s-2)}
+  .pr-nav-item{display:flex;align-items:baseline;gap:var(--s-4);padding:var(--s-4) 0;
+    border-bottom:1px solid var(--line);opacity:.34;
+    transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateX(0)}
+  .pr-nav-item.is-active{opacity:1;transform:translateX(6px)}
+  /* Geister-Nummer in der Sprache der uebrigen Seiten (.rs-num, .ab-num) */
+  .pr-nav-num{flex:0 0 auto;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(2rem,1.2rem + 2vw,3.2rem);line-height:.8;letter-spacing:-.045em;
+    -webkit-text-stroke:1px var(--line-3);color:transparent;
+    transition:-webkit-text-stroke-color .5s var(--ease),color .5s var(--ease)}
+  .pr-nav-item.is-active .pr-nav-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.12)}
+  .pr-nav-txt{display:flex;flex-direction:column;gap:var(--s-2);
+    font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.05rem,.95rem + .6vw,1.5rem);line-height:1.15;letter-spacing:-.018em}
+  .pr-nav-txt b{font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .pr-nav-item.is-active .pr-nav-txt b{color:var(--emerald)}
+
+  /* Rechts: die Tafeln liegen uebereinander, nur die aktive ist sichtbar */
+  /* Die Tafel nutzt die verfuegbare Hoehe des angepinnten Fensters aus. Vorher
+     war sie auf 520px gedeckelt, der Inhalt brauchte 737px — der PREIS fiel
+     unten raus, also ausgerechnet die wichtigste Zeile. */
+  .pr-scene-panels{position:relative;height:min(700px,calc(100vh - var(--header-h) - 92px))}
+  .pr-panel{position:absolute;inset:0;padding:clamp(var(--s-5),2.6vw,var(--s-7));
+    border:1px solid var(--line-2);border-radius:18px;overflow-y:auto;
+    opacity:0;transform:translateY(14px) scale(.985);pointer-events:none;
+    transition:opacity .55s var(--ease),transform .55s var(--ease)}
+  .pr-panel.is-active{opacity:1;transform:none;pointer-events:auto}
+  .pr-panel.is-lead{border-color:rgba(0,184,136,.28);
+    background:radial-gradient(110% 150% at 0% 0%,rgba(0,184,136,.13),transparent 56%),
+      radial-gradient(110% 140% at 100% 100%,rgba(31,166,224,.09),transparent 60%),var(--surf-grad);
+    box-shadow:var(--depth)}
+  .pr-panel .pr-way-tag,.pr-panel .pr-way-h{display:none}
+  /* In der Szene enger gesetzt als in der gestapelten Mobil-Fassung. */
+  .pr-panel .pr-way-t{margin-top:0;font-size:.95rem}
+  .pr-panel .pr-ratio{margin-top:var(--s-4)}
+  .pr-panel .pr-split{margin-top:var(--s-4);gap:var(--s-5)}
+  .pr-panel .pr-split li{padding:9px 0;font-size:.9rem}
+  .pr-panel .pr-split ul{margin-top:var(--s-3)}
+  .pr-panel .pr-way-p{margin-top:var(--s-5)}   /* steht schon im Index links */
+
+  /* Fortschrittsfaden am linken Rand des Index */
+  .pr-scene-nav{position:relative}
+  .pr-scene-nav::before{content:"";position:absolute;left:-14px;top:0;bottom:0;width:2px;border-radius:2px;
+    background:var(--line);overflow:hidden}
+  .pr-scene-nav::after{content:"";position:absolute;left:-14px;top:0;width:2px;border-radius:2px;
+    height:calc(var(--p,0) * 100%);background:linear-gradient(180deg,var(--emerald),var(--teal));
+    box-shadow:0 0 12px -2px rgba(0,184,136,.7)}
+
+  /* Flache Fenster (kleine Notebooks): noch enger, sonst faellt beim laengsten
+     Weg die Preiszeile aus der Tafel. Gemessen bei 760px Fensterhoehe. */
+  @media (min-width:960px) and (max-height:840px){
+    .pr-panel{padding:var(--s-5)}
+    .pr-panel .pr-way-t{font-size:.9rem;line-height:1.45}
+    .pr-panel .pr-split li{padding:6px 0;font-size:.86rem}
+    .pr-panel .pr-ratio-bar{height:30px}
+    .pr-panel .pr-way-p{margin-top:var(--s-4);font-size:1.25rem}
+  }
+
+  @media (max-width:959px){
+    /* Kein Anpinnen: Track auf natuerliche Hoehe, Tafeln stapeln sich */
+    .pr-scene-track{height:auto}
+    .pr-scene-pin{position:static;height:auto;display:block;overflow:visible}
+    .pr-scene-grid{display:block;padding:0}
+    .pr-scene-nav{display:none}
+    .pr-scene-panels{position:static;min-height:0;display:grid;gap:var(--s-4)}
+    .pr-panel{position:static;opacity:1;transform:none;pointer-events:auto;overflow:visible}
+    .pr-panel .pr-way-tag,.pr-panel .pr-way-h{display:block}
+  }
+
   /* Auf dem Handy EINSPALTIG. Die zweispaltige Fassung liess eine 2,5rem breite
      Nummernspalte stehen — der Text quetschte sich in den Rest, lief bis an den
      rechten Rand und brach mitten in Wortgruppen um. Die Nummer sitzt jetzt als
@@ -524,13 +607,12 @@
     <nav class="nav" aria-label="Hauptnavigation">
       <!-- SHELL:NAV -->
       <ul class="nav-links">
-        
-              <li><span class="ix">01</span><span><a href="/preise/" aria-current="page">Preise</a></span></li>
-              <li><span class="ix">02</span><span><a href="/#ablauf">Ablauf</a></span></li>
-              <li><span class="ix">03</span><span><a href="/for-you/">Für wen</a></span></li>
-              <li><span class="ix">04</span><span><a href="/results/">Ergebnisse</a></span></li>
-              <li><span class="ix">05</span><span><a href="/about/">Über uns</a></span></li>
-              </ul>
+        <li><a href="/preise/" aria-current="page">Preise</a></li>
+        <li><a href="/#ablauf">Ablauf</a></li>
+        <li><a href="/for-you/">Für wen</a></li>
+        <li><a href="/results/">Ergebnisse</a></li>
+        <li><a href="/about/">Über uns</a></li>
+      </ul>
       <a class="nav-soft" href="/#gratis">Gratis-Vorschau</a>
       <a class="nav-login" href="https://mein.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
 <!-- /SHELL:NAV -->
@@ -568,8 +650,26 @@
         <h2 id="pr-wege" class="wipe">Wie viel willst du <em>abgeben</em>?</h2>
       </div>
 
-      <div class="pr-ways stagger">
-        <article class="pr-way is-lead">
+      <div class="pr-scene" data-scene>
+        <div class="pr-scene-track" data-scene-track>
+          <div class="pr-scene-pin">
+            <div class="pr-scene-grid">
+              <ol class="pr-scene-nav" aria-label="Die drei Wege">
+          <li class="pr-nav-item is-active" data-scene-step="0">
+            <span class="pr-nav-num" aria-hidden="true">01</span>
+            <span class="pr-nav-txt"><b>Alles abgeben</b>Wir bauen und betreuen.</span>
+          </li>
+          <li class="pr-nav-item" data-scene-step="1">
+            <span class="pr-nav-num" aria-hidden="true">02</span>
+            <span class="pr-nav-txt"><b>Laufendes abgeben</b>Dein Profil steht schon.</span>
+          </li>
+          <li class="pr-nav-item" data-scene-step="2">
+            <span class="pr-nav-num" aria-hidden="true">03</span>
+            <span class="pr-nav-txt"><b>Einmal Starthilfe</b>Danach machst du weiter.</span>
+          </li>
+              </ol>
+              <div class="pr-scene-panels">
+          <article class="pr-panel is-lead is-active" data-scene-panel="0">
           <p class="pr-way-tag">Alles abgeben</p>
           <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
           <p class="pr-way-t">Im ersten Monat entsteht dein Profil. Danach läuft es — zehn Beiträge im Monat, veröffentlicht, Anfragen landen bei dir. Du hörst von uns, wenn etwas zu entscheiden ist.</p>
@@ -600,9 +700,8 @@
             </div>
           </div>
           <p class="pr-way-p"><span class="ab">ab</span> 1.547,00 €<span class="dann">einmalig, danach 464,10 € im Monat</span></p>
-        </article>
-
-        <article class="pr-way">
+          </article>
+          <article class="pr-panel" data-scene-panel="1">
           <p class="pr-way-tag">Laufendes abgeben</p>
           <h3 class="pr-way-h">Dein Profil steht schon.</h3>
           <p class="pr-way-t">Wir übernehmen ab jetzt die Beiträge. Du postest nichts mehr selbst.</p>
@@ -632,9 +731,8 @@
             </div>
           </div>
           <p class="pr-way-p"><span class="ab">ab</span> 523,60 €<span class="dann">im Monat</span></p>
-        </article>
-
-        <article class="pr-way">
+          </article>
+          <article class="pr-panel" data-scene-panel="2">
           <p class="pr-way-tag">Einmal Starthilfe</p>
           <h3 class="pr-way-h">Danach machst du weiter.</h3>
           <p class="pr-way-t">Profil, Branding und die ersten Beiträge — und du hast eine Vorlage, mit der du selbst arbeiten kannst.</p>
@@ -664,7 +762,11 @@
             </div>
           </div>
           <p class="pr-way-p"><span class="ab">ab</span> 446,25 €<span class="dann">einmalig</span></p>
-        </article>
+          </article>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div></section>
 
