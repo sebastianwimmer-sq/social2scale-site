@@ -43,7 +43,13 @@
      stehen jetzt in /s2s.css — dort aendern, nicht hier. */
 
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
-  .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
+  /* Der Hero war 1214px hoch bei 900px Sichtfenster — 1,35 Bildschirme. Das
+     Wortmarken-Bild allein belegte die ersten 551px, also mehr als die halbe
+     erste Ansicht, obwohl die Marke schon in der Kopfleiste steht. Folge:
+     Kapitel 01 begann erst nach 382px Scrollen (Laptop: 430px), und der erste
+     Bildschirm sah nach dem Umbau vom 03.08. praktisch aus wie vorher.
+     Gemessen am 04.08.2026, nachdem genau das aufgefallen war. */
+  .hero{position:relative;overflow:hidden;padding:clamp(var(--s-6),3.2vw,var(--s-8)) 0 clamp(var(--s-7),4.5vw,var(--s-9))}
   /* Hero-Hintergrundfoto, dunkel überscrimt → Text bleibt knackig, Foto gibt Tiefe */
   .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.58),rgba(3,8,13,.80) 58%,#03080D 100%),url(/assets/hero-growth.jpg) center 55%/cover no-repeat}
   .hero>.wrap{position:relative;z-index:1}
@@ -69,9 +75,12 @@
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
   /* the ONE prominent brand mark — large centered wordmark */
-  .hero-logo{display:block;width:clamp(300px,52vw,680px);height:auto;margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  /* Deutlich kleiner: die Marke steht bereits in der Kopfleiste, ein 680px
+     breites Wortmarken-Bild daruntersetzen heisst sie dreimal zeigen (Leiste,
+     Bild, Begruessungszeile) und kostet die halbe erste Ansicht. */
+  .hero-logo{display:block;width:clamp(200px,21vw,320px);height:auto;margin-bottom:clamp(var(--s-5),2.2vw,var(--s-6))}
   .hero .eyebrow{margin-bottom:clamp(var(--s-3),1.4vw,var(--s-4))}
-  .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.9rem,1rem + 7vw,7rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
+  .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.6rem,1rem + 5.2vw,5.6rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
   .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
@@ -194,7 +203,7 @@
   /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
-    .hero-logo{width:clamp(280px,72vw,420px);margin-bottom:var(--s-6)}
+    .hero-logo{width:clamp(170px,44vw,240px);margin-bottom:var(--s-5)}
     
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
