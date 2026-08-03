@@ -29,6 +29,39 @@ derselben Datei.
    anderen Session den Branch weg und gefährdet ihre nicht-committeten Änderungen.
 3. **Nur eine Session merged nach `main`** — und sagt es vorher hier an.
 
+## Vierte Regel: jede Session hat ihren eigenen Port
+
+Am 03.08.2026 dazugekommen, weil es geknallt hat.
+
+| Ordner | Testserver-Port |
+|---|---|
+| `~/s2s-extern` | **8917** |
+| `~/social2scale-site` | frei wählbar, **nicht** 8917 |
+
+Was passiert war: In `~/s2s-kunden/_portal` lief ein `python3 -m http.server`
+auf **8899** — dem Port, der in `s2s-extern/playwright.config.mjs` stand.
+Zusammen mit `reuseExistingServer: true` hat Playwright diesen Fremdserver
+übernommen und die visuellen Basisbilder gegen ein **völlig anderes Projekt**
+verglichen. Ohne Warnung.
+
+Das ist schlimmer als ein roter Test: Wenn Basisbilder einmal gegen den
+falschen Server entstehen, stimmen falsch und falsch überein und die
+Absicherung meldet dauerhaft „unverändert".
+
+Deshalb steht dort jetzt `reuseExistingServer: false` — ein belegter Port bricht
+laut ab, statt still das Falsche zu prüfen.
+
+**Nie blind einen Prozess auf einem Port beenden.** Vorher klären, wem er
+gehört:
+
+```bash
+for p in $(lsof -ti :8917); do
+  echo "$p -> $(lsof -a -p $p -d cwd -Fn | grep ^n | cut -c2-)"
+done
+```
+
+Nur beenden, wenn das `cwd` der eigene Arbeitsordner ist.
+
 ## Wer hat gerade welchen Ordner
 
 Diese Tabelle beim Start aktualisieren und committen. Leere Zeile = Ordner frei.
