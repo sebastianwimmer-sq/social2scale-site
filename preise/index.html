@@ -404,19 +404,20 @@
   .pr-split .wir h4{color:var(--emerald)}
   .pr-split ul{list-style:none;margin-top:var(--s-4);display:flex;flex-direction:column;gap:var(--s-3)}
   .pr-split li{position:relative;padding-left:var(--s-5);font-size:.95rem;line-height:1.5;color:var(--muted)}
-  .pr-split li::before{content:"";position:absolute;left:0;top:.52em;width:6px;height:6px;border-radius:50%;background:var(--line-3)}
-  .pr-split .wir li::before{background:var(--emerald);box-shadow:0 0 8px -1px rgba(0,184,136,.7)}
   .pr-split .du li{color:var(--paper)}
   .pr-split .du .nix{color:var(--faint);font-style:italic}
 
   /* ===== Aufwands-Zeitstrahl — dein Anteil schrumpft auf null ===== */
   .pr-time{margin-top:clamp(var(--s-6),3vw,var(--s-7));display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-4),2.4vw,var(--s-6))}
-  .pr-time-step{position:relative;padding-top:var(--s-6)}
+  /* Statt Kreis-und-Linie: die Geister-Nummer der uebrigen Seiten. "Knoten
+     plus Verbindungslinie" ist das generischste Zeitstrahl-Bauteil ueberhaupt —
+     und die Aufwandsbalken darunter sagen ohnehin schon, worum es geht. */
+  .pr-time-step{position:relative;padding-top:0}
+  .pr-time-num{display:block;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(2.2rem,1.4rem + 2vw,3.4rem);line-height:.82;letter-spacing:-.045em;
+    -webkit-text-stroke:1px var(--line-3);color:transparent;margin-bottom:var(--s-4)}
+  .pr-time-step.is-done .pr-time-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.10)}
   /* Linie durch alle drei Schritte, Knoten je Schritt */
-  .pr-time-step::before{content:"";position:absolute;left:0;right:calc(-1 * clamp(var(--s-4),2.4vw,var(--s-6)));top:5px;height:1px;background:var(--line-2)}
-  .pr-time-step:last-child::before{right:0}
-  .pr-time-step::after{content:"";position:absolute;left:0;top:0;width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--line-3)}
-  .pr-time-step.is-done::after{background:var(--emerald);border-color:var(--emerald);box-shadow:0 0 12px -2px rgba(0,184,136,.8)}
   .pr-time-when{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
   .pr-time-what{margin-top:var(--s-3);font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.05rem,.98rem + .4vw,1.3rem);line-height:1.2;letter-spacing:-.015em}
   .pr-time-bar{margin-top:var(--s-5);height:6px;border-radius:99px;background:var(--line);overflow:hidden}
@@ -429,10 +430,7 @@
     .pr-split{grid-template-columns:1fr;gap:var(--s-5)}
     .pr-split-rule{height:1px;width:100%;background:var(--line-2)}
     .pr-time{grid-template-columns:1fr;gap:var(--s-5)}
-    .pr-time-step::before{left:5px;right:auto;top:11px;bottom:calc(-1 * var(--s-5));width:1px;height:auto}
-    .pr-time-step:last-child::before{display:none}
-    .pr-time-step{padding-top:0;padding-left:var(--s-6)}
-    .pr-time-step::after{top:2px}
+    .pr-time-step{padding-left:0}
   }
 
 
@@ -474,11 +472,6 @@
   .pr-split .du .nix{color:var(--faint);font-style:italic}
 
   /* ===== Zeitstrahl: die Linie zeichnet sich von links ===== */
-  .pr-time-step::before{transform:scaleX(0);transform-origin:left center;
-    transition:transform .9s var(--ease)}
-  .reveal.on .pr-time-step::before{transform:scaleX(1)}
-  .reveal.on .pr-time-step:nth-child(2)::before{transition-delay:.25s}
-  .reveal.on .pr-time-step:nth-child(3)::before{transition-delay:.5s}
 
 
   /* ===== Angepinnte Szene: die drei Wege =====
@@ -780,18 +773,21 @@
       <p class="pr-time-label">Dein Aufwand beim Weg „Alles abgeben"</p>
       <div class="pr-time stagger">
         <div class="pr-time-step is-done">
+          <span class="pr-time-num" aria-hidden="true">01</span>
           <p class="pr-time-when">Monat 1</p>
           <p class="pr-time-what">Dein Profil entsteht.</p>
           <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: gering"><i class="fillbar" style="--fill:.28"></i></div>
           <p class="pr-time-you">ein Briefing, etwa 30 Minuten</p>
         </div>
         <div class="pr-time-step is-zero">
+          <span class="pr-time-num" aria-hidden="true">02</span>
           <p class="pr-time-when">Monat 2</p>
           <p class="pr-time-what">Die ersten Beiträge laufen.</p>
           <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>
           <p class="pr-time-you">nichts</p>
         </div>
         <div class="pr-time-step is-zero">
+          <span class="pr-time-num" aria-hidden="true">03</span>
           <p class="pr-time-when">ab Monat 3</p>
           <p class="pr-time-what">Es läuft weiter.</p>
           <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>

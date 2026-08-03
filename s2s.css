@@ -76,6 +76,19 @@
         linear-gradient(160deg,#04140F 0%,#05131C 55%,#03080D 100%);
       background-attachment:scroll;background-size:cover;background-repeat:no-repeat}
   }
+  /* ===== Korn =====
+     Eine sehr feine Rauschebene ueber der ganzen Seite. Auf grossen dunklen
+     Flaechen entsteht sonst Streifenbildung im Verlauf ("banding"), und das
+     Bild wirkt digital-flach. Das Korn nimmt dem Verlauf die Glaette und gibt
+     der Flaeche Material — steht so auch in den eigenen Design-Regeln
+     ("Texture, grain, or atmosphere when it fits the visual direction").
+     Statisch, kein Rechenaufwand beim Scrollen, ohne Mausereignisse. */
+  body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
+    opacity:.055;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    background-size:140px 140px}
+  @media (prefers-reduced-motion:reduce){body::after{opacity:.04}}
+
   body.nav-open{overflow:hidden}
   /* ===== s2s-Loader (Intro + Seitenwechsel) — kurze Marke, fadet weg ===== */
   #loader{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,#06170F 0%,#03080D 72%);transition:opacity .55s var(--ease),visibility .55s var(--ease)}
