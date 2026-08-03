@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const SEITEN = [
   { name: 'start', pfad: '/' },
+  { name: 'ablauf', pfad: '/ablauf/' },
   { name: 'about', pfad: '/about/' },
   { name: 'fuer-wen', pfad: '/for-you/' },
   { name: 'ergebnisse', pfad: '/results/' },

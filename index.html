@@ -423,10 +423,21 @@
   .pcap[data-i="0"]{margin-left:0}
   .pcap.s2on{opacity:1;filter:none;transform:none}
 
-  .dots{position:absolute;bottom:5.5vh;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:9px}
-  .dots i{width:7px;height:7px;border-radius:50%;background:var(--line-3);transition:.4s var(--spring)}
-  .dots i.s2on{width:26px;border-radius:6px;background:var(--accent-flow)}
-  .dots i.s2done{background:rgba(0,184,136,.55)}
+  /* Phasen-Anzeige als Mono-Nummern statt Karussell-Punkten.
+     Vorher: vier 7px-Kreise, der aktive zur Pille gestreckt — das Muster, das
+     auf jeder zweiten Vorlage steht. Die Nummern sind dieselbe Zeichensprache
+     wie die Kapitel-Label, die Geister-Ziffern und der Mono-Index auf /preise/
+     — und sie sagen zusaetzlich, in welcher der vier Phasen man gerade ist.
+     Die Klassen .s2on und .s2done setzt weiterhin dasselbe Skript. */
+  .dots{position:absolute;bottom:5.5vh;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:var(--s-5)}
+  .dots i{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:11px;letter-spacing:.14em;
+    color:var(--line-3);position:relative;padding-bottom:6px;transition:color .4s var(--ease)}
+  .dots i::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:var(--accent-flow);transform:scaleX(0);transform-origin:left center;
+    transition:transform .45s var(--ease)}
+  .dots i.s2on{color:var(--paper)}
+  .dots i.s2on::after{transform:scaleX(1)}
+  .dots i.s2done{color:rgba(0,184,136,.6)}
   .hint{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:calc(1 - var(--p)*8);transition:opacity .3s var(--ease);pointer-events:none}
   .hint svg{width:15px;height:15px;stroke:var(--faint);stroke-width:2;fill:none;animation:bob 1.8s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
@@ -575,12 +586,12 @@
       <!-- SHELL:NAV -->
       <ul class="nav-links">
         <li><a href="/preise/">Preise</a></li>
-        <li><a href="#ablauf">Ablauf</a></li>
+        <li><a href="/ablauf/">Ablauf</a></li>
         <li><a href="/for-you/">Für wen</a></li>
         <li><a href="/results/">Ergebnisse</a></li>
         <li><a href="/about/">Über uns</a></li>
       </ul>
-      <a class="nav-soft" href="#gratis">Gratis-Vorschau</a>
+      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
       <a class="nav-login" href="https://mein.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
 <!-- /SHELL:NAV -->
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
@@ -594,11 +605,11 @@
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
     <!-- SHELL:MOBIL -->
     <a class="m-link" href="/preise/">Preise</a>
-    <a class="m-link" href="#ablauf">Ablauf</a>
+    <a class="m-link" href="/ablauf/">Ablauf</a>
     <a class="m-link" href="/for-you/">Für wen</a>
     <a class="m-link" href="/results/">Ergebnisse</a>
     <a class="m-link" href="/about/">Über uns</a>
-    <a class="m-link" href="#gratis">Gratis-Vorschau</a>
+    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
     <a class="m-link" href="https://mein.social2scale.com" style="color:var(--emerald,#00B888);font-weight:600">Login · Mein Bereich</a>
 <!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
@@ -612,9 +623,14 @@
             <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 680px">
             <img class="hero-logo r" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
           </picture>
-          <p class="eyebrow r" style="animation-delay:.08s"><span class="dot" aria-hidden="true"></span>Premium Social-Growth · Coaches, Experten &amp; B2B</p>
+          <!-- Begruessung statt Kategorie-Etikett. Hier stand "Premium
+               Social-Growth · Coaches, Experten & B2B" — eine Einordnung, keine
+               Ansprache. Ein Erstgespraech faengt nicht mit der Branche an,
+               sondern mit Hallo. Fuer wen wir da sind, sagt jetzt die
+               Unterzeile, wo es ohnehin hingehoert. -->
+          <p class="eyebrow r" style="animation-delay:.08s"><span class="dot" aria-hidden="true"></span>Willkommen bei social2scale</p>
           <h1 class="r" style="animation-delay:.14s">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</h1>
-          <p class="sub r" style="animation-delay:.24s">Keinen oder einen schwachen Social-Auftritt? <b>Wir bauen ihn von Grund auf — und lassen dich wachsen.</b></p>
+          <p class="sub r" style="animation-delay:.24s">Für <b>Coaches, Experten und B2B</b> ohne starken Auftritt: Wir bauen ihn von Grund auf, produzieren den Content und betreuen ihn — <b>du gibst nur die Richtung vor.</b></p>
           <!-- Rahmensetzung: sagt vorab, was auf dieser Seite passiert. Genau
                das macht ein gutes Erstgespraech in den ersten 20 Sekunden —
                wer weiss, wohin es geht, steigt nicht nach dem ersten Absatz
@@ -659,6 +675,7 @@
           </article>
         </div>
         <p class="st-bridge">Alle drei kosten dasselbe: <b>Aufträge, die jemand anders bekommt.</b></p>
+        <a class="kap-tuer" href="/for-you/">Für wen wir bauen<span class="pfeil" aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -769,11 +786,20 @@
         <div class="pcap" data-i="3"><span class="s2n">04 · Skalierung</span><h3>Alles messbar in deinem s2s-Bereich.</h3><p>Reichweite, Leads &amp; Umsatz — planbar.</p></div>
       </div>
 
-      <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="dots" aria-hidden="true"><i>01</i><i>02</i><i>03</i><i>04</i></div>
       <div class="hint" aria-hidden="true"><span>scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
   </div>
 </section>
+
+    <!-- Tuer zu Kapitel 03. Steht bewusst AUSSERHALB der angepinnten Szene:
+         innerhalb waere sie ueber die ganze Pin-Strecke sichtbar und wuerde
+         zum Absprung einladen, bevor die vier Phasen durch sind. -->
+    <section class="kap-band">
+      <div class="wrap reveal">
+        <a class="kap-tuer" href="/ablauf/">Der Ablauf im Detail — was in jeder Phase passiert<span class="pfeil" aria-hidden="true">→</span></a>
+      </div>
+    </section>
 
     <section class="proof photo-sec" id="proof" aria-labelledby="proof-h">
       <div class="sec-bg growth" aria-hidden="true"></div>
@@ -788,6 +814,7 @@
               <li>Leads statt Likes</li>
               <li>Umsatz, schwarz auf weiß</li>
             </ul>
+            <a class="kap-tuer" href="/results/">Wie wir Ergebnisse messen<span class="pfeil" aria-hidden="true">→</span></a>
           </div>
           <div class="proof-visual">
             <div class="panel">
@@ -900,6 +927,7 @@
           <p>Reichweite → Leads → Umsatz. Inklusive Ads &amp; Paid Growth, messbar in deinem s2s-Bereich.</p>
         </div>
       </div>
+      <a class="kap-tuer" href="/preise/">Was das kostet<span class="pfeil" aria-hidden="true">→</span></a>
     </div></section>
 
 
@@ -973,7 +1001,7 @@
           <!-- SHELL:FOOTER -->
           <li><a href="https://mein.social2scale.com">Login · Mein Bereich</a></li>
           <li><a href="/preise/">Preise</a></li>
-          <li><a href="#ablauf">Ablauf</a></li>
+          <li><a href="/ablauf/">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
           <li><a href="/results/">Ergebnisse</a></li>
           <li><a href="/about/">Über uns</a></li>

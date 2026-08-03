@@ -200,6 +200,32 @@
   .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
   .head{max-width:42ch}
 
+  /* ===== Kapitel-Tuer =====
+     Jedes Kapitel der Startseite ist die Kurzfassung, die verlinkte Seite die
+     Tiefe. Bis zum 03.08.2026 hatten SECHS von zehn Abschnitten ueberhaupt
+     keinen Ausgang: man scrollte durch das ganze Closing, und die einzigen
+     Wege hinaus waren die beiden Handlungsaufrufe. Die Unterseiten waren nur
+     ueber das Kopfmenue erreichbar.
+
+     Bewusst leiser als ein Knopf — die Tuer soll den Lesefluss nicht
+     unterbrechen, sondern am Ende eines Kapitels danebenstehen. Die Haarlinie
+     waechst beim Zeigen von links, der Pfeil rueckt nach. Nur transform. */
+  .kap-tuer{display:inline-flex;align-items:center;gap:var(--s-3);margin-top:clamp(var(--s-5),2.4vw,var(--s-6));
+    font-family:"Archivo",sans-serif;font-size:.94rem;font-weight:600;color:var(--muted);
+    text-decoration:none;position:relative;padding-bottom:var(--s-2);
+    transition:color .3s var(--ease)}
+  .kap-tuer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,var(--emerald),var(--teal));
+    transform:scaleX(0);transform-origin:left center;transition:transform .45s var(--ease)}
+  .kap-tuer .pfeil{display:inline-block;transition:transform .3s var(--ease)}
+  .kap-tuer:hover,.kap-tuer:focus-visible{color:var(--paper)}
+  .kap-tuer:hover::after,.kap-tuer:focus-visible::after{transform:scaleX(1)}
+  .kap-tuer:hover .pfeil,.kap-tuer:focus-visible .pfeil{transform:translateX(4px)}
+  /* Schmales Band fuer Tueren, die nicht in einem Kapitel Platz finden — etwa
+     hinter einer angepinnten Szene. */
+  .kap-band{padding:clamp(var(--s-5),2.6vw,var(--s-6)) 0;border-top:1px solid var(--line)}
+  .kap-band .kap-tuer{margin-top:0}
+
   /* ===== sticky header + nav (flat, hairline) ===== */
   .bar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 var(--px);min-height:var(--header-h);border-bottom:1px solid rgba(0,184,136,.14);box-shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -22px rgba(0,0,0,.8);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
   /* header: freigestellte s2s-Bildmarke als Anchor links (transparent, kein schwarzer Kasten) */

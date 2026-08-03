@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#03080D">
+<title>Ablauf — so entsteht dein Social-Auftritt | social2scale</title>
+<meta name="description" content="Vier Phasen vom Erstgespräch bis zum Auftritt, der ohne dich weiterläuft. Was in jeder Phase passiert, was du danach hast und wie viel Zeit es dich kostet.">
+<link rel="canonical" href="https://social2scale.com/ablauf/">
+<meta property="og:title" content="Ablauf — so entsteht dein Social-Auftritt | social2scale">
+<meta property="og:description" content="Vier Phasen vom Erstgespräch bis zum laufenden Auftritt. Ab Monat zwei liegt dein Aufwand bei null.">
+<meta property="og:url" content="https://social2scale.com/ablauf/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://social2scale.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
+<meta property="og:image:alt" content="social2scale — Premium Social-Growth für Coaches, Experten & B2B">
+<meta name="twitter:title" content="Ablauf — so entsteht dein Social-Auftritt | social2scale">
+<meta name="twitter:description" content="Vier Phasen vom Erstgespräch bis zum laufenden Auftritt. Ab Monat zwei liegt dein Aufwand bei null.">
+<meta name="twitter:image:alt" content="social2scale — Premium Social-Growth für Coaches, Experten & B2B">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"So entsteht dein Social-Auftritt mit social2scale","description":"Vier Phasen vom Erstgespräch bis zum laufenden Auftritt: Strategie, Setup, Content und Skalierung.","step":[{"@type":"HowToStep","position":1,"name":"Strategie-Call","text":"Ziel, Zielgruppe und Status quo werden geklärt. Der Plan steht."},{"@type":"HowToStep","position":2,"name":"Setup & Onboarding","text":"Profil, Branding und Content-Strategie entstehen. Dein Aufwand: ein Briefing von etwa 30 Minuten."},{"@type":"HowToStep","position":3,"name":"Content & Betreuung","text":"Laufende Produktion und Veröffentlichung, Woche für Woche."},{"@type":"HowToStep","position":4,"name":"Skalierung","text":"Reichweite, Leads und Umsatz werden im persönlichen s2s-Bereich messbar."}]}
+</script>
+<link rel="stylesheet" href="/fonts.css">
+<!-- Geteilte Shell: Tokens, Loader, Typo-Rollen, Header/Nav, Footer.
+     MUSS vor dem <style>-Block stehen, damit seiten-eigene Regeln gewinnen. -->
+<link rel="stylesheet" href="/s2s.css">
+<!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
+<script src="/s2s.js" defer></script>
+<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
+  </style></noscript>
+<style>
+  /* ===== /ablauf/ — die Tiefe zu Kapitel 03 der Startseite =====
+     Die Startseite zeigt die vier Phasen als Kurzfassung in einer angepinnten
+     Szene. Hier steht, was in jeder Phase tatsaechlich passiert, was danach da
+     ist und was es an Zeit kostet. Praefix .fl- (Flow), damit nichts mit den
+     .ab-Regeln von /about/ kollidiert, falls die Seiten je zusammenwachsen. */
+  .fl-hero{padding:calc(var(--header-h) + clamp(var(--s-8),7vw,var(--s-10))) 0 clamp(var(--s-7),5vw,var(--s-9));position:relative;overflow:hidden}
+  .fl-hero h1{font-family:"Fraunces",serif;font-weight:520;font-size:clamp(2.6rem,1.2rem + 5vw,5.2rem);line-height:1;letter-spacing:-.028em;margin-top:var(--s-4);max-width:16ch}
+  .fl-hero h1 em{font-style:italic;font-weight:480;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .fl-hero .sub{margin-top:clamp(var(--s-5),2.6vw,var(--s-6));max-width:56ch;font-size:clamp(1.06rem,1rem + .45vw,1.26rem);line-height:1.6;color:var(--muted)}
+  .fl-hero .sub b{color:var(--paper);font-weight:600}
+
+  /* ===== Die vier Phasen ===== */
+  .fl-phasen{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
+  .fl-phase{position:relative;padding:clamp(var(--s-6),3.4vw,var(--s-8)) 0;border-top:1px solid var(--line)}
+  .fl-phase:first-child{border-top:0}
+  .fl-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(var(--s-5),3.4vw,var(--s-8));align-items:start}
+  .fl-num{display:block;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(2.6rem,1.6rem + 3vw,4.6rem);line-height:.82;letter-spacing:-.045em;
+    -webkit-text-stroke:1px var(--line-3);color:transparent}
+  .fl-phase h2{margin-top:var(--s-4);font-size:clamp(1.7rem,1.2rem + 1.9vw,2.8rem);line-height:1.06}
+  .fl-was{margin-top:var(--s-4);font-size:clamp(1.02rem,.97rem + .4vw,1.2rem);line-height:1.55;color:var(--muted);max-width:46ch}
+  .fl-was b{color:var(--paper);font-weight:600}
+  /* Rechte Spalte: Ergebnis und Aufwand als Haarlinien-Zeilen — dieselbe
+     Sprache wie die Tarif-Liste auf /preise/, keine Aufzaehlungspunkte. */
+  .fl-fakten{display:grid;gap:var(--s-4);padding-top:var(--s-3)}
+  .fl-fakt{padding-top:var(--s-4);border-top:1px solid var(--line-2)}
+  .fl-fakt-lbl{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .fl-fakt-txt{margin-top:var(--s-3);font-size:.98rem;line-height:1.45;color:var(--paper)}
+  .fl-fakt.ist-null .fl-fakt-txt{color:var(--emerald)}
+  @media (max-width:880px){.fl-grid{grid-template-columns:1fr;gap:var(--s-5)}}
+
+  /* ===== Aufwand: die Rechnung, die schon auf /preise/ steht =====
+     Der Bezugsbalken ist die Zeit, die es selbst gemacht kostet. Alles andere
+     wird daran gemessen — deshalb sind die Anteile echte Verhaeltnisse und
+     keine gefuehlten Groessen. Quelle: 10 Beitraege x 45-90 Min = 7,5-15 h. */
+  .fl-aufwand{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
+  .fl-bar-list{list-style:none;margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+  .fl-bar-row{padding:var(--s-5) 0;border-top:1px solid var(--line)}
+  .fl-bar-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s-3) var(--s-5);margin-bottom:var(--s-4)}
+  .fl-bar-name{font-family:"Archivo",sans-serif;font-size:.98rem;font-weight:600;color:var(--paper);flex:0 0 auto}
+  .fl-bar-zeit{font-family:"JetBrains Mono",monospace;font-size:.86rem;color:var(--faint);flex:1 1 auto}
+  .fl-track{position:relative;height:10px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+  .fl-track .fillbar{display:block;height:100%;border-radius:99px;background:var(--line-3)}
+  .fl-bar-row.ist-uns .fl-bar-name{color:var(--emerald)}
+  .fl-bar-row.ist-uns .fl-track{background:rgba(0,184,136,.10);box-shadow:inset 0 0 0 1px rgba(0,184,136,.22)}
+  .fl-bar-row.ist-uns .fillbar{background:var(--accent-flow)}
+  /* Null Aufwand hat keinen Balken — ein 0-Pixel-Balken saehe nach Fehler aus.
+     Stattdessen ein Strich auf der Grundlinie, der die Leere benennt. */
+  .fl-track.ist-leer{background:transparent;box-shadow:none;border-top:1px dashed var(--line-2);height:1px;border-radius:0}
+  .fl-aufwand-note{margin-top:clamp(var(--s-5),2.6vw,var(--s-6));font-size:.92rem;line-height:1.55;color:var(--faint);max-width:62ch}
+  .fl-aufwand-note a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+  @media (max-width:760px){.fl-bar-head{display:block}.fl-bar-name{display:block;margin-bottom:var(--s-2)}}
+
+  /* ===== Was wir von dir brauchen ===== */
+  .fl-brauchen{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
+  .fl-b-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-5),2.6vw,var(--s-7));margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+  .fl-b-item{padding-top:var(--s-5);border-top:1px solid var(--line-2)}
+  .fl-b-item h3{font-family:"Archivo",sans-serif;font-size:1.02rem;font-weight:600;color:var(--paper)}
+  .fl-b-item p{margin-top:var(--s-3);font-size:.94rem;line-height:1.5;color:var(--faint)}
+  @media (max-width:760px){.fl-b-grid{grid-template-columns:1fr;gap:var(--s-5)}}
+
+  /* ===== Abschluss ===== */
+  .fl-cta{padding:clamp(var(--s-7),5vw,var(--s-9)) 0 clamp(var(--s-8),6vw,var(--s-10));border-top:1px solid var(--line)}
+  .fl-cta h2{max-width:18ch}
+  .fl-cta .sub{margin-top:var(--s-5);max-width:52ch;font-size:clamp(1.02rem,.97rem + .4vw,1.18rem);line-height:1.55;color:var(--muted)}
+  .fl-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5);margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+</style>
+</head>
+<body>
+  <a class="skip" href="#ablauf-inhalt">Zum Inhalt</a>
+
+  <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.png" alt="" width="124" height="62"><div class="ldr-bar" aria-hidden="true"></div></div>
+  <script>
+  (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
+    function hide(){l.classList.add('done');}window.addEventListener('pageshow',function(e){if(e.persisted)hide();});
+    window.addEventListener('load',function(){if((((performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{}).type)==='reload'&&location.hash){history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(function(){window.scrollTo({top:0,behavior:'instant'});});}setTimeout(hide,Math.max(0,900-(Date.now()-t0)));});
+    setTimeout(hide,1200);
+    document.addEventListener('click',function(e){
+      var a=e.target.closest?e.target.closest('a'):null;if(!a)return;
+      var h=a.getAttribute('href')||'';
+      if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(mailto:|tel:)/i.test(h))return;
+      if(/^https?:\/\//i.test(h)&&h.indexOf('social2scale.com')===-1)return; /* externe Links: kein Loader */
+      l.classList.remove('done');
+    });
+  })();
+  </script>
+
+  <header class="bar">
+    <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a>
+    <nav class="nav" aria-label="Hauptnavigation">
+      <!-- SHELL:NAV -->
+      <ul class="nav-links">
+        <li><a href="/preise/">Preise</a></li>
+        <li><a href="/ablauf/" aria-current="page">Ablauf</a></li>
+        <li><a href="/for-you/">Für wen</a></li>
+        <li><a href="/results/">Ergebnisse</a></li>
+        <li><a href="/about/">Über uns</a></li>
+      </ul>
+      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
+      <a class="nav-login" href="https://mein.social2scale.com" aria-label="Login zum Kundenbereich"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Login</a>
+<!-- /SHELL:NAV -->
+      <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav-scrim" id="nav-scrim" hidden></div>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
+    <!-- SHELL:MOBIL -->
+    <a class="m-link" href="/preise/">Preise</a>
+    <a class="m-link" href="/ablauf/" aria-current="page">Ablauf</a>
+    <a class="m-link" href="/for-you/">Für wen</a>
+    <a class="m-link" href="/results/">Ergebnisse</a>
+    <a class="m-link" href="/about/">Über uns</a>
+    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
+    <a class="m-link" href="https://mein.social2scale.com" style="color:var(--emerald,#00B888);font-weight:600">Login · Mein Bereich</a>
+<!-- /SHELL:MOBIL -->
+    <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
+
+  <main id="ablauf-inhalt">
+
+    <!-- Kopf. Das Versprechen steht in der Ueberschrift, nicht im Fliesstext:
+         ab Monat zwei liegt der Aufwand bei null. Das ist die Zahl, die die
+         Entscheidung traegt. -->
+    <section class="fl-hero">
+      <div class="sec-bg wave" aria-hidden="true"></div>
+      <div class="wrap reveal">
+        <p class="klabel">Ablauf</p>
+        <h1 class="wipe">Vier Phasen. Ab Monat zwei <em>machst du nichts mehr</em>.</h1>
+        <p class="sub">Vom ersten Gespräch bis zu einem Auftritt, der ohne dich weiterläuft. Hier steht, was in jeder Phase passiert, <b>was du danach hast</b> — und was es dich an Zeit kostet.</p>
+      </div>
+    </section>
+
+    <section class="fl-phasen" aria-label="Die vier Phasen">
+      <div class="wrap">
+      <article class="fl-phase reveal">
+        <div class="fl-grid">
+          <div>
+            <span class="fl-num" aria-hidden="true">01</span>
+            <h2 class="wipe">Strategie-Call</h2>
+            <p class="fl-was">Wir zeichnen dein System, bevor irgendetwas gebaut wird. <b>Ziel, Zielgruppe, Status quo</b> — und die Frage, ob es überhaupt passt. Wenn nicht, sagen wir das.</p>
+          </div>
+          <div class="fl-fakten stagger">
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Danach hast du</span>
+              <p class="fl-fakt-txt">Einen Plan, der auf dein Geschäft passt — nicht auf deine Branche.</p>
+            </div>
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Dein Aufwand</span>
+              <p class="fl-fakt-txt">Ein Gespräch.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="fl-phase reveal">
+        <div class="fl-grid">
+          <div>
+            <span class="fl-num" aria-hidden="true">02</span>
+            <h2 class="wipe">Setup & Onboarding</h2>
+            <p class="fl-was">Der Auftritt bekommt ein Gesicht: <b>Profil, Branding und Content-Strategie</b>. Wir bauen ihn so auf, als hätte es ihn immer gegeben.</p>
+          </div>
+          <div class="fl-fakten stagger">
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Danach hast du</span>
+              <p class="fl-fakt-txt">Ein Profil, das jemand ernst nimmt, der dich zum ersten Mal sieht.</p>
+            </div>
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Dein Aufwand</span>
+              <p class="fl-fakt-txt">Ein Briefing, etwa 30 Minuten.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="fl-phase reveal">
+        <div class="fl-grid">
+          <div>
+            <span class="fl-num" aria-hidden="true">03</span>
+            <h2 class="wipe">Content & Betreuung</h2>
+            <p class="fl-was">Laufende Produktion, Woche für Woche. <b>Idee, Text, Gestaltung, Veröffentlichung</b> — die Arbeit, die sonst zwischen deinen Terminen liegen bleibt.</p>
+          </div>
+          <div class="fl-fakten stagger">
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Danach hast du</span>
+              <p class="fl-fakt-txt">Beiträge, die erscheinen, ohne dass du daran denken musst.</p>
+            </div>
+            <div class="fl-fakt ist-null">
+              <span class="fl-fakt-lbl">Dein Aufwand</span>
+              <p class="fl-fakt-txt">Keiner. Freigabe nur, wenn du sie willst.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="fl-phase reveal">
+        <div class="fl-grid">
+          <div>
+            <span class="fl-num" aria-hidden="true">04</span>
+            <h2 class="wipe">Skalierung</h2>
+            <p class="fl-was">Aus Reichweite werden Anfragen. Was trägt, bekommt mehr Schub — <b>inklusive Ads, wenn die Zahlen es hergeben</b>, nicht weil es im Paket steht.</p>
+          </div>
+          <div class="fl-fakten stagger">
+            <div class="fl-fakt">
+              <span class="fl-fakt-lbl">Danach hast du</span>
+              <p class="fl-fakt-txt">Zahlen in deinem s2s-Bereich statt Bauchgefühl.</p>
+            </div>
+            <div class="fl-fakt ist-null">
+              <span class="fl-fakt-lbl">Dein Aufwand</span>
+              <p class="fl-fakt-txt">Keiner.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+      </div>
+    </section>
+
+    <!-- Der Aufwand als Verhaeltnis. Die Zahlen sind dieselben, die auf
+         /preise/ stehen — eine Quelle, damit die Seiten sich nicht
+         widersprechen koennen. -->
+    <section class="fl-aufwand" aria-labelledby="aufwand-h">
+      <div class="wrap reveal">
+        <p class="klabel">Was es dich an Zeit kostet</p>
+        <h2 class="wipe" id="aufwand-h">Deine Zeit, <em>im Verhältnis</em>.</h2>
+        <ol class="fl-bar-list">
+          <li class="fl-bar-row">
+            <div class="fl-bar-head"><span class="fl-bar-name">Wenn du es selbst machst</span><span class="fl-bar-zeit">7,5 – 15 Stunden pro Monat</span></div>
+            <div class="fl-track"><i class="fillbar" style="--fill:1"></i></div>
+          </li>
+          <li class="fl-bar-row ist-uns">
+            <div class="fl-bar-head"><span class="fl-bar-name">Mit uns — Monat 1</span><span class="fl-bar-zeit">rund 30 Minuten, einmalig</span></div>
+            <div class="fl-track"><i class="fillbar" style="--fill:.055"></i></div>
+          </li>
+          <li class="fl-bar-row ist-uns">
+            <div class="fl-bar-head"><span class="fl-bar-name">Mit uns — ab Monat 2</span><span class="fl-bar-zeit">nichts</span></div>
+            <div class="fl-track ist-leer" aria-hidden="true"></div>
+          </li>
+        </ol>
+        <p class="fl-aufwand-note">Grundlage sind zehn Beiträge im Monat mit 45 bis 90 Minuten je Beitrag — Idee, Text, Gestaltung, Veröffentlichung. Dieselbe Rechnung steht mit Zahlen auf der <a href="/preise/">Preisseite</a>.</p>
+      </div>
+    </section>
+
+    <!-- Ehrlichkeit als Verkaufsargument: was wir brauchen, steht vor dem
+         Abschluss und nicht danach. Wer das hier liest und zusagt, hat keine
+         Ueberraschung mehr vor sich. -->
+    <section class="fl-brauchen" aria-labelledby="brauchen-h">
+      <div class="wrap reveal">
+        <p class="klabel">Damit es losgeht</p>
+        <h2 class="wipe" id="brauchen-h">Was wir von dir <em>brauchen</em>.</h2>
+        <div class="fl-b-grid stagger">
+          <div class="fl-b-item">
+            <h3>Zugang zum Account</h3>
+            <p>Bestehendes Profil oder wir legen eines an. Die Rechte bleiben bei dir — immer.</p>
+          </div>
+          <div class="fl-b-item">
+            <h3>Bildmaterial</h3>
+            <p>Was da ist, reicht meist. Wenn nicht, organisieren wir einen Foto-Termin.</p>
+          </div>
+          <div class="fl-b-item">
+            <h3>Eine halbe Stunde</h3>
+            <p>Das Briefing im ersten Monat. Danach nur noch, wenn du mitreden willst.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fl-cta">
+      <div class="wrap reveal">
+        <p class="klabel">Der nächste Schritt</p>
+        <h2 class="wipe">Lass uns über <em>dein Wachstum</em> reden.</h2>
+        <p class="sub">Unverbindliches Erstgespräch. Wir schauen uns an, wo du stehst, und sagen dir ehrlich, ob es passt.</p>
+        <div class="fl-cta-row">
+          <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+          <a class="textlink" href="/preise/">Oder erst die Preise ansehen</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer"><div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="104" height="52"></a>
+        <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
+        <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </div>
+      <nav class="foot-col" aria-label="Footer-Navigation">
+        <p class="foot-col-title">Agentur</p>
+        <ul>
+          <!-- SHELL:FOOTER -->
+          <li><a href="https://mein.social2scale.com">Login · Mein Bereich</a></li>
+          <li><a href="/preise/">Preise</a></li>
+          <li><a href="/ablauf/">Ablauf</a></li>
+          <li><a href="/for-you/">Für wen</a></li>
+          <li><a href="/results/">Ergebnisse</a></li>
+          <li><a href="/about/">Über uns</a></li>
+          <li><a href="/#leistungen">Leistungen</a></li>
+          <li><a href="/#faq">FAQ</a></li>
+          <li><a href="/#gratis">Gratis-Vorschau</a></li>
+<!-- /SHELL:FOOTER -->
+        </ul>
+      </nav>
+      <nav class="foot-col" aria-label="Rechtliches">
+        <p class="foot-col-title">Rechtliches</p>
+        <ul>
+          <li><a href="/impressum/">Impressum</a></li>
+          <li><a href="/datenschutz/">Datenschutz</a></li>
+          <li><a href="mailto:info@social2scale.com">Kontakt</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> social2scale</span>
+      <span class="foot-legal">
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
+        <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </span>
+    </div>
+  </div></footer>
+
+  <script>
+    document.getElementById('yr').textContent=new Date().getFullYear();
+
+    // wire real CTA urls (placeholder until Calendly link arrives)
+    ['cta','cta-top','cta-bottom','cta-menu'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var u=el.getAttribute('data-cta-url');if(u&&u!=='#')el.setAttribute('href',u);});
+
+    // ===== burger / mobile menu =====
+    (function(){
+      var burger=document.getElementById('burger');
+      var menu=document.getElementById('mobile-menu');
+      var scrim=document.getElementById('nav-scrim');
+      if(!burger||!menu||!scrim)return;
+      function open(){
+        menu.hidden=false;scrim.hidden=false;
+        requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
+        burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
+        document.body.classList.add('nav-open');
+      }
+      function close(){
+        menu.classList.remove('open');scrim.classList.remove('open');
+        burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
+        document.body.classList.remove('nav-open');
+        var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
+        menu.addEventListener('transitionend',hide);
+      }
+      function toggle(){burger.getAttribute('aria-expanded')==='true'?close():open();}
+      burger.addEventListener('click',toggle);
+      scrim.addEventListener('click',close);
+      menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true')close();});
+    })();
+
+    // ===== scroll reveal =====
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
+    else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
+
+    // ===== scrollspy nav-state (handmade touch) =====
+    (function(){
+      var sections=['leistungen','ablauf','fuer-wen','ueber-uns','faq'].map(function(id){return document.getElementById(id);}).filter(Boolean);
+      var links={};document.querySelectorAll('.nav-links a').forEach(function(a){var h=a.getAttribute('href');if(h&&h[0]==='#')links[h.slice(1)]=a;});
+      if(!('IntersectionObserver' in window)||!sections.length)return;
+      var spy=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){Object.keys(links).forEach(function(k){links[k].removeAttribute('aria-current');});var a=links[e.target.id];if(a)a.setAttribute('aria-current','true');}});},{rootMargin:'-45% 0px -50% 0px',threshold:0});
+      sections.forEach(function(s){spy.observe(s);});
+    })();
+  </script>
+  <!-- back-to-top (global) -->
+  <button id="toTop" class="to-top" type="button" aria-label="Nach oben scrollen" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <style>
+  .to-top{position:fixed;right:clamp(16px,3vw,28px);bottom:clamp(16px,3vw,28px);z-index:90;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line-2,rgba(255,255,255,.12));border-radius:50%;background:linear-gradient(180deg,rgba(20,21,24,.92),rgba(10,11,13,.86));-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%);color:var(--paper,#F2F3F1);cursor:pointer;opacity:0;transform:translateY(12px) scale(.92);transition:opacity .3s var(--ease,cubic-bezier(.16,1,.3,1)),transform .3s var(--ease,cubic-bezier(.16,1,.3,1)),border-color .25s,box-shadow .25s;box-shadow:0 10px 30px -12px rgba(0,0,0,.7);pointer-events:none}
+  .to-top.show{opacity:1;transform:none;pointer-events:auto}
+  .to-top:hover{border-color:rgba(0,184,136,.55);box-shadow:0 14px 36px -10px rgba(0,184,136,.45),0 10px 30px -12px rgba(0,0,0,.7);transform:translateY(-2px)}
+  .to-top:focus-visible{outline:2px solid var(--emerald,#00B888);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){.to-top{transition:opacity .2s}.to-top.show{transform:none}.to-top:hover{transform:none}}
+  </style>
+  <script>
+  (function(){var b=document.getElementById('toTop');if(!b)return;b.hidden=false;var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;var t=false;
+    function upd(){if(window.pageYOffset>480)b.classList.add('show');else b.classList.remove('show');}
+    window.addEventListener('scroll',function(){if(!t){requestAnimationFrame(function(){upd();t=false;});t=true;}},{passive:true});
+    b.addEventListener('click',function(){window.scrollTo({top:0,behavior:rm?'auto':'smooth'});});
+    upd();
+  })();
+  </script>
+</body>
+</html>
