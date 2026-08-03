@@ -46,6 +46,63 @@ einem Commit aus erzeugen, dessen Aussehen du überprüft hast.
 Die Schwelle in `playwright.config.mjs` bleibt, wo sie ist. Sie hochzusetzen,
 damit ein Test grün wird, macht die Absicherung wertlos.
 
+### ⚠️ Der Port gehört diesem Projekt allein
+
+`playwright.config.mjs` startet einen eigenen Server auf **8917** mit
+`reuseExistingServer: false`.
+
+Bis zum 03.08.2026 stand dort `8899` mit `reuseExistingServer: true`. An dem Tag
+belegte ein Server der zweiten Session diesen Port und lieferte
+`~/s2s-kunden/_portal` aus. Playwright übernahm ihn kommentarlos und hätte die
+Basisbilder gegen ein **völlig anderes Projekt** verglichen — ohne Warnung.
+
+Deshalb gilt beides zusammen:
+
+- ein unverwechselbarer Port statt der naheliegenden 88xx-Reihe
+- `reuseExistingServer: false`, damit ein belegter Port **laut abbricht**
+
+Ein lauter Abbruch ist besser als ein grüner Vergleich gegen die falsche Seite.
+Läuft ein eigener Prüfserver, vor dem Testlauf beenden — aber **nur den
+eigenen**. Vorher prüfen, wem der Prozess gehört:
+
+```bash
+for p in $(lsof -ti :8917); do
+  lsof -a -p $p -d cwd -Fn | grep ^n | cut -c2-
+done
+```
+
+## Der Gesprächsbogen der Startseite
+
+Die Startseite ist seit dem 03.08.2026 **kein Katalog mehr, sondern ein
+Closing**. Die Sektionen tragen fortlaufende Kapitel-Nummern, die den Bogen
+sichtbar machen, ohne einen Satz Text hinzuzufügen:
+
+| | Sektion | Rolle im Gespräch |
+|---|---|---|
+| — | `#hero` | Begrüßung **und Rahmensetzung** (`.hero-frame`: was gleich passiert) |
+| 01 | `#stand` | Wo du stehst — der Schmerz, benannt |
+| 02 | `#warum` | Warum's bisher nicht klappte — Einwand vorweg |
+| 03 | `#ablauf` | Der Weg |
+| 04 | `#proof` | Beweis |
+| 05 | `#leistungen` | Was drin ist |
+| 06 | `#faq` | Einwände |
+| 07 | `#gratis` | Der leise Einstieg (Rückfalltür) |
+| 08 | `#cta-bottom` | Abschluss |
+
+**Die Reihenfolge ist nicht verhandelbar.** Vor 01 und 02 stand hier der
+30-Sekunden-Check: drei Kästen mit „Für wen / Was wir machen / So startet's".
+Sachlich korrekt, aber eine Inhaltsangabe des Katalogs — kein Grund
+weiterzulesen. Ohne benannten Schmerz gibt es keinen Anlass zu handeln, und
+ohne „warum's bisher nicht klappte" beantwortet die Besucherin den stärksten
+Einwand selbst — meist mit „hat bei mir nicht funktioniert".
+
+Eine neue Sektion einzuschieben heißt: **Kapitel-Nummern nachziehen.** Sie
+stehen in `index.html` in den `.klabel` / `.s2eyebrow` / `.ix`-Elementen.
+
+Die Unterseiten (`/preise/`, `/results/`, `/for-you/`, `/about/`) sind die
+**Vertiefung** zu einzelnen Kapiteln, nicht eigene Closings. Sie brauchen keine
+Nummerierung.
+
 ## Menüpunkt ändern, hinzufügen, entfernen
 
 1. `lib/shell.mjs` bearbeiten — das ist die einzige Stelle.

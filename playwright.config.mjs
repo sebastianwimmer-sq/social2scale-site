@@ -13,13 +13,23 @@ export default {
     },
   },
   // Eigener Server, damit der Test nicht von einem laufenden Terminal abhaengt.
+  //
+  // Port 8899 war hier bis zum 03.08.2026 eingetragen — und wurde am 03.08. von
+  // einem Server der zweiten Session belegt, der ~/s2s-kunden/_portal auslieferte.
+  // Zusammen mit reuseExistingServer:true hat Playwright diesen Fremdserver
+  // uebernommen und haette die Basisbilder gegen ein voellig anderes Projekt
+  // verglichen — ohne eine einzige Warnung. Zwei Konsequenzen:
+  //   1. Eigener, unverwechselbarer Port statt der naheliegenden 88xx-Reihe.
+  //   2. reuseExistingServer:false — ist der Port belegt, soll der Lauf laut
+  //      abbrechen. Ein lauter Abbruch ist besser als ein gruener Vergleich
+  //      gegen die falsche Seite.
   webServer: {
-    command: 'python3 -m http.server 8899',
-    url: 'http://localhost:8899/',
-    reuseExistingServer: true,
+    command: 'python3 -m http.server 8917',
+    url: 'http://localhost:8917/',
+    reuseExistingServer: false,
     timeout: 20000,
   },
-  use: { baseURL: 'http://localhost:8899' },
+  use: { baseURL: 'http://localhost:8917' },
   projects: [
     { name: 'chromium', use: { browserName: 'chromium' } },
     { name: 'webkit', use: { browserName: 'webkit' } },
