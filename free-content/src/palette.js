@@ -38,7 +38,14 @@ const WELTEN = {
  * Umschalten — dieselbe Form wie "kraftvoll".
  */
 const NACH_STIMMUNG = {
-  ruhig:      ['creme', 'salbei'],
+  // Die 4 Werte, die das Formular WIRKLICH sendet (form.js data-mood). Bis zum
+  // 04.08. kannte diese Tabelle nur ruhig davon — klar/warm/mutig fielen still
+  // auf STANDARD: drei von vier Chips waren Attrappen.
+  ruhig:      ['salbei', 'creme'],   // „Ruhig & natürlich" — Salbei führt
+  klar:       ['papier', 'nacht'],   // „Klar & professionell"
+  warm:       ['creme', 'salbei'],   // „Warm & nahbar" — Terracotta-Akzent führt
+  mutig:      ['nacht', 'creme'],    // „Kraftvoll & mutig"
+  // Ältere/synonyme Werte bleiben gültig:
   natuerlich: ['salbei', 'creme'],
   hell:       ['papier', 'creme'],
   freundlich: ['papier', 'salbei'],

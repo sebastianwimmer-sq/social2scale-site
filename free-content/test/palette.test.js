@@ -90,6 +90,22 @@ describe('derivePalettes', () => {
   });
 });
 
+describe('Formular-Stimmungen (die 4 echten Chips)', () => {
+  // form.js sendet exakt diese Werte — jede muss ein EIGENES, bewusstes Paar
+  // treffen, nicht den Standard-Fallback (sonst ist der Chip eine Attrappe).
+  it('ruhig, klar, warm, mutig treffen vier verschiedene Leit-Welten', () => {
+    const leit = ['ruhig', 'klar', 'warm', 'mutig'].map(
+      (s) => derivePalettes(s, '')[0].id
+    );
+    expect(new Set(leit).size).toBe(4);
+  });
+
+  it('klar fuehrt hell-professionell (papier), mutig fuehrt dunkel (nacht)', () => {
+    expect(derivePalettes('klar', '')[0].id).toBe('papier');
+    expect(derivePalettes('mutig', '')[0].id).toBe('nacht');
+  });
+});
+
 describe('Kontrast — ihre Wunschfarbe darf nicht unsichtbar werden', () => {
   it('laesst eine kontrastarme Wunschfarbe fallen statt sie unlesbar zu setzen', () => {
     // Sie waehlt exakt den Grund der Welt: der Akzent wuerde verschwinden.
