@@ -7,6 +7,14 @@ const SEITEN = [
   { name: 'fuer-wen', pfad: '/for-you/' },
   { name: 'ergebnisse', pfad: '/results/' },
   { name: 'preise', pfad: '/preise/' },
+  // Beide haengen bewusst NICHT an der geteilten Shell: /onboarding/ ist ein
+  // Formular mit 20 Feldern und /anfrage/ genauso — weniger Fluchtwege heisst
+  // mehr Abschluesse. /danke/ steht hinter dem Kauf. Sie sind hier trotzdem
+  // aufgenommen, weil ihre kopierten Fusszeilen auseinanderlaufen koennen: am
+  // 04.08.2026 zeigte /danke/ noch auf /#ablauf, obwohl es die Seite /ablauf/
+  // laengst gab. Ohne Basisbilder faellt so etwas erst einer Kundin auf.
+  { name: 'danke', pfad: '/danke/' },
+  { name: 'onboarding', pfad: '/onboarding/' },
 ];
 const BREITEN = [390, 768, 1024, 1440];
 
