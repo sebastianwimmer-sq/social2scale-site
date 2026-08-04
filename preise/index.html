@@ -440,6 +440,68 @@
   }
 
 
+  /* ===== Uebersicht: die drei Wege nebeneinander =====
+     Die Ueberschrift verspricht "Drei Wege", zu sehen bekam man sie aber nie
+     nebeneinander: die angepinnte Szene darunter zeigt immer nur einen, und
+     man muss ueber drei Bildschirme scrollen, um alle gesehen zu haben.
+     Vergleichen konnte man sie damit gar nicht — genau das macht eine
+     Preisseite unuebersichtlich.
+
+     Bewusst KEIN Raster aus drei gleichen Karten. Was eine Entscheidung
+     traegt, sind ausgerichtete Zeilen: Wann, Dein Aufwand, Preis. So liest man
+     quer statt dreimal von oben nach unten.
+
+     AUFBAU: Im Markup ist jeder Weg ein zusammenhaengender Block — das ist die
+     richtige Reihenfolge fuer Telefon und Vorleseprogramm. Auf dem Desktop
+     loest display:contents die Bloecke auf, und Zeile und Spalte werden
+     ausdruecklich zugewiesen. Der erste Versuch hatte das Markup zeilenweise
+     angelegt; auf dem Telefon standen dann erst alle drei Ueberschriften und
+     danach alle "Wann"-Zeilen — die Spalten fielen auseinander. */
+  .pr-ueb{margin-top:clamp(var(--s-6),3.4vw,var(--s-8))}
+  .pr-ueb-fuss{margin-top:clamp(var(--s-5),2.6vw,var(--s-6));font-size:.92rem;line-height:1.6;color:var(--faint);max-width:64ch}
+
+  .pr-ueb-nr{display:block;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(1.7rem,1.2rem + 1.5vw,2.6rem);line-height:.86;letter-spacing:-.04em;
+    -webkit-text-stroke:1px var(--line-3);color:transparent}
+  .pr-ueb-name{display:block;margin-top:var(--s-3);font-family:"Archivo",sans-serif;
+    font-size:clamp(.98rem,.94rem + .3vw,1.14rem);font-weight:600;color:var(--paper);line-height:1.25}
+  .pr-ueb-zelle{font-size:.96rem;line-height:1.45;color:var(--muted)}
+  .pr-ueb-zelle b{color:var(--paper);font-weight:600}
+  /* Der Aufwand ist das Unterscheidungsmerkmal — "nichts" bekommt die Farbe. */
+  .pr-ueb-zelle.ist-null{color:var(--emerald);font-weight:600}
+  /* Preise in Mono: sie sind Zahlen, keine Prosa. */
+  .pr-ueb-preis{font-family:"JetBrains Mono",monospace;font-size:clamp(.98rem,.92rem + .3vw,1.16rem);
+    color:var(--paper);letter-spacing:-.01em;line-height:1.5}
+  .pr-ueb-preis small{display:block;margin-top:var(--s-2);font-size:11px;letter-spacing:.06em;color:var(--faint)}
+  .pr-ueb-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);line-height:1.6}
+
+  /* --- Telefon: drei Bloecke untereinander, Beschriftung ueber dem Wert --- */
+  .pr-ueb-spalte + .pr-ueb-spalte{margin-top:var(--s-7);padding-top:var(--s-6);border-top:1px solid var(--line-2)}
+  .pr-ueb-zelle{padding-top:var(--s-5)}
+  .pr-ueb-zelle::before{content:attr(data-lbl);display:block;margin-bottom:var(--s-2);
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint)}
+  .pr-ueb-labels{display:none}
+
+  /* --- Ab 880px: echte Tabelle mit ausgerichteten Zeilen --- */
+  @media (min-width:880px){
+    .pr-ueb-tab{display:grid;grid-template-columns:minmax(92px,140px) repeat(3,minmax(0,1fr));
+      column-gap:clamp(var(--s-4),2vw,var(--s-6))}
+    .pr-ueb-labels,.pr-ueb-spalte{display:contents}
+    .pr-ueb-spalte + .pr-ueb-spalte{margin-top:0;padding-top:0;border-top:0}
+    .pr-ueb-labels > *{grid-column:1}
+    .pr-ueb-spalte > *{grid-column:var(--sp)}
+    .pr-ueb-kopf{grid-row:1;padding-bottom:var(--s-5)}
+    .z-wann{grid-row:2}.z-du{grid-row:3}.z-wir{grid-row:4}.z-preis{grid-row:5}
+    .pr-ueb-labels .z-wann,.pr-ueb-labels .z-du,.pr-ueb-labels .z-wir,.pr-ueb-labels .z-preis,
+    .pr-ueb-zelle{padding:var(--s-5) 0;border-top:1px solid var(--line)}
+    .pr-ueb-labels{display:contents}
+    /* Auf dem Desktop traegt die eigene Spalte links die Beschriftung — die
+       Wiederholung ueber jedem Wert waere dreifach dasselbe. */
+    .pr-ueb-zelle::before{content:none}
+  }
+
   /* ===== Verhaeltnis-Balken =====
      Traegt die Aussage, die die Liste darunter nur aufzaehlt: wie viel bleibt
      bei dir, wie viel geht an uns. Der emeraldfarbene Teil waechst beim
@@ -643,9 +705,62 @@
       <p class="lead">Wie viel du abgibst, entscheidest du. Alles andere machen wir — Sebi und Phil, persönlich, ohne Team dazwischen.</p>
     </div></section>
 
+
+    <!-- Uebersicht der drei Wege. Steht bewusst VOR der angepinnten Szene:
+         erst der Ueberblick, dann das Detail. Wer sich hier schon
+         wiedererkennt, muss die Szene gar nicht durchscrollen. -->
+    <section class="pr-blk pr-ueb-sec" aria-labelledby="pr-ueb-h"><div class="wrap reveal">
+      <div class="pr-blk-head">
+        <p class="pr-rh"><b>№ 02</b> — Überblick</p>
+        <h2 id="pr-ueb-h" class="wipe">Die drei Wege <em>nebeneinander</em>.</h2>
+      </div>
+      <div class="pr-ueb">
+        <div class="pr-ueb-tab stagger">
+          <div class="pr-ueb-labels" aria-hidden="true">
+            <div class="pr-ueb-kopf"></div>
+            <p class="pr-ueb-lbl z-wann">Wann das passt</p>
+            <p class="pr-ueb-lbl z-du">Du machst</p>
+            <p class="pr-ueb-lbl z-wir">Wir machen</p>
+            <p class="pr-ueb-lbl z-preis">Preis</p>
+          </div>
+          <div class="pr-ueb-spalte" style="--sp:2">
+            <div class="pr-ueb-kopf">
+              <span class="pr-ueb-nr" aria-hidden="true">01</span>
+              <span class="pr-ueb-name">Alles abgeben</span>
+            </div>
+            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du hast <b>noch keinen oder einen schwachen</b> Auftritt.</p>
+            <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Ein Briefing. Einmal.</p>
+            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">6 Aufgaben</p>
+            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
+          </div>
+          <div class="pr-ueb-spalte" style="--sp:3">
+            <div class="pr-ueb-kopf">
+              <span class="pr-ueb-nr" aria-hidden="true">02</span>
+              <span class="pr-ueb-name">Laufendes abgeben</span>
+            </div>
+            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Dein <b>Profil steht schon</b> — es fehlt der Content.</p>
+            <p class="pr-ueb-zelle z-du ist-null" data-lbl="Du machst">Nichts.</p>
+            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">5 Aufgaben</p>
+            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 523,60 €<small>im Monat</small></p>
+          </div>
+          <div class="pr-ueb-spalte" style="--sp:4">
+            <div class="pr-ueb-kopf">
+              <span class="pr-ueb-nr" aria-hidden="true">03</span>
+              <span class="pr-ueb-name">Einmal Starthilfe</span>
+            </div>
+            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du willst <b>danach selbst</b> weitermachen.</p>
+            <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Briefing geben, danach selbst posten.</p>
+            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">4 Aufgaben</p>
+            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 446,25 €<small>einmalig</small></p>
+          </div>
+        </div>
+        <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Was in jedem Weg genau steckt — und was du dafür nicht mehr selbst machst — steht direkt darunter.</p>
+      </div>
+    </div></section>
+
     <section class="pr-blk" aria-labelledby="pr-wege"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 02</b> — Entscheidung</p>
+        <p class="pr-rh"><b>№ 03</b> — Entscheidung</p>
         <h2 id="pr-wege" class="wipe">Wie viel willst du <em>abgeben</em>?</h2>
       </div>
 
@@ -771,7 +886,7 @@
 
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 03</b> — Einordnung</p>
+        <p class="pr-rh"><b>№ 04</b> — Einordnung</p>
         <h2 id="pr-rechnung" class="wipe">Was es dich kostet — an <em>Zeit</em> und an Geld.</h2>
         <p class="lead">Nicht als Drohung, sondern als Rechnung. Beim ersten Weg sieht die Zeitseite so aus:</p>
       </div>
@@ -817,7 +932,7 @@
 
     <section class="pr-blk pr-why" aria-labelledby="pr-warum"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 04</b> — Warum nicht billiger</p>
+        <p class="pr-rh"><b>№ 05</b> — Warum nicht billiger</p>
         <h2 id="pr-warum" class="wipe">Zwei Leute. <em>Keine</em> Zwischenebene.</h2>
       </div>
       <div class="pr-why-grid">
@@ -834,7 +949,7 @@
 
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 05</b> — Für die, die vergleichen</p>
+        <p class="pr-rh"><b>№ 06</b> — Für die, die vergleichen</p>
         <h2 id="pr-detail" class="wipe">Alle sieben Pakete im <em>Detail</em>.</h2>
       </div>
 
@@ -928,7 +1043,7 @@
         <p class="lead">Ein Gespräch, kein Termin-Marathon. Wir sagen dir auch, wenn du noch keins der drei brauchst.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="btn btn-ghost" href="/#gratis">Erst die Gratis-Vorschau ansehen</a>
+          <a class="btn btn-ghost" href="/gratis/">Erst die Gratis-Vorschau ansehen</a>
         </div>
       </div>
     </div></section>

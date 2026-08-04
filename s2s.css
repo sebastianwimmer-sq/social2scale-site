@@ -223,6 +223,16 @@
   .kap-tuer:hover .pfeil,.kap-tuer:focus-visible .pfeil{transform:translateX(4px)}
   /* Schmales Band fuer Tueren, die nicht in einem Kapitel Platz finden — etwa
      hinter einer angepinnten Szene. */
+  /* ===== Zweitrangiger Knopf =====
+     Stand bis zum 04.08.2026 nur im Stilblock von index.html, wurde aber auch
+     auf /preise/ benutzt. Dort fehlte damit jede Farbangabe, und der Browser
+     hat seine Standardfarbe fuer Links gezeigt: rgb(158,158,255), ein Flieder,
+     das in der Palette nicht vorkommt — auf der Preisseite, ausgerechnet.
+     Geteilte Bauteile gehoeren in die geteilte Datei. */
+  .btn-ghost{background:transparent;color:var(--paper);border:1px solid var(--line-3);
+    transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+  .btn-ghost:hover{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09)}
+
   .kap-band{padding:clamp(var(--s-5),2.6vw,var(--s-6)) 0;border-top:1px solid var(--line)}
   .kap-band .kap-tuer{margin-top:0}
 
