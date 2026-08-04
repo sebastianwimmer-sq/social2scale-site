@@ -208,27 +208,35 @@ CSS am umgebenden `.reveal.on`, das der vorhandene Beobachter ohnehin setzt.
 - Dateien im Repo ablegen, die niemand sehen soll. `.nojekyll` bedeutet:
   **alles** ist öffentlich abrufbar.
 
-## 🟡 Offen: interne Dateien werden mit ausgeliefert
+## ✅ Erledigt: interne Dateien sind nicht mehr öffentlich
 
-Weil `.nojekyll` im Root liegt, gibt GitHub Pages jede Datei roh heraus —
-auch `docs/`, `lib/`, `scripts/`, `package.json` und `playwright.config.mjs`.
-Nachgeprüft am 29.07.2026: alle liefern HTTP 200.
+Bis zum 04.08.2026 lag hier eine leere `.nojekyll`. Die schaltet die
+Jekyll-Verarbeitung ab — und damit gab GitHub Pages **jede** Datei roh heraus.
+Nachgeprüft, alle mit HTTP 200 öffentlich abrufbar: `docs/WER-MACHT-WAS.md`
+mit der internen Arbeitsteilung, `docs/SEITEN-BAUEN.md`, `lib/shell.mjs`,
+`scripts/build-pages.mjs`, `playwright.config.mjs`.
 
-Betroffen ist unter anderem `docs/domain-umzug-cloudflare.md` mit dem
-DNS-Bestand und dem Umzugs-Runbook. Die DNS-Werte selbst sind ohnehin
-öffentlich (`dig TXT social2scale.com` zeigt dasselbe) — unangenehm ist, dass
-interne Runbooks und Specs mit sehr offener Innensicht auf der Marketing-Domain
-liegen.
+`robots.txt` hielt sie nur aus Such- und KI-Antworten heraus. Gegen einen
+Direktaufruf half das nicht.
 
-**Vorläufig** hält `robots.txt` sie aus Such- und KI-Antworten heraus. Das
-verhindert keinen Direktaufruf.
+Jetzt steuert `_config.yml` im Wurzelverzeichnis, was veröffentlicht wird.
+**Neue interne Ordner dort in `exclude` eintragen** — sonst sind sie sofort
+öffentlich.
 
-**Richtig gelöst** wäre es auf einem dieser Wege — beides ändert den
-Auslieferungsweg der Live-Seite und gehört deshalb bewusst entschieden, nicht
-nebenbei gemacht:
-1. `.nojekyll` entfernen, `_config.yml` mit `exclude:` anlegen. Jekyll reicht
-   HTML ohne Front-Matter unverändert durch, das Risiko ist gering — aber es
-   ist eine Änderung am Deploy einer laufenden Seite.
-2. Interne Dokumente in ein nicht veröffentlichtes Repo verschieben. Sauberste
-   Trennung, macht aber die Abstimmung zwischen den Sessions umständlicher,
-   weil `WER-MACHT-WAS.md` dann nicht mehr neben dem Code liegt.
+Gegenprobe nach der Umstellung: 23 öffentliche Ziele weiterhin 200,
+8 interne jetzt 404, Domain und Zertifikat unberührt.
+
+### ⚠️ Zwei Fallen dabei
+
+1. **CNAME niemals ausschließen.** Ohne sie fällt die Seite auf die
+   github.io-Adresse zurück und `social2scale.com` ist weg.
+2. **Liquid-Syntax prüfen, bevor jemand `.nojekyll` wieder anfasst.** Jekyll
+   liest `{{` und `{%` als Vorlagen-Anweisung. Vor der Umstellung geprüft:
+
+   ```bash
+   git ls-files "*.html" "*.css" "*.js" "*.txt" "*.xml" "*.svg" |
+     while read f; do grep -q "{{\|{%" "$f" && echo "KOLLISION: $f"; done
+   ```
+
+   Damals null Treffer. Kommt je eine Datei mit dieser Syntax dazu, muss sie
+   entweder in `exclude` oder ein `{% raw %}`-Block herum.
