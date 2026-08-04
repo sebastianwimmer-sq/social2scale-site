@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { derivePalettes, contrastRatio } from '../src/palette.js';
-import { ACCENT_MIN_CONTRAST } from '../src/constants.js';
+import { ACCENT_MIN_CONTRAST, FARB_CHIPS } from '../src/constants.js';
 
 const istHex = (v) => /^#[0-9a-f]{6}$/i.test(v);
 
@@ -148,5 +148,26 @@ describe('Kontrast — ihre Wunschfarbe darf nicht unsichtbar werden', () => {
     expect(contrastRatio('#000000', '#FFFFFF')).toBeCloseTo(21, 1);
     expect(contrastRatio('#FFFFFF', '#FFFFFF')).toBeCloseTo(1, 5);
     expect(contrastRatio('#FFFFFF', '#000000')).toBeCloseTo(21, 1); // symmetrisch
+  });
+});
+
+describe('FARB_CHIPS — kuratierte Markenfarben des Wizard-Steps', () => {
+  // Alle Stimmungen abklappern = alle erreichbaren Papiere. Wird der Akzent
+  // ueberall uebernommen, hat jeder Chip das Kontrast-Gate ueberall bestanden —
+  // wir bieten keine Wahl an, die ihr Bild zerstoeren koennte.
+  const stimmungen = ['ruhig', 'klar', 'warm', 'mutig', 'hell', 'dunkel', 'edel', 'freundlich', 'natuerlich', 'kraftvoll', ''];
+  for (const { hex, name } of FARB_CHIPS) {
+    it(`${name} (${hex}) traegt auf jeder Welt`, () => {
+      for (const s of stimmungen) {
+        for (const p of derivePalettes(s, hex)) {
+          expect(p.accent, `${name} auf ${p.id}`).toBe(hex);
+        }
+      }
+    });
+  }
+
+  it('sind genau 6, alle als kleingeschriebene Hex-Werte', () => {
+    expect(FARB_CHIPS).toHaveLength(6);
+    for (const { hex } of FARB_CHIPS) expect(hex).toMatch(/^#[0-9a-f]{6}$/);
   });
 });

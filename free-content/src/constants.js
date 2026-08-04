@@ -73,3 +73,18 @@ export const BUILDING_TIMEOUT_MINUTES = 15;
 export const AVATAR_MIN_BYTES = 2048;
 export const AVATAR_MAX_BYTES = 2_000_000;
 export const FOTO_MAX_CHARS = 2_800_000;
+
+/**
+ * Kuratierte Markenfarben fuer den Wizard-Step "Markenfarbe". JEDE muss auf
+ * ALLEN Welten-Papieren >= ACCENT_MIN_CONTRAST tragen (palette.test.js
+ * erzwingt das) — eine Wahl, die ihr Bild zerstoeren koennte, bieten wir gar
+ * nicht erst an. Hex klein, wie derivePalettes sie zurueckgibt.
+ */
+export const FARB_CHIPS = [
+  { hex: '#c2410c', name: 'Terracotta' },
+  { hex: '#b45309', name: 'Ocker' },
+  { hex: '#2f6f5e', name: 'Tannengrün' },
+  { hex: '#2563eb', name: 'Ozeanblau' },
+  { hex: '#7c3aed', name: 'Violett' },
+  { hex: '#be185d', name: 'Beere' },
+];

@@ -11,6 +11,7 @@
  */
 
 import { htmlDoc } from './shell.js';
+import { FARB_CHIPS } from '../constants.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
@@ -87,6 +88,15 @@ const PAGE_STYLE = `
   .chip[aria-pressed=true]{background:var(--flow)}
   .chip[aria-pressed=true] span{background:radial-gradient(130% 130% at 0% 0%,color-mix(in oklab,var(--mood) 30%,transparent),rgba(14,17,20,.92) 62%);color:#fff}
 
+  /* Markenfarbe-Chips: kleiner Farbpunkt vor dem Namen */
+  .farb-chips .sw{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:9px;vertical-align:-2px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+  .sw-multi{background:conic-gradient(#c2410c,#2563eb,#2f6f5e,#be185d,#c2410c)}
+  /* Foto-Upload: runder Vorschau-Slot im gleichen Glas-Look wie die Felder */
+  .foto-row{display:flex;align-items:center;gap:14px}
+  .foto-drop{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));border:1px dashed rgba(255,255,255,.22);border-radius:16px;padding:12px 18px 12px 12px;cursor:pointer;color:var(--muted);font-family:var(--ff-label);font-weight:600;font-size:13.5px;transition:border-color .3s,transform .3s var(--e-spring)}
+  .foto-drop:hover{border-color:rgba(0,184,136,.55);transform:translateY(-2px)}
+  .foto-ph{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:var(--faint)}
+  #fotoPrev{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 2px var(--emerald-soft)}
   .react{margin-top:10px;font-size:.9rem;color:var(--emerald-soft);min-height:20px;display:flex;align-items:center;gap:7px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s var(--e-out)}
   .react.show{opacity:1;transform:none}
   .react .tick{display:inline-flex;align-items:center;color:var(--emerald-soft)}
@@ -141,7 +151,7 @@ function pageMarkup(turnstileSiteKey) {
   <div class="top">
     <img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="24">
     <span class="prog"><i id="bar"></i></span>
-    <span class="cnt" id="cnt">1/7</span>
+    <span class="cnt" id="cnt">1/9</span>
   </div>
 
   <div class="stage">
@@ -230,6 +240,36 @@ function pageMarkup(turnstileSiteKey) {
       </div>
 
       <div class="q" data-step="7">
+        <span class="eyebrow">Zeig dich</span>
+        <h2>Magst du dein <em>Profilbild</em> zeigen?</h2>
+        <input type="file" id="f-foto" accept="image/*" style="display:none">
+        <div class="foto-row">
+          <button type="button" class="foto-drop" id="fotoBtn">
+            <span class="foto-ph" id="fotoPh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.4-2h5.2L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+            <img id="fotoPrev" alt="" hidden>
+            <span class="foto-lab" id="fotoLab">Foto auswählen</span>
+          </button>
+          <button type="button" class="back" id="fotoWeg" hidden>Entfernen</button>
+        </div>
+        <p class="hint" style="text-align:left;margin-top:10px">Optional — dein Feed zeigt es dann wie auf Instagram, mit Story-Ring.</p>
+        <div class="react" id="r-foto"></div>
+        <div class="foot"><button class="next" data-go="8"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="8">
+        <span class="eyebrow">Deine Markenfarbe</span>
+        <h2>Hat deine Marke eine <em>Farbe</em>?</h2>
+        <div class="chips farb-chips" id="farbe" role="group" aria-label="Markenfarbe">
+          ${FARB_CHIPS.map((f) => `<button class="chip farb" data-hex="${f.hex}" aria-pressed="false"><span><i class="sw" style="background:${f.hex}"></i>${f.name}</span></button>`).join('')}
+          <button class="chip farb" id="farb-eigene" aria-pressed="false"><span><i class="sw sw-multi"></i>Eigene…</span></button>
+        </div>
+        <input type="color" id="f-farbe-custom" value="#2f6f5e" aria-label="Eigene Markenfarbe" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none">
+        <p class="hint" style="text-align:left;margin-top:10px">Optional — ohne Auswahl wählen wir eine, die zu deiner Stimmung passt.</p>
+        <div class="react" id="r-farbe"></div>
+        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="7">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="9">
         <span class="eyebrow">Letzter Schritt</span>
         <h2>Fast fertig — <em>wohin damit</em>?</h2>
         <div class="field"><div class="field-in"><input type="email" id="f-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
@@ -239,15 +279,15 @@ function pageMarkup(turnstileSiteKey) {
           <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
           <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
-          <button class="back" data-go="6">Zurück</button>
+          <button class="back" data-go="8">Zurück</button>
         </div>
       </div>
 
-      <div class="q" data-step="8">
+      <div class="q" data-step="10">
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
-        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="7">E-Mail ändern</button></div>
+        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="9">E-Mail ändern</button></div>
       </div>
     </div>
     <p class="legal"><a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
@@ -260,7 +300,7 @@ function pageMarkup(turnstileSiteKey) {
 // wurde von reiner Navigation auf einen echten POST /api/free-content umgestellt.
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
-  const TOTAL=7; let step=0;
+  const TOTAL=9; let step=0;
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOODS={
@@ -275,7 +315,7 @@ const PAGE_SCRIPT = `
     $('#bar').style.transform=\`scaleX(\${s/TOTAL})\`;
     $('#cnt').textContent=\`\${s}/\${TOTAL}\`; $('#cnt').style.visibility=n===0?'hidden':'visible';
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
-    if(n===8){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
+    if(n===10){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
   function react(id,html,cls){const el=$(id);el.innerHTML=html;el.className='react show'+(cls?' '+cls:'');}
   function clr(id){$(id).className='react';}
@@ -298,6 +338,67 @@ const PAGE_SCRIPT = `
     document.querySelectorAll('#stand .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
     react('#r-stand',\`Alles klar — da holen wir dich genau ab.\`);
   }));
+
+  // ── Foto-Upload (optional): clientseitig auf 512px verkleinert, als JPEG-
+  // data-URL in den Payload. Moderne Browser drehen EXIF beim <img>-Decode
+  // selbst — Canvas zeichnet also schon richtig orientiert. ──
+  let fotoWahl='';
+  const FOTO_KANTE=512;
+  function fotoLaden(file){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(file);});}
+  $('#fotoBtn').addEventListener('click',()=>$('#f-foto').click());
+  $('#f-foto').addEventListener('change',async e=>{
+    const file=e.target.files&&e.target.files[0]; if(!file)return;
+    try{
+      const img=await fotoLaden(file);
+      const s=Math.min(1,FOTO_KANTE/Math.max(img.naturalWidth,img.naturalHeight));
+      const w=Math.max(1,Math.round(img.naturalWidth*s)),h=Math.max(1,Math.round(img.naturalHeight*s));
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(img.src);
+      fotoWahl=c.toDataURL('image/jpeg',.85);
+      const prev=$('#fotoPrev');prev.src=fotoWahl;prev.hidden=false;$('#fotoPh').hidden=true;
+      $('#fotoLab').textContent='Anderes Foto';$('#fotoWeg').hidden=false;
+      pvAv.style.backgroundImage='url('+fotoWahl+')';pvAv.style.backgroundSize='cover';pvAv.textContent='';bump(pvAv);
+      react('#r-foto','Schön! Dein Feed zeigt dich — mit Story-Ring.');
+    }catch(err){
+      console.error('Foto nicht lesbar:',err);
+      react('#r-foto','Das Bild ließ sich nicht lesen — probier ein anderes.','warn');
+    }
+  });
+  $('#fotoWeg').addEventListener('click',()=>{
+    fotoWahl='';$('#f-foto').value='';
+    $('#fotoPrev').hidden=true;$('#fotoPh').hidden=false;
+    $('#fotoLab').textContent='Foto auswählen';$('#fotoWeg').hidden=true;
+    pvAv.style.backgroundImage='';pvAv.textContent=($('#f-name').value.trim()[0]||'·').toUpperCase();
+    clr('#r-foto');
+  });
+
+  // ── Markenfarbe (optional): Chip an/ab, "Eigene…" oeffnet den Color-Picker.
+  // Die Wahl faerbt sofort die Live-Vorschau (--mood), wie es die Stimmung tut. ──
+  let farbeWahl='';
+  function farbeSetzen(hex){
+    farbeWahl=hex;
+    if(hex){document.documentElement.style.setProperty('--mood',hex);bump(pvAv);react('#r-farbe','Deine Farbe — dein Feed trägt sie als Akzent.');}
+    else clr('#r-farbe');
+  }
+  document.querySelectorAll('#farbe .chip').forEach(c=>c.addEventListener('click',()=>{
+    if(c.id==='farb-eigene'){
+      document.querySelectorAll('#farbe .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+      c.setAttribute('aria-pressed','true');
+      $('#f-farbe-custom').click();
+      return;
+    }
+    const war=c.getAttribute('aria-pressed')==='true';
+    document.querySelectorAll('#farbe .chip').forEach(x=>x.setAttribute('aria-pressed','false'));
+    if(war){farbeSetzen('');return;}
+    c.setAttribute('aria-pressed','true');
+    farbeSetzen(c.dataset.hex);
+  }));
+  $('#f-farbe-custom').addEventListener('input',e=>{
+    const eig=$('#farb-eigene');
+    eig.querySelector('.sw').style.background=e.target.value;
+    farbeSetzen(e.target.value.toLowerCase());
+  });
 
   const DOM=['gmail.com','googlemail.com','web.de','gmx.de','gmx.net','t-online.de','hotmail.com','outlook.de','outlook.com','yahoo.de','yahoo.com','icloud.com','me.com'];
   function lev(a,b){const m=a.length,n=b.length,d=[...Array(m+1)].map((_,i)=>[i,...Array(n).fill(0)]);for(let j=0;j<=n;j++)d[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n];}
@@ -349,7 +450,8 @@ const PAGE_SCRIPT = `
       ziel:$('#f-ziel').value.trim(),
       stimmung:(document.querySelector('#stimmung .chip[aria-pressed=true]')||{}).dataset?.mood||'',
       stand:(document.querySelector('#stand .chip[aria-pressed=true]')||{}).dataset?.stand||'',
-      farbe:'',
+      farbe:farbeWahl,
+      foto:fotoWahl,
       consent:true,
       testimonialConsent:$('#f-testimonial').checked,
       elapsed:Date.now()-START,
@@ -360,7 +462,7 @@ const PAGE_SCRIPT = `
       const res=await fetch('/api/free-content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;
       try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
-      if(res.ok&&data&&data.ok){show(8);return;}
+      if(res.ok&&data&&data.ok){show(10);return;}
       react('#r-mail',SUBMIT_FEHLER[data&&data.error]||'Kurz warten und nochmal versuchen.','warn');
       turnstileReset();
     }catch(err){

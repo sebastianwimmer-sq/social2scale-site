@@ -21,6 +21,27 @@ describe('Formular-Seite', () => {
     // sich aendern, die Aussage nicht.
     expect(html).toContain('Schnellentwurf');
   });
+
+  it('enthaelt die zwei optionalen Personalisierungs-Steps (Foto + Markenfarbe)', async () => {
+    const req = new Request('https://start.social2scale.com/');
+    const ctx = createExecutionContext();
+    const res = await worker.fetch(req, env, ctx);
+    await waitOnExecutionContext(ctx);
+    const html = await res.text();
+    // Foto-Step
+    expect(html).toContain('id="f-foto"');
+    expect(html).toContain('Profilbild');
+    // Markenfarbe-Step: Chips aus FARB_CHIPS + Eigene
+    expect(html).toContain('id="farbe"');
+    expect(html).toContain('data-hex="#c2410c"');
+    expect(html).toContain('Terracotta');
+    expect(html).toContain('id="farb-eigene"');
+    // Renumbering: Mail-Step ist auf 9 gerueckt, Done auf 10, Zaehler auf 9
+    expect(html).toContain('data-step="9"');
+    expect(html).toContain('data-step="10"');
+    expect(html).toContain('1/9');
+    expect(html).toContain('const TOTAL=9');
+  });
 });
 
 // Bis zum 28.07. lieferte der Funnel GAR KEINE Sicherheits-Header — auf Seiten,
