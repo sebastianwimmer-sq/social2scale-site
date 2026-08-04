@@ -63,3 +63,12 @@ export const FOLLOWUP_TAGE = 2;
  * Wahrscheinlichkeit tot (leads.js sweepStaleBuilding).
  */
 export const BUILDING_TIMEOUT_MINUTES = 15;
+
+/**
+ * Avatar-Fetch (unavatar.io): Gates gegen "Ressource da, Auslieferung leer".
+ * Min-Groesse sortiert Platzhalter/kaputte Winzbilder aus, Max-Groesse haelt
+ * die data-URL der Render-Seite im Rahmen, Timeout schuetzt die Wartezeit.
+ */
+export const AVATAR_TIMEOUT_MS = 4000;
+export const AVATAR_MIN_BYTES = 2048;
+export const AVATAR_MAX_BYTES = 2_000_000;
