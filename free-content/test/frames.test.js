@@ -138,3 +138,28 @@ describe('Avatar im Profil-Frame', () => {
     expect(html).not.toContain('class="share-pfp"');
   });
 });
+
+describe('IG-App-Detailtreue im Profil-Frame (Besucher-Perspektive)', () => {
+  it('zeigt Folgen- und Nachricht-Buttons unter der Bio', () => {
+    expect(html).toContain('class="btn-follow"');
+    expect(html).toContain('>Folgen<');
+    expect(html).toContain('class="btn-msg"');
+    expect(html).toContain('>Nachricht<');
+  });
+
+  it('zeigt die Tab-Leiste (Grid aktiv, Reels, Markiert) ueber dem Grid', () => {
+    // 2 Farbwelten × 1 Profil-Frame = je 2 Treffer
+    expect(html.split('class="tab on"').length - 1).toBe(2);
+    expect(html.split('class="tab"').length - 1).toBe(4); // 2 inaktive je Welt
+  });
+
+  it('Stats heissen wie in der deutschen IG-App (Gefolgt, nicht Folgt)', () => {
+    expect(html).toContain('Gefolgt');
+    expect(html).not.toContain('>Folgt<');
+  });
+
+  it('Statusbar traegt echte Icons statt Platzhalter-Zeichen', () => {
+    expect(html).toContain('class="ios-ic"');
+    expect(html).not.toContain('▮▮▮');
+  });
+});

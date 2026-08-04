@@ -131,14 +131,20 @@ export const LOOK_CSS = `
     background: var(--paper);
     box-shadow: 0 40px 90px -30px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.22);
   }
-  /* Statusleiste + Handle-Kopf: die zwei Details, die es sofort als IG lesbar machen */
-  .ios { display: flex; justify-content: space-between; padding: 20px 30px 4px;
+  /* Statusleiste + App-Header: die Details, die es sofort als IG lesbar machen.
+     Besucher-Perspektive (Back-Chevron, Folgen-Button): so sieht IHR Profil fuer
+     ihre Wunschkundin aus. */
+  .ios { display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 30px 2px;
     font-family: var(--ff-body); font-size: 17px; font-weight: 600; color: var(--ink); }
-  .ios .rechts { letter-spacing: .12em; }
-  .ig-top { display: flex; align-items: center; gap: 10px; padding: 10px 26px 14px;
+  .ios-ic { display: flex; align-items: center; gap: 7px; }
+  .ios-ic svg { display: block; }
+  .ig-top { display: flex; align-items: center; gap: 12px; padding: 8px 20px 12px;
     font-family: var(--ff-body); font-size: 21px; font-weight: 700; color: var(--ink);
     border-bottom: 1px solid var(--rule); }
-  .prof { padding: 24px 26px 22px; }
+  .ig-top > span:nth-child(2) { flex: 1; }
+  .ig-back, .ig-more { display: flex; color: var(--ink); }
+  .prof { padding: 18px 26px 22px; }
   .prof-top { display: flex; align-items: center; gap: 26px; }
   /* Story-Ring wie bei aktiver IG-Story — in der Akzentfarbe der Welt, nicht
      im IG-Markengradient (Look-alike ja, Marken-Kopie nein). Der Paper-Rand
@@ -163,13 +169,22 @@ export const LOOK_CSS = `
   .stat { text-align: center; font-family: var(--ff-body); }
   .stat b { display: block; font-size: 23px; font-weight: 700; color: var(--ink); }
   .stat span { font-size: 15px; color: var(--ink-soft); }
-  .bio { margin-top: 18px; font-family: var(--ff-body); }
+  .bio { margin-top: 14px; font-family: var(--ff-body); }
   .bio .n { font-size: 20px; font-weight: 700; color: var(--ink); }
   .bio .l { font-size: 17px; line-height: 1.45; color: var(--ink-soft); margin-top: 3px; }
   .bio .l b { color: var(--accent); font-weight: 600; }
   /* Highlights: echtes IG-Element UND Teil des Pakets (render-brand.cjs baut die Cover).
      Sie zeigen, dass hier ein ganzer Auftritt gedacht ist, nicht nur ein paar Posts. */
-  .hl { display: flex; gap: 18px; margin-top: 20px; }
+  /* Folgen/Nachricht wie in der App — Folgen traegt die Akzentfarbe: der
+     Conversion-Moment, den sie fuehlen soll. */
+  .cta-row { display: flex; gap: 10px; margin-top: 16px; font-family: var(--ff-body); }
+  .btn-follow, .btn-msg {
+    flex: 1; text-align: center; padding: 12px 0; border-radius: 12px;
+    font-size: 17px; font-weight: 700;
+  }
+  .btn-follow { flex: 1.35; background: var(--accent); color: var(--paper); }
+  .btn-msg { background: color-mix(in oklab, var(--ink) 9%, var(--paper)); color: var(--ink); }
+  .hl { display: flex; gap: 18px; margin-top: 18px; }
   .hl-i { text-align: center; font-family: var(--ff-body); font-size: 12px; color: var(--ink-soft); }
   .hl-c {
     width: 62px; height: 62px; border-radius: 50%; margin-bottom: 6px;
@@ -178,8 +193,14 @@ export const LOOK_CSS = `
     font-family: var(--ff-display); font-size: 20px; font-weight: 600;
     background: color-mix(in oklab, var(--accent) 12%, var(--paper)); color: var(--accent);
   }
+  /* Tab-Leiste wie in der App: Grid aktiv (Unterstrich in Ink), Reels, Markiert. */
+  .tabs { display: flex; margin-top: 14px; }
+  .tab { flex: 1; display: flex; justify-content: center; padding: 10px 0 9px;
+    color: var(--ink-soft); border-bottom: 1.5px solid var(--rule); }
+  .tab.on { color: var(--ink); border-bottom-color: var(--ink); }
+  .tab svg { display: block; }
   /* 2px statt 4px: das echte IG-Grid ist nahezu randlos — Detailtreue. */
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 22px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 0; }
   .cell {
     aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
     padding: 10px; text-align: center;

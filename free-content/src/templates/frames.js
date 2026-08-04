@@ -163,28 +163,52 @@ function profil(id, clean, copy, p) {
     ? `<img class="pfp-img" src="${esc(clean.avatarUrl)}" alt="">`
     : initial;
 
+  // Besucher-Perspektive wie in der echten IG-App: Back-Chevron + „···" im
+  // Header, Folgen/Nachricht unter der Bio, Tab-Leiste ueberm Grid. Das ist der
+  // Frame, den sie ihren Wunschkundinnen zeigt — er muss wie ein Screenshot
+  // wirken, nicht wie eine Illustration. Kein IG-Logo-Asset (Look-alike, keine
+  // Marken-Kopie).
+  const S = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"';
+  const UI = {
+    back: `<svg ${S} width="26" height="26"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg>`,
+    dots: `<svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>`,
+    signal: `<svg viewBox="0 0 20 14" fill="currentColor" width="20" height="14"><rect x="0" y="9" width="3.4" height="5" rx="1"/><rect x="5.2" y="6" width="3.4" height="8" rx="1"/><rect x="10.4" y="3" width="3.4" height="11" rx="1"/><rect x="15.6" y="0" width="3.4" height="14" rx="1"/></svg>`,
+    wifi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" width="19" height="16"><path d="M4 9.5a12 12 0 0 1 16 0"/><path d="M7 13a8 8 0 0 1 10 0"/><path d="M10 16.5a4 4 0 0 1 4 0"/><circle cx="12" cy="19.4" r="1.15" fill="currentColor" stroke="none"/></svg>`,
+    batt: `<svg viewBox="0 0 27 14" width="25" height="14"><rect x=".8" y=".8" width="22" height="12.4" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.6" y="2.6" width="15" height="8.8" rx="1.8" fill="currentColor"/><path d="M24.6 4.8v4.4a2.4 2.4 0 0 0 0-4.4z" fill="currentColor" fill-opacity=".5"/></svg>`,
+    grid: `<svg ${S} width="27" height="27"><rect x="3.5" y="3.5" width="17" height="17" rx="1.2"/><path d="M9.2 3.5v17M14.8 3.5v17M3.5 9.2h17M3.5 14.8h17"/></svg>`,
+    reels: `<svg ${S} width="26" height="26"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M3.5 8.6h17M8.6 3.5l2.6 5.1M14.2 3.5l2.6 5.1"/><path d="M10.4 12.2l4.6 2.7-4.6 2.7z" fill="currentColor" stroke="none"/></svg>`,
+    tag: `<svg ${S} width="26" height="26"><circle cx="12" cy="9.6" r="2.6"/><path d="M6.9 16.8c.5-2.4 2.6-3.7 5.1-3.7s4.6 1.3 5.1 3.7"/><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/></svg>`,
+  };
+
   return `<div class="frame grain" id="${id}" style="${tokens(p)}">
     <div class="phone-pad"><div class="shell"><div class="device">
-      <div class="ios"><span>9:41</span><span class="rechts">▮▮▮ ▰</span></div>
-      <div class="ig-top"><span>@${esc(clean.handle)}</span></div>
+      <div class="ios"><span>9:41</span><span class="ios-ic">${UI.signal}${UI.wifi}${UI.batt}</span></div>
+      <div class="ig-top"><span class="ig-back">${UI.back}</span><span>${esc(clean.handle)}</span><span class="ig-more">${UI.dots}</span></div>
       <div class="prof">
         <div class="prof-top">
           <div class="pfp-ring"><div class="avatar">${avatarInhalt}</div></div>
           <div class="stats">
             <div class="stat"><b>9</b><span>Beiträge</span></div>
             <div class="stat"><b>1.240</b><span>Follower</span></div>
-            <div class="stat"><b>318</b><span>Folgt</span></div>
+            <div class="stat"><b>318</b><span>Gefolgt</span></div>
           </div>
         </div>
         <div class="bio">
           <div class="n">${esc(clean.name)}</div>
           <div class="l"><b>${esc(copy.bio)}</b></div>
         </div>
+        <div class="cta-row">
+          <span class="btn-follow">Folgen</span>
+          <span class="btn-msg">Nachricht</span>
+        </div>
         <div class="hl">
           <div class="hl-i"><div class="hl-c">${HL_ICONS.person}</div>Über mich</div>
           <div class="hl-i"><div class="hl-c">${HL_ICONS.spark}</div>Angebot</div>
           <div class="hl-i"><div class="hl-c">${HL_ICONS.heart}</div>Stimmen</div>
           <div class="hl-i"><div class="hl-c">${HL_ICONS.chat}</div>Fragen</div>
+        </div>
+        <div class="tabs">
+          <span class="tab on">${UI.grid}</span><span class="tab">${UI.reels}</span><span class="tab">${UI.tag}</span>
         </div>
         <div class="grid3">${zellen}</div>
       </div>
