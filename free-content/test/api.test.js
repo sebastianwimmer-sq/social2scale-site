@@ -339,3 +339,32 @@ describe('GET /img/:token/:name', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('POST /api/free-content — foto (Upload-Ende-zu-Ende)', () => {
+  beforeEach(async () => {
+    await resetTables(env.DB, SCHEMA_SQL, TABELLEN);
+  });
+
+  it('legt ein gutes Foto unter free/<token>/avatar.bin ab', async () => {
+    const FOTO = 'data:image/jpeg;base64,' + btoa('x'.repeat(3000));
+    const res = await post({ ...GUELTIG, foto: FOTO });
+    expect(res.status).toBe(200);
+    const [lead] = await zeilen();
+    const obj = await env.IMAGES.get(`free/${lead.token}/avatar.bin`);
+    expect(obj).not.toBeNull();
+    expect((await obj.arrayBuffer()).byteLength).toBe(3000);
+  });
+
+  it('weist ein kaputtes foto-Feld mit stabilem Fehlerschluessel ab', async () => {
+    const res = await post({ ...GUELTIG, foto: 'https://boese.example/x.jpg' });
+    expect(res.status).toBe(422);
+    expect((await res.json()).error).toBe('foto');
+    expect(await zeilen()).toHaveLength(0);   // kein Lead angelegt
+  });
+
+  it('ohne foto entsteht kein R2-Objekt', async () => {
+    await post(GUELTIG);
+    const [lead] = await zeilen();
+    expect(await env.IMAGES.get(`free/${lead.token}/avatar.bin`)).toBeNull();
+  });
+});

@@ -373,3 +373,31 @@ describe('mirrorToCrm', () => {
     expect(nach.generated_at).toBeTruthy();        // Riegel bleibt gesetzt
   });
 });
+
+describe('generateFor — hochgeladenes Foto', () => {
+  const FOTO = 'data:image/jpeg;base64,' + btoa('x'.repeat(3000));
+
+  it('bettet das Foto aus R2 als avatarUrl in den Render ein', async () => {
+    const token = await bestaetigterLead();
+    const { speichereAvatar } = await import('../src/avatar.js');
+    expect(await speichereAvatar(env, token, FOTO)).toBe(true);
+    renderMock.mockImplementationOnce(async () => []);
+
+    const r = await generateFor(env, token);
+
+    expect(r.ok).toBe(true);
+    const cleanArg = renderMock.mock.calls.at(-1)[2];
+    expect(cleanArg.avatarUrl).toBe(FOTO);
+  });
+
+  it('rendert OHNE avatarUrl, wenn kein Foto hochgeladen wurde', async () => {
+    const token = await bestaetigterLead();
+    renderMock.mockImplementationOnce(async () => []);
+
+    const r = await generateFor(env, token);
+
+    expect(r.ok).toBe(true);
+    const cleanArg = renderMock.mock.calls.at(-1)[2];
+    expect(cleanArg.avatarUrl).toBeUndefined();
+  });
+});

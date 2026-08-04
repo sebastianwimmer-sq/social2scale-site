@@ -8,6 +8,7 @@
 
 import { checkInput } from './moderate.js';
 import { generateCopy } from './copy.js';
+import { ladeAvatar } from './avatar.js';
 import { derivePalettes } from './palette.js';
 import { renderAll } from './render.js';
 import { findByToken } from './leads.js';
@@ -154,6 +155,9 @@ export async function generateFor(env, token) {
   try {
     // Jeder Schritt = echte Arbeit dahinter, die ein Poller sehen kann (Spec §6).
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.texte);
+    // Parallel zur Copy (ladeAvatar wirft nie): ihr hochgeladenes Foto aus R2 —
+    // bis die Texte stehen, ist es laengst da. Kostet keine Wartezeit.
+    const avatarVersprechen = ladeAvatar(env, token);
     const copy = await generateCopy(env, clean);   // wirft nie, faellt zurueck
 
     // Ist Claude die Ursache des Fallbacks (Guthaben leer / API-Fehler / falsch
@@ -190,7 +194,10 @@ export async function generateFor(env, token) {
     const palettes = derivePalettes(lead.stimmung, lead.farbe);
 
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.rendern);
-    await mitRetry(() => renderAll(env, token, clean, copy, palettes));
+    // Foto einsammeln (null = Initial-Fallback im Frame, frames.js entscheidet).
+    const avatarUrl = await avatarVersprechen;
+    const zumRendern = avatarUrl ? { ...clean, avatarUrl } : clean;
+    await mitRetry(() => renderAll(env, token, zumRendern, copy, palettes));
 
     // Captions (farbwelt-unabhaengig) neben die Bilder legen — der Reveal holt sie
     // einmal von /api/content/:token. Struktur bleibt { captions: [3 strings] }

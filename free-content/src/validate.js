@@ -4,7 +4,7 @@
  */
 
 import { DISPOSABLE_DOMAINS } from './disposable.js';
-import { FIELD_LIMITS } from './constants.js';
+import { FIELD_LIMITS, FOTO_MAX_CHARS } from './constants.js';
 
 const GMAIL_DOMAINS = new Set(['gmail.com', 'googlemail.com']);
 
@@ -153,6 +153,21 @@ export function validateSubmission(input) {
   const source = clip(raw.source, FIELD_LIMITS.source);
   if (source === null) return { ok: false, error: 'source' };
 
+  // foto (optionaler Upload, data-URL): BEWUSST NICHT durch clip — das wuerde
+  // die lange Base64-Kette kappen und Whitespace-Normalisierung braucht sie
+  // nicht. Hier nur das billige Vor-Gate (Typ-Prefix + Laengen-Cap VOR jedem
+  // Dekodieren); die harte Pruefung inkl. Base64-Decode macht avatar.js
+  // (parseFotoDataUrl) beim Ablegen — Verteidigung in zwei Schichten.
+  let foto = '';
+  if (raw.foto !== null && raw.foto !== undefined && raw.foto !== '') {
+    if (typeof raw.foto !== 'string') return { ok: false, error: 'foto' };
+    if (raw.foto.length > FOTO_MAX_CHARS) return { ok: false, error: 'foto' };
+    if (!/^data:image\/(?:jpeg|png|webp);base64,/.test(raw.foto)) {
+      return { ok: false, error: 'foto' };
+    }
+    foto = raw.foto;
+  }
+
   if (raw.consent !== true) return { ok: false, error: 'consent' };
 
   // Separates, freiwilliges Testimonial-Einverstaendnis (DSGVO-Kopplungsverbot):
@@ -175,6 +190,7 @@ export function validateSubmission(input) {
       consent: true,
       testimonialConsent,
       source,
+      foto,
     },
   };
 }

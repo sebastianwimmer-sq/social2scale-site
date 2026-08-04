@@ -244,3 +244,35 @@ describe('validateSubmission', () => {
     expect(validateSubmission({ ...gut, testimonialConsent: 1 }).value.testimonialConsent).toBe(false);
   });
 });
+
+describe('validateSubmission — foto (optionaler Upload)', () => {
+  const gut = {
+    name: 'Sebi', email: 'sebi@firma.de', handle: 'sebi.wimmer',
+    branche: 'Fitness', ziel: 'Mehr Anfragen', stimmung: 'ruhig',
+    consent: true,
+  };
+  const FOTO = 'data:image/jpeg;base64,' + btoa('x'.repeat(3000));
+
+  it('nimmt eine gute Foto-data-URL an und reicht sie unveraendert durch', () => {
+    const r = validateSubmission({ ...gut, foto: FOTO });
+    expect(r.ok).toBe(true);
+    expect(r.value.foto).toBe(FOTO); // NICHT durch clip (wuerde kappen)
+  });
+
+  it('fehlendes oder leeres foto ist ok (optional)', () => {
+    expect(validateSubmission(gut).ok).toBe(true);
+    expect(validateSubmission(gut).value.foto).toBe('');
+    expect(validateSubmission({ ...gut, foto: '' }).value.foto).toBe('');
+  });
+
+  it('lehnt Nicht-Strings, fremde Formate und URLs ab', () => {
+    for (const schlecht of [['a'], 42, 'https://x.de/a.jpg', 'data:text/html;base64,QUJD', 'data:image/svg+xml;base64,QUJD']) {
+      expect(validateSubmission({ ...gut, foto: schlecht }).error, String(schlecht)).toBe('foto');
+    }
+  });
+
+  it('lehnt eine ueberlange data-URL ab (Cap VOR dem Dekodieren)', () => {
+    const riesig = 'data:image/jpeg;base64,' + 'A'.repeat(3_000_000);
+    expect(validateSubmission({ ...gut, foto: riesig }).error).toBe('foto');
+  });
+});

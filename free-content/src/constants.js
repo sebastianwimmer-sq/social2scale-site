@@ -65,10 +65,11 @@ export const FOLLOWUP_TAGE = 2;
 export const BUILDING_TIMEOUT_MINUTES = 15;
 
 /**
- * Avatar-Fetch (unavatar.io): Gates gegen "Ressource da, Auslieferung leer".
- * Min-Groesse sortiert Platzhalter/kaputte Winzbilder aus, Max-Groesse haelt
- * die data-URL der Render-Seite im Rahmen, Timeout schuetzt die Wartezeit.
+ * Foto-Upload (Wizard-Step "Zeig dich"): Gates gegen "Ressource da,
+ * Auslieferung leer". Min-Groesse sortiert kaputte Winzbilder aus, Max-Groesse
+ * haelt die data-URL der Render-Seite im Rahmen. FOTO_MAX_CHARS deckelt das
+ * Payload-Feld in validate.js VOR dem Dekodieren (Base64 ~ 4/3 der Bytes).
  */
-export const AVATAR_TIMEOUT_MS = 4000;
 export const AVATAR_MIN_BYTES = 2048;
 export const AVATAR_MAX_BYTES = 2_000_000;
+export const FOTO_MAX_CHARS = 2_800_000;

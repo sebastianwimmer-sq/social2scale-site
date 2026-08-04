@@ -12,6 +12,7 @@ import {
   registerAttempt,
 } from './protect.js';
 import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './leads.js';
+import { speichereAvatar } from './avatar.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
@@ -152,6 +153,18 @@ async function handleSubmit(request, env, ctx, cors) {
   // eine klare Meldung bekommt, ist eine offene Produkt-/Datenschutz-Entscheidung.
   if (action === 'handle_taken') {
     console.error('[submit] Handle bereits von bestaetigtem Lead belegt (still, Anti-Enumeration):', checked.value.handleNorm);
+  }
+
+  // Hochgeladenes Foto nicht-fatal ablegen (haengt am AKTUELLEN lead.token —
+  // reenter kann einen neuen Token vergeben haben, dann liegt es richtig unter
+  // dem neuen). Kein await: die Antwortzeit des Formulars bleibt unangetastet,
+  // und ein kaputtes Foto darf die Anmeldung nie kosten (avatar.js prueft hart).
+  if (checked.value.foto && action !== 'handle_taken') {
+    ctx.waitUntil(
+      speichereAvatar(env, lead.token, checked.value.foto).then((ok) => {
+        if (!ok) console.error('[submit] Foto nicht abgelegt (Gates/R2), Lead', lead.id);
+      })
+    );
   }
 
   // Mailversand und Aufraeumen duerfen die Antwort nicht aufhalten.
