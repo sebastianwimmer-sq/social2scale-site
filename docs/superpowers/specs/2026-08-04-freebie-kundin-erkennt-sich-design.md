@@ -28,11 +28,14 @@ wie echtes Instagram aussieht.
 - **Gates (kein „Ressource da, Auslieferung leer"):** HTTP 200 + `Content-Type
   image/*` + Mindestgröße (> 2 KB; unavatar-Platzhalter/kaputte Bilder fallen
   raus). Nur wenn alle Gates halten, gilt das Bild als da.
-- **Ablage:** als `avatar.jpg` in R2 unter dem Lead-Prefix (neben den Frames).
-- **Einbettung ins Frame:** `buildPage`/`profil()` bekommt eine Avatar-Quelle
-  (data-URL oder R2-gestützte URL — Entscheidung im Plan, Constraint: die
-  Render-Seite läuft in Browser-Rendering, externe Fetches dort vermeiden).
-  Rund maskiert im bestehenden `.avatar`-Slot, mit IG-typischem Story-Ring.
+- **Ablage:** KEIN R2-Objekt (Entscheidung im Plan: ein `avatar.jpg` im
+  Lead-Prefix würde den `.jpg`-Zähler von `buildStatus` verfälschen, und
+  Reveal/Share zeigen ohnehin nur die gerenderten Frames). Das Bild lebt als
+  data-URL nur im Render-Durchlauf und danach eingebrannt in den Frames.
+- **Einbettung ins Frame:** als data-URL in `clean.avatarUrl` — die
+  Browser-Rendering-Seite kommt per `setContent` ohne Origin und kann externe
+  Quellen nicht zuverlässig laden. Rund maskiert im bestehenden
+  `.avatar`-Slot, mit Story-Ring in der Akzentfarbe.
 - **Fallback:** Fetch scheitert / Gates greifen → Initial-Buchstabe wie heute.
   Der Ausfall ist still für die Besucherin, aber geloggt.
 - **Reveal + Share-Card ziehen mit:** Reveal-Profilkarte zeigt das echte Foto;
