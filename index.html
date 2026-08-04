@@ -78,17 +78,33 @@
   /* Deutlich kleiner: die Marke steht bereits in der Kopfleiste, ein 680px
      breites Wortmarken-Bild daruntersetzen heisst sie dreimal zeigen (Leiste,
      Bild, Begruessungszeile) und kostet die halbe erste Ansicht. */
-  .hero-logo{display:block;width:clamp(160px,15vw,230px);height:auto;margin-bottom:clamp(var(--s-5),2.2vw,var(--s-6))}
+  /* Die Wortmarke ist hier kein Dekor, sondern das Wort "social2scale" in der
+     Begruessung — deshalb darf und soll sie gross sein.
+
+     Der transparente Rand der PNG wird herausgerechnet. Gemessen ueber die
+     Alpha-Kanaele: 1300x731px, Schrift nur von y=277 bis y=450 — also 37,9 %
+     leer oben und 38,3 % unten, gerade mal ein Viertel der Bildhoehe ist
+     ueberhaupt Schrift. Bei 520px Breite sind das rund 197px Leere, die den
+     Abstand zur Begruessung aufreissen und den Hero aufblaehen.
+
+     Die negativen Abstaende haengen an --lw, nicht an festen Pixeln: der Rand
+     waechst mit dem Bild, ein fester Wert waere nur bei einer Breite richtig.
+     Faktor 0,19 statt 0,213 laesst bewusst einen Rest Luft stehen. */
+  .hero h1 picture{display:block}
+  .hero-logo{--lw:clamp(280px,40vw,660px);display:block;width:var(--lw);height:auto;
+    margin:calc(var(--lw) * -.19) auto calc(var(--lw) * -.155)}
   .hero .eyebrow{margin-bottom:clamp(var(--s-3),1.4vw,var(--s-4))}
-  .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.6rem,1rem + 5.2vw,5.6rem);line-height:.96;letter-spacing:-.03em;max-width:18ch;font-variation-settings:"opsz" 144}
+  /* Das h1 ist jetzt ein Behaelter fuer drei Teile: Gruss, Wortmarke, Aussage.
+     Die Schriftgroesse sitzt deshalb auf .claim statt auf dem h1 selbst. */
+  .hero h1{font-family:"Fraunces",serif;max-width:none;font-variation-settings:"opsz" 144}
+  .hero h1 .claim{display:block;font-weight:540;font-size:clamp(2rem,1rem + 3.6vw,4.2rem);
+    line-height:.98;letter-spacing:-.03em;max-width:19ch;margin:0 auto}
   .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  /* Die Begruessung: eigene Zeile im h1, deutlich kleiner als die Aussage.
-     Der Groessensprung IST die Hierarchie — zuerst weiss man, wo man ist,
-     dann warum es einen angeht. Gleiche Groesse waere zwei Ueberschriften
-     nebeneinander und keine von beiden wuerde fuehren. */
-  .hero h1 .gruss{display:block;font-size:clamp(1.5rem,.9rem + 1.9vw,2.7rem);
-    font-weight:400;font-style:italic;line-height:1.1;letter-spacing:-.015em;
-    color:var(--muted);margin-bottom:clamp(var(--s-4),1.6vw,var(--s-5))}
+  /* "Willkommen bei" — die Anrede vor dem Schriftzug. Bewusst kleiner als das
+     Logo: zusammen sind sie EIN Satz, und die Marke traegt die Betonung. */
+  .hero h1 .gruss{display:block;font-size:clamp(1.15rem,.85rem + 1.15vw,1.9rem);
+    font-weight:400;font-style:italic;line-height:1.1;letter-spacing:-.01em;
+    color:var(--muted);margin-bottom:clamp(var(--s-3),1.2vw,var(--s-4))}
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
   /* Rahmensetzung: bewusst leiser als die Unterzeile — sie sagt nicht, was wir
@@ -210,7 +226,7 @@
   /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
-    .hero-logo{width:clamp(140px,34vw,185px);margin-bottom:var(--s-5)}
+    .hero-logo{--lw:clamp(230px,70vw,340px)}
     
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
@@ -635,21 +651,32 @@
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="wrap">
         <div class="hero-center">
-          <picture>
-            <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 680px">
-            <img class="hero-logo r" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
-          </picture>
-          <!-- Begruessung IN der Ueberschrift, nicht darueber.
-               Am 03.08. stand sie als .eyebrow darueber: 11px, gesperrt,
-               Grossbuchstaben, mit Verlaufsstrich davor — das Etikett-Muster,
-               das auf jeder zweiten Vorlage klebt. Als Begruessung taugt es
-               nicht: zu leise, um zu sagen "hier bist du richtig".
+          <!-- Die Begruessung ist die Ueberschrift, und der Schriftzug ist das
+               Wort darin: "Willkommen bei" + Wortmarke = ein Satz.
 
-               Beides steht bewusst im SELBEN h1. Ein h1, das nur den Markennamen
-               enthaelt, traegt kein einziges Wort, nach dem jemand sucht — die
-               Ueberschrift ist das staerkste Signal der Seite. So bekommt der
-               Gruss die Groesse und die Aussage bleibt drin. -->
-          <h1 class="r" style="animation-delay:.1s"><span class="gruss">Willkommen bei social2scale.</span>Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</h1>
+               Zwei Zwischenstaende bis hierher. Am 03.08. stand der Gruss als
+               .eyebrow ueber der Ueberschrift — 11px, gesperrt, mit
+               Verlaufsstrich davor, also das Etikett-Muster von jeder zweiten
+               Vorlage, und viel zu leise fuer ein "hier bist du richtig". Am
+               04.08. dann als eigene Textzeile im h1, aber damit stand der
+               Markenname zweimal da: als Wortmarken-Bild UND als Text.
+
+               So traegt das Bild jetzt Bedeutung, statt Dekor zu sein.
+
+               Das Bild steht IM h1 und behaelt sein alt="social2scale" — ein
+               Vorleseprogramm hoert weiterhin "Willkommen bei social2scale.
+               Wir bauen das System, das dich planbar skaliert." Genau ein h1
+               auf der Seite, und es enthaelt die Woerter, nach denen gesucht
+               wird: ein h1 mit blossem Markennamen waere fuer die Suche
+               wertlos. -->
+          <h1 class="r" style="animation-delay:.1s">
+            <span class="gruss">Willkommen bei</span>
+            <picture>
+              <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 660px">
+              <img class="hero-logo" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
+            </picture>
+            <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
+          </h1>
           <p class="sub r" style="animation-delay:.24s">Für <b>Coaches, Experten und B2B</b> ohne starken Auftritt: Wir bauen ihn von Grund auf, produzieren den Content und betreuen ihn — <b>du gibst nur die Richtung vor.</b></p>
           <!-- Rahmensetzung: sagt vorab, was auf dieser Seite passiert. Genau
                das macht ein gutes Erstgespraech in den ersten 20 Sekunden —
