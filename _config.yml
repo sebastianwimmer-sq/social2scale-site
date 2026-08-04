@@ -1,0 +1,54 @@
+# ============================================================
+# social2scale.com — Auslieferungs-Regeln für GitHub Pages
+#
+# WARUM ES DIESE DATEI GIBT
+#
+# Vorher lag hier eine leere `.nojekyll`. Die schaltet die Jekyll-Verarbeitung
+# ab — und damit gibt GitHub Pages JEDE Datei im Repo roh heraus. Nachgeprüft
+# am 04.08.2026, alle mit HTTP 200 öffentlich abrufbar:
+#
+#   /docs/WER-MACHT-WAS.md      die interne Arbeitsteilung der Sessions,
+#                               inklusive der Deploy-Panne vom 29.07.
+#   /docs/SEITEN-BAUEN.md       Bau-Anleitung und bekannte Fallen
+#   /lib/shell.mjs              Quelle der Navigation
+#   /scripts/build-pages.mjs    Bauschritt
+#   /playwright.config.mjs      Testaufbau samt Port
+#
+# `robots.txt` hielt sie nur aus Suchergebnissen und KI-Antworten heraus. Gegen
+# einen Direktaufruf hilft das nicht.
+#
+# Ohne `.nojekyll` läuft die Seite wieder durch Jekyll, und `exclude` unten
+# entscheidet, was gar nicht erst veröffentlicht wird.
+#
+# WARUM DAS HIER SICHER IST
+#
+# Jekyll reicht HTML ohne Front-Matter unverändert durch. Gefährlich wäre nur
+# Liquid-Syntax (`{{` oder `{%`) in ausgelieferten Dateien — die würde Jekyll
+# als Vorlage interpretieren. Vor der Umstellung über alle versionierten
+# .html/.css/.js/.txt/.xml/.svg geprüft: **null Treffer**.
+#
+# Schlägt ein Jekyll-Bau fehl, liefert Pages weiterhin den letzten
+# erfolgreichen Stand aus — die Seite kann dadurch nicht offline gehen.
+# ============================================================
+
+# Rein statische Seite: keine Sammlungen, keine Layouts, keine Plugins.
+plugins: []
+
+# Diese Pfade werden NICHT veröffentlicht.
+exclude:
+  - docs/               # interne Dokumentation und Koordination
+  - lib/                # Shell-Quelle (Navigation, Footer)
+  - scripts/            # Bauschritte und Prüfskripte
+  - tests/              # Playwright-Tests
+  - test-results/       # Testausgaben
+  - workers/            # Worker-Quelltext
+  - package.json
+  - playwright.config.mjs
+  - node_modules/
+  - README.md
+
+# CNAME, robots.txt, sitemap.xml, llms.txt und favicon.svg bleiben bewusst
+# draußen aus dieser Liste — die gehören ausgeliefert.
+#
+# ⚠️ CNAME NIEMALS ausschließen. Ohne sie fällt die Seite auf die
+# github.io-Adresse zurück und social2scale.com ist weg.
