@@ -17,14 +17,20 @@ Sie ist in `.gitignore` erfasst und landet nicht im Repo.
 npx --no-install playwright test
 ```
 
-32 Aufnahmen: 4 Seiten × 4 Breiten (390 · 768 · 1024 · 1440) × chromium und
+64 Aufnahmen: 8 Seiten × 4 Breiten (390 · 768 · 1024 · 1440) × chromium und
 webkit. Schwelle: 0,1 % abweichende Pixel.
+
+Die acht: Startseite · `/ablauf/` · `/about/` · `/for-you/` · `/results/` ·
+`/preise/` · `/danke/` · `/onboarding/`. Die letzten beiden hängen bewusst
+nicht an der geteilten Shell — sie sind trotzdem abgesichert, weil ihre
+kopierten Fußzeilen auseinanderlaufen können.
 
 ### Die Basisbilder liegen nur lokal
 
-Sie sind bewusst **nicht** im Repo: 32 Vollseiten-Aufnahmen sind rund 65 MB,
-und da hier `.nojekyll` liegt, liefert GitHub Pages jede Datei roh aus — sie
-wären unter `social2scale.com/tests/basis/…` öffentlich abrufbar.
+Sie sind bewusst **nicht** im Repo: 64 Vollseiten-Aufnahmen sind über 100 MB.
+Seit dem 04.08.2026 wäre `tests/` durch `_config.yml` zwar ohnehin von der
+Veröffentlichung ausgenommen — im Repo haben Bilder in dieser Größe aber
+trotzdem nichts verloren.
 
 **Neu erzeugen** (nur von einem sauberen, geprüften Stand aus):
 
@@ -205,8 +211,9 @@ CSS am umgebenden `.reveal.on`, das der vorhandene Beobachter ohnehin setzt.
 
 - `upgrade-insecure-requests` in eine CSP zurückschreiben — bricht Safari auf
   localhost, alle Assets scheitern. Entfernt am 28.07.2026 (`a366449`).
-- Dateien im Repo ablegen, die niemand sehen soll. `.nojekyll` bedeutet:
-  **alles** ist öffentlich abrufbar.
+- Einen neuen internen Ordner anlegen, ohne ihn in `_config.yml` unter
+  `exclude` einzutragen. Alles, was nicht dort steht, ist sofort öffentlich
+  abrufbar.
 
 ## ✅ Erledigt: interne Dateien sind nicht mehr öffentlich
 
