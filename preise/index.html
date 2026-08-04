@@ -502,6 +502,21 @@
     .pr-ueb-zelle::before{content:none}
   }
 
+  /* Einzelposten in der Uebersicht. Standen bis zum 04.08.2026 nur in der
+     angepinnten Szene darunter — zusammen mit Name, Aufwandsverhaeltnis und
+     Preis, die alle drei schon in der Uebersicht standen. Die Szene kostete
+     damit 2984px, also 3,3 Bildschirme, fuer genau diese Listen. Jetzt stehen
+     sie hier und die Szene ist ersatzlos raus.
+
+     Mono-Index statt Aufzaehlungspunkten — dieselbe Sprache wie die
+     Tarif-Liste weiter unten. Punkte sind das Erkennungsmerkmal jeder
+     Standard-Landingpage. */
+  .pr-ueb-liste{list-style:none;display:grid;gap:var(--s-3)}
+  .pr-ueb-liste li{display:flex;align-items:baseline;gap:var(--s-3);
+    font-size:.94rem;line-height:1.4;color:var(--muted)}
+  .pr-ueb-liste .ix{flex:0 0 auto;font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.1em;color:rgba(0,184,136,.6)}
+
   /* ===== Verhaeltnis-Balken =====
      Traegt die Aussage, die die Liste darunter nur aufzaehlt: wie viel bleibt
      bei dir, wie viel geht an uns. Der emeraldfarbene Teil waechst beim
@@ -730,7 +745,16 @@
             </div>
             <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du hast <b>noch keinen oder einen schwachen</b> Auftritt.</p>
             <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Ein Briefing. Einmal.</p>
-            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">6 Aufgaben</p>
+            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
+            <ol class="pr-ueb-liste">
+              <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
+              <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
+              <li><span class="ix" aria-hidden="true">03</span>Zehn Beiträge im Monat</li>
+              <li><span class="ix" aria-hidden="true">04</span>Veröffentlichen nach Plan</li>
+              <li><span class="ix" aria-hidden="true">05</span>Hashtag-Strategie je Beitrag</li>
+              <li><span class="ix" aria-hidden="true">06</span>Anfragen sammeln und weiterleiten</li>
+            </ol>
+          </div>
             <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
           </div>
           <div class="pr-ueb-spalte" style="--sp:3">
@@ -740,7 +764,15 @@
             </div>
             <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Dein <b>Profil steht schon</b> — es fehlt der Content.</p>
             <p class="pr-ueb-zelle z-du ist-null" data-lbl="Du machst">Nichts.</p>
-            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">5 Aufgaben</p>
+            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
+            <ol class="pr-ueb-liste">
+              <li><span class="ix" aria-hidden="true">01</span>Zehn Beiträge im Monat</li>
+              <li><span class="ix" aria-hidden="true">02</span>Veröffentlichen nach Plan</li>
+              <li><span class="ix" aria-hidden="true">03</span>Hashtag-Strategie je Beitrag</li>
+              <li><span class="ix" aria-hidden="true">04</span>Anfragen weiterleiten</li>
+              <li><span class="ix" aria-hidden="true">05</span>Monatlicher Kurz-Report</li>
+            </ol>
+          </div>
             <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 523,60 €<small>im Monat</small></p>
           </div>
           <div class="pr-ueb-spalte" style="--sp:4">
@@ -750,7 +782,14 @@
             </div>
             <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du willst <b>danach selbst</b> weitermachen.</p>
             <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Briefing geben, danach selbst posten.</p>
-            <p class="pr-ueb-zelle z-wir" data-lbl="Wir machen">4 Aufgaben</p>
+            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
+            <ol class="pr-ueb-liste">
+              <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
+              <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
+              <li><span class="ix" aria-hidden="true">03</span>Neun Beiträge gestalten</li>
+              <li><span class="ix" aria-hidden="true">04</span>Hashtag-Strategie</li>
+            </ol>
+          </div>
             <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 446,25 €<small>einmalig</small></p>
           </div>
         </div>
@@ -758,135 +797,11 @@
       </div>
     </div></section>
 
-    <section class="pr-blk" aria-labelledby="pr-wege"><div class="wrap reveal">
-      <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 03</b> — Entscheidung</p>
-        <h2 id="pr-wege" class="wipe">Wie viel willst du <em>abgeben</em>?</h2>
-      </div>
 
-      <div class="pr-scene" data-scene>
-        <div class="pr-scene-track" data-scene-track>
-          <div class="pr-scene-pin">
-            <div class="pr-scene-grid">
-              <ol class="pr-scene-nav" aria-label="Die drei Wege">
-          <li class="pr-nav-item is-active" data-scene-step="0">
-            <span class="pr-nav-num" aria-hidden="true">01</span>
-            <span class="pr-nav-txt"><b>Alles abgeben</b>Wir bauen und betreuen.</span>
-          </li>
-          <li class="pr-nav-item" data-scene-step="1">
-            <span class="pr-nav-num" aria-hidden="true">02</span>
-            <span class="pr-nav-txt"><b>Laufendes abgeben</b>Dein Profil steht schon.</span>
-          </li>
-          <li class="pr-nav-item" data-scene-step="2">
-            <span class="pr-nav-num" aria-hidden="true">03</span>
-            <span class="pr-nav-txt"><b>Einmal Starthilfe</b>Danach machst du weiter.</span>
-          </li>
-              </ol>
-              <div class="pr-scene-panels">
-          <article class="pr-panel is-lead is-active" data-scene-panel="0">
-          <p class="pr-way-tag">Alles abgeben</p>
-          <h3 class="pr-way-h">Wir bauen und betreuen.</h3>
-          <p class="pr-way-t">Im ersten Monat entsteht dein Profil. Danach läuft es — zehn Beiträge im Monat, veröffentlicht, Anfragen landen bei dir. Du hörst von uns, wenn etwas zu entscheiden ist.</p>
-          <div class="pr-ratio">
-            <div class="pr-ratio-bar" style="--du:.15" role="img" aria-label="1 Aufgabe bei dir · 6 bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
-            <p class="pr-ratio-note">1 Aufgabe bei dir · 6 bei uns</p>
-          </div>
-          <div class="pr-split">
-            <div class="du from-left">
-              <h4>Du machst</h4>
-              <ul>
-            
-              <li><span class="ix">01</span><span>Ein Briefing geben. Einmal.</span></li>
-              </ul>
-            </div>
-            <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir from-right">
-              <h4>Wir machen</h4>
-              <ul class="stagger">
-            
-              <li><span class="ix">01</span><span>Profil aufbauen</span></li>
-              <li><span class="ix">02</span><span>Branding und Positionierung</span></li>
-              <li><span class="ix">03</span><span>Zehn Beiträge im Monat</span></li>
-              <li><span class="ix">04</span><span>Veröffentlichen nach Plan</span></li>
-              <li><span class="ix">05</span><span>Hashtag-Strategie je Beitrag</span></li>
-              <li><span class="ix">06</span><span>Anfragen sammeln und weiterleiten</span></li>
-              </ul>
-            </div>
-          </div>
-          <p class="pr-way-p"><span class="ab">ab</span> 1.547,00 €<span class="dann">einmalig, danach 464,10 € im Monat</span></p>
-          </article>
-          <article class="pr-panel" data-scene-panel="1">
-          <p class="pr-way-tag">Laufendes abgeben</p>
-          <h3 class="pr-way-h">Dein Profil steht schon.</h3>
-          <p class="pr-way-t">Wir übernehmen ab jetzt die Beiträge. Du postest nichts mehr selbst.</p>
-          <div class="pr-ratio">
-            <div class="pr-ratio-bar" style="--du:.10" role="img" aria-label="nichts bei dir · 5 Aufgaben bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
-            <p class="pr-ratio-note">nichts bei dir · 5 Aufgaben bei uns</p>
-          </div>
-          <div class="pr-split">
-            <div class="du from-left">
-              <h4>Du machst</h4>
-              <ul>
-            
-              <li class="nix"><span class="ix">01</span><span>Nichts — dein Profil steht ja schon.</span></li>
-              </ul>
-            </div>
-            <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir from-right">
-              <h4>Wir machen</h4>
-              <ul class="stagger">
-            
-              <li><span class="ix">01</span><span>Zehn Beiträge im Monat</span></li>
-              <li><span class="ix">02</span><span>Veröffentlichen nach Plan</span></li>
-              <li><span class="ix">03</span><span>Hashtag-Strategie je Beitrag</span></li>
-              <li><span class="ix">04</span><span>Anfragen weiterleiten</span></li>
-              <li><span class="ix">05</span><span>Monatlicher Kurz-Report</span></li>
-              </ul>
-            </div>
-          </div>
-          <p class="pr-way-p"><span class="ab">ab</span> 523,60 €<span class="dann">im Monat</span></p>
-          </article>
-          <article class="pr-panel" data-scene-panel="2">
-          <p class="pr-way-tag">Einmal Starthilfe</p>
-          <h3 class="pr-way-h">Danach machst du weiter.</h3>
-          <p class="pr-way-t">Profil, Branding und die ersten Beiträge — und du hast eine Vorlage, mit der du selbst arbeiten kannst.</p>
-          <div class="pr-ratio">
-            <div class="pr-ratio-bar" style="--du:.34" role="img" aria-label="2 Aufgaben bei dir · 4 bei uns"><i></i><span class="l-du">Du</span><span class="l-wir">Wir</span></div>
-            <p class="pr-ratio-note">2 Aufgaben bei dir · 4 bei uns</p>
-          </div>
-          <div class="pr-split">
-            <div class="du from-left">
-              <h4>Du machst</h4>
-              <ul>
-            
-              <li><span class="ix">01</span><span>Ein Briefing geben</span></li>
-              <li><span class="ix">02</span><span>Danach selbst posten</span></li>
-              </ul>
-            </div>
-            <div class="pr-split-rule" aria-hidden="true"></div>
-            <div class="wir from-right">
-              <h4>Wir machen</h4>
-              <ul class="stagger">
-            
-              <li><span class="ix">01</span><span>Profil aufbauen</span></li>
-              <li><span class="ix">02</span><span>Branding und Positionierung</span></li>
-              <li><span class="ix">03</span><span>Neun Beiträge gestalten</span></li>
-              <li><span class="ix">04</span><span>Hashtag-Strategie</span></li>
-              </ul>
-            </div>
-          </div>
-          <p class="pr-way-p"><span class="ab">ab</span> 446,25 €<span class="dann">einmalig</span></p>
-          </article>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 04</b> — Einordnung</p>
+        <p class="pr-rh"><b>№ 03</b> — Einordnung</p>
         <h2 id="pr-rechnung" class="wipe">Was es dich kostet — an <em>Zeit</em> und an Geld.</h2>
         <p class="lead">Nicht als Drohung, sondern als Rechnung. Beim ersten Weg sieht die Zeitseite so aus:</p>
       </div>
@@ -932,7 +847,7 @@
 
     <section class="pr-blk pr-why" aria-labelledby="pr-warum"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 05</b> — Warum nicht billiger</p>
+        <p class="pr-rh"><b>№ 04</b> — Warum nicht billiger</p>
         <h2 id="pr-warum" class="wipe">Zwei Leute. <em>Keine</em> Zwischenebene.</h2>
       </div>
       <div class="pr-why-grid">
@@ -949,7 +864,7 @@
 
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
       <div class="pr-blk-head">
-        <p class="pr-rh"><b>№ 06</b> — Für die, die vergleichen</p>
+        <p class="pr-rh"><b>№ 05</b> — Für die, die vergleichen</p>
         <h2 id="pr-detail" class="wipe">Alle sieben Pakete im <em>Detail</em>.</h2>
       </div>
 
