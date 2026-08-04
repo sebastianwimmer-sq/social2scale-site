@@ -383,7 +383,13 @@
   .rs-close{padding:var(--section-y) 0;border-top:1px solid var(--line)}
 
   /* shared placeholder note */
-  .rs-note{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);margin-top:clamp(var(--s-5),3vw,var(--s-6))}
+  /* Fussnoten sind Prosa, keine Etiketten. Standen bis zum 04.08.2026 in
+     JetBrains Mono mit Sperrung — dieselbe Falle wie die Rahmenzeile im Hero:
+     Mono ist auf diesen Seiten die Sprache der Kapitel-Nummern, Indizes und
+     Messwerte. Ein ganzer Satz darin liest sich wie eine Systemmeldung und
+     laesst die Seite generisch wirken. Kurze Mono-Zeilen mit Zahlen bleiben,
+     die tragen Daten. */
+  .rs-note{font-size:.88rem;color:var(--faint);line-height:1.6;max-width:66ch;margin-top:clamp(var(--s-5),3vw,var(--s-6))}
   .rs-note b{color:var(--emerald);font-weight:400}
 
   /* ============================================================

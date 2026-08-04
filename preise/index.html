@@ -317,7 +317,13 @@
   .pr-row.is-best .pr-num{color:var(--emerald)}
   .pr-tag{display:inline-block;margin-top:var(--s-4);font-family:"Archivo",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald-ink);background:var(--emerald);border-radius:4px;padding:4px 9px}
 
-  .pr-note{margin-top:clamp(var(--s-5),3vw,var(--s-6));font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.05em;color:var(--faint);line-height:1.9;max-width:70ch}
+  /* Fussnoten sind Prosa, keine Etiketten. Standen bis zum 04.08.2026 in
+     JetBrains Mono mit Sperrung — dieselbe Falle wie die Rahmenzeile im Hero:
+     Mono ist auf diesen Seiten die Sprache der Kapitel-Nummern, Indizes und
+     Messwerte. Ein ganzer Satz darin liest sich wie eine Systemmeldung und
+     laesst die Seite generisch wirken. Kurze Mono-Zeilen mit Zahlen bleiben,
+     die tragen Daten. */
+  .pr-note{margin-top:clamp(var(--s-5),3vw,var(--s-6));font-size:.88rem;color:var(--faint);line-height:1.6;max-width:66ch}
 
   /* Steuer- und B2B-Hinweis: bewusst nicht kleingedruckt */
   .pr-tax{margin-top:clamp(var(--s-7),4vw,var(--s-8));padding:clamp(var(--s-5),2.6vw,var(--s-6));border:1px solid var(--line-2);border-radius:14px;background:var(--surf-grad);max-width:64ch}

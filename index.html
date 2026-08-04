@@ -107,12 +107,22 @@
     color:var(--muted);margin-bottom:clamp(var(--s-3),1.2vw,var(--s-4))}
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
-  /* Rahmensetzung: bewusst leiser als die Unterzeile — sie sagt nicht, was wir
-     koennen, sondern was gleich passiert. Mono, damit sie sich als Ansage vom
-     Fliesstext absetzt. */
-  .hero-frame{margin-top:clamp(var(--s-4),1.8vw,var(--s-5));font-family:"JetBrains Mono",monospace;
-    font-size:clamp(11.5px,11px + .18vw,13px);letter-spacing:.05em;line-height:1.7;color:var(--faint)}
-  .hero-frame b{color:var(--muted);font-weight:500}
+  /* Rahmensetzung: sagt nicht, was wir koennen, sondern was gleich passiert.
+
+     Stand bis zum 04.08.2026 in JetBrains Mono mit Sperrung, 12px, grau. Damit
+     las sie sich wie eine Systemmeldung statt wie ein Satz — Mono ist auf
+     dieser Seite die Sprache der Etiketten, Kapitel-Nummern und Indizes, nicht
+     der Prosa. Ein ganzer Satz in Laufschrift mit Sperrung ist genau das
+     Muster, das eine Seite generisch aussehen laesst.
+
+     Jetzt Fraunces kursiv wie die Begruessung "Willkommen bei" — dadurch
+     gehoeren beide hoerbar zusammen: Anrede oben, Nachsatz unten, dieselbe
+     Stimme. */
+  .hero-frame{margin-top:clamp(var(--s-4),1.8vw,var(--s-5));
+    font-family:"Fraunces",serif;font-style:italic;font-weight:400;
+    font-size:clamp(1rem,.9rem + .5vw,1.25rem);line-height:1.5;letter-spacing:-.01em;
+    color:var(--faint);max-width:46ch;margin-left:auto;margin-right:auto}
+  .hero-frame b{color:var(--muted);font-weight:400}
   /* hero trust row — 3 value pills, semantic emerald checks */
   .hero-trust{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s-4) var(--s-6);margin-top:clamp(var(--s-5),2.5vw,var(--s-6));font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
   .hero-trust li{display:flex;align-items:center;gap:var(--s-2)}
@@ -682,7 +692,7 @@
                das macht ein gutes Erstgespraech in den ersten 20 Sekunden —
                wer weiss, wohin es geht, steigt nicht nach dem ersten Absatz
                aus. Nummerierung deckt sich mit den klabels der Sektionen. -->
-          <p class="hero-frame r" style="animation-delay:.3s">Zwei Minuten: <b>wo du stehst</b>, warum es bisher nicht lief, <b>wie wir das ändern</b>.</p>
+          <p class="hero-frame r" style="animation-delay:.3s">Zwei Minuten. Dann weißt du, <b>wo du stehst</b>, warum es bisher nicht lief und <b>wie wir das ändern</b>.</p>
           <div class="cta-row r" style="animation-delay:.38s">
             <a class="btn btn-primary" id="cta" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
             <a class="textlink" href="#leistungen">Was wir machen</a>
