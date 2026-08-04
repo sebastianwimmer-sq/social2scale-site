@@ -615,3 +615,40 @@ git commit -m "docs(free-content): Handoff Datenschutz-Satz Avatar-Fetch + Paylo
   4. Negativtest: zweiter Testlead mit erfundenem Handle (`kein-echtes-profil-xyz123`) → Feed baut trotzdem, Avatar = Initial (kein kaputtes Bild, kein Hänger).
 - [ ] **Step 4: Testdaten RESTLOS entfernen** — beide Testleads: `DELETE FROM free_leads WHERE email IN (…)`; zugehörige `submissions`/`clients`/`activity`/`events`-Zeilen (mirrorToCrm legt sie an!) löschen; R2-Prefixe `free/<token>/` leeren. Danach SELECT-Gegenprobe: 0 Zeilen.
 - [ ] **Step 5: Push + Abschlussmeldung** — `git push origin feat/free-content-funnel`. Status 🟢/🟡/🔴 an Sebi: was live ist, was er gegenlesen muss (Datenschutz-Satz, Task 6).
+
+---
+
+## ÄNDERUNG 04.08. abends: Avatar-Quelle = Upload statt unavatar
+
+Live vom Cloudflare-Edge verifiziert (Wegwerf-Worker): unavatar.io/instagram =
+403 Pro-Plan; instagram.com (Profil UND /embed/) = Login-Redirect für
+Worker-IPs. Sebi-Entscheid: **optionaler Foto-Upload im Wizard.**
+
+Tasks 1-3 bleiben gültig (Frames sind quellen-agnostisch, `clean.avatarUrl`).
+Task 4 wird ersetzt durch:
+
+### Task 4 (neu): avatar.js v2 (Upload-Parse + R2) · validate.js `foto` · handleSubmit-Ablage · generate.js lädt aus R2
+
+- `src/avatar.js`: Fetch-Funktion raus. Neu: `parseFotoDataUrl(v)` (Gates:
+  Typ jpeg/png/webp, AVATAR_MIN_BYTES/AVATAR_MAX_BYTES) → `{typ, bytes}|null`;
+  `avatarKey(token)` = `free/<token>/avatar.bin` (NICHT .jpg — buildStatus
+  zählt .jpg); `speichereAvatar(env, token, dataUrl)` non-fatal;
+  `ladeAvatar(env, token)` → data-URL|null. AVATAR_TIMEOUT_MS entfällt.
+- `src/validate.js`: optionales Feld `foto` ('' erlaubt; wenn gesetzt:
+  data:image/(jpeg|png|webp);base64 + Längen-Cap FOTO_MAX_CHARS ≈ 2.8M Zeichen).
+  Feldname in den Payload-Vertrag aufnehmen (Handoff-Datei Task 6).
+- `src/index.js` handleSubmit: nach upsertLead, wenn `checked.value.foto` und
+  action nicht 'handle_taken': `ctx.waitUntil(speichereAvatar(env, lead.token,
+  checked.value.foto))` — non-fatal, Antwortzeit unangetastet.
+- `src/generate.js`: `holeAvatar(clean.handle)` → `ladeAvatar(env, token)`,
+  weiterhin parallel zur Copy gestartet.
+- Tests: avatar.test.js komplett neu (parse-Gates, Key, speichern/laden mit
+  Fake-R2), validate.test.js (foto ok/kaputt/zu groß), generate.test.js
+  (Mock auf ladeAvatar umstellen).
+
+### Task 5 (erweitert): Wizard bekommt ZWEI optionale Steps
+
+Step 7 „Zeig dich" (Foto-Upload, Canvas-Downscale ~512px JPEG q0.85, Vorschau
+rund im Step, entfernbar) · Step 8 „Markenfarbe" (wie geplant) · Mail = 9,
+Done = 10, TOTAL = 9. Payload: `foto: <dataURL|''>`, `farbe` wie geplant.
+Renumbering entsprechend eine Stufe weiter als im Original-Task-5.

@@ -20,14 +20,27 @@ wie echtes Instagram aussieht.
 - Profil-Frame ist bereits ein IG-Mockup (Statusbar, Handle-Top, Stats, Bio,
   Highlights, 3er-Grid), aber mit Abstrichen in der Detailtreue.
 
-## 1. Echtes Profilbild (automatisch, server-seitig)
+## 1. Echtes Profilbild (Upload im Wizard — GEÄNDERT 04.08. abends)
 
-- **Wo:** Queue-Consumer in `generate.js`, VOR dem Render (der Render braucht
-  die Bild-URL). Fetch über den validierten Handle: `https://unavatar.io/instagram/<handle>`
-  mit `?fallback=false` (liefert 404 statt Platzhalter-Bild), Timeout ~4s.
-- **Gates (kein „Ressource da, Auslieferung leer"):** HTTP 200 + `Content-Type
-  image/*` + Mindestgröße (> 2 KB; unavatar-Platzhalter/kaputte Bilder fallen
-  raus). Nur wenn alle Gates halten, gilt das Bild als da.
+⚠️ **Der automatische Weg ist tot, live verifiziert:** unavatar.io verlangt für
+den Instagram-Provider einen Pro-Plan (403 + JSON), und Instagram leitet
+Anfragen aus Cloudflare-Worker-IPs auf den Login um (vom Edge getestet via
+Wegwerf-Worker, auch `/embed/` liefert keine Bild-URLs). Ein Server-Fetch
+hätte still IMMER den Fallback geliefert — „Ressource da, Auslieferung leer"
+als Feature. Entscheidung Sebi: **optionaler Foto-Upload im Wizard.**
+
+- **Wo:** Neuer optionaler Wizard-Step „Zeig dich" — sie wählt ihr Profilbild
+  oder ein Lieblingsfoto. Client verkleinert auf ~512px JPEG (Canvas) und
+  schickt es als data-URL im bestehenden JSON-Payload (`foto`).
+- **Server:** `handleSubmit` legt das geprüfte Bild nicht-fatal als
+  `free/<token>/avatar.bin` in R2 ab (bewusst NICHT `.jpg` — der
+  Fortschrittszähler `buildStatus` zählt `.jpg`-Keys). `generate.js` lädt es
+  beim Bauen parallel zur Copy und bettet es als data-URL in die Frames.
+- **Gates (kein „Ressource da, Auslieferung leer"):** data-URL-Format
+  (`image/jpeg|png|webp`), Mindestgröße (> 2 KB), Maximalgröße. Nur wenn alle
+  Gates halten, gilt das Bild als da.
+- **DSGVO-Vorteil:** Sie lädt selbst hoch = klare Einwilligung, kein Scraping,
+  kein Drittanbieter.
 - **Ablage:** KEIN R2-Objekt (Entscheidung im Plan: ein `avatar.jpg` im
   Lead-Prefix würde den `.jpg`-Zähler von `buildStatus` verfälschen, und
   Reveal/Share zeigen ohnehin nur die gerenderten Frames). Das Bild lebt als
