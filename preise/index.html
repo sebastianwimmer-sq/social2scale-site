@@ -502,6 +502,74 @@
     .pr-ueb-zelle::before{content:none}
   }
 
+  /* ===== Empfohlener Weg + zwei Auswege =====
+     Vorher standen alle drei Wege gleichwertig nebeneinander. Das ist eine
+     Entscheidung drei-aus-drei statt ja/nein und laehmt genau die Kundin, die
+     schnell zusagen wuerde. Jetzt fuehrt einer, die anderen zwei stehen
+     kleiner daneben — sie bleiben aber stehen, weil sie andere Ausgangslagen
+     abdecken und nicht guenstigere Stufen sind. */
+  .pr-emp{position:relative;margin-top:clamp(var(--s-6),3.4vw,var(--s-8));
+    padding:clamp(var(--s-6),3vw,var(--s-8));
+    border:1px solid rgba(0,184,136,.28);border-radius:16px;
+    background:linear-gradient(180deg,rgba(0,184,136,.055),rgba(0,184,136,.012) 42%,transparent);
+    box-shadow:var(--depth)}
+  .pr-emp-lbl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--emerald)}
+  .pr-emp-kopf{display:flex;align-items:flex-start;gap:clamp(var(--s-4),2vw,var(--s-6));
+    margin-top:var(--s-5)}
+  .pr-emp-nr{flex:0 0 auto;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(2.4rem,1.6rem + 2.4vw,4rem);line-height:.82;letter-spacing:-.045em;
+    -webkit-text-stroke:1px rgba(0,184,136,.45);color:transparent}
+  .pr-emp-name{font-family:"Fraunces",serif;font-weight:460;
+    font-size:clamp(1.5rem,1.1rem + 1.5vw,2.4rem);line-height:1.06;letter-spacing:-.02em;color:var(--paper)}
+  .pr-emp-wann{margin-top:var(--s-3);font-size:clamp(1rem,.95rem + .35vw,1.14rem);
+    line-height:1.5;color:var(--muted);max-width:52ch}
+  .pr-emp-wann b{color:var(--paper);font-weight:600}
+  .pr-emp-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);
+    gap:clamp(var(--s-5),2.6vw,var(--s-7));margin-top:clamp(var(--s-6),3vw,var(--s-7));
+    padding-top:clamp(var(--s-5),2.6vw,var(--s-6));border-top:1px solid var(--line)}
+  .pr-emp-spalte .pr-ueb-lbl{margin-bottom:var(--s-4)}
+  .pr-emp-du{font-size:1.02rem;line-height:1.45;color:var(--paper);font-weight:500}
+  .pr-emp-fuss{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    gap:var(--s-5);margin-top:clamp(var(--s-6),3vw,var(--s-7));
+    padding-top:clamp(var(--s-5),2.6vw,var(--s-6));border-top:1px solid var(--line)}
+  .pr-emp-preis{font-family:"JetBrains Mono",monospace;font-size:clamp(1.2rem,1rem + .8vw,1.7rem);
+    color:var(--paper);letter-spacing:-.015em;line-height:1.3}
+  .pr-emp-preis small{display:block;margin-top:var(--s-2);font-size:11px;letter-spacing:.06em;color:var(--faint)}
+  @media (max-width:760px){.pr-emp-grid{grid-template-columns:1fr}}
+
+  /* --- Die zwei Auswege: kleiner, aber vollstaendig --- */
+  .pr-alt-vor{margin-top:clamp(var(--s-7),3.6vw,var(--s-8));font-size:.98rem;color:var(--faint)}
+  .pr-alt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:clamp(var(--s-5),2.6vw,var(--s-7));margin-top:var(--s-5)}
+  .pr-alt{padding-top:var(--s-5);border-top:1px solid var(--line-2)}
+  .pr-alt-nr{display:block;font-family:"Fraunces",serif;font-weight:440;
+    font-size:clamp(1.5rem,1.2rem + 1vw,2rem);line-height:.86;letter-spacing:-.04em;
+    -webkit-text-stroke:1px var(--line-3);color:transparent}
+  .pr-alt-name{margin-top:var(--s-3);font-family:"Archivo",sans-serif;
+    font-size:1.06rem;font-weight:600;color:var(--paper)}
+  .pr-alt-wann{margin-top:var(--s-3);font-size:.94rem;line-height:1.5;color:var(--muted)}
+  .pr-alt-wann b{color:var(--paper);font-weight:600}
+  .pr-alt-du{margin-top:var(--s-4);font-size:.94rem;line-height:1.45;color:var(--paper)}
+  .pr-alt-du .pr-ueb-lbl{display:block;margin-bottom:var(--s-2)}
+  .pr-alt-du.ist-null{color:var(--emerald);font-weight:600}
+  .pr-alt-preis{margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;
+    font-size:1.04rem;color:var(--paper);letter-spacing:-.01em}
+  .pr-alt-preis small{display:block;margin-top:var(--s-2);font-size:11px;letter-spacing:.06em;color:var(--faint)}
+  .pr-alt-mehr{margin-top:var(--s-4)}
+  .pr-alt-mehr summary{cursor:pointer;list-style:none;font-family:"Archivo",sans-serif;
+    font-size:.88rem;font-weight:600;color:var(--muted);padding-bottom:var(--s-2);
+    display:inline-flex;align-items:center;gap:var(--s-2);
+    transition:color .25s var(--ease)}
+  .pr-alt-mehr summary::-webkit-details-marker{display:none}
+  .pr-alt-mehr summary::after{content:"";width:7px;height:7px;
+    border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+    transform:rotate(45deg) translate(-2px,-2px);transition:transform .3s var(--ease)}
+  .pr-alt-mehr[open] summary::after{transform:rotate(-135deg) translate(-3px,-3px)}
+  .pr-alt-mehr summary:hover{color:var(--paper)}
+  .pr-alt-liste{margin-top:var(--s-4)}
+  @media (max-width:700px){.pr-alt-grid{grid-template-columns:1fr;gap:var(--s-6)}}
+
   /* Einzelposten in der Uebersicht. Standen bis zum 04.08.2026 nur in der
      angepinnten Szene darunter — zusammen mit Name, Aufwandsverhaeltnis und
      Preis, die alle drei schon in der Uebersicht standen. Die Szene kostete
@@ -727,74 +795,91 @@
     <section class="pr-blk pr-ueb-sec" aria-labelledby="pr-ueb-h"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh"><b>№ 02</b> — Überblick</p>
-        <h2 id="pr-ueb-h" class="wipe">Die drei Wege <em>nebeneinander</em>.</h2>
+        <h2 id="pr-ueb-h" class="wipe">Der Weg, den wir <em>empfehlen</em>.</h2>
       </div>
-      <div class="pr-ueb">
-        <div class="pr-ueb-tab stagger">
-          <div class="pr-ueb-labels" aria-hidden="true">
-            <div class="pr-ueb-kopf"></div>
-            <p class="pr-ueb-lbl z-wann">Wann das passt</p>
-            <p class="pr-ueb-lbl z-du">Du machst</p>
-            <p class="pr-ueb-lbl z-wir">Wir machen</p>
-            <p class="pr-ueb-lbl z-preis">Preis</p>
-          </div>
-          <div class="pr-ueb-spalte" style="--sp:2">
-            <div class="pr-ueb-kopf">
-              <span class="pr-ueb-nr" aria-hidden="true">01</span>
-              <span class="pr-ueb-name">Alles abgeben</span>
-            </div>
-            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du hast <b>noch keinen oder einen schwachen</b> Auftritt.</p>
-            <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Ein Briefing. Einmal.</p>
-            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
-            <ol class="pr-ueb-liste">
-              <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
-              <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
-              <li><span class="ix" aria-hidden="true">03</span>Zehn Beiträge im Monat</li>
-              <li><span class="ix" aria-hidden="true">04</span>Veröffentlichen nach Plan</li>
-              <li><span class="ix" aria-hidden="true">05</span>Hashtag-Strategie je Beitrag</li>
-              <li><span class="ix" aria-hidden="true">06</span>Anfragen sammeln und weiterleiten</li>
-            </ol>
-          </div>
-            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
-          </div>
-          <div class="pr-ueb-spalte" style="--sp:3">
-            <div class="pr-ueb-kopf">
-              <span class="pr-ueb-nr" aria-hidden="true">02</span>
-              <span class="pr-ueb-name">Laufendes abgeben</span>
-            </div>
-            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Dein <b>Profil steht schon</b> — es fehlt der Content.</p>
-            <p class="pr-ueb-zelle z-du ist-null" data-lbl="Du machst">Nichts.</p>
-            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
-            <ol class="pr-ueb-liste">
-              <li><span class="ix" aria-hidden="true">01</span>Zehn Beiträge im Monat</li>
-              <li><span class="ix" aria-hidden="true">02</span>Veröffentlichen nach Plan</li>
-              <li><span class="ix" aria-hidden="true">03</span>Hashtag-Strategie je Beitrag</li>
-              <li><span class="ix" aria-hidden="true">04</span>Anfragen weiterleiten</li>
-              <li><span class="ix" aria-hidden="true">05</span>Monatlicher Kurz-Report</li>
-            </ol>
-          </div>
-            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 523,60 €<small>im Monat</small></p>
-          </div>
-          <div class="pr-ueb-spalte" style="--sp:4">
-            <div class="pr-ueb-kopf">
-              <span class="pr-ueb-nr" aria-hidden="true">03</span>
-              <span class="pr-ueb-name">Einmal Starthilfe</span>
-            </div>
-            <p class="pr-ueb-zelle z-wann" data-lbl="Wann das passt">Du willst <b>danach selbst</b> weitermachen.</p>
-            <p class="pr-ueb-zelle z-du" data-lbl="Du machst">Briefing geben, danach selbst posten.</p>
-            <div class="pr-ueb-zelle z-wir" data-lbl="Wir machen">
-            <ol class="pr-ueb-liste">
-              <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
-              <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
-              <li><span class="ix" aria-hidden="true">03</span>Neun Beiträge gestalten</li>
-              <li><span class="ix" aria-hidden="true">04</span>Hashtag-Strategie</li>
-            </ol>
-          </div>
-            <p class="pr-ueb-zelle pr-ueb-preis z-preis" data-lbl="Preis">ab 446,25 €<small>einmalig</small></p>
+      <!-- EIN empfohlener Weg als Ja/Nein-Entscheidung, die anderen zwei als
+           Ausweg darunter. Vorher standen alle drei gleichwertig nebeneinander
+           — das ist drei-aus-drei statt ja/nein und laehmt die Entscheidung.
+
+           Die Alternativen bleiben aber stehen, und zwar bewusst: die drei Wege
+           sind keine Preisstufen, sondern drei verschiedene Ausgangslagen. Wer
+           schon ein laufendes Profil hat, braucht kein Profil-Setup. Ihn durch
+           den empfohlenen Weg zu zwingen hiesse, ihm etwas zu verkaufen, das er
+           nicht braucht — das Gegenteil der eigenen Zeile "wir sagen dir auch,
+           wenn du noch keins der drei brauchst".
+
+           Das Etikett heisst "Unsere Empfehlung" und nicht "Das nehmen die
+           meisten": das erste ist wahr, das zweite waere eine Behauptung ueber
+           Zahlen, die wir nicht belegen koennen. -->
+      <div class="pr-emp">
+        <p class="pr-emp-lbl">Unsere Empfehlung</p>
+        <div class="pr-emp-kopf">
+          <span class="pr-emp-nr" aria-hidden="true">01</span>
+          <div>
+            <h3 class="pr-emp-name">Alles abgeben</h3>
+            <p class="pr-emp-wann">Du hast <b>noch keinen oder einen schwachen</b> Auftritt — und willst dich nicht darum kümmern müssen.</p>
           </div>
         </div>
-        <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Was in jedem Weg genau steckt — und was du dafür nicht mehr selbst machst — steht direkt darunter.</p>
+        <div class="pr-emp-grid">
+          <div class="pr-emp-spalte">
+            <p class="pr-ueb-lbl">Du machst</p>
+            <p class="pr-emp-du">Ein Briefing. Einmal.</p>
+          </div>
+          <div class="pr-emp-spalte">
+            <p class="pr-ueb-lbl">Wir machen</p>
+            <ol class="pr-ueb-liste">
+                <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
+                <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
+                <li><span class="ix" aria-hidden="true">03</span>Zehn Beiträge im Monat</li>
+                <li><span class="ix" aria-hidden="true">04</span>Veröffentlichen nach Plan</li>
+                <li><span class="ix" aria-hidden="true">05</span>Hashtag-Strategie je Beitrag</li>
+                <li><span class="ix" aria-hidden="true">06</span>Anfragen sammeln und weiterleiten</li>
+              </ol>
+          </div>
+        </div>
+        <div class="pr-emp-fuss">
+          <p class="pr-emp-preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
+          <a class="btn btn-primary" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+        </div>
       </div>
+
+      <p class="pr-alt-vor">Passt nicht ganz? Dann ist es einer von diesen zwei.</p>
+      <div class="pr-alt-grid">
+        <article class="pr-alt">
+          <span class="pr-alt-nr" aria-hidden="true">02</span>
+          <h3 class="pr-alt-name">Laufendes abgeben</h3>
+          <p class="pr-alt-wann">Dein <b>Profil steht schon</b> — es fehlt nur der Content.</p>
+          <p class="pr-alt-du ist-null"><span class="pr-ueb-lbl">Du machst</span>Nichts.</p>
+          <p class="pr-alt-preis">ab 523,60 €<small>im Monat</small></p>
+          <details class="pr-alt-mehr">
+            <summary>Was wir dabei machen</summary>
+            <ol class="pr-ueb-liste pr-alt-liste">
+                <li><span class="ix" aria-hidden="true">01</span>Zehn Beiträge im Monat</li>
+                <li><span class="ix" aria-hidden="true">02</span>Veröffentlichen nach Plan</li>
+                <li><span class="ix" aria-hidden="true">03</span>Hashtag-Strategie je Beitrag</li>
+                <li><span class="ix" aria-hidden="true">04</span>Anfragen weiterleiten</li>
+                <li><span class="ix" aria-hidden="true">05</span>Monatlicher Kurz-Report</li>
+              </ol>
+          </details>
+        </article>
+        <article class="pr-alt">
+          <span class="pr-alt-nr" aria-hidden="true">03</span>
+          <h3 class="pr-alt-name">Einmal Starthilfe</h3>
+          <p class="pr-alt-wann">Du willst <b>danach selbst</b> weitermachen.</p>
+          <p class="pr-alt-du"><span class="pr-ueb-lbl">Du machst</span>Briefing geben, danach selbst posten.</p>
+          <p class="pr-alt-preis">ab 446,25 €<small>einmalig</small></p>
+          <details class="pr-alt-mehr">
+            <summary>Was wir dabei machen</summary>
+            <ol class="pr-ueb-liste pr-alt-liste">
+                <li><span class="ix" aria-hidden="true">01</span>Profil aufbauen</li>
+                <li><span class="ix" aria-hidden="true">02</span>Branding und Positionierung</li>
+                <li><span class="ix" aria-hidden="true">03</span>Neun Beiträge gestalten</li>
+                <li><span class="ix" aria-hidden="true">04</span>Hashtag-Strategie</li>
+              </ol>
+          </details>
+        </article>
+      </div>
+      <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Welcher Weg zu dir passt, sagen wir dir im Erstgespräch — auch dann, wenn es keiner der drei ist.</p>
     </div></section>
 
 
