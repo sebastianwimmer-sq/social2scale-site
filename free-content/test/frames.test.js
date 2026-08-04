@@ -114,3 +114,27 @@ describe('buildPage', () => {
     expect(html).toContain('1350px');
   });
 });
+
+describe('Avatar im Profil-Frame', () => {
+  it('rendert das echte Profilbild mit Story-Ring, wenn avatarUrl da ist', () => {
+    const mitFoto = buildPage({ ...clean, avatarUrl: 'data:image/jpeg;base64,QUJD' }, copy, palettes, 'https://x.de');
+    expect(mitFoto).toContain('class="pfp-img"');
+    expect(mitFoto).toContain('data:image/jpeg;base64,QUJD');
+    expect(mitFoto).toContain('pfp-ring');
+  });
+
+  it('faellt ohne avatarUrl auf das Initial zurueck — kein img, kein leerer src', () => {
+    // Auf die Markup-Klasse pruefen, nicht den blossen String: das Inline-CSS
+    // enthaelt .pfp-img als Selektor immer (siehe Slide-Layout-Test oben).
+    expect(html).not.toContain('class="pfp-img"');
+    expect(html).toContain('class="avatar"');
+    expect(html).toContain('>D</div>'); // Initial von "Dorothea"
+  });
+
+  it('Share-Card zeigt das Foto klein neben dem Handle', () => {
+    const mitFoto = buildPage({ ...clean, avatarUrl: 'data:image/jpeg;base64,QUJD' }, copy, palettes, 'https://x.de');
+    expect(mitFoto).toContain('class="share-pfp"');
+    // Ohne Foto: kein leeres <img> auf der Share-Card
+    expect(html).not.toContain('class="share-pfp"');
+  });
+});

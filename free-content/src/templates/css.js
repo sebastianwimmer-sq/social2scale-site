@@ -140,12 +140,25 @@ export const LOOK_CSS = `
     border-bottom: 1px solid var(--rule); }
   .prof { padding: 24px 26px 22px; }
   .prof-top { display: flex; align-items: center; gap: 26px; }
+  /* Story-Ring wie bei aktiver IG-Story — in der Akzentfarbe der Welt, nicht
+     im IG-Markengradient (Look-alike ja, Marken-Kopie nein). Der Paper-Rand
+     zwischen Ring und Bild ist der Spalt, der den Ring als Ring lesbar macht. */
+  .pfp-ring {
+    flex: none; padding: 4px; border-radius: 50%;
+    background: conic-gradient(from 210deg,
+      var(--accent),
+      color-mix(in oklab, var(--accent) 30%, var(--paper)) 55%,
+      var(--accent));
+  }
   .avatar {
-    width: 104px; height: 104px; border-radius: 50%; flex: none;
+    width: 104px; height: 104px; border-radius: 50%;
+    border: 4px solid var(--paper);
     background: var(--accent); color: var(--paper);
     display: flex; align-items: center; justify-content: center;
     font-family: var(--ff-display); font-size: 42px; font-weight: 700;
+    overflow: hidden;
   }
+  .pfp-img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .stats { display: flex; gap: 34px; }
   .stat { text-align: center; font-family: var(--ff-body); }
   .stat b { display: block; font-size: 23px; font-weight: 700; color: var(--ink); }
@@ -165,7 +178,8 @@ export const LOOK_CSS = `
     font-family: var(--ff-display); font-size: 20px; font-weight: 600;
     background: color-mix(in oklab, var(--accent) 12%, var(--paper)); color: var(--accent);
   }
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 22px; }
+  /* 2px statt 4px: das echte IG-Grid ist nahezu randlos — Detailtreue. */
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 22px; }
   .cell {
     aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
     padding: 10px; text-align: center;
@@ -190,6 +204,11 @@ export const LOOK_CSS = `
   .share-inner { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; padding: 84px 90px 80px; }
   /* Kopf: WESSEN Feed das ist (Handle = der Absender, nicht s2s). */
   .share-top { display: flex; align-items: center; justify-content: space-between; }
+  .share-id { display: flex; align-items: center; gap: 22px; }
+  .share-pfp {
+    width: 96px; height: 96px; border-radius: 50%; object-fit: cover; display: block;
+    border: 2.5px solid rgba(255,255,255,.28);
+  }
   .share-who { display: flex; flex-direction: column; gap: 8px; }
   .share-at {
     font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 44px;

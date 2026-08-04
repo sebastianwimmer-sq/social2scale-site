@@ -155,6 +155,13 @@ function profil(id, clean, copy, p) {
     .map((t, i) => `<div class="cell ${muster[i]}">${esc(t)}</div>`)
     .join('');
   const initial = esc((clean.name || clean.handle || '?').trim().charAt(0).toUpperCase());
+  // Echtes Profilbild (data-URL, server-seitig via avatar.js geholt) mit
+  // Story-Ring — das staerkste "das bin ja ich"-Signal. Ring in der Akzentfarbe,
+  // NICHT der IG-Markengradient (Look-alike ja, Marken-Kopie nein). Ohne Bild:
+  // Initial wie bisher.
+  const avatarInhalt = clean.avatarUrl
+    ? `<img class="pfp-img" src="${esc(clean.avatarUrl)}" alt="">`
+    : initial;
 
   return `<div class="frame grain" id="${id}" style="${tokens(p)}">
     <div class="phone-pad"><div class="shell"><div class="device">
@@ -162,7 +169,7 @@ function profil(id, clean, copy, p) {
       <div class="ig-top"><span>@${esc(clean.handle)}</span></div>
       <div class="prof">
         <div class="prof-top">
-          <div class="avatar">${initial}</div>
+          <div class="pfp-ring"><div class="avatar">${avatarInhalt}</div></div>
           <div class="stats">
             <div class="stat"><b>9</b><span>Beiträge</span></div>
             <div class="stat"><b>1.240</b><span>Follower</span></div>
@@ -203,14 +210,19 @@ function shareFrame(clean, copy, shareUrl) {
   const head = esc(hook.head || copy?.head || 'Dein Content,');
   const accent = esc(hook.headAccent || copy?.headAccent || 'der auffällt.');
   const sub = esc(hook.sub || '');
+  // Ihr echtes Foto klein neben dem Handle: der geteilte Post wird persoenlich,
+  // nicht generisch. Ohne Foto faellt der Block auf reinen Text zurueck.
+  const sharePfp = clean.avatarUrl
+    ? `<img class="share-pfp" src="${esc(clean.avatarUrl)}" alt="">`
+    : '';
   return `<div class="frame share grain" id="f-share">
     <div class="share-grad"></div>
     <div class="share-inner">
       <div class="share-top">
-        <div class="share-who">
+        <div class="share-id">${sharePfp}<div class="share-who">
           <span class="share-at">@${esc(clean.handle)}</span>
           <span class="share-plat">Instagram · frische Vorschau</span>
-        </div>
+        </div></div>
         <img class="share-mark" src="https://social2scale.com/assets/sig-avatar.png" alt="social2scale">
       </div>
       <div class="share-hero">
