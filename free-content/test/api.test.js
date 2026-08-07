@@ -368,3 +368,19 @@ describe('POST /api/free-content — foto (Upload-Ende-zu-Ende)', () => {
     expect(await env.IMAGES.get(`free/${lead.token}/avatar.bin`)).toBeNull();
   });
 });
+
+describe('POST /api/free-content — Body-Groessen-Gate', () => {
+  it('weist einen ehrlich deklarierten Riesen-Body VOR dem Parsen ab (413)', async () => {
+    const res = await SELF.fetch('https://start.social2scale.com/api/free-content', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': String(10_000_000),
+        'CF-Connecting-IP': '9.9.9.9',
+      },
+      body: JSON.stringify(GUELTIG),
+    });
+    expect(res.status).toBe(413);
+    expect((await res.json()).error).toBe('foto');
+  });
+});

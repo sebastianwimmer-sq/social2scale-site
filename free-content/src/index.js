@@ -13,6 +13,7 @@ import {
 } from './protect.js';
 import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './leads.js';
 import { speichereAvatar } from './avatar.js';
+import { BODY_MAX_BYTES } from './constants.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
@@ -64,6 +65,14 @@ function clientIp(request) {
 }
 
 async function handleSubmit(request, env, ctx, cors) {
+  // Groessen-Gate VOR dem Parsen: Content-Length luegt hoechstens nach unten
+  // (dann greift beim Lesen das Plattform-Limit), aber ein ehrlich deklarierter
+  // Riesen-Body kostet uns so kein request.json() mehr.
+  const laenge = Number(request.headers.get('content-length') || 0);
+  if (laenge > BODY_MAX_BYTES) {
+    console.error('[submit] Abgewiesen: Body zu gross,', laenge, 'Bytes');
+    return json({ ok: false, error: 'foto' }, 413, cors);
+  }
   let body;
   try {
     body = await request.json();
@@ -183,7 +192,7 @@ async function handleSubmit(request, env, ctx, cors) {
   }
 
   ctx.waitUntil(
-    cleanupExpired(env.DB).catch((err) =>
+    cleanupExpired(env.DB, new Date(), env.IMAGES).catch((err) =>
       console.error('[submit] TTL-Aufraeumen fehlgeschlagen:', err)
     )
   );

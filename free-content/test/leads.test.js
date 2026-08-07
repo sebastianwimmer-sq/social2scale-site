@@ -288,6 +288,23 @@ describe('cleanupExpired', () => {
     const weit = new Date('2026-08-20T12:00:00Z');
     expect(await cleanupExpired(env.DB, weit)).toBe(0);
   });
+
+  it('loescht die R2-Ablage (Foto + Frames) der entfernten Leads mit — sonst ist die DSGVO-Loeschung eine halbe', async () => {
+    const { lead } = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await env.IMAGES.put(`free/${lead.token}/avatar.bin`, 'FOTO');
+    await env.IMAGES.put(`free/${lead.token}/f-0-profil.jpg`, 'BILD');
+    const weit = new Date('2026-08-20T12:00:00Z');
+    expect(await cleanupExpired(env.DB, weit, env.IMAGES)).toBe(1);
+    expect(await env.IMAGES.get(`free/${lead.token}/avatar.bin`)).toBeNull();
+    expect(await env.IMAGES.get(`free/${lead.token}/f-0-profil.jpg`)).toBeNull();
+  });
+
+  it('R2-Fehler kippt die DB-Loeschung nicht (non-fatal)', async () => {
+    await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    const kaputt = { list: async () => { throw new Error('r2 down'); }, delete: async () => {} };
+    const weit = new Date('2026-08-20T12:00:00Z');
+    expect(await cleanupExpired(env.DB, weit, kaputt)).toBe(1);
+  });
 });
 
 // §9 Sackgasse: ein hart gekillter Worker (CPU-Limit/OOM) zwischen dem atomaren

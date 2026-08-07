@@ -88,3 +88,11 @@ export const FARB_CHIPS = [
   { hex: '#7c3aed', name: 'Violett' },
   { hex: '#be185d', name: 'Beere' },
 ];
+
+/**
+ * Groesster sinnvoller Request-Body von /api/free-content: Textfelder (~4 KB)
+ * + foto-data-URL (FOTO_MAX_CHARS ~2.8 MB) + JSON-Overhead. Alles darueber
+ * wird VOR request.json() abgewiesen — sonst parsen wir Megabytes, nur um sie
+ * danach in validate.js abzulehnen (Security-Review 07.08., MEDIUM).
+ */
+export const BODY_MAX_BYTES = 3_500_000;

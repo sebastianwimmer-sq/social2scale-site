@@ -39,3 +39,25 @@ Zwei Feld-Änderungen am Vertrag `form.js → validate.js`:
 
 Der Kunden-Strang kann `~/social2scale-clients/docs/WER-MACHT-WAS.md` bei
 Gelegenheit um beide Felder ergänzen (sein Ordner, deshalb hier nur notiert).
+
+## NACHTRAG 07.08. — Security-Review (2 HIGH, 1 MEDIUM; 2 davon gefixt)
+
+- ✅ **GEFIXT: R2-Löschung existierte nicht.** Der ursprüngliche Satz oben („Aufräumen
+  löscht beides zusammen") war eine Absichtserklärung, kein Code — `cleanupExpired`
+  löschte nur D1-Zeilen. Jetzt löscht es die R2-Ablage (Foto + Frames) unbestätigter
+  Leads nach 30 Tagen MIT (leads.js, getestet). Der Datenschutz-Satz stimmt damit für
+  Unbestätigte. ⚠️ Für BESTÄTIGTE Leads gibt es (wie schon vor dem Foto-Feature)
+  keine automatische Löschfrist — Vorschau + Foto bleiben, bis der Lead manuell
+  entfernt wird. Wenn der Datenschutz-Satz live geht, entweder so formulieren
+  („solange deine Vorschau verfügbar ist") oder eine Retention-Frist bauen.
+- ✅ **GEFIXT: Body-Größen-Gate** — Riesen-Requests werden jetzt vor dem Parsen
+  abgewiesen (413, `BODY_MAX_BYTES`).
+- 🔴 **OFFENE PRODUKTENTSCHEIDUNG: Foto ohne Bildmoderation.** Das Foto wird beim
+  Absenden gespeichert — VOR der Mail-Bestätigung. Wer eine fremde Mailadresse
+  einträgt, kann der echten Besitzerin ein beliebiges Bild in „ihre" Vorschau legen
+  (Text-Felder gehen durch moderate.js, Bilder durch nichts). Dämpfer heute:
+  Vorschau nur hinter ihrem persönlichen Token, Founder-Mail bei jedem fertigen
+  Feed (menschlicher Blick), unbestätigte Fotos werden nach 30 Tagen gelöscht.
+  Optionen: (a) Risiko akzeptieren + Founder-Sichtung, (b) Bildmoderation via
+  Claude-Vision-Call vor dem Render (~1 Call/Lead), (c) Foto erst im Reveal
+  nachreichen lassen (nach Bestätigung). Sebi entscheidet.

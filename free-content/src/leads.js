@@ -225,9 +225,29 @@ export async function confirmLead(db, token, now = new Date()) {
   return { ok: true, lead: await byId(db, lead.id) };
 }
 
-/** DSGVO: unbestaetigte Leads nach PENDING_TTL_DAYS loeschen. */
-export async function cleanupExpired(db, now = new Date()) {
+/**
+ * DSGVO: unbestaetigte Leads nach PENDING_TTL_DAYS loeschen — MITSAMT ihrer
+ * R2-Ablage (hochgeladenes Foto `avatar.bin`, ggf. Frames). Ohne den R2-Teil
+ * waere die Loeschung eine halbe: die Zeile verschwindet, ihr Bild bleibt
+ * liegen (Security-Review 07.08., HIGH). `images` ist optional, damit alte
+ * Aufrufer nicht brechen; ohne Binding wird nur die DB bereinigt.
+ */
+export async function cleanupExpired(db, now = new Date(), images = null) {
   const cutoff = iso(new Date(now.getTime() - PENDING_TTL_DAYS * 24 * HOUR_MS));
+  // Tokens VOR dem DELETE einsammeln — danach kennt sie niemand mehr.
+  let tokens = [];
+  try {
+    const alte = await db
+      .prepare(
+        `SELECT token FROM free_leads
+          WHERE status = 'pending' AND confirmed_at IS NULL AND created_at < ?`
+      )
+      .bind(cutoff)
+      .all();
+    tokens = (alte.results ?? []).map((r) => r.token).filter(Boolean);
+  } catch (err) {
+    console.error('[leads] Token-Sammlung fuers Aufraeumen fehlgeschlagen:', err);
+  }
   const res = await db
     .prepare(
       `DELETE FROM free_leads
@@ -235,6 +255,19 @@ export async function cleanupExpired(db, now = new Date()) {
     )
     .bind(cutoff)
     .run();
+  // R2 non-fatal: ein R2-Ruckler darf die DB-Loeschung nicht kippen. Ein
+  // uebrig gebliebenes Objekt faengt der naechste Lauf NICHT mehr (Token weg) —
+  // deshalb loggen, damit es wenigstens auffindbar ist.
+  if (images && tokens.length) {
+    for (const t of tokens) {
+      try {
+        const liste = await images.list({ prefix: `free/${t}/`, limit: 40 });
+        await Promise.all((liste.objects ?? []).map((o) => images.delete(o.key)));
+      } catch (err) {
+        console.error(`[leads] R2-Aufraeumen fuer free/${t}/ fehlgeschlagen:`, err);
+      }
+    }
+  }
   return res.meta?.changes ?? 0;
 }
 
