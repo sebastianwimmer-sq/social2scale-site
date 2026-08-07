@@ -61,3 +61,11 @@ Gelegenheit um beide Felder ergänzen (sein Ordner, deshalb hier nur notiert).
   Optionen: (a) Risiko akzeptieren + Founder-Sichtung, (b) Bildmoderation via
   Claude-Vision-Call vor dem Render (~1 Call/Lead), (c) Foto erst im Reveal
   nachreichen lassen (nach Bestätigung). Sebi entscheidet.
+- ✅ **GEBAUT (07.08., Sebis Vorschlag): Eskalations-Knopf.** Im Reveal-Footer
+  steht jetzt leise „Stimmt hier etwas nicht? Missbrauch melden" — ein Klick
+  sperrt den Feed sofort (`reported_at` + status=failed), löscht die R2-Bilder
+  und schickt euch einen 🚨-Founder-Alarm. Idempotent, ohne Enumeration (jede
+  Antwort 200). Da der Token nur an die Mail-Inhaberin geht, ist die Meldende
+  immer die Betroffene. Migration `migrate-freeleads-reported.sql` ist auf
+  s2s-crm gelaufen. Das entschärft die offene Produktentscheidung deutlich —
+  (a) + Eskalations-Knopf ist jetzt eine vertretbare Grundabsicherung.

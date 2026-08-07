@@ -140,6 +140,10 @@ export const REVEAL_STYLE = `
      Fliesstext dieser Groesse — ausgerechnet bei den zwei Saetzen, die die
      Erwartung setzen (Wasserzeichen-Hinweis + "Beispiel-Vorschau"). --muted: ~7.9:1. */
   .rv-wm,.rv-disclaimer{font-size:.8rem;color:var(--muted);max-width:38ch;margin-top:.45rem;line-height:1.55}
+  .rv-report{background:none;border:0;cursor:pointer;font-size:.74rem;color:var(--faint);margin-top:1.1rem;padding:4px;text-decoration:underline;text-underline-offset:3px;transition:color .25s}
+  .rv-report:hover{color:var(--muted)}
+  .rv-report.done{text-decoration:none;color:var(--muted);cursor:default}
+  .rv-report:disabled{cursor:default}
 
   .rv-scrollhint[hidden]{display:none}
   .rv-scrollhint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--ff-label);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:6px;animation:rvbob 2s var(--e-out) infinite}
@@ -265,6 +269,10 @@ export function revealMarkup(copy) {
          zu leise) — aber vorwaerts formuliert: erst klar sagen, was das hier ist,
          dann was daraus wird. Kein Ergebnis- oder Reichweitenversprechen (UWG). -->
     <p class="rv-disclaimer rv">&lowast; Das ist ein Schnellentwurf aus drei Antworten — bewusst grob. Dein echter Auftritt entsteht mit dir: von Hand, in deiner Sprache, ohne unser Zeichen.</p>
+    <!-- Eskalations-Knopf: nur die Token-Inhaberin sieht diese Seite. Meldet sie
+         (z. B. ein Foto, das sie nie hochgeladen hat), geht der Feed sofort
+         offline + Founder-Alarm. Bewusst leise gesetzt — ein Ventil, kein CTA. -->
+    <button type="button" class="rv-report rv" id="rv-report">Stimmt hier etwas nicht? Missbrauch melden</button>
   </div>
   </div><!-- /rv-main-col -->
 </section>
@@ -425,6 +433,26 @@ export const REVEAL_SCRIPT = `
     if (el) el.addEventListener('click', rvDownload);
   }
 
+  // Eskalations-Knopf: Feed sofort sperren lassen (z. B. untergeschobenes Foto).
+  // Ein Klick, keine Rueckfrage-Modals (Dialoge waeren hier Huerden) — der Server
+  // ist idempotent, ein Versehen kann der Founder-Kontakt aufloesen.
+  function rvWireReport() {
+    const el = $('rv-report');
+    if (!el) return;
+    el.addEventListener('click', async () => {
+      el.disabled = true;
+      try {
+        await fetch('/api/report/' + TOKEN, { method: 'POST' });
+        el.textContent = 'Danke — wir haben die Vorschau offline genommen und melden uns.';
+        el.classList.add('done');
+      } catch (err) {
+        console.error('Meldung fehlgeschlagen:', err);
+        el.disabled = false;
+        el.textContent = 'Melden hat nicht geklappt — bitte nochmal versuchen.';
+      }
+    });
+  }
+
   // Teilen mit Followern (den Mehrwert in Kooperation posten -> Gespraechs-Aufhaenger).
   // Web Share API mit Datei, wo unterstuetzt (Mobile); sonst Text+Link; sonst Fallback
   // auf den Download, damit "Teilen" nie ins Leere klickt. Bricht NIE die Seite.
@@ -541,6 +569,7 @@ export const REVEAL_SCRIPT = `
     rvWireSwitcher();
     rvWirePrimaryCta();
     rvWireDownload();
+    rvWireReport();
     rvWireShare();
     rvWireContact();
     rvWireCaptionCopy();

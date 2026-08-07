@@ -11,7 +11,7 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
-import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding } from './leads.js';
+import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding, reportLead, loescheLeadAblage } from './leads.js';
 import { speichereAvatar } from './avatar.js';
 import { BODY_MAX_BYTES } from './constants.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
@@ -382,6 +382,30 @@ export default {
     // Fehlerfall, sondern ein legitimes 'not_found' (der Build-Screen pollt das,
     // bevor er weiss ob der Token echt ist) — daher bewusst kein striktes Hex-Muster,
     // nur ein sicherer Zeichensatz mit Laengengrenze gegen ReDoS/Muell.
+    // Eskalations-Knopf: Missbrauchs-Meldung aus dem Reveal. Der Token geht nur
+    // an die Mail-Inhaberin — wer ihn hat, IST die Betroffene. Antwort fuer
+    // unbekannte/bereits gemeldete Tokens identisch (keine Enumeration). Bei
+    // Erfolg: Feed gesperrt, R2-Ablage sofort weg, Founder-Alarm mit 🚨.
+    const reportMatch = url.pathname.match(/^\/api\/report\/([a-zA-Z0-9_-]{1,128})$/);
+    if (reportMatch) {
+      if (request.method !== 'POST') return json({ ok: false, error: 'method' }, 405, cors);
+      try {
+        const r = await reportLead(env.DB, reportMatch[1]);
+        if (r.ok) {
+          ctx.waitUntil(loescheLeadAblage(env.IMAGES, reportMatch[1]).then(() => undefined));
+          ctx.waitUntil(
+            notifyFounders(env, r.lead, '🚨 MISSBRAUCH GEMELDET — Feed offline genommen, Bilder geloescht. Bitte pruefen und ggf. Kontakt aufnehmen.').catch((err) =>
+              console.error('[report] Founder-Alarm ging nicht raus:', err)
+            )
+          );
+          console.error('[report] Feed gemeldet und gesperrt, Lead', r.lead?.id);
+        }
+      } catch (err) {
+        console.error('[report] Meldung fehlgeschlagen:', err);
+      }
+      return json({ ok: true }, 200, cors);
+    }
+
     const statusMatch = url.pathname.match(/^\/api\/status\/([a-zA-Z0-9_-]{1,128})$/);
     if (statusMatch) {
       try {

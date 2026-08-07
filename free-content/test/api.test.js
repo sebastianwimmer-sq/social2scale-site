@@ -384,3 +384,40 @@ describe('POST /api/free-content — Body-Groessen-Gate', () => {
     expect((await res.json()).error).toBe('foto');
   });
 });
+
+describe('POST /api/report/:token — Eskalations-Knopf', () => {
+  beforeEach(async () => {
+    await resetTables(env.DB, SCHEMA_SQL, TABELLEN);
+  });
+
+  async function melde(token) {
+    return SELF.fetch(`https://start.social2scale.com/api/report/${token}`, {
+      method: 'POST',
+      headers: { 'CF-Connecting-IP': '9.9.9.9' },
+    });
+  }
+
+  it('nimmt den Feed offline und loescht die R2-Ablage', async () => {
+    await post(GUELTIG);
+    const [lead] = await zeilen();
+    await env.IMAGES.put(`free/${lead.token}/avatar.bin`, 'FOTO');
+    await env.IMAGES.put(`free/${lead.token}/f-0-profil.jpg`, 'BILD');
+
+    const res = await melde(lead.token);
+    expect(res.status).toBe(200);
+    expect((await res.json()).ok).toBe(true);
+
+    const status = await (await SELF.fetch(`https://start.social2scale.com/api/status/${lead.token}`)).json();
+    expect(status.state).toBe('failed');
+    expect(await env.IMAGES.get(`free/${lead.token}/avatar.bin`)).toBeNull();
+    expect(await env.IMAGES.get(`free/${lead.token}/f-0-profil.jpg`)).toBeNull();
+  });
+
+  it('antwortet fuer unbekannte Tokens gleich (keine Enumeration), GET ist nicht erlaubt', async () => {
+    const res = await melde('a'.repeat(64));
+    expect(res.status).toBe(200);
+    expect((await res.json()).ok).toBe(true);
+    const get = await SELF.fetch('https://start.social2scale.com/api/report/abc123', { method: 'GET' });
+    expect(get.status).toBe(405);
+  });
+});

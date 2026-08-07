@@ -260,15 +260,50 @@ export async function cleanupExpired(db, now = new Date(), images = null) {
   // deshalb loggen, damit es wenigstens auffindbar ist.
   if (images && tokens.length) {
     for (const t of tokens) {
-      try {
-        const liste = await images.list({ prefix: `free/${t}/`, limit: 40 });
-        await Promise.all((liste.objects ?? []).map((o) => images.delete(o.key)));
-      } catch (err) {
-        console.error(`[leads] R2-Aufraeumen fuer free/${t}/ fehlgeschlagen:`, err);
-      }
+      await loescheLeadAblage(images, t);
     }
   }
   return res.meta?.changes ?? 0;
+}
+
+/** Loescht alle R2-Objekte eines Leads (Foto + Frames + Captions). WIRFT NIE. */
+export async function loescheLeadAblage(images, token) {
+  try {
+    const liste = await images.list({ prefix: `free/${token}/`, limit: 40 });
+    await Promise.all((liste.objects ?? []).map((o) => images.delete(o.key)));
+    return true;
+  } catch (err) {
+    console.error(`[leads] R2-Aufraeumen fuer free/${token}/ fehlgeschlagen:`, err);
+    return false;
+  }
+}
+
+/**
+ * Eskalations-Knopf (Missbrauchs-Meldung aus dem Reveal): sperrt den Feed.
+ * Der Token geht nur an die Mail-Inhaberin — wer melden kann, ist also immer
+ * die Betroffene selbst. Claim atomar ueber reported_at IS NULL (idempotent);
+ * status='failed' + fail_reason='gemeldet' nimmt Build-Screen/Reveal die
+ * Datengrundlage, die R2-Loeschung uebernimmt der Aufrufer (index.js).
+ * @returns {Promise<{ok: boolean, lead?: object}>} wirft nie
+ */
+export async function reportLead(db, token, now = new Date()) {
+  if (!token) return { ok: false };
+  try {
+    const claim = await db
+      .prepare(
+        `UPDATE free_leads
+            SET reported_at=?, status='failed', fail_reason='gemeldet'
+          WHERE token=? AND reported_at IS NULL`
+      )
+      .bind(iso(now), token)
+      .run();
+    if ((claim.meta?.changes ?? 0) === 0) return { ok: false };
+    const lead = await findByToken(db, token);
+    return { ok: true, lead };
+  } catch (err) {
+    console.error('[leads] Meldung konnte nicht gespeichert werden:', err);
+    return { ok: false };
+  }
 }
 
 /**

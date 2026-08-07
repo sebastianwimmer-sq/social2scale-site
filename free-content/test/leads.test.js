@@ -1,6 +1,6 @@
 import { env } from 'cloudflare:test';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { upsertLead, findByToken, confirmLead, cleanupExpired, sweepStaleBuilding } from '../src/leads.js';
+import { upsertLead, findByToken, confirmLead, cleanupExpired, sweepStaleBuilding, reportLead } from '../src/leads.js';
 import { BUILDING_TIMEOUT_MINUTES } from '../src/constants.js';
 import { validateSubmission } from '../src/validate.js';
 // Kein readFileSync: dieser Test laeuft in workerd, nicht in Node — node:fs ist
@@ -383,5 +383,27 @@ describe('sweepStaleBuilding', () => {
   it('fasst eine "pending"-Zeile nicht an (kein generated_at, kein building)', async () => {
     await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
     expect(await sweepStaleBuilding(env.DB, NOW)).toBe(0);
+  });
+});
+
+describe('reportLead (Eskalations-Knopf)', () => {
+  it('sperrt den Feed: reported_at + status=failed + fail_reason=gemeldet', async () => {
+    const { lead } = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    const r = await reportLead(env.DB, lead.token, NOW);
+    expect(r.ok).toBe(true);
+    const nach = await findByToken(env.DB, lead.token);
+    expect(nach.reported_at).toBeTruthy();
+    expect(nach.status).toBe('failed');
+    expect(nach.fail_reason).toBe('gemeldet');
+  });
+
+  it('ist idempotent — die zweite Meldung claimt nicht erneut', async () => {
+    const { lead } = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    expect((await reportLead(env.DB, lead.token, NOW)).ok).toBe(true);
+    expect((await reportLead(env.DB, lead.token, NOW)).ok).toBe(false);
+  });
+
+  it('unbekannter Token: ok=false, wirft nicht', async () => {
+    expect((await reportLead(env.DB, 'gibtsnicht', NOW)).ok).toBe(false);
   });
 });

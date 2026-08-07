@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS free_leads (
   status        TEXT NOT NULL DEFAULT 'pending',
   build_step    TEXT NOT NULL DEFAULT '',
   fail_reason   TEXT DEFAULT '',
+  reported_at   TEXT,
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
