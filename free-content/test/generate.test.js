@@ -401,3 +401,31 @@ describe('generateFor — hochgeladenes Foto', () => {
     expect(cleanArg.avatarUrl).toBeUndefined();
   });
 });
+
+describe('buildStatus — Leit-Welt fuer den Build-Screen', () => {
+  it('liefert die Palette der Kundin mit (Stimmung + Markenfarbe)', async () => {
+    await upsertLead(env.DB, validateSubmission({
+      name: 'W', email: 'w@firma.de', handle: 'w.test', branche: 'Yoga',
+      ziel: 'Ruhe', stimmung: 'mutig', farbe: '#7c3aed', consent: true,
+    }).value, '1.1.1.1');
+    const { results } = await env.DB.prepare('SELECT token FROM free_leads').all();
+    const s = await buildStatus(env, results[0].token);
+    expect(s.welt).toBeTruthy();
+    expect(s.welt.paper.toLowerCase()).toBe('#0e1013');   // mutig -> Nacht fuehrt
+    expect(s.welt.accent.toLowerCase()).toBe('#7c3aed');  // ihre Markenfarbe traegt
+    expect(s.welt.ink).toBeTruthy();
+  });
+});
+
+describe('mitZeitlimit — Watchdog gegen haengende Renders', () => {
+  it('wirft, wenn das Promise haengt — damit der Retry ueberhaupt feuern kann', async () => {
+    const { mitZeitlimit } = await import('../src/generate.js');
+    const haengt = new Promise(() => {});
+    await expect(mitZeitlimit(haengt, 50)).rejects.toThrow(/Zeitlimit/);
+  });
+
+  it('reicht ein schnelles Ergebnis unveraendert durch', async () => {
+    const { mitZeitlimit } = await import('../src/generate.js');
+    await expect(mitZeitlimit(Promise.resolve('ok'), 5000)).resolves.toBe('ok');
+  });
+});

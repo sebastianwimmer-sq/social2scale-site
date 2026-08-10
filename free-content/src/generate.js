@@ -14,7 +14,7 @@ import { renderAll } from './render.js';
 import { findByToken } from './leads.js';
 import { notifyFounders } from './mail.js';
 import { FRAME_IDS } from './templates/frames.js';
-import { RENDER_VERSUCHE, RENDER_BACKOFF_MS, FOLLOWUP_TAGE } from './constants.js';
+import { RENDER_VERSUCHE, RENDER_BACKOFF_MS, RENDER_TIMEOUT_MS, FOLLOWUP_TAGE } from './constants.js';
 
 /** Was sie waehrend des Bauens liest. Ehrlich, nicht dekorativ. */
 const SCHRITTE = {
@@ -30,6 +30,23 @@ const SCHRITTE = {
  * Sessions — bei einem Andrang scheitert der erste Versuch, der zweite klappt.
  * Ohne Retry verliert sie ihre Bilder, weil jemand anders zufaellig gleichzeitig da war.
  */
+/**
+ * Watchdog: ein haengender CDP-Call (Screenshot, fonts.ready) WIRFT nie — ohne
+ * Zeitlimit steht der Lead ewig auf 'building' und mitRetry kann nie feuern
+ * (live passiert 10.08.: ein Render-Bucket hing nach seinem ersten Frame).
+ * Der haengende Lauf laeuft im Hintergrund weiter, bis die Runtime ihn reisst —
+ * aber der Retry bekommt seine Chance, und das Ende ist ein ehrlicher Status
+ * statt ewigem Warten.
+ */
+export function mitZeitlimit(promise, ms = RENDER_TIMEOUT_MS) {
+  return Promise.race([
+    promise,
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error(`Render-Zeitlimit ${ms}ms ueberschritten (haengender Browser-Call)`)), ms)
+    ),
+  ]);
+}
+
 async function mitRetry(fn) {
   let letzter;
   for (let versuch = 1; versuch <= RENDER_VERSUCHE; versuch++) {
@@ -197,7 +214,7 @@ export async function generateFor(env, token) {
     // Foto einsammeln (null = Initial-Fallback im Frame, frames.js entscheidet).
     const avatarUrl = await avatarVersprechen;
     const zumRendern = avatarUrl ? { ...clean, avatarUrl } : clean;
-    await mitRetry(() => renderAll(env, token, zumRendern, copy, palettes));
+    await mitRetry(() => mitZeitlimit(renderAll(env, token, zumRendern, copy, palettes)));
 
     // Captions (farbwelt-unabhaengig) neben die Bilder legen — der Reveal holt sie
     // einmal von /api/content/:token. Struktur bleibt { captions: [3 strings] }
@@ -282,9 +299,15 @@ export async function buildStatus(env, token) {
   // Angaben, hinter ihrem Token) den Erstgespraech-CTA vor, damit sie sie nicht
   // erneut tippen muss.
   const vorname = String(lead.name || '').trim().split(/\s+/)[0] || '';
+  // Leit-Welt (erste Palette) fuer den Build-Screen: die Platzhalter-Kacheln
+  // waren hart auf Creme/Terracotta verdrahtet — wer "mutig" + eigene Farbe
+  // waehlte, sah beim Warten die FALSCHEN Farben und dann einen Sprung, sobald
+  // die echten Frames landeten. derivePalettes ist rein und billig.
+  const [welt] = derivePalettes(lead.stimmung, lead.farbe);
   const basis = {
     state: lead.status, step: lead.build_step || '', done, total: FRAME_IDS.length,
     handle: lead.handle || '', vorname, name: lead.name || '', email: lead.email || '',
+    welt: { paper: welt.paper, ink: welt.ink, inkSoft: welt.inkSoft, accent: welt.accent },
   };
   if (lead.status === 'ready') return { ...basis, images };
   // grund (Moderation vs. Render, siehe markiereFehler oben) macht den Build-Screen

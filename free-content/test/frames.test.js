@@ -78,10 +78,14 @@ describe('buildPage', () => {
   });
 
   it('escaped ihre Eingaben — sie kommen aus einem oeffentlichen Formular', () => {
+    // name rendert seit der Profil-Transformation ueber copy.nameLine (Fallback
+    // clean.name) — beide Pfade muessen escapen.
     const boese = { ...clean, name: '<script>alert(1)</script>', handle: 'x' };
-    const h = buildPage(boese, copy, palettes);
-    expect(h).not.toContain('<script>alert(1)</script>');
-    expect(h).toContain('&lt;script&gt;');
+    const boeseCopy = { ...copy, nameLine: '<script>alert(1)</script>' };
+    for (const h of [buildPage(boese, { ...copy, nameLine: '' }, palettes), buildPage(clean, boeseCopy, palettes)]) {
+      expect(h).not.toContain('<script>alert(1)</script>');
+      expect(h).toContain('&lt;script&gt;');
+    }
   });
 
   it('escaped auch die generierten Texte', () => {
@@ -161,5 +165,32 @@ describe('IG-App-Detailtreue im Profil-Frame (Besucher-Perspektive)', () => {
   it('Statusbar traegt echte Icons statt Platzhalter-Zeichen', () => {
     expect(html).toContain('class="ios-ic"');
     expect(html).not.toContain('▮▮▮');
+  });
+});
+
+describe('Profil-Transformation (Anzeigename + echte IG-Bio)', () => {
+  const copyNeu = {
+    ...copy,
+    nameLine: 'Dorothea | Coaching für Coaches',
+    bioLines: ['Klare Feeds für Coaches', 'Struktur statt Posting-Chaos', 'Starte mit deiner Vorschau ↓'],
+  };
+
+  it('zeigt den optimierten Anzeigenamen statt des rohen Namens', () => {
+    const h = buildPage(clean, copyNeu, palettes);
+    expect(h).toContain('Dorothea | Coaching für Coaches');
+  });
+
+  it('rendert die mehrzeilige Bio (Zeile 1 akzentuiert, Rest normal)', () => {
+    const h = buildPage(clean, copyNeu, palettes);
+    expect(h).toContain('<b>Klare Feeds für Coaches</b>');
+    expect(h).toContain('<br>Struktur statt Posting-Chaos');
+    expect(h).toContain('<br>Starte mit deiner Vorschau ↓');
+  });
+
+  it('faellt ohne neue Felder auf Name + einzeilige Bio zurueck (alte Copy-Objekte)', () => {
+    const altCopy = { ...copy, nameLine: undefined, bioLines: undefined };
+    const h = buildPage(clean, altCopy, palettes);
+    expect(h).toContain('Dorothea Beekman');
+    expect(h).toContain(`<b>${copy.bio}</b>`);
   });
 });

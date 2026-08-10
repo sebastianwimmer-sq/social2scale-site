@@ -46,6 +46,8 @@ const SYSTEM =
   'INHALT der Felder (die STRUKTUR gibt das Tool-Schema vor — du fuellst sie hochwertig):\n' +
   '- eyebrow: 2-3 Woerter Kicker. head + headAccent: Headline in ZWEI Teilen, headAccent = farbige Pointe. sub: ein Satz, max 90 Zeichen.\n' +
   '- bio: ihre Instagram-Bio-Zeile, max 40 Zeichen. cells: 9 kurze Feed-Raster-Titel (je max 18 Zeichen).\n' +
+  '- nameLine: der optimierte IG-Anzeigename \u2014 \u201eVorname | Positionierung\u201c (z. B. \u201eAnna | Yoga f\u00fcr Vielarbeiterinnen\u201c), max 34 Zeichen. Der Name ist auf Instagram durchsuchbar: die Positionierung MUSS ein Suchbegriff ihres Themas sein.\n' +
+  '- bioLines: die komplette Bio-Transformation, GENAU 3 kurze Zeilen (je max 36 Zeichen): Zeile 1 = wem sie wie hilft (Positionierung), Zeile 2 = was sie besonders macht (Substanz, kein Erfolgsversprechen), Zeile 3 = sanfte Handlungszeile mit \u2193 oder \u2192.\n' +
   '- posts (GENAU 3 Karussells): je 3 Slides in der Reihenfolge hook → value → cta.\n' +
   '  hook: Spannung/Neugier. value: DER konkrete Kern, EINE grosse Kernaussage. cta: ruhiger Abschluss, sanfte Handlung („Speicher dir das" / „Folge fuer mehr").\n' +
   '  Jede Slide: eyebrow, head, headAccent, sub — alle gefuellt, nie leer.\n' +
@@ -90,9 +92,11 @@ const PROFILE_TOOL = {
       headAccent: { type: 'string' },
       sub: { type: 'string' },
       bio: { type: 'string' },
+      nameLine: { type: 'string' },
+      bioLines: { type: 'array', items: { type: 'string' }, minItems: 3, maxItems: 3 },
       cells: { type: 'array', items: { type: 'string' }, minItems: 9, maxItems: 9 },
     },
-    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'cells'],
+    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'nameLine', 'bioLines', 'cells'],
   },
 };
 
@@ -131,6 +135,13 @@ export function buildFallback(clean) {
     headAccent: 'aussehen.',
     sub: `Dein Thema, dein Stil — bereit zum Posten${gruss}.`.slice(0, 90),
     bio: 'Dein Feed — sichtbar, konsistent.'.slice(0, 40),
+    // Profil-Transformation, generisch: nameLine ohne claim-traechtige branche.
+    nameLine: (name || 'Dein Name').slice(0, 34),
+    bioLines: [
+      'Dein Thema, klar positioniert',
+      'Inhalte mit Substanz statt Laerm',
+      'Starte mit deiner Vorschau ↓',
+    ],
     cells: [
       'Dein Thema', 'Warum jetzt?', '3 Schritte',
       'Zitat', 'Vorher / Nachher', 'Deine Frage?',
@@ -313,7 +324,7 @@ export async function generateCopy(env, clean) {
 
   // Alle 4 Calls gleichzeitig — Wall-Zeit = langsamster Call, nicht Summe.
   const [prof, ...rohPosts] = await Promise.all([
-    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
+    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, nameLine, bioLines, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
     ...winkel.map((w, i) => callClaude(env, POST_TOOL, basis + '\n\nAufgabe: Genau EIN Karussell (3 Slides hook→value→cta) + fertige Caption.\n' + w, `post${i + 1}`)),
   ]);
 
@@ -331,6 +342,26 @@ export async function generateCopy(env, clean) {
     console.error('[copy] Profil hat die falsche Form — Fallback. Keys:', Object.keys(prof || {}).join(','), 'cells:', Array.isArray(prof?.cells) ? prof.cells.length : 'n/a');
     return buildFallback(clean);
   }
+
+  // Profil-Transformation WEICH normalisieren: nameLine/bioLines sind neu und
+  // duerfen bei einem Patzer nicht das ganze (gute) Profil kosten — dann eben
+  // Name + generische Bio-Zeilen aus dem Fallback. Kein harter formStimmt-Fail.
+  const fbProf = buildFallback(clean);
+  const nameLineOk = typeof prof.nameLine === 'string' && prof.nameLine.trim();
+  prof.nameLine = clip(nameLineOk ? prof.nameLine : fbProf.nameLine, 34);
+  const bioLinesOk = Array.isArray(prof.bioLines) && prof.bioLines.length === 3 &&
+    prof.bioLines.every((z) => typeof z === 'string' && z.trim());
+  // An der WORTGRENZE kappen, nicht mitten im Wort: Claude haelt Zeichenlimits
+  // nur ungefaehr ein, und "wie sie traini" im Profil sieht kaputt aus, nicht
+  // premium (live 10.08.). 44 Zeichen tragen bei 17px in der Bio-Breite.
+  const clipWort = (z, n) => {
+    const v = String(z ?? '').trim();
+    if (v.length <= n) return v;
+    const kurz = v.slice(0, n);
+    const grenze = kurz.lastIndexOf(' ');
+    return (grenze > n * 0.6 ? kurz.slice(0, grenze) : kurz).trim();
+  };
+  prof.bioLines = (bioLinesOk ? prof.bioLines : fbProf.bioLines).map((z) => clipWort(z, 44));
 
   // Posts einzeln bewerten: gute uebernehmen, nur die patzenden aus dem Fallback
   // backfillen (statt die ganze Antwort wegzuwerfen).

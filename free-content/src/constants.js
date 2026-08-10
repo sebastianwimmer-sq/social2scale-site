@@ -96,3 +96,11 @@ export const FARB_CHIPS = [
  * danach in validate.js abzulehnen (Security-Review 07.08., MEDIUM).
  */
 export const BODY_MAX_BYTES = 3_500_000;
+
+/**
+ * Watchdog um renderAll: ein haengender CDP-Call (Screenshot/Fonts) WIRFT nie —
+ * der Retry kann dann nie feuern und der Lead steht ewig auf 'building'
+ * (live passiert 10.08., Bucket hing nach 1 Frame). Normaler 21-Frame-Lauf
+ * ~10-40s; 120s ist grosszuegig, aber endlich.
+ */
+export const RENDER_TIMEOUT_MS = 120_000;

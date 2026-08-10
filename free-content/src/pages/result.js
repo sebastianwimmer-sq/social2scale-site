@@ -115,8 +115,14 @@ const PAGE_STYLE = `
   .tile.land{z-index:3}
   .tile.land::after{content:"";position:absolute;inset:0;box-shadow:0 0 0 1.5px rgba(0,184,136,.95),0 0 22px 5px rgba(0,184,136,.55);animation:ring .7s var(--e-out) forwards}
   @keyframes ring{0%{opacity:1;transform:scale(.92)}100%{opacity:0;transform:scale(1.14)}}
-  .t-dark{background:#1a1512;color:#F4F0E9}.t-accent{background:#C2410C;color:#F4F0E9}
-  .t-tint{background:#EAD9CE;color:#23201C}.t-line{background:#F4F0E9;color:#6B645A}
+  /* Platzhalter-Kacheln in der LEIT-WELT der Kundin (CSS-Vars, gesetzt vom
+     Poller aus /api/status.welt). Fallbacks = alte Creme-Werte, nur bis der
+     erste Status da ist — vorher waren sie HART verdrahtet: wer "mutig" oder
+     eine eigene Farbe waehlte, sah beim Warten die falschen Farben. */
+  .t-dark{background:var(--bs-ink,#1a1512);color:var(--bs-paper,#F4F0E9)}
+  .t-accent{background:var(--bs-accent,#C2410C);color:var(--bs-paper,#F4F0E9)}
+  .t-tint{background:color-mix(in oklab,var(--bs-accent,#C2410C) 18%,var(--bs-paper,#EAD9CE));color:var(--bs-ink,#23201C)}
+  .t-line{background:var(--bs-paper,#F4F0E9);color:var(--bs-soft,#6B645A)}
   .sweep{position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(31,201,152,.16),transparent);height:40%;animation:sweep 2.4s var(--e-out) infinite}
   @keyframes sweep{0%{transform:translateY(-120%)}100%{transform:translateY(320%)}}
   @keyframes shimmer{to{background-position:-220% 0}}
@@ -299,6 +305,20 @@ const PAGE_SCRIPT = `
   // ── Identitaet aus dem Formular ins Chrome ziehen (@handle + Vorname), sobald
   //    /api/status sie mitliefert. Einmalig — danach steht der echte Handle statt
   //    "dein.profil" auf Build- UND Reveal-Handy. rvSetVorname lebt im Reveal-Scope. ──
+  // Leit-Welt der Kundin auf die Platzhalter-Kacheln — einmalig, sobald der
+  // Status sie liefert. Danach warten die Kacheln in IHREN Farben statt in der
+  // alten Creme-Vorlage.
+  let weltApplied = false;
+  function applyWelt(data) {
+    if (weltApplied || !data || !data.welt || !data.welt.paper) return;
+    weltApplied = true;
+    const R = document.documentElement.style;
+    R.setProperty('--bs-paper', data.welt.paper);
+    R.setProperty('--bs-ink', data.welt.ink);
+    R.setProperty('--bs-accent', data.welt.accent);
+    R.setProperty('--bs-soft', data.welt.inkSoft);
+  }
+
   let identityApplied = false;
   function applyIdentity(data) {
     if (identityApplied || !data) return;
@@ -325,6 +345,7 @@ const PAGE_SCRIPT = `
       const url = 'https://social2scale.com/anfrage/?' + q;
       const p = $('rv-cta-primary'); if (p) p.href = url;
       const c = $('rv-contact'); if (c) c.href = url;
+      const f = $('rv-float-cta'); if (f) f.href = url;
     }
   }
 
@@ -412,6 +433,7 @@ const PAGE_SCRIPT = `
     }
     if (typeof data.total === 'number' && data.total > 0) total = data.total;
     applyIdentity(data);
+    applyWelt(data);
     const action = nextAction(data, Date.now() - pollStartedAt);
     if (action.kind === 'reveal') {
       clearInterval(pollTimer);

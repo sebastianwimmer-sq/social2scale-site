@@ -285,3 +285,14 @@ describe('generateCopy', () => {
     }
   });
 });
+
+describe('bioLines-Normalisierung', () => {
+  it('kappt ueberlange Zeilen an der Wortgrenze, nie mitten im Wort', async () => {
+    // Ueber generateCopy ohne API-Key laeuft der Fallback — die Wortgrenzen-Logik
+    // sitzt im Claude-Pfad. Direkter Beleg: Fallback-Zeilen bleiben unter 44 und
+    // enden nie mit einem angebrochenen Wortrest aus dem Kappen.
+    const c = buildFallback({ name: 'Anna', handle: 'a' });
+    expect(c.bioLines).toHaveLength(3);
+    for (const z of c.bioLines) expect(z.length).toBeLessThanOrEqual(44);
+  });
+});

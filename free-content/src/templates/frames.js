@@ -149,6 +149,21 @@ function slide(id, clean, s, p, nr) {
   </div>`;
 }
 
+/**
+ * Profil-Transformation: die IG-Bio als ECHTE mehrzeilige Bio (Zeile 1 =
+ * Positionierung, akzentuiert; danach Substanz + CTA-Zeile), Anzeigename mit
+ * Positionierung via copy.nameLine. Aeltere Copy-Objekte ohne die neuen Felder
+ * fallen sauber auf Name + einzeilige bio zurueck.
+ */
+function bioHtml(copy) {
+  const zeilen = Array.isArray(copy.bioLines)
+    ? copy.bioLines.map((z) => String(z ?? '').trim()).filter(Boolean)
+    : [];
+  if (!zeilen.length) return `<b>${esc(copy.bio)}</b>`;
+  const [erste, ...rest] = zeilen;
+  return `<b>${esc(erste)}</b>${rest.map((z) => `<br>${esc(z)}`).join('')}`;
+}
+
 function profil(id, clean, copy, p) {
   const muster = ['c-fill','c-tint','c-accent','c-line','c-fill','c-tint','c-accent','c-line','c-fill'];
   const zellen = copy.cells
@@ -194,8 +209,8 @@ function profil(id, clean, copy, p) {
           </div>
         </div>
         <div class="bio">
-          <div class="n">${esc(clean.name)}</div>
-          <div class="l"><b>${esc(copy.bio)}</b></div>
+          <div class="n">${esc(copy.nameLine || clean.name)}</div>
+          <div class="l">${bioHtml(copy)}</div>
         </div>
         <div class="cta-row">
           <span class="btn-follow">Folgen</span>

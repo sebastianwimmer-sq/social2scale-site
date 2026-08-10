@@ -216,3 +216,28 @@ describe('nextAction (Poller-Entscheidung, keine Sackgassen)', () => {
     });
   });
 });
+
+describe('Reveal-Ausbau 10.08. (Experten-Zeilen + Floating-CTA)', () => {
+  async function revealHtml() {
+    const req = new Request('https://start.social2scale.com/r/' + 'a'.repeat(64));
+    const ctx = createExecutionContext();
+    const res = await worker.fetch(req, env, ctx);
+    await waitOnExecutionContext(ctx);
+    return res.text();
+  }
+
+  it('traegt zu jedem der 3 Posts eine Warum-Begruendung', async () => {
+    const html = await revealHtml();
+    expect(html.split('class="rv-why rv"').length - 1).toBe(3);
+    expect(html).toContain('Der Aufmacher.');
+    expect(html).toContain('Die Substanz.');
+    expect(html).toContain('Die Nähe.');
+  });
+
+  it('hat den Floating-CTA (versteckt, mit Schliessen-Knopf)', async () => {
+    const html = await revealHtml();
+    expect(html).toContain('id="rv-float"');
+    expect(html).toContain('Lass uns starten');
+    expect(html).toContain('id="rv-float-x"');
+  });
+});

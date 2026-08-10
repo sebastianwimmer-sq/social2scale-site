@@ -140,6 +140,18 @@ export const REVEAL_STYLE = `
      Fliesstext dieser Groesse — ausgerechnet bei den zwei Saetzen, die die
      Erwartung setzen (Wasserzeichen-Hinweis + "Beispiel-Vorschau"). --muted: ~7.9:1. */
   .rv-wm,.rv-disclaimer{font-size:.8rem;color:var(--muted);max-width:38ch;margin-top:.45rem;line-height:1.55}
+  /* Experten-Begruendung unterm Karussell: leise Autoritaet, kein zweiter CTA. */
+  .rv-why{font-size:.82rem;line-height:1.6;color:var(--muted);max-width:44ch;margin-top:.9rem;padding-left:.9rem;border-left:2px solid var(--mood,#00B888)}
+  .rv-why-k{display:block;font-family:var(--ff-label);font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mood,#00B888);margin-bottom:.25rem}
+  /* Floating-CTA: gleiche Sprache wie der Haupt-CTA, aber kompakt + verschwindet
+     sobald das Angebot selbst im Viewport ist. */
+  .rv-float{position:fixed;left:50%;bottom:calc(1.1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);z-index:60;display:flex;align-items:center;gap:.4rem;transition:transform .6s var(--e-spring)}
+  .rv-float.on{transform:translate(-50%,0)}
+  .rv-float-cta{white-space:nowrap;font-family:var(--ff-label);font-weight:700;font-size:.88rem;color:var(--emerald-ink,#04201A);background:var(--flow,linear-gradient(90deg,#00B888,#1FA6E0));border-radius:100px;padding:.78rem 1.35rem;text-decoration:none;display:flex;align-items:center;gap:.5rem;box-shadow:0 18px 44px -14px rgba(0,184,136,.65),0 6px 18px rgba(0,0,0,.35)}
+  .rv-float-cta .ic{transition:transform .3s var(--e-out)}
+  .rv-float-cta:hover .ic{transform:translateX(3px)}
+  .rv-float-x{width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;background:rgba(10,13,16,.8);color:var(--muted);font-size:1rem;line-height:1;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  @media (prefers-reduced-motion:reduce){.rv-float{transition:none}}
   .rv-report{background:none;border:0;cursor:pointer;font-size:.74rem;color:var(--faint);margin-top:1.1rem;padding:4px;text-decoration:underline;text-underline-offset:3px;transition:color .25s}
   .rv-report:hover{color:var(--muted)}
   .rv-report.done{text-decoration:none;color:var(--muted);cursor:default}
@@ -201,6 +213,15 @@ export function revealMarkup(copy) {
   // (world-abhaengig) — im Markup stehen nur data-post/data-slide als Vertrag.
   const postsHtml = [1, 2, 3].map((p) => {
     const capIdx = p - 1;
+    // Experten-Begruendung pro Post: WARUM genau diese drei (Sebis "zeigt
+    // Experten-Wissen"). Die Texte spiegeln die festen Blickwinkel aus copy.js
+    // (Post 1 Ueberzeugung / Post 2 Methode / Post 3 persoenlich) — aendert sich
+    // dort die Dramaturgie, MUESSEN diese Zeilen mitziehen.
+    const WARUM = [
+      'Der Aufmacher. Neue Besucherinnen entscheiden in Sekunden, ob sie bleiben — dieser Post positioniert dich mit einer klaren Haltung statt mit Floskeln.',
+      'Die Substanz. Ein konkreter Weg aus deiner Praxis zeigt, WIE du arbeitest — gezeigtes Können überzeugt mehr als jede Behauptung.',
+      'Die Nähe. Menschen folgen Menschen: ein persönlicher Einblick macht aus stillen Mitleserinnen Followerinnen, die dir schreiben.',
+    ];
     const slides = [1, 2, 3].map((s) =>
       `<div class="rv-slide"><img data-post="${p}" data-slide="${s}" alt="Post ${p}, Slide ${s}" loading="lazy"></div>`
     ).join('');
@@ -212,7 +233,8 @@ export function revealMarkup(copy) {
         <div class="rv-post-head"><span class="rv-post-n">Post ${p}</span><span class="rv-post-swipe">3 Slides · swipe <span class="arw" aria-hidden="true">→</span></span></div>
         <div class="rv-track" data-post="${p}">${slides}</div>
         <div class="rv-dots" data-post="${p}">${dots}</div>
-        <div class="rv-post-cap"><p class="rv-cap-text" data-cap="${capIdx}">Caption wird geladen …</p><button type="button" class="rv-cap-copy" data-cap="${capIdx}">Caption kopieren</button></div>
+        <p class="rv-why rv"><span class="rv-why-k">Warum dieser Post</span>${WARUM[p - 1]}</p>
+        <div class="rv-post-cap rv"><p class="rv-cap-text" data-cap="${capIdx}">Caption wird geladen …</p><button type="button" class="rv-cap-copy" data-cap="${capIdx}">Caption kopieren</button></div>
       </article>`;
   }).join('');
   return `
@@ -277,7 +299,16 @@ export function revealMarkup(copy) {
   </div><!-- /rv-main-col -->
 </section>
 
-<div class="rv-scrollhint" id="rv-hint" hidden><span>scroll</span><span class="arw"></span></div>`;
+<div class="rv-scrollhint" id="rv-hint" hidden><span>scroll</span><span class="arw"></span></div>
+
+<!-- Floating-CTA: „Lass uns starten" darf nicht erst ganz unten auftauchen —
+     wer nach den Posts abspringt, hat ihn sonst nie gesehen. Erscheint nach
+     ~25s, verschwindet fuer immer, sobald das echte Angebot im Blick ist
+     (kein doppelter CTA im Bild) oder sie ihn wegklickt. -->
+<div class="rv-float" id="rv-float" hidden>
+  <a class="rv-float-cta" id="rv-float-cta" href="${ANFRAGE_URL}">Lass uns starten <span class="ic" aria-hidden="true">→</span></a>
+  <button type="button" class="rv-float-x" id="rv-float-x" aria-label="Hinweis schließen">×</button>
+</div>`;
 }
 
 /**
@@ -433,6 +464,35 @@ export const REVEAL_SCRIPT = `
     if (el) el.addEventListener('click', rvDownload);
   }
 
+  // Floating-CTA: nach ~25s einblenden (wer bis dahin scrollt, ist interessiert,
+  // hat den Haupt-CTA aber evtl. nie gesehen). Verschwindet ENDGUELTIG, sobald
+  // das Angebot im Viewport war (kein doppelter CTA) oder sie ihn wegklickt.
+  var FLOAT_DELAY_MS = 25000;
+  function rvWireFloat() {
+    const float = $('rv-float');
+    if (!float) return;
+    let vorbei = false;
+    const weg = () => { vorbei = true; float.classList.remove('on'); setTimeout(() => { float.hidden = true; }, 650); };
+    const offer = document.querySelector('.rv-offer');
+    if (offer && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => {
+        if (es.some((e) => e.isIntersecting)) { weg(); io.disconnect(); }
+      }, { threshold: .2 });
+      io.observe(offer);
+    }
+    const x = $('rv-float-x');
+    if (x) x.addEventListener('click', weg);
+    const cta = $('rv-float-cta');
+    if (cta) cta.addEventListener('click', () => {
+      try { if (navigator.sendBeacon) navigator.sendBeacon('/api/track?e=cta_call&t=' + TOKEN); } catch (err) {}
+    });
+    setTimeout(() => {
+      if (vorbei) return;
+      float.hidden = false;
+      requestAnimationFrame(() => requestAnimationFrame(() => float.classList.add('on')));
+    }, FLOAT_DELAY_MS);
+  }
+
   // Eskalations-Knopf: Feed sofort sperren lassen (z. B. untergeschobenes Foto).
   // Ein Klick, keine Rueckfrage-Modals (Dialoge waeren hier Huerden) — der Server
   // ist idempotent, ein Versehen kann der Founder-Kontakt aufloesen.
@@ -570,6 +630,7 @@ export const REVEAL_SCRIPT = `
     rvWirePrimaryCta();
     rvWireDownload();
     rvWireReport();
+    rvWireFloat();
     rvWireShare();
     rvWireContact();
     rvWireCaptionCopy();
@@ -581,8 +642,15 @@ export const REVEAL_SCRIPT = `
       rvs.forEach((el) => el.classList.add('in'));
       return;
     }
+    // Gestaffelt statt gleichzeitig: kommen mehrere Elemente in EINEM Schwung in
+    // den Viewport (z. B. Post-Bild + Warum-Zeile + Caption), erscheinen sie als
+    // kleine Kaskade — das "mehr Reveal beim Scrollen"-Gefuehl, ohne neue Animationen.
     const io = new IntersectionObserver((es) => {
-      es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      const rein = es.filter((e) => e.isIntersecting);
+      rein.forEach((e, i) => {
+        io.unobserve(e.target);
+        setTimeout(() => e.target.classList.add('in'), i * 110);
+      });
     }, { threshold: .18 });
     rvs.forEach((el) => io.observe(el));
     // die obersten sofort gestaffelt zeigen (Blur-up), Rest beim Reinscrollen.
