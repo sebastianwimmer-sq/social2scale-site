@@ -194,3 +194,18 @@ describe('Profil-Transformation (Anzeigename + echte IG-Bio)', () => {
     expect(h).toContain(`<b>${copy.bio}</b>`);
   });
 });
+
+describe('Personalisierte Highlights (wie ein echtes Konto)', () => {
+  it('rendert die generierten Highlight-Namen statt der statischen', () => {
+    const c = { ...copy, highlights: ['Meine Story', 'Kurse', 'Erfolge', 'FAQ'] };
+    const h = buildPage(clean, c, palettes);
+    expect(h).toContain('Meine Story');
+    expect(h).toContain('>Kurse<');
+    expect(h).not.toContain('>Über mich<');
+  });
+
+  it('faellt ohne highlights auf die bewaehrten vier zurueck', () => {
+    expect(html).toContain('Über mich');
+    expect(html).toContain('Angebot');
+  });
+});

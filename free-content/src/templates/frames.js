@@ -164,6 +164,22 @@ function bioHtml(copy) {
   return `<b>${esc(erste)}</b>${rest.map((z) => `<br>${esc(z)}`).join('')}`;
 }
 
+/**
+ * Story-Highlights wie auf einem ECHTEN Konto: Claude benennt sie kundenspezifisch
+ * (copy.highlights, 4 kurze Labels) — statisch waren sie Template-Geruch. Die vier
+ * Linien-Icons bleiben (kohaerente Ikonografie), nur die Namen personalisieren.
+ */
+function hlHtml(copy) {
+  const namen = Array.isArray(copy.highlights) && copy.highlights.length === 4 &&
+    copy.highlights.every((h) => typeof h === 'string' && h.trim())
+    ? copy.highlights
+    : ['Über mich', 'Angebot', 'Stimmen', 'Fragen'];
+  const icons = [HL_ICONS.person, HL_ICONS.spark, HL_ICONS.heart, HL_ICONS.chat];
+  return namen
+    .map((n, i) => `<div class="hl-i"><div class="hl-c">${icons[i]}</div>${esc(n)}</div>`)
+    .join('');
+}
+
 function profil(id, clean, copy, p) {
   const muster = ['c-fill','c-tint','c-accent','c-line','c-fill','c-tint','c-accent','c-line','c-fill'];
   const zellen = copy.cells
@@ -216,12 +232,7 @@ function profil(id, clean, copy, p) {
           <span class="btn-follow">Folgen</span>
           <span class="btn-msg">Nachricht</span>
         </div>
-        <div class="hl">
-          <div class="hl-i"><div class="hl-c">${HL_ICONS.person}</div>Über mich</div>
-          <div class="hl-i"><div class="hl-c">${HL_ICONS.spark}</div>Angebot</div>
-          <div class="hl-i"><div class="hl-c">${HL_ICONS.heart}</div>Stimmen</div>
-          <div class="hl-i"><div class="hl-c">${HL_ICONS.chat}</div>Fragen</div>
-        </div>
+        <div class="hl">${hlHtml(copy)}</div>
         <div class="tabs">
           <span class="tab on">${UI.grid}</span><span class="tab">${UI.reels}</span><span class="tab">${UI.tag}</span>
         </div>

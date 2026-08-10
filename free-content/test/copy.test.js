@@ -296,3 +296,19 @@ describe('bioLines-Normalisierung', () => {
     for (const z of c.bioLines) expect(z.length).toBeLessThanOrEqual(44);
   });
 });
+
+describe('clipWort — Wortgrenzen-Schnitt (nie "Hundesch")', () => {
+  it('kappt an Space und Bindestrich, strippt haessliche Endzeichen', async () => {
+    const { clipWort } = await import('../src/copy.js');
+    expect(clipWort('Sieben | Welpentraining & Hundeschule', 34)).toBe('Sieben | Welpentraining');
+    // Endet der Schnitt auf einem Fuellwort, faellt es mit weg (nie "... für").
+    expect(clipWort('Sieben | Welpentraining für unsichere Ersthunde', 34)).toBe('Sieben | Welpentraining');
+    expect(clipWort('kurz', 34)).toBe('kurz');
+    expect(clipWort('Vorher-Nachher-Momente', 12)).toBe('Vorher');
+  });
+
+  it("liefert '' wenn kein sauberer Schnitt moeglich ist", async () => {
+    const { clipWort } = await import('../src/copy.js');
+    expect(clipWort('Riesenlangeswortohnegrenze', 12)).toBe('');
+  });
+});

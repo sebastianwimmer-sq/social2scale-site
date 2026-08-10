@@ -48,10 +48,29 @@ const SYSTEM =
   '- bio: ihre Instagram-Bio-Zeile, max 40 Zeichen. cells: 9 kurze Feed-Raster-Titel (je max 18 Zeichen).\n' +
   '- nameLine: der optimierte IG-Anzeigename \u2014 \u201eVorname | Positionierung\u201c (z. B. \u201eAnna | Yoga f\u00fcr Vielarbeiterinnen\u201c), max 34 Zeichen. Der Name ist auf Instagram durchsuchbar: die Positionierung MUSS ein Suchbegriff ihres Themas sein.\n' +
   '- bioLines: die komplette Bio-Transformation, GENAU 3 kurze Zeilen (je max 36 Zeichen): Zeile 1 = wem sie wie hilft (Positionierung), Zeile 2 = was sie besonders macht (Substanz, kein Erfolgsversprechen), Zeile 3 = sanfte Handlungszeile mit \u2193 oder \u2192.\n' +
+  '- highlights: GENAU 4 Story-Highlight-Namen fuer ihr Profil (je max 11 Zeichen, Instagram kuerzt hart): konkret zu ihrem Thema statt generisch (z. B. Yoga: Meine Story / Kurse / Erfolge / FAQ).\n' +
   '- posts (GENAU 3 Karussells): je 3 Slides in der Reihenfolge hook → value → cta.\n' +
   '  hook: Spannung/Neugier. value: DER konkrete Kern, EINE grosse Kernaussage. cta: ruhiger Abschluss, sanfte Handlung („Speicher dir das" / „Folge fuer mehr").\n' +
   '  Jede Slide: eyebrow, head, headAccent, sub — alle gefuellt, nie leer.\n' +
   '- caption pro Post: fertige, sofort postbare IG-Bildunterschrift, inhaltlich zu den 3 Slides. Aufbau: starke erste Zeile → 2-4 kurze Mehrwert-Zeilen (Ich-/Du-Ton) → sanfte Handlungsaufforderung → 4-6 relevante Hashtags. 400-700 Zeichen.';
+
+/**
+ * Kappt an der WORTGRENZE (Space/Bindestrich), nie mitten im Wort — harte
+ * Zeichen-Clips lieferten live "Hundesch" und "Vorher-Nachh" (10.08.).
+ * Gibt '' zurueck, wenn kein sauberer Schnitt moeglich ist (ein langes Wort):
+ * der Aufrufer entscheidet dann (harter Schnitt oder Fallback-Label).
+ */
+export function clipWort(z, n) {
+  const v = String(z ?? '').trim();
+  if (v.length <= n) return v;
+  const kurz = v.slice(0, n);
+  const grenze = Math.max(kurz.lastIndexOf(' '), kurz.lastIndexOf('-'));
+  if (grenze < 4) return '';
+  return kurz.slice(0, grenze)
+    .replace(/[\s|&·—-]+$/u, '')
+    .replace(/\s+(für|mit|und|aus|der|die|das|dein|deine|im|in|am|an)$/iu, '')
+    .trim();
+}
 
 function clip(v, n) {
   return String(v ?? '').trim().slice(0, n);
@@ -94,9 +113,10 @@ const PROFILE_TOOL = {
       bio: { type: 'string' },
       nameLine: { type: 'string' },
       bioLines: { type: 'array', items: { type: 'string' }, minItems: 3, maxItems: 3 },
+      highlights: { type: 'array', items: { type: 'string' }, minItems: 4, maxItems: 4 },
       cells: { type: 'array', items: { type: 'string' }, minItems: 9, maxItems: 9 },
     },
-    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'nameLine', 'bioLines', 'cells'],
+    required: ['eyebrow', 'head', 'headAccent', 'sub', 'bio', 'nameLine', 'bioLines', 'highlights', 'cells'],
   },
 };
 
@@ -142,6 +162,7 @@ export function buildFallback(clean) {
       'Inhalte mit Substanz statt Laerm',
       'Starte mit deiner Vorschau ↓',
     ],
+    highlights: ['Über mich', 'Angebot', 'Stimmen', 'Fragen'],
     cells: [
       'Dein Thema', 'Warum jetzt?', '3 Schritte',
       'Zitat', 'Vorher / Nachher', 'Deine Frage?',
@@ -324,7 +345,7 @@ export async function generateCopy(env, clean) {
 
   // Alle 4 Calls gleichzeitig — Wall-Zeit = langsamster Call, nicht Summe.
   const [prof, ...rohPosts] = await Promise.all([
-    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, nameLine, bioLines, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
+    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, nameLine, bioLines, 4 highlights, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
     ...winkel.map((w, i) => callClaude(env, POST_TOOL, basis + '\n\nAufgabe: Genau EIN Karussell (3 Slides hook→value→cta) + fertige Caption.\n' + w, `post${i + 1}`)),
   ]);
 
@@ -348,20 +369,21 @@ export async function generateCopy(env, clean) {
   // Name + generische Bio-Zeilen aus dem Fallback. Kein harter formStimmt-Fail.
   const fbProf = buildFallback(clean);
   const nameLineOk = typeof prof.nameLine === 'string' && prof.nameLine.trim();
-  prof.nameLine = clip(nameLineOk ? prof.nameLine : fbProf.nameLine, 34);
+  const nlRoh = nameLineOk ? prof.nameLine : fbProf.nameLine;
+  prof.nameLine = clipWort(nlRoh, 34) || clip(nlRoh, 34);
   const bioLinesOk = Array.isArray(prof.bioLines) && prof.bioLines.length === 3 &&
     prof.bioLines.every((z) => typeof z === 'string' && z.trim());
-  // An der WORTGRENZE kappen, nicht mitten im Wort: Claude haelt Zeichenlimits
-  // nur ungefaehr ein, und "wie sie traini" im Profil sieht kaputt aus, nicht
-  // premium (live 10.08.). 44 Zeichen tragen bei 17px in der Bio-Breite.
-  const clipWort = (z, n) => {
-    const v = String(z ?? '').trim();
-    if (v.length <= n) return v;
-    const kurz = v.slice(0, n);
-    const grenze = kurz.lastIndexOf(' ');
-    return (grenze > n * 0.6 ? kurz.slice(0, grenze) : kurz).trim();
-  };
-  prof.bioLines = (bioLinesOk ? prof.bioLines : fbProf.bioLines).map((z) => clipWort(z, 44));
+  prof.bioLines = (bioLinesOk ? prof.bioLines : fbProf.bioLines).map((z) => clipWort(z, 44) || clip(z, 44));
+  const hlOk = Array.isArray(prof.highlights) && prof.highlights.length === 4 &&
+    prof.highlights.every((h) => typeof h === 'string' && h.trim());
+  // Highlights sind winzig (IG kuerzt ~11 Zeichen): passt ein Label nicht und
+  // laesst sich nicht sauber schneiden, traegt das bewaehrte Fallback-Label mehr
+  // als ein verstuemmeltes ("Vorher-Nachh").
+  prof.highlights = (hlOk ? prof.highlights : fbProf.highlights).map((h, i) => {
+    const v = String(h).trim();
+    if (v.length <= 12) return v;
+    return clipWort(v, 12) || fbProf.highlights[i];
+  });
 
   // Posts einzeln bewerten: gute uebernehmen, nur die patzenden aus dem Fallback
   // backfillen (statt die ganze Antwort wegzuwerfen).

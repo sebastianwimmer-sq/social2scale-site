@@ -224,10 +224,18 @@ export async function generateFor(env, token) {
     const captions = Array.isArray(copy.posts)
       ? copy.posts.map((post) => (typeof post?.caption === 'string' ? post.caption : ''))
       : [];
+    // profil = die im Funnel DEFINIERTE Konto-Basis (Name-Zeile, Bio, Highlights,
+    // Raster-Titel). Liegt maschinenlesbar neben dem Feed, damit der Kauf-Workflow
+    // (kunde.py / Brand-Kit) beim Onboarding zieht statt abzutippen.
+    const profil = {
+      nameLine: copy.nameLine ?? '', bioLines: copy.bioLines ?? [],
+      highlights: copy.highlights ?? [], bio: copy.bio ?? '', cells: copy.cells ?? [],
+      stimmung: lead.stimmung ?? '', farbe: lead.farbe ?? '',
+    };
     try {
       await env.IMAGES.put(
         `free/${token}/content.json`,
-        JSON.stringify({ captions }),
+        JSON.stringify({ captions, profil }),
         { httpMetadata: { contentType: 'application/json' } }
       );
     } catch (err) {
