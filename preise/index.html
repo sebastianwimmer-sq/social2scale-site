@@ -40,6 +40,8 @@
      UEBER dem Foto (screen-blend) — das Bild bleibt, das Licht lebt.
      reduced-motion: keine Ebene, Foto wie bisher. */
   .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
+  .band .ambient-layer{opacity:.4}
+  .band>*:not(.ambient-layer){position:relative;z-index:1}
   @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) -->
@@ -1043,7 +1045,7 @@
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-cta"><div class="wrap reveal">
-      <div class="band">
+      <div class="band"><video class="ambient-layer" autoplay muted loop playsinline preload="metadata" src="/assets/ambient-soft.mp4"></video>
         <span class="klabel">Unsicher, welcher Weg passt?</span>
         <h2 id="pr-cta" class="wipe">Dann lass uns kurz <em>reden</em>.</h2>
         <p class="lead">Ein Gespräch, kein Termin-Marathon. Wir sagen dir auch, wenn du noch keins der drei brauchst.</p>

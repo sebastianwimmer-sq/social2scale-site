@@ -47,6 +47,8 @@
      UEBER dem Foto (screen-blend) — das Bild bleibt, das Licht lebt.
      reduced-motion: keine Ebene, Foto wie bisher. */
   .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
+  .band .ambient-layer{opacity:.4}
+  .band>*:not(.ambient-layer){position:relative;z-index:1}
   @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly)
@@ -767,7 +769,7 @@
 
     <!-- 8) Closing CTA — reuses existing .band -->
     <section class="rs-close"><div class="wrap reveal">
-      <div class="band">
+      <div class="band"><video class="ambient-layer" autoplay muted loop playsinline preload="metadata" src="/assets/ambient-soft.mp4"></video>
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde und welche Zahlen realistisch sind.</p>

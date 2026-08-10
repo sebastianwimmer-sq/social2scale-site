@@ -125,6 +125,17 @@
   .hp{position:absolute!important;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
 
   /* SUCCESS STATE */
+  /* 10.08. Freebie-Level: Ambient-Licht im Kopf, Fortschrittslinie am Formular,
+     Mikro-Feedback beim Tippen — dieselbe Sprache wie der Gratis-Funnel. */
+  .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
+  @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
+  .top .wrap,.top .backhome{position:relative;z-index:1}
+  .fprog{height:2px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:clamp(22px,4vw,34px)}
+  .fprog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--emerald),#1FA6E0);border-radius:2px;transition:width .5s var(--ease);box-shadow:0 0 10px rgba(0,184,136,.6)}
+  .freact{min-height:18px;margin-top:7px;font-size:.86rem;color:var(--emerald-soft,#1FC998);opacity:0;transform:translateY(3px);transition:opacity .3s,transform .3s var(--ease)}
+  .freact.show{opacity:1;transform:none}
+  .freact.warn{color:#F0C08B}
+  .freact b{cursor:pointer;border-bottom:1px solid rgba(0,184,136,.4);font-weight:600;color:var(--emerald-soft,#1FC998)}
   .success{display:none;text-align:center;padding:clamp(40px,9vw,90px) 0}
   .success.show{display:block;animation:upIn .6s var(--ease) both}
   .success-mark{width:88px;height:88px;margin:0 auto;display:grid;place-items:center;border-radius:50%;
@@ -202,7 +213,8 @@
   <a class="skip" href="#anfrage-form">Direkt zur Anfrage</a>
 
   <!-- HEADER -->
-  <header class="top" style="background:linear-gradient(180deg,rgba(3,8,13,.82),rgba(3,8,13,.94)),url(/assets/formbg.webp) center/cover no-repeat">
+  <header class="top" style="position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(3,8,13,.78),rgba(3,8,13,.92)),url(/assets/formbg.webp) center/cover no-repeat">
+    <video class="ambient-layer" autoplay muted loop playsinline preload="metadata" src="/assets/ambient-soft.mp4"></video>
     <a class="backhome" href="/" aria-label="Zurück zur Startseite">← Startseite</a>
     <div class="glowtop" aria-hidden="true"></div>
     <div class="wrap">
@@ -217,6 +229,7 @@
     <!-- FORM -->
     <form id="anfrage-form" method="POST" novalidate aria-labelledby="form-heading">
       <h2 id="form-heading" class="skip">Anfrage für ein Erstgespräch</h2>
+      <div class="fprog" aria-hidden="true"><i id="fprog-i"></i></div>
 
       <!-- Honeypot — muss leer bleiben -->
       <div class="hp" aria-hidden="true">
@@ -233,10 +246,12 @@
             <div class="field">
               <label for="name">Dein Name <span class="req" aria-hidden="true">*</span></label>
               <input type="text" id="name" name="name" autocomplete="name" required placeholder="Max Mustermann">
+              <div class="freact" id="freact-name" aria-live="polite"></div>
             </div>
             <div class="field">
               <label for="email">E-Mail <span class="req" aria-hidden="true">*</span></label>
               <input type="email" id="email" name="email" autocomplete="email" required placeholder="max@firma.de">
+              <div class="freact" id="freact-mail" aria-live="polite"></div>
             </div>
             <div class="field">
               <label for="phone">Telefon — für deinen Rückruf <span class="req" aria-hidden="true">*</span></label>
@@ -390,6 +405,52 @@
     } catch (e) {}
 
     // Scroll-Reveal (prefers-reduced-motion-safe)
+    // ── Freebie-Level-Mikromotion: Fortschritt + Tipp-Feedback ──
+    (function () {
+      var form = document.getElementById('anfrage-form');
+      var bar = document.getElementById('fprog-i');
+      function fortschritt() {
+        if (!form || !bar) return;
+        var pflicht = form.querySelectorAll('input[required], select[required], textarea[required]');
+        var ok = 0;
+        pflicht.forEach(function (el) {
+          if (el.type === 'checkbox' ? el.checked : el.validity.valid && el.value.trim()) ok++;
+        });
+        bar.style.width = Math.round((ok / Math.max(1, pflicht.length)) * 100) + '%';
+      }
+      if (form) { form.addEventListener('input', fortschritt); form.addEventListener('change', fortschritt); fortschritt(); }
+
+      function react(id, html, warn) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = html;
+        el.className = 'freact show' + (warn ? ' warn' : '');
+      }
+      function clr(id) { var el = document.getElementById(id); if (el) el.className = 'freact'; }
+
+      var nameEl = document.getElementById('name');
+      if (nameEl) nameEl.addEventListener('input', function () {
+        var v = nameEl.value.trim().split(/\s+/)[0];
+        if (v && v.length >= 2) react('freact-name', 'Schön, ' + v.replace(/[<>&"']/g, '') + ' — dauert keine zwei Minuten.');
+        else clr('freact-name');
+      });
+
+      var DOM = ['gmail.com','googlemail.com','web.de','gmx.de','gmx.net','t-online.de','hotmail.com','outlook.de','outlook.com','yahoo.de','yahoo.com','icloud.com','me.com'];
+      function lev(a, b) { var m = a.length, n = b.length, d = []; for (var i = 0; i <= m; i++) { d[i] = [i]; } for (var j = 0; j <= n; j++) { d[0][j] = j; } for (i = 1; i <= m; i++) for (j = 1; j <= n; j++) d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+(a[i-1] === b[j-1] ? 0 : 1)); return d[m][n]; }
+      function suggest(mail) { var at = mail.lastIndexOf('@'); if (at < 1) return null; var dom = mail.slice(at+1).toLowerCase(); if (!dom || DOM.indexOf(dom) >= 0) return null; var best = null, bd = 3; for (var i = 0; i < DOM.length; i++) { var x = lev(dom, DOM[i]); if (x < bd) { bd = x; best = DOM[i]; } } return best ? mail.slice(0, at+1) + best : null; }
+      var mailEl = document.getElementById('email');
+      if (mailEl) mailEl.addEventListener('input', function () {
+        var v = mailEl.value.trim(), s = suggest(v);
+        if (s) {
+          react('freact-mail', 'Meintest du <b id="freact-tf"></b>?', true);
+          var tf = document.getElementById('freact-tf');
+          tf.textContent = s;
+          tf.onclick = function () { mailEl.value = s; clr('freact-mail'); mailEl.focus(); mailEl.dispatchEvent(new Event('input')); };
+        } else if (mailEl.validity.valid && v) react('freact-mail', 'Passt — dahin melden wir uns.');
+        else clr('freact-mail');
+      });
+    })();
+
     var els = document.querySelectorAll('.reveal');
     if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
       els.forEach(function (e) { e.classList.add('on'); });
