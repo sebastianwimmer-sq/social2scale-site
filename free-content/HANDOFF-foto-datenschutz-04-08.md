@@ -69,3 +69,18 @@ Gelegenheit um beide Felder ergänzen (sein Ordner, deshalb hier nur notiert).
   immer die Betroffene. Migration `migrate-freeleads-reported.sql` ist auf
   s2s-crm gelaufen. Das entschärft die offene Produktentscheidung deutlich —
   (a) + Eskalations-Knopf ist jetzt eine vertretbare Grundabsicherung.
+
+## FINAL 10.08. — alle Punkte dieses Handoffs sind erledigt
+
+- ✅ **Datenschutz ist LIVE** (Site main `968ff49`): eigener Abschnitt
+  `#gratis-vorschau` — Formulardaten, Foto-Absatz (Löschung mit der Vorschau,
+  30-Tage-Cleanup Unbestätigter), KI-Einsatz inkl. Foto-Moderation,
+  Art.-50-Transparenzhinweis (KI-VO (EU) 2024/1689), AVV-Hinweise. Sebi hat
+  das Gegenlesen delegiert; eingebaut direkt auf main (extern war komplett
+  gemerged). Damit ist der 🔴-Punkt oben geschlossen.
+- ✅ **Produktentscheidung Bildmoderation: Option (b) gebaut** —
+  `src/moderate-foto.js` (Claude Vision, fail-open, Ablehnung = Initial +
+  R2-Löschung + 🚫-Founder-Mail). Der Unterschieb-Vektor ist geschlossen.
+- 📄 AI-Act-Leitfaden für die Kundenberatung: `docs/ki-kennzeichnung-ai-act.md`
+  (Site-Repo). Offen NUR noch: Beratungs-Snippet in Hub/Onboarding
+  (Kunden-Strang).
