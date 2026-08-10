@@ -16,6 +16,9 @@ const renderMock = vi.hoisted(() =>
     throw new Error('kein BROWSER-Binding (Default im Test)');
   })
 );
+vi.mock('../src/moderate-foto.js', () => ({
+  pruefeFoto: vi.fn(async () => ({ ok: true })),
+}));
 vi.mock('../src/render.js', async (importActual) => {
   const echt = await importActual();
   return { ...echt, renderAll: renderMock };
@@ -427,5 +430,44 @@ describe('mitZeitlimit — Watchdog gegen haengende Renders', () => {
   it('reicht ein schnelles Ergebnis unveraendert durch', async () => {
     const { mitZeitlimit } = await import('../src/generate.js');
     await expect(mitZeitlimit(Promise.resolve('ok'), 5000)).resolves.toBe('ok');
+  });
+});
+
+describe('generateFor — Bildmoderation', () => {
+  const FOTO = 'data:image/jpeg;base64,' + btoa('x'.repeat(3000));
+
+  it('abgelehntes Foto rendert NICHT, wird geloescht und alarmiert die Founder', async () => {
+    const { pruefeFoto } = await import('../src/moderate-foto.js');
+    vi.mocked(pruefeFoto).mockResolvedValueOnce({ ok: false, grund: 'gewalt' });
+    const token = await bestaetigterLead();
+    const { speichereAvatar, avatarKey } = await import('../src/avatar.js');
+    await speichereAvatar(env, token, FOTO);
+    renderMock.mockImplementationOnce(async () => []);
+
+    const f = vi.fn(async () => ({ ok: true, status: 200, text: async () => '' }));
+    vi.stubGlobal('fetch', f);
+    const r = await generateFor(
+      { ...env, BREVO_API_KEY: 'test-key', NOTIFY_TO: 'x@s2s.de', NOTIFY_FROM: 'x@s2s.de' },
+      token
+    );
+
+    expect(r.ok).toBe(true); // ihr Feed kommt trotzdem — nur ohne Foto
+    const cleanArg = renderMock.mock.calls.at(-1)[2];
+    expect(cleanArg.avatarUrl).toBeUndefined();
+    expect(await env.IMAGES.get(avatarKey(token))).toBeNull(); // geloescht
+    const bodies = f.mock.calls.map((c) => String(c[1]?.body || ''));
+    expect(bodies.some((b) => b.includes('FOTO ABGELEHNT'))).toBe(true);
+  });
+
+  it('freigegebenes Foto rendert wie gehabt', async () => {
+    const { pruefeFoto } = await import('../src/moderate-foto.js');
+    vi.mocked(pruefeFoto).mockResolvedValueOnce({ ok: true });
+    const token = await bestaetigterLead();
+    const { speichereAvatar } = await import('../src/avatar.js');
+    await speichereAvatar(env, token, FOTO);
+    renderMock.mockImplementationOnce(async () => []);
+
+    await generateFor(env, token);
+    expect(renderMock.mock.calls.at(-1)[2].avatarUrl).toBe(FOTO);
   });
 });

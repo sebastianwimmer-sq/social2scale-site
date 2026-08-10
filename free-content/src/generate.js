@@ -8,7 +8,8 @@
 
 import { checkInput } from './moderate.js';
 import { generateCopy } from './copy.js';
-import { ladeAvatar } from './avatar.js';
+import { ladeAvatar, avatarKey } from './avatar.js';
+import { pruefeFoto } from './moderate-foto.js';
 import { derivePalettes } from './palette.js';
 import { renderAll } from './render.js';
 import { findByToken } from './leads.js';
@@ -172,9 +173,26 @@ export async function generateFor(env, token) {
   try {
     // Jeder Schritt = echte Arbeit dahinter, die ein Poller sehen kann (Spec §6).
     await setzeSchritt(env.DB, token, 'building', SCHRITTE.texte);
-    // Parallel zur Copy (ladeAvatar wirft nie): ihr hochgeladenes Foto aus R2 —
-    // bis die Texte stehen, ist es laengst da. Kostet keine Wartezeit.
-    const avatarVersprechen = ladeAvatar(env, token);
+    // Parallel zur Copy (wirft nie): Foto aus R2 laden UND moderieren — bis die
+    // Texte stehen, ist beides laengst durch. Kostet keine Wartezeit.
+    // Bildmoderation (Entscheid 10.08., fail-open): ein abgelehntes Foto rendert
+    // NICHT (Initial-Fallback), fliegt aus R2 und alarmiert die Founder — die
+    // Kundin sieht keinen Fehler, ihr Feed kommt nur ohne Foto. Der
+    // Unterschieb-Vektor (fremde Mail + boeses Bild) endet damit vor dem Render.
+    const avatarVersprechen = ladeAvatar(env, token).then(async (url) => {
+      if (!url) return null;
+      const urteil = await pruefeFoto(env, url);
+      if (urteil.ok) {
+        if (urteil.ungeprueft) console.error('[generate] Foto UNGEPRUEFT gerendert (Moderation fail-open), Lead', lead.id);
+        return url;
+      }
+      console.error('[generate] Foto abgelehnt:', urteil.grund, 'Lead', lead.id);
+      try { await env.IMAGES.delete(avatarKey(token)); } catch (e) { console.error('[generate] abgelehntes Foto nicht loeschbar:', e); }
+      try {
+        await notifyFounders(env, lead, `🚫 FOTO ABGELEHNT (${urteil.grund}) — Feed rendert mit Initial. Bitte Lead pruefen.`);
+      } catch (e) { console.error('[generate] Founder-Alarm (Foto) ging nicht raus:', e); }
+      return null;
+    });
     const copy = await generateCopy(env, clean);   // wirft nie, faellt zurueck
 
     // Ist Claude die Ursache des Fallbacks (Guthaben leer / API-Fehler / falsch
