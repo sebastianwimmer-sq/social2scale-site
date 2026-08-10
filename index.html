@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -90,39 +89,20 @@
      Die negativen Abstaende haengen an --lw, nicht an festen Pixeln: der Rand
      waechst mit dem Bild, ein fester Wert waere nur bei einer Breite richtig.
      Faktor 0,19 statt 0,213 laesst bewusst einen Rest Luft stehen. */
-  .hero h1 picture{display:block}
-  .hero-logo{--lw:clamp(280px,40vw,660px);display:block;width:var(--lw);height:auto;
-    margin:calc(var(--lw) * -.19) auto calc(var(--lw) * -.155)}
   .hero .eyebrow{margin-bottom:clamp(var(--s-3),1.4vw,var(--s-4))}
-  /* Das h1 ist jetzt ein Behaelter fuer drei Teile: Gruss, Wortmarke, Aussage.
-     Die Schriftgroesse sitzt deshalb auf .claim statt auf dem h1 selbst. */
+  /* 10.08.: Hero auf EINE Stimme reduziert (vorher 9 Font-Schnitte im ersten
+     Viewport — "erschlaegt"). Die Headline traegt allein: kein Wortmarken-Bild
+     mehr (Doppel-Branding zum Header), kein Gruss, kein Rahmensetzungs-Absatz.
+     Uebrig: Fraunces (Claim + Italic-Akzent), Hanken (Subline), Archivo (CTA). */
   .hero h1{font-family:"Fraunces",serif;max-width:none;font-variation-settings:"opsz" 144}
-  .hero h1 .claim{display:block;font-weight:540;font-size:clamp(2rem,1rem + 3.6vw,4.2rem);
+  .hero h1 .claim{display:block;font-weight:540;font-size:clamp(2.3rem,1.1rem + 4.3vw,4.8rem);
     line-height:.98;letter-spacing:-.03em;max-width:19ch;margin:0 auto}
   .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  /* "Willkommen bei" — die Anrede vor dem Schriftzug. Bewusst kleiner als das
-     Logo: zusammen sind sie EIN Satz, und die Marke traegt die Betonung. */
-  .hero h1 .gruss{display:block;font-size:clamp(1.15rem,.85rem + 1.15vw,1.9rem);
-    font-weight:400;font-style:italic;line-height:1.1;letter-spacing:-.01em;
-    color:var(--muted);margin-bottom:clamp(var(--s-3),1.2vw,var(--s-4))}
-  .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:54ch;line-height:1.6}
+  .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:46ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
-  /* Rahmensetzung: sagt nicht, was wir koennen, sondern was gleich passiert.
-
-     Stand bis zum 04.08.2026 in JetBrains Mono mit Sperrung, 12px, grau. Damit
-     las sie sich wie eine Systemmeldung statt wie ein Satz — Mono ist auf
-     dieser Seite die Sprache der Etiketten, Kapitel-Nummern und Indizes, nicht
-     der Prosa. Ein ganzer Satz in Laufschrift mit Sperrung ist genau das
-     Muster, das eine Seite generisch aussehen laesst.
-
-     Jetzt Fraunces kursiv wie die Begruessung "Willkommen bei" — dadurch
-     gehoeren beide hoerbar zusammen: Anrede oben, Nachsatz unten, dieselbe
-     Stimme. */
-  .hero-frame{margin-top:clamp(var(--s-4),1.8vw,var(--s-5));
-    font-family:"Fraunces",serif;font-style:italic;font-weight:400;
-    font-size:clamp(1rem,.9rem + .5vw,1.25rem);line-height:1.5;letter-spacing:-.01em;
-    color:var(--faint);max-width:46ch;margin-left:auto;margin-right:auto}
-  .hero-frame b{color:var(--muted);font-weight:400}
+  /* Nachsatz unterm CTA: das Freebie-Versprechen konkret (60 Sekunden, Foto,
+     Farbe) — klein, weil der Button schon laut ist. */
+  .cta-note{font-size:.9rem;color:var(--faint);margin-top:var(--s-4);max-width:44ch;margin-left:auto;margin-right:auto}
   /* hero trust row — 3 value pills, semantic emerald checks */
   .hero-trust{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s-4) var(--s-6);margin-top:clamp(var(--s-5),2.5vw,var(--s-6));font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
   .hero-trust li{display:flex;align-items:center;gap:var(--s-2)}
@@ -233,11 +213,11 @@
   
   
 
-  /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
+  /* mobile: die Hintergrund-Collage lief mit ihren Zahlen ("28,7K", "+342%")
+     mitten durch den Text — staerkerer Scrim, damit der Text auf Ruhe liegt. */
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
-    .hero-logo{--lw:clamp(230px,70vw,340px)}
-    
+    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.82),rgba(3,8,13,.92) 58%,#03080D 100%),url(/assets/hero-growth.jpg) center 55%/cover no-repeat}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
   @media (max-width:560px){
@@ -661,42 +641,31 @@
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="wrap">
         <div class="hero-center">
-          <!-- Die Begruessung ist die Ueberschrift, und der Schriftzug ist das
-               Wort darin: "Willkommen bei" + Wortmarke = ein Satz.
+          <!-- 10.08.: Hero radikal beruhigt (Sebi: "Grafik-Chaos, zu viel Text,
+               zu viele Schriftarten — erschlaegt"). Raus: das grosse Wortmarken-
+               Bild (stand direkt unter dem Header-Logo = Doppel-Branding und
+               konkurrierte mit der Headline), die "Willkommen bei"-Zeile, der
+               Rahmensetzungs-Absatz und der Bold-Wechsel-Mix in der Subline.
+               Die Headline traegt jetzt allein. Der Markenname bleibt fuer
+               Suche/Vorleseprogramme im Header-Logo und im <title>.
 
-               Zwei Zwischenstaende bis hierher. Am 03.08. stand der Gruss als
-               .eyebrow ueber der Ueberschrift — 11px, gesperrt, mit
-               Verlaufsstrich davor, also das Etikett-Muster von jeder zweiten
-               Vorlage, und viel zu leise fuer ein "hier bist du richtig". Am
-               04.08. dann als eigene Textzeile im h1, aber damit stand der
-               Markenname zweimal da: als Wortmarken-Bild UND als Text.
-
-               So traegt das Bild jetzt Bedeutung, statt Dekor zu sein.
-
-               Das Bild steht IM h1 und behaelt sein alt="social2scale" — ein
-               Vorleseprogramm hoert weiterhin "Willkommen bei social2scale.
-               Wir bauen das System, das dich planbar skaliert." Genau ein h1
-               auf der Seite, und es enthaelt die Woerter, nach denen gesucht
-               wird: ein h1 mit blossem Markennamen waere fuer die Suche
-               wertlos. -->
+               CTA-Hierarchie GEDREHT (Sebi 10.08., kippt bewusst die "genau
+               EIN Weg"-Entscheidung vom 27.07.): das Freebie ist jetzt der
+               primaere Weg — kalter Traffic klickt eher "gratis ansehen" als
+               "Erstgespraech anfragen"; der Funnel qualifiziert und uebergibt.
+               Link geht ueber /gratis/ (NICHT direkt zum Worker): die
+               Funnel-Adresse steht weiterhin an genau EINER Stelle (s. u.).
+               data-cta-url bleibt am Erstgespraechs-Link — der Zaehler misst
+               weiterhin Erstgespraechs-Klicks, nicht Freebie-Klicks. -->
           <h1 class="r" style="animation-delay:.1s">
-            <span class="gruss">Willkommen bei</span>
-            <picture>
-              <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 660px">
-              <img class="hero-logo" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
-            </picture>
             <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
           </h1>
-          <p class="sub r" style="animation-delay:.24s">Für <b>Coaches, Experten und B2B</b> ohne starken Auftritt: Wir bauen ihn von Grund auf, produzieren den Content und betreuen ihn — <b>du gibst nur die Richtung vor.</b></p>
-          <!-- Rahmensetzung: sagt vorab, was auf dieser Seite passiert. Genau
-               das macht ein gutes Erstgespraech in den ersten 20 Sekunden —
-               wer weiss, wohin es geht, steigt nicht nach dem ersten Absatz
-               aus. Nummerierung deckt sich mit den klabels der Sektionen. -->
-          <p class="hero-frame r" style="animation-delay:.3s">Zwei Minuten. Dann weißt du, <b>wo du stehst</b>, warum es bisher nicht lief und <b>wie wir das ändern</b>.</p>
+          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn — <b>du gibst nur die Richtung vor.</b></p>
           <div class="cta-row r" style="animation-delay:.38s">
-            <a class="btn btn-primary" id="cta" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-            <a class="textlink" href="#leistungen">Was wir machen</a>
+            <a class="btn btn-primary" id="cta" href="/gratis/">Gratis-Vorschau starten →</a>
+            <a class="textlink" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
           </div>
+          <p class="cta-note r" style="animation-delay:.42s">Dein Feed-Entwurf in 60 Sekunden — kostenlos, mit deinem Foto und deiner Farbe.</p>
           <ul class="hero-trust r" style="animation-delay:.46s" aria-label="Mehrwert auf einen Blick">
             <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</li>
             <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</li>
