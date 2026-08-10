@@ -572,18 +572,6 @@
     .wa-name{display:block;margin-bottom:var(--s-2)}
   }
 
-  /* Gratis-Vorschau — der weiche Weg fuer alle, die noch nicht sprechen wollen.
-     BEWUSST ruhiger gehalten als .band: der Erstgespraech-Knopf bleibt das
-     einzige Emerald-Glow-Element der Seite (siehe Kommentar an .btn-primary).
-     Deshalb hier ein Rahmen-Knopf statt eines zweiten leuchtenden. */
-  .fb{padding:0 0 clamp(var(--s-6),4vw,var(--s-8))}
-  .fb-card{position:relative;border:1px solid var(--line-2);border-radius:24px;padding:clamp(28px,4.5vw,52px);background:linear-gradient(150deg,rgba(0,184,136,.07),rgba(31,166,224,.05) 58%,transparent)}
-  .fb-card::before{content:"";position:absolute;left:0;top:24px;bottom:24px;width:2px;border-radius:2px;background:linear-gradient(180deg,var(--emerald),var(--teal))}
-  .fb-card h2{max-width:20ch;margin-top:var(--s-3)}
-  .fb-card .lead{max-width:52ch}
-  .fb-note{margin-top:var(--s-5);font-size:.86rem;line-height:1.5;color:var(--faint);max-width:52ch}
-  .btn-ghost{background:transparent;color:var(--paper);border:1px solid var(--line-3);transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
-  .btn-ghost:hover{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09)}
   </style>
 </head>
 <body>
@@ -980,39 +968,20 @@
       </div>
     </div></section>
 
-    <!-- ── Gratis-Vorschau (Free-Content-Funnel) ──────────────────────────────
-         DIE EINZIGE STELLE auf der Seite mit der Funnel-Adresse. Zieht der Funnel
-         auf start.social2scale.com um, wird sie hier geaendert — sonst nirgends.
-
-         Platzierung ist Absicht: NACH der FAQ, VOR dem Abschluss-CTA. Wer bis
-         hierher gelesen und noch nicht angefragt hat, bekommt den weichen Weg,
-         bevor er die Seite verlaesst — der Erstgespraech-CTA bleibt der letzte
-         Eindruck. Nicht in den Hero: dort gibt es genau einen Weg, ein zweiter
-         Knopf wuerde ihn kannibalisieren. -->
-    <section class="blk fb" id="gratis" aria-labelledby="fb-h">
-      <div class="wrap wrap-narrow reveal">
-        <div class="fb-card">
-          <p class="klabel">07 — Der leise Einstieg</p>
-          <h2 id="fb-h" class="wipe">Noch nicht bereit zu reden? Dann sieh es dir erst <em>an</em>.</h2>
-          <p class="lead">Drei Fragen beantworten, Mail bestätigen — und du siehst eine Vorschau, wie dein Instagram-Auftritt aussehen könnte. Kostenlos, ohne Verpflichtung.</p>
-          <div class="cta-row">
-            <!-- Geht ueber /gratis/, nicht direkt zum Worker: die Funnel-Adresse steht
-                 damit nur noch in gratis/index.html. Beim Domain-Umzug nur dort aendern. -->
-            <a class="btn btn-ghost" href="/gratis/">Gratis-Vorschau ansehen →</a>
-          </div>
-          <p class="fb-note">Ein Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit uns, von Hand.</p>
-        </div>
-      </div>
-    </section>
-
+    <!-- 10.08.: Die eigene Gratis-Vorschau-Sektion ("07 — Der leise Einstieg")
+         ist raus. Seit das Freebie der PRIMAERE Hero-CTA ist, standen hier zwei
+         CTA-Bloecke direkt uebereinander vor dem Footer. Der weiche Weg lebt
+         jetzt oben im Hero; unten schliesst GENAU EIN Band: Erstgespraech
+         primaer (wer bis hier liest, ist warm), Gratis-Vorschau als ruhiger
+         Zweitweg fuer alle anderen. -->
     <section class="blk"><div class="wrap reveal">
       <div class="band has-photo">
-        <span class="klabel">08 — Dein nächster Schritt</span>
+        <span class="klabel">07 — Dein nächster Schritt</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>
+          <a class="textlink" href="/gratis/">Noch nicht so weit? Starte mit der Gratis-Vorschau</a>
         </div>
       </div>
     </div></section>
