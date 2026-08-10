@@ -42,7 +42,13 @@
 <!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
 <script src="/s2s.js" defer></script>
 <noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
-  </style></noscript>
+  
+  /* 10.08.: generierter Ambient-Loop (Higgsfield, 202 KB) als Licht-Ebene
+     UEBER dem Foto (screen-blend) — das Bild bleibt, das Licht lebt.
+     reduced-motion: keine Ebene, Foto wie bisher. */
+  .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
+  @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
+</style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly)
      [P] erledigt 28.07.2026 — Platzhalter-Zahlen und Platzhalter-Stimmen sind raus,
          die Seite zeigt jetzt Definitionen + Messrhythmus statt behaupteter Ergebnisse. -->
@@ -528,7 +534,7 @@
   <main id="ergebnisse">
 
     <!-- 1) Editorial hero — oversized Fraunces display vs tiny mono running head -->
-    <section class="rs-hero" aria-labelledby="rs-hero-h" style="position:relative;overflow:hidden"><div class="rs-hero-bg" aria-hidden="true" data-parallax="0.3" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"></div><div class="wrap reveal" style="position:relative;z-index:1">
+    <section class="rs-hero" aria-labelledby="rs-hero-h" style="position:relative;overflow:hidden"><div class="rs-hero-bg" aria-hidden="true" data-parallax="0.3" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"><video class="ambient-layer" autoplay muted loop playsinline preload="metadata" src="/assets/ambient-soft.mp4"></video></div><div class="wrap reveal" style="position:relative;z-index:1">
       <p class="rs-rh"><b>№ 01</b> — Ergebnisse</p>
       <h1 id="rs-hero-h" class="wipe">Wachstum, das man <em>nachrechnen</em> kann.</h1>
       <p class="lead">Wir sind jung genug, um ehrlich zu sein: Hier stehen keine Erfolgszahlen fremder Kunden. Stattdessen steht hier, <b>woran wir uns messen lassen</b> — sauber definiert, in festem Takt, und zwar auch dann, wenn eine Zahl mal fällt.</p>
