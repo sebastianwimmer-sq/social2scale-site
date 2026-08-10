@@ -35,14 +35,6 @@
 <!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
 <script src="/s2s.js" defer></script>
 <noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
-  
-  /* 10.08.: generierter Ambient-Loop (Higgsfield, 202 KB) als Licht-Ebene
-     UEBER dem Foto (screen-blend) — das Bild bleibt, das Licht lebt.
-     reduced-motion: keine Ebene, Foto wie bisher. */
-  .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
-  .band .ambient-layer{opacity:.4}
-  .band>*:not(.ambient-layer){position:relative;z-index:1}
-  @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) · [P] Social-Proof-Stats + Testimonial sind Platzhalter -->
 <style>
@@ -390,6 +382,14 @@
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
   
   /* Liquid Glass und Loader-Progressbar stehen jetzt in /s2s.css. */
+  
+  /* 10.08.: generierter Ambient-Loop (Higgsfield, 202 KB) als Licht-Ebene
+     UEBER dem Foto (screen-blend) — das Bild bleibt, das Licht lebt.
+     reduced-motion: keine Ebene, Foto wie bisher. */
+  .ambient-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.5;pointer-events:none}
+  .band .ambient-layer{opacity:.4}
+  .band>*:not(.ambient-layer){position:relative;z-index:1}
+  @media (prefers-reduced-motion:reduce){.ambient-layer{display:none}}
   </style>
 </head>
 <body>
