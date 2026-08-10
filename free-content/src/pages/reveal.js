@@ -290,7 +290,7 @@ export function revealMarkup(copy) {
     <!-- Erwartungssteuerung, bewusst DEUTLICHER als vorher ("Beispiel-Vorschau" war
          zu leise) — aber vorwaerts formuliert: erst klar sagen, was das hier ist,
          dann was daraus wird. Kein Ergebnis- oder Reichweitenversprechen (UWG). -->
-    <p class="rv-disclaimer rv">&lowast; Das ist ein Schnellentwurf aus drei Antworten — bewusst grob. Dein echter Auftritt entsteht mit dir: von Hand, in deiner Sprache, ohne unser Zeichen.</p>
+    <p class="rv-disclaimer rv">&lowast; Das ist ein KI-gestützt erstellter Schnellentwurf aus deinen Antworten — bewusst grob. Dein echter Auftritt entsteht mit dir: von Hand, in deiner Sprache, ohne unser Zeichen.</p>
     <!-- Eskalations-Knopf: nur die Token-Inhaberin sieht diese Seite. Meldet sie
          (z. B. ein Foto, das sie nie hochgeladen hat), geht der Feed sofort
          offline + Founder-Alarm. Bewusst leise gesetzt — ein Ventil, kein CTA. -->
