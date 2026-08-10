@@ -95,6 +95,9 @@
      mehr (Doppel-Branding zum Header), kein Gruss, kein Rahmensetzungs-Absatz.
      Uebrig: Fraunces (Claim + Italic-Akzent), Hanken (Subline), Archivo (CTA). */
   .hero h1{font-family:"Fraunces",serif;max-width:none;font-variation-settings:"opsz" 144}
+  .hero h1 .gruss{display:block;font-size:clamp(1.05rem,.8rem + 1vw,1.6rem);
+    font-weight:400;font-style:italic;line-height:1.1;letter-spacing:-.01em;
+    color:var(--muted);margin-bottom:clamp(var(--s-3),1.2vw,var(--s-4))}
   .hero h1 .claim{display:block;font-weight:540;font-size:clamp(2.3rem,1.1rem + 4.3vw,4.8rem);
     line-height:.98;letter-spacing:-.03em;max-width:19ch;margin:0 auto}
   .hero h1 em{font-style:italic;font-weight:500;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
@@ -658,6 +661,12 @@
                data-cta-url bleibt am Erstgespraechs-Link — der Zaehler misst
                weiterhin Erstgespraechs-Klicks, nicht Freebie-Klicks. -->
           <h1 class="r" style="animation-delay:.1s">
+            <!-- 10.08. Nachtrag (Sebi): ohne Anrede wirkte der Hero
+                 "reingeschmissen". Der Gruss ist zurueck — als leise TEXTzeile
+                 mit Markennamen (das entfernte Problem war das grosse
+                 Wortmarken-BILD, nicht die Begruessung). Screenreader/SEO
+                 hoeren wieder: "Willkommen bei social2scale. Wir bauen ..." -->
+            <span class="gruss">Willkommen bei social2scale</span>
             <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
           </h1>
           <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn — <b>du gibst nur die Richtung vor.</b></p>
