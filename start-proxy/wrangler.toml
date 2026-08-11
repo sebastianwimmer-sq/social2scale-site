@@ -1,0 +1,15 @@
+# Pages-Proxy: start.social2scale.com -> Funnel-Worker (s2s-free-content).
+#
+# WARUM: Worker-Custom-Domains verlangen die Zone bei Cloudflare — die liegt
+# bei IONOS und soll dort bleiben (Entscheid 28.07.). Cloudflare PAGES darf
+# aber per externem CNAME auf einer Subdomain laufen (mein./closing. laufen
+# genau so). Dieses Mini-Projekt ist die Bruecke: Pages nimmt die Domain an
+# und reicht JEDEN Request per Service-Binding an den Funnel-Worker durch —
+# kein Zonen-Umzug, keine zweite Codebasis.
+name = "s2s-start"
+compatibility_date = "2026-07-01"
+pages_build_output_dir = "./public"
+
+[[services]]
+binding = "FUNNEL"
+service = "s2s-free-content"
