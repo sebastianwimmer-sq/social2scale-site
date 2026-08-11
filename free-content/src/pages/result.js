@@ -54,6 +54,11 @@ const ASSET_BASE = 'https://social2scale.com/assets';
 const PAGE_STYLE = `
   .brandbar{position:relative;z-index:2;display:flex;justify-content:center;padding:1.6rem 1.25rem .4rem}
   .brandbar .wm-logo{height:22px;width:auto;max-width:158px;object-fit:contain;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  /* Site-Footer (11.08., Sebi: "beim Freebie kommt man nicht mehr raus"):
+     schlanker Rueckweg zur Website auf Build- UND Reveal-Screen. */
+  .site-foot{position:relative;z-index:2;margin-top:3rem;padding:1.3rem 1rem calc(1.3rem + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--ff-label);font-size:10.5px;letter-spacing:.06em;color:var(--faint);border-top:1px solid rgba(255,255,255,.07)}
+  .site-foot a{color:var(--muted);text-decoration:none;margin:0 .55rem;transition:color .2s}
+  .site-foot a:hover{color:var(--emerald-soft)}
   .stage{position:relative;z-index:2;min-height:calc(100dvh - 4rem);display:flex;flex-direction:column;align-items:center;padding:1.4rem 1.25rem 2.4rem;gap:1.4rem}
   .caption{max-width:34rem;text-align:center;display:flex;flex-direction:column;gap:.5rem}
   .caption .kick{font-family:var(--ff-label);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
@@ -180,7 +185,7 @@ function tilesHtml() {
 
 function pageMarkup() {
   return `
-<header class="brandbar"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="22"></header>
+<header class="brandbar"><a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="22"></a></header>
 <div class="stage">
   <div class="caption">
     <span class="kick">social2scale · live</span>

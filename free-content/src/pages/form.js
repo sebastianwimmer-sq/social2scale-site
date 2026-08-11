@@ -149,7 +149,7 @@ function pageMarkup(turnstileSiteKey) {
   return `
 <div class="app">
   <div class="top">
-    <img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="24">
+    <a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="24"></a>
     <span class="prog"><i id="bar"></i></span>
     <span class="cnt" id="cnt">1/9</span>
   </div>
@@ -290,7 +290,7 @@ function pageMarkup(turnstileSiteKey) {
         <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="9">E-Mail ändern</button></div>
       </div>
     </div>
-    <p class="legal"><a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
+    <p class="legal"><a href="https://social2scale.com/">Startseite</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
   </div></div>
 </div>`;
 }

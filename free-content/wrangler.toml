@@ -60,3 +60,7 @@ max_batch_size = 1        # jede Generierung isoliert (eine schwere Aufgabe pro 
 max_batch_timeout = 5
 max_retries = 3
 max_concurrency = 3       # Browser-Rendering-Sessions nicht ueberrennen
+
+# Selbstheilung (index.js scheduled): sweepStaleBuilding + ein Auto-Retry je Render-Ausfall.
+[triggers]
+crons = ["*/5 * * * *"]

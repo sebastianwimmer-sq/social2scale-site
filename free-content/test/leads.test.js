@@ -407,3 +407,33 @@ describe('reportLead (Eskalations-Knopf)', () => {
     expect((await reportLead(env.DB, 'gibtsnicht', NOW)).ok).toBe(false);
   });
 });
+
+describe('heileRenderAusfaelle (Selbstheilungs-Cron)', () => {
+  it('gibt einem render-Ausfall GENAU EINEN neuen Versuch (Marker render_retry)', async () => {
+    const { heileRenderAusfaelle } = await import('../src/index.js');
+    const { lead } = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await confirmLead(env.DB, lead.token, NOW);
+    await env.DB.prepare("UPDATE free_leads SET status='failed', fail_reason='render', generated_at=datetime('now') WHERE token=?").bind(lead.token).run();
+    const gesendet = [];
+    const fakeEnv = { DB: env.DB, GEN_QUEUE: { send: async (m) => gesendet.push(m) } };
+
+    expect(await heileRenderAusfaelle(fakeEnv)).toBe(1);
+    expect(gesendet).toEqual([{ token: lead.token }]);
+    const nach = await findByToken(env.DB, lead.token);
+    expect(nach.fail_reason).toBe('render_retry');
+    expect(nach.generated_at).toBeNull(); // Riegel frei fuer den neuen Lauf
+
+    // Zweiter Cron-Lauf: KEIN weiterer Versuch (sonst Endlos-Schleife)
+    expect(await heileRenderAusfaelle(fakeEnv)).toBe(0);
+    expect(gesendet).toHaveLength(1);
+  });
+
+  it('fasst Moderations-Ablehnungen und Fremd-Fails NICHT an', async () => {
+    const { heileRenderAusfaelle } = await import('../src/index.js');
+    const { lead } = await upsertLead(env.DB, clean(), '1.1.1.1', NOW);
+    await env.DB.prepare("UPDATE free_leads SET status='failed', fail_reason='moderation' WHERE token=?").bind(lead.token).run();
+    const gesendet = [];
+    expect(await heileRenderAusfaelle({ DB: env.DB, GEN_QUEUE: { send: async (m) => gesendet.push(m) } })).toBe(0);
+    expect(gesendet).toHaveLength(0);
+  });
+});

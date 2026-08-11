@@ -314,7 +314,48 @@ async function handleConfirm(token, env, ctx) {
   return new Response(null, { status: 302, headers: { Location: `/r/${token}` } });
 }
 
+/**
+ * Selbstheilung fuer Render-Ausfaelle (Cloudflare Browser-Rendering flackert):
+ * jeder Lead mit status='failed' + fail_reason='render' bekommt GENAU EINEN
+ * automatischen zweiten Lauf — Marker 'render_retry' verhindert die Schleife.
+ * Laeuft im 5-Minuten-Cron (scheduled), zusammen mit sweepStaleBuilding, damit
+ * Haenger und Ausfaelle auch OHNE Besucher-Traffic geheilt werden.
+ * @returns {Promise<number>} Anzahl neu angestossener Leads. WIRFT NIE.
+ */
+export async function heileRenderAusfaelle(env) {
+  try {
+    const { results } = await env.DB
+      .prepare("SELECT token FROM free_leads WHERE status='failed' AND fail_reason='render'")
+      .all();
+    let angestossen = 0;
+    for (const r of results ?? []) {
+      const claim = await env.DB
+        .prepare("UPDATE free_leads SET fail_reason='render_retry', generated_at=NULL WHERE token=? AND fail_reason='render'")
+        .bind(r.token)
+        .run();
+      if ((claim.meta?.changes ?? 0) === 0) continue;
+      await env.GEN_QUEUE.send({ token: r.token });
+      angestossen++;
+      console.error('[cron] Render-Ausfall neu angestossen:', r.token.slice(0, 8));
+    }
+    return angestossen;
+  } catch (err) {
+    console.error('[cron] Selbstheilung fehlgeschlagen:', err);
+    return 0;
+  }
+}
+
 export default {
+  async scheduled(_event, env, _ctx) {
+    try {
+      const befreit = await sweepStaleBuilding(env.DB);
+      if (befreit) console.error('[cron]', befreit, 'haengende Builds befreit');
+    } catch (err) {
+      console.error('[cron] sweepStaleBuilding fehlgeschlagen:', err);
+    }
+    await heileRenderAusfaelle(env);
+  },
+
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const cors = corsHeaders(env.ALLOW_ORIGIN || 'https://social2scale.com');
