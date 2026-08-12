@@ -74,8 +74,11 @@
   .afbg{position:fixed;inset:0;z-index:0;pointer-events:none}
   .afbg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.22;mix-blend-mode:screen}
   .afbg::after{content:"";position:absolute;inset:0;
-    background:radial-gradient(60% 42% at 82% 18%,rgba(0,184,136,.10),transparent 70%),
-      radial-gradient(55% 40% at 12% 78%,rgba(31,166,224,.08),transparent 70%)}
+    background:
+      linear-gradient(158deg,rgba(0,184,136,.09) 0%,transparent 34%,transparent 62%,rgba(31,166,224,.10) 100%),
+      radial-gradient(62% 44% at 84% 16%,rgba(0,184,136,.15),transparent 68%),
+      radial-gradient(58% 42% at 10% 80%,rgba(31,166,224,.13),transparent 68%),
+      radial-gradient(46% 34% at 50% 52%,rgba(0,184,136,.06),transparent 72%)}
   @media (prefers-reduced-motion:reduce){.afbg video{display:none}}
   header.top,main,.success{position:relative;z-index:1}
   header.top{padding-top:64px}
