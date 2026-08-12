@@ -166,3 +166,21 @@ Danach:
 
 Der Funnel läuft unverändert auf `https://s2s-free-content.peaking.workers.dev`.
 Alles funktioniert; die drei Gründe ganz oben bleiben bestehen.
+
+---
+
+## NACHTRAG 12.08.2026 — Funnel-Teil ist GELÖST, ohne Zonen-Umzug
+
+Der Haupttreiber dieses Dokuments (Funnel auf branded Domain) ist erledigt:
+**start.social2scale.com läuft LIVE** über eine Pages-Brücke — `start-proxy/`
+(Pages-Projekt `s2s-start`, `_worker.js` reicht per Service-Binding `FUNNEL`
+alles an den Worker `s2s-free-content` durch). Pages darf per externem CNAME
+auf die Subdomain (wie mein./closing.), Worker nicht — deshalb die Brücke.
+DNS: IONOS-CNAME `start` → `s2s-start.pages.dev`. PUBLIC_ORIGIN ist geflippt,
+/gratis/ leitet auf die neue Domain, CRM-Bestandslinks sind migriert.
+
+**Ein Zonen-Umzug ist damit für den Funnel NICHT mehr nötig.** Die drei
+Gründe vom 27.07. (peaking-Markenleck, Mail-Zustellbarkeit Absender≠Linkziel,
+QR-Ziel) sind alle durch die Brücke behoben. Dieses Dokument bleibt nur
+relevant, falls künftig ein ANDERER Worker eine Custom Domain braucht —
+dann zuerst das Pages-Proxy-Muster prüfen (Aufwand: Minuten statt Umzug).
