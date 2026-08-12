@@ -13,7 +13,9 @@ NOTIFY_FROM   = "info@social2scale.com"
 # TEMP fuer den privaten Test (21.07.): auf die workers.dev-URL, damit die Mail-Links
 # erreichbar sind, OHNE die Domain anzufassen. Zurueck auf start.social2scale.com,
 # sobald die branded Domain steht.
-PUBLIC_ORIGIN = "https://s2s-free-content.peaking.workers.dev"
+# 12.08.: eigene Domain via Pages-Proxy (start-proxy/) — kein peaking, kein
+# workers.dev mehr in Kundensicht; Mail-Links/QR/CRM-Links ziehen automatisch mit.
+PUBLIC_ORIGIN = "https://start.social2scale.com"
 # 21.07. scheiterte claude-sonnet-5 hier schon einmal: die Antwort kam ohne
 # tool_use zurueck -> generateCopy() fiel auf buildFallback (generische Copy).
 # Vermutete Ursache (27.07.): auf Sonnet 5 ist adaptives Denken AN, sobald das
