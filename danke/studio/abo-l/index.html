@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#03080D">
+<title>Danke — L-Abo · Smart Studio · social2scale</title>
+<meta name="description" content="Danke für deinen Kauf — dein Smart-Studio-Guthaben ist unterwegs.">
+<link rel="stylesheet" href="/fonts.css">
+<style>
+  :root{
+    --ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --surface-3:#23252A;
+    --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    --teal:#1FA6E0; --amber:#E8B34B;
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
+    --hi-2:inset 0 1px 0 rgba(255,255,255,.07);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --surf-grad:linear-gradient(180deg,#202227 0%,var(--surface-2) 38%,var(--surface) 100%);
+    --depth:var(--hi-2),0 1px 2px rgba(0,0,0,.4),0 14px 30px -18px rgba(0,0,0,.6);
+    --depth-lg:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88);
+    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.12),transparent 52%),radial-gradient(120% 130% at 14% 96%,rgba(31,166,224,.10),transparent 56%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
+    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px;
+    --px:clamp(20px,5vw,56px);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+    background-attachment:fixed;background-color:#03080D;
+    color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
+  @media (max-width:700px){body{background-attachment:scroll;background-size:cover}}
+  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;border-radius:4px}
+  .wrap{width:100%;max-width:880px;margin:0 auto;padding:0 var(--px)}
+
+  @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+  @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+  @keyframes glowPulse{0%{opacity:0;transform:scale(.7)}45%{opacity:.85}100%{opacity:0;transform:scale(1.5)}}
+  @keyframes drawCheck{to{stroke-dashoffset:0}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1!important;transform:none!important;transition:none}
+    .r{animation:none!important;opacity:1!important}
+    .badge path{stroke-dashoffset:0!important;animation:none!important}
+    .celebrate{animation:none;opacity:0}
+  }
+  .r{opacity:0;animation:upIn .7s var(--ease) forwards}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+  .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);display:block}
+  h2{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s-3)}
+  h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
+
+  .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
+  .bar .brand img{height:30px;width:auto;display:block}
+
+  .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
+  .btn:hover{transform:translateY(-3px)}
+  .btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
+  .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
+  .btn-primary:hover::after{animation:glint .85s var(--ease) forwards}
+  .btn .arr{display:inline-block;transition:transform .25s var(--ease)}.btn:hover .arr{transform:translateX(4px)}
+  .btn-ghost{background:rgba(242,243,241,.04);border:1px solid var(--line-2);color:var(--paper)}
+  .btn-ghost:hover{border-color:var(--line-3)}
+
+  .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-9)) 0 clamp(var(--s-7),5vw,var(--s-8))}
+  .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--ease) .2s both}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);background:rgba(0,184,136,.10);border:1px solid rgba(0,184,136,.30);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--ease) .12s both}
+  .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--ease) .55s forwards}
+  .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--ease) .26s both}
+  .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--ease) .38s both}
+  .hero .sub b{color:var(--paper);font-weight:600}
+  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s-3);margin-top:var(--s-6);animation:upIn .7s var(--ease) .5s both}
+  .hero .hint{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint)}
+
+  section.blk{padding:clamp(var(--s-7),5vw,var(--s-8)) 0}
+  .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--depth-lg)}
+  .offer .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
+  .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap}
+  .cd{display:inline-flex;align-items:baseline;gap:10px;background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.32);border-radius:999px;padding:8px 16px}
+  .cd-k{font-family:"Archivo",sans-serif;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+  .cd-t{font-family:"JetBrains Mono",monospace;font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+  .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s-6);margin-top:var(--s-6);background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--depth)}
+  .oc-big{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s-2)}
+  .oc-bonus{margin-top:var(--s-3);font-family:"Archivo",sans-serif;font-weight:600;font-size:.96rem;color:var(--amber)}
+  .oc-list{list-style:none;margin-top:var(--s-4);display:grid;gap:var(--s-2)}
+  .oc-list li{position:relative;padding-left:1.6em;color:var(--muted);font-size:.98rem}
+  .oc-list li::before{content:"✓";position:absolute;left:0;color:var(--emerald);font-weight:700}
+  .oc-side{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s-3);border-left:1px solid var(--line);padding-left:var(--s-6)}
+  .oc-price{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.3rem}
+  .oc-hint{font-size:.85rem;color:var(--faint);line-height:1.5}
+  .expired p{margin-top:var(--s-5);color:var(--muted);background:rgba(242,243,241,.03);border:1px solid var(--line-2);border-radius:12px;padding:var(--s-4) var(--s-5)}
+  .expired b{color:var(--paper)}
+  .offer .panel.is-expired .offercard,.offer .panel.is-expired .cd,.offer .panel.is-expired .oc-hint{display:none}
+  @media (max-width:720px){
+    .offercard{grid-template-columns:1fr}
+    .oc-side{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:var(--s-5);align-items:stretch}
+    .oc-side .btn{text-align:center}
+  }
+
+  .steps-blk .wrap>.eyebrow{margin-bottom:var(--s-2)}
+  .steps{list-style:none;display:grid;gap:var(--s-3);counter-reset:step;margin-top:var(--s-5)}
+  .steps li{counter-increment:step;display:flex;gap:var(--s-5);align-items:baseline;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:14px;padding:clamp(16px,2.4vw,22px) clamp(18px,3vw,26px);box-shadow:var(--depth)}
+  .steps li::before{content:counter(step,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:.95rem;color:var(--emerald);flex:none}
+  .steps li b{color:var(--paper);font-weight:600}
+  .steps li{color:var(--muted);font-size:.98rem}
+
+  .legal-blk .wrap{display:grid;gap:var(--s-4)}
+  .notecard{background:rgba(242,243,241,.03);border:1px solid var(--line-2);border-radius:12px;padding:var(--s-4) var(--s-5);color:var(--muted);font-size:.93rem;line-height:1.65}
+  .notecard b{color:var(--paper)}
+  .notecard a{color:var(--emerald-soft);text-decoration:none}
+  .notecard a:hover{text-decoration:underline}
+  .mandatory{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.03em;color:var(--faint)}
+
+  .site-footer{margin-top:var(--s-8);border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink)}
+  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4);padding-top:var(--s-6);padding-bottom:var(--s-6);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint)}
+  .site-footer img{height:34px;width:auto;display:block}
+  .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s-4)}
+  .site-footer a{color:var(--muted);text-decoration:none}
+  .site-footer a:hover{color:var(--paper)}
+</style>
+<noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
+</head>
+<body>
+  <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a></div>
+
+  <main>
+    <section class="hero">
+      <div class="celebrate" aria-hidden="true"></div>
+      <div class="wrap">
+        <span class="badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Zahlung bestätigt</span>
+        <h1>Dein Studio ist <em>startklar</em>.</h1>
+        <p class="sub">Dein Studio füllt sich ab jetzt <b>jeden Monat automatisch mit 700 Token</b> — die ersten sind in der Regel in Sekunden da. Fast tägliche Sichtbarkeit, ohne Rechnen.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://mein.social2scale.com">Zum Smart Studio <span class="arr">→</span></a>
+          <span class="hint">Gutschrift dauert in der Regel nur Sekunden.</span>
+        </div>
+      </div>
+    </section>
+
+    
+  <section class="blk offer" aria-labelledby="offer-h">
+    <div class="wrap"><div class="panel reveal" id="offer-panel">
+      <div class="offer-top">
+        <span class="eyebrow">Dein nächster Schritt · persönlich</span>
+        
+      </div>
+      <h2 id="offer-h">Dein Engpass ist jetzt nicht mehr Content — sondern <em>Zeit</em>.</h2>
+      <p class="lead">Mit dem L-Abo hast du das Maximum aus dem Studio geholt. Wenn du willst, gehen wir den letzten Schritt: Wir übernehmen Erstellung und Feinschliff komplett für dich — du gibst nur noch frei.</p>
+      <div class="offercard">
+        <div class="oc-main">
+          <span class="klabel">Done-for-you mit social2scale</span>
+          <p class="oc-big">Wir erstellen. Du gibst frei.</p>
+          
+          <ul class="oc-list"><li>Beiträge, Bildwelt und Feinschliff aus einer Hand</li><li>Dein Studio bleibt — für alles Spontane</li><li>Unverbindliches Gespräch, kein Verkaufsdruck</li></ul>
+        </div>
+        <div class="oc-side">
+          
+          <a class="btn btn-primary" id="upsell-cta" href="https://social2scale.com/anfrage/" rel="noopener">Gespräch anfragen <span class="arr">→</span></a>
+          
+        </div>
+      </div>
+      
+    </div></div>
+  </section>
+
+    <section class="blk steps-blk" aria-labelledby="steps-h">
+      <div class="wrap">
+        <span class="eyebrow" id="steps-h">In 3 Minuten zum ersten Beitrag</span>
+        <ol class="steps reveal">
+          <li><span><b>Studio öffnen</b> — dein Guthaben steht oben rechts.</span></li>
+          <li><span><b>Thema eingeben</b> — ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt.</span></li>
+          <li><span><b>Favorit wählen &amp; feinschleifen</b> — bestätigen, fertig. Caption und Hashtags sind schon dabei.</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="blk legal-blk">
+      <div class="wrap">
+        <div class="notecard"><b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:info@social2scale.com">info@social2scale.com</a> — wir ordnen es dir persönlich zu.</div>
+        <p class="mandatory">Die Abbuchung erfolgt durch Digistore24. Dein Abo verlängert sich monatlich und ist jederzeit über Digistore24 kündbar.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap">
+    <a href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="68" height="34"></a>
+    <nav aria-label="Rechtliches">
+      <a href="/impressum/">Impressum</a>
+      <a href="/datenschutz/">Datenschutz</a>
+      <a href="mailto:info@social2scale.com">Kontakt</a>
+    </nav>
+    <span>© <span id="yr"></span> social2scale</span>
+  </div></footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Reveal-on-scroll (dezent, reduced-motion respektiert CSS-seitig)
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('on'); }); return; }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); } });
+      }, { rootMargin: '0px 0px -60px' });
+      els.forEach(function (e) { io.observe(e); });
+      setTimeout(function () { els.forEach(function (e) { e.classList.add('on'); }); }, 1200);
+    })();
+
+    // E-Mail aus Digistore-Dankesseiten-Parametern an den Upsell-Link
+    // weiterreichen → Bestellformular vorbefüllt → Auto-Match im Portal greift.
+    (function () {
+      var cta = document.getElementById('upsell-cta');
+      if (!cta) return;
+      try {
+        var q = new URLSearchParams(location.search);
+        var email = q.get('email') || q.get('buyer_email') || '';
+        if (email && cta.href.indexOf('digistore24.com') > -1) {
+          var u = new URL(cta.href);
+          u.searchParams.set('email', email);
+          cta.href = u.toString();
+        }
+      } catch (_) {}
+    })();
+
+  </script>
+</body>
+</html>
