@@ -192,6 +192,49 @@ const PRODUCTS = [
   },
 ];
 
+// ------------------------------------------------------------
+// BONUS-VARIANTEN (Upsell-Käufe) — Ende der Kette: Bestätigung
+// mit Bonus-Rechnung, bewusst KEIN weiterer Upsell.
+// ------------------------------------------------------------
+const BONUS_PRODUCTS = [
+  {
+    slug: "abo-m-bonus",
+    label: "M-Abo + Bonus",
+    isAbo: true,
+    tokens: 400,
+    h1: "Guter <em>Move</em>.",
+    heroSub: "Dein erster Monat startet mit <b>300 + 100 Bonus-Token = 400 Token</b> — danach füllt sich dein Studio jeden Monat automatisch mit 300. Die ersten sind in der Regel in Sekunden da.",
+    upsell: null,
+  },
+  {
+    slug: "abo-l-bonus",
+    label: "L-Abo + Bonus",
+    isAbo: true,
+    tokens: 900,
+    h1: "Guter <em>Move</em>.",
+    heroSub: "Dein erster Monat startet mit <b>700 + 200 Bonus-Token = 900 Token</b> — danach füllt sich dein Studio jeden Monat automatisch mit 700. Die ersten sind in der Regel in Sekunden da.",
+    upsell: null,
+  },
+  {
+    slug: "paket-250-bonus",
+    label: "250 Token + Bonus",
+    isAbo: false,
+    tokens: 300,
+    h1: "Guter <em>Move</em>.",
+    heroSub: "Deine <b>250 + 50 Bonus-Token = 300 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Vorrat verfällt nie.",
+    upsell: null,
+  },
+  {
+    slug: "paket-600-bonus",
+    label: "600 Token + Bonus",
+    isAbo: false,
+    tokens: 700,
+    h1: "Guter <em>Move</em>.",
+    heroSub: "Deine <b>600 + 100 Bonus-Token = 700 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Vorrat verfällt nie.",
+    upsell: null,
+  },
+];
+
 // Fallback-Seite, wenn ein Kauf ohne produktspezifische URL landet.
 const FALLBACK = {
   slug: "",
@@ -252,9 +295,9 @@ function pageHtml(p) {
   const title = p.slug
     ? `Danke — ${p.label} · Smart Studio · social2scale`
     : "Danke — dein Guthaben kommt · Smart Studio · social2scale";
-  const h1 = p.isAbo
+  const h1 = p.h1 || (p.isAbo
     ? 'Dein Studio ist <em>startklar</em>.'
-    : 'Dein Guthaben ist <em>da</em>.';
+    : 'Dein Guthaben ist <em>da</em>.');
   const aboLegal = p.isAbo
     ? " Dein Abo verlängert sich monatlich und ist jederzeit über Digistore24 kündbar."
     : "";
@@ -515,7 +558,7 @@ ${hasCountdown ? `
 // Build
 // ------------------------------------------------------------
 let built = 0;
-for (const p of [...PRODUCTS, FALLBACK]) {
+for (const p of [...PRODUCTS, ...BONUS_PRODUCTS, FALLBACK]) {
   const dir = p.slug ? join(ROOT, "danke", "studio", p.slug) : join(ROOT, "danke", "studio");
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "index.html"), pageHtml(p));
