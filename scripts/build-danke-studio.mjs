@@ -47,6 +47,11 @@ const ds = (id) => "https://www.digistore24.com/product/" + id;
 // tokens = was der Kauf gutschreibt · upsell = das EINE Angebot.
 // ------------------------------------------------------------
 const PRODUCTS = [
+  // Reale Digistore-Produkte (Phil, 16.08.): 100T=722966 · 250T=722970 ·
+  // 500T=722971 · Service-Abo=722974. Das Abo ist NICHT token-basiert
+  // (Sebi 19.08.): Rundum-Service — wir erstellen laufend, Kundin kuratiert.
+  // Kein Countdown/Bonus, solange keine exklusiven Bonus-Produkte existieren
+  // (UWG: Verknappung nur, wenn sie real ist).
   {
     slug: "paket-100",
     label: "100 Token",
@@ -54,20 +59,21 @@ const PRODUCTS = [
     tokens: 100,
     heroSub: "Deine <b>100 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 4 komplette Beiträge.",
     upsell: {
-      id: "ID_TBD_ABO_M_BONUS",
-      eyebrow: "Einmaliges Dankeschön · nur auf dieser Seite",
-      pain: "Der teuerste Moment ist ein <em>leeres Guthaben</em> — genau dann, wenn du posten willst.",
-      lead: "Wer nachkaufen muss, postet später. Mit dem M-Abo füllt sich dein Studio jeden Monat von selbst — und nur hier legen wir dir auf den ersten Monat Bonus-Token obendrauf.",
-      title: "Smart Studio M — Token-Abo",
-      big: "300 Token / Monat",
-      bonus: "+100 Bonus-Token im 1. Monat — nur über diese Seite",
+      id: "722974",
+      eyebrow: "Wenn du magst · dein nächster Schritt",
+      pain: "Selbst erstellen ist stark. <em>Gar nicht dran denken müssen</em> ist stärker.",
+      lead: "Mit dem Rundum-Service läuft dein Content automatisch weiter: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir.",
+      title: "Smart Studio — Rundum-Service",
+      big: "Wir übernehmen. Du wählst aus.",
+      bonus: null,
       bullets: [
-        "12 Beiträge pro Monat, ohne ans Nachkaufen zu denken",
-        "Nicht genutzte Token bleiben dir erhalten",
+        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
+        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
         "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
       ],
-      price: "59,90 € / Monat", // TODO(Sebi/Phil): finaler Preis
-      cta: "Abo mit Bonus sichern",
+      price: "49 € / Monat",
+      cta: "Rundum-Service starten",
+      noCountdown: true,
     },
   },
   {
@@ -77,118 +83,61 @@ const PRODUCTS = [
     tokens: 250,
     heroSub: "Deine <b>250 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 10 komplette Beiträge.",
     upsell: {
-      id: "ID_TBD_ABO_M_BONUS",
-      eyebrow: "Einmaliges Dankeschön · nur auf dieser Seite",
+      id: "722974",
+      eyebrow: "Wenn du magst · dein nächster Schritt",
       pain: "Dein Rhythmus steht schon — mach ihn jetzt <em>automatisch</em>.",
-      lead: "250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Das M-Abo nimmt dir den letzten Handgriff ab — und nur hier gibt es Bonus-Token auf den ersten Monat obendrauf.",
-      title: "Smart Studio M — Token-Abo",
-      big: "300 Token / Monat",
-      bonus: "+100 Bonus-Token im 1. Monat — nur über diese Seite",
-      bullets: [
-        "12 Beiträge pro Monat, automatisch aufgefüllt",
-        "Nicht genutzte Token bleiben dir erhalten",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "59,90 € / Monat", // TODO(Sebi/Phil): finaler Preis
-      cta: "Abo mit Bonus sichern",
-    },
-  },
-  {
-    slug: "paket-600",
-    label: "600 Token",
-    isAbo: false,
-    tokens: 600,
-    heroSub: "Deine <b>600 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Content-Vorrat für Monate.",
-    upsell: {
-      id: "ID_TBD_ABO_L_BONUS",
-      eyebrow: "Einmaliges Dankeschön · nur auf dieser Seite",
-      pain: "Du planst groß. Mach aus dem Vorrat ein <em>System</em>.",
-      lead: "Mit dem L-Abo postest du fast täglich, ohne je auf den Kontostand zu schauen — und nur hier legen wir dir auf den ersten Monat Bonus-Token obendrauf.",
-      title: "Smart Studio L — Token-Abo",
-      big: "700 Token / Monat",
-      bonus: "+200 Bonus-Token im 1. Monat — nur über diese Seite",
-      bullets: [
-        "28 Beiträge pro Monat — fast täglich sichtbar",
-        "Bester Token-Preis aller Pakete",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "119,90 € / Monat", // TODO(Sebi/Phil): finaler Preis
-      cta: "Abo mit Bonus sichern",
-    },
-  },
-  {
-    slug: "abo-s",
-    label: "S-Abo",
-    isAbo: true,
-    tokens: 100,
-    heroSub: "Dein Studio füllt sich ab jetzt <b>jeden Monat automatisch mit 100 Token</b> — die ersten sind in der Regel in Sekunden da.",
-    upsell: {
-      id: "ID_TBD_PAKET_250_BONUS",
-      eyebrow: "Einmaliger Start-Vorteil · nur auf dieser Seite",
-      pain: "Monatsende, Ideen übrig — aber das Guthaben ist <em>leer</em>?",
-      lead: "Dein Abo deckt den Rhythmus. Für die Wochen, in denen mehr geht, sichere dir jetzt einmalig einen Vorrat mit Bonus-Token — er verfällt nie und wartet einfach auf dich.",
-      title: "Smart Studio — 250 Token",
-      big: "250 Token Vorrat",
-      bonus: "+50 Bonus-Token — nur über diese Seite",
-      bullets: [
-        "10 zusätzliche Beiträge, wann immer du sie brauchst",
-        "Verfällt nie — dein Puffer für starke Wochen",
-        "Einmalzahlung, kein weiteres Abo",
-      ],
-      price: "64,90 € einmalig", // TODO(Sebi/Phil): finaler Preis
-      cta: "Vorrat mit Bonus sichern",
-    },
-  },
-  {
-    slug: "abo-m",
-    label: "M-Abo",
-    isAbo: true,
-    tokens: 300,
-    heroSub: "Dein Studio füllt sich ab jetzt <b>jeden Monat automatisch mit 300 Token</b> — die ersten sind in der Regel in Sekunden da.",
-    upsell: {
-      id: "ID_TBD_PAKET_600_BONUS",
-      eyebrow: "Einmaliger Start-Vorteil · nur auf dieser Seite",
-      pain: "Launch, Aktion, Saison: Spitzen brauchen <em>Reserven</em>.",
-      lead: "Dein Abo trägt den Alltag. Für Kampagnen-Wochen sichere dir jetzt einmalig den großen Vorrat mit Bonus-Token — er verfällt nie und liegt bereit, wenn es zählt.",
-      title: "Smart Studio — 600 Token",
-      big: "600 Token Vorrat",
-      bonus: "+100 Bonus-Token — nur über diese Seite",
-      bullets: [
-        "24 zusätzliche Beiträge für Launches & Aktionen",
-        "Verfällt nie — dein Kampagnen-Puffer",
-        "Einmalzahlung, kein weiteres Abo",
-      ],
-      price: "129,90 € einmalig", // TODO(Sebi/Phil): finaler Preis
-      cta: "Vorrat mit Bonus sichern",
-    },
-  },
-  {
-    slug: "abo-l",
-    label: "L-Abo",
-    isAbo: true,
-    tokens: 700,
-    heroSub: "Dein Studio füllt sich ab jetzt <b>jeden Monat automatisch mit 700 Token</b> — die ersten sind in der Regel in Sekunden da. Fast tägliche Sichtbarkeit, ohne Rechnen.",
-    // L-Kundinnen sind Vollausbau → kein Kauf-Upsell, sondern der
-    // Done-for-you-Schritt. Kein Countdown (kein künstlicher Druck
-    // vor einem Gespräch).
-    upsell: {
-      id: null,
-      href: "https://social2scale.com/anfrage/",
-      eyebrow: "Dein nächster Schritt · persönlich",
-      pain: "Dein Engpass ist jetzt nicht mehr Content — sondern <em>Zeit</em>.",
-      lead: "Mit dem L-Abo hast du das Maximum aus dem Studio geholt. Wenn du willst, gehen wir den letzten Schritt: Wir übernehmen Erstellung und Feinschliff komplett für dich — du gibst nur noch frei.",
-      title: "Done-for-you mit social2scale",
-      big: "Wir erstellen. Du gibst frei.",
+      lead: "250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Der Rundum-Service nimmt dir den letzten Handgriff ab — wir erstellen laufend, du wählst nur noch aus.",
+      title: "Smart Studio — Rundum-Service",
+      big: "Wir übernehmen. Du wählst aus.",
       bonus: null,
       bullets: [
-        "Beiträge, Bildwelt und Feinschliff aus einer Hand",
-        "Dein Studio bleibt — für alles Spontane",
-        "Unverbindliches Gespräch, kein Verkaufsdruck",
+        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
+        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
+        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
       ],
-      price: null,
-      cta: "Gespräch anfragen",
+      price: "49 € / Monat",
+      cta: "Rundum-Service starten",
       noCountdown: true,
     },
+  },
+  {
+    slug: "paket-500",
+    label: "500 Token",
+    isAbo: false,
+    tokens: 500,
+    heroSub: "Deine <b>500 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Content-Vorrat für Monate.",
+    upsell: {
+      id: "722974",
+      eyebrow: "Wenn du magst · dein nächster Schritt",
+      pain: "Du planst groß. Mach aus dem Vorrat ein <em>System</em>.",
+      lead: "Mit dem Rundum-Service musst du nie wieder auf den Kontostand schauen: Wir erstellen dir laufend Beiträge in deiner Marke — du wählst nur noch deine Favoriten aus.",
+      title: "Smart Studio — Rundum-Service",
+      big: "Wir übernehmen. Du wählst aus.",
+      bonus: null,
+      bullets: [
+        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
+        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
+        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
+      ],
+      price: "49 € / Monat",
+      cta: "Rundum-Service starten",
+      noCountdown: true,
+    },
+  },
+  {
+    slug: "abo",
+    label: "Rundum-Service",
+    isAbo: true,
+    tokens: null,
+    h1: "Willkommen im <em>Rundum-Service</em>.",
+    heroSub: "Ab jetzt läuft dein Content <b>automatisch</b>: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir. <b>Wir melden uns innerhalb von 24 Stunden persönlich bei dir</b> und richten alles ein.",
+    stepsEyebrow: "So geht es jetzt weiter",
+    steps: [
+      { b: "Wir melden uns", t: "innerhalb von 24 Stunden — kurz abstimmen, was deine Marke gerade braucht." },
+      { b: "Dein Studio füllt sich", t: "wir erstellen dir laufend fertige Beiträge in deiner Markenwelt." },
+      { b: "Du wählst aus", t: "Herz drücken bei deinen Favoriten — wir planen und veröffentlichen für dich." },
+    ],
+    upsell: null,
   },
 ];
 
@@ -197,42 +146,9 @@ const PRODUCTS = [
 // mit Bonus-Rechnung, bewusst KEIN weiterer Upsell.
 // ------------------------------------------------------------
 const BONUS_PRODUCTS = [
-  {
-    slug: "abo-m-bonus",
-    label: "M-Abo + Bonus",
-    isAbo: true,
-    tokens: 400,
-    h1: "Guter <em>Move</em>.",
-    heroSub: "Dein erster Monat startet mit <b>300 + 100 Bonus-Token = 400 Token</b> — danach füllt sich dein Studio jeden Monat automatisch mit 300. Die ersten sind in der Regel in Sekunden da.",
-    upsell: null,
-  },
-  {
-    slug: "abo-l-bonus",
-    label: "L-Abo + Bonus",
-    isAbo: true,
-    tokens: 900,
-    h1: "Guter <em>Move</em>.",
-    heroSub: "Dein erster Monat startet mit <b>700 + 200 Bonus-Token = 900 Token</b> — danach füllt sich dein Studio jeden Monat automatisch mit 700. Die ersten sind in der Regel in Sekunden da.",
-    upsell: null,
-  },
-  {
-    slug: "paket-250-bonus",
-    label: "250 Token + Bonus",
-    isAbo: false,
-    tokens: 300,
-    h1: "Guter <em>Move</em>.",
-    heroSub: "Deine <b>250 + 50 Bonus-Token = 300 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Vorrat verfällt nie.",
-    upsell: null,
-  },
-  {
-    slug: "paket-600-bonus",
-    label: "600 Token + Bonus",
-    isAbo: false,
-    tokens: 700,
-    h1: "Guter <em>Move</em>.",
-    heroSub: "Deine <b>600 + 100 Bonus-Token = 700 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Vorrat verfällt nie.",
-    upsell: null,
-  },
+  // Bewusst leer: exklusive Bonus-Produkte existieren (noch) nicht in
+  // Digistore. Erst wieder befüllen, wenn Phil sie anlegt — sonst wären
+  // Countdown/Bonus-Versprechen UWG-Risiko.
 ];
 
 // Fallback-Seite, wenn ein Kauf ohne produktspezifische URL landet.
@@ -461,11 +377,13 @@ function pageHtml(p) {
 
     <section class="blk steps-blk" aria-labelledby="steps-h">
       <div class="wrap">
-        <span class="eyebrow" id="steps-h">In 3 Minuten zum ersten Beitrag</span>
+        <span class="eyebrow" id="steps-h">${esc(p.stepsEyebrow || "In 3 Minuten zum ersten Beitrag")}</span>
         <ol class="steps reveal">
-          <li><span><b>Studio öffnen</b> — dein Guthaben steht oben rechts.</span></li>
-          <li><span><b>Thema eingeben</b> — ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt.</span></li>
-          <li><span><b>Favorit wählen &amp; feinschleifen</b> — bestätigen, fertig. Caption und Hashtags sind schon dabei.</span></li>
+${(p.steps || [
+  { b: "Studio öffnen", t: "dein Guthaben steht oben rechts." },
+  { b: "Thema eingeben", t: "ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt." },
+  { b: "Favorit wählen & feinschleifen", t: "bestätigen, fertig. Caption und Hashtags sind schon dabei." },
+]).map((s) => `          <li><span><b>${esc(s.b)}</b> — ${esc(s.t)}</span></li>`).join("\n")}
         </ol>
       </div>
     </section>

@@ -156,30 +156,25 @@
   <section class="blk offer" aria-labelledby="offer-h">
     <div class="wrap"><div class="panel reveal" id="offer-panel">
       <div class="offer-top">
-        <span class="eyebrow">Einmaliges Dankeschön · nur auf dieser Seite</span>
-        <div class="cd" id="cd" role="timer" aria-label="Verbleibende Zeit für dieses Angebot">
-        <span class="cd-k">Angebot endet in</span>
-        <span class="cd-t" id="cd-t">15:00</span>
-      </div>
+        <span class="eyebrow">Wenn du magst · dein nächster Schritt</span>
+        
       </div>
       <h2 id="offer-h">Dein Rhythmus steht schon — mach ihn jetzt <em>automatisch</em>.</h2>
-      <p class="lead">250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Das M-Abo nimmt dir den letzten Handgriff ab — und nur hier gibt es Bonus-Token auf den ersten Monat obendrauf.</p>
+      <p class="lead">250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Der Rundum-Service nimmt dir den letzten Handgriff ab — wir erstellen laufend, du wählst nur noch aus.</p>
       <div class="offercard">
         <div class="oc-main">
-          <span class="klabel">Smart Studio M — Token-Abo</span>
-          <p class="oc-big">300 Token / Monat</p>
-          <p class="oc-bonus">✦ +100 Bonus-Token im 1. Monat — nur über diese Seite</p>
-          <ul class="oc-list"><li>12 Beiträge pro Monat, automatisch aufgefüllt</li><li>Nicht genutzte Token bleiben dir erhalten</li><li>Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit</li></ul>
+          <span class="klabel">Smart Studio — Rundum-Service</span>
+          <p class="oc-big">Wir übernehmen. Du wählst aus.</p>
+          
+          <ul class="oc-list"><li>Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst</li><li>Du markierst deine Favoriten, wir kümmern uns um den Rest</li><li>Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit</li></ul>
         </div>
         <div class="oc-side">
-          <p class="oc-price">59,90 € / Monat</p>
-          <a class="btn btn-primary" id="upsell-cta" href="https://www.digistore24.com/product/ID_TBD_ABO_M_BONUS">Abo mit Bonus sichern <span class="arr">→</span></a>
-          <p class="oc-hint">Gilt nur auf dieser Seite — danach regulärer Umfang.</p>
+          <p class="oc-price">49 € / Monat</p>
+          <a class="btn btn-primary" id="upsell-cta" href="https://www.digistore24.com/product/722974">Rundum-Service starten <span class="arr">→</span></a>
+          
         </div>
       </div>
-      <div class="expired" id="expired" hidden>
-        <p><b>Dieses Angebot ist abgelaufen.</b> Alle Abos und Pakete findest du jederzeit in deinem Studio unter „Guthaben aufladen".</p>
-      </div>
+      
     </div></div>
   </section>
 
@@ -242,36 +237,6 @@
       } catch (_) {}
     })();
 
-    // Countdown: 15 Min ab erstem Besuch dieser Seite (pro
-    // Bestellung, via localStorage). Abgelaufen → Angebot ausblenden,
-    // ruhiger Hinweis. Muss mit einer ECHTEN Befristung in Digistore
-    // hinterlegt sein (kein Fake-Countdown).
-    (function () {
-      var MIN = 15;
-      var q = new URLSearchParams(location.search);
-      var key = 's2s_danke_paket-250_' + (q.get('order_id') || 'visit');
-      var end = 0;
-      try { end = Number(localStorage.getItem(key)) || 0; } catch (_) {}
-      if (!end) {
-        end = Date.now() + MIN * 60 * 1000;
-        try { localStorage.setItem(key, String(end)); } catch (_) {}
-      }
-      var tEl = document.getElementById('cd-t');
-      var panel = document.getElementById('offer-panel');
-      var expired = document.getElementById('expired');
-      function render() {
-        var left = Math.max(0, end - Date.now());
-        var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
-        if (tEl) tEl.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-        if (left <= 0) {
-          if (panel) panel.classList.add('is-expired');
-          if (expired) expired.hidden = false;
-          clearInterval(timer);
-        }
-      }
-      var timer = setInterval(render, 1000);
-      render();
-    })();
   </script>
 </body>
 </html>
