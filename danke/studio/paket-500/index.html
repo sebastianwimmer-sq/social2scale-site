@@ -77,6 +77,8 @@
   .btn-ghost:hover{border-color:var(--line-3)}
 
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-9)) 0 clamp(var(--s-7),5vw,var(--s-8))}
+  .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;z-index:0;pointer-events:none}
+  @media (prefers-reduced-motion:reduce){.herovid{display:none}}
   .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center}
   .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--ease) .2s both}
   .badge{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);background:rgba(0,184,136,.10);border:1px solid rgba(0,184,136,.30);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--ease) .12s both}
@@ -140,6 +142,7 @@
 
   <main>
     <section class="hero">
+      <video class="herovid" autoplay muted loop playsinline poster="/danke/studio/assets/danke-poster.jpg" aria-hidden="true"><source src="/danke/studio/assets/danke-bg.mp4" type="video/mp4"></video>
       <div class="celebrate" aria-hidden="true"></div>
       <div class="wrap">
         <span class="badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Zahlung bestätigt</span>
