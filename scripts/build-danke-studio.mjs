@@ -400,7 +400,7 @@ function pageHtml(p) {
         <p class="sub">${p.heroSub}</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="${STUDIO_URL}">Zu deinem Bereich <span class="arr">→</span></a>
-          <span class="hint">Gutschrift dauert in der Regel nur Sekunden.</span>
+          <span class="hint">${p.isAbo ? "Wir haben deine Bestellung — du hörst innerhalb von 24 Stunden persönlich von uns." : "Gutschrift dauert in der Regel nur Sekunden."}</span>
         </div>
       </div>
     </section>
@@ -423,7 +423,7 @@ ${(p.steps || [
     <section class="blk legal-blk">
       <div class="wrap">
         <div class="notecard human"><b>Hinter deinem Studio stehen Menschen.</b> Wir — Sebi &amp; Phil — lesen jede Nachricht selbst. Wenn irgendwas ist oder du dir unsicher bist: <a href="mailto:${SUPPORT_MAIL}">schreib uns</a>, wir antworten persönlich.</div>
-        <div class="notecard"><b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir ordnen es dir persönlich zu.</div>
+        <div class="notecard">${p.isAbo ? `<b>Nichts von uns gehört?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast, als wir von dir kennen. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir melden uns sofort.` : `<b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir ordnen es dir persönlich zu.`}</div>
         <p class="mandatory">Die Abbuchung erfolgt durch Digistore24.${aboLegal}</p>
       </div>
     </section>
