@@ -43,6 +43,77 @@ const COUNTDOWN_MINUTES = 15;
 const ds = (id) => "https://www.digistore24.com/product/" + id;
 
 // ------------------------------------------------------------
+// BONUS-UPSELL (Higgsfield-Style, Sebi 19.08.): „Kauf JETZT nochmal →
+// Bonus-Token obendrauf" mit echtem Countdown. Erst aktiv, wenn Phil die
+// exklusiven Bonus-Produkte in Digistore angelegt hat (IDs hier eintragen,
+// dann node scripts/build-danke-studio.mjs + deploy). Leer = ruhiger
+// Service-Upsell ohne Countdown — UWG: Verknappung nur, wenn sie real ist.
+// ------------------------------------------------------------
+const BONUS_ABO_ID = ""; // „Rundum-Service-Abo + 100 Bonus-Token (nur Dankesseite)" · 49 €/Mon
+const BONUS_250_ID = ""; // „250 Token + 50 Bonus-Token (nur Dankesseite)" · 47 € einmalig
+
+// Paket-Seiten: Abo-Upsell — mit Bonus+Countdown, sobald das Bonus-Produkt existiert.
+function aboUpsell(pain, lead) {
+  if (BONUS_ABO_ID) {
+    return {
+      id: BONUS_ABO_ID,
+      eyebrow: "Einmaliges Dankeschön · nur auf dieser Seite",
+      pain,
+      lead: lead + " Und nur hier legen wir dir 100 Bonus-Token auf den ersten Monat obendrauf.",
+      title: "Smart Studio — Rundum-Service",
+      big: "Wir übernehmen. Du wählst aus.",
+      bonus: "+100 Bonus-Token im 1. Monat — nur über diese Seite",
+      bullets: [
+        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
+        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
+        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
+      ],
+      price: "49 € / Monat",
+      cta: "Rundum-Service mit Bonus sichern",
+    };
+  }
+  return {
+    id: "722974",
+    eyebrow: "Wenn du magst · dein nächster Schritt",
+    pain,
+    lead,
+    title: "Smart Studio — Rundum-Service",
+    big: "Wir übernehmen. Du wählst aus.",
+    bonus: null,
+    bullets: [
+      "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
+      "Du markierst deine Favoriten, wir kümmern uns um den Rest",
+      "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
+    ],
+    price: "49 € / Monat",
+    cta: "Rundum-Service starten",
+    noCountdown: true,
+  };
+}
+
+// Abo-Seite: Token-Vorrat-Upsell — nur mit echtem Bonus-Produkt, sonst keiner.
+function aboPageUpsell() {
+  if (!BONUS_250_ID) return null;
+  return {
+    id: BONUS_250_ID,
+    eyebrow: "Einmaliger Start-Vorteil · nur auf dieser Seite",
+    pain: "Für die Wochen, in denen du <em>selbst</em> kreativ sein willst.",
+    lead: "Dein Service läuft ab jetzt automatisch. Fürs Selbermachen zwischendurch: Sichere dir jetzt einmalig den Token-Vorrat mit 50 Bonus-Token obendrauf — er verfällt nie.",
+    title: "Smart Studio — 250 Token",
+    big: "250 + 50 Bonus-Token",
+    bonus: "+50 Bonus-Token — nur über diese Seite",
+    bullets: [
+      "12 eigene Beiträge, wann immer du magst",
+      "Verfällt nie — dein Vorrat wartet auf dich",
+      "Einmalzahlung, kein weiteres Abo",
+    ],
+    price: "47 € einmalig",
+    cta: "Vorrat mit Bonus sichern",
+  };
+}
+
+
+// ------------------------------------------------------------
 // PRODUKT-CONFIG — die einzige Stelle, an der gepflegt wird.
 // tokens = was der Kauf gutschreibt · upsell = das EINE Angebot.
 // ------------------------------------------------------------
@@ -58,23 +129,10 @@ const PRODUCTS = [
     isAbo: false,
     tokens: 100,
     heroSub: "Deine <b>100 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 4 komplette Beiträge.",
-    upsell: {
-      id: "722974",
-      eyebrow: "Wenn du magst · dein nächster Schritt",
-      pain: "Selbst erstellen ist stark. <em>Gar nicht dran denken müssen</em> ist stärker.",
-      lead: "Mit dem Rundum-Service läuft dein Content automatisch weiter: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir.",
-      title: "Smart Studio — Rundum-Service",
-      big: "Wir übernehmen. Du wählst aus.",
-      bonus: null,
-      bullets: [
-        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
-        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "49 € / Monat",
-      cta: "Rundum-Service starten",
-      noCountdown: true,
-    },
+    upsell: aboUpsell(
+      "Selbst erstellen ist stark. <em>Gar nicht dran denken müssen</em> ist stärker.",
+      "Mit dem Rundum-Service läuft dein Content automatisch weiter: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir."
+    ),
   },
   {
     slug: "paket-250",
@@ -82,23 +140,10 @@ const PRODUCTS = [
     isAbo: false,
     tokens: 250,
     heroSub: "Deine <b>250 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 10 komplette Beiträge.",
-    upsell: {
-      id: "722974",
-      eyebrow: "Wenn du magst · dein nächster Schritt",
-      pain: "Dein Rhythmus steht schon — mach ihn jetzt <em>automatisch</em>.",
-      lead: "250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Der Rundum-Service nimmt dir den letzten Handgriff ab — wir erstellen laufend, du wählst nur noch aus.",
-      title: "Smart Studio — Rundum-Service",
-      big: "Wir übernehmen. Du wählst aus.",
-      bonus: null,
-      bullets: [
-        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
-        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "49 € / Monat",
-      cta: "Rundum-Service starten",
-      noCountdown: true,
-    },
+    upsell: aboUpsell(
+      "Dein Rhythmus steht schon — mach ihn jetzt <em>automatisch</em>.",
+      "250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Der Rundum-Service nimmt dir den letzten Handgriff ab — wir erstellen laufend, du wählst nur noch aus."
+    ),
   },
   {
     slug: "paket-500",
@@ -106,23 +151,10 @@ const PRODUCTS = [
     isAbo: false,
     tokens: 500,
     heroSub: "Deine <b>500 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Content-Vorrat für Monate.",
-    upsell: {
-      id: "722974",
-      eyebrow: "Wenn du magst · dein nächster Schritt",
-      pain: "Du planst groß. Mach aus dem Vorrat ein <em>System</em>.",
-      lead: "Mit dem Rundum-Service musst du nie wieder auf den Kontostand schauen: Wir erstellen dir laufend Beiträge in deiner Marke — du wählst nur noch deine Favoriten aus.",
-      title: "Smart Studio — Rundum-Service",
-      big: "Wir übernehmen. Du wählst aus.",
-      bonus: null,
-      bullets: [
-        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
-        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "49 € / Monat",
-      cta: "Rundum-Service starten",
-      noCountdown: true,
-    },
+    upsell: aboUpsell(
+      "Du planst groß. Mach aus dem Vorrat ein <em>System</em>.",
+      "Mit dem Rundum-Service musst du nie wieder auf den Kontostand schauen: Wir erstellen dir laufend Beiträge in deiner Marke — du wählst nur noch deine Favoriten aus."
+    ),
   },
   {
     slug: "abo",
@@ -137,7 +169,7 @@ const PRODUCTS = [
       { b: "Dein Studio füllt sich", t: "wir erstellen dir laufend fertige Beiträge in deiner Markenwelt." },
       { b: "Du wählst aus", t: "Herz drücken bei deinen Favoriten — wir planen und veröffentlichen für dich." },
     ],
-    upsell: null,
+    upsell: aboPageUpsell(),
   },
 ];
 
@@ -367,7 +399,7 @@ function pageHtml(p) {
         <h1>${h1}</h1>
         <p class="sub">${p.heroSub}</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="${STUDIO_URL}">Zum Smart Studio <span class="arr">→</span></a>
+          <a class="btn btn-primary" href="${STUDIO_URL}">Zu deinem Bereich <span class="arr">→</span></a>
           <span class="hint">Gutschrift dauert in der Regel nur Sekunden.</span>
         </div>
       </div>
@@ -390,6 +422,7 @@ ${(p.steps || [
 
     <section class="blk legal-blk">
       <div class="wrap">
+        <div class="notecard human"><b>Hinter deinem Studio stehen Menschen.</b> Wir — Sebi &amp; Phil — lesen jede Nachricht selbst. Wenn irgendwas ist oder du dir unsicher bist: <a href="mailto:${SUPPORT_MAIL}">schreib uns</a>, wir antworten persönlich.</div>
         <div class="notecard"><b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir ordnen es dir persönlich zu.</div>
         <p class="mandatory">Die Abbuchung erfolgt durch Digistore24.${aboLegal}</p>
       </div>
