@@ -109,6 +109,38 @@ Die Unterseiten (`/preise/`, `/results/`, `/for-you/`, `/about/`) sind die
 **Vertiefung** zu einzelnen Kapiteln, nicht eigene Closings. Sie brauchen keine
 Nummerierung.
 
+## ⚠️ Nach JEDEM Bau: Sicherheits-Block erneuern
+
+```sh
+node scripts/csp-haerten.mjs          # setzt CSP + Referrer-Policy + Rahmenschutz
+node scripts/csp-pruefen-browser.mjs  # prüft im echten Browser, dass nichts bricht
+```
+
+**Warum das nicht optional ist.** Die Seite liegt auf GitHub Pages, und die
+Plattform kann keine eigenen Antwort-Header setzen — nachgeprüft am 20.08.2026,
+die Antwort enthält nicht einen einzigen, nicht einmal HSTS. Der gesamte Schutz
+steht deshalb in der Seite selbst.
+
+`script-src` arbeitet mit **sha256-Hashes statt `unsafe-inline`**: jedes
+Inline-Skript ist einzeln freigegeben. Das heißt aber auch — **ändert sich auch
+nur ein Zeichen in einem Inline-Skript, passt sein Hash nicht mehr und der
+Browser führt es nicht mehr aus.** Ohne den Härtungslauf ist die Seite danach
+still kaputt: sie sieht normal aus, aber Menü, Formular und Zählung tun nichts.
+
+`csp-haerten.mjs --pruefen` ändert nichts und liefert Exit 1, sobald irgendeine
+Seite einen veralteten Block hat — als Gate vor dem Deploy geeignet.
+
+Der Browser-Test beginnt mit einem **Negativtest**: er hängt zur Laufzeit ein
+Skript ein, das keinen passenden Hash hat, und bricht ab, wenn es NICHT
+blockiert wird. Ohne den bewiese ein grüner Lauf nichts — bei einer gar nicht
+angekommenen Regel meldete ebenfalls keine Seite einen Verstoß.
+
+**Was auf GitHub Pages nicht geht:** `X-Content-Type-Options`, `HSTS` und
+`Permissions-Policy` haben kein Meta-Äquivalent. `frame-ancestors` ignorieren
+Browser im Meta-Tag grundsätzlich — deshalb der Rahmenschutz per Skript, der
+die Seite aus einem fremden Rahmen heraussetzt. Für echte Header müsste die
+Seite hinter Cloudflare laufen; `_headers` liegt dafür fertig im Repo.
+
 ## Menüpunkt ändern, hinzufügen, entfernen
 
 1. `lib/shell.mjs` bearbeiten — das ist die einzige Stelle.
