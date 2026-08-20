@@ -16,3 +16,7 @@ node_modules/
 test-results/
 playwright-report/
 tests/basis/
+
+# Test-Coverage-Report des free-content-Workers — erzeugtes Artefakt,
+# gehört nicht in ein Website-Repo (war lokal committet, auf dem Server nie).
+free-content/coverage/
