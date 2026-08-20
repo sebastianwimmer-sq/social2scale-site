@@ -65,7 +65,12 @@ const AUSGESCHLOSSEN = [
   "test-results", "workers", "free-content",
 ];
 
+// Turnstile lädt sein Skript von challenges.cloudflare.com, holt die eigentliche
+// Prüfung aber von einer WECHSELNDEN Subdomain (beobachtet: hagen.challenges…).
+// Nur den exakten Host freizugeben lässt das Widget still leer bleiben — genau
+// das war am 20.08. kurzzeitig live. Beide Formen nötig.
 const TURNSTILE = "https://challenges.cloudflare.com";
+const TURNSTILE_SUB = "https://*.challenges.cloudflare.com";
 const FORMULAR_ZIEL = "https://api.web3forms.com";
 const ZAEHLUNG = "https://closing.social2scale.com";
 
@@ -113,10 +118,10 @@ function cspFuer(html) {
   hashes.push(hash(RAHMENSCHUTZ));
 
   const skript = ["'self'", ...new Set(hashes)];
-  if (brauchtTurnstile) skript.push(TURNSTILE);
+  if (brauchtTurnstile) skript.push(TURNSTILE, TURNSTILE_SUB);
 
   const verbinden = ["'self'", ZAEHLUNG];
-  if (brauchtTurnstile) verbinden.push(TURNSTILE);
+  if (brauchtTurnstile) verbinden.push(TURNSTILE, TURNSTILE_SUB);
 
   const formular = ["'self'"];
   if (brauchtFormular) formular.push(FORMULAR_ZIEL);
@@ -130,7 +135,7 @@ function cspFuer(html) {
     "font-src 'self'",
     "connect-src " + verbinden.join(" "),
     // Turnstile rendert sich in einen eigenen Rahmen; sonst nichts einbetten.
-    "frame-src " + (brauchtTurnstile ? TURNSTILE : "'none'"),
+    "frame-src " + (brauchtTurnstile ? TURNSTILE + " " + TURNSTILE_SUB : "'none'"),
     "object-src 'none'",
     "base-uri 'self'",
     "form-action " + formular.join(" "),
