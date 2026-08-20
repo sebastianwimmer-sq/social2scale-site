@@ -23,3 +23,23 @@
     } catch (e) {}
   })();
 </script>
+<script>
+  // Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite.
+  // Ohne JS bleibt alles sichtbar (kein opacity:0 als Grundzustand im noscript-Fall).
+  (function () {
+    var els = document.querySelectorAll(".w-re");
+    if (!els.length) return;
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      els.forEach(function (e) { e.classList.add("an"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        setTimeout(function () { e.target.classList.add("an"); }, Math.min(i * 60, 240));
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>

@@ -139,39 +139,125 @@
   .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
   .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
   
-  /* ===== Wissens-Sektion ===== */
-  .w-art{max-width:46rem;padding-block:clamp(2.5rem,7vw,5rem)}
-  .w-art h1{font-size:clamp(1.85rem,4.6vw,2.9rem);line-height:1.12;letter-spacing:-.022em;margin-bottom:1.1rem;text-wrap:balance}
-  .w-antwort{font-size:clamp(1.06rem,2.3vw,1.24rem);line-height:1.62;color:var(--paper);
-    border-left:3px solid var(--emerald);padding:.15rem 0 .15rem 1.15rem;margin:0 0 1.1rem}
-  .w-art .meta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--faint)}
-  .w-blk{margin-top:clamp(2rem,4.5vw,3rem)}
-  .w-blk h2{font-size:clamp(1.15rem,2.6vw,1.5rem);letter-spacing:-.012em;margin-bottom:.75rem;text-wrap:balance}
-  .w-blk p{color:var(--muted);line-height:1.72;margin-bottom:.85rem;max-width:38rem}
-  .w-liste{margin-top:.4rem}
-  .w-liste dt{font-weight:600;color:var(--paper);margin-top:1rem;font-size:1rem}
-  .w-liste dd{color:var(--muted);line-height:1.7;margin:.2rem 0 0;max-width:38rem}
-  .w-karten{list-style:none;display:grid;gap:.85rem;margin-top:2rem}
-  .w-karten a{display:block;padding:1.4rem 1.5rem;border:1px solid var(--line);border-radius:16px;
-    background:var(--surface);text-decoration:none;transition:border-color .22s var(--ease),transform .22s var(--ease)}
-  .w-karten a:hover{border-color:rgba(0,184,136,.45);transform:translateY(-2px)}
-  .w-karten h2{font-size:1.08rem;line-height:1.35;letter-spacing:-.01em;color:var(--paper);text-wrap:balance}
-  .w-karten p{color:var(--muted);font-size:.92rem;line-height:1.6;margin-top:.45rem}
-  .w-mehr{display:inline-block;margin-top:.7rem;font-size:.82rem;font-weight:600;color:var(--emerald)}
-  .w-cta{margin-top:clamp(2.5rem,5vw,3.5rem);padding:1.6rem 1.7rem;border:1px solid var(--line-2);
-    border-radius:18px;background:linear-gradient(160deg,var(--surface),var(--surface-2))}
-  .w-cta h2{font-size:1.15rem;margin-bottom:.4rem}
-  .w-cta p{color:var(--muted);line-height:1.65;margin-bottom:1rem;max-width:34rem}
-  .w-btn{display:inline-block;padding:.8rem 1.3rem;border-radius:12px;font-weight:600;font-size:.94rem;
-    text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink)}
-  .w-weiter{margin-top:2.4rem;padding-top:1.5rem;border-top:1px solid var(--line)}
-  .w-weiter h2{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:.7rem}
-  .w-weiter ul{list-style:none;display:flex;flex-wrap:wrap;gap:.5rem}
-  .w-weiter a{display:inline-block;padding:.45rem .85rem;border:1px solid var(--line);border-radius:99px;
-    font-size:.85rem;color:var(--muted);text-decoration:none;transition:color .2s,border-color .2s}
-  .w-weiter a:hover{color:var(--paper);border-color:var(--line-2)}
-  .klabel a{color:inherit;text-decoration:none}
-  @media (prefers-reduced-motion:reduce){.w-karten a{transition:none}}
+  /* Marken-Tokens, die im Basis-CSS der Rechtsseiten fehlen — 1:1 aus der
+     Startseite übernommen, damit die Wissens-Seiten dieselbe Sprache sprechen. */
+  :root{
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --teal:#1FA6E0;
+    --hi:inset 0 1px 0 rgba(255,255,255,.05);
+  }
+
+  /* ===== Wissens-Sektion — Editorial im s2s-Aurora-Look =====
+     Übernimmt die Marken-Mittel der Startseite statt eigener Erfindungen:
+     accent-flow für em-Wörter, radiale Atmosphäre, gestapelte Oberflächen
+     mit Inset-Highlight, Reveal beim Scrollen. */
+
+  .w-page{position:relative;overflow:hidden}
+  /* Atmosphäre wie im Startseiten-Hero: zwei weiche Lichtquellen, kein Blob-Klischee */
+  .w-page::before{content:"";position:absolute;inset:0 0 auto;height:70vh;pointer-events:none;z-index:0;
+    background:radial-gradient(95% 70% at 12% 0%,rgba(0,184,136,.13),transparent 62%),
+               radial-gradient(80% 60% at 88% 6%,rgba(31,166,224,.09),transparent 58%)}
+  .w-art{position:relative;z-index:1;max-width:44rem;padding-block:clamp(2.2rem,6vw,4.2rem) clamp(3rem,8vw,6rem)}
+
+  /* Kopfzeile: Rücksprung statt dekorativem Label */
+  .w-zurueck{display:inline-flex;align-items:center;gap:.45rem;font-family:"JetBrains Mono",monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;
+    transition:color .22s var(--ease)}
+  .w-zurueck:hover{color:var(--emerald)}
+  .w-zurueck::before{content:"←";font-size:1.1em}
+
+  .w-art h1{font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(1.9rem,4.8vw,3.1rem);line-height:1.1;letter-spacing:-.022em;
+    margin:1.4rem 0 0;text-wrap:balance;max-width:20ch}
+  .w-art h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;
+    background-clip:text;color:transparent;padding-bottom:.08em}
+
+  /* Die direkte Antwort: der wichtigste Absatz der Seite, also auch der größte.
+     Kein Zitat-Balken (das wäre ein fremdes Muster), sondern echter Lead-Text. */
+  .w-lead{font-family:"Hanken Grotesk",system-ui,sans-serif;
+    font-size:clamp(1.08rem,2.4vw,1.32rem);line-height:1.58;color:var(--paper);
+    margin:1.25rem 0 0;max-width:34ch;text-wrap:pretty}
+  .w-lead::first-letter{font-family:"Fraunces",serif;font-size:1.15em;line-height:1;color:var(--emerald-soft)}
+  .w-stand{margin-top:1.6rem;padding-top:1rem;border-top:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint)}
+
+  /* Abschnitte: Rhythmus über Größe und Abstand, nicht über Kästen */
+  .w-blk{margin-top:clamp(2.4rem,5vw,3.6rem)}
+  .w-blk h2{font-family:"Archivo",sans-serif;font-weight:600;
+    font-size:clamp(1.08rem,2.4vw,1.36rem);letter-spacing:-.014em;line-height:1.25;
+    margin-bottom:.85rem;text-wrap:balance;max-width:26ch}
+  .w-blk p{color:var(--muted);line-height:1.78;margin-bottom:.9rem;max-width:36rem}
+  .w-blk p:last-child{margin-bottom:0}
+
+  /* Aufzählungen als Editorial-Zeilen: Hairline nur oben, Begriff trägt die Farbe.
+     Bewusst keine Karten und keine Linie unter jeder Zeile. */
+  .w-liste{margin-top:1.1rem;display:grid;gap:0}
+  .w-liste dt{font-family:"Archivo",sans-serif;font-weight:600;font-size:.97rem;color:var(--paper);
+    padding-top:1.05rem;margin-top:1.05rem;border-top:1px solid var(--line)}
+  .w-liste dt:first-of-type{border-top:0;margin-top:0;padding-top:0}
+  .w-liste dd{color:var(--muted);line-height:1.72;margin:.35rem 0 0;max-width:34rem;font-size:.95rem}
+
+  /* Übersicht: eine editorial gesetzte Liste mit wachsender Nummer,
+     keine gleichförmigen Karten (das war der Slop-Punkt). */
+  .w-index{list-style:none;margin-top:clamp(2rem,4vw,3rem);display:grid;gap:0}
+  /* Das Basis-CSS setzt einen grünen Punkt vor jedes li — hier stört er,
+     die Nummer ist der Marker. */
+  .w-index li::before,.w-weiter li::before{display:none;content:none}
+  .w-index li,.w-weiter li{padding-left:0}
+  .w-index li{border-top:1px solid var(--line)}
+  .w-index li:last-child{border-bottom:1px solid var(--line)}
+  .w-index a{display:grid;grid-template-columns:auto 1fr;gap:0 1.3rem;align-items:baseline;
+    padding:clamp(1.2rem,2.6vw,1.9rem) 0;text-decoration:none;
+    transition:padding-left .3s var(--ease)}
+  .w-index a:hover,.w-index a:focus-visible{padding-left:.6rem}
+  .w-index .nr{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--faint);
+    letter-spacing:.06em;transition:color .3s var(--ease)}
+  .w-index a:hover .nr,.w-index a:focus-visible .nr{color:var(--emerald)}
+  .w-index h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.16rem,2.7vw,1.6rem);
+    line-height:1.24;letter-spacing:-.015em;color:var(--paper);text-wrap:balance;max-width:24ch}
+  .w-index p{grid-column:2;color:var(--muted);font-size:.93rem;line-height:1.62;
+    margin-top:.5rem;max-width:40rem}
+
+  /* Abschluss-Block: gestapelte Oberfläche mit Inset-Highlight wie auf der Startseite */
+  .w-cta{position:relative;margin-top:clamp(2.8rem,6vw,4rem);padding:clamp(1.5rem,3.4vw,2.1rem);
+    border:1px solid var(--line-2);border-radius:20px;overflow:hidden;
+    background:linear-gradient(158deg,var(--surface-2),var(--surface));box-shadow:var(--hi)}
+  .w-cta::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(80% 120% at 100% 0%,rgba(0,184,136,.12),transparent 60%)}
+  .w-cta > *{position:relative}
+  .w-cta h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.2rem,2.7vw,1.55rem);
+    line-height:1.22;letter-spacing:-.015em;margin-bottom:.5rem;text-wrap:balance}
+  .w-cta p{color:var(--muted);line-height:1.68;margin-bottom:1.2rem;max-width:32rem;font-size:.95rem}
+  .w-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.35rem;border-radius:12px;
+    font-family:"Archivo",sans-serif;font-weight:600;font-size:.93rem;text-decoration:none;
+    background:var(--accent-flow);color:var(--emerald-ink);
+    box-shadow:0 14px 34px -14px rgba(0,184,136,.55),var(--hi);
+    transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+  .w-btn:hover{transform:translateY(-1px);box-shadow:0 18px 42px -14px rgba(0,184,136,.7),var(--hi)}
+  .w-btn:active{transform:translateY(0) scale(.985)}
+
+  /* Weiterlesen: schlichte Zeilen statt Pillen-Wolke */
+  .w-weiter{margin-top:clamp(2.2rem,4.5vw,3rem);padding-top:1.3rem;border-top:1px solid var(--line)}
+  .w-weiter h2{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);font-weight:400;margin-bottom:.6rem}
+  .w-weiter ul{list-style:none;display:grid;gap:0}
+  .w-weiter a{display:block;padding:.62rem 0;color:var(--muted);text-decoration:none;font-size:.95rem;
+    border-bottom:1px solid var(--line);transition:color .22s var(--ease),padding-left .25s var(--ease)}
+  .w-weiter li:last-child a{border-bottom:0}
+  .w-weiter a:hover,.w-weiter a:focus-visible{color:var(--paper);padding-left:.4rem}
+
+  /* Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite */
+  .w-re{opacity:0;transform:translateY(16px)}
+  .w-re.an{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  @media (prefers-reduced-motion:reduce){
+    .w-re{opacity:1!important;transform:none!important;transition:none!important}
+    .w-index a,.w-weiter a,.w-btn{transition:none}
+  }
+  @media (max-width:560px){
+    .w-index a{grid-template-columns:1fr;gap:.15rem}
+    .w-index p{grid-column:1}
+  }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Woran erkennt man eine gute Social-Media-Agentur?","acceptedAnswer":{"@type":"Answer","text":"Eine gute Social-Media-Agentur erkennt man an vier überprüfbaren Dingen: Sie zeigt echte Ergebnisse statt Followerzahlen, sie sagt wer konkret an dem Account arbeitet, sie macht die Wirkung messbar, und sie legt Kündigungsfristen offen. Wer im Erstgespräch keine dieser vier Fragen klar beantwortet, arbeitet selten transparent. Wer macht die Arbeit? Lassen Sie sich sagen, welche Person Ihre Beiträge schreibt und gestaltet. Bei kleinen Anbietern sind das die Gründer selbst, bei großen oft wechselnde Junior-Kräfte. Wie wird Erfolg gemessen? Reichweite allein ist keine Kennzahl. Aussagekräftig sind Profilaufrufe, Anfragen über das Profil und daraus entstandene Gespräche. Gibt es Beispiele aus der Nische? Content für Coaches funktioniert anders als für Maschinenbau. Fragen Sie nach Accounts aus einem vergleichbaren Umfeld. Was passiert bei Unzufriedenheit? Klare Kündigungsfristen und ein benannter Ansprechpartner sind ein gutes Zeichen; lange Mindestlaufzeiten ohne Ausstiegsmöglichkeit nicht. Wem gehören die Inhalte? Bilder, Texte und Zugänge müssen bei Ihnen bleiben — auch nach dem Ende der Zusammenarbeit. Wie viel Aufwand bleibt bei Ihnen? Seriöse Anbieter benennen das ehrlich. Ganz ohne Ihre Mitwirkung geht es nie, aber der Unterschied zwischen einem Briefing und wöchentlichen Abstimmungen ist erheblich. Garantierte Followerzahlen sind das deutlichste Warnsignal — sie lassen sich nur durch gekaufte oder inaktive Konten erreichen und schaden der Reichweite dauerhaft. Ebenfalls kritisch: Wer über den eigenen Ablauf nicht sprechen will, wer ausschließlich über Paketpreise redet ohne das Ziel zu klären, oder wer sofortigen Vertragsabschluss drängt."}}],"isPartOf":{"@type":"WebSite","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/s2s-t.webp"},"dateModified":"2026-08-20","inLanguage":"de-DE"}</script>
 </head>
@@ -180,20 +266,19 @@
   <header class="site-head">
     <div class="wrap">
       <img class="logo" src="/assets/wordmark.png" alt="social2scale">
-      <a class="home-link" href="../">← zur Startseite</a>
     </div>
   </header>
-  <main id="main">
+  <main id="main" class="w-page">
     <article class="wrap w-art">
-      <p class="klabel"><a href="/wissen/">Wissen</a></p>
-      <h1>Woran erkennt man eine gute Social-Media-Agentur?</h1>
-      <p class="w-antwort">Eine gute Social-Media-Agentur erkennt man an vier überprüfbaren Dingen: Sie zeigt echte Ergebnisse statt Followerzahlen, sie sagt wer konkret an dem Account arbeitet, sie macht die Wirkung messbar, und sie legt Kündigungsfristen offen. Wer im Erstgespräch keine dieser vier Fragen klar beantwortet, arbeitet selten transparent.</p>
-      <p class="meta">Zuletzt geprüft: 20. August 2026</p>
-      <section class="w-blk"><h2>Die sechs Kriterien</h2><dl class="w-liste"><dt>Wer macht die Arbeit?</dt><dd>Lassen Sie sich sagen, welche Person Ihre Beiträge schreibt und gestaltet. Bei kleinen Anbietern sind das die Gründer selbst, bei großen oft wechselnde Junior-Kräfte.</dd><dt>Wie wird Erfolg gemessen?</dt><dd>Reichweite allein ist keine Kennzahl. Aussagekräftig sind Profilaufrufe, Anfragen über das Profil und daraus entstandene Gespräche.</dd><dt>Gibt es Beispiele aus der Nische?</dt><dd>Content für Coaches funktioniert anders als für Maschinenbau. Fragen Sie nach Accounts aus einem vergleichbaren Umfeld.</dd><dt>Was passiert bei Unzufriedenheit?</dt><dd>Klare Kündigungsfristen und ein benannter Ansprechpartner sind ein gutes Zeichen; lange Mindestlaufzeiten ohne Ausstiegsmöglichkeit nicht.</dd><dt>Wem gehören die Inhalte?</dt><dd>Bilder, Texte und Zugänge müssen bei Ihnen bleiben — auch nach dem Ende der Zusammenarbeit.</dd><dt>Wie viel Aufwand bleibt bei Ihnen?</dt><dd>Seriöse Anbieter benennen das ehrlich. Ganz ohne Ihre Mitwirkung geht es nie, aber der Unterschied zwischen einem Briefing und wöchentlichen Abstimmungen ist erheblich.</dd></dl></section><section class="w-blk"><h2>Warnsignale im Erstgespräch</h2><p>Garantierte Followerzahlen sind das deutlichste Warnsignal — sie lassen sich nur durch gekaufte oder inaktive Konten erreichen und schaden der Reichweite dauerhaft.</p><p>Ebenfalls kritisch: Wer über den eigenen Ablauf nicht sprechen will, wer ausschließlich über Paketpreise redet ohne das Ziel zu klären, oder wer sofortigen Vertragsabschluss drängt.</p></section>
-      <section class="w-cta">
-        <h2>Unsicher, was davon zu Ihnen passt?</h2>
-        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in Ihrem Fall sinnvoll ist — unverbindlich und ohne Verkaufsdruck.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen →</a>
+      <a class="w-zurueck" href="/wissen/">Alle Antworten</a>
+      <h1 class="w-re">Woran erkennt man eine <em>gute</em> Social-Media-Agentur?</h1>
+      <p class="w-lead w-re">Eine gute Social-Media-Agentur erkennt man an vier überprüfbaren Dingen: Sie zeigt echte Ergebnisse statt Followerzahlen, sie sagt wer konkret an dem Account arbeitet, sie macht die Wirkung messbar, und sie legt Kündigungsfristen offen. Wer im Erstgespräch keine dieser vier Fragen klar beantwortet, arbeitet selten transparent.</p>
+      <p class="w-stand w-re">Zuletzt geprüft: 20. August 2026</p>
+      <section class="w-blk w-re"><h2>Die sechs Kriterien</h2><dl class="w-liste"><dt>Wer macht die Arbeit?</dt><dd>Lassen Sie sich sagen, welche Person Ihre Beiträge schreibt und gestaltet. Bei kleinen Anbietern sind das die Gründer selbst, bei großen oft wechselnde Junior-Kräfte.</dd><dt>Wie wird Erfolg gemessen?</dt><dd>Reichweite allein ist keine Kennzahl. Aussagekräftig sind Profilaufrufe, Anfragen über das Profil und daraus entstandene Gespräche.</dd><dt>Gibt es Beispiele aus der Nische?</dt><dd>Content für Coaches funktioniert anders als für Maschinenbau. Fragen Sie nach Accounts aus einem vergleichbaren Umfeld.</dd><dt>Was passiert bei Unzufriedenheit?</dt><dd>Klare Kündigungsfristen und ein benannter Ansprechpartner sind ein gutes Zeichen; lange Mindestlaufzeiten ohne Ausstiegsmöglichkeit nicht.</dd><dt>Wem gehören die Inhalte?</dt><dd>Bilder, Texte und Zugänge müssen bei Ihnen bleiben — auch nach dem Ende der Zusammenarbeit.</dd><dt>Wie viel Aufwand bleibt bei Ihnen?</dt><dd>Seriöse Anbieter benennen das ehrlich. Ganz ohne Ihre Mitwirkung geht es nie, aber der Unterschied zwischen einem Briefing und wöchentlichen Abstimmungen ist erheblich.</dd></dl></section><section class="w-blk w-re"><h2>Warnsignale im Erstgespräch</h2><p>Garantierte Followerzahlen sind das deutlichste Warnsignal — sie lassen sich nur durch gekaufte oder inaktive Konten erreichen und schaden der Reichweite dauerhaft.</p><p>Ebenfalls kritisch: Wer über den eigenen Ablauf nicht sprechen will, wer ausschließlich über Paketpreise redet ohne das Ziel zu klären, oder wer sofortigen Vertragsabschluss drängt.</p></section>
+      <section class="w-cta w-re">
+        <h2>Unsicher, was davon zu Ihnen <em>passt</em>?</h2>
+        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in Ihrem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
+        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
       </section>
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>
@@ -224,6 +309,26 @@
       if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
       else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
     } catch (e) {}
+  })();
+</script>
+<script>
+  // Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite.
+  // Ohne JS bleibt alles sichtbar (kein opacity:0 als Grundzustand im noscript-Fall).
+  (function () {
+    var els = document.querySelectorAll(".w-re");
+    if (!els.length) return;
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      els.forEach(function (e) { e.classList.add("an"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        setTimeout(function () { e.target.classList.add("an"); }, Math.min(i * 60, 240));
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (e) { io.observe(e); });
   })();
 </script>
 

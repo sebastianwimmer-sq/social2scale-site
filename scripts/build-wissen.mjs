@@ -40,6 +40,7 @@ const SEITEN = [
   {
     slug: "was-kostet-social-media-betreuung",
     titel: "Was kostet Social-Media-Betreuung für Coaches und B2B?",
+    emWort: "kostet",
     kurz: "Was kostet Social-Media-Betreuung?",
     beschreibung:
       "Konkrete Preise für professionelle Instagram-Betreuung: Komplettpaket ab 1.547 € einmalig plus 464,10 € monatlich, laufende Betreuung ab 523,60 € im Monat.",
@@ -76,6 +77,7 @@ const SEITEN = [
   {
     slug: "social-media-agentur-auswaehlen",
     titel: "Woran erkennt man eine gute Social-Media-Agentur?",
+    emWort: "gute",
     kurz: "Wie wähle ich eine Agentur aus?",
     beschreibung:
       "Sechs überprüfbare Kriterien für die Auswahl einer Social-Media-Agentur — und die Warnsignale, die im Erstgespräch auffallen.",
@@ -105,6 +107,7 @@ const SEITEN = [
   {
     slug: "wie-lange-bis-ergebnisse",
     titel: "Wie lange dauert es, bis Social Media Ergebnisse bringt?",
+    emWort: "Ergebnisse",
     kurz: "Wann kommen die ersten Ergebnisse?",
     beschreibung:
       "Realistische Zeitspannen für Social-Media-Aufbau: erste Reaktionen nach zwei bis vier Wochen, belastbare Anfragen meist ab dem dritten Monat.",
@@ -132,6 +135,7 @@ const SEITEN = [
   {
     slug: "selbst-machen-oder-agentur",
     titel: "Social Media selbst machen oder an eine Agentur abgeben?",
+    emWort: "selbst machen",
     kurz: "Selbst machen oder abgeben?",
     beschreibung:
       "Die ehrliche Rechnung: Wann sich eine Agentur lohnt, wann Selbermachen sinnvoller ist — mit Zeitaufwand und Kostenvergleich.",
@@ -159,6 +163,7 @@ const SEITEN = [
   {
     slug: "ablauf-zusammenarbeit",
     titel: "Wie läuft die Zusammenarbeit mit einer Social-Media-Agentur ab?",
+    emWort: "Zusammenarbeit",
     kurz: "Wie läuft die Zusammenarbeit ab?",
     beschreibung:
       "Vom Erstgespräch bis zum laufenden Betrieb: die vier Phasen einer Social-Media-Betreuung und was in jeder von Ihnen erwartet wird.",
@@ -186,6 +191,16 @@ const SEITEN = [
 ];
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+// Headline im Marken-Stil: EIN Wort im Aurora-Verlauf hervorgehoben.
+// Der reine Text bleibt unverändert — das Schema führt dieselbe Frage, eine
+// Abweichung wäre ein Cloaking-Signal.
+function headline(seite) {
+  const t = esc(seite.titel);
+  if (!seite.emWort) return t;
+  const w = esc(seite.emWort);
+  return t.replace(w, "<em>" + w + "</em>");
+}
 
 // Text für das Schema: identisch zum sichtbaren Inhalt, nur ohne Auszeichnung.
 function antwortText(seite) {
@@ -227,7 +242,7 @@ function abschnittHtml(a) {
     out += '<dl class="w-liste">' + a.liste
       .map(([k, v]) => "<dt>" + esc(k) + "</dt><dd>" + esc(v) + "</dd>").join("") + "</dl>";
   }
-  return '<section class="w-blk">' + out + "</section>";
+  return '<section class="w-blk w-re">' + out + "</section>";
 }
 
 const CSS = readFileSync(join(WURZEL, "scripts", "wissen.css"), "utf8");
@@ -263,17 +278,17 @@ ${schema(seite)}
 </head>
 <body>
 ${KOPF}
-  <main id="main">
+  <main id="main" class="w-page">
     <article class="wrap w-art">
-      <p class="klabel"><a href="/wissen/">Wissen</a></p>
-      <h1>${esc(seite.titel)}</h1>
-      <p class="w-antwort">${esc(seite.antwort)}</p>
-      <p class="meta">Zuletzt geprüft: ${STAND}</p>
+      <a class="w-zurueck" href="/wissen/">Alle Antworten</a>
+      <h1 class="w-re">${headline(seite)}</h1>
+      <p class="w-lead w-re">${esc(seite.antwort)}</p>
+      <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
-      <section class="w-cta">
-        <h2>Unsicher, was davon zu Ihnen passt?</h2>
-        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in Ihrem Fall sinnvoll ist — unverbindlich und ohne Verkaufsdruck.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen →</a>
+      <section class="w-cta w-re">
+        <h2>Unsicher, was davon zu Ihnen <em>passt</em>?</h2>
+        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in Ihrem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
+        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
       </section>
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>
@@ -324,23 +339,23 @@ function uebersichtHtml() {
 </head>
 <body>
 ${KOPF}
-  <main id="main">
+  <main id="main" class="w-page">
     <div class="wrap w-art">
-      <p class="klabel">Wissen</p>
-      <h1>Ehrliche Antworten statt Verkaufsgerede.</h1>
-      <p class="lead">Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden — hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Machen Sie es selbst.</p>
-      <p class="meta">Zuletzt geprüft: ${STAND}</p>
-      <ul class="w-karten">
-        ${SEITEN.map((s) => `<li><a href="/wissen/${s.slug}/">
+      <a class="w-zurueck" href="/">Zur Startseite</a>
+      <h1 class="w-re">Ehrliche Antworten statt <em>Verkaufsgerede</em>.</h1>
+      <p class="w-lead w-re">Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Machen Sie es selbst.</p>
+      <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
+      <ul class="w-index w-re">
+        ${SEITEN.map((s, i) => `<li><a href="/wissen/${s.slug}/">
+          <span class="nr">${String(i + 1).padStart(2, "0")}</span>
           <h2>${esc(s.titel)}</h2>
           <p>${esc(s.antwort.split(". ")[0])}.</p>
-          <span class="w-mehr">Antwort lesen →</span>
         </a></li>`).join("")}
       </ul>
-      <section class="w-cta">
-        <h2>Ihre Frage ist nicht dabei?</h2>
-        <p>Schreiben Sie uns — wir antworten persönlich, auch wenn daraus kein Auftrag wird.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen →</a>
+      <section class="w-cta w-re">
+        <h2>Ihre Frage ist nicht <em>dabei</em>?</h2>
+        <p>Schreiben Sie uns. Wir antworten persönlich, auch wenn daraus kein Auftrag wird.</p>
+        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
       </section>
     </div>
   </main>
