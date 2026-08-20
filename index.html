@@ -11,7 +11,7 @@
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#03080D">
 <link rel="canonical" href="https://social2scale.com/">
@@ -1397,8 +1397,8 @@
       });
       var url = "https://closing.social2scale.com/api/pv";
       // sendBeacon überlebt auch schnelles Weiterklicken und blockiert nichts.
-      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "application/json" }));
-      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "application/json" }, keepalive: true }).catch(function () {});
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
