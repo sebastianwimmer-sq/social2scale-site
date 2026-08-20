@@ -257,6 +257,7 @@ function seiteHtml(seite) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <title>${esc(seite.titel)} | social2scale</title>
 <meta name="description" content="${esc(seite.beschreibung)}">
 <link rel="canonical" href="${url}">
@@ -318,6 +319,7 @@ function uebersichtHtml() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <title>Wissen — ehrliche Antworten zu Social-Media-Betreuung | social2scale</title>
 <meta name="description" content="Was kostet Social-Media-Betreuung, wie lange dauert der Aufbau, selbst machen oder abgeben? Konkrete Antworten mit echten Zahlen — ohne Verkaufsgerede.">
 <link rel="canonical" href="${BASIS}/wissen/">

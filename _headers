@@ -1,3 +1,22 @@
+# ⚠️ DIESE DATEI IST DERZEIT WIRKUNGSLOS — sie ist Vorbereitung, kein Schutz.
+#
+# social2scale.com liegt auf GITHUB PAGES (Apex zeigt auf 185.199.108–111.153,
+# die Zone liegt bei IONOS). GitHub Pages kann grundsätzlich keine eigenen
+# Antwort-Header setzen und ignoriert diese Datei; sie ist dort nicht einmal
+# abrufbar (404). Erst wenn die Seite hinter Cloudflare läuft — als Pages-Projekt
+# wie mein./closing. oder mit der Zone bei Cloudflare — greift sie automatisch.
+#
+# WAS DAS HEISST, SOLANGE DAS SO IST:
+# Die CSP steckt als <meta http-equiv> in jeder Seite und wirkt auch dort — mit
+# einer Ausnahme: 'frame-ancestors' ignorieren Browser in einem Meta-Tag
+# grundsätzlich. Die Seite ist also in einen fremden Rahmen ladbar
+# (Clickjacking). Dagegen hilft nur ein echter Header, also nur ein Umzug.
+# Ebenfalls nur per Header möglich: nosniff, Referrer-Policy, HSTS,
+# Permissions-Policy.
+#
+# Die CSP unten ist identisch mit der Meta-Regel in den Seiten. Wer eine ändert,
+# muss die andere mitziehen — sonst verhalten sich alt und neu unterschiedlich.
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
