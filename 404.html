@@ -110,5 +110,25 @@
     upd();
   })();
   </script>
+<script>
+  // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
+  // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
+  // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
+  // Seite weiterhin keinen Cookie-Banner. Fehler bleiben stumm.
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      var daten = JSON.stringify({
+        p: location.pathname,
+        r: document.referrer || "",
+        d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop"
+      });
+      var url = "https://closing.social2scale.com/api/pv";
+      // sendBeacon überlebt auch schnelles Weiterklicken und blockiert nichts.
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "application/json" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "application/json" }, keepalive: true }).catch(function () {});
+    } catch (e) { /* Statistik darf die Seite nie stören */ }
+  })();
+</script>
 </body>
 </html>
