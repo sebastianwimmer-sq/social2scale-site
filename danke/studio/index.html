@@ -223,9 +223,11 @@
   </script>
 <script>
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
+  // Auf DIESEN Seiten ist die Zahl der Beleg dafür, dass Digistore die
+  // Dankesseiten-URL wirklich ausliefert: 0 Aufrufe bei erfolgten Käufen =
+  // URL im Digistore-Produkt nicht (richtig) hinterlegt.
   // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
-  // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
-  // Seite weiterhin keinen Cookie-Banner. Fehler bleiben stumm.
+  // Keine Cookies, keine Kennung, keine IP-Speicherung. Fehler bleiben stumm.
   (function () {
     try {
       if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
@@ -235,7 +237,6 @@
         d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop"
       });
       var url = "https://closing.social2scale.com/api/pv";
-      // sendBeacon überlebt auch schnelles Weiterklicken und blockiert nichts.
       if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
       else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
     } catch (e) { /* Statistik darf die Seite nie stören */ }

@@ -257,7 +257,10 @@ function pageHtml(p) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; base-uri 'self'; form-action 'self' https:; frame-ancestors 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#03080D">
@@ -391,7 +394,7 @@ function pageHtml(p) {
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
 </head>
 <body>
-  <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="60" height="30"></a></div>
+  <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>
 
   <main>
     <section class="hero">
@@ -433,7 +436,7 @@ ${(p.steps || [
   </main>
 
   <footer class="site-footer"><div class="wrap">
-    <a href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.png" alt="social2scale" width="68" height="34"></a>
+    <a href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="68" height="34"></a>
     <nav aria-label="Rechtliches">
       <a href="/impressum/">Impressum</a>
       <a href="/datenschutz/">Datenschutz</a>
@@ -503,6 +506,27 @@ ${hasCountdown ? `
       render();
     })();` : ""}
   </script>
+<script>
+  // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
+  // Auf DIESEN Seiten ist die Zahl der Beleg dafür, dass Digistore die
+  // Dankesseiten-URL wirklich ausliefert: 0 Aufrufe bei erfolgten Käufen =
+  // URL im Digistore-Produkt nicht (richtig) hinterlegt.
+  // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
+  // Keine Cookies, keine Kennung, keine IP-Speicherung. Fehler bleiben stumm.
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      var daten = JSON.stringify({
+        p: location.pathname,
+        r: document.referrer || "",
+        d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop"
+      });
+      var url = "https://closing.social2scale.com/api/pv";
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
+    } catch (e) { /* Statistik darf die Seite nie stören */ }
+  })();
+</script>
 </body>
 </html>
 `;
