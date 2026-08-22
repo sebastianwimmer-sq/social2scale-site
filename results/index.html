@@ -14,10 +14,10 @@
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#03080D">
 <title>Ergebnisse — social2scale</title>
-<meta name="description" content="Was das social2scale-System bewegt: Reichweite, Leads und Umsatz — transparent messbar in PEAKING.">
+<meta name="description" content="Was das social2scale-System bewegt: Reichweite, Leads und Umsatz — transparent messbar in deinem Bereich.">
 <link rel="canonical" href="https://social2scale.com/results/">
 <meta property="og:title" content="Ergebnisse — social2scale | Wachstum, das man sieht">
-<meta property="og:description" content="Reichweite, Leads und Umsatz — als System gebaut und live messbar in PEAKING. Wachstum statt Zufall.">
+<meta property="og:description" content="Reichweite, Leads und Umsatz — als System gebaut und live messbar in deinem Bereich. Wachstum statt Zufall.">
 <meta property="og:url" content="https://social2scale.com/results/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
@@ -27,7 +27,7 @@
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 <meta property="og:image:alt" content="social2scale — Premium Social-Growth für Coaches, Experten & B2B">
 <meta name="twitter:title" content="Ergebnisse — social2scale | Wachstum, das man sieht">
-<meta name="twitter:description" content="Reichweite, Leads und Umsatz — als System gebaut und live messbar in PEAKING. Wachstum statt Zufall.">
+<meta name="twitter:description" content="Reichweite, Leads und Umsatz — als System gebaut und live messbar in deinem Bereich. Wachstum statt Zufall.">
 <meta name="twitter:image:alt" content="social2scale — Premium Social-Growth für Coaches, Experten & B2B">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Organization","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/favicon.svg","description":"Premium Social-Media-Growth für Coaches, Experten & B2B. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich wachsen.","email":"info@social2scale.com","founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}]}
@@ -35,7 +35,7 @@
 <!-- Service-Schema für die Ergebnis-/Proof-Seite. BEWUSST OHNE aggregateRating/review:
      alle Kennzahlen auf dieser Seite sind Platzhalter — keine erfundenen Bewertungen/Sterne ausspielen. -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Service","name":"Social-Media-Growth as a Service","serviceType":"Social-Media-Growth & Content-System","provider":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/"},"areaServed":"DACH","audience":{"@type":"Audience","audienceType":"Coaches, Experten & B2B"},"description":"Messbares Social-Media-Wachstum: Reichweite, qualifizierte Leads und Umsatz — live nachvollziehbar in der PEAKING-Plattform. Wir bauen Strategie, Content und Distribution als System statt Zufall.","url":"https://social2scale.com/results/","hasOfferCatalog":{"@type":"OfferCatalog","name":"Messbare Wachstums-Ergebnisse","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Reichweiten-Aufbau"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Lead-Generierung"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Umsatz-Wachstum durch Social"}}]}}
+{"@context":"https://schema.org","@type":"Service","name":"Social-Media-Growth as a Service","serviceType":"Social-Media-Growth & Content-System","provider":{"@type":"Organization","name":"social2scale","url":"https://social2scale.com/"},"areaServed":"DACH","audience":{"@type":"Audience","audienceType":"Coaches, Experten & B2B"},"description":"Messbares Social-Media-Wachstum: Reichweite, qualifizierte Leads und Umsatz — live nachvollziehbar in deinem Bereich. Wir bauen Strategie, Content und Distribution als System statt Zufall.","url":"https://social2scale.com/results/","hasOfferCatalog":{"@type":"OfferCatalog","name":"Messbare Wachstums-Ergebnisse","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Reichweiten-Aufbau"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Lead-Generierung"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Umsatz-Wachstum durch Social"}}]}}
 </script>
 <link rel="stylesheet" href="/fonts.css">
 <noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
@@ -211,7 +211,7 @@
   .textlink:hover{transform:none}
   .textlink:hover::after{background:var(--paper)}
 
-  /* ===== hero growth panel — stylised analytics dashboard (PEAKING-style) ===== */
+  /* ===== hero growth panel — stylised analytics dashboard (Analytics-Look) ===== */
   .panel{position:relative;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:20px;
     box-shadow:var(--depth-lg);overflow:hidden}
   .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent)}
@@ -563,7 +563,7 @@
 
   /* ============================================================
      PEAK additions — glass metric cards (mono tabular-nums, the
-     landing "growth panel" data language), glass PEAKING panel,
+     landing "growth panel" data language), glass report panel,
      and premium glass testimonial cards. Reuses tokens only.
      ============================================================ */
 
@@ -593,7 +593,7 @@
   @media (max-width:880px){.rs-metrics{grid-template-columns:repeat(2,1fr)}}
   @media (max-width:420px){.rs-metrics{grid-template-columns:1fr}}
 
-  /* — 5b) PEAKING live-panel reference — glass report frame echoing the landing
+  /* — 5b) live-panel reference — glass report frame echoing the landing
      growth panel: hairline emerald top rule, mono meta, tabular-num KPI strip. — */
   .rs-peak{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(var(--s-7),5vw,var(--s-9));align-items:center}
   .rs-peak-copy{max-width:44ch}
@@ -725,7 +725,7 @@
         <a class="m-link" href="/wissen/">Wissen</a>
     <a class="m-link" href="/#faq">FAQ</a>
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-    <p class="m-foot">Powered by PEAKING</p>
+    
   </nav>
 
   <main id="ergebnisse">
@@ -734,7 +734,7 @@
     <section class="rs-hero" aria-labelledby="rs-hero-h" style="background:linear-gradient(170deg,rgba(3,8,13,.62),rgba(3,8,13,.84) 70%,#03080D 100%),url(/assets/dashboard.webp) center/cover no-repeat"><div class="wrap reveal">
       <p class="rs-rh"><b>№ 01</b> — Ergebnisse</p>
       <h1 id="rs-hero-h">Wachstum, das man <em>sieht</em>.</h1>
-      <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in PEAKING.</p>
+      <p class="lead">Wir bauen Social-Auftritte als System — und machen jeden Schritt messbar. <b>Reichweite, Leads und Umsatz</b> statt Bauchgefühl, live nachvollziehbar in deinem Bereich.</p>
     </div></section>
 
     <!-- 2) Metric highlight row — 4 glass result cards, mono tabular-num values
@@ -743,7 +743,7 @@
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 02</b> — Was unser System bewegt</p>
         <h2 id="rs-stats-h">Wachstum in <em>Zahlen</em>.</h2>
-        <p class="lead">Vier Kennzahlen, die zählen — Reichweite, Leads, Umsatz und Sichtbarkeit. Live in PEAKING, statt Bauchgefühl.</p>
+        <p class="lead">Vier Kennzahlen, die zählen — Reichweite, Leads, Umsatz und Sichtbarkeit. Live in deinem Bereich, statt Bauchgefühl.</p>
       </div>
       <div class="rs-metrics">
         <!-- Platzhalter — echte Werte -->
@@ -853,20 +853,20 @@
       </figure>
     </div></section>
 
-    <!-- 5) PEAKING live-panel reference — results tracked live in the platform -->
+    <!-- 5) live-panel reference — results tracked live in the platform -->
     <section class="rs-blk" id="peaking" aria-labelledby="rs-peak-h"><div class="wrap reveal">
       <div class="rs-peak">
         <div class="rs-peak-copy">
-          <p class="rs-rh"><b>№ 04</b> — Live in PEAKING</p>
-          <p class="mh">Jeden Fortschritt live in <em>PEAKING</em>.</p>
-          <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>PEAKING</b> zusammen — der Plattform, über die wir dein Wachstum steuern und du es jederzeit nachvollziehst.</p>
+          <p class="rs-rh"><b>№ 04</b> — Live in deinem Bereich</p>
+          <p class="mh">Jeden Fortschritt live in <em>deinem Bereich</em>.</p>
+          <p class="mintro">Keine geschönten Screenshots. Deine Ergebnisse laufen live in <b>deinem Bereich</b> zusammen — dort steuern wir dein Wachstum, und du siehst jederzeit, wo du stehst.</p>
           <ul class="rs-peak-points">
             <li>Reichweite, die zählt</li>
             <li>Leads statt Likes</li>
             <li>Umsatz, schwarz auf weiß</li>
           </ul>
         </div>
-        <div class="rs-rep" role="img" aria-label="Beispielhafter PEAKING-Growth-Report mit Reichweite, Leads und Umsatz — Platzhalter-Werte.">
+        <div class="rs-rep" role="img" aria-label="Beispielhafter Growth-Report mit Reichweite, Leads und Umsatz — Platzhalter-Werte.">
           <div class="rs-rep-head">
             <span class="ttl"><span class="dot" aria-hidden="true"></span>Growth Report</span>
             <span class="meta"><span class="period">8 WO</span><span>0 → skaliert</span></span>
@@ -891,7 +891,7 @@
               <div class="rs-spark"><span class="sb" style="height:18%"></span><span class="sb" style="height:28%"></span><span class="sb up" style="height:40%"></span><span class="sb up" style="height:58%"></span><span class="sb up" style="height:74%"></span><span class="sb" style="height:96%"></span></div>
             </div>
           </div>
-          <div class="rs-rep-foot"><b>●</b> live · synchronisiert mit PEAKING</div>
+          <div class="rs-rep-foot"><b>●</b> live · live aktualisiert</div>
         </div>
       </div>
       <p class="rs-note"><b>*</b> Beispielhafter Report — Platzhalter-Werte, echte Kundendaten laufen live ein.</p>
@@ -1004,7 +1004,7 @@
       </nav>
     </div>
     <div class="foot-bottom">
-      <span>© <span id="yr"></span> social2scale · Powered by <span class="pk">PEAKING</span></span>
+      <span>© <span id="yr"></span> social2scale</span>
       <span class="foot-legal">
         <a href="/impressum/">Impressum</a>
         <a href="/datenschutz/">Datenschutz</a>

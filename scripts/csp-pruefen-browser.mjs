@@ -123,7 +123,12 @@ for (const pfad of liste) {
 
   // Externe Aufrufe (Turnstile, Zählung) scheitern im Test ohne Netz — das ist
   // kein CSP-Problem und darf den Lauf nicht rot färben.
-  const echt = konsole.filter((t) => !/Failed to load resource|net::ERR|ERR_NAME_NOT_RESOLVED/i.test(t));
+  //
+  // Ebensowenig fremde Ursprünge: /gratis/ leitet auf start.social2scale.com
+  // weiter, und dessen Konsolen-Rauschen gehört nicht uns. Ohne diese Grenze
+  // meldet der Lauf Fehler, die auf unseren Seiten gar nicht existieren.
+  const fremd = !seite.url().startsWith("http://localhost:" + PORT);
+  const echt = fremd ? [] : konsole.filter((t) => !/Failed to load resource|net::ERR|ERR_NAME_NOT_RESOLVED/i.test(t));
 
   if (verstoesse.length || echt.length) {
     fehlerhaft++;
