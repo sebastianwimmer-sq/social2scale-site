@@ -69,7 +69,11 @@ const PAGE_STYLE = `
   .q.on>*:nth-child(1){animation-delay:.02s}.q.on>*:nth-child(2){animation-delay:.09s}.q.on>*:nth-child(3){animation-delay:.16s}.q.on>*:nth-child(4){animation-delay:.23s}.q.on>*:nth-child(5){animation-delay:.3s}
   @keyframes rise{to{opacity:1;transform:none;filter:none}}
   .eyebrow{font-family:var(--ff-label);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
-  h2{font-family:var(--ff-serif);font-weight:460;font-size:clamp(1.7rem,1.3rem + 2.6vw,2.3rem);line-height:1.02;letter-spacing:-.025em;margin:.65rem 0 1rem;text-wrap:balance}
+  /* h1 und h2 teilen sich die Gestaltung: der erste Schritt traegt die
+     Seitenueberschrift als h1, die weiteren Schritte sind Fragen (h2).
+     Ohne h1 hier haette die Seite gar keine — 11 Ueberschriften, alle ab
+     h2, was Suchmaschinen und Vorleseprogramme bemaengeln. */
+  h1,h2{font-family:var(--ff-serif);font-weight:460;font-size:clamp(1.7rem,1.3rem + 2.6vw,2.3rem);line-height:1.02;letter-spacing:-.025em;margin:.65rem 0 1rem;text-wrap:balance}
   h2 em{font-style:italic;font-weight:430;background:var(--flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
   /* Doppelrand-Glas-Eingabe */
@@ -128,7 +132,7 @@ const PAGE_STYLE = `
   .legal a:hover{color:var(--emerald-soft)}
   /* Kurze Screens (SE & Landscape): Handy skaliert, Sheet passt sich an, nichts ueberlappt den Header */
   @media (max-height:780px) and (max-width:520px){ .device{width:min(40vw,140px)} .sheet-in{min-height:auto;padding:.9rem 1.3rem 1.15rem} h2{font-size:1.55rem;margin:.5rem 0 .75rem} .disclaimer{margin-top:.5rem;font-size:.66rem} .foot{margin-top:.85rem} .stage{padding:.1rem 0} }
-  @media (max-height:650px) and (max-width:520px){ .device{width:min(33vw,112px)} h2{font-size:1.35rem} }
+  @media (max-height:650px) and (max-width:520px){ .device{width:min(33vw,112px)} h1,h2{font-size:1.35rem} }
   /* ── DESKTOP: 2-Spalten statt einer gequetschten Mitte-Spalte. Phone links,
      Formular rechts, breiter, mit Luft. ── */
   @media (min-width:900px){
@@ -178,7 +182,7 @@ function pageMarkup(turnstileSiteKey) {
     <div id="card">
       <div class="q on" data-step="0">
         <span class="eyebrow">Deine Vorschau</span>
-        <h2>Schau zu, wie dein Feed <em>entsteht</em>.</h2>
+        <h1>Schau zu, wie dein Feed <em>entsteht</em>.</h1>
         <div class="foot"><button class="next" data-go="1"><span class="lab">Los geht’s</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><p class="hint">In 60 Sekunden: dein Instagram-Auftritt, maßgeschneidert</p></div>
       </div>
 

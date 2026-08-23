@@ -109,6 +109,33 @@ Die Unterseiten (`/preise/`, `/results/`, `/for-you/`, `/about/`) sind die
 **Vertiefung** zu einzelnen Kapiteln, nicht eigene Closings. Sie brauchen keine
 Nummerierung.
 
+## Warum die Startseite `/s2s.css` NICHT einbindet
+
+Kurz: weil sie es nicht gefahrlos kann. Am 23.08.2026 ausgemessen.
+
+`/preise/` und `/ablauf/` lesen aus `s2s.css`, `index.html` hat dieselben Regeln
+inline. Das sieht nach Doppelung aus, die man auflösen sollte — der Versuch ist
+messbar gescheitert:
+
+- 72 Selektoren stehen in beiden. **65 sind wortgleich, 7 weichen bewusst ab** —
+  die Startseite schaltet den Loader ab (`#loader{display:none!important}`), hat
+  eine eigene Reveal-Animation, einen eigenen Knopf-Verlauf und eine eigene
+  Farbe für den Login-Link.
+- Bindet man `s2s.css` davor ein und entfernt die wortgleichen Regeln, ändern
+  sich **29 gemessene Eigenschaften**: Hintergrund, Schatten und
+  `backdrop-filter` der Kopfleiste, Schatten der Hauptknöpfe.
+- Ursache: mehrere Regeln stehen inline **mehrfach**, spätere übersteuern
+  frühere. Ein Vergleich „Selektor → erste Deklaration" übersieht das und
+  entfernt genau die Regel, die gewinnt.
+
+**Wer es trotzdem versuchen will:** vorher und nachher die *berechneten* Stile
+messen (`getComputedStyle` über Kopfleiste, Knöpfe, Hero, Footer, in beiden
+Ansichten) und auf null Abweichungen kommen. Ein Vergleich der Quelltexte reicht
+nicht. Ein-Pixel-Sprünge an `.tile` sind Animationsrauschen, keine Änderung.
+
+**Praktische Folge:** Wer `s2s.css` ändert, ändert die Startseite NICHT mit.
+Änderungen an geteilten Bausteinen dort zusätzlich in `index.html` nachziehen.
+
 ## ⚠️ Nach JEDEM Bau: Sicherheits-Block erneuern
 
 ```sh
