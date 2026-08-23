@@ -1,0 +1,73 @@
+# Funnel-Worker hinter start.social2scale.com
+#
+# ⚠️ REKONSTRUIERT am 23.08.2026 — nicht aus dem Original.
+#
+# Der Quelltext dieses Workers war verloren (siehe src/HERKUNFT.md) und wurde aus
+# einer wrangler-Quelltextkarte gerettet. Karten tragen nur Quelldateien, keine
+# Konfiguration. Diese Datei ist deshalb aus dem LAUFENDEN Worker abgelesen:
+#
+#   npx wrangler versions view eba24ffa-2298-4c0a-85a1-3f0efbea2a89 \
+#       --name s2s-free-content
+#
+# Alles unten steht so im Deployment vom 12.08.2026, 05:42 — mit zwei Ausnahmen,
+# die unten mit BESTÄTIGEN markiert sind.
+#
+# Die Auslieferung läuft nicht direkt auf dieser Domain: `../start-proxy/` ist ein
+# Cloudflare-Pages-Projekt, das start.social2scale.com annimmt und jeden Aufruf
+# per Service-Binding hierher durchreicht. Grund: Worker-Custom-Domains verlangen
+# die Zone bei Cloudflare, und die liegt bei IONOS.
+
+name = "s2s-free-content"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Dieselbe Datenbank wie das CRM — der Funnel schreibt Leads direkt dorthin.
+[[d1_databases]]
+binding = "DB"
+database_name = "s2s-crm"
+database_id = "ddb630bc-a9c8-48ba-95bd-9c3843d0846e"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "s2s-free"
+
+# Der Worker ist BEIDES: er legt Aufträge in die Queue und arbeitet sie selbst ab
+# (Handler `queue()` in src/index.js).
+[[queues.producers]]
+binding = "GEN_QUEUE"
+queue = "s2s-free-gen"
+
+[[queues.consumers]]
+queue = "s2s-free-gen"
+
+[browser]
+binding = "BROWSER"
+
+[vars]
+AI_MODEL = "claude-sonnet-5"
+ALLOW_ORIGIN = "https://social2scale.com"
+NOTIFY_FROM = "info@social2scale.com"
+PUBLIC_ORIGIN = "https://start.social2scale.com"
+TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
+
+# ⚠️ BESTÄTIGEN — die Anzeige schneidet den Wert ab:
+#    "sebastian@social2scale.com, philipp@s…"
+# Die zweite Adresse NICHT raten: hier laufen die Lead-Benachrichtigungen auf.
+# Vor dem ersten Deploy im Cloudflare-Dashboard nachsehen und hier eintragen.
+# NOTIFY_TO = "sebastian@social2scale.com, philipp@…"
+
+# ⚠️ BESTÄTIGEN — der Worker hat einen `scheduled`-Handler, und der Code nennt
+# einen 5-Minuten-Takt (src/index.js: „Laeuft im 5-Minuten-Cron"). Der genaue
+# Ausdruck liess sich nicht auslesen. Im Dashboard gegenprüfen, bevor deployt
+# wird: ein falscher Takt lässt Entwürfe liegen oder feuert zu oft.
+# [triggers]
+# crons = ["*/5 * * * *"]
+
+# Geheimnisse stehen NICHT hier. Im Deployment hinterlegt sind:
+#   ANTHROPIC_API_KEY · BREVO_API_KEY · TURNSTILE_SECRET
+# Sie bleiben beim Deployen erhalten, solange sie nicht überschrieben werden.
+#
+# Im Quelltext wird ausserdem env.MODERATION_MODEL gelesen, das im Deployment
+# NICHT gesetzt ist — der Code muss dafür einen Rückfall haben. Vor einer
+# Änderung an der Moderation nachsehen.

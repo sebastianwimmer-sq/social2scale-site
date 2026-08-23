@@ -21,13 +21,23 @@ vom 12.08.2026, 05:42 — die Karte ist zwei Stunden jünger.
 Zehn Überschriften der **Live-Seite** gegen den wiederhergestellten Quelltext
 gehalten: **10 von 10 gefunden**. Es ist der Stand, der läuft.
 
-## ⚠️ Vor der nächsten Auslieferung
+## Konfiguration — am 23.08. rekonstruiert
 
-Die **Bau-Konfiguration ist nicht mit wiederhergestellt** — in der Karte stehen
-nur die Quelldateien, keine `wrangler.toml`. Wer diesen Worker deployen will,
-muss sie erst rekonstruieren (Name `s2s-free-content`, Bindings für D1, R2, KV
-und die Secrets aus dem Cloudflare-Dashboard ablesen). **Nicht raten** — ein
-Deploy mit falschen Bindings nimmt den laufenden Funnel vom Netz.
+`../wrangler.toml` liegt jetzt daneben, abgelesen aus dem **laufenden** Worker:
+
+    npx wrangler versions view eba24ffa-2298-4c0a-85a1-3f0efbea2a89 \
+        --name s2s-free-content
+
+Damit ist der Funnel wieder änderbar. Zwei Werte liessen sich nicht vollständig
+auslesen und sind in der Datei als **BESTÄTIGEN** markiert:
+
+- `NOTIFY_TO` — die Anzeige schneidet ab („sebastian@…, philipp@s…"). Hier laufen
+  die Lead-Benachrichtigungen auf, die zweite Adresse darf nicht geraten werden.
+- der **Cron-Ausdruck**. Der Worker hat einen `scheduled`-Handler, und der Code
+  nennt einen 5-Minuten-Takt — der genaue Ausdruck steht nur im Dashboard.
+
+Beides vor dem ersten Deploy nachtragen. `MODERATION_MODEL` fehlt im Deployment
+absichtlich: `moderate-foto.js` hat dafür einen Rückfall.
 
 ## Welche Bindings der Worker braucht
 
