@@ -704,6 +704,19 @@
   @media (min-width:760px){.sticky-cta{display:none !important}}
   @media (max-width:759px){.sticky-cta{display:block}}
   @media (prefers-reduced-motion:reduce){.sticky-cta{transition:none}}
+  /* — Gruender-Signatur: zwei Gesichter statt einer Behauptung. Dieselbe
+       Komponente steht auf Start, Preise, Anfrage und Danke — bewusst klein,
+       das grosse Portraet bleibt der Ueber-uns-Seite vorbehalten. Bewusst ohne
+       Token fuer Abstaende: nicht jede Seite bindet s2s.css ein. — */
+  .duo{display:flex;align-items:center;gap:14px;margin-top:24px;text-align:left}
+  .duo-pics{display:inline-flex;flex:none}
+  .duo-pics img{width:46px;height:46px;border-radius:50%;object-fit:cover;display:block;
+    border:2px solid rgba(3,8,13,.9);box-shadow:0 2px 12px rgba(0,0,0,.5)}
+  .duo-pics picture+picture img{margin-left:-15px}
+  .duo-txt{margin:0;font-size:.95rem;line-height:1.45;color:var(--muted)}
+  .duo-txt b{color:var(--paper);font-weight:600}
+  .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color .2s ease,border-color .2s ease}
+  .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
 </style>
 </head>
 <body>
@@ -1045,6 +1058,10 @@
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
           <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>
+        </div>
+        <div class="duo">
+          <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
+          <p class="duo-txt"><b>Sebi &amp; Phil</b> — wir zwei bauen das, kein Team dazwischen. <a href="/about/">Über uns →</a></p>
         </div>
       </div>
     </div></section>

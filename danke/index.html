@@ -221,7 +221,18 @@
 
   /* ===== founder note ===== */
   .founder{display:flex;gap:var(--s-5);align-items:flex-start;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(24px,3vw,34px);box-shadow:var(--depth);margin-top:var(--s-6)}
-  .founder .pic{flex:none;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(0,184,136,.28),rgba(31,166,224,.12) 60%,var(--surface-2));border:1px solid rgba(0,184,136,.32);display:grid;place-items:center;color:var(--faint);font-family:"JetBrains Mono",monospace;font-size:9px;text-align:center;line-height:1.3}
+  /* Zwei echte Gesichter statt eines Platzhalters — das hier ist die erste
+     Seite nach dem Kauf, da gehoert gezeigt, wer jetzt uebernimmt. */
+  .founder .pics{flex:none;display:inline-flex}
+  .founder .pics img{width:60px;height:60px;border-radius:50%;object-fit:cover;display:block;
+    border:2px solid rgba(3,8,13,.9);box-shadow:0 2px 12px rgba(0,0,0,.5)}
+  .founder .pics picture+picture img{margin-left:-18px}
+  /* Schmales Display: Gesichter oben, Text darunter in voller Breite —
+     nebeneinander bleiben sonst nur ~55 % Zeilenbreite uebrig. */
+  @media (max-width:520px){
+    .founder{flex-direction:column;gap:var(--s-4)}
+    .founder .pics img{width:54px;height:54px}
+  }
   .founder p{font-size:1.05rem;line-height:1.65}.founder p .m{color:var(--muted)}
   .founder p b{color:var(--paper);font-weight:600}
   .founder .sig{margin-top:var(--s-4);font-family:"Fraunces",serif;font-style:italic;font-size:1.15rem;color:var(--emerald-soft)}
@@ -434,7 +445,7 @@
           <h2 id="founder-h">Wir freuen uns <em>riesig</em>.</h2>
         </div>
         <div class="founder">
-          <div class="pic" aria-hidden="true">Foto<br>Sebi&amp;Phil</div>
+          <span class="pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
           <div>
             <p>Hey<span id="vorname2"></span>, <b>wir sind Sebi &amp; Phil</b>. <span class="m">Danke für dein Vertrauen — wir freuen uns riesig, dich an Bord zu haben. Wir nehmen deinen Auftrag so ernst wie unseren eigenen und machen dein Wachstum ab jetzt zu unserem.</span></p>
             <div class="sig">— Sebi &amp; Phil</div>
