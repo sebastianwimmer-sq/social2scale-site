@@ -504,10 +504,28 @@
       linear-gradient(170deg,var(--surface-3),var(--surface) 80%);
     border:1px solid rgba(0,184,136,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
     display:grid;place-items:center;margin-bottom:clamp(var(--s-5),2.2vw,var(--s-6))}
-  /* faint monogram so the empty plate still reads as intentional, not broken */
-  .ab-pic .mono{font-family:"Fraunces",serif;font-weight:480;font-style:italic;font-size:clamp(3rem,8vw,4.5rem);line-height:1;letter-spacing:-.03em;color:rgba(242,243,241,.10)}
-  .ab-pic .cap{position:absolute;left:14px;bottom:12px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-  .ab-pic .cap::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald);margin-right:6px;vertical-align:middle}
+  /* Foto fuellt die Platte randlos; der Verlauf darunter bleibt als Grund
+     stehen, solange das Bild laedt. */
+  .ab-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(.92) contrast(1.04);transition:transform .5s var(--ease),filter .5s var(--ease)}
+  .ab-fcard:hover .ab-pic img{transform:scale(1.03);filter:saturate(1) contrast(1.06)}
+  @media (prefers-reduced-motion:reduce){.ab-pic img{transition:none}.ab-fcard:hover .ab-pic img{transform:none}}
+  /* Angleich-Schleier: die beiden Aufnahmen kommen aus voellig verschiedenem
+     Licht (Nacht vs. Studio-Weiss). Emerald oben, dunkler Fuss unten bindet
+     beide an die Flaeche und an die Karte darunter. */
+  .ab-pic::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(168deg,rgba(0,184,136,.16),transparent 46%),
+      linear-gradient(0deg,rgba(3,8,13,.62),rgba(3,8,13,.10) 42%,transparent 62%);
+    transition:opacity .35s var(--ease)}
+  .ab-fcard:hover .ab-pic::after{opacity:.82}
+  /* Studio-Weiss liegt tonal weit ueber der Nachtaufnahme daneben. Diese Platte
+     bekommt deshalb einen kraeftigeren Schleier, damit beide im selben
+     Helligkeitsbereich landen. */
+  .ab-pic.is-hell img{filter:saturate(.88) contrast(1.05) brightness(.88)}
+  .ab-pic.is-hell::after{background:
+      linear-gradient(168deg,rgba(0,184,136,.13),rgba(3,8,13,.22) 55%),
+      linear-gradient(0deg,rgba(3,8,13,.58),rgba(3,8,13,.18) 46%,rgba(3,8,13,.10) 74%)}
   .ab-fmeta{display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap}
   .ab-fname{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2rem,1.5rem + 1.8vw,2.85rem);line-height:.95;letter-spacing:-.03em;color:var(--paper)}
   .ab-frole{font-family:"Archivo",sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:4px 11px;border-radius:100px}
@@ -519,7 +537,9 @@
   .ab-fsocial:hover svg{stroke:var(--emerald-soft)}
   @media (max-width:880px){
     .ab-founders{grid-template-columns:1fr;gap:var(--s-5)}
-    .ab-pic{aspect-ratio:16/10}
+    /* Hochformat bleibt: ein 16:10-Ausschnitt wuerde die Gesichter kappen.
+       Breite gedeckelt, damit die Platte das Handy nicht auffuellt. */
+    .ab-pic{max-width:min(300px,68vw)}
   }
 
   /* — numbered editorial rows (how we work) — identical pattern to .fw-rows:
@@ -681,11 +701,12 @@
       </div>
       <div class="ab-founders">
 
-        <!-- TODO echte Foto -->
         <article class="ab-fcard">
-          <div class="ab-pic" aria-hidden="true">
-            <span class="mono">P</span>
-            <span class="cap">Foto Philipp</span>
+          <div class="ab-pic">
+            <picture>
+              <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:880px) 300px, (max-width:1200px) 44vw, 520px">
+              <img src="/assets/founder-philipp-560.jpg" alt="Philipp, Gruender von social2scale" width="560" height="700" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="ab-fmeta">
             <h3 class="ab-fname">Philipp</h3>
@@ -695,11 +716,12 @@
           <p class="ab-fbio">Hält Technik, Vertrieb und die Systeme dahinter zusammen — damit aus Reichweite planbares, messbares Wachstum wird. Jeder Fortschritt sichtbar in deinem Bereich.</p>
         </article>
 
-        <!-- TODO echte Foto -->
         <article class="ab-fcard">
-          <div class="ab-pic" aria-hidden="true">
-            <span class="mono">S</span>
-            <span class="cap">Foto Sebi</span>
+          <div class="ab-pic is-hell">
+            <picture>
+              <source type="image/webp" srcset="/assets/founder-sebastian-560.webp 560w, /assets/founder-sebastian-768.webp 768w" sizes="(max-width:880px) 300px, (max-width:1200px) 44vw, 520px">
+              <img src="/assets/founder-sebastian-560.jpg" alt="Sebastian, Gruender von social2scale" width="560" height="700" loading="lazy" decoding="async">
+            </picture>
           </div>
           <div class="ab-fmeta">
             <h3 class="ab-fname">Sebastian</h3>
