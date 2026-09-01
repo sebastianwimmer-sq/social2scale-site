@@ -507,8 +507,8 @@
   /* Foto fuellt die Platte randlos; der Verlauf darunter bleibt als Grund
      stehen, solange das Bild laedt. */
   .ab-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
-    filter:saturate(.92) contrast(1.04);transition:transform .5s var(--ease),filter .5s var(--ease)}
-  .ab-fcard:hover .ab-pic img{transform:scale(1.03);filter:saturate(1) contrast(1.06)}
+    filter:none;transition:transform .5s var(--ease),filter .5s var(--ease)}
+  .ab-fcard:hover .ab-pic img{transform:scale(1.03)}
   @media (prefers-reduced-motion:reduce){.ab-pic img{transition:none}.ab-fcard:hover .ab-pic img{transform:none}}
   /* Angleich-Schleier: die beiden Aufnahmen kommen aus voellig verschiedenem
      Licht (Nacht vs. Studio-Weiss). Emerald oben, dunkler Fuss unten bindet
@@ -519,13 +519,15 @@
       linear-gradient(0deg,rgba(3,8,13,.62),rgba(3,8,13,.10) 42%,transparent 62%);
     transition:opacity .35s var(--ease)}
   .ab-fcard:hover .ab-pic::after{opacity:.82}
-  /* Studio-Weiss liegt tonal weit ueber der Nachtaufnahme daneben. Diese Platte
-     bekommt deshalb einen kraeftigeren Schleier, damit beide im selben
-     Helligkeitsbereich landen. */
-  .ab-pic.is-hell img{filter:saturate(.88) contrast(1.05) brightness(.88)}
+  /* Die Aufnahmen sind ausserhalb der Seite auf einen gemeinsamen Look
+     gerechnet (Farbort angeglichen, Saettigung zurueck, gleiche Tonwertkurve,
+     gleiche Vignette). Hier bleibt nur, was der Flaeche gehoert. Die hellere
+     Platte traegt lediglich einen etwas laengeren Fuss-Verlauf, damit sie
+     genauso in die Karte laeuft wie die dunkle. */
   .ab-pic.is-hell::after{background:
-      linear-gradient(168deg,rgba(0,184,136,.13),rgba(3,8,13,.22) 55%),
-      linear-gradient(0deg,rgba(3,8,13,.58),rgba(3,8,13,.18) 46%,rgba(3,8,13,.10) 74%)}
+      radial-gradient(115% 88% at 52% 36%,transparent 26%,rgba(3,8,13,.30) 68%,rgba(3,8,13,.62) 100%),
+      linear-gradient(168deg,rgba(0,184,136,.12),transparent 48%),
+      linear-gradient(0deg,rgba(3,8,13,.72),rgba(3,8,13,.24) 40%,transparent 68%)}
   .ab-fmeta{display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap}
   .ab-fname{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2rem,1.5rem + 1.8vw,2.85rem);line-height:.95;letter-spacing:-.03em;color:var(--paper)}
   .ab-frole{font-family:"Archivo",sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald-ink);background:linear-gradient(135deg,var(--emerald),var(--teal));padding:4px 11px;border-radius:100px}
@@ -712,8 +714,9 @@
             <h3 class="ab-fname">Philipp</h3>
             <span class="ab-frole">Gründer · Technik &amp; Vertrieb</span>
           </div>
-          <p class="ab-fline">&bdquo;Was du nicht messen kannst, kannst du nicht skalieren.&ldquo;</p>
+          <p class="ab-fline">&bdquo;Ich verkaufe niemandem etwas, das ich hinterher nicht nachrechnen kann.&ldquo;</p>
           <p class="ab-fbio">Hält Technik, Vertrieb und die Systeme dahinter zusammen — damit aus Reichweite planbares, messbares Wachstum wird. Jeder Fortschritt sichtbar in deinem Bereich.</p>
+          <a class="ab-fsocial" href="https://instagram.com/ph.lib" target="_blank" rel="noopener noreferrer" aria-label="Philipp auf Instagram, @ph.lib"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg><span>@ph.lib</span></a>
         </article>
 
         <article class="ab-fcard">
@@ -727,7 +730,7 @@
             <h3 class="ab-fname">Sebastian</h3>
             <span class="ab-frole">Gründer · Content &amp; Reichweite</span>
           </div>
-          <p class="ab-fline">&bdquo;Wenn deine Botschaft nicht in drei Sekunden sitzt, ist der Rest egal.&ldquo;</p>
+          <p class="ab-fline">&bdquo;Ich poste für dich nichts, was ich auf meinem eigenen Account nicht posten würde.&ldquo;</p>
           <p class="ab-fbio">Baut als <b>@vegetarianhulk</b> selbst eine Community auf — und bringt diese Praxis direkt in deinen Auftritt: Positionierung, Content und Reichweite, die sofort verstanden wird.</p>
           <!-- ANPASSEN: Insta-Handle/URL bestätigen -->
           <a class="ab-fsocial" href="https://instagram.com/vegetarianhulk" target="_blank" rel="noopener noreferrer" aria-label="Sebi auf Instagram, @vegetarianhulk"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg><span>@vegetarianhulk</span></a>
