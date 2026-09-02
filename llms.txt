@@ -1,23 +1,64 @@
 # social2scale
 
-> Premium Social-Media-Growth-Agentur aus Deutschland. social2scale baut den Social-Media-Auftritt von B2B-Firmen (auch komplett von null) sowie von Coaches & Experten auf, betreut ihn done-for-you und skaliert ihn messbar — Reichweite, Leads und Umsatz. Den Fortschritt verfolgen Kund:innen live im eigenen s2s-Bereich.
+> Social-Media-Agentur aus Deutschland für Coaches, Experten und B2B. social2scale baut den
+> Social-Auftritt auf (auch komplett von null), produziert den Content und betreut ihn
+> done-for-you. Zehn Beiträge im Monat nach festem Redaktionsplan. Den Fortschritt verfolgen
+> Kund:innen live im eigenen Bereich. Alle Preise stehen offen auf der Website — nicht auf Anfrage.
 
-social2scale wurde von **Sebi** (Marke & Content) und **Phil** (Tech & Plattform) gegründet.
+Gegründet von **Sebastian** (Content & Reichweite) und **Philipp** (Technik & Vertrieb).
+Zwei Gründer machen die Arbeit selbst; es gibt kein Account-Manager-Karussell.
 
-- **Zielkunden:** B2B-Unternehmen ohne oder mit schwachem Social-Auftritt · Coaches & Experten · wachstumswillige Brands.
-- **Leistungen:** Social-Auftritt-Setup (Profile, Branding, Strategie) · laufende Betreuung & Content-Produktion · Ads / Paid Growth (Done-for-you).
-- **Modell:** Setup → Folge-Abo mit persönlichem Chat-Support → Upsells.
-- **Besonderheit:** messbare Ergebnisse, transparent im persönlichen s2s-Bereich der Kund:innen.
-- **Kostenloser Einstieg:** eine unverbindliche Instagram-Vorschau, in Minuten aus drei Antworten erzeugt — siehe unten.
+- **Zielkunden:** Coaches, Experten und B2B-Dienstleister mit noch keinem oder schwachem
+  Social-Auftritt.
+- **Leistungen:** Profil-Setup (Profile, Branding, Positionierung) · laufende Content-Produktion
+  und Veröffentlichung · Hashtag-Strategie je Beitrag · Weiterleitung eingehender Anfragen ·
+  Landingpage als Ergänzung.
+- **Ablauf:** Erstgespräch (etwa 20 Minuten, unverbindlich) → Briefing (einmalig, etwa 30 Minuten)
+  → Aufbau → laufender Betrieb. Ab Monat zwei fällt kein Aufwand mehr an.
+- **Preise:** Sieben Pakete mit Endpreisen inklusive Umsatzsteuer, offen einsehbar. Content-Paket
+  mit neun Beiträgen ab 446,25 € einmalig · laufende Betreuung ab 523,60 € im Monat bei drei
+  Monaten Mindestlaufzeit · Komplettpakete ab 1.547,00 € einmalig.
+- **Rechte:** Bilder, Texte und Zugänge bleiben bei der Kundin — auch nach Ende der Zusammenarbeit.
+- **Kostenloser Einstieg:** eine unverbindliche Instagram-Vorschau, in etwa einer Minute aus drei
+  Antworten erzeugt.
+- **Was wir nicht versprechen:** garantierte Follower- oder Umsatzzahlen. Es gibt derzeit keine
+  freigegebenen Kundenergebnisse; die Website zeigt deshalb Methodik statt Erfolgszahlen.
 - **Kontakt:** info@social2scale.com
 
 ## Seiten
 
-- [Startseite](https://social2scale.com/): Was wir machen, der Weg zu planbarem Wachstum, interaktiver Growth-Report (Vorher/Nachher), Leistungen, FAQ.
-- [Gratis-Vorschau](https://social2scale.com/gratis/): Kostenloses Angebot ohne Gespräch — drei Fragen beantworten, E-Mail bestätigen, und man erhält eine persönliche Vorschau des eigenen Instagram-Auftritts inklusive Profil und drei fertigen Post-Entwürfen.
-- [Für wen](https://social2scale.com/for-you/): Für B2B-Firmen ohne Auftritt, Coaches & Experten und Wachstums-Willige — mit konkreten Ergebnissen je Zielgruppe.
-- [Ergebnisse](https://social2scale.com/results/): Wie social2scale Ergebnisse misst und sichtbar macht — Reichweite, Leads und Umsatz, laufend nachvollziehbar im s2s-Bereich.
-- [Über uns](https://social2scale.com/about/): Die Gründer Sebi (Marke & Content) und Phil (Tech & Plattform) und wie wir arbeiten.
+- [Startseite](https://social2scale.com/): Was wir machen, der Ablauf in vier Phasen, Leistungen, FAQ.
+- [Preise](https://social2scale.com/preise/): Alle sieben Pakete mit Endpreisen, dazu eine
+  Aufwandsrechnung fürs Selbermachen und eine Einordnung in die Marktspannen.
+- [Ablauf](https://social2scale.com/ablauf/): Die vier Phasen von Strategie-Call bis Skalierung,
+  was wir dafür brauchen und wie viel Aufwand bleibt.
+- [Gratis-Vorschau](https://social2scale.com/gratis/): Kostenloses Angebot ohne Gespräch — drei
+  Fragen beantworten, E-Mail bestätigen, und man erhält eine Vorschau des eigenen
+  Instagram-Auftritts inklusive Profil und drei fertigen Post-Entwürfen.
+- [Für wen](https://social2scale.com/for-you/): Coaches, Experten und B2B — mit dem jeweiligen
+  Engpass und dem passenden System.
+- [Prüf uns](https://social2scale.com/results/): Woran man social2scale messen kann — die drei
+  Kennzahlen, nach denen wir arbeiten, der reale Verlauf der ersten sechs Monate und sechs Fragen
+  an jede Social-Agentur, uns eingeschlossen. Bewusst ohne Erfolgszahlen.
+- [Über uns](https://social2scale.com/about/): Die Gründer Sebastian (Content & Reichweite) und
+  Philipp (Technik & Vertrieb) und wie wir arbeiten.
+
+## Wissen — Antworten mit Zahlen
+
+- [Was kostet Social-Media-Betreuung für Coaches und B2B?](https://social2scale.com/wissen/was-kostet-social-media-betreuung/):
+  Marktüblich 400–2.000 € im Monat. Der größte Kostenblock ist nicht das Posten, sondern alles
+  davor. Angebote unter etwa 300 € decken selten mehr ab als das Einplanen fertiger Vorlagen.
+- [Woran erkennt man eine gute Social-Media-Agentur?](https://social2scale.com/wissen/social-media-agentur-auswaehlen/):
+  Sechs überprüfbare Kriterien und die deutlichsten Warnsignale — allen voran garantierte
+  Followerzahlen.
+- [Wie lange dauert es, bis Social Media Ergebnisse bringt?](https://social2scale.com/wissen/wie-lange-bis-ergebnisse/):
+  Der Verlauf über sechs Monate. Zehn Beiträge monatlich sind die untere Grenze, ab der
+  Plattformen ein Profil verlässlich ausspielen.
+- [Social Media selbst machen oder abgeben?](https://social2scale.com/wissen/selbst-machen-oder-agentur/):
+  Die Rechnung: 45–90 Minuten je Beitrag, siebeneinhalb bis fünfzehn Stunden im Monat. Ab etwa
+  60 € Stundensatz kippt es Richtung Abgeben.
+- [Wie läuft die Zusammenarbeit mit einer Social-Media-Agentur ab?](https://social2scale.com/wissen/ablauf-zusammenarbeit/):
+  Erstgespräch, Briefing, Aufbau, laufender Betrieb — und was davon wie viel Zeit kostet.
 
 ## Rechtliches
 

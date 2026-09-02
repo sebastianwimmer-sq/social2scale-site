@@ -87,12 +87,12 @@ const SEITEN = [
       {
         h: "Die sechs Kriterien",
         liste: [
-          ["Wer macht die Arbeit?", "Lassen Sie sich sagen, welche Person Ihre Beiträge schreibt und gestaltet. Bei kleinen Anbietern sind das die Gründer selbst, bei großen oft wechselnde Junior-Kräfte."],
+          ["Wer macht die Arbeit?", "Lass dir sagen, welche Person deine Beiträge schreibt und gestaltet. Bei kleinen Anbietern sind das die Gründer selbst, bei großen oft wechselnde Junior-Kräfte."],
           ["Wie wird Erfolg gemessen?", "Reichweite allein ist keine Kennzahl. Aussagekräftig sind Profilaufrufe, Anfragen über das Profil und daraus entstandene Gespräche."],
-          ["Gibt es Beispiele aus der Nische?", "Content für Coaches funktioniert anders als für Maschinenbau. Fragen Sie nach Accounts aus einem vergleichbaren Umfeld."],
+          ["Gibt es Beispiele aus der Nische?", "Content für Coaches funktioniert anders als für Maschinenbau. Frag nach Accounts aus einem vergleichbaren Umfeld."],
           ["Was passiert bei Unzufriedenheit?", "Klare Kündigungsfristen und ein benannter Ansprechpartner sind ein gutes Zeichen; lange Mindestlaufzeiten ohne Ausstiegsmöglichkeit nicht."],
-          ["Wem gehören die Inhalte?", "Bilder, Texte und Zugänge müssen bei Ihnen bleiben — auch nach dem Ende der Zusammenarbeit."],
-          ["Wie viel Aufwand bleibt bei Ihnen?", "Seriöse Anbieter benennen das ehrlich. Ganz ohne Ihre Mitwirkung geht es nie, aber der Unterschied zwischen einem Briefing und wöchentlichen Abstimmungen ist erheblich."],
+          ["Wem gehören die Inhalte?", "Bilder, Texte und Zugänge müssen bei dir bleiben — auch nach dem Ende der Zusammenarbeit."],
+          ["Wie viel Aufwand bleibt bei dir?", "Seriöse Anbieter benennen das ehrlich. Ganz ohne deine Mitwirkung geht es nie, aber der Unterschied zwischen einem Briefing und wöchentlichen Abstimmungen ist erheblich."],
         ],
       },
       {
@@ -140,7 +140,7 @@ const SEITEN = [
     beschreibung:
       "Die ehrliche Rechnung: Wann sich eine Agentur lohnt, wann Selbermachen sinnvoller ist — mit Zeitaufwand und Kostenvergleich.",
     antwort:
-      "Selbermachen lohnt sich, wenn Sie die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten können und Freude am Schreiben haben. Abgeben lohnt sich, sobald diese Zeit fehlt oder Ihre Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
+      "Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
       PREISE.laufend.monat + " im Monat ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall.",
     abschnitte: [
       {
@@ -153,8 +153,8 @@ const SEITEN = [
       {
         h: "Wann was sinnvoller ist",
         liste: [
-          ["Selbst machen", "Wenn Sie gern schreiben, ein klares Thema haben und die Zeit verlässlich freihalten können. Der Vorteil: Ihre Stimme ist unverfälscht."],
-          ["Abgeben", "Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder Sie einen einheitlichen Auftritt brauchen, ohne sich damit zu beschäftigen."],
+          ["Selbst machen", "Wenn du gern schreibst, ein klares Thema hast und die Zeit verlässlich freihalten kannst. Der Vorteil: deine Stimme ist unverfälscht."],
+          ["Abgeben", "Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder du einen einheitlichen Auftritt brauchst, ohne sich damit zu beschäftigen."],
           ["Mischform", "Einmalige Starthilfe für Profil und Positionierung, danach selbst weitermachen. Bei social2scale ab " + PREISE.starthilfe.einmalig + " einmalig."],
         ],
       },
@@ -166,7 +166,7 @@ const SEITEN = [
     emWort: "Zusammenarbeit",
     kurz: "Wie läuft die Zusammenarbeit ab?",
     beschreibung:
-      "Vom Erstgespräch bis zum laufenden Betrieb: die vier Phasen einer Social-Media-Betreuung und was in jeder von Ihnen erwartet wird.",
+      "Vom Erstgespräch bis zum laufenden Betrieb: die vier Phasen einer Social-Media-Betreuung und was in jeder von dir erwartet wird.",
     antwort:
       "Eine Social-Media-Betreuung läuft in vier Phasen ab: Erstgespräch, einmaliges Briefing, Aufbau von Profil und Bildsprache, danach der laufende Betrieb. Der eigene Aufwand konzentriert sich fast vollständig auf das Briefing am Anfang — danach beschränkt er sich auf Freigaben.",
     abschnitte: [
@@ -174,15 +174,15 @@ const SEITEN = [
         h: "Die vier Phasen",
         liste: [
           ["1. Erstgespräch", "Etwa zwanzig Minuten: Ziel, Zielgruppe und Ausgangslage klären. Danach steht fest, ob und in welchem Umfang eine Zusammenarbeit sinnvoll ist."],
-          ["2. Briefing", "Einmalig und ausführlich: Wofür Sie stehen, wen Sie erreichen wollen, was auf keinen Fall vorkommen soll. Das ist der Teil, der über die Qualität aller späteren Beiträge entscheidet."],
-          ["3. Aufbau", "Profil, Positionierung und Bildsprache werden erstellt und abgestimmt. Sie sehen alles vor der Veröffentlichung."],
-          ["4. Laufender Betrieb", PREISE.beitraege + " Beiträge im Monat werden erstellt, eingeplant und veröffentlicht; Anfragen werden an Sie weitergeleitet."],
+          ["2. Briefing", "Einmalig und ausführlich: Wofür du stehst, wen du erreichen willst, was auf keinen Fall vorkommen soll. Das ist der Teil, der über die Qualität aller späteren Beiträge entscheidet."],
+          ["3. Aufbau", "Profil, Positionierung und Bildsprache werden erstellt und abgestimmt. Du siehst alles vor der Veröffentlichung."],
+          ["4. Laufender Betrieb", PREISE.beitraege + " Beiträge im Monat werden erstellt, eingeplant und veröffentlicht; Anfragen werden an dich weitergeleitet."],
         ],
       },
       {
-        h: "Was von Ihnen erwartet wird",
+        h: "Was von dir erwartet wird",
         p: [
-          "Nach dem Briefing bleibt vor allem eines: Freigaben. Je nach Vereinbarung sehen Sie jeden Beitrag vorab oder nur größere Themen — beides ist üblich, es sollte nur von Anfang an klar sein.",
+          "Nach dem Briefing bleibt vor allem eines: Freigaben. Je nach Vereinbarung siehst du jeden Beitrag vorab oder nur größere Themen — beides ist üblich, es sollte nur von Anfang an klar sein.",
           "Hilfreich, aber nicht zwingend, sind eigene Fotos. Sie machen einen Auftritt persönlicher als jedes gekaufte Bildmaterial, weshalb gute Anbieter danach fragen statt Standardbilder einzusetzen.",
         ],
       },
@@ -288,8 +288,8 @@ ${KOPF}
       <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
       <section class="w-cta w-re">
-        <h2>Unsicher, was davon zu Ihnen <em>passt</em>?</h2>
-        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in Ihrem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
+        <h2>Unsicher, was davon zu dir <em>passt</em>?</h2>
+        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in deinem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
         <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
       </section>
       <nav class="w-weiter" aria-label="Weitere Antworten">
@@ -347,7 +347,7 @@ ${KOPF}
     <div class="wrap w-art">
       <a class="w-zurueck" href="/">Zur Startseite</a>
       <h1 class="w-re">Ehrliche Antworten statt <em>Verkaufsgerede</em>.</h1>
-      <p class="w-lead w-re">Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Machen Sie es selbst.</p>
+      <p class="w-lead w-re">Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Mach es selbst.</p>
       <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       <ul class="w-index w-re">
         ${SEITEN.map((s, i) => `<li><a href="/wissen/${s.slug}/">
@@ -357,8 +357,8 @@ ${KOPF}
         </a></li>`).join("")}
       </ul>
       <section class="w-cta w-re">
-        <h2>Ihre Frage ist nicht <em>dabei</em>?</h2>
-        <p>Schreiben Sie uns. Wir antworten persönlich, auch wenn daraus kein Auftrag wird.</p>
+        <h2>Deine Frage ist nicht <em>dabei</em>?</h2>
+        <p>Schreib uns. Wir antworten persönlich, auch wenn daraus kein Auftrag wird.</p>
         <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
       </section>
     </div>
