@@ -140,13 +140,13 @@ const SEITEN = [
     beschreibung:
       "Die ehrliche Rechnung: Wann sich eine Agentur lohnt, wann Selbermachen sinnvoller ist — mit Zeitaufwand und Kostenvergleich.",
     antwort:
-      "Selbermachen lohnt sich, wenn Sie mindestens fünf bis acht Stunden im Monat verlässlich freihalten können und Freude am Schreiben haben. Abgeben lohnt sich, sobald diese Zeit fehlt oder Ihre Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
+      "Selbermachen lohnt sich, wenn Sie die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten können und Freude am Schreiben haben. Abgeben lohnt sich, sobald diese Zeit fehlt oder Ihre Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
       PREISE.laufend.monat + " im Monat ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall.",
     abschnitte: [
       {
         h: "Der reale Zeitaufwand beim Selbermachen",
         p: [
-          "Für zehn Beiträge im Monat sollte man mit fünf bis acht Stunden rechnen: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt.",
+          "Für zehn Beiträge im Monat sollte man mit siebeneinhalb bis fünfzehn Stunden rechnen — 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt.",
           "Dazu kommt der Einarbeitungsaufwand am Anfang: Bildformate, Textaufbau und ein wiedererkennbarer Look brauchen ein paar Anläufe. Diese Lernkurve ist der Hauptgrund, warum viele nach zwei Monaten wieder aufhören.",
         ],
       },
