@@ -219,13 +219,22 @@ img,video{max-width:100%}
        gemischt, damit sie leiser bleibt als der Fließtext. Gemessen mit
        studio-flaechen.mjs --nur=danke. */
     --s2-faint:color-mix(in srgb, var(--s2-ink) 78%, var(--s2-bg));
+    /* Aus demselben Grund der Sekundaerton: auf dem hellsten Punkt des
+       Seitenverlaufs stand er mit 4,06:1. Beide Rollen bleiben leiser als der
+       Fliesstext, nur eben hell genug fuer DIESE Flaeche. */
+    --s2-muted:color-mix(in srgb, var(--s2-ink) 88%, var(--s2-bg));
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
     background:
-      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
-      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+      /* Die beiden Farbwolken lagen bei .34 und .30 und machten den oberen
+         linken Bereich so hell, dass der Fliesstext darauf mit 2,87:1 stand —
+         genau dort, wo die Verkaufszeile sitzt. Gemessen auf der fertigen
+         Seite; vorher hat es kein Werkzeug gesehen, weil der Verlauf aus
+         mehreren Schichten besteht und falsch gerechnet wurde. */
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.22),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.20),transparent 56%),
       linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
     background-attachment:fixed;background-color:#03080D;
     color:var(--s2-ink);font-family:var(--s2-ff-ui);
