@@ -12,28 +12,213 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
+     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#03080D">
 <title>Danke — 100 Token · Smart Studio · social2scale</title>
 <meta name="description" content="Danke für deinen Kauf — dein Smart-Studio-Guthaben ist unterwegs.">
 <link rel="stylesheet" href="/fonts.css">
 <style>
+  /* Die Werkstatt-Tokens kommen aus EINER Quelle:
+     social2scale-clients/_portal/lib/studio-design.js.
+     Hier stand vorher eine handgepflegte Kopie derselben Palette — und sie war
+     schon auseinandergelaufen (--faint auf #7C7E78 statt #8E918B). Erneuern:
+       node scripts/design-tokens-export.mjs --ziel=<site>/scripts/studio-tokens.css
+     Prüfen (Tor gegen Drift):
+       node scripts/design-tokens-export.mjs --pruefe=<site>/scripts/studio-tokens.css */
+/* ERZEUGT — nicht von Hand ändern.
+ * Quelle: _portal/lib/studio-design.js (Repo social2scale-clients)
+ * Neu erzeugen: node scripts/design-tokens-export.mjs --ziel=<diese Datei>
+ * Prüfen:       node scripts/design-tokens-export.mjs --pruefe=<diese Datei>
+ *
+ * Wer hier etwas ändert, ändert es nur auf EINER Fläche. Das ist genau der
+ * Zustand, den diese Datei abschafft. */
+:root{
+  color-scheme:dark;
+  --s2-bg:#0E1013;--s2-bg-2:#0A0B0D;
+  --s2-surface:#141518;--s2-surface-2:#1B1D21;--s2-surface-3:#23252A;
+  --s2-ink:#F2F3F1;--s2-muted:#A4A6A1;--s2-faint:#8E918B;
+  --s2-accent:#00B888;--s2-accent-soft:#1FC998;--s2-accent-2:#1FA6E0;
+  --s2-accent-text:#1FC998;
+  --s2-on-accent:#0A0B0D;--s2-on-accent-2:#0A0B0D;
+  --s2-flow:linear-gradient(135deg, #1FC998, #1fa6e0);
+  --s2-accent-wash:color-mix(in srgb, #1FA6E0 12%, transparent);
+  /* Das Herz. Instagram-Rot ist hier kein Dekor, sondern das Signal „gefällt
+     mir" — es gehört zum Produktvokabular und steht deshalb als Rolle da,
+     nicht als Literal an sechs Stellen. */
+  --s2-like:#FF2D55;--s2-like-soft:#FF5A7A;
+  --s2-danger:#E5484D;--s2-danger-ink:#FFB3B3;
+  --s2-line:color-mix(in srgb, #FFFFFF 8%, transparent);
+  --s2-line-2:color-mix(in srgb, #FFFFFF 14%, transparent);
+  --s2-line-3:color-mix(in srgb, #FFFFFF 22%, transparent);
+
+  --s2-ff-display:"Fraunces",Georgia,serif;
+  --s2-ff-ui:"Archivo",system-ui,-apple-system,sans-serif;
+  --s2-ff-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  /* Eine Skala für beide Modi. Die drei größten Stufen sind fluid, damit auf
+     390px nichts abreißt und auf 1440px nichts verloren wirkt. */
+  --s2-fs-label:.63rem;--s2-fs-xs:.78rem;--s2-fs-sm:.86rem;--s2-fs-base:.96rem;
+  --s2-fs-lg:1.12rem;
+  /* ACHTUNG: In clamp()/calc() MÜSSEN Leerzeichen um + und - stehen.
+     Ohne sie ist der Wert ungültig, die Eigenschaft fällt auf „erben" zurück
+     und jede Überschrift steht still in Fließtextgröße — ohne Fehlermeldung,
+     ohne Konsolen-Eintrag. Genau so stand die Angebotsseite am 02.09. da.
+     studio-flaechen.mjs prueft jeden Token jetzt mit CSS.supports nach. */
+  --s2-fs-xl:clamp(1.24rem, .9rem + 1.1vw, 1.46rem);
+  --s2-fs-2xl:clamp(1.72rem, 1.1rem + 2.4vw, 2.35rem);
+  --s2-fs-3xl:clamp(2.2rem, 1.2rem + 4.4vw, 3.4rem);
+  --s2-lh-tight:1.14;--s2-lh-snug:1.32;--s2-lh-base:1.6;
+  --s2-ls-label:.17em;--s2-ls-display:-.022em;
+
+  --s2-sp-1:4px;--s2-sp-2:8px;--s2-sp-3:12px;--s2-sp-4:16px;--s2-sp-5:22px;
+  --s2-sp-6:30px;--s2-sp-7:42px;--s2-sp-8:58px;--s2-sp-9:80px;
+  --s2-gutter:clamp(20px, 5vw, 44px);--s2-max:1080px;
+
+  --s2-r-1:9px;--s2-r-2:12px;--s2-r-3:16px;--s2-r-4:20px;--s2-r-5:26px;--s2-r-pill:999px;
+
+  --s2-hi:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
+  --s2-e-1:var(--s2-hi),0 1px 2px rgba(0,0,0,.4);
+  --s2-e-2:var(--s2-hi),0 2px 4px rgba(0,0,0,.45),0 14px 30px -18px rgba(0,0,0,.6);
+  --s2-e-3:var(--s2-hi),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.9);
+
+  --s2-ease:cubic-bezier(.16,1,.3,1);--s2-ease-in-out:cubic-bezier(.4,0,.2,1);
+  --s2-dur-1:140ms;--s2-dur-2:240ms;--s2-dur-3:420ms;--s2-dur-4:900ms;
+
+  --s2-focus:#1FC998;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--s2-ff-ui);color:var(--s2-ink);background:var(--s2-bg);
+  font-size:var(--s2-fs-base);line-height:var(--s2-lh-base);-webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+img,video{max-width:100%}
+
+/* Sichtbarer Fokus auf ALLEM, was Fokus bekommen kann. Vorher hatten die
+   Format-, Vorlagen-, Welt- und Herz-Knöpfe der Studio-App gar keinen —
+   mit der Tastatur war der Flow unbedienbar. */
+:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--s2-focus);outline-offset:2px;border-radius:var(--s2-r-1)}
+
+/* Nur für Screenreader — Sprungmarke und Statusmeldungen. */
+.s2-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.s2-skip{position:absolute;left:var(--s2-sp-3);top:-3rem;z-index:200;padding:10px 16px;
+  border-radius:var(--s2-r-2);background:var(--s2-accent);color:var(--s2-on-accent);
+  min-height:44px;display:inline-flex;align-items:center;
+  font-weight:700;transition:top var(--s2-dur-1) var(--s2-ease)}
+.s2-skip:focus{top:var(--s2-sp-3)}
+
+.s2-wrap{max-width:var(--s2-max);margin:0 auto;padding-inline:var(--s2-gutter)}
+
+/* Etikett — die Mono-Signatur, die Werkstatt und Schaufenster verbindet. */
+/* Der Akzent als TEXT — nie --s2-accent-2 direkt: das ist die FLÄCHEN-Farbe
+   und steht auf Evas Creme mit 3,09:1. */
+.s2-label{font-family:var(--s2-ff-mono);font-size:var(--s2-fs-label);font-weight:600;
+  letter-spacing:var(--s2-ls-label);text-transform:uppercase;color:var(--s2-accent-text)}
+.s2-label--quiet{color:var(--s2-faint)}
+
+.s2-display{font-family:var(--s2-ff-display);font-weight:540;line-height:var(--s2-lh-tight);
+  letter-spacing:var(--s2-ls-display);text-wrap:balance}
+.s2-h1{font-size:var(--s2-fs-3xl)}
+.s2-h2{font-size:var(--s2-fs-2xl)}
+.s2-h3{font-size:var(--s2-fs-xl)}
+/* Ein Wort im Verlauf — das wiederkehrende Betonungsmittel. Der Fallback ist
+   Pflicht: ohne ihn steht bei fehlendem background-clip unsichtbarer Text. */
+.s2-em{font-style:italic;font-weight:500;color:var(--s2-accent-text);
+  background:var(--s2-flow);-webkit-background-clip:text;background-clip:text}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .s2-em{color:transparent}}
+
+.s2-lead{color:var(--s2-muted);max-width:56ch}
+.s2-quiet{color:var(--s2-faint);font-size:var(--s2-fs-sm)}
+
+/* Sektions-Kopf mit Linie — trägt die Hierarchie, die vorher fehlte:
+   „Neu für dich" war eine Kette gleich aussehender Karten ohne Gliederung. */
+.s2-sect{display:flex;align-items:baseline;gap:var(--s2-sp-3);margin:var(--s2-sp-8) 0 var(--s2-sp-4)}
+.s2-sect::after{content:"";flex:1;height:1px;background:var(--s2-line-2)}
+.s2-sect h2{font-family:var(--s2-ff-display);font-weight:540;font-size:var(--s2-fs-xl);
+  letter-spacing:var(--s2-ls-display)}
+
+.s2-panel{position:relative;background:var(--s2-surface);border:1px solid var(--s2-line);
+  border-radius:var(--s2-r-4);box-shadow:var(--s2-e-2);padding:clamp(20px, 3vw, 30px);overflow:hidden}
+/* Die Haarlinie im Verlauf oben — das Erkennungszeichen einer Studio-Fläche. */
+.s2-panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--s2-accent) 36%,var(--s2-accent-2) 64%,transparent);opacity:.8}
+.s2-panel--flat::before{display:none}
+
+.s2-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2-sp-2);
+  font-weight:700;font-size:var(--s2-fs-base);border-radius:var(--s2-r-2);
+  padding:14px 26px;background:var(--s2-flow);color:var(--s2-on-accent-2);
+  box-shadow:0 16px 38px -14px var(--s2-accent-wash),var(--s2-hi);
+  transition:transform var(--s2-dur-1) var(--s2-ease),filter var(--s2-dur-1) var(--s2-ease)}
+.s2-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.s2-btn:active{transform:translateY(1px)}
+.s2-btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;filter:none}
+.s2-btn--ghost{background:transparent;color:var(--s2-muted);border:1px solid var(--s2-line-2);box-shadow:none}
+.s2-btn--ghost:hover{color:var(--s2-ink);border-color:var(--s2-line-3);filter:none}
+.s2-btn--small{padding:9px 15px;font-size:var(--s2-fs-sm);border-radius:var(--s2-r-1)}
+
+.s2-pill{display:inline-flex;align-items:center;gap:var(--s2-sp-2);border-radius:var(--s2-r-pill);
+  padding:8px 15px;font-size:var(--s2-fs-sm);font-weight:600;
+  background:var(--s2-surface-2);border:1px solid var(--s2-line-2);box-shadow:var(--s2-e-1);
+  transition:border-color var(--s2-dur-1) var(--s2-ease),color var(--s2-dur-1) var(--s2-ease)}
+.s2-pill[aria-pressed="true"],.s2-pill.on{background:var(--s2-flow);border-color:transparent;
+  color:var(--s2-on-accent-2);font-weight:700}
+
+/* Waagerechte Leiste mit Bildern.
+   Zwei Fallen, die hier beide schon zugeschlagen haben:
+   1. Ein Grid-/Flex-Kind mit min-width:auto wächst auf Inhaltsbreite — dann
+      läuft nichts über und der Streifen scrollt NICHT.
+   2. Ohne sichtbare Bedienung findet auf dem Desktop niemand den Streifen. */
+.s2-rail-wrap{position:relative;min-width:0}
+.s2-rail{display:flex;gap:var(--s2-sp-3);overflow-x:auto;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;padding-bottom:var(--s2-sp-2);min-width:0;
+  scrollbar-width:thin;scrollbar-color:var(--s2-line-3) transparent}
+.s2-rail>*{flex:0 0 auto;scroll-snap-align:start}
+.s2-rail::-webkit-scrollbar{height:6px}
+.s2-rail::-webkit-scrollbar-thumb{background:var(--s2-line-3);border-radius:var(--s2-r-pill)}
+.s2-rail-nav{position:absolute;top:calc(50% - var(--s2-sp-3));transform:translateY(-50%);
+  width:38px;height:38px;border-radius:50%;display:none;place-items:center;z-index:3;
+  background:var(--s2-surface);border:1px solid var(--s2-line-2);box-shadow:var(--s2-e-2);
+  color:var(--s2-ink);font-size:1.1rem;line-height:1}
+.s2-rail-nav[hidden]{display:none!important}
+.s2-rail-wrap.has-rail .s2-rail-nav{display:grid}
+.s2-rail-nav.prev{left:-14px}.s2-rail-nav.next{right:-14px}
+@media(max-width:760px){.s2-rail-wrap.has-rail .s2-rail-nav{display:none}}
+
+.s2-msg{padding:13px 16px;border-radius:var(--s2-r-3);font-size:var(--s2-fs-sm);line-height:var(--s2-lh-snug)}
+.s2-msg--warm{background:var(--s2-accent-wash);border:1px solid var(--s2-line-2);color:var(--s2-ink)}
+.s2-msg--err{background:color-mix(in srgb,var(--s2-danger) 12%,transparent);
+  border:1px solid color-mix(in srgb,var(--s2-danger) 34%,transparent);color:var(--s2-danger-ink)}
+
+@keyframes s2-rise{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes s2-shimmer{to{background-position:-220% 0}}
+@keyframes s2-aurora{0%{transform:translate3d(-4%,-2%,0) scale(1)}100%{transform:translate3d(5%,3%,0) scale(1.14)}}
+@keyframes s2-pulse{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.1)}}
+.s2-rise{animation:s2-rise var(--s2-dur-3) var(--s2-ease) both}
+
+/* Eine einzige Stelle, an der Motion abgeschaltet wird — nicht pro Fläche. */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;
+    transition-duration:1ms!important;scroll-behavior:auto!important}
+  .s2-rail{scroll-behavior:auto}
+}
+
   :root{
-    --ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --surface-3:#23252A;
-    --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
-    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
-    --teal:#1FA6E0; --amber:#E8B34B;
-    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
-    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
-    --hi-2:inset 0 1px 0 rgba(255,255,255,.07);
-    --ease:cubic-bezier(.16,1,.3,1);
-    --surf-grad:linear-gradient(180deg,#202227 0%,var(--surface-2) 38%,var(--surface) 100%);
-    --depth:var(--hi-2),0 1px 2px rgba(0,0,0,.4),0 14px 30px -18px rgba(0,0,0,.6);
-    --depth-lg:var(--hi-2),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88);
-    --grad-emerald:radial-gradient(120% 140% at 78% 8%,rgba(0,184,136,.12),transparent 52%),radial-gradient(120% 130% at 14% 96%,rgba(31,166,224,.10),transparent 56%),linear-gradient(180deg,#191B1F 0%,var(--surface) 70%);
-    --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:48px; --s-8:64px; --s-9:96px;
-    --px:clamp(20px,5vw,56px);
-    color-scheme:dark;
+    /* Nur, was ausschließlich diese Seiten brauchen. */
+    --amber:#E8B34B;
+    --surf-grad:linear-gradient(180deg,color-mix(in srgb,var(--s2-surface-3) 55%,var(--s2-surface-2)) 0%,var(--s2-surface-2) 38%,var(--s2-surface) 100%);
+    --grad-emerald:radial-gradient(120% 140% at 78% 8%,color-mix(in srgb,var(--s2-accent) 12%,transparent),transparent 52%),radial-gradient(120% 130% at 14% 96%,color-mix(in srgb,var(--s2-accent-2) 10%,transparent),transparent 56%),linear-gradient(180deg,color-mix(in srgb,var(--s2-surface) 88%,var(--s2-ink)) 0%,var(--s2-surface) 70%);
+    --px:clamp(20px, 5vw, 56px);
+    /* Diese Seiten malen einen deutlich HELLEREN Verlauf hinter den Text als
+       --s2-bg. Der leise Ton des Systems ist dafür gebaut, auf #0E1013 zu
+       stehen, und kam hier auf 3,5:1. Statt fünf Regeln einzeln zu flicken,
+       wird die ROLLE für diese Fläche neu belegt — aus derselben Tinte
+       gemischt, damit sie leiser bleibt als der Fließtext. Gemessen mit
+       studio-flaechen.mjs --nur=danke. */
+    --s2-faint:color-mix(in srgb, var(--s2-ink) 78%, var(--s2-bg));
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -43,18 +228,18 @@
       radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
       linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
     background-attachment:fixed;background-color:#03080D;
-    color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;
+    color:var(--s2-ink);font-family:var(--s2-ff-ui);
     -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
   @media (max-width:700px){body{background-attachment:scroll;background-size:cover}}
   ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--emerald);outline-offset:3px;border-radius:4px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--s2-accent);outline-offset:3px;border-radius:4px}
   .wrap{width:100%;max-width:880px;margin:0 auto;padding:0 var(--px)}
 
   @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
   @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
   @keyframes glowPulse{0%{opacity:0;transform:scale(.7)}45%{opacity:.85}100%{opacity:0;transform:scale(1.5)}}
   @keyframes drawCheck{to{stroke-dashoffset:0}}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--s2-ease),transform .7s var(--s2-ease)}
   .reveal.on{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){
     .reveal{opacity:1!important;transform:none!important;transition:none}
@@ -62,84 +247,91 @@
     .badge path{stroke-dashoffset:0!important;animation:none!important}
     .celebrate{animation:none;opacity:0}
   }
-  .r{opacity:0;animation:upIn .7s var(--ease) forwards}
+  .r{opacity:0;animation:upIn .7s var(--s2-ease) forwards}
 
-  .eyebrow{display:inline-flex;align-items:center;gap:var(--s-2);font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
-  .klabel{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);display:block}
-  h2{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s-3)}
-  h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
+  .eyebrow{display:inline-flex;align-items:center;gap:var(--s2-sp-2);font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-faint)}
+  .klabel{font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent);display:block}
+  h2{font-family:var(--s2-ff-display);font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s2-sp-3)}
+  h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--s2-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--s2-accent)}
+  .lead{color:var(--s2-muted);max-width:58ch;margin-top:var(--s2-sp-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
 
   .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
   .bar .brand img{height:30px;width:auto;display:block}
 
-  .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:15px;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease),box-shadow .25s}
+  .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:15px;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
   .btn:hover{transform:translateY(-3px)}
-  .btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
+  .btn-primary{background:linear-gradient(135deg,var(--s2-accent-soft) 0%,var(--s2-accent) 52%,var(--s2-accent-2) 100%);color:var(--s2-on-accent-2);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
   .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
-  .btn-primary:hover::after{animation:glint .85s var(--ease) forwards}
-  .btn .arr{display:inline-block;transition:transform .25s var(--ease)}.btn:hover .arr{transform:translateX(4px)}
-  .btn-ghost{background:rgba(242,243,241,.04);border:1px solid var(--line-2);color:var(--paper)}
-  .btn-ghost:hover{border-color:var(--line-3)}
+  .btn-primary:hover::after{animation:glint .85s var(--s2-ease) forwards}
+  .btn .arr{display:inline-block;transition:transform .25s var(--s2-ease)}.btn:hover .arr{transform:translateX(4px)}
+  .btn-ghost{background:rgba(242,243,241,.04);border:1px solid var(--s2-line-2);color:var(--s2-ink)}
+  .btn-ghost:hover{border-color:var(--s2-line-3)}
 
-  .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-9)) 0 clamp(var(--s-7),5vw,var(--s-8))}
+  .hero{position:relative;overflow:hidden;padding:clamp(var(--s2-sp-8),7vw,var(--s2-sp-9)) 0 clamp(var(--s2-sp-7),5vw,var(--s2-sp-8))}
   .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;z-index:0;pointer-events:none}
   @media (prefers-reduced-motion:reduce){.herovid{display:none}}
   .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--ease) .2s both}
-  .badge{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald);background:rgba(0,184,136,.10);border:1px solid rgba(0,184,136,.30);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--ease) .12s both}
-  .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--ease) .55s forwards}
-  .hero h1{font-family:"Fraunces",serif;font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--ease) .26s both}
-  .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--ease) .38s both}
-  .hero .sub b{color:var(--paper);font-weight:600}
-  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s-3);margin-top:var(--s-6);animation:upIn .7s var(--ease) .5s both}
-  .hero .hint{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;color:var(--faint);text-shadow:0 1px 10px rgba(0,0,0,.85)}
+  .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--s2-ease) .2s both}
+  /* Der Bestaetigungs-Chip stand als Akzentfarbe auf einer Akzent-Waschung
+     ueber dem hellen Hero — 3,72:1. Sichtbar wurde das erst, als das
+     Pruefwerkzeug die Einblend-Animation ans Ende setzt; vorher war der Chip
+     zum Messzeitpunkt durchsichtig. */
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent-soft);background:var(--s2-surface);border:1px solid color-mix(in srgb,var(--s2-accent) 34%,transparent);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--s2-ease) .12s both}
+  .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--s2-ease) .55s forwards}
+  .hero h1{font-family:var(--s2-ff-display);font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s2-sp-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--s2-ease) .26s both}
+  .hero .sub{color:var(--s2-muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s2-sp-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--s2-ease) .38s both}
+  .hero .sub b{color:var(--s2-ink);font-weight:600}
+  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s2-sp-3);margin-top:var(--s2-sp-6);animation:upIn .7s var(--s2-ease) .5s both}
+    .hero .hint{font-family:var(--s2-ff-mono);font-size:11px;letter-spacing:.08em;color:var(--s2-faint);text-shadow:0 1px 10px rgba(0,0,0,.85)}
 
-  section.blk{padding:clamp(var(--s-7),5vw,var(--s-8)) 0}
-  .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--depth-lg)}
+  section.blk{padding:clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)) 0}
+  .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--s2-line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--s2-e-3)}
   .offer .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
-  .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap}
+  .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);flex-wrap:wrap}
   .cd{display:inline-flex;align-items:baseline;gap:10px;background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.32);border-radius:999px;padding:8px 16px}
-  .cd-k{font-family:"Archivo",sans-serif;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
-  .cd-t{font-family:"JetBrains Mono",monospace;font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
-  .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s-6);margin-top:var(--s-6);background:var(--surf-grad);border:1px solid var(--line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--depth)}
-  .oc-big{font-family:"Fraunces",serif;font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s-2)}
-  .oc-bonus{margin-top:var(--s-3);font-family:"Archivo",sans-serif;font-weight:600;font-size:.96rem;color:var(--amber)}
-  .oc-list{list-style:none;margin-top:var(--s-4);display:grid;gap:var(--s-2)}
-  .oc-list li{position:relative;padding-left:1.6em;color:var(--muted);font-size:.98rem}
-  .oc-list li::before{content:"✓";position:absolute;left:0;color:var(--emerald);font-weight:700}
-  .oc-side{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s-3);border-left:1px solid var(--line);padding-left:var(--s-6)}
-  .oc-price{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.3rem}
-  .oc-hint{font-size:.85rem;color:var(--faint);line-height:1.5}
-  .expired p{margin-top:var(--s-5);color:var(--muted);background:rgba(242,243,241,.03);border:1px solid var(--line-2);border-radius:12px;padding:var(--s-4) var(--s-5)}
-  .expired b{color:var(--paper)}
+  .cd-k{font-family:var(--s2-ff-ui);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+  .cd-t{font-family:var(--s2-ff-mono);font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+  .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s2-sp-6);margin-top:var(--s2-sp-6);background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--s2-e-2)}
+  .oc-big{font-family:var(--s2-ff-display);font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s2-sp-2)}
+  .oc-bonus{margin-top:var(--s2-sp-3);font-family:var(--s2-ff-ui);font-weight:600;font-size:.96rem;color:var(--amber)}
+  .oc-list{list-style:none;margin-top:var(--s2-sp-4);display:grid;gap:var(--s2-sp-2)}
+  .oc-list li{position:relative;padding-left:1.6em;color:var(--s2-muted);font-size:.98rem}
+  .oc-list li::before{content:"✓";position:absolute;left:0;color:var(--s2-accent);font-weight:700}
+  .oc-side{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s2-sp-3);border-left:1px solid var(--s2-line);padding-left:var(--s2-sp-6)}
+  .oc-price{font-family:var(--s2-ff-ui);font-weight:700;font-size:1.3rem}
+  .oc-hint{font-size:.85rem;color:var(--s2-faint);line-height:1.5}
+  .expired p{margin-top:var(--s2-sp-5);color:var(--s2-muted);background:rgba(242,243,241,.03);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5)}
+  .expired b{color:var(--s2-ink)}
   .offer .panel.is-expired .offercard,.offer .panel.is-expired .cd,.offer .panel.is-expired .oc-hint{display:none}
   @media (max-width:720px){
     .offercard{grid-template-columns:1fr}
-    .oc-side{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:var(--s-5);align-items:stretch}
+    .oc-side{border-left:0;border-top:1px solid var(--s2-line);padding-left:0;padding-top:var(--s2-sp-5);align-items:stretch}
     .oc-side .btn{text-align:center}
   }
 
-  .steps-blk .wrap>.eyebrow{margin-bottom:var(--s-2)}
-  .steps{list-style:none;display:grid;gap:var(--s-3);counter-reset:step;margin-top:var(--s-5)}
-  .steps li{counter-increment:step;display:flex;gap:var(--s-5);align-items:baseline;background:var(--surf-grad);border:1px solid var(--line-2);border-radius:14px;padding:clamp(16px,2.4vw,22px) clamp(18px,3vw,26px);box-shadow:var(--depth)}
-  .steps li::before{content:counter(step,decimal-leading-zero);font-family:"JetBrains Mono",monospace;font-size:.95rem;color:var(--emerald);flex:none}
-  .steps li b{color:var(--paper);font-weight:600}
-  .steps li{color:var(--muted);font-size:.98rem}
+  .steps-blk .wrap>.eyebrow{margin-bottom:var(--s2-sp-2)}
+  .steps{list-style:none;display:grid;gap:var(--s2-sp-3);counter-reset:step;margin-top:var(--s2-sp-5)}
+  .steps li{counter-increment:step;display:flex;gap:var(--s2-sp-5);align-items:baseline;background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:14px;padding:clamp(16px,2.4vw,22px) clamp(18px,3vw,26px);box-shadow:var(--s2-e-2)}
+  .steps li::before{content:counter(step,decimal-leading-zero);font-family:var(--s2-ff-mono);font-size:.95rem;color:var(--s2-accent);flex:none}
+  .steps li b{color:var(--s2-ink);font-weight:600}
+  .steps li{color:var(--s2-muted);font-size:.98rem}
 
-  .legal-blk .wrap{display:grid;gap:var(--s-4)}
-  .notecard{background:rgba(242,243,241,.03);border:1px solid var(--line-2);border-radius:12px;padding:var(--s-4) var(--s-5);color:var(--muted);font-size:.93rem;line-height:1.65}
-  .notecard b{color:var(--paper)}
-  .notecard a{color:var(--emerald-soft);text-decoration:none}
+  .legal-blk .wrap{display:grid;gap:var(--s2-sp-4)}
+  /* Die Karte liegt auf dem hellen Teil des Verlaufs. Ein durchsichtiger
+     Grund reicht dort nicht: der Sekundaerton kam auf 4,25:1. Eine eigene,
+     deckende Flaeche gibt dem Text wieder einen definierten Grund. */
+  .notecard{background:var(--s2-surface);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5);color:var(--s2-muted);font-size:.93rem;line-height:1.65;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .notecard b{color:var(--s2-ink)}
+  .notecard a{color:var(--s2-accent-soft);text-decoration:none}
   .notecard a:hover{text-decoration:underline}
-  .mandatory{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.03em;color:var(--faint)}
+  .mandatory{font-family:var(--s2-ff-mono);font-size:11.5px;letter-spacing:.03em;color:var(--s2-muted)}
 
-  .site-footer{margin-top:var(--s-8);border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink)}
-  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4);padding-top:var(--s-6);padding-bottom:var(--s-6);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint)}
+  .site-footer{margin-top:var(--s2-sp-8);border-top:1px solid var(--s2-line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--s2-bg-2)}
+  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:11px;letter-spacing:.04em;color:var(--s2-faint)}
   .site-footer img{height:34px;width:auto;display:block}
-  .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s-4)}
-  .site-footer a{color:var(--muted);text-decoration:none}
-  .site-footer a:hover{color:var(--paper)}
+  .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s2-sp-4)}
+  .site-footer a{display:inline-flex;align-items:center;min-height:24px;color:var(--s2-muted);text-decoration:none}
+  .site-footer a:hover{color:var(--s2-ink)}
 </style>
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
 </head>
