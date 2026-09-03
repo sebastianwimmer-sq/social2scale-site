@@ -1,0 +1,5 @@
+# Sicherheitslücke gefunden? Melde sie uns bitte vertraulich, bevor du sie veröffentlichst.
+Contact: mailto:info@social2scale.com
+Expires: 2027-09-03T00:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://social2scale.com/.well-known/security.txt

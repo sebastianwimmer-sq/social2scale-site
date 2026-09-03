@@ -34,6 +34,12 @@
 # Rein statische Seite: keine Sammlungen, keine Layouts, keine Plugins.
 plugins: []
 
+# Jekyll versteckt Ordner mit Punkt-Präfix standardmäßig. .well-known MUSS
+# explizit rein, sonst liefert Pages /.well-known/security.txt als 404 aus
+# (RFC-9116-Kontaktdatei für Sicherheits-Meldungen).
+include:
+  - .well-known
+
 # Diese Pfade werden NICHT veröffentlicht.
 exclude:
   - docs/               # interne Dokumentation und Koordination
