@@ -48,6 +48,11 @@ exclude:
   - tests/              # Playwright-Tests
   - test-results/       # Testausgaben
   - workers/            # Worker-Quelltext
+  - free-content/       # eigenes Worker-Projekt (src/ + wrangler.toml) — versehentlich im Baum;
+                        #   keine Besucherseite drunter (/free-content/ = 404). 05.09.2026: der
+                        #   komplette Backend-Quellcode inkl. Anti-Missbrauch (protect/moderate/
+                        #   disposable) war öffentlich abrufbar. Läuft als separater Worker weiter.
+  - start-proxy/        # Worker-Projekt (wrangler.toml war öffentlich)
   - package.json
   - playwright.config.mjs
   - node_modules/
