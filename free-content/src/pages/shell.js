@@ -42,11 +42,19 @@ const CSP = [
   "object-src 'none'",
 ].join('; ');
 
+// 09.09.2026: Gegentest bestanden — die echten Seiten laden NUR von
+// challenges.cloudflare.com (Turnstile) + social2scale.com (Fonts/Bilder), beide
+// in der CSP-Whitelist. Deshalb von Report-Only auf DURCHSETZEND geflippt (wie im
+// Kommentar oben vorgesehen). 'unsafe-inline' bleibt (der Funnel lebt von Inline-
+// Skripten) → eigene Skripte laufen weiter, aber eingeschleustes Fremd-Markup nicht.
+// Plus HSTS + Permissions-Policy, damit die Freebie-Fläche gleich hart ist wie CRM/Portal.
 export const SICHERHEITS_HEADER = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Content-Security-Policy-Report-Only': CSP,
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()',
+  'Content-Security-Policy': CSP,
 };
 
 const SHARED_STYLE = `
