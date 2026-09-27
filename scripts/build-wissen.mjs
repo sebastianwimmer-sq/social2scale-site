@@ -224,10 +224,10 @@ function schema(seite) {
       name: seite.titel,
       acceptedAnswer: { "@type": "Answer", text: antwortText(seite) },
     }],
-    isPartOf: { "@type": "WebSite", name: "social2scale", url: BASIS + "/" },
+    isPartOf: { "@type": "WebSite", "@id": BASIS + "/#website", name: "social2scale", url: BASIS + "/" },
     publisher: {
-      "@type": "Organization", name: "social2scale", url: BASIS + "/",
-      logo: BASIS + "/assets/s2s-t.webp",
+      "@type": "Organization", "@id": BASIS + "/#org", name: "social2scale", url: BASIS + "/",
+      logo: BASIS + "/assets/avatar-s2s.png",
     },
     dateModified: "2026-08-20",
     inLanguage: "de-DE",
