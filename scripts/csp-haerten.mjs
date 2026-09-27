@@ -73,6 +73,10 @@ const TURNSTILE = "https://challenges.cloudflare.com";
 const TURNSTILE_SUB = "https://*.challenges.cloudflare.com";
 const FORMULAR_ZIEL = "https://api.web3forms.com";
 const ZAEHLUNG = "https://closing.social2scale.com";
+// Terminkalender nach der Anfrage (cal.eu). embed.js kommt von www.cal.eu,
+// der Kalender selbst rendert in einem Rahmen von app.cal.eu. Fehlte bis
+// 27.09.2026 — der Kalender auf /anfrage/ blieb dadurch still leer.
+const KALENDER = ["https://www.cal.eu", "https://app.cal.eu", "https://cal.eu"];
 
 // Der Rahmenschutz. Ersetzt frame-ancestors, das im Meta-Tag wirkungslos ist.
 // Bewusst als erstes Skript im Kopf, damit er greift, bevor etwas sichtbar wird.
@@ -112,6 +116,7 @@ function inlineSkripte(html) {
 function cspFuer(html) {
   const brauchtTurnstile = html.includes(TURNSTILE);
   const brauchtFormular = html.includes(FORMULAR_ZIEL);
+  const brauchtKalender = html.includes("cal.eu/embed/");
 
   const hashes = inlineSkripte(html).map(hash);
   // Der Rahmenschutz wird gleich eingesetzt und muss selbst freigegeben sein.
@@ -119,9 +124,15 @@ function cspFuer(html) {
 
   const skript = ["'self'", ...new Set(hashes)];
   if (brauchtTurnstile) skript.push(TURNSTILE, TURNSTILE_SUB);
+  if (brauchtKalender) skript.push(...KALENDER);
 
   const verbinden = ["'self'", ZAEHLUNG];
   if (brauchtTurnstile) verbinden.push(TURNSTILE, TURNSTILE_SUB);
+  if (brauchtKalender) verbinden.push(...KALENDER);
+
+  const rahmen = [];
+  if (brauchtTurnstile) rahmen.push(TURNSTILE, TURNSTILE_SUB);
+  if (brauchtKalender) rahmen.push(...KALENDER);
 
   const formular = ["'self'"];
   if (brauchtFormular) formular.push(FORMULAR_ZIEL);
@@ -135,7 +146,7 @@ function cspFuer(html) {
     "font-src 'self'",
     "connect-src " + verbinden.join(" "),
     // Turnstile rendert sich in einen eigenen Rahmen; sonst nichts einbetten.
-    "frame-src " + (brauchtTurnstile ? TURNSTILE + " " + TURNSTILE_SUB : "'none'"),
+    "frame-src " + (rahmen.length ? rahmen.join(" ") : "'none'"),
     "object-src 'none'",
     "base-uri 'self'",
     "form-action " + formular.join(" "),
