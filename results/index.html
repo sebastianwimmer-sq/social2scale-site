@@ -688,6 +688,64 @@
   .duo-txt b{color:var(--paper);font-weight:600}
   .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color .2s ease,border-color .2s ease}
   .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+
+  /* — 7) Kundenstimmen — editorial, NICHT geboxt.
+     Bewusst dieselbe Sprache wie .rs-stats: Haarlinien statt Karten, Fraunces
+     fuer das Zitat, winzige Mono-Metazeile darunter. Ein Raster aus drei
+     gleichen Glaskaesten waere genau das Template-Aussehen, das die uebrige
+     Seite vermeidet.
+     Das Markup erzeugt scripts/bewertungen-bauen.mjs — Klassennamen dort
+     aendern heisst, sie hier mitzuziehen. — */
+  .bw-zahl{margin-top:var(--s-4);font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;color:var(--faint)}
+  .bw-gitter{display:grid;gap:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));
+    border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .bw-karte{margin:0;padding:clamp(var(--s-6),3vw,var(--s-8)) clamp(var(--s-5),2.5vw,var(--s-7)) clamp(var(--s-6),3vw,var(--s-7)) 0;
+    display:flex;flex-direction:column;gap:var(--s-5)}
+  .bw-karte + .bw-karte{border-left:1px solid var(--line);padding-left:clamp(var(--s-5),2.5vw,var(--s-7))}
+
+  /* Sterne: gefuellt = Akzent mit leichtem Schimmer, leer = nur Kontur.
+     Die Zahl steht zusaetzlich im aria-label, die Glyphen sind Dekoration. */
+  .bw-sterne{display:inline-flex;gap:3px;flex:0 0 auto}
+  .bw-st{width:13px;height:13px;flex:0 0 auto}
+  .bw-st::before{content:"★";display:block;font-size:13px;line-height:1;color:var(--line-3)}
+  .bw-st.on::before{color:var(--emerald);text-shadow:0 0 10px rgba(0,184,136,.45)}
+
+  .bw-karte blockquote{position:relative;margin:0;font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(1.12rem,1rem + .5vw,1.4rem);line-height:1.42;letter-spacing:-.011em;
+    color:var(--paper);font-variation-settings:"opsz" 72;text-wrap:pretty}
+  /* Haengendes Anfuehrungszeichen — sitzt im Rand, nicht im Textfluss.
+     Bewusst das hohe “ und nicht das deutsche „: als Dekoration (aria-hidden,
+     kein Satzzeichen) muss es auf Hoehe der ERSTEN Zeile sitzen. Das „ steht
+     auf der Grundlinie und landete dadurch immer neben Zeile zwei. */
+  .bw-karte blockquote::before{content:"“";position:absolute;left:-.5em;top:-.04em;
+    font-size:2.2em;line-height:1;color:var(--emerald);opacity:.24;pointer-events:none}
+
+  .bw-karte figcaption{display:flex;align-items:center;gap:var(--s-3);margin-top:auto}
+  .bw-av{display:grid;place-items:center;width:34px;height:34px;flex:0 0 auto;border-radius:50%;
+    background:var(--surf-grad);border:1px solid var(--line-2);box-shadow:var(--pill-depth);
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.02em;color:var(--muted)}
+  .bw-wer{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .bw-wer b{font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;color:var(--paper)}
+  .bw-wer span{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint)}
+
+  .bw-quelle{display:inline-flex;align-items:center;gap:var(--s-2);margin-top:clamp(var(--s-6),3vw,var(--s-7));
+    font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;text-decoration:none;
+    color:var(--emerald-soft);border-bottom:1px solid rgba(0,184,136,.34);padding-bottom:3px;
+    transition:color .25s var(--ease),border-color .25s var(--ease),gap .25s var(--ease)}
+  .bw-quelle:hover{color:var(--paper);border-bottom-color:var(--paper);gap:var(--s-4)}
+
+  @media (max-width:640px){
+    .bw-karte{padding-right:0}
+    .bw-karte + .bw-karte{border-left:0;border-top:1px solid var(--line);padding-left:0}
+    /* Schmal bleibt kein Rand zum Haengen — sonst wird das Anfuehrungszeichen
+       am linken Bildschirmrand abgeschnitten. Stattdessen nach innen holen. */
+    .bw-karte blockquote{padding-left:.55em}
+    .bw-karte blockquote::before{left:-.06em}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .bw-quelle{transition:color .2s,border-color .2s}
+    .bw-quelle:hover{gap:var(--s-2)}
+  }
 </style>
 </head>
 <body>
@@ -873,7 +931,9 @@
       <p class="rs-note"><b>*</b>So ist der Bericht aufgebaut. Die Werte darin sind deine — ab dem ersten Monat.</p>
     </div></section>
 
-    <!-- 6) Kundenstimmen — premium glass quote cards (3-up) -->
+    <!-- 6) Sechs Prueffragen — Checkliste, hairline list.
+         (Die alte Beschriftung "Kundenstimmen" war ein Rest vom 02.09., als die
+         Platzhalter-Stimmen entfernt wurden — die echten stehen jetzt in 7.) -->
     <section class="rs-blk" aria-labelledby="rs-fragen-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 05</b> — Prüf uns</p>
@@ -915,7 +975,15 @@
       </div>
     </div></section>
 
-    <!-- 7) So messen wir — short editorial transparency line, two hairline columns -->
+    <!-- 7) Kundenstimmen — erzeugt aus data/bewertungen.json.
+         NICHT von Hand befuellen: scripts/bewertungen-bauen.mjs schreibt hier.
+         Solange keine Bewertungen vorliegen, bleibt der Bereich bewusst leer. -->
+    <!-- BEWERTUNGEN -->
+    <!-- Noch keine Bewertungen. Abschnitt bleibt bewusst leer:
+         ein leerer Kasten ist schlechter als keiner. -->
+    <!-- /BEWERTUNGEN -->
+
+    <!-- 8) So messen wir — short editorial transparency line, two hairline columns -->
     <section class="rs-blk" id="messung" aria-labelledby="rs-measure-h"><div class="wrap reveal">
       <div class="rs-blk-head">
         <p class="rs-rh"><b>№ 06</b> — Transparenz</p>
