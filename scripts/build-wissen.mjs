@@ -275,6 +275,7 @@ function seiteHtml(seite) {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/abschluss.css">
 <style>${CSS}</style>
 ${schema(seite)}
 </head>
@@ -338,6 +339,7 @@ function uebersichtHtml() {
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/abschluss.css">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(daten)}</script>
 </head>

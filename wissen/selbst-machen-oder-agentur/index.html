@@ -26,6 +26,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/abschluss.css">
 <style>
   :root{
     --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
@@ -265,6 +266,36 @@
     .w-index a{grid-template-columns:1fr;gap:.15rem}
     .w-index p{grid-column:1}
   }
+
+  /* ===== Markenwelt wie die Hauptseiten (28.09.2026) =====
+     /wissen/ stand auf reinem Schwarz mit Karogitter, Zwischentitel in fetter
+     Archivo und einem Kasten als Abschluss — beim Klick von der Startseite
+     wechselte man die Website. Jetzt dieselben Flaechen-Tokens und dieselbe
+     Aurora wie index.html, Fraunces fuer Zwischentitel, Abschluss ohne Kasten. */
+  :root{--ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --faint:#8E918B;
+    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14)}
+  body{
+    background:
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.30),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.26),transparent 56%),
+      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+    background-attachment:fixed;background-color:#03080D}
+  @media (max-width:700px){body{background-attachment:scroll}}
+  ::-webkit-scrollbar-track{background:var(--ink)}
+
+  .w-blk h2{font-family:"Fraunces",serif;font-weight:450;letter-spacing:-.015em;
+    font-size:clamp(1.35rem,1.05rem + 1.1vw,1.8rem);line-height:1.18;text-transform:none}
+
+  .w-cta{border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;
+    border-top:1px solid var(--line-2);padding:clamp(2.4rem,6vw,3.6rem) 0 0;isolation:isolate}
+  .w-cta::before{inset:0 -8% -20%;z-index:-1;
+    background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1.5px);
+    background-size:22px 22px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%);
+            mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%)}
+  .w-cta h2{font-weight:450;font-size:clamp(1.7rem,1.2rem + 2.2vw,2.5rem);line-height:1.05;letter-spacing:-.025em;margin-bottom:.8rem}
+
+  .site-footer .foot-mark{max-width:720px;margin:8px auto 0;padding:0 var(--px)}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Social Media selbst machen oder an eine Agentur abgeben?","acceptedAnswer":{"@type":"Answer","text":"Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten — bei 523,60 € im Monat ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall. Für zehn Beiträge im Monat sollte man mit siebeneinhalb bis fünfzehn Stunden rechnen — 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt. Dazu kommt der Einarbeitungsaufwand am Anfang: Bildformate, Textaufbau und ein wiedererkennbarer Look brauchen ein paar Anläufe. Diese Lernkurve ist der Hauptgrund, warum viele nach zwei Monaten wieder aufhören. Selbst machen Wenn du gern schreibst, ein klares Thema hast und die Zeit verlässlich freihalten kannst. Der Vorteil: deine Stimme ist unverfälscht. Abgeben Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder du einen einheitlichen Auftritt brauchst, ohne sich damit zu beschäftigen. Mischform Einmalige Starthilfe für Profil und Positionierung, danach selbst weitermachen. Bei social2scale ab 446,25 € einmalig."}}],"isPartOf":{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/avatar-s2s.png"},"dateModified":"2026-08-20","inLanguage":"de-DE"}</script>
 </head>
@@ -305,6 +336,7 @@
         <a href="mailto:info@social2scale.com">info@social2scale.com</a>
       </nav>
     </div>
+    <div class="foot-mark" aria-hidden="true"><img src="/assets/wortmarke-geist.webp" alt="" width="1600" height="239" loading="lazy" decoding="async" style="max-width:100%;height:auto;opacity:.075"></div>
     <p class="foot-meta">© <span id="yr"></span> social2scale</p>
   </footer><script>
   (function () {
