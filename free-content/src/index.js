@@ -17,7 +17,7 @@ import { BODY_MAX_BYTES } from './constants.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
-import { track } from './track.js';
+import { track, trackBeacon } from './track.js';
 import { formPage } from './pages/form.js';
 import { resultPage } from './pages/result.js';
 import { SICHERHEITS_HEADER } from './pages/shell.js';
@@ -386,8 +386,8 @@ export default {
     if (url.pathname === '/api/track') {
       const e = url.searchParams.get('e') || '';
       const t = url.searchParams.get('t') || '';
-      if (TRACK_EVENTS.includes(e) && (t === '' || TOKEN_RE.test(t))) {
-        ctx.waitUntil(track(env, { event: e, token: t }));
+      if (TRACK_EVENTS.includes(e) && TOKEN_RE.test(t)) {
+        ctx.waitUntil(trackBeacon(env, { event: e, token: t }));
       }
       return new Response(null, { status: 204 });
     }

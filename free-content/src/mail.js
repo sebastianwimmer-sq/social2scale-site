@@ -116,8 +116,13 @@ export async function sendResultMail(env, lead) {
 
 /** Founder-Benachrichtigung — non-fatal, aber niemals still. */
 export async function notifyFounders(env, lead, action) {
+  // Fehlt NOTIFY_TO, ging die Mail an die Adresse "undefined" und Brevo lehnte
+  // still ab — seit dem Deploy vom 09.09.2026 bis 28.09. ohne jede Meldung.
+  // Rueckfall aufs Sammelpostfach, und laut loggen.
+  const an = env.NOTIFY_TO || env.NOTIFY_FROM;
+  if (!env.NOTIFY_TO) console.error('[mail] NOTIFY_TO fehlt — Founder-Mail geht ans Sammelpostfach', an);
   try {
-    await send(env, env.NOTIFY_TO, 'social2scale', buildFounderMail(lead, action, env.PUBLIC_ORIGIN));
+    await send(env, an, 'social2scale', buildFounderMail(lead, action, env.PUBLIC_ORIGIN));
   } catch (err) {
     console.error('[mail] Founder-Benachrichtigung fehlgeschlagen:', err);
   }

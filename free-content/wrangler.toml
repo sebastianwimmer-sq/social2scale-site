@@ -22,6 +22,10 @@ main = "src/index.js"
 compatibility_date = "2024-11-01"
 compatibility_flags = ["nodejs_compat"]
 
+# Vorschau-URLs je Version wuerden alte Versionen erreichbar halten.
+preview_urls = false
+workers_dev = true
+
 # Dieselbe Datenbank wie das CRM — der Funnel schreibt Leads direkt dorthin.
 [[d1_databases]]
 binding = "DB"
@@ -49,6 +53,15 @@ AI_MODEL = "claude-sonnet-5"
 ALLOW_ORIGIN = "https://social2scale.com"
 NOTIFY_FROM = "info@social2scale.com"
 PUBLIC_ORIGIN = "https://start.social2scale.com"
+TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
+# Lead-Benachrichtigung. Fehlte seit dem Deploy vom 09.09.2026 (live gelesen am
+# 28.09.) — jede Founder-Mail ging an "undefined". Phils Adresse ergaenzen,
+# sobald bestaetigt; sie steht in keinem Repo.
+NOTIFY_TO = "sebastian@social2scale.com, info@social2scale.com"
+
+# Live gelesen am 28.09.2026 (API /schedules): alle 5 Minuten.
+[triggers]
+crons = ["*/5 * * * *"]
 TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
 
 # ⚠️ BESTÄTIGEN — die Anzeige schneidet den Wert ab:
