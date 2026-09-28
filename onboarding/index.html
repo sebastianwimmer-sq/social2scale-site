@@ -196,6 +196,18 @@
   /* ===== Back-to-Home Pill · BACKHOME ===== */
   .backhome{position:absolute;top:16px;left:var(--px);z-index:6;display:inline-flex;align-items:center;gap:6px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:color .2s var(--ease),border-color .2s var(--ease),transform .2s var(--ease)}
   .backhome:hover{color:var(--paper);border-color:rgba(0,184,136,.45);transform:translateX(-2px)}
+  /* Markenwelt wie die Hauptseiten (28.09.2026): gleiche Flaechen-Tokens und
+     Aurora wie index.html statt reinem Schwarz mit Karogitter. */
+  :root{--ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --faint:#8E918B;
+    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14)}
+  body{
+    background:
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.30),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.26),transparent 56%),
+      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+    background-attachment:fixed;background-color:#03080D}
+  @media (max-width:700px){body{background-attachment:scroll}}
+  .card{background:linear-gradient(180deg,rgba(27,29,33,.72),rgba(20,21,24,.72))}
   </style>
 </head>
 <body>
