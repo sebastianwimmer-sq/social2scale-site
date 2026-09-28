@@ -97,3 +97,39 @@ section.abschluss.fl-cta .fl-cta-row{justify-content:center}
 }
 /* In der Zeitleiste zeigt die Farbe den Zustand: offen = leise */
 .pr-time-step:not(.is-done) .pr-time-num{color:var(--faint)}
+
+/* ── Seitenwechsel (28.09.2026) ──────────────────────────────
+   Vorher baute jeder Klick die Seite hart neu auf — sieben Einzelseiten statt
+   einer Website. Jetzt bleiben Kopfleiste und Logo stehen, der Inhalt geht
+   leise ueber. Der eine laute Moment ist der Weg zur Anfrage (uebergang.js).
+   Beide Seiten muessen opt-in machen: diese Datei laden alle Seiten.
+   Chromium 126+ und Safari 18.2+; Firefox laedt normal. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}
+header.bar { view-transition-name: kopf; }
+header.bar .brand, .af-logo { view-transition-name: marke; }
+.af-buehne { view-transition-name: anfrage-karte; }
+.af-einladung h1 { view-transition-name: anfrage-titel; }
+
+::view-transition-old(root) { animation: s2sRaus 260ms cubic-bezier(.16,1,.3,1) both; }
+::view-transition-new(root) { animation: s2sRein 460ms cubic-bezier(.16,1,.3,1) both; }
+@keyframes s2sRaus { to { opacity: 0; transform: scale(.985); } }
+@keyframes s2sRein { from { opacity: 0; transform: translateY(18px); } }
+
+/* Die Leiste bleibt einfach stehen */
+::view-transition-old(kopf), ::view-transition-new(kopf) { animation: none; mix-blend-mode: normal; }
+::view-transition-group(kopf) { animation: none; }
+
+/* Knopf -> Formularkarte, Satz -> Kopf der Anfrage: langsam genug zum Folgen */
+::view-transition-group(anfrage-karte), ::view-transition-group(anfrage-titel), ::view-transition-group(marke) {
+  animation-duration: 620ms; animation-timing-function: cubic-bezier(.16,1,.3,1); }
+::view-transition-old(anfrage-karte), ::view-transition-new(anfrage-karte) { height: 100%; object-fit: fill; }
+::view-transition-old(anfrage-karte) { animation: s2sKnopfWeg 240ms ease both; }
+::view-transition-new(anfrage-karte) { animation: s2sKarteDa 420ms 120ms ease both; }
+@keyframes s2sKnopfWeg { to { opacity: 0; } }
+@keyframes s2sKarteDa { from { opacity: 0; } }
+/* Gibt es die Leiste nur auf EINER Seite (die Anfrage hat keine), bleibt sie
+   sonst bis zum Ende stehen und verschwindet dann schlagartig. */
+::view-transition-old(kopf):only-child { animation: s2sKnopfWeg 220ms ease both; }
+::view-transition-new(kopf):only-child { animation: s2sKarteDa 320ms 120ms ease both; }
