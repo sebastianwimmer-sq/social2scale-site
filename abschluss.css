@@ -75,3 +75,25 @@ section.abschluss.fl-cta h2{
 }
 section.abschluss.fl-cta .sub{max-width:44ch;margin-inline:auto}
 section.abschluss.fl-cta .fl-cta-row{justify-content:center}
+
+/* ── Kapitelziffern (28.09.2026) ──────────────────────────────
+   Vorher an 5 Stellen auf 3 Seiten dieselbe Geste: riesige Fraunces-Ziffer
+   als Umriss, fast unsichtbar. Wo die Zahl eine Reihenfolge traegt (Phasen,
+   Zeitleiste, Etappen), bleibt sie — aber in der Etikettensprache, die die
+   Seite fuer Kapitel schon hat (.ix: Mono, gesperrt). Eine Regel fuer alle,
+   damit keine Seite auf der alten Geste stehen bleibt. Zustandsvarianten
+   (is-done, is-active, :hover) stehen mit in der Liste, sonst faerben sie
+   den Umriss wieder ein. */
+:is(.fl-num,.pr-time-num,.pr-emp-nr,.pr-alt-nr,.ab-num),
+.pr-time-step.is-done .pr-time-num,
+.ab-row:hover .ab-num{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:500;font-style:normal;
+  font-size:12px;line-height:1.4;letter-spacing:.16em;
+  -webkit-text-stroke:0;color:var(--emerald-soft);
+}
+:is(.fl-num,.pr-time-num,.pr-emp-nr,.pr-alt-nr,.ab-num)::before{
+  content:"";width:22px;height:1px;background:currentColor;opacity:.55;flex:none;
+}
+/* In der Zeitleiste zeigt die Farbe den Zustand: offen = leise */
+.pr-time-step:not(.is-done) .pr-time-num{color:var(--faint)}
