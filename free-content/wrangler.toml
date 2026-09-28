@@ -54,10 +54,9 @@ ALLOW_ORIGIN = "https://social2scale.com"
 NOTIFY_FROM = "info@social2scale.com"
 PUBLIC_ORIGIN = "https://start.social2scale.com"
 TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
-# Lead-Benachrichtigung. Fehlte seit dem Deploy vom 09.09.2026 (live gelesen am
-# 28.09.) — jede Founder-Mail ging an "undefined". Phils Adresse ergaenzen,
-# sobald bestaetigt; sie steht in keinem Repo.
-NOTIFY_TO = "sebastian@social2scale.com, info@social2scale.com"
+# Lead-Benachrichtigung an Sebi UND Phil persoenlich (Adressen laut Impressum).
+# Fehlte live vom Deploy am 09.09.2026 bis 28.09. — jede Founder-Mail ging an "undefined".
+NOTIFY_TO = "sebastian@social2scale.com, philipp@social2scale.com"
 
 # Live gelesen am 28.09.2026 (API /schedules): alle 5 Minuten.
 [triggers]
