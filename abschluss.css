@@ -1,0 +1,77 @@
+/* Seitenabschluss und Fussband — geteilt von allen Seiten mit .site-footer.
+   Eigene Datei, weil die Startseite s2s.css bewusst nicht einbindet
+   (docs/SEITEN-BAUEN.md). Nur Tokens, die jede Seite definiert; wo eine Seite
+   ohne Abstands-Token auskommt, greift der Rueckfallwert.
+
+   Vorher: dieselbe Glas-Karte auf fuenf Seiten, darunter ein leerer
+   Verlaufsstreifen, dann ein Fuss aus drei Spalten. Jetzt steht der Abschluss
+   frei auf einem Punktraster, laeuft ohne Luecke in den Fuss, und der Fuss
+   endet in der Wortmarke. */
+
+/* ── Abschluss ─────────────────────────────────────────────── */
+section.abschluss{
+  position:relative;
+  overflow:clip;
+  isolation:isolate;
+  border-top:0;
+  padding-block:clamp(88px,12vw,168px) clamp(40px,5vw,72px);
+}
+/* Punktraster, zur Mitte hin sichtbar, an den Raendern weg */
+section.abschluss::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.17) 1px,transparent 1.5px);
+  background-size:24px 24px;
+  -webkit-mask-image:radial-gradient(ellipse 62% 70% at 50% 46%,#000 20%,transparent 78%);
+          mask-image:radial-gradient(ellipse 62% 70% at 50% 46%,#000 20%,transparent 78%);
+}
+/* Licht von unten: traegt den Blick zum Knopf und geht nahtlos in den Fuss */
+section.abschluss::after{
+  content:"";position:absolute;inset:auto 0 0;height:70%;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(ellipse 48% 60% at 50% 100%,color-mix(in srgb,var(--emerald) 22%,transparent),transparent 72%),
+    linear-gradient(180deg,transparent,var(--ink) 96%);
+}
+
+section.abschluss .band{
+  position:static;
+  background:none;border:0;border-radius:0;box-shadow:none;
+  padding:0;
+  text-align:center;
+}
+section.abschluss .band::before{content:none}
+section.abschluss .band h2{
+  max-width:15ch;margin-inline:auto;
+  font-size:clamp(2.6rem,1.5rem + 4.4vw,5.2rem);
+  line-height:.98;letter-spacing:-.03em;
+}
+section.abschluss .band .lead{max-width:44ch;margin-inline:auto}
+section.abschluss .band .cta-row{justify-content:center}
+section.abschluss .duo{justify-content:center;margin-top:clamp(28px,4vw,40px)}
+
+/* Abschluss und Fuss sind eine Flaeche — kein Aussenabstand dazwischen */
+main:has(> section.abschluss:last-child) + .site-footer{margin-top:0;border-top-color:transparent;box-shadow:none}
+main:has(> section.abschluss:last-child) + .site-footer::before{content:none}
+
+/* ── Fussband mit Wortmarke ─────────────────────────────────── */
+.foot-mark{
+  margin-top:var(--s-8,48px);
+  line-height:0;
+  pointer-events:none;user-select:none;
+}
+.foot-mark img{
+  display:block;width:100%;height:auto;
+  opacity:.075;
+  -webkit-mask-image:linear-gradient(180deg,#000 25%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 25%,transparent 100%);
+}
+.foot-mark + .foot-bottom{margin-top:calc(-1 * clamp(8px,2.2vw,28px))}
+
+/* Ablauf traegt den Abschluss ohne .band — gleiche Haltung */
+section.abschluss.fl-cta .wrap{text-align:center}
+section.abschluss.fl-cta h2{
+  max-width:15ch;margin-inline:auto;
+  font-size:clamp(2.6rem,1.5rem + 4.4vw,5.2rem);
+  line-height:.98;letter-spacing:-.03em;
+}
+section.abschluss.fl-cta .sub{max-width:44ch;margin-inline:auto}
+section.abschluss.fl-cta .fl-cta-row{justify-content:center}

@@ -713,7 +713,34 @@
   .duo-txt b{color:var(--paper);font-weight:600}
   .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color .2s ease,border-color .2s ease}
   .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+  /* FAQ als Nachschlagewerk statt Kastenstapel: Kopf steht links und bleibt
+     stehen, rechts laufen die Fragen auf Haarlinien. */
+  .faq-split{display:grid;gap:var(--s-7)}
+  @media (min-width:900px){
+    .faq-split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,7vw,112px);align-items:start}
+    .faq-split .blk-head{position:sticky;top:calc(var(--header-h,72px) + var(--s-7));margin-bottom:0}
+  }
+  .faq-split .blk-head{margin-bottom:0}
+  .faq-split .faq{gap:0;border-top:1px solid var(--line-2)}
+  .faq-split .faq details,.faq-split .faq details:hover,.faq-split .faq details[open]{
+    background:none;border:0;border-radius:0;box-shadow:none;border-bottom:1px solid var(--line-2)}
+  .faq-split .faq summary{padding:var(--s-6) 0;font-size:clamp(1.2rem,1rem + .7vw,1.55rem);line-height:1.25;transition:color .2s var(--ease)}
+  .faq-split .faq summary:hover{color:var(--emerald-soft)}
+  .faq-split .faq summary:focus-visible{outline:2px solid var(--emerald);outline-offset:4px;border-radius:4px}
+  .faq-split .faq summary::after{
+    content:"";width:34px;height:34px;border-radius:50%;border:1px solid var(--line-3);
+    background:
+      linear-gradient(var(--emerald),var(--emerald)) center/12px 1.5px no-repeat,
+      linear-gradient(var(--emerald),var(--emerald)) center/1.5px 12px no-repeat;
+    transition:transform .3s var(--ease),background-color .3s var(--ease),border-color .3s var(--ease)}
+  .faq-split .faq details[open] summary::after{transform:rotate(135deg);border-color:var(--emerald);background-color:color-mix(in srgb,var(--emerald) 12%,transparent)}
+  .faq-split .faq p{padding:0 56px var(--s-6) 0;font-size:1.02rem}
+  .faq-split .faq details::details-content{block-size:0;overflow:clip;transition:block-size .35s var(--ease),content-visibility .35s allow-discrete}
+  .faq-split .faq details[open]::details-content{block-size:auto}
+  .faq-split{interpolate-size:allow-keywords}
+  @media (prefers-reduced-motion:reduce){.faq-split .faq details::details-content,.faq-split .faq summary::after{transition:none}}
 </style>
+<link rel="stylesheet" href="/abschluss.css">
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
@@ -1032,7 +1059,7 @@
     </div></section>
 
 
-    <section class="blk" id="faq"><div class="wrap wrap-narrow reveal">
+    <section class="blk" id="faq"><div class="wrap faq-split reveal">
       <div class="blk-head head">
         <span class="klabel">Häufige Fragen</span>
         <h2>Gut zu <em>wissen</em>.</h2>
@@ -1046,8 +1073,8 @@
       </div>
     </div></section>
 
-    <section class="blk"><div class="wrap reveal">
-      <div class="band has-photo">
+    <section class="blk abschluss"><div class="wrap reveal">
+      <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
@@ -1096,6 +1123,7 @@
         </ul>
       </nav>
     </div>
+    <div class="foot-mark" aria-hidden="true"><img src="/assets/wortmarke-geist.webp" alt="" width="1600" height="239" loading="lazy" decoding="async" style="max-width:100%;height:auto;opacity:.075"></div>
     <div class="foot-bottom">
       <span>© <span id="yr"></span> social2scale</span>
       <span class="foot-legal">

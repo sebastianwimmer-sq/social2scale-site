@@ -667,7 +667,34 @@
   .duo-txt b{color:var(--paper);font-weight:600}
   .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color .2s ease,border-color .2s ease}
   .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+  /* Personas als Spalten statt Kartenraster (28.09.2026): keine Flaeche, keine
+     Icon-Chips, keine Geisterziffer. Haarlinien trennen, die Linie oben fuellt
+     sich beim Drueberfahren — die Spalte, bei der man bleibt, wird markiert. */
+  .fw-personas{gap:0;border-top:1px solid var(--line-2)}
+  .fw-pcard,.fw-pcard:hover{
+    background:none;border:0;border-radius:0;box-shadow:none;transform:none;
+    padding:clamp(28px,3vw,40px) clamp(20px,2.4vw,36px) clamp(28px,3vw,40px)}
+  .fw-pcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;
+    background:linear-gradient(90deg,var(--emerald),var(--cyan));
+    transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+  .fw-pcard:hover::before,.fw-pcard:focus-within::before{transform:scaleX(1)}
+  .fw-pcard + .fw-pcard{border-left:1px solid var(--line-2)}
+  .fw-pcard:first-child{padding-left:0}
+  .fw-pcard:last-child{padding-right:0}
+  .fw-pkicker{margin-top:0;color:var(--emerald-soft)}
+  .fw-ptitle{font-size:clamp(1.9rem,1.3rem + 1.8vw,2.9rem);line-height:1.02;margin-top:var(--s-3)}
+  .fw-pledger{border-top:0;padding-top:0;margin-top:auto;gap:var(--s-5)}
+  .fw-pbody{margin-top:auto}
+  .fw-pwho{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .fw-pline{grid-template-columns:1fr;gap:var(--s-1)}
+  .fw-pline.win{padding-top:var(--s-5);border-top:1px dashed var(--line-2)}
+  @media (max-width:880px){
+    .fw-pcard,.fw-pcard:first-child,.fw-pcard:last-child{padding-inline:0}
+    .fw-pcard + .fw-pcard{border-left:0;border-top:1px solid var(--line-2)}
+  }
+  @media (prefers-reduced-motion:reduce){.fw-pcard::before{transition:none}}
 </style>
+<link rel="stylesheet" href="/abschluss.css">
 </head>
 <body>
   <a class="skip" href="#fuer-wen">Zum Inhalt</a>
@@ -748,16 +775,14 @@
 
         <!-- Coaches -->
         <article class="fw-pcard">
-          <span class="fw-pnum" aria-hidden="true">01</span>
           <div class="fw-phead">
-            <span class="fw-picon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v9"/><circle cx="12" cy="16.5" r="3.5"/><path d="M5 6l2 2M19 6l-2 2"/></svg></span>
             <p class="fw-pkicker">Persona 01 · Coaches</p>
             <h3 class="fw-ptitle">Coaches</h3>
             <p class="fw-pwho">Du lebst dein Thema, deine Kund:innen lieben dich — aber online kennt dich nur ein Bruchteil derer, die dich brauchen.</p>
           </div>
           <div class="fw-pbody">
             <div class="fw-pledger">
-              <div class="fw-pline pain"><span class="lbl">Pain</span><span class="val">Top-Wissen, aber zu wenig Reichweite — Empfehlungen statt System.</span></div>
+              <div class="fw-pline pain"><span class="lbl">Heute</span><span class="val">Top-Wissen, aber zu wenig Reichweite — Empfehlungen statt System.</span></div>
               <div class="fw-pline win"><span class="lbl">Wir liefern</span><span class="val">Aus deinem Wissen wird sichtbare Reichweite — und daraus echte Kund:innen.</span></div>
             </div>
           </div>
@@ -765,26 +790,22 @@
 
         <!-- Experten -->
         <article class="fw-pcard">
-          <span class="fw-pnum" aria-hidden="true">02</span>
-          <span class="fw-picon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 21.4 6.99 21 8.2 12.4 4 8.6 9.6 8z"/></svg></span>
           <p class="fw-pkicker">Persona 02 · Experten</p>
           <h3 class="fw-ptitle">Experten</h3>
           <p class="fw-pwho">Du bist in deinem Feld eine Autorität — nur sieht man das online noch nicht.</p>
           <div class="fw-pledger">
-            <div class="fw-pline pain"><span class="lbl">Pain</span><span class="val">Expertise ohne Bühne — die Wahrnehmung hinkt deinem Können hinterher.</span></div>
+            <div class="fw-pline pain"><span class="lbl">Heute</span><span class="val">Expertise ohne Bühne — die Wahrnehmung hinkt deinem Können hinterher.</span></div>
             <div class="fw-pline win"><span class="lbl">Wir liefern</span><span class="val">Eine Positionierung, die deinen Status sichtbar und buchbar macht.</span></div>
           </div>
         </article>
 
         <!-- B2B / Dienstleister -->
         <article class="fw-pcard">
-          <span class="fw-pnum" aria-hidden="true">03</span>
-          <span class="fw-picon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21V8l6-3 6 3"/><path d="M15 21V11l6 3v7"/><path d="M3 21h18"/><path d="M7 12h0M7 16h0M11 12h0M11 16h0"/></svg></span>
           <p class="fw-pkicker">Persona 03 · B2B</p>
           <h3 class="fw-ptitle">B2B &amp; Dienstleister</h3>
           <p class="fw-pwho">Ihr liefert ab — aber online findet euch keiner, und Leads kommen nur über Umwege.</p>
           <div class="fw-pledger">
-            <div class="fw-pline pain"><span class="lbl">Pain</span><span class="val">Kein oder schwacher Auftritt — Wachstum hängt an Empfehlung und Zufall.</span></div>
+            <div class="fw-pline pain"><span class="lbl">Heute</span><span class="val">Kein oder schwacher Auftritt — Wachstum hängt an Empfehlung und Zufall.</span></div>
             <div class="fw-pline win"><span class="lbl">Wir liefern</span><span class="val">Einen Auftritt von 0 auf sichtbar — bis Anfragen von selbst kommen.</span></div>
           </div>
         </article>
@@ -860,7 +881,7 @@
     </div></section>
 
     <!-- 6. Closing CTA — reuses existing .band -->
-    <section class="fw-blk"><div class="wrap reveal">
+    <section class="fw-blk abschluss"><div class="wrap reveal">
       <div class="band">
         <span class="klabel">Bereit für planbares Wachstum?</span>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
@@ -904,6 +925,7 @@
         </ul>
       </nav>
     </div>
+    <div class="foot-mark" aria-hidden="true"><img src="/assets/wortmarke-geist.webp" alt="" width="1600" height="239" loading="lazy" decoding="async" style="max-width:100%;height:auto;opacity:.075"></div>
     <div class="foot-bottom">
       <span>© <span id="yr"></span> social2scale</span>
       <span class="foot-legal">
