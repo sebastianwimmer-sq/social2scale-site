@@ -17,174 +17,139 @@
 <meta name="robots" content="noindex,follow">
 <meta name="theme-color" content="#03080D">
 <title>social2scale — Links</title>
-<meta name="description" content="Gratis-Vorschau, Erstgespräch, Preise und Wissen von social2scale auf einen Blick.">
+<meta name="description" content="Gratis-Vorschau, Erstgespräch, Preise und Antworten von social2scale.">
 <link rel="canonical" href="https://social2scale.com/links/">
-<link rel="preload" href="/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/links/img/vorschau-feed.webp" as="image" fetchpriority="high">
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/s2s.css">
 <style>
-  /* Link-Seite (Instagram-Bio). Eine Spalte, am Daumen gebaut.
-     Tokens kommen aus s2s.css — hier nur, was diese Fläche allein braucht. */
+  /* Link-Seite (Instagram-Bio) nach dem Linktree-Muster: Profil, EIN
+     hervorgehobener Weg, vier Knöpfe. Tiefe entsteht aus drei Lagen:
+     Aurora-Grund (s2s.css) · Wellen-Video der Website · Glas darüber.
+     Das Handy auf der Hauptkarte ist ein eigenes Higgsfield-Motiv
+     (29.09.2026) — bewusst OHNE Zahlen: die Regler-Werte der Website
+     sind illustrativ und im Register für Instagram gesperrt. */
   :root{
-    --col:30rem;
-    --r-card:22px; --r-row:16px;
-    --focus:0 0 0 3px rgba(4,32,26,.9),0 0 0 5px var(--emerald-soft);
-    --glow-primary:0 30px 70px -34px rgba(0,184,136,.55),0 22px 60px -40px rgba(31,166,224,.5);
+    --col:26.5rem;
+    --glas:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.03));
+    --glas-rand:rgba(255,255,255,.12);
+    --glas-tiefe:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.25),0 1px 2px rgba(0,0,0,.35),0 18px 40px -22px rgba(0,0,0,.8);
+    --focus:0 0 0 2px #03080D,0 0 0 4px var(--emerald-soft);
   }
-  body{font-size:17px;min-height:100svh}
+  body{font-size:16px;min-height:100svh}
+  .welle{position:fixed;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;mix-blend-mode:screen;opacity:.55;pointer-events:none}
+  @media (prefers-reduced-motion:reduce){.welle{display:none}}
   .blatt{position:relative;z-index:2;width:min(100%,var(--col));margin-inline:auto;
-    padding:calc(env(safe-area-inset-top,0px) + 40px) 18px calc(env(safe-area-inset-bottom,0px) + 36px)}
+    padding:calc(env(safe-area-inset-top,0px) + 44px) 18px calc(env(safe-area-inset-bottom,0px) + 28px)}
 
-  /* ===== Kopf ===== */
-  .kopf{display:grid;justify-items:center;text-align:center;gap:14px;margin-bottom:28px}
-  /* Die Datei trägt oben und unten viel transparenten Rand — Ausschnitt statt neuer Datei */
-  .kopf img{width:min(244px,66vw);height:auto;aspect-ratio:1300/250;object-fit:cover;object-position:50% 50%;display:block}
-  .kopf p{color:var(--muted);font-size:15.5px;line-height:1.5;max-width:26ch}
-  .kopf .claim{font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:17px;color:var(--paper);
-    background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  /* ===== Profil ===== */
+  .profil{display:grid;justify-items:center;text-align:center}
+  /* Story-Ring wie in der App — dreht sich langsam */
+  .ring{position:relative;width:104px;height:104px;border-radius:50%;padding:3px;display:grid;place-items:center;isolation:isolate}
+  .ring::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:-1;
+    background:conic-gradient(from var(--w,0deg),#1FC998,#46BEEA,#1FA6E0,#0E6B55,#1FC998)}
+  .ring img{width:100%;height:100%;border-radius:50%;border:3px solid #03080D;display:block}
+  @property --w{syntax:"<angle>";inherits:false;initial-value:0deg}
+  @media (prefers-reduced-motion:no-preference){.ring::before{animation:drehen 8s linear infinite}}
+  @keyframes drehen{to{--w:360deg}}
+  .profil h1{margin-top:14px;font-family:"Hanken Grotesk",system-ui,sans-serif;font-size:19px;font-weight:700;letter-spacing:.01em}
+  .profil p{margin-top:4px;color:var(--muted);font-size:15px;line-height:1.45}
+  .profil p em{font-family:"Fraunces",Georgia,serif;font-style:italic;color:var(--paper)}
 
-  /* ===== Hauptweg: Gratis-Vorschau ===== */
-  .haupt{position:relative;display:block;text-decoration:none;color:inherit;border-radius:var(--r-card);
-    padding:22px 20px 20px;isolation:isolate;
-    background:linear-gradient(180deg,rgba(18,40,36,.92),rgba(12,22,28,.94));
-    box-shadow:var(--hi-2),var(--glow-primary);
+  /* ===== Der Hauptweg ===== */
+  .haupt{position:relative;display:grid;grid-template-columns:44% 1fr;align-items:end;margin-top:56px;
+    border-radius:24px;text-decoration:none;color:inherit;isolation:isolate;
+    background:radial-gradient(120% 90% at 0% 100%,rgba(0,184,136,.30),transparent 60%),linear-gradient(160deg,rgba(18,44,40,.92),rgba(6,16,20,.94));
+    box-shadow:var(--glas-tiefe),0 34px 70px -34px rgba(0,184,136,.55);
     transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
-  /* Verlaufskante: eigene Schicht, damit der Radius sauber bleibt */
-  .haupt::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;z-index:-1;
-    background:linear-gradient(140deg,rgba(31,201,152,.85),rgba(70,190,234,.35) 45%,rgba(255,255,255,.06) 80%);
-    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude}
-  .haupt:hover{transform:translateY(-2px)}
-  .haupt:focus-visible{outline:none;box-shadow:var(--focus),var(--glow-primary)}
-  .marke{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;
-    letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
-  .marke::before{content:"";width:22px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,var(--emerald),var(--teal));
-    box-shadow:0 0 8px rgba(0,184,136,.45)}
-  .haupt h1{font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(26px,7.4vw,31px);line-height:1.08;
-    letter-spacing:-.015em;margin:12px 0 16px;text-wrap:balance}
-  .haupt h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  /* umlaufende Lichtkante */
+  .haupt::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.2px;z-index:-1;
+    background:conic-gradient(from var(--w,0deg),rgba(31,201,152,.95),rgba(70,190,234,.2) 30%,rgba(255,255,255,.08) 55%,rgba(70,190,234,.6) 80%,rgba(31,201,152,.95));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  @media (prefers-reduced-motion:no-preference){.haupt::before{animation:drehen 6s linear infinite}}
+  /* das Handy ragt aus der Karte heraus */
+  .haupt__bild{position:relative;align-self:stretch;min-height:190px}
+  /* Das Motiv stand auf reinem Schwarz — das Schwarz ist in der Datei als
+     Transparenz herausgerechnet (Unscreen), damit das Handy auch ÜBER den
+     Kartenrand ragen kann. `screen` allein wirkte nur innerhalb der Karte. */
+  .haupt__bild img{position:absolute;left:-4%;bottom:6px;width:112%;height:auto;aspect-ratio:4/5;object-fit:cover;
+    transform:translateY(-10%) rotate(-4deg);transition:transform .6s var(--ease)}
+  .haupt__text{padding:22px 18px 20px 4px}
+  .marke{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
+  .haupt h2{margin:8px 0 14px;font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:25px;line-height:1.06;letter-spacing:-.01em}
+  .haupt h2 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .los{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;font-weight:700;font-size:15px;
+    color:var(--emerald-ink);background:linear-gradient(135deg,#1FC998,#46BEEA);
+    box-shadow:0 10px 26px -10px rgba(0,184,136,.7),inset 0 1px 0 rgba(255,255,255,.45)}
+  .los span{transition:transform .4s var(--ease)}
+  .haupt:hover{transform:translateY(-3px)}
+  .haupt:hover .haupt__bild img{transform:translateY(-13%) rotate(-2deg)}
+  .haupt:hover .los span{transform:translateX(3px)}
+  .haupt:active{transform:translateY(0) scale(.99)}
+  .haupt:focus-visible{outline:none;box-shadow:var(--focus),var(--glas-tiefe)}
 
-  /* Mini-Feed: zeigt, WAS man bekommt — ein Raster, kein Symbolbild */
-  .feed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border-radius:12px;overflow:hidden;margin-bottom:18px}
-  .feed i{aspect-ratio:4/5;display:block;position:relative;overflow:hidden}
-  .feed i:nth-child(1){background:radial-gradient(90% 70% at 20% 10%,rgba(31,201,152,.75),transparent 60%),#0B1A17}
-  .feed i:nth-child(2){background:linear-gradient(160deg,#F2F3F1,#DCE3DF)}
-  .feed i:nth-child(3){background:linear-gradient(200deg,#1FA6E0,#0B3A4E)}
-  .feed i:nth-child(4){background:linear-gradient(180deg,#141518,#0A0B0D)}
-  .feed i:nth-child(5){background:radial-gradient(80% 60% at 70% 80%,rgba(70,190,234,.7),transparent 62%),#08161E}
-  .feed i:nth-child(6){background:linear-gradient(150deg,#1FC998,#0E6B55)}
-  /* Textzeilen als Andeutung auf den Kacheln */
-  .feed i::before,.feed i::after{content:"";position:absolute;left:12%;height:5%;border-radius:3px;background:currentColor;opacity:.85}
-  .feed i::before{bottom:22%;width:62%}
-  .feed i::after{bottom:13%;width:40%;opacity:.5}
-  .feed i{color:rgba(242,243,241,.9)}
-  .feed i:nth-child(2){color:#0A0B0D}
-  @media (prefers-reduced-motion:no-preference){
-    .feed i{animation:kachel 1s var(--ease) both}
-    .feed i:nth-child(2){animation-delay:.08s}.feed i:nth-child(3){animation-delay:.16s}
-    .feed i:nth-child(4){animation-delay:.24s}.feed i:nth-child(5){animation-delay:.32s}.feed i:nth-child(6){animation-delay:.4s}
-  }
-  @keyframes kachel{from{opacity:0;transform:scale(.94)}}
+  /* ===== Knöpfe ===== */
+  .knoepfe{list-style:none;display:grid;gap:12px;margin-top:16px}
+  .knopf{position:relative;display:flex;align-items:center;justify-content:center;min-height:60px;padding:0 56px;border-radius:18px;
+    text-decoration:none;color:var(--paper);font-weight:650;font-size:16px;text-align:center;
+    background:var(--glas);border:1px solid var(--glas-rand);box-shadow:var(--glas-tiefe);
+    -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);
+    transition:transform .35s var(--ease),background .35s var(--ease),border-color .35s var(--ease)}
+  .knopf .ic{position:absolute;left:10px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(160deg,rgba(31,201,152,.22),rgba(31,166,224,.10));box-shadow:inset 0 0 0 1px rgba(31,201,152,.25);color:var(--emerald-soft)}
+  .knopf .ic svg{width:20px;height:20px}
+  .knopf .gesichter{position:absolute;left:10px;top:50%;margin-top:-18px;display:flex}
+  .knopf .gesichter img{width:36px;height:36px;border-radius:50%;border:2px solid #0b1716;object-fit:cover;display:block}
+  .knopf .gesichter img+img{margin-left:-10px}
+  .knopf .pfeil{position:absolute;right:18px;color:var(--faint);transition:transform .35s var(--ease),color .35s var(--ease)}
+  .knopf:hover{transform:translateY(-2px);background:linear-gradient(180deg,rgba(31,201,152,.12),rgba(255,255,255,.04));border-color:rgba(31,201,152,.4)}
+  .knopf:hover .pfeil{transform:translateX(3px);color:var(--emerald-soft)}
+  .knopf:active{transform:scale(.985)}
+  .knopf:focus-visible{outline:none;box-shadow:var(--focus)}
 
-  .knopf{display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;border-radius:999px;
-    font-weight:700;font-size:16.5px;color:var(--emerald-ink);
-    background:linear-gradient(135deg,#1FC998,#46BEEA);
-    box-shadow:0 16px 38px -14px rgba(0,184,136,.65),inset 0 1px 0 rgba(255,255,255,.45)}
-  .knopf .pfeil{transition:transform .4s var(--ease)}
-  .haupt:hover .pfeil{transform:translateX(4px)}
-  .notiz{margin-top:10px;text-align:center;font-size:14px;color:var(--muted)}
-
-  /* ===== Zweiter Weg: Erstgespräch ===== */
-  .gespraech{display:flex;align-items:center;gap:14px;margin-top:12px;padding:14px 16px;border-radius:var(--r-row);
-    text-decoration:none;color:inherit;background:var(--surf-grad);box-shadow:var(--depth);border:1px solid var(--line);
-    transition:background .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease)}
-  .gesichter{display:flex;flex:0 0 auto}
-  .gesichter img{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid #111416;display:block}
-  .gesichter img+img{margin-left:-12px}
-  .gespraech .text b{display:block;font-size:16.5px;font-weight:650;line-height:1.3}
-  .gespraech .text span{display:block;font-size:14px;color:var(--muted);line-height:1.35}
-  .gespraech .pfeil{margin-left:auto;color:var(--emerald-soft);font-size:20px;transition:transform .35s var(--ease)}
-
-  /* ===== Gruppen ===== */
-  .gruppe{margin-top:34px}
-  .gruppe h2{font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;
-    color:var(--faint);margin:0 4px 10px}
-  .liste{list-style:none;border-radius:var(--r-row);overflow:hidden;background:var(--surf-grad);box-shadow:var(--depth);border:1px solid var(--line)}
-  .liste li+li{border-top:1px solid var(--line)}
-  .zeile{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;min-height:62px;padding:12px 16px;
-    text-decoration:none;color:inherit;transition:background .3s var(--ease)}
-  .zeile .nr{font-family:"Fraunces",Georgia,serif;font-style:italic;font-size:15px;color:var(--emerald-soft);min-width:1.4em}
-  .zeile b{display:block;font-size:16px;font-weight:600;line-height:1.3}
-  .zeile span{display:block;font-size:14px;color:var(--muted);line-height:1.35}
-  .zeile .pfeil{color:var(--faint);transition:transform .3s var(--ease),color .3s var(--ease)}
-
-  .gespraech:hover,.zeile:hover{background:rgba(0,184,136,.07)}
-  .gespraech:hover{border-color:rgba(0,184,136,.35)}
-  .gespraech:hover .pfeil,.zeile:hover .pfeil{transform:translateX(4px);color:var(--emerald-soft)}
-  .gespraech:focus-visible,.zeile:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--emerald-soft)}
-  .gespraech:focus-visible{box-shadow:var(--focus)}
-
-  /* ===== Fuss ===== */
-  .fuss{margin-top:40px;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 18px;font-size:13.5px}
+  .fuss{margin-top:36px;display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:13px}
   .fuss a{color:var(--faint);text-decoration:none;padding:12px 2px;min-height:44px;display:inline-flex;align-items:center}
   .fuss a:hover{color:var(--paper)}
   .fuss a:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:2px;border-radius:4px}
 
-  /* Eintritt: Kopf, Hauptweg, dann der Rest — je Block einmal, nicht jedes Element */
   @media (prefers-reduced-motion:no-preference){
-    .auf{animation:auf .9s var(--ease) both}
-    .auf:nth-of-type(2){animation-delay:.08s}
-    .auf.spaet{animation-delay:.2s}
+    .auf{animation:auf .9s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms)}
   }
-  @keyframes auf{from{opacity:0;transform:translateY(14px)}}
+  @keyframes auf{from{opacity:0;transform:translateY(12px)}}
 </style>
 </head>
 <body>
+<video class="welle" autoplay muted loop playsinline preload="metadata" src="/assets/ambient-soft.mp4" aria-hidden="true"></video>
 <main class="blatt">
-  <header class="kopf auf">
-    <img src="/assets/wordmark-t.webp" alt="social2scale" width="1300" height="731" fetchpriority="high">
-    <p><span class="claim">Strategie statt Zufall.</span><br>Instagram für Coaches, Experten &amp; B2B: wir bauen, produzieren und betreuen.</p>
+  <header class="profil auf">
+    <span class="ring"><img src="/links/img/profil.webp" alt="social2scale" width="256" height="256"></span>
+    <h1>@social2scale</h1>
+    <p>Instagram für Coaches, Experten &amp; B2B.<br><em>Strategie statt Zufall.</em></p>
   </header>
 
-  <section aria-labelledby="t-gratis" class="auf">
-    <a class="haupt" href="/gratis/" data-ziel="gratis">
-      <span class="marke">Kostenlos · ohne Gespräch</span>
-      <h1 id="t-gratis">Dein Feed-Entwurf in <em>60 Sekunden.</em></h1>
-      <div class="feed" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-      <span class="knopf">Gratis-Vorschau starten <span class="pfeil" aria-hidden="true">→</span></span>
-      <p class="notiz">Mit deinem Foto und deiner Farbe.</p>
-    </a>
+  <a class="haupt auf" style="--i:1" href="/gratis/" data-ziel="gratis">
+    <span class="haupt__bild" aria-hidden="true"><img src="/links/img/vorschau-feed.webp" alt="" width="640" height="800"></span>
+    <span class="haupt__text">
+      <span class="marke">Gratis · 60 Sek.</span>
+      <h2>Dein Feed, <em>vorab.</em></h2>
+      <span class="los">Vorschau starten <span aria-hidden="true">→</span></span>
+    </span>
+  </a>
 
-    <a class="gespraech" href="/anfrage/" data-ziel="anfrage">
-      <span class="gesichter" aria-hidden="true">
-        <img src="/assets/founder-sebastian-avatar-192.webp" alt="" width="192" height="192" loading="lazy">
-        <img src="/assets/founder-philipp-avatar-192.webp" alt="" width="192" height="192" loading="lazy">
-      </span>
-      <span class="text"><b>Lieber gleich reden?</b><span>Kostenloses Erstgespräch mit Sebi &amp; Phil</span></span>
-      <span class="pfeil" aria-hidden="true">→</span>
-    </a>
-  </section>
-
-  <section class="gruppe auf spaet" aria-labelledby="t-pruefen">
-    <h2 id="t-pruefen">Erst prüfen, dann entscheiden</h2>
-    <ul class="liste">
-      <li><a class="zeile" href="/preise/" data-ziel="preise"><span class="nr">€</span><span><b>Preise</b><span>Alle sieben Pakete mit Endpreis</span></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/results/" data-ziel="results"><span class="nr">✓</span><span><b>Prüf uns</b><span>Woran du uns messen kannst</span></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/ablauf/" data-ziel="ablauf"><span class="nr">→</span><span><b>Ablauf</b><span>Vier Phasen. Ab Monat zwei machst du nichts mehr.</span></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/about/" data-ziel="about"><span class="nr">S&amp;P</span><span><b>Über uns</b><span>Wer hinter social2scale steht</span></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-    </ul>
-  </section>
-
-  <section class="gruppe auf spaet" aria-labelledby="t-wissen">
-    <h2 id="t-wissen">Ehrliche Antworten</h2>
-    <ul class="liste">
-      <li><a class="zeile" href="/wissen/was-kostet-social-media-betreuung/" data-ziel="wissen"><span class="nr">01</span><span><b>Was kostet Social-Media-Betreuung?</b></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/wissen/wie-lange-bis-ergebnisse/" data-ziel="wissen"><span class="nr">02</span><span><b>Wie lange, bis es Ergebnisse bringt?</b></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/wissen/selbst-machen-oder-agentur/" data-ziel="wissen"><span class="nr">03</span><span><b>Selbst machen oder abgeben?</b></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/wissen/social-media-agentur-auswaehlen/" data-ziel="wissen"><span class="nr">04</span><span><b>Woran erkennt man eine gute Agentur?</b></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-      <li><a class="zeile" href="/wissen/ablauf-zusammenarbeit/" data-ziel="wissen"><span class="nr">05</span><span><b>Wie läuft die Zusammenarbeit ab?</b></span><span class="pfeil" aria-hidden="true">→</span></a></li>
-    </ul>
-  </section>
+  <ul class="knoepfe">
+    <li class="auf" style="--i:2"><a class="knopf" href="/anfrage/" data-ziel="anfrage">
+      <span class="gesichter" aria-hidden="true"><img src="/assets/founder-sebastian-avatar-192.webp" alt="" width="192" height="192"><img src="/assets/founder-philipp-avatar-192.webp" alt="" width="192" height="192"></span>
+      Erstgespräch anfragen<span class="pfeil" aria-hidden="true">→</span></a></li>
+    <li class="auf" style="--i:3"><a class="knopf" href="/preise/" data-ziel="preise">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5 11 5h8v8l-7.5 7.5a1.5 1.5 0 0 1-2 0l-6-6a1.5 1.5 0 0 1 0-2Z"/><circle cx="15.5" cy="8.5" r="1.3"/></svg></span>
+      Preise<span class="pfeil" aria-hidden="true">→</span></a></li>
+    <li class="auf" style="--i:4"><a class="knopf" href="/results/" data-ziel="results">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.4 3.1 8 7.5 9.5 4.4-1.5 7.5-5.1 7.5-9.5V6L12 3Z"/><path d="m8.8 12.2 2.2 2.2 4.3-4.6"/></svg></span>
+      Prüf uns<span class="pfeil" aria-hidden="true">→</span></a></li>
+    <li class="auf" style="--i:5"><a class="knopf" href="/wissen/" data-ziel="wissen">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 5.5c2.5-1.3 5-1.3 7.5 0v14c-2.5-1.3-5-1.3-7.5 0v-14Z"/><path d="M12 5.5c2.5-1.3 5-1.3 7.5 0v14c-2.5-1.3-5-1.3-7.5 0"/></svg></span>
+      Ehrliche Antworten<span class="pfeil" aria-hidden="true">→</span></a></li>
+  </ul>
 
   <footer class="fuss">
     <a href="/">social2scale.com</a>
