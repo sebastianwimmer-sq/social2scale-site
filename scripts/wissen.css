@@ -266,4 +266,3 @@
             mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%)}
   .w-cta h2{font-weight:450;font-size:clamp(1.7rem,1.2rem + 2.2vw,2.5rem);line-height:1.05;letter-spacing:-.025em;margin-bottom:.8rem}
 
-  .site-footer .foot-mark{max-width:720px;margin:8px auto 0;padding:0 var(--px)}
