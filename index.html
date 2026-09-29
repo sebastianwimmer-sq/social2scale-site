@@ -739,6 +739,51 @@
   .faq-split .faq details[open]::details-content{block-size:auto}
   .faq-split{interpolate-size:allow-keywords}
   @media (prefers-reduced-motion:reduce){.faq-split .faq details::details-content,.faq-split .faq summary::after{transition:none}}
+  /* ===== Flaechen-Rhythmus (29.09.2026) =====
+     Referenzen (kit-build/web-referenzen-evidenz.json): Apple, Stripe,
+     Locomotive, Instrument wechseln die Flaeche entschieden; Linear bleibt
+     dunkel, gibt aber jedem Kapitel ein eigenes Bild statt einer Wolke.
+     Vorher lag dieselbe grun-blaue Aurora unter JEDEM Abschnitt — eine Flaeche
+     ohne Kapitel. Jetzt: ruhiges Fast-Schwarz als Grund, Atmosphaere nur in
+     zwei Momenten (Hero, Abschluss), ein Papier-Kapitel dazwischen. */
+  body{background:#07090B;background-image:none}
+  .hero{background:
+      radial-gradient(90% 70% at 12% 0%,rgba(0,184,136,.30),transparent 60%),
+      radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.22),transparent 60%),#07090B}
+  /* Kapitel ohne Foto-Schleier: das Kapitel-Bild (Handy, Dashboard) traegt */
+  .qcheck .sec-bg,.proof .sec-bg{display:none}
+  .proof{background:
+      linear-gradient(rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,
+      linear-gradient(90deg,rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,#07090B;
+    -webkit-mask-image:none}
+  .proof::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(70% 60% at 70% 45%,transparent 0,#07090B 78%)}
+
+  /* ── Papier-Kapitel: Leistungen ── */
+  #leistungen{--p-grund:#EFEDE7;--p-tinte:#0E1512;--p-leise:#4A544F;--p-linie:rgba(14,21,18,.14);--p-akzent:#0B6B50;
+    background:var(--p-grund);color:var(--p-tinte);border-top:0}
+  #leistungen .sec-bg{display:none}
+  #leistungen .klabel{color:var(--p-akzent)}
+  #leistungen h2{color:var(--p-tinte)}
+  #leistungen h2 em{background:none;-webkit-text-fill-color:currentColor;color:var(--p-akzent)}
+  #leistungen .lead{color:var(--p-leise)}
+  #leistungen .bento{display:block;border-top:1px solid var(--p-linie);margin-top:var(--s-7)}
+  #leistungen .cell,#leistungen .cell:hover{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);
+    grid-template-rows:auto auto 1fr;gap:var(--s-2) clamp(24px,5vw,80px);align-items:start;
+    background:none;border:0;border-radius:0;box-shadow:none;transform:none;
+    padding:clamp(28px,3.4vw,44px) 0;border-bottom:1px solid var(--p-linie)}
+  /* Etikett und Titel in einer Spalte, Text und Schlagworte in der zweiten */
+  #leistungen .cell .n{grid-column:1;grid-row:1;color:var(--p-akzent);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+  #leistungen .cell h3{grid-column:1;grid-row:2;margin:0;color:var(--p-tinte);font-size:clamp(2.2rem,1.4rem + 2.6vw,3.6rem);line-height:1;letter-spacing:-.03em}
+  #leistungen .cell p{grid-column:2;grid-row:1 / span 2;align-self:end;margin:0;color:var(--p-leise);font-size:1.02rem;max-width:40ch}
+  #leistungen .cell .spacer{display:none}
+  #leistungen .cell .tags{grid-column:2;grid-row:3;display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--s-3)}
+  #leistungen .cell .tag{background:none;border:1px solid var(--p-linie);color:var(--p-tinte);box-shadow:none}
+  #leistungen .cell h3,#leistungen .cell-hero h3{font-size:clamp(2.2rem,1.4rem + 2.6vw,3.6rem)}
+  @media (max-width:760px){
+    #leistungen .cell,#leistungen .cell:hover{grid-template-columns:1fr;gap:var(--s-3)}
+    #leistungen .cell .n,#leistungen .cell h3,#leistungen .cell p,#leistungen .cell .tags{grid-column:1;grid-row:auto}
+  }
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 </head>
