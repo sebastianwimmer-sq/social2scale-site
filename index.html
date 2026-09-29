@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-Y5JASQB+wZDuIfOyqWa4Opa7fJY35+6whFrCSpoh1zI=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-AvfgsyOMOVIQfK48c3o7QLpDmV/YKSHNLlTPZcDuehI=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-wdKkno/egB44QF2KHwpPOsu4r8uVUQt7QEy4LtqnV7w=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-AvfgsyOMOVIQfK48c3o7QLpDmV/YKSHNLlTPZcDuehI=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -784,6 +784,28 @@
   /* Ein Etikett fuer alle Kapitel (vorher Mono klein vs. Mono Versal gruen) */
   .ix,.s2eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:none;color:var(--faint)}
   .textlink{gap:.45em}
+  /* ── Rhythmus & Details (29.09.2026) ── */
+  /* Kette: noch nicht erreichte Glieder in gedaempfter Farbe statt 38 % Deckkraft
+     (vorher 2,05:1 — jetzt die faint-Farbe, die ueberall die Latte haelt) */
+  .kette-glieder li{opacity:1}
+  .kette-glieder li:not(.an) b,.kette-glieder li:not(.an) span:not(.kg-punkt){color:var(--faint)}
+  /* Kapitelkopf zweispaltig: Zeile links, Lead rechts (Linear, Vercel) */
+  @media (min-width:900px){
+    #leistungen .blk-head.head{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);column-gap:clamp(24px,5vw,80px);align-items:end;max-width:none}
+    #leistungen .blk-head .ix{grid-column:1 / -1}
+    #leistungen .blk-head h2{grid-column:1;max-width:none;margin-top:0}
+    #leistungen .blk-head .lead{grid-column:2;margin:0;padding-bottom:.4em}
+  }
+  /* Kein 300-px-Loch vor dem Abschluss */
+  section.abschluss{padding-top:clamp(64px,8vw,120px)}
+  /* „scroll“ lag ueber den Fortschrittspunkten der Handy-Szene */
+  .s2hero .hint{display:none}
+  /* Handy: die Anfrage-Leiste (76 px) darf die Szene nicht zudecken */
+  @media (max-width:759px){
+    .s2hero-pin{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+    .phone{height:min(52vh,500px)}
+    .dots{bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+  }
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 </head>
@@ -1180,21 +1202,17 @@
         'Der Account trägt sich: Ältere Beiträge werden weiter gefunden, das Publikum wächst ohne jedes Mal neuen Anschub.'];
       var FLUSS=[0.2,0.46,0.74,1];
       var knoepfe=[].slice.call(k.querySelectorAll('[data-p]')), glieder=[].slice.call(k.querySelectorAll('[data-ab]'));
-      var txt=document.getElementById('kette-text'), auto=null;
+      var txt=document.getElementById('kette-text');
       function setzen(p){
         k.style.setProperty('--fluss',FLUSS[p]);
         knoepfe.forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.p===p));});
         glieder.forEach(function(g){g.classList.toggle('an',p>=+g.dataset.ab);});
         if(txt)txt.textContent=TEXT[p];
       }
-      knoepfe.forEach(function(b){b.addEventListener('click',function(){if(auto){clearInterval(auto);auto=null;}setzen(+b.dataset.p);});});
+      knoepfe.forEach(function(b){b.addEventListener('click',function(){setzen(+b.dataset.p);});});
       setzen(3);
-      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(reduce||!('IntersectionObserver' in window))return;
-      /* Einmal durchlaufen, wenn das Kapitel ins Bild kommt — dann steht es auf „Ab Monat 6". */
-      var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(!e.isIntersecting)return;ob.disconnect();
-        var p=0;setzen(0);auto=setInterval(function(){p++;setzen(p);if(p>=3){clearInterval(auto);auto=null;}},1400);});},{threshold:.5});
-      ob.observe(k);
+      /* Kein Selbstlauf (29.09.2026): der Text wechselte alle 1,4 s, waehrend man
+         ihn las. Die Kette steht auf „Ab Monat 6“, die Phasen tippt man selbst an. */
     })();
 
     // ===== scrollspy nav-state (handmade touch) =====
