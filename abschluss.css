@@ -121,3 +121,42 @@ header.bar .brand, .af-logo { view-transition-name: marke; }
    sonst bis zum Ende stehen und verschwindet dann schlagartig. */
 ::view-transition-old(kopf):only-child { animation: s2sKnopfWeg 220ms ease both; }
 ::view-transition-new(kopf):only-child { animation: s2sKarteDa 320ms 120ms ease both; }
+
+/* ── Bedienbarkeit (29.09.2026, Audit der Startseite) ─────────────────────── */
+
+/* Mobilmenue: `.mobile-menu{display:flex}` ueberstimmte das hidden-Attribut —
+   das zugeklappte Menue lag nur per transform ausserhalb des Bildes und war
+   mit der Tabulatortaste erreichbar (9 unsichtbare Tab-Stopps, WCAG 2.4.3/
+   2.4.7). Das Hereingleiten startet jetzt per @starting-style, weil das
+   Element aus display:none kommt. */
+.mobile-menu[hidden],.nav-scrim[hidden]{display:none!important}
+@starting-style{
+  .mobile-menu.open{transform:translateX(105%)}
+  .nav-scrim.open{opacity:0}
+}
+
+/* Feste Anfrage-Leiste am Handy: sie darf nichts verdecken. Platz am Seitenende
+   reservieren und den Nach-oben-Knopf darueber heben (vorher lag er komplett
+   darunter und Impressum/Datenschutz waren nicht antippbar). */
+@media (max-width:759px){
+  body:has(.sticky-cta){padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+  body:has(.sticky-cta.on) .to-top{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+}
+
+/* Trefferflaechen ab 44 px (PRODUCT.md), ohne das Schriftbild zu aendern */
+.textlink,.duo-txt a,.foot-brand .foot-mail{display:inline-flex;align-items:center;min-height:44px}
+.foot-col a,.foot-legal a,.foot-bottom a{display:inline-flex;align-items:center;min-height:44px}
+.foot-col ul{gap:0!important}
+.foot-ig{width:44px!important;height:44px!important}
+.kette-phasen button{min-height:44px}
+
+/* Grundschrift 17 px; kleine Lesetexte (>= 40 Zeichen) nicht unter 16 px */
+body{font-size:17px}
+.cta-note,.kette-glieder span:not(.kg-punkt),.pcap p,.duo-txt,.foot-brand p{font-size:max(16px,1em)}
+
+/* Wer weniger Bewegung will, bekommt keine — auch nicht von spezifischeren
+   Regeln (vorher liefen `ring`/`pulse` in der Handy-Attrappe endlos weiter). */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+}

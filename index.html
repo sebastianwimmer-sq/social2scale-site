@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+fvYhD95Qmu8+RCvYxVAyQdsqxl467nFsoq/6HiP9wc=' 'sha256-Y5JASQB+wZDuIfOyqWa4Opa7fJY35+6whFrCSpoh1zI=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-AvfgsyOMOVIQfK48c3o7QLpDmV/YKSHNLlTPZcDuehI=' 'sha256-wotW+xyfpT5I6+sseXFInpcryZMtMZExBEXwP2tbjik=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-+fvYhD95Qmu8+RCvYxVAyQdsqxl467nFsoq/6HiP9wc=' 'sha256-Y5JASQB+wZDuIfOyqWa4Opa7fJY35+6whFrCSpoh1zI=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-AvfgsyOMOVIQfK48c3o7QLpDmV/YKSHNLlTPZcDuehI=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -870,7 +870,7 @@
         <h2 class="s2title">Ein Account. Vier Phasen. <em class="s2em">Von null bis Wachstum.</em></h2>
       </div>
 
-      <div class="stage">
+      <div class="stage" aria-hidden="true">
         <div class="phone" id="phone">
           <div class="bloom" aria-hidden="true"></div>
           <div class="reflect" aria-hidden="true"></div>
@@ -886,7 +886,7 @@
 
                 <div class="app" id="app">
                   <div class="hdr">
-                    <a class="u" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">social2scale <span class="live" aria-hidden="true"></span><span class="vf"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span></a>
+                    <a tabindex="-1" class="u" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">social2scale <span class="live" aria-hidden="true"></span><span class="vf"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span></a>
                     <div class="dots-i">•••</div>
                   </div>
                   <div class="prof">
@@ -903,7 +903,7 @@
                     <div class="lk">🔗 social2scale.com/anfrage</div>
                   </div>
                   <div class="pills">
-                    <a class="pill pri" id="followBtn" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Folgen</a><a class="pill" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Nachricht</a><div class="pill sq">＋</div>
+                    <a tabindex="-1" class="pill pri" id="followBtn" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Folgen</a><a tabindex="-1" class="pill" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Nachricht</a><div class="pill sq">＋</div>
                   </div>
                   <div class="grid">
                     <div class="tile"><span class="lk"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-10-9.2C.6 8.8 2.2 6 5.3 6c1.9 0 3.1 1 3.7 2 .6-1 1.8-2 3.7-2 3.1 0 4.7 2.8 3.3 5.8C19.5 16.4 12 21 12 21z"/></svg>2,3k</span></div>
@@ -1393,14 +1393,24 @@
       var zeigen = heroWeg && !endeDa;
       bar.classList.toggle("on", zeigen);
       bar.setAttribute("aria-hidden", zeigen ? "false" : "true");
+      bar.inert = !zeigen;   /* ausgeblendet = nicht per Tastatur erreichbar */
     }
     new IntersectionObserver(function (es) {
       heroWeg = !es[0].isIntersecting; stellen();
     }, { threshold: 0 }).observe(hero);
     if (ende) {
-      new IntersectionObserver(function (es) {
-        endeDa = es[0].isIntersecting; stellen();
-      }, { threshold: 0, rootMargin: "0px 0px 120px 0px" }).observe(ende);
+      /* Die Lage des Abschluss-Knopfs wird beim Scrollen direkt gelesen: ein
+         Beobachter meldet sich nicht, wenn man in EINEM Sprung (Ende-Taste,
+         Anker, schneller Wisch) ueber ihn hinweg springt — dann kam die Leiste
+         am Seitenende zurueck und lag ueber Impressum/Datenschutz. */
+      var t = false;
+      var pruefen = function () {
+        t = false;
+        endeDa = ende.getBoundingClientRect().top < window.innerHeight + 120;
+        stellen();
+      };
+      window.addEventListener("scroll", function () { if (!t) { t = true; requestAnimationFrame(pruefen); } }, { passive: true });
+      pruefen();
     }
   })();
 </script>
