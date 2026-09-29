@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-A2gmgHnSqXonPp8TzKIiU1wv7jpidMyGTzjBK4DdYlg=' 'sha256-vah3Rs3XYVPopikU3QuG2TpoQztHGwxMuMYdCYQU2G8=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-vah3Rs3XYVPopikU3QuG2TpoQztHGwxMuMYdCYQU2G8=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -39,7 +39,7 @@
 <link rel="stylesheet" href="/s2s.css">
 <!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
 <script src="/s2s.js" defer></script>
-<noscript><style>#loader{display:none!important}.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
+<noscript><style>.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
   </style></noscript>
 <style>
   /* ===== /ablauf/ — die Tiefe zu Kapitel 03 der Startseite =====
@@ -126,22 +126,7 @@
 </head>
 <body>
   <a class="skip" href="#ablauf-inhalt">Zum Inhalt</a>
-
-  <div id="loader" aria-hidden="true"><img src="/assets/s2s-t.webp" alt="" width="124" height="62"><div class="ldr-bar" aria-hidden="true"></div></div>
-  <script>
-  (function(){var l=document.getElementById('loader');if(!l)return;var t0=Date.now();
-    function hide(){l.classList.add('done');}window.addEventListener('pageshow',function(e){if(e.persisted)hide();});
-    window.addEventListener('load',function(){if((((performance.getEntriesByType&&performance.getEntriesByType('navigation')[0])||{}).type)==='reload'&&location.hash){history.replaceState(null,'',location.pathname+location.search);window.scrollTo({top:0,behavior:'instant'});requestAnimationFrame(function(){window.scrollTo({top:0,behavior:'instant'});});}setTimeout(hide,Math.max(0,900-(Date.now()-t0)));});
-    setTimeout(hide,1200);
-    document.addEventListener('click',function(e){
-      var a=e.target.closest?e.target.closest('a'):null;if(!a)return;
-      var h=a.getAttribute('href')||'';
-      if(!h||h.charAt(0)==='#'||a.target==='_blank'||/^(mailto:|tel:)/i.test(h))return;
-      if(/^https?:\/\//i.test(h)&&h.indexOf('social2scale.com')===-1)return; /* externe Links: kein Loader */
-      l.classList.remove('done');
-    });
-  })();
-  </script>
+  
 
   <header class="bar">
     <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
