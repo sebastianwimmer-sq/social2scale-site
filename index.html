@@ -749,6 +749,42 @@
     .kette-phasen button{padding:11px 8px;font-size:12.5px}
   }
   @media (prefers-reduced-motion:reduce){.kette-fluss,.kette-glieder li,.kg-punkt{transition:none}}
+  /* ── Kapitel 01/02 (Gespraechsbogen, 29.09.2026) ── */
+  .kap{padding:var(--section-y) 0;border-top:1px solid var(--line)}
+  .kap h2{max-width:20ch}
+  .kap-tuer{margin-top:clamp(var(--s-6),3vw,var(--s-7));gap:8px}
+  .st-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:clamp(var(--s-7),4vw,var(--s-8));border-top:1px solid var(--line-2)}
+  .st-card{position:relative;padding:clamp(24px,2.6vw,34px) clamp(18px,2.4vw,32px) 8px}
+  .st-card:first-child{padding-left:0}
+  .st-card:last-child{padding-right:0}
+  .st-card + .st-card{border-left:1px solid var(--line-2)}
+  .st-let{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.16em;color:var(--emerald-soft);margin-bottom:var(--s-4)}
+  .st-ist{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.3rem,1.05rem + .9vw,1.7rem);line-height:1.25;letter-spacing:-.015em;color:var(--paper)}
+  .st-kost{margin-top:var(--s-4);font-size:1rem;line-height:1.55;color:var(--muted);max-width:34ch}
+  .st-bridge{margin-top:clamp(var(--s-7),4vw,var(--s-8));font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.3rem,1.05rem + .9vw,1.8rem);line-height:1.3;letter-spacing:-.015em;color:var(--muted);max-width:30ch}
+  .st-bridge b{color:var(--paper);font-weight:430;font-style:italic}
+  @media (max-width:760px){
+    .st-grid{grid-template-columns:1fr}
+    .st-card,.st-card:first-child,.st-card:last-child{padding:22px 0 20px}
+    .st-card + .st-card{border-left:0;border-top:1px solid var(--line-2)}
+  }
+  .wa-scale{display:flex;justify-content:space-between;gap:var(--s-4);margin-top:clamp(var(--s-7),4vw,var(--s-8));font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .wa-list{list-style:none;margin:var(--s-3) 0 0;padding:0}
+  .wa-row{padding:clamp(20px,2.4vw,28px) 0;border-top:1px solid var(--line)}
+  .wa-head{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:var(--s-2) clamp(20px,4vw,56px);align-items:baseline;margin-bottom:var(--s-4)}
+  .wa-name{font-family:"Fraunces",serif;font-weight:430;font-size:clamp(1.15rem,1rem + .5vw,1.4rem);color:var(--paper)}
+  .wa-note{font-size:1rem;line-height:1.5;color:var(--muted)}
+  .wa-track{position:relative;height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden}
+  .wa-track .fillbar{display:block;height:100%;width:100%;border-radius:99px;background:var(--line-3);transform-origin:left;transform:scaleX(var(--fill,1))}
+  .wa-row.is-us .wa-name{color:var(--emerald-soft)}
+  .wa-row.is-us .wa-note{color:var(--paper)}
+  .wa-row.is-us .wa-track{height:8px}
+  .wa-row.is-us .fillbar{background:var(--accent-flow);box-shadow:0 0 14px rgba(31,201,152,.4)}
+  .wa-close{margin-top:clamp(var(--s-7),4vw,var(--s-8));font-size:clamp(1.05rem,1rem + .35vw,1.2rem);line-height:1.5;color:var(--muted)}
+  .wa-close b{color:var(--paper);font-weight:600}
+  @media (max-width:760px){.wa-head{grid-template-columns:1fr}}
+  /* Sebi & Phil schon im Hero — mittig unter dem Knopf */
+  .hero-duo{justify-content:center;margin-top:clamp(var(--s-6),3vw,var(--s-7))}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 </head>
@@ -818,44 +854,61 @@
             </picture>
             <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
           </h1>
-          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn — <b>du musst nichts können ausser reden.</b></p>
+          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn — <b>du musst nichts können außer reden.</b></p>
           <div class="cta-row r" style="animation-delay:.38s">
             <a class="btn btn-primary" id="cta" href="/gratis/">Gratis-Vorschau starten →</a>
             <a class="textlink" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
           </div>
           <p class="cta-note r" style="animation-delay:.42s">Dein Feed-Entwurf in 60 Sekunden — kostenlos, mit deinem Foto und deiner Farbe.</p>
-          <ul class="hero-trust r" style="animation-delay:.4s" aria-label="Mehrwert auf einen Blick">
-            <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</li>
-            <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</li>
-            <li><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in deinem Bereich</li>
-          </ul>
+          <div class="duo hero-duo r" style="animation-delay:.46s">
+            <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
+            <p class="duo-txt">Zwei Gründer, die selbst Hand anlegen: <b>Sebi &amp; Phil</b>.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Quick-Check: 30-Sek-Scan ob's passt -->
-    <section class="qcheck photo-sec" aria-labelledby="qcheck-h">
-      <div class="sec-bg wave" aria-hidden="true"></div>
+    <!-- 01 · Schmerz und 02 · Einwand — der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
+         Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
+         Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
+    <section class="kap" id="stand" aria-labelledby="stand-h">
       <div class="wrap reveal">
-        <p class="klabel" id="qcheck-h">Der 30-Sekunden-Check</p>
-        <div class="qc-grid">
-          <div class="qc-item">
-            <span class="qc-lbl">Für wen</span>
-            <p class="qc-txt">Coaches, Experten &amp; B2B — mit noch keinem oder schwachem Social-Auftritt.</p>
-          </div>
-          <div class="qc-item">
-            <span class="qc-lbl">Was wir machen</span>
-            <p class="qc-txt"><b>Done-for-you:</b> Profil, Content &amp; persönliche Betreuung. Wir bauen, du wächst.</p>
-          </div>
-          <div class="qc-item">
-            <span class="qc-lbl">So startet’s</span>
-            <p class="qc-txt">Kurzes Erstgespräch → wir bauen dein System → Fortschritt live in deinem Bereich.</p>
-          </div>
+        <p class="ix"><b>01</b> · Wo du gerade stehst</p>
+        <h2 id="stand-h">Eines davon <em>bist du</em>.</h2>
+        <div class="st-grid">
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">A</span>
+            <p class="st-ist">Du bist gut in dem, was du tust. Online gibt es dich nicht.</p>
+            <p class="st-kost">Wer dich weiterempfiehlt, schickt Leute auf ein leeres Profil.</p>
+          </article>
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">B</span>
+            <p class="st-ist">Ein Profil ist da. Der letzte Beitrag ist von letztem Jahr.</p>
+            <p class="st-kost">Ein eingeschlafener Auftritt wirkt schlechter als gar keiner.</p>
+          </article>
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">C</span>
+            <p class="st-ist">Du postest regelmäßig. Likes kommen, Anfragen nicht.</p>
+            <p class="st-kost">Du arbeitest für Reichweite, die nichts einbringt.</p>
+          </article>
         </div>
-        <div class="qc-cta">
-          <a class="btn btn-primary" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="textlink" href="#leistungen">Oder mehr erfahren</a>
-        </div>
+        <p class="st-bridge">Alle drei kosten dasselbe: <b>Aufträge, die jemand anders bekommt.</b></p>
+        <a class="textlink kap-tuer" href="/for-you/">Für wen wir bauen <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="kap" id="warum" aria-labelledby="warum-h">
+      <div class="wrap reveal">
+        <p class="ix"><b>02</b> · Warum's bisher nicht klappte</p>
+        <h2 id="warum-h">Du hast es ja <em>schon versucht</em>.</h2>
+        <p class="wa-scale" aria-hidden="true"><span>Heute</span><span>Ein Auftritt, der trägt</span></p>
+        <ol class="wa-list">
+          <li class="wa-row"><div class="wa-head"><span class="wa-name">Selbst posten</span><span class="wa-note">Zwischen zwei Kundenterminen. Hält drei Wochen.</span></div><div class="wa-track"><i class="fillbar" style="--fill:.32"></i></div></li>
+          <li class="wa-row"><div class="wa-head"><span class="wa-name">Werkstudent</span><span class="wa-note">Postet, was du vorgibst. Die Strategie bleibt deine Aufgabe.</span></div><div class="wa-track"><i class="fillbar" style="--fill:.48"></i></div></li>
+          <li class="wa-row"><div class="wa-head"><span class="wa-name">Agentur von der Stange</span><span class="wa-note">Du bist Kunde 47. Dein Content sieht auch danach aus.</span></div><div class="wa-track"><i class="fillbar" style="--fill:.4"></i></div></li>
+          <li class="wa-row is-us"><div class="wa-head"><span class="wa-name">Mit uns</span><span class="wa-note">Strategie, Produktion und Betreuung übernehmen wir. Du gibst die Richtung vor.</span></div><div class="wa-track"><i class="fillbar" style="--fill:1"></i></div></li>
+        </ol>
+        <p class="wa-close">Der Unterschied ist nicht Fleiß. <b>Es ist, ob jemand das Ganze verantwortet.</b></p>
       </div>
     </section>
 
@@ -866,7 +919,7 @@
       <div class="vignette" aria-hidden="true"></div>
 
       <div class="s2head">
-        <span class="s2eyebrow">So läuft’s ab</span>
+        <span class="s2eyebrow">03 · So läuft’s ab</span>
         <h2 class="s2title">Ein Account. Vier Phasen. <em class="s2em">Von null bis Wachstum.</em></h2>
       </div>
 
@@ -946,7 +999,7 @@
       <div class="wrap">
         <div class="proof-grid reveal">
           <div class="proof-copy">
-            <p class="ix"><b>Live</b> · dein Bereich</p>
+            <p class="ix"><b>04</b> · Dein Bereich</p>
             <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
             <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools.</p>
             <ul class="proof-points">
@@ -954,6 +1007,7 @@
               <li>Leads statt Likes</li>
               <li>Umsatz, schwarz auf weiß</li>
             </ul>
+            <a class="textlink kap-tuer" href="/results/">Woran du uns messen kannst <span aria-hidden="true">→</span></a>
           </div>
           <div class="proof-visual">
             <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen —
@@ -982,20 +1036,9 @@
       </div>
     </section>
 
-    <section class="trust" aria-label="Unsere Stärken">
-      <div class="wrap">
-        <div class="row reveal">
-          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Done-for-you</div>
-          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Persönlich betreut</div>
-          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Messbar in deinem Bereich</div>
-          <div class="item"><span class="chk" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span>Von null bis Wachstum</div>
-        </div>
-      </div>
-    </section>
-
     <section class="blk photo-sec" id="leistungen"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
       <div class="blk-head head">
-        <span class="klabel">Was wir machen</span>
+        <p class="ix"><b>05</b> · Was wir machen</p>
         <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
         <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
       </div>
@@ -1025,7 +1068,7 @@
 
     <section class="blk" id="faq"><div class="wrap faq-split reveal">
       <div class="blk-head head">
-        <span class="klabel">Häufige Fragen</span>
+        <p class="ix"><b>06</b> · Häufige Fragen</p>
         <h2>Gut zu <em>wissen</em>.</h2>
       </div>
       <div class="faq">
@@ -1039,7 +1082,7 @@
 
     <section class="blk abschluss"><div class="wrap reveal">
       <div class="band">
-        <span class="klabel">Bereit für planbares Wachstum?</span>
+        <p class="ix"><b>07</b> · Nächster Schritt</p>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
         <div class="cta-row">
