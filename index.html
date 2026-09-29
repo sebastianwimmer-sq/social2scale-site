@@ -232,8 +232,6 @@
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:clamp(var(--s-5),3vw,var(--s-6));max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
   /* hero trust row — 3 value pills, semantic emerald checks */
-  .hero-trust{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s-4) var(--s-6);margin-top:clamp(var(--s-5),2.5vw,var(--s-6));font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;color:var(--muted)}
-  .hero-trust li{display:flex;align-items:center;gap:var(--s-2)}
   .cta-row{display:flex;gap:var(--s-6);align-items:center;flex-wrap:wrap;margin-top:var(--s-7)}
   .hero-center .cta-row{justify-content:center;margin-top:clamp(var(--s-6),3.5vw,var(--s-7))}
 
@@ -282,15 +280,11 @@
   }
 
   /* ===== trust strip — compact, editorial ===== */
-  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .trust .row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5) var(--s-7);padding:var(--s-5) 0}
-  .trust .item{display:flex;align-items:center;gap:var(--s-3);font-size:.92rem;color:var(--muted);font-weight:500}
   .chk{flex:0 0 auto;width:18px;height:18px;display:grid;place-items:center}
   .chk svg{width:14px;height:14px;stroke:var(--emerald);stroke-width:2.6;fill:none}
 
   /* ===== blocks ===== */
   section.blk{padding:var(--section-y) 0;border-top:1px solid var(--line)}
-  .trust + section.blk{border-top:0}
   .blk-head{margin-bottom:var(--s-8)}
   /* section index marker — small technical mono coordinate above the label */
   .ix{display:flex;align-items:center;gap:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;color:var(--faint);margin-bottom:var(--s-4)}
@@ -602,14 +596,6 @@
   @media (prefers-reduced-motion:reduce){#loader .ldr-bar::before{animation:none;transform:none;width:100%;opacity:.45}}
   
   /* ===== Quick-Check: 30-Sek-Scan ob's passt ===== */
-  .qcheck{padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line)}
-  .qc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-5),3vw,var(--s-7));margin-top:var(--s-6)}
-  .qc-item{position:relative;padding-left:var(--s-4);border-left:2px solid;border-image:linear-gradient(180deg,var(--emerald),var(--teal)) 1}
-  .qc-lbl{display:block;font-family:"Archivo",sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
-  .qc-txt{margin-top:var(--s-3);font-size:clamp(1.02rem,.97rem + .35vw,1.18rem);line-height:1.5;color:var(--muted)}
-  .qc-txt b{color:var(--paper);font-weight:600}
-  .qc-cta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-5);margin-top:clamp(var(--s-6),3.5vw,var(--s-7))}
-  @media (max-width:760px){.qc-grid{grid-template-columns:1fr;gap:var(--s-5)}}
   
   /* Sticky-CTA fürs Handy (Launch-Check 20.08.): die Startseite ist ~10.800 px
      hoch — wer unten ankommt, hatte keinen Knopf mehr in Daumennähe. Erscheint
@@ -679,7 +665,6 @@
       radial-gradient(90% 70% at 12% 0%,rgba(0,184,136,.30),transparent 60%),
       radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.22),transparent 60%),#07090B}
   /* Kapitel ohne Foto-Schleier: das Kapitel-Bild (Handy, Dashboard) traegt */
-  .qcheck .sec-bg,.proof .sec-bg{display:none}
   .proof{background:
       linear-gradient(rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,
       linear-gradient(90deg,rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,#07090B;
@@ -785,6 +770,12 @@
   @media (max-width:760px){.wa-head{grid-template-columns:1fr}}
   /* Sebi & Phil schon im Hero — mittig unter dem Knopf */
   .hero-duo{justify-content:center;margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+  /* Preise sichtbar statt im 4. FAQ versteckt (offen ist euer Unterschied) */
+  .preiszeile{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-3) var(--s-6);margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+  .preiszeile p{font-size:1.05rem;color:var(--muted);max-width:60ch}
+  .preiszeile b{color:var(--paper);font-weight:600;font-variant-numeric:tabular-nums}
+  .pz-lbl{display:inline-block;margin-right:12px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald-soft)}
+  .faq a{color:var(--emerald-soft);text-underline-offset:3px}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 </head>
@@ -1039,7 +1030,7 @@
     <section class="blk photo-sec" id="leistungen"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
       <div class="blk-head head">
         <p class="ix"><b>05</b> · Was wir machen</p>
-        <h2>Von <em>null</em> bis Wachstum — alles aus einer Hand.</h2>
+        <h2>Alles aus <em>einer Hand</em>.</h2>
         <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
       </div>
       <div class="bento">
@@ -1063,6 +1054,10 @@
           <p>Reichweite → Leads → Umsatz. Inklusive Ads &amp; Paid Growth, messbar in deinem Bereich.</p>
         </div>
       </div>
+      <div class="preiszeile">
+        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig · laufende Betreuung ab <b>523,60 €</b> im Monat.</p>
+        <a class="textlink" href="/preise/">Alle sieben Pakete mit Endpreisen <span aria-hidden="true">→</span></a>
+      </div>
     </div></section>
 
 
@@ -1076,7 +1071,7 @@
         <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. Reichweite &amp; Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in deinem Bereich.</p></details>
         <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um.</p></details>
         
-        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der Preisseite — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
+        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a> — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
       </div>
     </div></section>
 
