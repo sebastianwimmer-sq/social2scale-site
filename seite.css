@@ -4,33 +4,19 @@
    Entscheidungen inline (Flaechen-Rhythmus vom 29.09.2026).
 
    Was hier entschieden ist und warum:
-   - Ruhiger Grund statt Aurora-Wolke unter jedem Abschnitt. Eine Wolke ueber
-     allem liest sich als EINE Flaeche ohne Kapitel
-     (kit-build/web-referenzen-evidenz.json, Regel "flaechen-wechsel").
-   - Atmosphaere nur im Kopf und im Abschluss jeder Seite.
+   - Grund: das Emerald-Licht der Marke (abschluss.css). Der ruhige schwarze
+     Grund vom 01.10. wirkte flach (Sebi: "dunkel, flach und langweilig").
    - Verlaufsschrift nur noch an zwei Stellen je Seite (Kopf + Abschluss);
      wenn jede Ueberschrift leuchtet, leuchtet keine.
    - Leitsaetze stehen als eigenes Band auf der Anthrazit-Flaeche.
    - Etiketten in Hanken-Versalien (zwei Familien, fonts.css). */
 
-/* ── Grund ─────────────────────────────────────────────────── */
-body,
-body:where(*){
-  background:#07090B;
-  background-image:none;
-  font-synthesis-weight:none;
-}
-@media (max-width:700px){
-  body{background:#07090B;background-image:none}
-}
+/* ── Grund: Emerald-Licht kommt aus abschluss.css (eine Quelle fuer alle Seiten) ── */
+body{font-synthesis-weight:none}
 
-/* Kopf ohne eigenes Foto bekommt das Licht der Startseite */
-.fl-hero{
-  background:
-    radial-gradient(90% 70% at 12% 0%,rgba(0,184,136,.26),transparent 60%),
-    radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.18),transparent 60%),
-    #07090B;
-}
+/* Kopf ohne eigenes Foto: das Licht kommt jetzt vom Grund (abschluss.css) —
+   ein zweiter Schein hier machte ihn am Handy zu hell fuer die Etiketten */
+.fl-hero{background:none}
 
 /* ── Hervorhebung: Gradient-Flow auf jedem betonten Wort ──
    Erst auf Kopf + Abschluss begrenzt (01.10.2026), damit er heraussticht —
@@ -141,3 +127,6 @@ ul.ab-creed > li > span{font-size:17px}
 p.pr-alt-du{font-size:17px}
 
 
+
+/* "Unsere Empfehlung" stand am Handy im hellsten Licht bei 4,31:1 */
+.pr-emp-lbl{color:#6EE3BF}

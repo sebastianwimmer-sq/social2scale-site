@@ -223,3 +223,34 @@ section.abschluss .rueckfall .textlink{display:inline;min-height:0}
    (Startseite; die Unterseiten setzen dasselbe in seite.css) */
 .ix::after{background:linear-gradient(90deg,#1FC998,rgba(70,190,234,.55) 55%,transparent)}
 section.abschluss .ix::after{content:none}
+
+/* ── Grund: Emerald-Licht (01.10.2026) ─────────────────────────
+   EINE Quelle fuer alle Seiten (Startseite + Unterseiten). Zwischendurch
+   stand hier ruhiges Fast-Schwarz — Sebi: "sieht iwie so dunkel jz alles
+   aus, flach und langweilig". Das Licht ist das Zeichen der Marke:
+   Emerald oben links, Tuerkis unten rechts, fest am Fenster, damit beim
+   Scrollen jedes Kapitel im Licht steht. Kapitel mit eigener Flaeche
+   (Leistungen, Leitsatz-Baender) setzen sich davon ab. */
+body{
+  background:
+    radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
+    radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+    linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+  background-attachment:fixed;
+  background-color:#03080D;
+}
+/* Handy: fixed wird oft ignoriert oder ruckelt — grosse, mitlaufende Flaeche */
+@media (max-width:700px){
+  body{
+    background:
+      radial-gradient(130% 55% at 8% 1%,rgba(0,184,136,.32),transparent 56%),
+      radial-gradient(130% 60% at 96% 99%,rgba(20,140,200,.28),transparent 58%),
+      linear-gradient(160deg,#04140F 0%,#05131C 55%,#03080D 100%);
+    background-attachment:scroll;background-size:cover;background-repeat:no-repeat;
+  }
+}
+
+/* Grautoene fuer das Licht: --faint/--muted waren auf Fast-Schwarz gerechnet;
+   auf dem Emerald-Licht fielen Etiketten und Unterzeilen auf 3,0–4,4:1
+   (gemessen an echten Pixeln, 01.10.2026). Eine Stelle fuer alle Seiten. */
+:root{--faint:#ABAEA8;--muted:#BEC0BB}
