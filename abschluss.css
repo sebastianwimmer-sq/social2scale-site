@@ -160,3 +160,20 @@ body{font-size:17px}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
     transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
+
+/* ── Nav-Aktion „Gratis-Vorschau“ (lib/shell.mjs, AKTIONEN) ──
+   Stand bis 01.10.2026 nur in s2s.css — Startseite, Prüf uns, Für wen und
+   Über uns binden die nicht ein und zeigten den Link ungestaltet. Lautstaerke:
+   Menuepunkte gedaempft, dieser Link farbig, der CTA als Flaeche. */
+.nav-soft{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;min-height:44px;
+  font-family:"Hanken Grotesk",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+  color:var(--emerald,#00B888);text-decoration:none;white-space:nowrap;
+  transition:opacity .25s var(--ease,ease),gap .25s var(--ease,ease)}
+.nav-soft::after{content:"\2192";font-size:1.05em;transition:transform .25s var(--ease,ease)}
+.nav-soft:hover{opacity:.82}
+.nav-soft:hover::after{transform:translateX(3px)}
+.nav-soft:focus-visible{outline:2px solid var(--emerald,#00B888);outline-offset:4px;border-radius:4px}
+@media (max-width:960px){.nav .nav-soft{display:none}}
+/* lib/shell.mjs setzt aria-current="page"; manche Seiten kannten nur "true" */
+.nav-links a[aria-current="page"]{color:var(--paper,#F2F3F1)}
+.nav-links a[aria-current="page"]::after{width:100%}

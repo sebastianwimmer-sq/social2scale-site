@@ -1,0 +1,70 @@
+/* Unterseiten-Schicht (01.10.2026) — dieselbe Haltung wie die Startseite.
+   Eingebunden NACH abschluss.css auf Preise, Ablauf, Prüf uns, Für wen,
+   Über uns. Die Startseite bindet sie nicht ein: sie traegt dieselben
+   Entscheidungen inline (Flaechen-Rhythmus vom 29.09.2026).
+
+   Was hier entschieden ist und warum:
+   - Ruhiger Grund statt Aurora-Wolke unter jedem Abschnitt. Eine Wolke ueber
+     allem liest sich als EINE Flaeche ohne Kapitel
+     (kit-build/web-referenzen-evidenz.json, Regel "flaechen-wechsel").
+   - Atmosphaere nur im Kopf und im Abschluss jeder Seite.
+   - Verlaufsschrift nur noch an zwei Stellen je Seite (Kopf + Abschluss);
+     wenn jede Ueberschrift leuchtet, leuchtet keine.
+   - Leitsaetze stehen als eigenes Band auf der Anthrazit-Flaeche.
+   - Etiketten in Hanken-Versalien (zwei Familien, fonts.css). */
+
+/* ── Grund ─────────────────────────────────────────────────── */
+body,
+body:where(*){
+  background:#07090B;
+  background-image:none;
+  font-synthesis-weight:none;
+}
+@media (max-width:700px){
+  body{background:#07090B;background-image:none}
+}
+
+/* Kopf ohne eigenes Foto bekommt das Licht der Startseite */
+.fl-hero{
+  background:
+    radial-gradient(90% 70% at 12% 0%,rgba(0,184,136,.26),transparent 60%),
+    radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.18),transparent 60%),
+    #07090B;
+}
+
+/* ── Hervorhebung: einfarbig, Verlauf nur Kopf + Abschluss ── */
+/* Ueberschriften und Leitsaetze: das betonte Wort einfarbig */
+main :is(h2,h3,blockquote) em{
+  background:none;
+  -webkit-text-fill-color:currentColor;
+  color:var(--emerald-soft,#1FC998);
+  text-shadow:none;
+}
+/* Fliesstext: Betonung ueber Gewicht, nicht ueber Farbe */
+main p b,main p strong{
+  background:none;
+  -webkit-text-fill-color:currentColor;
+  color:var(--paper,#F2F3F1);
+}
+main :is(h1) em,
+main section.abschluss h2 em{
+  background:var(--accent-flow,linear-gradient(135deg,#1FC998,#46BEEA));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* ── Leitsaetze als eigenes Band ────────────────────────────── */
+.rs-quote,.fw-quote,.ab-quote{
+  background:linear-gradient(180deg,var(--surface,#141518),#0E0F12);
+  border-block:1px solid var(--line,rgba(242,243,241,.08));
+}
+.rs-quote::before,.fw-quote::before,.ab-quote::before,
+.rs-quote::after,.fw-quote::after,.ab-quote::after{opacity:.5}
+
+/* ── Abschnittsgrenzen: Haarlinie statt Lichtwechsel ────────── */
+main > section + section:not(.abschluss):not(.rs-quote):not(.fw-quote):not(.ab-quote){
+  border-top:1px solid var(--line,rgba(242,243,241,.08));
+}
+
+/* ── Nav-Aktion (Gratis-Vorschau) ───────────────────────────── */
+.nav-soft{font-family:"Hanken Grotesk",sans-serif}
