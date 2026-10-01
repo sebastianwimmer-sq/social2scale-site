@@ -166,7 +166,7 @@ describe('Einsetzen in die Seite', () => {
 });
 
 describe('nummerieren', () => {
-  const rubrik = (n) => `<p class="rs-rh"><b>№ ${n}</b> — X</p>`;
+  const rubrik = (n) => `<p class="rs-rh"><b>${n}</b> · X</p>`;
 
   test('Luecke wird geschlossen (ohne Bewertungen kein Sprung von 05 auf 07)', () => {
     const html = [rubrik('01'), rubrik('05'), rubrik('07')].join('');
