@@ -141,3 +141,11 @@ ul.ab-creed > li > span{font-size:17px}
 /* ── Fuer wen: Pfeil ohne Kreis — der Kreis sah aus wie ein Knopf, tat aber nichts */
 .fw-marrow,.fw-mrow:hover .fw-marrow{border:0;background:none;width:24px;height:24px}
 p.pr-alt-du{font-size:17px}
+
+/* Leitsatz-Band und Zeilentitel: die Seiten setzen den Verlauf mit hoeherer
+   Spezifitaet (.fw-quote blockquote em, .fw-msys .mt b) — hier gleich stark
+   und spaeter geladen, damit die Regel "Verlauf nur Kopf + Abschluss" greift. */
+:is(.fw-quote,.ab-quote,.rs-quote) blockquote em,
+.fw-msys .mt b{
+  background:none;-webkit-text-fill-color:currentColor;color:var(--emerald-soft,#1FC998);
+}
