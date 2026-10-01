@@ -68,3 +68,24 @@ main > section + section:not(.abschluss):not(.rs-quote):not(.fw-quote):not(.ab-q
 
 /* ── Nav-Aktion (Gratis-Vorschau) ───────────────────────────── */
 .nav-soft{font-family:"Hanken Grotesk",sans-serif}
+
+/* ── Kapitelkoepfe ──────────────────────────────────────────
+   max-width in ch stand am BEHAELTER und rechnete gegen 17 px statt gegen
+   die grosse Ueberschrift darin — "Sechs Fragen an jede Agentur" brach ein
+   Wort je Zeile. Die Zeilenlaenge gehoert an das Element, das die Schrift
+   traegt. */
+:is(.pr-blk-head,.rs-blk-head,.fw-blk-head,.ab-blk-head){max-width:none}
+:is(.pr-blk-head,.rs-blk-head,.fw-blk-head,.ab-blk-head) h2{max-width:18ch;text-wrap:balance}
+:is(.pr-blk-head,.rs-blk-head,.fw-blk-head,.ab-blk-head) > p:not([class*="rh"]):not(.ix):not(.eyebrow){max-width:52ch}
+
+/* ── Lesetext ab 17 px (PRODUCT.md, kern.md) ────────────────
+   Gemessen am 01.10.2026 auf Textknoten-Ebene: 15–16,3 px in diesen
+   Rollen. Etiketten in Versalien und Bildunterschriften bleiben kleiner. */
+.pr-alt-vor,.pr-alt-wann,.pr-ueb-fuss,.pr-calc-line,.pr-why-lead,.pr-tax p,
+.fl-fakt-txt,.fl-aufwand-note,.fl-b-item p,
+.rs-mlist .mt > span,
+.fw-pline .val,
+.ab-fbio,main li > span{
+  font-size:17px;
+}
+.rs-mlist .mt > span{line-height:1.55}
