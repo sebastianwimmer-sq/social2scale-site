@@ -129,6 +129,10 @@ function cspFuer(html) {
   const verbinden = ["'self'", ZAEHLUNG];
   if (brauchtTurnstile) verbinden.push(TURNSTILE, TURNSTILE_SUB);
   if (brauchtKalender) verbinden.push(...KALENDER);
+  // Das Onboarding sendet per fetch(), nicht als klassisches Formular — dafür gilt
+  // connect-src, nicht form-action. Fehlte vom 20.08. bis 01.10.2026: jede Kundin
+  // sah nach dem Absenden „fehlgeschlagen", die Mail über Web3Forms kam nie an.
+  if (brauchtFormular) verbinden.push(FORMULAR_ZIEL);
 
   const rahmen = [];
   if (brauchtTurnstile) rahmen.push(TURNSTILE, TURNSTILE_SUB);

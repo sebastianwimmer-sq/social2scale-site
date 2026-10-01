@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-oy8p4162AS8dUzeHrmeJDXrN0+xCVOQWSs1qFwdIvOA=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8CDrLEv4Go/yj40Z/qZ2Wb8TUUZ2HoemoB/sUboK2yA=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://api.web3forms.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -494,7 +494,15 @@
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
         .then(function (r) {
           if (r.ok && r.json && r.json.success) {
-            if (kickoffCta) kickoffCta.setAttribute('href', KICKOFF_URL);
+            // Platzhalter nie als Knopf ausliefern: cal.com/REPLACE-KICKOFF war eine
+            // 404 direkt nach dem Kauf (gefunden 01.10.2026). Ohne echte Adresse
+            // sagt die Seite, was passiert, statt ins Leere zu verlinken.
+            if (kickoffCta && !/REPLACE/.test(KICKOFF_URL)) kickoffCta.setAttribute('href', KICKOFF_URL);
+            else if (kickoffCta) {
+              kickoffCta.parentNode.hidden = true;
+              var hinweis = successEl.querySelector('p');
+              if (hinweis) hinweis.textContent = 'Wir haben deine Antworten. Wir melden uns bei dir, um den Kickoff-Termin zu vereinbaren — da legen wir gemeinsam den Startplan für dein Wachstum fest.';
+            }
             form.style.display = 'none';
             successEl.classList.add('show');
             try { successEl.focus(); } catch (e) {}
