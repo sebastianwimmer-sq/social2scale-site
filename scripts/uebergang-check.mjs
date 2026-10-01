@@ -38,12 +38,19 @@ const server = await new Promise((fertig) => {
 const BASIS = `http://localhost:${server.address().port}`;
 
 const SONDE = `addEventListener('pagereveal', (e) => {
-  window.__vt = { lief: !!e.viewTransition, alt: null, fertig: false };
+  window.__vt = { lief: !!e.viewTransition, alt: null, fertig: false, deckel: null };
   if (!e.viewTransition) { window.__vt.fertig = true; return; }
   requestAnimationFrame(() => requestAnimationFrame(() => {
     window.__vt.alt = document.getAnimations().map((a) => a.effect && a.effect.pseudoElement)
       .filter((p) => p && p.startsWith('::view-transition-old('))
       .map((p) => p.slice(22, -1));
+    /* Liegt eine bildschirmfuellende feste Ebene ueber der Seite? (Bis 29.09.2026
+       deckte eine Ladeblende jeden Wechsel mindestens 0,9 s zu — das Tor sah die
+       Gruppen laufen und meldete gruen, obwohl man nichts davon sah.) */
+    window.__vt.deckel = [...document.querySelectorAll('body *')].filter((el) => {
+      const s = getComputedStyle(el); if (s.position !== 'fixed' || s.visibility === 'hidden' || +s.opacity < 0.5 || s.display === 'none') return false;
+      const r = el.getBoundingClientRect(); return r.width * r.height > innerWidth * innerHeight * 0.8;
+    }).map((el) => el.id || el.className || el.tagName).slice(0, 3);
     window.__vt.fertig = true;
   }));
 });`;
@@ -54,6 +61,7 @@ async function schritt(name, start, klick, erwartet, verboten = []) {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   await ctx.addInitScript(SONDE);
   const s = await ctx.newPage();
+  await s.route('**/closing.social2scale.com/**', (r) => r.abort());
   await s.goto(BASIS + start, { waitUntil: 'load' });
   await s.evaluate(() => { window.__vt = null; });
   const el = s.locator(klick).first();
@@ -65,6 +73,7 @@ async function schritt(name, start, klick, erwartet, verboten = []) {
   const alt = vt.alt || [];
   console.log(`  ${name.padEnd(36)} ${vt.lief ? 'Übergang ✓' : 'Übergang ✗'} · kam mit: ${alt.filter((n) => n !== 'root').join(', ') || '–'}`);
   if (!vt.lief) befunde.push(`${name}: kein Uebergang`);
+  if ((vt.deckel || []).length) befunde.push(`${name}: feste Ebene deckt den Wechsel zu (${vt.deckel.join(', ')})`);
   for (const n of erwartet) if (!alt.includes(n)) befunde.push(`${name}: ${n} kommt nicht von der vorigen Seite`);
   for (const n of verboten) if (alt.includes(n)) befunde.push(`${name}: ${n} haette nicht wandern duerfen`);
 }
