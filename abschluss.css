@@ -160,3 +160,97 @@ body{font-size:17px}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
     transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
+
+/* ── Nav-Aktion „Gratis-Vorschau“ (lib/shell.mjs, AKTIONEN) ──
+   Stand bis 01.10.2026 nur in s2s.css — Startseite, Prüf uns, Für wen und
+   Über uns binden die nicht ein und zeigten den Link ungestaltet. Lautstaerke:
+   Menuepunkte gedaempft, dieser Link farbig, der CTA als Flaeche. */
+.nav-soft{flex:0 0 auto;display:inline-flex;align-items:center;gap:5px;min-height:44px;
+  font-family:"Hanken Grotesk",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+  color:var(--emerald,#00B888);text-decoration:none;white-space:nowrap;
+  transition:opacity .25s var(--ease,ease),gap .25s var(--ease,ease)}
+.nav-soft::after{content:"\2192";font-size:1.05em;transition:transform .25s var(--ease,ease)}
+.nav-soft:hover{opacity:.82}
+.nav-soft:hover::after{transform:translateX(3px)}
+.nav-soft:focus-visible{outline:2px solid var(--emerald,#00B888);outline-offset:4px;border-radius:4px}
+@media (max-width:960px){.nav .nav-soft{display:none}}
+/* lib/shell.mjs setzt aria-current="page"; manche Seiten kannten nur "true" */
+.nav-links a[aria-current="page"]{color:var(--paper,#F2F3F1)}
+.nav-links a[aria-current="page"]::after{width:100%}
+
+/* ── Knopf und Textlink: EIN Baustein fuer alle Seiten (01.10.2026) ──
+   Stand bisher als Kopie im <style> jeder Seite; /ablauf/ hatte keine Kopie,
+   sein Abschluss zeigte zwei unterstrichene Browser-Links statt Knopf. */
+@keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+.btn{position:relative;display:inline-block;font-family:"Hanken Grotesk",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease,cubic-bezier(.16,1,.3,1)),box-shadow .25s}
+.btn:hover{transform:translateY(-3px)}
+.btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
+.btn-primary:hover::after{animation:glint .85s var(--ease,cubic-bezier(.16,1,.3,1)) forwards}
+.textlink{font-family:"Hanken Grotesk",sans-serif;font-size:14px;font-weight:600;letter-spacing:.01em;color:var(--paper);text-decoration:none;position:relative;padding-bottom:3px}
+.textlink::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--line-3);transition:background .25s var(--ease,cubic-bezier(.16,1,.3,1))}
+.textlink:hover{transform:none}
+.textlink:hover::after{background:var(--paper)}
+
+/* ── Fuss am Handy: Spalten nebeneinander statt ein langer Turm ──
+   Vorher stand unter 520 px jede Spalte einzeln — Agentur (8 Links) und
+   Rechtliches untereinander, ein Fuss laenger als ein Bildschirm. */
+@media (max-width:560px){
+  .site-footer .foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6,32px) var(--s-5,24px)}
+  .site-footer .foot-brand{grid-column:1 / -1}
+}
+
+/* ── Rueckfall im Abschluss: die Gratis-Vorschau als leise zweite Tuer ──
+   Die Vorschau ist das Hauptargument (Sebi 01.10.2026); wer am Ende noch
+   zoegert, bekommt sie hier statt nur Gespraech oder Mail. */
+section.abschluss .rueckfall{margin-top:var(--s-5,24px);color:var(--muted,#A4A6A1);font-size:17px}
+section.abschluss .rueckfall .textlink{display:inline;min-height:0}
+
+/* ── Aufzaehlungs-Marker: Punkt statt farbigem Seitenstreifen ──
+   Ein 3-px-Balken links in Akzentfarbe ist das Karten-Muster, das wir
+   ueberall abgebaut haben (impeccable-Bann). Gilt fuer Startseite (.proof-points)
+   und Ueber uns (.ab-creed). */
+.proof-points li::before,.ab-creed li::before{
+  width:6px;height:6px;border-radius:50%;top:.62em;
+  background:var(--emerald-soft,#1FC998);box-shadow:none;
+}
+
+/* ── Instagram im Fuss: Baustein fuer alle Seiten (stand nur in s2s.css und auf der Startseite) */
+.foot-ig{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line-2,rgba(255,255,255,.14));border-radius:10px;color:var(--paper,#F2F3F1);transition:border-color .25s var(--ease,ease),color .25s var(--ease,ease),transform .25s var(--ease,ease)}
+.foot-ig:hover{border-color:rgba(0,184,136,.55);color:#28C281;transform:translateY(-2px)}
+
+/* ── Gradient-Flow im Kapitel-Etikett: die Linie laeuft von Gruen nach Tuerkis aus ──
+   (Startseite; die Unterseiten setzen dasselbe in seite.css) */
+.ix::after{background:linear-gradient(90deg,#1FC998,rgba(70,190,234,.55) 55%,transparent)}
+section.abschluss .ix::after{content:none}
+
+/* ── Grund: Emerald-Licht (01.10.2026) ─────────────────────────
+   EINE Quelle fuer alle Seiten (Startseite + Unterseiten). Zwischendurch
+   stand hier ruhiges Fast-Schwarz — Sebi: "sieht iwie so dunkel jz alles
+   aus, flach und langweilig". Das Licht ist das Zeichen der Marke:
+   Emerald oben links, Tuerkis unten rechts, fest am Fenster, damit beim
+   Scrollen jedes Kapitel im Licht steht. Kapitel mit eigener Flaeche
+   (Leistungen, Leitsatz-Baender) setzen sich davon ab. */
+body{
+  background:
+    radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
+    radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+    linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+  background-attachment:fixed;
+  background-color:#03080D;
+}
+/* Handy: fixed wird oft ignoriert oder ruckelt — grosse, mitlaufende Flaeche */
+@media (max-width:700px){
+  body{
+    background:
+      radial-gradient(130% 55% at 8% 1%,rgba(0,184,136,.32),transparent 56%),
+      radial-gradient(130% 60% at 96% 99%,rgba(20,140,200,.28),transparent 58%),
+      linear-gradient(160deg,#04140F 0%,#05131C 55%,#03080D 100%);
+    background-attachment:scroll;background-size:cover;background-repeat:no-repeat;
+  }
+}
+
+/* Grautoene fuer das Licht: --faint/--muted waren auf Fast-Schwarz gerechnet;
+   auf dem Emerald-Licht fielen Etiketten und Unterzeilen auf 3,0–4,4:1
+   (gemessen an echten Pixeln, 01.10.2026). Eine Stelle fuer alle Seiten. */
+:root{--faint:#ABAEA8;--muted:#BEC0BB}

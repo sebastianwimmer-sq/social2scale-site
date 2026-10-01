@@ -100,7 +100,7 @@ export function abschnittBauen(daten) {
          KEIN aggregateRating/review-Markup: self-serving, siehe Skriptkopf. -->
     <section class="rs-blk" id="stimmen" aria-labelledby="bw-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>№ 06</b> — Nicht von uns</p>
+        <p class="rs-rh"><b>06</b> · Nicht von uns</p>
         <h2 id="bw-h">Was <em>Kundinnen</em> schreiben, wenn wir nicht mitlesen.</h2>
         ${zaehler}
       </div>
@@ -138,13 +138,15 @@ export function einsetzen(html, abschnitt) {
 }
 
 /**
- * Zaehlt die Rubriken (№ 01, № 02 …) in Dokumentreihenfolge neu durch.
+ * Zaehlt die Rubriken (01 · …, 02 · …) in Dokumentreihenfolge neu durch.
+ * Format seit 01.10.2026 wie die Startseite: <b>NN</b> · Titel (vorher <b>№ NN</b> — Titel;
+ * die alte Form wird weiter erkannt, damit ein aelterer Stand nicht still uebersprungen wird).
  * Der Bewertungs-Abschnitt ist mal da und mal nicht — mit fester Nummer
  * sprang die Seite ohne Bewertungen von № 05 auf № 07 (gefunden 27.09.2026).
  */
 export function nummerieren(html) {
   let n = 0;
-  return html.replace(/(class="rs-rh"><b>№ )\d+(<\/b>)/g, (_, vor, nach) =>
+  return html.replace(/(class="rs-rh"><b>(?:№ )?)\d+(<\/b>)/g, (_, vor, nach) =>
     `${vor}${String(++n).padStart(2, '0')}${nach}`
   );
 }

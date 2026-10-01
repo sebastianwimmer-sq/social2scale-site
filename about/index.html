@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-bPSe9EoNBrFtxuMLtzbtkN6v71h4lzDDBYNDdOfWYzI=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7H1XVjUAR+3bbwntAkuDBzyxNBWLMD2ojzn6lTrrTj4=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -599,23 +599,25 @@
   
   </style>
 <link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/seite.css">
 </head>
 <body>
-  <a class="skip" href="#ueber-uns">Zum Inhalt</a>
+  <a class="skip" href="#main">Zum Inhalt</a>
   
 
   <header class="bar">
     <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
+      <!-- SHELL:NAV -->
       <ul class="nav-links">
-        <li><a href="/#leistungen">Leistungen</a></li>
-        <li><a href="/#ablauf">Ablauf</a></li>
         <li><a href="/preise/">Preise</a></li>
-          <li><a href="/for-you/">Für wen</a></li>
-        <li><a href="/about/">Über uns</a></li>
-        <li><a href="/wissen/">Wissen</a></li>
-        <li><a href="/#faq">FAQ</a></li>
+        <li><a href="/ablauf/">Ablauf</a></li>
+        <li><a href="/for-you/">Für wen</a></li>
+        <li><a href="/results/">Prüf uns</a></li>
+        <li><a href="/about/" aria-current="page">Über uns</a></li>
       </ul>
+      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
+<!-- /SHELL:NAV -->
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
@@ -625,21 +627,22 @@
 
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
-    <a class="m-link" href="/#leistungen">Leistungen</a>
-    <a class="m-link" href="/#ablauf">Ablauf</a>
+    <!-- SHELL:MOBIL -->
     <a class="m-link" href="/preise/">Preise</a>
-     <a class="m-link" href="/for-you/">Für wen</a>
-    <a class="m-link" href="/about/">Über uns</a>
-        <a class="m-link" href="/wissen/">Wissen</a>
-    <a class="m-link" href="/#faq">FAQ</a>
+    <a class="m-link" href="/ablauf/">Ablauf</a>
+    <a class="m-link" href="/for-you/">Für wen</a>
+    <a class="m-link" href="/results/">Prüf uns</a>
+    <a class="m-link" href="/about/" aria-current="page">Über uns</a>
+    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
+<!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
     
   </nav>
 
-  <main>
+  <main id="main" tabindex="-1">
     <!-- 1. Editorial hero — oversized Fraunces display vs tiny mono running head -->
     <section class="ab-hero" id="ueber-uns" aria-labelledby="ab-heading" style="position:relative;overflow:hidden"><div class="ab-hero-bg" aria-hidden="true" style="position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.60),rgba(3,8,13,.82) 60%,#03080D 100%),url(/assets/collab.webp) center/cover no-repeat"></div><div class="wrap reveal" style="position:relative;z-index:1">
-      <p class="ab-rh"><b>№ 01</b> — Über uns</p>
+      <p class="ab-rh"><b>01</b> · Über uns</p>
       <h1 id="ab-heading">Wir bauen Systeme,<span class="l2">keine <em>Zufälle</em>.</span></h1>
       <p class="lead">Keine Agentur-Maschine. <b>Zwei Gründer, die selbst Hand anlegen</b> — von der Strategie bis zum letzten Post. Done-for-you, persönlich betreut, jeder Fortschritt messbar in deinem Bereich.</p>
       <div class="cta-row">
@@ -651,21 +654,21 @@
     <!-- 2. Full editorial pull-quote break (brand POV) -->
     <section class="ab-quote" aria-label="Leitsatz"><div class="wrap reveal">
       <blockquote>Wachstum auf Social ist kein Glück.<br>Es wird <em>gebaut</em>.</blockquote>
-      <p class="ab-rh"><b>№ 02</b> — Unser Prinzip</p>
+      <p class="ab-rh"><b>02</b> · Unser Prinzip</p>
     </div></section>
 
     <!-- 3. Mission / Belief — editorial split: statement left, creed right -->
     <section class="ab-mission" aria-labelledby="ab-mission-h"><div class="wrap reveal">
       <div class="ab-mission-grid">
         <div class="ab-mission-copy">
-          <p class="ab-rh"><b>№ 03</b> — Warum es uns gibt</p>
+          <p class="ab-rh"><b>03</b> · Warum es uns gibt</p>
           <h2 id="ab-mission-h">System statt <em>Zufall</em>.</h2>
           <p class="ab-msub">Die meisten verbrennen Monate damit, sich an Reichweite heranzuraten — posten ins Leere, hoffen auf den viralen Treffer, geben auf. <b>Wir haben social2scale gebaut, damit Coaches und Experten genau das nicht müssen.</b> Wir übernehmen den ganzen Auftritt, betreuen dich persönlich und machen jeden Schritt sichtbar.</p>
         </div>
         <ul class="ab-creed" aria-label="Wofür social2scale steht">
           <li>Done-for-you<span>Du gibst die Richtung vor — wir bauen, produzieren und veröffentlichen.</span></li>
           <li>Persönlich betreut<span>Kein Account-Manager-Karussell. Du sprichst direkt mit den Gründern.</span></li>
-          <li>Messbar in deinem Bereich<span>Reichweite, Leads und Umsatz — transparent an einem Ort, statt Zahlen aus zehn Tools.</span></li>
+          <li>Messbar in deinem Bereich<span>Profilaufrufe, Anfragen und Gespräche — an einem Ort, statt Zahlen aus zehn Tools.</span></li>
         </ul>
       </div>
     </div></section>
@@ -673,7 +676,7 @@
     <!-- 4. Die zwei Gründer — two glass cards, emerald-tinted photo plates -->
     <section class="ab-blk" aria-labelledby="ab-founders-h"><div class="wrap reveal">
       <div class="ab-blk-head">
-        <p class="ab-rh"><b>№ 04</b> — Die Gründer</p>
+        <p class="ab-rh"><b>04</b> · Die Gründer</p>
         <h2 id="ab-founders-h">Phil &amp; Sebi</h2>
         <p class="lead">Zwei, die jeden Tag zusammen dran sitzen — und deine Marke wie ihre eigene behandeln.</p>
       </div>
@@ -718,7 +721,7 @@
     <!-- 5. Wie wir arbeiten — numbered editorial rows (fixed numeral track) -->
     <section class="ab-blk" id="wie-wir-arbeiten" aria-labelledby="ab-princ-h"><div class="wrap reveal">
       <div class="ab-blk-head">
-        <p class="ab-rh"><b>№ 05</b> — Wofür wir stehen</p>
+        <p class="ab-rh"><b>05</b> · Wofür wir stehen</p>
         <h2 id="ab-princ-h">Vier Prinzipien, <em>keine Floskeln</em>.</h2>
       </div>
       <div class="ab-rows">
@@ -735,7 +738,7 @@
           <span class="ab-num" aria-hidden="true">02</span>
           <div class="ab-rmain">
             <h3 class="ab-rtitle">Messbar</h3>
-            <p class="ab-rbody">Jeder Schritt sichtbar in echten Zahlen — Reichweite, Leads und Umsatz in deinem Bereich. Du siehst schwarz auf weiß, was wirkt.</p>
+            <p class="ab-rbody">Jeder Schritt sichtbar in echten Zahlen — Profilaufrufe, Anfragen und Gespräche in deinem Bereich. Du siehst, was wirkt.</p>
           </div>
         </div>
 
@@ -761,13 +764,14 @@
     <!-- 6. Closing CTA — reuses existing .band -->
     <section class="ab-blk abschluss"><div class="wrap reveal">
       <div class="band">
-        <span class="klabel">Bereit für planbares Wachstum?</span>
+        <p class="ix"><b>06</b> · Nächster Schritt</p>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
           <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>
         </div>
+        <p class="rueckfall">Noch nicht so weit? <a class="textlink" href="/gratis/">Erst mal die Gratis-Vorschau: dein Feed-Entwurf in 60 Sekunden <span aria-hidden="true">→</span></a></p>
       </div>
     </div></section>
   </main>
@@ -778,16 +782,25 @@
         <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="104" height="52"></a>
         <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
         <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
+        <div class="foot-social" style="display:flex;gap:.6rem;margin-top:.9rem">
+          <a class="foot-ig" href="https://instagram.com/social2scale" target="_blank" rel="noopener" aria-label="social2scale auf Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          </a>
+        </div>
       </div>
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
         <ul>
-          <li><a href="/#leistungen">Leistungen</a></li>
-          <li><a href="/#ablauf">Ablauf</a></li>
+          <!-- SHELL:FOOTER -->
           <li><a href="/preise/">Preise</a></li>
+          <li><a href="/ablauf/">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
+          <li><a href="/results/">Prüf uns</a></li>
           <li><a href="/about/">Über uns</a></li>
+          <li><a href="/#leistungen">Leistungen</a></li>
           <li><a href="/#faq">FAQ</a></li>
+          <li><a href="/gratis/">Gratis-Vorschau</a></li>
+<!-- /SHELL:FOOTER -->
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
@@ -821,16 +834,17 @@
       var menu=document.getElementById('mobile-menu');
       var scrim=document.getElementById('nav-scrim');
       if(!burger||!menu||!scrim)return;
+      function setInert(an){document.querySelectorAll('main,.site-footer').forEach(function(el){el.inert=an;});}
       function open(){
         menu.hidden=false;scrim.hidden=false;
         requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
         burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
-        document.body.classList.add('nav-open');
+        document.body.classList.add('nav-open');setInert(true);
       }
       function close(){
         menu.classList.remove('open');scrim.classList.remove('open');
         burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
-        document.body.classList.remove('nav-open');
+        document.body.classList.remove('nav-open');setInert(false);
         var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
         menu.addEventListener('transitionend',hide);
       }
@@ -838,7 +852,7 @@
       burger.addEventListener('click',toggle);
       scrim.addEventListener('click',close);
       menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true')close();});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true'){close();burger.focus();}});
     })();
 
     // ===== scroll reveal =====

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-aH9jydjzoSc3ebjFMPeE9WxF/DA74g82FLwc5BP203g=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-KoPf1Ij3Yv94wdOTSR5E6N96UXiFEchu0hiKLX8nhYk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-KoPf1Ij3Yv94wdOTSR5E6N96UXiFEchu0hiKLX8nhYk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -122,8 +122,8 @@
   .eyebrow .dot{width:22px;height:1.5px;border-radius:2px;background:linear-gradient(90deg,var(--emerald),var(--teal));box-shadow:0 0 8px rgba(0,184,136,.45);flex:0 0 auto}
   .klabel{font-family:"Hanken Grotesk",sans-serif;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);display:block}
   h2{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(2.2rem,1.4rem + 2.8vw,3.6rem);line-height:1.04;letter-spacing:-.022em;margin-top:var(--s-3)}
-  h2 em{font-style:italic;font-weight:450;color:var(--emerald-soft)}
-  /* Verlauf nur an zwei Stellen (Anfang + Abschluss) — ueberall sonst leuchtet er nicht mehr */
+  h2 em{font-style:italic;font-weight:450;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  /* Gradient-Flow auf jedem betonten Wort — das Markenzeichen (Sebi 01.10.2026: "verlieren komplett den gradient flow") */
   section.abschluss h2 em{background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
   .lead{color:var(--muted);max-width:58ch;margin-top:var(--s-4);font-size:clamp(1.0625rem,1rem + .3vw,1.15rem)}
   .head{max-width:42ch}
@@ -353,7 +353,7 @@
   .s2eyebrow{font-family:var(--ff-mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald);display:inline-flex;align-items:center;gap:8px}
   .s2eyebrow::before{content:"";width:22px;height:1px;background:var(--emerald);opacity:.7}
   .s2title{font-family:var(--ff-display);font-weight:440;letter-spacing:-.02em;line-height:1.05;font-size:clamp(1.45rem,1rem + 2vw,2.7rem);margin:0;text-wrap:balance}
-  .s2em{font-style:italic;color:var(--emerald-soft)}
+  .s2em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   /* atmosphere: bloom + cinematic vignette */
   .aura{position:absolute;left:50%;top:48%;width:min(1000px,100vw);height:min(1000px,100vw);transform:translate(-50%,-50%);z-index:0;pointer-events:none;border-radius:50%;filter:blur(44px);
     background:radial-gradient(closest-side,rgba(0,184,136,calc(.10 + var(--p)*.14)),rgba(31,166,224,.05) 55%,transparent 72%);transition:background .4s var(--ease)}
@@ -651,17 +651,16 @@
      Vorher lag dieselbe grun-blaue Aurora unter JEDEM Abschnitt — eine Flaeche
      ohne Kapitel. Jetzt: ruhiges Fast-Schwarz als Grund, Atmosphaere nur in
      zwei Momenten (Hero, Abschluss), ein Papier-Kapitel dazwischen. */
-  body{background:#07090B;background-image:none}
   .hero{background:
       radial-gradient(90% 70% at 12% 0%,rgba(0,184,136,.30),transparent 60%),
-      radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.22),transparent 60%),#07090B}
+      radial-gradient(80% 70% at 95% 100%,rgba(20,140,200,.22),transparent 60%)}
   /* Kapitel ohne Foto-Schleier: das Kapitel-Bild (Handy, Dashboard) traegt */
   .proof{background:
       linear-gradient(rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,
-      linear-gradient(90deg,rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px,#07090B;
+      linear-gradient(90deg,rgba(242,243,241,.045) 1px,transparent 1px) 0 0/64px 64px;
     -webkit-mask-image:none}
   .proof::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-    background:radial-gradient(70% 60% at 70% 45%,transparent 0,#07090B 78%)}
+    background:radial-gradient(70% 60% at 70% 45%,transparent 0,rgba(3,8,13,.55) 85%)}
 
   /* ── Leistungen: grosse Zeilen auf Haarlinien, auf der Anthrazit-Flaeche ──
      (kein heller Grund — der kommt im Designsystem nicht vor, Sebi 29.09.2026) */
@@ -841,16 +840,16 @@
   <header class="bar">
     <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"><img src="/assets/s2s-t.webp" srcset="/assets/s2s-t.webp 248w, /assets/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
+      <!-- SHELL:NAV -->
       <ul class="nav-links">
-        <li><a href="#leistungen">Leistungen</a></li>
-        <li><a href="#ablauf">Ablauf</a></li>
-          <li><a href="/preise/">Preise</a></li>
+        <li><a href="/preise/">Preise</a></li>
+        <li><a href="/ablauf/">Ablauf</a></li>
         <li><a href="/for-you/">Für wen</a></li>
         <li><a href="/results/">Prüf uns</a></li>
         <li><a href="/about/">Über uns</a></li>
-        <li><a href="/wissen/">Wissen</a></li>
-        <li><a href="#faq">FAQ</a></li>
       </ul>
+      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
+<!-- /SHELL:NAV -->
       <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
@@ -860,14 +859,14 @@
 
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
-    <a class="m-link" href="#leistungen">Leistungen</a>
-    <a class="m-link" href="#ablauf">Ablauf</a>
-     <a class="m-link" href="/preise/">Preise</a>
+    <!-- SHELL:MOBIL -->
+    <a class="m-link" href="/preise/">Preise</a>
+    <a class="m-link" href="/ablauf/">Ablauf</a>
     <a class="m-link" href="/for-you/">Für wen</a>
     <a class="m-link" href="/results/">Prüf uns</a>
     <a class="m-link" href="/about/">Über uns</a>
-        <a class="m-link" href="/wissen/">Wissen</a>
-    <a class="m-link" href="#faq">FAQ</a>
+    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
+<!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
     
   </nav>
@@ -1147,13 +1146,16 @@
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
         <ul>
-          <li><a href="#leistungen">Leistungen</a></li>
-          <li><a href="#ablauf">Ablauf</a></li>
+          <!-- SHELL:FOOTER -->
           <li><a href="/preise/">Preise</a></li>
+          <li><a href="/ablauf/">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
           <li><a href="/results/">Prüf uns</a></li>
           <li><a href="/about/">Über uns</a></li>
+          <li><a href="#leistungen">Leistungen</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="/gratis/">Gratis-Vorschau</a></li>
+<!-- /SHELL:FOOTER -->
         </ul>
       </nav>
       <nav class="foot-col" aria-label="Rechtliches">
@@ -1185,16 +1187,17 @@
       var menu=document.getElementById('mobile-menu');
       var scrim=document.getElementById('nav-scrim');
       if(!burger||!menu||!scrim)return;
+      function setInert(an){document.querySelectorAll('main,.site-footer').forEach(function(el){el.inert=an;});}
       function open(){
         menu.hidden=false;scrim.hidden=false;
         requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
         burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
-        document.body.classList.add('nav-open');
+        document.body.classList.add('nav-open');setInert(true);
       }
       function close(){
         menu.classList.remove('open');scrim.classList.remove('open');
         burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
-        document.body.classList.remove('nav-open');
+        document.body.classList.remove('nav-open');setInert(false);
         var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
         menu.addEventListener('transitionend',hide);
       }
