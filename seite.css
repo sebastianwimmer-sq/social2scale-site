@@ -89,3 +89,22 @@ main > section + section:not(.abschluss):not(.rs-quote):not(.fw-quote):not(.ab-q
   font-size:17px;
 }
 .rs-mlist .mt > span{line-height:1.55}
+
+/* ── Kapitel-Etiketten wie auf der Startseite: "02 · Was zaehlt" ──
+   Vorher vier Formen fuer dasselbe Element (№ 01 — …, 02 · …, Etikett ohne
+   Nummer, Mono-Versalien). */
+:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh),main p.ix{
+  display:flex;align-items:center;gap:var(--s-3,12px);
+  font-family:"Hanken Grotesk",sans-serif;font-weight:600;font-size:11.5px;
+  letter-spacing:.14em;text-transform:uppercase;font-variant-numeric:tabular-nums;
+  color:var(--faint,#8E918B);
+}
+:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh,main p.ix) b{color:var(--emerald-soft,#1FC998);font-weight:600}
+:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh)::before{content:none}
+:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh,main p.ix)::after{content:"";flex:1;height:1px;max-width:120px;background:var(--line-2,rgba(242,243,241,.14))}
+main .klabel{font-family:"Hanken Grotesk",sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.14em}
+
+/* ── Ueber uns: Rollen-Pille wie die Tags der Startseite (Umriss statt Verlauf) */
+.ab-frole{background:none;color:var(--emerald-soft,#1FC998);border:1px solid color-mix(in srgb,var(--emerald,#00B888) 45%,transparent);font-family:"Hanken Grotesk",sans-serif;font-weight:600}
+/* ── Fuer wen: Zeilentitel einfarbig statt Verlauf */
+main p.mt b{background:none;-webkit-text-fill-color:currentColor;color:var(--emerald-soft,#1FC998)}

@@ -177,3 +177,25 @@ body{font-size:17px}
 /* lib/shell.mjs setzt aria-current="page"; manche Seiten kannten nur "true" */
 .nav-links a[aria-current="page"]{color:var(--paper,#F2F3F1)}
 .nav-links a[aria-current="page"]::after{width:100%}
+
+/* ── Knopf und Textlink: EIN Baustein fuer alle Seiten (01.10.2026) ──
+   Stand bisher als Kopie im <style> jeder Seite; /ablauf/ hatte keine Kopie,
+   sein Abschluss zeigte zwei unterstrichene Browser-Links statt Knopf. */
+@keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+.btn{position:relative;display:inline-block;font-family:"Hanken Grotesk",sans-serif;font-size:14.5px;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--ease,cubic-bezier(.16,1,.3,1)),box-shadow .25s}
+.btn:hover{transform:translateY(-3px)}
+.btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
+.btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
+.btn-primary:hover::after{animation:glint .85s var(--ease,cubic-bezier(.16,1,.3,1)) forwards}
+.textlink{font-family:"Hanken Grotesk",sans-serif;font-size:14px;font-weight:600;letter-spacing:.01em;color:var(--paper);text-decoration:none;position:relative;padding-bottom:3px}
+.textlink::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--line-3);transition:background .25s var(--ease,cubic-bezier(.16,1,.3,1))}
+.textlink:hover{transform:none}
+.textlink:hover::after{background:var(--paper)}
+
+/* ── Fuss am Handy: Spalten nebeneinander statt ein langer Turm ──
+   Vorher stand unter 520 px jede Spalte einzeln — Agentur (8 Links) und
+   Rechtliches untereinander, ein Fuss laenger als ein Bildschirm. */
+@media (max-width:560px){
+  .site-footer .foot-top{grid-template-columns:1fr 1fr;gap:var(--s-6,32px) var(--s-5,24px)}
+  .site-footer .foot-brand{grid-column:1 / -1}
+}
