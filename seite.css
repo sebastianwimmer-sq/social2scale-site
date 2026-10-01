@@ -32,13 +32,17 @@ body:where(*){
     #07090B;
 }
 
-/* ── Hervorhebung: einfarbig, Verlauf nur Kopf + Abschluss ── */
-/* Ueberschriften und Leitsaetze: das betonte Wort einfarbig */
-main :is(h2,h3,blockquote) em{
-  background:none;
-  -webkit-text-fill-color:currentColor;
-  color:var(--emerald-soft,#1FC998);
-  text-shadow:none;
+/* ── Hervorhebung: Gradient-Flow auf jedem betonten Wort ──
+   Erst auf Kopf + Abschluss begrenzt (01.10.2026), damit er heraussticht —
+   Sebi: "verlieren komplett den gradient flow". Er ist das Markenzeichen und
+   laeuft wieder durch jede Ueberschrift; der Grund bleibt ruhig, Fliesstext
+   bleibt ohne Farbe. */
+main :is(h1,h2,h3,blockquote) em,
+:is(.fw-quote,.ab-quote,.rs-quote) blockquote em,
+.fw-msys .mt b{
+  background:var(--accent-flow,linear-gradient(135deg,#1FC998,#46BEEA));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--emerald,#00B888);
 }
 /* Fliesstext: Betonung ueber Gewicht, nicht ueber Farbe */
 main p b,main p strong{
@@ -46,12 +50,7 @@ main p b,main p strong{
   -webkit-text-fill-color:currentColor;
   color:var(--paper,#F2F3F1);
 }
-main :is(h1) em,
-main section.abschluss h2 em{
-  background:var(--accent-flow,linear-gradient(135deg,#1FC998,#46BEEA));
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
+
 
 /* ── Leitsaetze als eigenes Band ────────────────────────────── */
 .rs-quote,.fw-quote,.ab-quote{
@@ -101,13 +100,12 @@ main > section + section:not(.abschluss):not(.rs-quote):not(.fw-quote):not(.ab-q
 }
 :is(.pr-rh,.rs-rh,.fw-rh,.ab-rh,main p.ix) b{color:var(--emerald-soft,#1FC998);font-weight:600}
 :is(.pr-rh,.rs-rh,.fw-rh,.ab-rh)::before{content:none}
-:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh,main p.ix)::after{content:"";flex:1;height:1px;max-width:120px;background:var(--line-2,rgba(242,243,241,.14))}
+:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh,main p.ix)::after{content:"";flex:1;height:1px;max-width:120px;background:linear-gradient(90deg,#1FC998,rgba(70,190,234,.55) 55%,transparent)}
 main .klabel{font-family:"Hanken Grotesk",sans-serif;font-weight:600;font-size:11.5px;letter-spacing:.14em}
 
 /* ── Ueber uns: Rollen-Pille wie die Tags der Startseite (Umriss statt Verlauf) */
 .ab-frole{background:none;color:var(--emerald-soft,#1FC998);border:1px solid color-mix(in srgb,var(--emerald,#00B888) 45%,transparent);font-family:"Hanken Grotesk",sans-serif;font-weight:600}
 /* ── Fuer wen: Zeilentitel einfarbig statt Verlauf */
-main p.mt b{background:none;-webkit-text-fill-color:currentColor;color:var(--emerald-soft,#1FC998)}
 
 /* ── Preise: Bedingungen sichtbar beim Preis, nicht im Kleingedruckten ── */
 .pr-alt-bed{margin-top:6px;font-size:15px;line-height:1.45;color:var(--muted,#A4A6A1)}
@@ -142,10 +140,4 @@ ul.ab-creed > li > span{font-size:17px}
 .fw-marrow,.fw-mrow:hover .fw-marrow{border:0;background:none;width:24px;height:24px}
 p.pr-alt-du{font-size:17px}
 
-/* Leitsatz-Band und Zeilentitel: die Seiten setzen den Verlauf mit hoeherer
-   Spezifitaet (.fw-quote blockquote em, .fw-msys .mt b) — hier gleich stark
-   und spaeter geladen, damit die Regel "Verlauf nur Kopf + Abschluss" greift. */
-:is(.fw-quote,.ab-quote,.rs-quote) blockquote em,
-.fw-msys .mt b{
-  background:none;-webkit-text-fill-color:currentColor;color:var(--emerald-soft,#1FC998);
-}
+

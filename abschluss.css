@@ -218,3 +218,8 @@ section.abschluss .rueckfall .textlink{display:inline;min-height:0}
 /* ── Instagram im Fuss: Baustein fuer alle Seiten (stand nur in s2s.css und auf der Startseite) */
 .foot-ig{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line-2,rgba(255,255,255,.14));border-radius:10px;color:var(--paper,#F2F3F1);transition:border-color .25s var(--ease,ease),color .25s var(--ease,ease),transform .25s var(--ease,ease)}
 .foot-ig:hover{border-color:rgba(0,184,136,.55);color:#28C281;transform:translateY(-2px)}
+
+/* ── Gradient-Flow im Kapitel-Etikett: die Linie laeuft von Gruen nach Tuerkis aus ──
+   (Startseite; die Unterseiten setzen dasselbe in seite.css) */
+.ix::after{background:linear-gradient(90deg,#1FC998,rgba(70,190,234,.55) 55%,transparent)}
+section.abschluss .ix::after{content:none}
