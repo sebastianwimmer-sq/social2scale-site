@@ -1,0 +1,61 @@
+/* Bewegung, die den Inhalt erzaehlt (01.10.2026)
+   Eine Schicht fuer alle sechs Seiten, zuletzt geladen. Leitlinie aus kern.md:
+   "Die staerkste Bewegung sagt etwas ueber den INHALT" — und "alles blendet
+   ein" ist derselbe flache Eindruck wie "nichts blendet ein".
+
+   Sicherheitsnetz: Alles ist im Grundzustand SICHTBAR. Verborgen wird nur,
+   was in einem .reveal steht, das noch nicht .on ist — faellt das Skript
+   aus, sieht man die fertige Seite. Bei prefers-reduced-motion steht alles. */
+
+/* ── 1. Flusslinie: die Etikett-Linie zeichnet sich, wenn ihr Kapitel kommt ── */
+:is(.ix,.pr-rh,.rs-rh,.fw-rh,.ab-rh)::after{
+  transform-origin:left center;
+  transition:transform 1.3s cubic-bezier(.16,1,.3,1) .25s;
+}
+.reveal:not(.on) :is(.ix,.pr-rh,.rs-rh,.fw-rh,.ab-rh)::after{transform:scaleX(0)}
+
+/* ── 2. Der Gradient-Flow fliesst: das betonte Wort traegt einen wandernden
+   Verlauf, nur solange es im Bild ist (Klasse .fliesst aus bewegung.js) ── */
+@keyframes s2-fluss{to{background-position:200% 0}}
+em.fliesst{
+  background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%)!important;
+  background-size:200% 100%!important;
+  animation:s2-fluss 9s linear infinite;
+}
+
+/* ── 3. Ablauf: der Weg durch die vier Phasen ──
+   Die Linie ueber jeder Phase fuellt sich, waehrend man an ihr vorbeiscrollt
+   (--weg 0..1 aus bewegung.js); die Phasen-Nummer leuchtet, wenn sie erreicht ist. */
+.fl-phase::before{
+  content:"";position:absolute;left:0;right:0;top:-1px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,#1FC998,#46BEEA);
+  transform:scaleX(var(--weg,1));transform-origin:left center;
+}
+.fl-phase .fl-num{transition:color .5s ease,text-shadow .5s ease}
+.fl-phase.ist-erreicht .fl-num{color:#6EE3BF;text-shadow:0 0 18px rgba(31,201,152,.45)}
+
+/* ── 4. Licht folgt der Maus auf den Karten, die eine Entscheidung tragen ──
+   (Kette, Empfehlung, Gruender). Nur mit feinem Zeiger; das Licht liegt
+   unter dem Inhalt (z-index -1 in eigenem Stapelkontext). */
+[data-licht]{position:relative;isolation:isolate}
+[data-licht] > .s2-licht{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(420px circle at var(--lx,50%) var(--ly,0%),rgba(31,201,152,.13),rgba(70,190,234,.05) 40%,transparent 65%);
+  opacity:0;transition:opacity .4s ease;
+}
+[data-licht]:hover > .s2-licht{opacity:1}
+
+/* ── 5. Gruender: das Foto oeffnet sich mit einer Blende (am Bild, nicht am
+   beobachteten Element — kern.md: clip-path auf Nullflaeche meldet dem
+   IntersectionObserver nichts) ── */
+.ab-pic img{transition:clip-path 1.2s cubic-bezier(.16,1,.3,1) .15s,transform 1.6s cubic-bezier(.16,1,.3,1) .15s}
+.reveal:not(.on) .ab-pic img{clip-path:inset(0 0 100% 0);transform:scale(1.06)}
+
+/* ── Stillstand bei reduzierter Bewegung ── */
+@media (prefers-reduced-motion:reduce){
+  :is(.ix,.pr-rh,.rs-rh,.fw-rh,.ab-rh)::after,.ab-pic img,.fl-phase .fl-num,[data-licht] > .s2-licht{transition:none!important}
+  .reveal:not(.on) :is(.ix,.pr-rh,.rs-rh,.fw-rh,.ab-rh)::after{transform:none}
+  .reveal:not(.on) .ab-pic img{clip-path:none;transform:none}
+  em.fliesst{animation:none}
+  .fl-phase::before{transform:none}
+}

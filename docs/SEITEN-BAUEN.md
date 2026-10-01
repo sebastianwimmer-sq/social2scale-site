@@ -306,3 +306,15 @@ Gegenprobe nach der Umstellung: 23 öffentliche Ziele weiterhin 200,
 
    Damals null Treffer. Kommt je eine Datei mit dieser Syntax dazu, muss sie
    entweder in `exclude` oder ein `{% raw %}`-Block herum.
+
+## Bewegung und Prüfung (seit 01.10.2026)
+
+- **Eine Bewegungsschicht für alle Seiten:** `bewegung.css` (zuletzt geladen) + `bewegung.js` (defer).
+  Bewegung erzählt den Inhalt: die Etikett-Linie zeichnet sich, wenn ihr Kapitel kommt; das betonte
+  Wort trägt einen wandernden Gradient-Flow (nur im Bild); auf /ablauf/ füllt sich der Weg durch die
+  vier Phasen; auf Karten mit Entscheidung (`data-licht`) folgt Licht dem Zeiger (nur feiner Zeiger).
+- **Grundzustand ist sichtbar.** Verborgen wird nur, was in einem `.reveal` ohne `.on` steht; fällt
+  das Skript aus, ist die Seite fertig. `prefers-reduced-motion` hält alles an.
+- **Neue Karte mit Licht:** Attribut `data-licht` an das Element, das schon `position:relative` hat.
+- **Vor jedem Commit:** `bash scripts/pruefen.sh` — Selbsttests zuerst, dann CSP (Datei + Browser),
+  Seitenwechsel, Bewegung. Exit 1 bei jedem Befund.

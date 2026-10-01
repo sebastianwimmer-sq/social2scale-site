@@ -89,6 +89,9 @@ function htmlDateien(verzeichnis, gesammelt = []) {
     if (AUSGESCHLOSSEN.includes(eintrag) || eintrag.startsWith(".")) continue;
     const pfad = join(verzeichnis, eintrag);
     if (statSync(pfad).isDirectory()) htmlDateien(pfad, gesammelt);
+    // Google-Bestaetigungsdatei (google<hex>.html) ist Klartext, kein Dokument —
+    // sie darf nie veraendert werden und liess das Tor dauerhaft rot stehen.
+    else if (/^google[0-9a-f]+\.html$/.test(eintrag)) continue;
     else if (eintrag.endsWith(".html")) gesammelt.push(pfad);
   }
   return gesammelt;
