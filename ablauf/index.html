@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-vah3Rs3XYVPopikU3QuG2TpoQztHGwxMuMYdCYQU2G8=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-T+eECSa64WAyyeJceSxyLGdjOGtREsAsmZCaT+x2h3c=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -126,7 +126,7 @@
 <link rel="stylesheet" href="/seite.css">
 </head>
 <body>
-  <a class="skip" href="#ablauf-inhalt">Zum Inhalt</a>
+  <a class="skip" href="#main">Zum Inhalt</a>
   
 
   <header class="bar">
@@ -161,7 +161,7 @@
 <!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>  </nav>
 
-  <main id="ablauf-inhalt">
+  <main id="main" tabindex="-1" id="ablauf-inhalt">
 
     <!-- Kopf. Das Versprechen steht in der Ueberschrift, nicht im Fliesstext:
          ab Monat zwei liegt der Aufwand bei null. Das ist die Zahl, die die
@@ -169,7 +169,7 @@
     <section class="fl-hero">
       <div class="sec-bg wave" aria-hidden="true"></div>
       <div class="wrap reveal">
-        <p class="klabel">Ablauf</p>
+        <p class="ix"><b>01</b> · Ablauf</p>
         <h1 class="wipe">Vier Phasen. Ab Monat zwei <em>machst du nichts mehr</em>.</h1>
         <p class="sub">Vom ersten Gespräch bis zu einem Auftritt, der ohne dich weiterläuft. Hier steht, was in jeder Phase passiert, <b>was du danach hast</b> — und was es dich an Zeit kostet.</p>
       </div>
@@ -261,7 +261,7 @@
          widersprechen koennen. -->
     <section class="fl-aufwand" aria-labelledby="aufwand-h">
       <div class="wrap reveal">
-        <p class="klabel">Was es dich an Zeit kostet</p>
+        <p class="ix"><b>02</b> · Was es dich an Zeit kostet</p>
         <h2 class="wipe" id="aufwand-h">Deine Zeit, <em>im Verhältnis</em>.</h2>
         <ol class="fl-bar-list">
           <li class="fl-bar-row">
@@ -286,7 +286,7 @@
          Ueberraschung mehr vor sich. -->
     <section class="fl-brauchen" aria-labelledby="brauchen-h">
       <div class="wrap reveal">
-        <p class="klabel">Damit es losgeht</p>
+        <p class="ix"><b>03</b> · Damit es losgeht</p>
         <h2 class="wipe" id="brauchen-h">Was wir von dir <em>brauchen</em>.</h2>
         <div class="fl-b-grid stagger">
           <div class="fl-b-item">
@@ -307,13 +307,14 @@
 
     <section class="fl-cta abschluss">
       <div class="wrap reveal">
-        <p class="klabel">Der nächste Schritt</p>
+        <p class="ix"><b>04</b> · Nächster Schritt</p>
         <h2 class="wipe">Lass uns über <em>dein Wachstum</em> reden.</h2>
         <p class="sub">Unverbindliches Erstgespräch. Wir schauen uns an, wo du stehst, und sagen dir ehrlich, ob es passt.</p>
         <div class="fl-cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
           <a class="textlink" href="/preise/">Oder erst die Preise ansehen</a>
         </div>
+        <p class="rueckfall">Noch nicht so weit? <a class="textlink" href="/gratis/">Erst mal die Gratis-Vorschau: dein Feed-Entwurf in 60 Sekunden <span aria-hidden="true">→</span></a></p>
         <div class="duo">
           <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
           <p class="duo-txt">Ab hier machen wir das — <b>Sebi &amp; Phil</b>, persönlich. <a href="/about/">Über uns →</a></p>
@@ -329,6 +330,11 @@
         <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="104" height="52"></a>
         <p>Premium Social-Growth für Coaches, Experten &amp; B2B. System statt Zufall — von null bis Wachstum.</p>
         <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
+        <div class="foot-social" style="display:flex;gap:.6rem;margin-top:.9rem">
+          <a class="foot-ig" href="https://instagram.com/social2scale" target="_blank" rel="noopener" aria-label="social2scale auf Instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>
+          </a>
+        </div>
       </div>
       <nav class="foot-col" aria-label="Footer-Navigation">
         <p class="foot-col-title">Agentur</p>
@@ -376,16 +382,17 @@
       var menu=document.getElementById('mobile-menu');
       var scrim=document.getElementById('nav-scrim');
       if(!burger||!menu||!scrim)return;
+      function setInert(an){document.querySelectorAll('main,.site-footer').forEach(function(el){el.inert=an;});}
       function open(){
         menu.hidden=false;scrim.hidden=false;
         requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
         burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
-        document.body.classList.add('nav-open');
+        document.body.classList.add('nav-open');setInert(true);
       }
       function close(){
         menu.classList.remove('open');scrim.classList.remove('open');
         burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
-        document.body.classList.remove('nav-open');
+        document.body.classList.remove('nav-open');setInert(false);
         var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
         menu.addEventListener('transitionend',hide);
       }
@@ -393,7 +400,7 @@
       burger.addEventListener('click',toggle);
       scrim.addEventListener('click',close);
       menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true')close();});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&burger.getAttribute('aria-expanded')==='true'){close();burger.focus();}});
     })();
 
     // ===== scroll reveal =====

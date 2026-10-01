@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-aH9jydjzoSc3ebjFMPeE9WxF/DA74g82FLwc5BP203g=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-KoPf1Ij3Yv94wdOTSR5E6N96UXiFEchu0hiKLX8nhYk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-KoPf1Ij3Yv94wdOTSR5E6N96UXiFEchu0hiKLX8nhYk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -1188,16 +1188,17 @@
       var menu=document.getElementById('mobile-menu');
       var scrim=document.getElementById('nav-scrim');
       if(!burger||!menu||!scrim)return;
+      function setInert(an){document.querySelectorAll('main,.site-footer').forEach(function(el){el.inert=an;});}
       function open(){
         menu.hidden=false;scrim.hidden=false;
         requestAnimationFrame(function(){menu.classList.add('open');scrim.classList.add('open');});
         burger.setAttribute('aria-expanded','true');burger.setAttribute('aria-label','Menü schließen');
-        document.body.classList.add('nav-open');
+        document.body.classList.add('nav-open');setInert(true);
       }
       function close(){
         menu.classList.remove('open');scrim.classList.remove('open');
         burger.setAttribute('aria-expanded','false');burger.setAttribute('aria-label','Menü öffnen');
-        document.body.classList.remove('nav-open');
+        document.body.classList.remove('nav-open');setInert(false);
         var hide=function(){menu.hidden=true;scrim.hidden=true;menu.removeEventListener('transitionend',hide);};
         menu.addEventListener('transitionend',hide);
       }

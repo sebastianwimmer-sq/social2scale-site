@@ -108,3 +108,35 @@ main .klabel{font-family:"Hanken Grotesk",sans-serif;font-weight:600;font-size:1
 .ab-frole{background:none;color:var(--emerald-soft,#1FC998);border:1px solid color-mix(in srgb,var(--emerald,#00B888) 45%,transparent);font-family:"Hanken Grotesk",sans-serif;font-weight:600}
 /* ── Fuer wen: Zeilentitel einfarbig statt Verlauf */
 main p.mt b{background:none;-webkit-text-fill-color:currentColor;color:var(--emerald-soft,#1FC998)}
+
+/* ── Preise: Bedingungen sichtbar beim Preis, nicht im Kleingedruckten ── */
+.pr-alt-bed{margin-top:6px;font-size:15px;line-height:1.45;color:var(--muted,#A4A6A1)}
+.pr-alt-zusatz{margin-top:14px;font-size:15px;color:var(--muted,#A4A6A1)}
+
+/* ── Abschluss: Etikett zentriert ueber dem zentrierten Block ── */
+section.abschluss p.ix{justify-content:center}
+section.abschluss p.ix::after{content:none}
+/* ── Pruef uns: "Was wir nicht messen" mit Kreuz statt Haken ── */
+.rs-mlist svg.nein{stroke:var(--faint,#8E918B)}
+
+/* ── Inline-Links im Fliesstext: eine Farbe auf allen Seiten ──
+   vorher grau unterstrichen (/ablauf/) oder Browser-Lila nach Besuch (/results/) */
+main p a:not(.btn):not(.textlink),main li a:not(.btn):not(.textlink),
+main p a:not(.btn):not(.textlink):visited,main li a:not(.btn):not(.textlink):visited{
+  color:var(--emerald-soft,#1FC998);
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb,var(--emerald-soft,#1FC998) 45%,transparent);
+}
+
+/* ── Lesbarkeit, Pruefrunde 01.10.2026 ───────────────────── */
+.pr-ueb-liste .ix{color:var(--emerald-soft,#1FC998);font-size:11px}
+p.pr-what{font-size:17px}
+p.pr-note{font-size:15px}
+details.pr-details > summary,details.pr-alt-mehr > summary{min-height:44px;display:flex;align-items:center}
+details.pr-details > summary > span{font-size:15px}
+.rs-quote figcaption{font-size:14px}
+ul.ab-creed > li > span{font-size:17px}
+@media (max-width:600px){main p.lead,p.pr-emp-wann{font-size:17px}}
+
+/* ── Fuer wen: Pfeil ohne Kreis — der Kreis sah aus wie ein Knopf, tat aber nichts */
+.fw-marrow,.fw-mrow:hover .fw-marrow{border:0;background:none;width:24px;height:24px}
