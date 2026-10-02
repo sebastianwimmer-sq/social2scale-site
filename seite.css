@@ -130,3 +130,8 @@ p.pr-alt-du{font-size:17px}
 
 /* "Unsere Empfehlung" stand am Handy im hellsten Licht bei 4,31:1 */
 .pr-emp-lbl{color:#6EE3BF}
+
+/* Listen ohne Icon-Spalte (Haken/Kreuze entfernt, 02.10.2026) */
+.rs-mlist li,.fw-qcol li{display:block}
+/* Engpass-Zeilen: zwei Spalten, seit der Pfeil-Kreis raus ist (02.10.2026) */
+@media (min-width:681px){.fw-mrow{grid-template-columns:minmax(0,5fr) minmax(0,7fr)!important}}

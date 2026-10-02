@@ -792,6 +792,22 @@
     #leistungen .blk-head .lead{grid-column:2;margin:0;padding-bottom:.4em}
   }
   /* Kein 300-px-Loch vor dem Abschluss */
+  /* ── Eigener Feed: echte Beitraege als Kapitel-Bild (02.10.2026) ── */
+  .feed-band{position:relative;padding:clamp(72px,9vw,128px) 0;border-top:1px solid var(--line)}
+  .feed-kopf h2{max-width:18ch}
+  .feed-reihe{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1vw,14px)}
+  .feed-reihe li{min-width:0}
+  .feed-reihe img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:6px;
+    box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 28px 56px -30px rgba(0,0,0,.85);
+    transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s cubic-bezier(.16,1,.3,1)}
+  @media (hover:hover){.feed-reihe li:hover img{transform:translateY(-6px);box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 36px 64px -28px rgba(0,184,136,.35)}}
+  .feed-reihe li{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal:not(.on) .feed-reihe li{opacity:0;transform:translateY(24px)}
+  .feed-reihe li:nth-child(2){transition-delay:.06s}.feed-reihe li:nth-child(3){transition-delay:.12s}
+  .feed-reihe li:nth-child(4){transition-delay:.18s}.feed-reihe li:nth-child(5){transition-delay:.24s}.feed-reihe li:nth-child(6){transition-delay:.30s}
+  .feed-link{display:inline-flex;margin-top:clamp(20px,2.4vw,28px)}
+  @media (max-width:760px){.feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.feed-reihe img{border-radius:3px}}
+  @media (prefers-reduced-motion:reduce){.feed-reihe li,.feed-reihe img{transition:none}.reveal:not(.on) .feed-reihe li{opacity:1;transform:none}}
   section.abschluss{padding-top:clamp(64px,8vw,120px)}
   /* Pflichthinweis zu den illustrativen Zahlen (s2s-aussagen.json: nur als Beispielwert) */
   .s2-beispiel{position:absolute;left:0;right:0;bottom:clamp(10px,2vh,18px);z-index:4;margin:0;text-align:center;font-size:12px;letter-spacing:.02em;color:var(--faint)}
@@ -842,7 +858,7 @@
   </script>
 
   <header class="bar">
-    <a class="brand" href="#hero" aria-label="social2scale — zum Seitenanfang"><img src="/assets/s2s-t.webp" srcset="/assets/s2s-t.webp 248w, /assets/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
+    <a class="brand" href="#hero" aria-label="social2scale, zum Seitenanfang"><img src="/assets/s2s-t.webp" srcset="/assets/s2s-t.webp 248w, /assets/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
     <nav class="nav" aria-label="Hauptnavigation">
       <!-- SHELL:NAV -->
       <ul class="nav-links">
@@ -871,7 +887,7 @@
     <a class="m-link" href="/about/">Über uns</a>
     <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
 <!-- /SHELL:MOBIL -->
-    <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+    <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen</a>
     
   </nav>
 
@@ -888,12 +904,12 @@
             </picture>
             <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
           </h1>
-          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn — <b>du musst nichts können außer reden.</b></p>
+          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn. <b>Du musst nichts können außer reden.</b></p>
           <div class="cta-row r" style="animation-delay:.38s">
             <a class="btn btn-primary" id="cta" href="/gratis/">Gratis-Vorschau starten →</a>
             <a class="textlink" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
           </div>
-          <p class="cta-note r" style="animation-delay:.42s">Dein Feed-Entwurf in 60 Sekunden — kostenlos, mit deinem Foto und deiner Farbe.</p>
+          <p class="cta-note r" style="animation-delay:.42s">Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.</p>
           <div class="duo hero-duo r" style="animation-delay:.46s">
             <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
             <p class="duo-txt">Zwei Gründer, die selbst Hand anlegen: <b>Sebi &amp; Phil</b>.</p>
@@ -902,12 +918,12 @@
       </div>
     </section>
 
-    <!-- 01 · Schmerz und 02 · Einwand — der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
+    <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
          Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
          Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
     <section class="kap" id="stand" aria-labelledby="stand-h">
       <div class="wrap reveal">
-        <p class="ix"><b>01</b> · Wo du gerade stehst</p>
+        <p class="ix">Wo du gerade stehst</p>
         <h2 id="stand-h">Eines davon <em>bist du</em>.</h2>
         <div class="st-grid">
           <article class="st-card">
@@ -927,13 +943,13 @@
           </article>
         </div>
         <p class="st-bridge">Alle drei kosten dasselbe: <b>Aufträge, die jemand anders bekommt.</b></p>
-        <a class="textlink kap-tuer" href="/for-you/">Für wen wir bauen <span aria-hidden="true">→</span></a>
+        <a class="textlink kap-tuer" href="/for-you/">Für wen wir bauen</a>
       </div>
     </section>
 
     <section class="kap" id="warum" aria-labelledby="warum-h">
       <div class="wrap reveal">
-        <p class="ix"><b>02</b> · Warum's bisher nicht klappte</p>
+        <p class="ix">Warum's bisher nicht klappte</p>
         <h2 id="warum-h">Du hast es ja <em>schon versucht</em>.</h2>
         <ol class="wa-list">
           <li class="wa-row"><div class="wa-head"><span class="wa-name">Selbst posten</span><span class="wa-note">Zwischen zwei Kundenterminen. Hält drei Wochen.</span></div></li>
@@ -952,7 +968,7 @@
       <div class="vignette" aria-hidden="true"></div>
 
       <div class="s2head">
-        <span class="s2eyebrow">03 · So läuft’s ab</span>
+        <span class="s2eyebrow">So läuft’s ab</span>
         <h2 class="s2title">Ein Account. Vier Phasen. <em class="s2em">Von null bis Wachstum.</em></h2>
       </div>
 
@@ -1015,37 +1031,54 @@
       </div>
 
       <div class="orbit" aria-hidden="false">
-        <div class="pcap" data-i="0"><span class="s2n">Phase 1 · Strategie-Call</span><h3>Wir zeichnen dein System.</h3><p>Ziel, Zielgruppe & Status quo — der Plan steht.</p></div>
-        <div class="pcap" data-i="1"><span class="s2n">Phase 2 · Setup &amp; Onboarding</span><h3>Der Auftritt bekommt ein Gesicht.</h3><p>Profil, Branding & Content-Strategie stehen.</p></div>
-        <div class="pcap" data-i="2"><span class="s2n">Phase 3 · Content &amp; Betreuung</span><h3>Reichweite &amp; Follower wachsen.</h3><p>Laufende Produktion — Woche für Woche sichtbar.</p></div>
-        <div class="pcap" data-i="3"><span class="s2n">Phase 4 · Skalierung</span><h3>Alles messbar in deinem Bereich.</h3><p>Anfragen und Gespräche, sichtbar in deinem Bereich.</p></div>
+        <div class="pcap" data-i="0"><span class="s2n">Phase 1: Strategie-Call</span><h3>Wir zeichnen dein System.</h3><p>Ziel, Zielgruppe & Status quo. Der Plan steht.</p></div>
+        <div class="pcap" data-i="1"><span class="s2n">Phase 2: Setup &amp; Onboarding</span><h3>Der Auftritt bekommt ein Gesicht.</h3><p>Profil, Branding & Content-Strategie stehen.</p></div>
+        <div class="pcap" data-i="2"><span class="s2n">Phase 3: Content &amp; Betreuung</span><h3>Reichweite &amp; Follower wachsen.</h3><p>Laufende Produktion. Woche für Woche sichtbar.</p></div>
+        <div class="pcap" data-i="3"><span class="s2n">Phase 4: Skalierung</span><h3>Alles messbar in deinem Bereich.</h3><p>Anfragen und Gespräche, sichtbar in deinem Bereich.</p></div>
       </div>
 
       <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <p class="s2-beispiel">Zahlen in der Szene und im Titelbild: Beispielwerte, keine Kundenergebnisse.</p>
+      <p class="s2-beispiel">Beispielwerte. Keine Kundenergebnisse.</p>
       <div class="hint" aria-hidden="true"><span>scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
   </div>
 </section>
+
+    <!-- Echte Arbeit statt Deko (02.10.2026): eigene, veroeffentlichte Beitraege
+         aus kit-build/out-s2s. Loest die leeren Kacheln der Handy-Szene auf. -->
+    <section class="feed-band" aria-labelledby="feed-h"><div class="wrap reveal">
+      <div class="feed-kopf">
+        <p class="ix">Unser eigener Feed</p>
+        <h2 id="feed-h">Wir behaupten nicht. Wir <em>zeigen</em>.</h2>
+      </div>
+      <ul class="feed-reihe">
+        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Vier Wochen, kaum neue Follower." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Keine Kennzahl." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Ein Wort, eine Abmahnung." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." loading="lazy" decoding="async"></li>
+      </ul>
+      <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Auf Instagram ansehen</a>
+    </div></section>
 
     <section class="proof photo-sec" id="proof" aria-labelledby="proof-h">
       <div class="sec-bg growth" aria-hidden="true"></div>
       <div class="wrap">
         <div class="proof-grid reveal">
           <div class="proof-copy">
-            <p class="ix"><b>04</b> · Dein Bereich</p>
+            <p class="ix">Dein Bereich</p>
             <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
-            <p class="lead">Reichweite, Leads und Fortschritt — transparent an einem Ort, statt Zahlen aus zehn Tools.</p>
+            <p class="lead">Reichweite, Leads und Fortschritt an einem Ort. Statt Zahlen aus zehn Tools.</p>
             <ul class="proof-points">
               <li>Reichweite, die zählt</li>
               <li>Leads statt Likes</li>
               <li>Gespräche statt Bauchgefühl</li>
             </ul>
-            <a class="textlink kap-tuer" href="/results/">Woran du uns messen kannst <span aria-hidden="true">→</span></a>
+            <a class="textlink kap-tuer" href="/results/">Woran du uns messen kannst</a>
           </div>
           <div class="proof-visual">
-            <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen —
-                 Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
+            <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen, Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
             <div class="kette" id="kette" data-licht>
               <div class="kette-kopf">
                 <span class="kette-ttl"><span class="dot" aria-hidden="true"></span>Dein Bereich</span>
@@ -1072,7 +1105,7 @@
 
     <section class="blk photo-sec" id="leistungen"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
       <div class="blk-head head">
-        <p class="ix"><b>05</b> · Was wir machen</p>
+        <p class="ix">Was wir machen</p>
         <h2>Alles aus <em>einer Hand</em>.</h2>
         <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
       </div>
@@ -1080,7 +1113,7 @@
         <div class="cell cell-hero">
           <div class="n">Fundament</div>
           <h3>Setup</h3>
-          <p>Wir bauen deinen kompletten Social-Auftritt professionell auf — Profile, Branding, Strategie.</p>
+          <p>Wir bauen deinen kompletten Social-Auftritt professionell auf. Profile, Branding, Strategie.</p>
           <span class="spacer"></span>
           <div class="tags">
             <span class="tag">Profile</span><span class="tag">Branding</span><span class="tag">Strategie</span><span class="tag">Positionierung</span>
@@ -1089,7 +1122,7 @@
         <div class="cell">
           <div class="n">Dein Team</div>
           <h3>Betreuung</h3>
-          <p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot — echte Menschen.</p>
+          <p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot. Echte Menschen.</p>
         </div>
         <div class="cell">
           <div class="n">Wachstum</div>
@@ -1098,38 +1131,37 @@
         </div>
       </div>
       <div class="preiszeile">
-        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig · laufende Betreuung ab <b>523,60 €</b> im Monat, zzgl. 523,60 € einmalig zum Start.</p>
-        <a class="textlink" href="/preise/">Alle sieben Pakete mit Endpreisen <span aria-hidden="true">→</span></a>
+        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig, laufende Betreuung ab <b>523,60 €</b> im Monat, zzgl. 523,60 € einmalig zum Start.</p>
+        <a class="textlink" href="/preise/">Alle sieben Pakete mit Endpreisen</a>
       </div>
     </div></section>
 
 
     <section class="blk" id="faq"><div class="wrap faq-split reveal">
       <div class="blk-head head">
-        <p class="ix"><b>06</b> · Häufige Fragen</p>
+        <p class="ix">Häufige Fragen</p>
         <h2>Gut zu <em>wissen</em>.</h2>
       </div>
       <div class="faq">
         <details><summary>Was, wenn ich noch gar keinen Social-Auftritt habe?</summary><p>Dann fangen wir bei null an. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content.</p></details>
         <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. In den ersten Wochen steigen die Profilaufrufe, ab Monat drei bis vier erreichen Beiträge Menschen außerhalb deiner Kontakte. Was sich wann bewegt, steht auf <a href="/results/">Prüf uns</a>.</p></details>
-        <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um.</p></details>
+        <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung. Du gibst die Richtung vor, wir setzen um.</p></details>
         <details><summary>Wie lange bin ich gebunden?</summary><p>Die Einmal-Pakete bezahlst du einmal, fertig. Die laufende Betreuung hat drei Monate Mindestlaufzeit, alle Bedingungen stehen auf der <a href="/preise/">Preisseite</a>.</p></details>
-        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a> — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
+        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a>. Mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
       </div>
     </div></section>
 
     <section class="blk abschluss"><div class="wrap reveal">
       <div class="band">
-        <p class="ix"><b>07</b> · Nächster Schritt</p>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Dein Feed-Entwurf in 60 Sekunden: kostenlos, mit deinem Foto und deiner Farbe.</p>
+        <p class="lead">Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-vorschau" href="/gratis/">Gratis-Vorschau starten →</a>
           <a class="textlink" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
         </div>
         <div class="duo">
           <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
-          <p class="duo-txt"><b>Sebi &amp; Phil</b> — wir zwei bauen das, kein Team dazwischen. <a href="/about/">Über uns →</a></p>
+          <p class="duo-txt"><b>Sebi &amp; Phil</b>. Wir zwei bauen das, kein Team dazwischen. <a href="/about/">Über uns</a></p>
         </div>
       </div>
     </div></section>
@@ -1138,8 +1170,8 @@
   <footer class="site-footer"><div class="wrap">
     <div class="foot-top">
       <div class="foot-brand">
-        <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" srcset="/assets/s2s-t.webp 248w, /assets/s2s-t-320.webp 320w" sizes="104px" alt="social2scale" width="104" height="52" loading="lazy"></a>
-        <p>Premium Social-Growth für Coaches, Experten &amp; B2B. Strategie statt Zufall — von null bis Wachstum.</p>
+        <a class="brand" href="/" aria-label="social2scale, zur Startseite"><img src="/assets/s2s-t.webp" srcset="/assets/s2s-t.webp 248w, /assets/s2s-t-320.webp 320w" sizes="104px" alt="social2scale" width="104" height="52" loading="lazy"></a>
+        <p>Premium Social-Growth für Coaches, Experten &amp; B2B. Strategie statt Zufall. Von null bis Wachstum.</p>
         <a class="foot-mail" href="mailto:info@social2scale.com">info@social2scale.com</a>
         <div class="foot-social" style="display:flex;gap:.6rem;margin-top:.9rem">
           <a class="foot-ig" href="https://instagram.com/social2scale" target="_blank" rel="noopener" aria-label="social2scale auf Instagram">
