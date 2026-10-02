@@ -600,6 +600,7 @@
   </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/seite.css">
+<link rel="stylesheet" href="/bewegung.css">
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -646,7 +647,7 @@
       <h1 id="ab-heading">Wir bauen Systeme,<span class="l2">keine <em>Zufälle</em>.</span></h1>
       <p class="lead">Keine Agentur-Maschine. <b>Zwei Gründer, die selbst Hand anlegen</b> — von der Strategie bis zum letzten Post. Done-for-you, persönlich betreut, jeder Fortschritt messbar in deinem Bereich.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" id="cta-hero" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+        <a class="btn btn-primary" id="cta-hero" href="/gratis/">Gratis-Vorschau starten →</a>
         <a class="textlink" href="#wie-wir-arbeiten">Wie wir arbeiten</a>
       </div>
     </div></section>
@@ -682,7 +683,7 @@
       </div>
       <div class="ab-founders">
 
-        <article class="ab-fcard">
+        <article class="ab-fcard" data-licht>
           <div class="ab-pic">
             <picture>
               <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:880px) 300px, (max-width:1200px) 44vw, 520px">
@@ -698,7 +699,7 @@
           <a class="ab-fsocial" href="https://instagram.com/ph.lib" target="_blank" rel="noopener noreferrer" aria-label="Philipp auf Instagram, @ph.lib"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg><span>@ph.lib</span></a>
         </article>
 
-        <article class="ab-fcard">
+        <article class="ab-fcard" data-licht>
           <div class="ab-pic is-hell">
             <picture>
               <source type="image/webp" srcset="/assets/founder-sebastian-560.webp 560w, /assets/founder-sebastian-768.webp 768w" sizes="(max-width:880px) 300px, (max-width:1200px) 44vw, 520px">
@@ -766,12 +767,11 @@
       <div class="band">
         <p class="ix"><b>06</b> · Nächster Schritt</p>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
+        <p class="lead">Dein Feed-Entwurf in 60 Sekunden: kostenlos, mit deinem Foto und deiner Farbe.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>
+          <a class="btn btn-primary" id="cta-vorschau" href="/gratis/">Gratis-Vorschau starten →</a>
+          <a class="textlink" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
         </div>
-        <p class="rueckfall">Noch nicht so weit? <a class="textlink" href="/gratis/">Erst mal die Gratis-Vorschau: dein Feed-Entwurf in 60 Sekunden <span aria-hidden="true">→</span></a></p>
       </div>
     </div></section>
   </main>
@@ -951,5 +951,6 @@
   })();
 </script>
 <script src="/uebergang.js" defer></script>
+<script src="/bewegung.js" defer></script>
 </body>
 </html>

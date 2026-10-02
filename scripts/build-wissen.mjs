@@ -33,6 +33,11 @@ const PREISE = {
   komplett: { einmalig: "1.547,00 €", monat: "464,10 €" },
   laufend: { monat: "523,60 €" },
   starthilfe: { einmalig: "446,25 €" },
+  // Profil + Branding ist Paket 02, nicht die Starthilfe fuer 446,25 € (= nur
+  // neun Beitraege). Stand bis 02.10.2026 falsch auf /wissen/ und /preise/.
+  profil: { einmalig: "1.297,10 €" },
+  // Laufende Pakete kosten zusaetzlich eine Monatsrate zum Start (/preise/).
+  start: "zzgl. 523,60 € einmalig zum Start",
   beitraege: 10,
 };
 
@@ -43,11 +48,11 @@ const SEITEN = [
     emWort: "kostet",
     kurz: "Was kostet Social-Media-Betreuung?",
     beschreibung:
-      "Konkrete Preise für professionelle Instagram-Betreuung: Komplettpaket ab 1.547 € einmalig plus 464,10 € monatlich, laufende Betreuung ab 523,60 € im Monat.",
+      "Konkrete Preise für professionelle Instagram-Betreuung: Komplettpaket ab 1.547 € einmalig plus 464,10 € monatlich, laufende Betreuung ab 523,60 € im Monat zzgl. 523,60 € einmalig zum Start.",
     antwort:
       "Professionelle Social-Media-Betreuung kostet im deutschen Mittelstand typischerweise zwischen 400 und 2.000 Euro im Monat, je nachdem wie viel Arbeit abgegeben wird. Bei social2scale kostet der komplette Aufbau " +
       PREISE.komplett.einmalig + " einmalig und danach " + PREISE.komplett.monat +
-      " im Monat; wer nur die laufende Erstellung abgibt, zahlt ab " + PREISE.laufend.monat + " monatlich.",
+      " im Monat; wer nur die laufende Erstellung abgibt, zahlt ab " + PREISE.laufend.monat + " monatlich (" + PREISE.start + ").",
     abschnitte: [
       {
         h: "Woraus sich der Preis zusammensetzt",
@@ -61,8 +66,8 @@ const SEITEN = [
         h: "Die drei üblichen Modelle im Vergleich",
         liste: [
           ["Alles abgeben", "Aufbau plus laufende Betreuung. " + PREISE.komplett.einmalig + " einmalig, danach " + PREISE.komplett.monat + " im Monat. Für alle, die bei null starten oder sich gar nicht kümmern wollen."],
-          ["Nur das Laufende abgeben", "Das Profil steht bereits, es fehlt der Content. Ab " + PREISE.laufend.monat + " im Monat."],
-          ["Einmalige Starthilfe", "Profil, Branding und Positionierung werden aufgebaut, danach macht man selbst weiter. Ab " + PREISE.starthilfe.einmalig + " einmalig."],
+          ["Nur das Laufende abgeben", "Das Profil steht bereits, es fehlt der Content. Ab " + PREISE.laufend.monat + " im Monat, " + PREISE.start + "."],
+          ["Einmalige Starthilfe", "Neun gestaltete Beiträge samt Captions, danach postet man selbst. Ab " + PREISE.starthilfe.einmalig + " einmalig; mit Profil, Bio und Branding " + PREISE.profil.einmalig + "."],
         ],
       },
       {
@@ -141,7 +146,7 @@ const SEITEN = [
       "Die ehrliche Rechnung: Wann sich eine Agentur lohnt, wann Selbermachen sinnvoller ist — mit Zeitaufwand und Kostenvergleich.",
     antwort:
       "Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
-      PREISE.laufend.monat + " im Monat ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall.",
+      PREISE.laufend.monat + " im Monat (" + PREISE.start + ") ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall.",
     abschnitte: [
       {
         h: "Der reale Zeitaufwand beim Selbermachen",
@@ -155,7 +160,7 @@ const SEITEN = [
         liste: [
           ["Selbst machen", "Wenn du gern schreibst, ein klares Thema hast und die Zeit verlässlich freihalten kannst. Der Vorteil: deine Stimme ist unverfälscht."],
           ["Abgeben", "Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder du einen einheitlichen Auftritt brauchst, ohne sich damit zu beschäftigen."],
-          ["Mischform", "Einmalige Starthilfe für Profil und Positionierung, danach selbst weitermachen. Bei social2scale ab " + PREISE.starthilfe.einmalig + " einmalig."],
+          ["Mischform", "Einmal aufbauen lassen, danach selbst weitermachen. Bei social2scale Profil und Branding für " + PREISE.profil.einmalig + ", nur die Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig."],
         ],
       },
     ],

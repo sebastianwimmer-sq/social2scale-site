@@ -33,7 +33,7 @@
 <meta name="twitter:title" content="social2scale — Premium Social-Growth">
 <meta name="twitter:description" content="Wir bauen dein Wachstum — Strategie statt Zufall.">
 <meta name="twitter:image:alt" content="social2scale — Premium Social-Growth für Coaches, Experten & B2B">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","ProfessionalService"],"@id":"https://social2scale.com/#org","name":"social2scale","alternateName":"Social2Scale","url":"https://social2scale.com/","logo":{"@type":"ImageObject","url":"https://social2scale.com/assets/avatar-s2s.png","width":160,"height":160},"image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth-Agentur für Coaches, Experten und B2B-Unternehmen ohne eigenen Social-Auftritt. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich planbar wachsen.","email":"info@social2scale.com","areaServed":"DE","knowsAbout":["Social Media Marketing","Content","Paid Growth","Personal Branding"],"founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}],"contactPoint":{"@type":"ContactPoint","email":"info@social2scale.com","contactType":"sales"},"sameAs":["https://www.instagram.com/social2scale/"]},{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","alternateName":["Social2Scale","social 2 scale"],"url":"https://social2scale.com/","inLanguage":"de-DE","publisher":{"@id":"https://social2scale.com/#org"}},{"@type":"FAQPage","@id":"https://social2scale.com/#faq","mainEntity":[{"@type":"Question","name":"Was, wenn ich noch gar keinen Social-Auftritt habe?","acceptedAnswer":{"@type":"Answer","text":"Perfekt — genau dafür sind wir da. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content."}},{"@type":"Question","name":"Wie schnell sehe ich Ergebnisse?","acceptedAnswer":{"@type":"Answer","text":"Den Auftritt sofort. Reichweite & Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in deinem Bereich."}},{"@type":"Question","name":"Muss ich selbst Content erstellen?","acceptedAnswer":{"@type":"Answer","text":"Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um."}},{"@type":"Question","name":"Was kostet das?","acceptedAnswer":{"@type":"Answer","text":"Alle sieben Pakete stehen offen auf der Preisseite — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat. Welcher Weg zu dir passt, klären wir im Erstgespräch."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Organization","ProfessionalService"],"@id":"https://social2scale.com/#org","name":"social2scale","alternateName":"Social2Scale","url":"https://social2scale.com/","logo":{"@type":"ImageObject","url":"https://social2scale.com/assets/avatar-s2s.png","width":160,"height":160},"image":"https://social2scale.com/assets/og-image.png","description":"Premium Social-Media-Growth-Agentur für Coaches, Experten und B2B-Unternehmen ohne eigenen Social-Auftritt. Wir bauen deinen Social-Auftritt von Grund auf und lassen dich planbar wachsen.","email":"info@social2scale.com","areaServed":"DE","knowsAbout":["Social Media Marketing","Content","Paid Growth","Personal Branding"],"founder":[{"@type":"Person","name":"Sebastian"},{"@type":"Person","name":"Philipp Libowicz"}],"contactPoint":{"@type":"ContactPoint","email":"info@social2scale.com","contactType":"sales"},"sameAs":["https://www.instagram.com/social2scale/"]},{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","alternateName":["Social2Scale","social 2 scale"],"url":"https://social2scale.com/","inLanguage":"de-DE","publisher":{"@id":"https://social2scale.com/#org"}},{"@type":"FAQPage","@id":"https://social2scale.com/#faq","mainEntity":[{"@type":"Question","name":"Was, wenn ich noch gar keinen Social-Auftritt habe?","acceptedAnswer":{"@type":"Answer","text":"Perfekt — genau dafür sind wir da. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content."}},{"@type":"Question","name":"Wie schnell sehe ich Ergebnisse?","acceptedAnswer":{"@type":"Answer","text":"Den Auftritt sofort. Reichweite & Leads bauen sich über die ersten Wochen auf — jeden Fortschritt verfolgst du live in deinem Bereich."}},{"@type":"Question","name":"Muss ich selbst Content erstellen?","acceptedAnswer":{"@type":"Answer","text":"Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um."}},{"@type":"Question","name":"Was kostet das?","acceptedAnswer":{"@type":"Answer","text":"Alle sieben Pakete stehen offen auf der Preisseite — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Welcher Weg zu dir passt, klären wir im Erstgespräch."}}]}]}</script>
 <link rel="stylesheet" href="/fonts.css">
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
   </style></noscript>
@@ -793,6 +793,9 @@
   }
   /* Kein 300-px-Loch vor dem Abschluss */
   section.abschluss{padding-top:clamp(64px,8vw,120px)}
+  /* Pflichthinweis zu den illustrativen Zahlen (s2s-aussagen.json: nur als Beispielwert) */
+  .s2-beispiel{position:absolute;left:0;right:0;bottom:clamp(10px,2vh,18px);z-index:4;margin:0;text-align:center;font-size:12px;letter-spacing:.02em;color:var(--faint)}
+  @media (max-width:959px){.s2-beispiel{position:static;margin-top:12px;padding:0 16px}}
   /* 03 liegt auf der Lichtflaeche der Szene: faint kam dort auf 3,9:1 */
   .s2hero .s2eyebrow{color:var(--muted)}
   .s2eyebrow::before{display:none}
@@ -825,6 +828,7 @@
   }
 </style>
 <link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/bewegung.css">
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -1018,6 +1022,7 @@
       </div>
 
       <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="s2-beispiel">Zahlen in der Szene und im Titelbild: Beispielwerte, keine Kundenergebnisse.</p>
       <div class="hint" aria-hidden="true"><span>scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </div>
   </div>
@@ -1041,7 +1046,7 @@
           <div class="proof-visual">
             <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen —
                  Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
-            <div class="kette" id="kette">
+            <div class="kette" id="kette" data-licht>
               <div class="kette-kopf">
                 <span class="kette-ttl"><span class="dot" aria-hidden="true"></span>Dein Bereich</span>
                 <span class="kette-meta">drei Zahlen, von Tag eins</span>
@@ -1093,7 +1098,7 @@
         </div>
       </div>
       <div class="preiszeile">
-        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig · laufende Betreuung ab <b>523,60 €</b> im Monat.</p>
+        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig · laufende Betreuung ab <b>523,60 €</b> im Monat, zzgl. 523,60 € einmalig zum Start.</p>
         <a class="textlink" href="/preise/">Alle sieben Pakete mit Endpreisen <span aria-hidden="true">→</span></a>
       </div>
     </div></section>
@@ -1109,7 +1114,7 @@
         <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. In den ersten Wochen steigen die Profilaufrufe, ab Monat drei bis vier erreichen Beiträge Menschen außerhalb deiner Kontakte. Was sich wann bewegt, steht auf <a href="/results/">Prüf uns</a>.</p></details>
         <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung — du gibst die Richtung vor, wir setzen um.</p></details>
         <details><summary>Wie lange bin ich gebunden?</summary><p>Die Einmal-Pakete bezahlst du einmal, fertig. Die laufende Betreuung hat drei Monate Mindestlaufzeit, alle Bedingungen stehen auf der <a href="/preise/">Preisseite</a>.</p></details>
-        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a> — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
+        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a> — mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
       </div>
     </div></section>
 
@@ -1117,12 +1122,11 @@
       <div class="band">
         <p class="ix"><b>07</b> · Nächster Schritt</p>
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Unverbindlicher Strategie-Call — wir zeigen dir, wie dein System aussehen würde.</p>
+        <p class="lead">Dein Feed-Entwurf in 60 Sekunden: kostenlos, mit deinem Foto und deiner Farbe.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="textlink" href="mailto:info@social2scale.com">Oder schreib uns</a>
+          <a class="btn btn-primary" id="cta-vorschau" href="/gratis/">Gratis-Vorschau starten →</a>
+          <a class="textlink" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
         </div>
-        <p class="rueckfall">Noch nicht so weit? <a class="textlink" href="/gratis/">Erst mal die Gratis-Vorschau: dein Feed-Entwurf in 60 Sekunden <span aria-hidden="true">→</span></a></p>
         <div class="duo">
           <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
           <p class="duo-txt"><b>Sebi &amp; Phil</b> — wir zwei bauen das, kein Team dazwischen. <a href="/about/">Über uns →</a></p>
@@ -1453,8 +1457,8 @@
   </script>
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <div class="inner">
-    <span class="txt"><b>Bereit für planbares Wachstum?</b>Unverbindlich, 20 Minuten.</span>
-    <a class="btn btn-primary" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch&nbsp;→</a>
+    <span class="txt"><b>Deine Gratis-Vorschau</b>Feed-Entwurf in 60 Sekunden.</span>
+    <a class="btn btn-primary" href="/gratis/">Vorschau&nbsp;starten&nbsp;→</a>
   </div>
 </div>
 <script>
@@ -1513,5 +1517,6 @@
   })();
 </script>
 <script src="/uebergang.js" defer></script>
+<script src="/bewegung.js" defer></script>
 </body>
 </html>
