@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-FUFSmmiBWs8s3LF8f1wBKJGNhOpdS4JC92jJo25oWA8=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-YP9XrTE/PxSQBMXBtrH5gpu7HEe/d2m8MJw0cAKrmmU=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -639,12 +639,27 @@
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
         .then(function (r) {
           if (r.ok && r.json && (r.json.success === true || r.json.ok === true)) { nachfrage = r.json.nachfrage || ''; fertig(); }
-          else throw new Error('abgelehnt');
+          else { var err = new Error('abgelehnt'); err.code = (r.json && r.json.error) || ''; throw err; }
         })
-        .catch(function () {
+        .catch(function (e) {
           weiter.classList.remove('laedt'); weiter.disabled = false; zurueck.disabled = false;
-          fehler('af-f5', 'Die Anfrage ist nicht angekommen. Deine Angaben bleiben gespeichert. Versuch es noch einmal oder schreib an info@social2scale.com.');
-          try { window.turnstile && window.turnstile.reset(); } catch (e) {}
+          try { window.turnstile && window.turnstile.reset(); } catch (x) {}
+          // Den Grund nennen, statt immer „nicht angekommen": am 01.10.2026 scheiterten
+          // fünf Versuche an einer E-Mail-Domain, die es nicht gibt — mit der alten
+          // Meldung schickt man denselben Tippfehler einfach noch einmal ab.
+          var code = (e && e.code) || '';
+          if (code === 'email_domain') {
+            zeige(4, true);
+            fehler('af-f-email', 'An diese Adresse kann keine E-Mail zugestellt werden. Prüf bitte die Schreibweise, zum Beispiel gmail.com statt gmial.com.', el('email'));
+            try { el('email').focus(); } catch (x) {}
+            return;
+          }
+          var text = {
+            captcha: 'Die Sicherheitsprüfung ist abgelaufen. Schick die Anfrage bitte einfach noch einmal ab.',
+            missing_fields: 'Name, E-Mail oder Telefon fehlen noch. Bitte in Schritt 4 ergänzen.'
+          }[code] || (/zu viele/i.test(String(code)) ? 'Zu viele Versuche in kurzer Zeit. Bitte in ein paar Minuten noch einmal.' :
+            'Die Anfrage ist nicht angekommen. Deine Angaben bleiben gespeichert. Versuch es noch einmal oder schreib an info@social2scale.com.');
+          fehler('af-f5', text);
         });
     }
 
