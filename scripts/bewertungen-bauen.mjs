@@ -100,7 +100,7 @@ export function abschnittBauen(daten) {
          KEIN aggregateRating/review-Markup: self-serving, siehe Skriptkopf. -->
     <section class="rs-blk" id="stimmen" aria-labelledby="bw-h"><div class="wrap reveal">
       <div class="rs-blk-head">
-        <p class="rs-rh"><b>06</b> · Nicht von uns</p>
+        <p class="rs-rh">Nicht von uns</p>
         <h2 id="bw-h">Was <em>Kundinnen</em> schreiben, wenn wir nicht mitlesen.</h2>
         ${zaehler}
       </div>

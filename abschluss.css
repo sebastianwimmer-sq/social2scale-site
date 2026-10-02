@@ -254,3 +254,16 @@ body{
    auf dem Emerald-Licht fielen Etiketten und Unterzeilen auf 3,0–4,4:1
    (gemessen an echten Pixeln, 01.10.2026). Eine Stelle fuer alle Seiten. */
 :root{--faint:#ABAEA8;--muted:#BEC0BB}
+
+/* ── Reduktion (02.10.2026): keine Zier-Striche, -Punkte und -Icons ──
+   Sebi: "schleichen sich schon wieder vermehrt Striche, Punkte, Icons ein —
+   KI-generischer Slop". Gezaehlt je Seite: bis zu 20 Gedankenstriche, 12
+   Mittelpunkte, 17 Zierlinien, 20 Nummern-Etiketten, 14 Haken-Icons.
+   Regel: Etiketten sind reiner Text (keine Nummer, keine Linie), Listen ohne
+   Marker, Pfeile nur am Hauptknopf und an der Vorschau-Aktion. Bedeutungs-
+   tragende Linien bleiben (Weg durch die Phasen auf /ablauf/, Kante der Kette). */
+.ix::after,:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh)::after,:is(.pr-rh,.rs-rh,.fw-rh,.ab-rh)::before{content:none!important}
+:is(.fl-num,.pr-time-num,.pr-emp-nr,.pr-alt-nr,.ab-num)::before{content:none!important}
+.proof-points li::before,.ab-creed li::before{content:none!important}
+.proof-points li,.ab-creed li{padding-left:0}
+.fw-marrow{display:none!important}

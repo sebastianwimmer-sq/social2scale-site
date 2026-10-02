@@ -58,14 +58,16 @@ async function seite(browser, pfad, motion) {
 // 3. Gegenprobe: bewegt sich ueberhaupt etwas?
 {
   const b = await chromium.launch();
-  for (const [pfad, was] of [['/about/', 'Linien + Fotos'], ['/ablauf/', 'Phasen']]) {
+  for (const [pfad, was] of [['/about/', 'Fotos'], ['/ablauf/', 'Phasen']]) {
     const { c, p } = await seite(b, pfad, 'no-preference');
     const r = await p.evaluate((sel) => ({
       linien: [...document.querySelectorAll(sel)].filter((e) => getComputedStyle(e, '::after').transform === 'matrix(0, 0, 0, 1, 0, 0)').length,
       fotos: [...document.querySelectorAll('.ab-pic img')].filter((i) => getComputedStyle(i).clipPath !== 'none').length,
       phasen: [...document.querySelectorAll('.fl-phase')].map((x) => parseFloat(getComputedStyle(x).getPropertyValue('--weg')) || 0),
     }), ETIKETTEN);
-    const bewegt = pfad === '/ablauf/' ? r.phasen.some((v) => v < 1) && r.linien > 0 : r.linien > 0 && r.fotos > 0;
+    // Etiketten tragen seit 02.10.2026 keine Linie mehr (Reduktion) — geprueft wird,
+    // was sich weiter bewegt: die Gruenderfotos und der Weg durch die Phasen.
+    const bewegt = pfad === '/ablauf/' ? r.phasen.some((v) => v < 1) : r.fotos > 0;
     melde(bewegt, `Gegenprobe ${pfad}: ${was} starten verborgen (Linien ${r.linien}, Fotos ${r.fotos}, Phasen ${r.phasen.join('/') || '-'})`);
     await c.close();
   }
