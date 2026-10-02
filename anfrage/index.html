@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-YP9XrTE/PxSQBMXBtrH5gpu7HEe/d2m8MJw0cAKrmmU=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-Fp66j4URxXLZ5DThMGgbL91wXmGS4vg00P7f88XOqQE=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -170,6 +170,15 @@
   .af-ok input:focus-visible + .af-ok-box{outline:2px solid var(--emerald-soft);outline-offset:3px}
   .af-ok a{color:var(--paper);text-decoration:underline;text-underline-offset:3px}
   .af-ts{margin-top:var(--s-4)}
+  /* Handy: die Uebersicht war mit echten Angaben 410-510 px hoch und schob die
+     Einwilligung unter die feste Knopfleiste (iPhone 15 Pro: 107 px). */
+  @media (max-width:759px){
+    .af-uebersicht{margin-top:12px}
+    .af-zeile{padding:4px 6px 4px 14px;gap:0 6px}
+    .af-zeile dt{font-size:12px;line-height:1.2}
+    .af-zeile dd{font-size:15px;line-height:1.3}
+    .af-ok{margin-top:14px}
+  }
   .af-ts .cf-turnstile{max-width:100%}
   .af-duo-senden{margin-top:var(--s-4)}
   .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -551,7 +560,15 @@
         if (erstes) erstes.focus();
         return ok;
       }
-      if (n === 5) return fehler('af-f5', el('consent').checked ? '' : 'Bitte bestätige die Datenschutzerklärung.');
+      if (n === 5) {
+        if (el('consent').checked) return fehler('af-f5', '');
+        // Am Handy lag die Einwilligung unter der festen Knopfleiste: ohne Sprung
+        // sah der Tipp auf „Anfrage senden" aus wie ein toter Knopf.
+        var box = el('consent').closest('.af-ok');
+        try { box.scrollIntoView({ block: 'center', behavior: ruhig ? 'auto' : 'smooth' }); } catch (e) {}
+        try { el('consent').focus({ preventScroll: true }); } catch (e) {}
+        return fehler('af-f5', 'Bitte bestätige die Datenschutzerklärung.');
+      }
       return true;
     }
 
