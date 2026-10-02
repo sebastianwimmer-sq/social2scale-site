@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-Fp66j4URxXLZ5DThMGgbL91wXmGS4vg00P7f88XOqQE=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-43sAZFLO6nFVHh8Mv1r8ZAuVdaEBWrJCqs+cN1htLPo=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -265,6 +265,8 @@
   /* Handy: Einladung nur beim ersten Schritt, danach zählt die Frage. */
   @media (max-width:959px){
     .af[data-schritt]:not([data-schritt="1"]) .af-einladung{display:none}
+    .af-vorschlag{margin-left:6px;padding:6px 12px;min-height:44px;border-radius:999px;border:1px solid var(--emerald,#00B888);background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}
+    .af-vorschlag:hover,.af-vorschlag:focus-visible{background:rgba(0,184,136,.14);outline:none}
     .af[data-schritt]:not([data-schritt="1"]) .af-weg{margin-top:var(--s-2)}
     .af-einladung .af-duo{display:none}
   }
@@ -541,6 +543,45 @@
       if (feld) { if (text) feld.setAttribute('aria-invalid', 'true'); else feld.removeAttribute('aria-invalid'); }
       return !text;
     }
+    // ---- Tippfehler in der E-Mail-Domain vorschlagen, BEVOR abgeschickt wird ----
+    // Am 01.10.2026 scheiterten fünf Versuche an einer Domain, die es nicht gibt.
+    // Ein Vorschlag mit einem Tipp verhindert das, statt es hinterher zu erklären.
+    // Nicht blockierend: wer die Adresse so meint, klickt einfach noch einmal weiter.
+    var BEKANNT = ['gmail.com', 'googlemail.com', 'gmx.de', 'gmx.net', 'gmx.at', 'gmx.ch', 'gmx.com', 'web.de', 't-online.de',
+      'outlook.com', 'outlook.de', 'hotmail.com', 'hotmail.de', 'live.de', 'live.com', 'icloud.com', 'me.com', 'yahoo.com',
+      'yahoo.de', 'aol.com', 'freenet.de', 'posteo.de', 'mail.de', 'arcor.de', 'online.de'];
+    function abstand(a, b) {            // Damerau (Vertauschung zählt als ein Fehler)
+      var d = [], i, j;
+      for (i = 0; i <= a.length; i++) { d[i] = [i]; }
+      for (j = 0; j <= b.length; j++) { d[0][j] = j; }
+      for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) {
+        var k = a[i - 1] === b[j - 1] ? 0 : 1;
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + k);
+        if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+      return d[a.length][b.length];
+    }
+    function vorschlag(adresse) {
+      var t = String(adresse).split('@');
+      if (t.length !== 2 || !t[1]) return '';
+      var dom = t[1].toLowerCase(), best = '', min = 3;
+      if (BEKANNT.indexOf(dom) > -1) return '';
+      BEKANNT.forEach(function (k) { var x = abstand(dom, k); if (x < min) { min = x; best = k; } });
+      return best ? t[0] + '@' + best : '';
+    }
+    var vorschlagGezeigt = '';
+    function zeigeVorschlag(v) {
+      var f = el('af-f-email');
+      f.textContent = 'Meintest du ';
+      var b = document.createElement('b'); b.textContent = v; f.appendChild(b);
+      f.appendChild(document.createTextNode('? '));
+      var k = document.createElement('button');
+      k.type = 'button'; k.className = 'af-vorschlag'; k.textContent = 'Übernehmen';
+      k.addEventListener('click', function () { el('email').value = v; fehler('af-f-email', '', el('email')); speichern(); el('email').focus(); });
+      f.appendChild(k);
+      el('email').setAttribute('aria-invalid', 'true');
+    }
+
     function pruefe(n) {
       if (n === 1) return fehler('af-f1', gewaehlt('status') ? '' : 'Wähl die Antwort, die am ehesten passt.');
       if (n === 2) {
@@ -557,6 +598,13 @@
         var ziffern = wert('phone').replace(/\D/g, '');
         feld('phone', (/^[0-9+()\/ .\-]+$/.test(wert('phone')) && ziffern.length >= 6) ? '' : 'Bitte eine Telefonnummer mit mindestens 6 Ziffern.');
         feld('business', wert('business') ? '' : 'Ein Stichwort reicht, z. B. dein Angebot.');
+        var v = ok || el('af-f-email').textContent === '' ? vorschlag(wert('email')) : '';
+        if (v && vorschlagGezeigt !== wert('email')) {
+          vorschlagGezeigt = wert('email');
+          zeigeVorschlag(v);
+          if (!erstes) erstes = el('email');
+          ok = false;
+        }
         if (erstes) erstes.focus();
         return ok;
       }
@@ -573,9 +621,24 @@
     }
 
     // ---- Schritt wechseln: immer oben beginnen ----
+    // Trichter: jeder gezeigte Schritt einmal je Besuch an die eigene Zählung —
+    // ohne Eingaben, ohne Kennung (Datenschutz §05). So sehen wir, wo das Formular
+    // zu kompliziert ist.
+    var gemeldet = {};
+    function melde(pfad) {
+      if (gemeldet[pfad]) return;
+      gemeldet[pfad] = true;
+      try {
+        if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || !navigator.sendBeacon) return;
+        var d = JSON.stringify({ p: pfad, r: '', d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
+        navigator.sendBeacon('https://closing.social2scale.com/api/pv', new Blob([d], { type: 'text/plain;charset=UTF-8' }));
+      } catch (e) { /* Zählung darf das Formular nie stören */ }
+    }
+
     function zeige(n, verlauf, rueckwaerts) {
       n = Math.max(1, Math.min(ANZAHL, n));
       var vorher = aktuell; aktuell = n;
+      melde('/anfrage/schritt/' + n + '/');
       huelle.setAttribute('data-schritt', String(n));
       schritte.forEach(function (s) {
         var an = Number(s.getAttribute('data-step')) === n;
@@ -700,6 +763,7 @@
       });
     }
     function fertig() {
+      melde('/anfrage/fertig/');
       var vorname = wert('name').split(/\s+/)[0];
       if (vorname) el('af-erfolg-titel').textContent = 'Danke, ' + vorname + '. Deine Anfrage ist da.';
       try { localStorage.removeItem(ENTWURF); } catch (e) {}
