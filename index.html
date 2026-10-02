@@ -792,6 +792,22 @@
     #leistungen .blk-head .lead{grid-column:2;margin:0;padding-bottom:.4em}
   }
   /* Kein 300-px-Loch vor dem Abschluss */
+  /* ── Eigener Feed: echte Beitraege als Kapitel-Bild (02.10.2026) ── */
+  .feed-band{position:relative;padding:clamp(72px,9vw,128px) 0;border-top:1px solid var(--line)}
+  .feed-kopf h2{max-width:18ch}
+  .feed-reihe{list-style:none;margin:clamp(32px,4vw,48px) 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(8px,1vw,14px)}
+  .feed-reihe li{min-width:0}
+  .feed-reihe img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:6px;
+    box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 28px 56px -30px rgba(0,0,0,.85);
+    transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s cubic-bezier(.16,1,.3,1)}
+  @media (hover:hover){.feed-reihe li:hover img{transform:translateY(-6px);box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 36px 64px -28px rgba(0,184,136,.35)}}
+  .feed-reihe li{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+  .reveal:not(.on) .feed-reihe li{opacity:0;transform:translateY(24px)}
+  .feed-reihe li:nth-child(2){transition-delay:.06s}.feed-reihe li:nth-child(3){transition-delay:.12s}
+  .feed-reihe li:nth-child(4){transition-delay:.18s}.feed-reihe li:nth-child(5){transition-delay:.24s}.feed-reihe li:nth-child(6){transition-delay:.30s}
+  .feed-link{display:inline-flex;margin-top:clamp(20px,2.4vw,28px)}
+  @media (max-width:760px){.feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.feed-reihe img{border-radius:3px}}
+  @media (prefers-reduced-motion:reduce){.feed-reihe li,.feed-reihe img{transition:none}.reveal:not(.on) .feed-reihe li{opacity:1;transform:none}}
   section.abschluss{padding-top:clamp(64px,8vw,120px)}
   /* Pflichthinweis zu den illustrativen Zahlen (s2s-aussagen.json: nur als Beispielwert) */
   .s2-beispiel{position:absolute;left:0;right:0;bottom:clamp(10px,2vh,18px);z-index:4;margin:0;text-align:center;font-size:12px;letter-spacing:.02em;color:var(--faint)}
@@ -1027,6 +1043,25 @@
     </div>
   </div>
 </section>
+
+    <!-- Echte Arbeit statt Deko (02.10.2026): eigene, veroeffentlichte Beitraege
+         aus kit-build/out-s2s. Loest die leeren Kacheln der Handy-Szene auf. -->
+    <section class="feed-band" aria-labelledby="feed-h"><div class="wrap reveal">
+      <div class="feed-kopf">
+        <p class="ix">Aus unserem eigenen Feed</p>
+        <h2 id="feed-h">Unser eigener <em>Auftritt</em>.</h2>
+        <p class="lead">Nach denselben Regeln gebaut, die wir für dich anlegen.</p>
+      </div>
+      <ul class="feed-reihe">
+        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Vier Wochen, kaum neue Follower." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Keine Kennzahl." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Ein Wort, eine Abmahnung." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." loading="lazy" decoding="async"></li>
+      </ul>
+      <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Auf Instagram ansehen</a>
+    </div></section>
 
     <section class="proof photo-sec" id="proof" aria-labelledby="proof-h">
       <div class="sec-bg growth" aria-hidden="true"></div>
