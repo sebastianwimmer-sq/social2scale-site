@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-6LvWwAyUwibnVT/aG7yOdYdfF3dJTvaWdMTF0cZK6PI=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-FUFSmmiBWs8s3LF8f1wBKJGNhOpdS4JC92jJo25oWA8=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -143,6 +143,10 @@
   .af-feld input:focus,.af-feld textarea:focus{outline:none;border-color:var(--emerald);background:rgba(3,8,13,.75);box-shadow:0 0 0 3px rgba(0,184,136,.2)}
   .af-feld input[aria-invalid="true"]{border-color:#ff8b7d;box-shadow:0 0 0 3px rgba(255,139,125,.14)}
   .af-anders{margin-top:var(--s-4)}
+  .af-gefunden{margin:var(--s-5) 0}
+  .af-gefunden[hidden],.af-gefunden-danke[hidden]{display:none}
+  .af-gefunden-danke{margin:var(--s-5) 0;color:var(--emerald-soft)}
+  .af-frei{color:var(--muted);font-size:.9em}
   .af-anders[hidden]{display:none}
 
   .af-fehler{margin-top:var(--s-3);min-height:1.4em;color:#ff9d91;font-size:.95rem;line-height:1.4}
@@ -396,6 +400,16 @@
         <div class="af-haken" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h2 id="af-erfolg-titel">Danke, deine Anfrage ist da.</h2>
         <p>Wenn du magst, such dir gleich einen Termin aus. Sonst rufen wir dich an.</p>
+        <div class="af-gefunden" id="af-gefunden" role="group" aria-labelledby="af-gefunden-t" hidden>
+          <p class="af-hilfe" id="af-gefunden-t">Eine kurze Frage noch: Wie hast du uns gefunden? <span class="af-frei">freiwillig</span></p>
+          <div class="af-chips">
+            <label class="af-chip"><input type="radio" name="gefunden" value="instagram"><span>Instagram</span></label>
+            <label class="af-chip"><input type="radio" name="gefunden" value="empfehlung"><span>Empfehlung</span></label>
+            <label class="af-chip"><input type="radio" name="gefunden" value="google"><span>Google</span></label>
+            <label class="af-chip"><input type="radio" name="gefunden" value="anders"><span>Anders</span></label>
+          </div>
+        </div>
+        <p class="af-gefunden-danke" id="af-gefunden-danke" role="status" hidden>Danke dir, das hilft uns sehr.</p>
         <div class="af-kalender" id="cal-inline" aria-label="Terminkalender Erstgespräch"></div>
         <a class="af-kalender-link" href="https://cal.eu/social2scale/social2scale-erstgesprach" target="_blank" rel="noopener noreferrer">Kalender lädt nicht? Hier direkt buchen</a>
       </section>
@@ -412,6 +426,7 @@
   <script>
   (function () {
     var ENDPOINT = 'https://closing.social2scale.com/api/anfrage';
+    var HERKUNFT_ENDPOINT = 'https://closing.social2scale.com/api/anfrage-herkunft';
     var ENTWURF = 's2s-anfrage-entwurf-v1';
     var ANZAHL = 5;
     var NAMEN = ['Deine Lage', 'Deine Ziele', 'Dein Rahmen', 'Kontakt', 'Prüfen & senden'];
@@ -435,6 +450,8 @@
     function el(id) { return document.getElementById(id); }
     function wert(id) { var e = el(id); return e ? e.value.trim() : ''; }
     function gewaehlt(name) { var e = form.querySelector('input[name="' + name + '"]:checked'); return e ? e.value : ''; }
+    function vonLink() { try { return (new URLSearchParams(location.search).get('von') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 30); } catch (e) { return ''; } }
+    function herkunftHost() { try { var h = document.referrer ? new URL(document.referrer).hostname : ''; return h === location.hostname ? '' : h.slice(0, 80); } catch (e) { return ''; } }
     function ziele() { return Array.prototype.slice.call(form.querySelectorAll('input[name="goalpick"]:checked')).map(function (c) { return c.value; }); }
     function anzeigeText(input) { var t = input && input.parentNode.querySelector('.af-kachel-titel'); return t ? t.textContent : ''; }
     function zielTexte() {
@@ -612,13 +629,16 @@
       var daten = {
         name: wert('name'), email: wert('email'), phone: wert('phone'), business: wert('business'),
         status: gewaehlt('status'), goal: z, budget: gewaehlt('budget'),
-        turnstile: tsTok, elapsed: Date.now() - geladenUm
+        turnstile: tsTok, elapsed: Date.now() - geladenUm,
+        // Herkunft ohne Speicherung im Browser: ein ?von= aus unseren eigenen
+        // Links und nur der Domainname der vorigen Seite.
+        von: vonLink(), herkunft: herkunftHost()
       };
       weiter.classList.add('laedt'); weiter.disabled = true; zurueck.disabled = true;
       fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(daten) })
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
         .then(function (r) {
-          if (r.ok && r.json && (r.json.success === true || r.json.ok === true)) fertig();
+          if (r.ok && r.json && (r.json.success === true || r.json.ok === true)) { nachfrage = r.json.nachfrage || ''; fertig(); }
           else throw new Error('abgelehnt');
         })
         .catch(function () {
@@ -628,6 +648,25 @@
         });
     }
 
+    // Freiwillige Nachfrage nach dem Absenden: kostet die Anfrage nichts. Der
+    // Schluessel gehoert nur zu DIESER Anfrage; das Danke kommt erst nach dem Server.
+    var nachfrage = '';
+    function nachfrageZeigen() {
+      var box = el('af-gefunden');
+      if (!box || !/^[a-f0-9]{32}$/.test(nachfrage)) return;
+      box.hidden = false;
+      Array.prototype.forEach.call(box.querySelectorAll('input[name="gefunden"]'), function (r) {
+        r.addEventListener('change', function () {
+          Array.prototype.forEach.call(box.querySelectorAll('input'), function (i) { i.disabled = true; });
+          fetch(HERKUNFT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nachfrage: nachfrage, gefunden: r.value }) })
+            .then(function (res) {
+              if (!res.ok) throw new Error('nein');
+              box.hidden = true; el('af-gefunden-danke').hidden = false;
+            })
+            .catch(function () { box.hidden = true; });
+        });
+      });
+    }
     function fertig() {
       var vorname = wert('name').split(/\s+/)[0];
       if (vorname) el('af-erfolg-titel').textContent = 'Danke, ' + vorname + '. Deine Anfrage ist da.';
@@ -639,6 +678,7 @@
       try { history.replaceState({ fertig: true }, '', location.pathname + location.search); } catch (e) {}
       try { huelle.scrollIntoView({ block: 'start', behavior: ruhig ? 'auto' : 'smooth' }); } catch (e) {}
       try { erfolg.focus({ preventScroll: true }); } catch (e) {}
+      nachfrageZeigen();
       try { window.s2sInitCal && window.s2sInitCal(); } catch (e) {}
     }
 
