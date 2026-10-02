@@ -10,7 +10,7 @@
  * fuer echte Kundinnen in HWG-Nischen. Bei Recht wird kopiert, nicht erfunden.
  */
 
-import { COPY_VERSUCHE, COPY_BACKOFF_MS } from './constants.js';
+import { COPY_VERSUCHE, COPY_BACKOFF_MS, TAETIGKEITEN } from './constants.js';
 
 const API = 'https://api.anthropic.com/v1/messages';
 // Die Copy war der wahre Flaschenhals der Wartezeit (~37s): EIN Call musste Profil
@@ -332,6 +332,8 @@ export async function generateCopy(env, clean) {
     `Kundin: ${clip(clean?.name, 60)} (@${clip(clean?.handle, 40)})\n` +
     `Thema: ${clip(clean?.branche, 200)}\n` +
     `Ziel: ${clip(clean?.ziel, 400)}\n` +
+    (TAETIGKEITEN[clean?.taetigkeit] && Object.prototype.hasOwnProperty.call(TAETIGKEITEN, clean.taetigkeit)
+      ? `Taetigkeit: ${TAETIGKEITEN[clean.taetigkeit]}\n` : '') +
     `Stimmung: ${clip(clean?.stimmung, 40)}`;
 
   // Drei feste Blickwinkel, damit die 3 unabhaengigen (parallelen) Post-Calls sich

@@ -203,22 +203,42 @@ function pageMarkup(turnstileSiteKey) {
       </div>
 
       <div class="q" data-step="3">
+        <span class="eyebrow">Was du machst</span>
+        <h2>Was machst du <em>beruflich</em>?</h2>
+        <div class="chips" id="taetigkeit" role="group" aria-label="Was du machst">
+          <button class="chip" data-taetigkeit="coach" aria-pressed="false"><span>Coach oder Beratung</span></button>
+          <button class="chip" data-taetigkeit="direktvertrieb" aria-pressed="false"><span>Direktvertrieb oder Network</span></button>
+          <button class="chip" data-taetigkeit="dienstleistung" aria-pressed="false"><span>Studio oder Dienstleistung</span></button>
+          <button class="chip" data-taetigkeit="creator" aria-pressed="false"><span>Creator</span></button>
+          <button class="chip" data-taetigkeit="anders" aria-pressed="false"><span>Etwas anderes</span></button>
+        </div>
+        <div class="react" id="r-taetigkeit"></div>
+        <div class="foot"><button class="next" data-req="taetigkeit" data-go="4"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="2">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="4">
         <span class="eyebrow">Dein Thema</span>
         <h2>Worum geht’s <em>bei dir</em>?</h2>
         <div class="field"><div class="field-in"><textarea id="f-thema" placeholder="z.B. Yoga & Achtsamkeit für gestresste Berufstätige."></textarea></div></div>
         <div class="react" id="r-thema"></div>
-        <div class="foot"><button class="next" data-req="f-thema" data-go="4"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="2">Zurück</button></div>
-      </div>
-
-      <div class="q" data-step="4">
-        <span class="eyebrow">Dein Ziel</span>
-        <h2>Was soll dein Auftritt <em>bewirken</em>?</h2>
-        <div class="field"><div class="field-in"><textarea id="f-ziel" placeholder="z.B. Mehr Anfragen von Wunschkunden — nicht nur Likes."></textarea></div></div>
-        <div class="react" id="r-ziel"></div>
-        <div class="foot"><button class="next" data-req="f-ziel" data-go="5"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="3">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-thema" data-go="5"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="3">Zurück</button></div>
       </div>
 
       <div class="q" data-step="5">
+        <span class="eyebrow">Dein Ziel</span>
+        <h2>Was soll dein Auftritt <em>bewirken</em>?</h2>
+        <div class="chips" id="ziel" role="group" aria-label="Dein Ziel">
+          <button class="chip" data-ziel="Mehr Anfragen" aria-pressed="false"><span>Mehr Anfragen</span></button>
+          <button class="chip" data-ziel="Mehr Sichtbarkeit" aria-pressed="false"><span>Mehr Sichtbarkeit</span></button>
+          <button class="chip" data-ziel="Mehr Umsatz" aria-pressed="false"><span>Mehr Umsatz</span></button>
+          <button class="chip" data-ziel="Weniger Zeit für Content" aria-pressed="false"><span>Weniger Zeit für Content</span></button>
+          <button class="chip" data-ziel="Meine Marke stärken" aria-pressed="false"><span>Meine Marke stärken</span></button>
+        </div>
+        <div class="react" id="r-ziel"></div>
+        <div class="foot"><button class="next" data-req="ziel" data-go="6"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="4">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="6">
         <span class="eyebrow">Wo du stehst</span>
         <h2>Wo stehst du <em>heute</em>?</h2>
         <div class="chips" id="stand" role="group" aria-label="Wo du heute stehst">
@@ -227,10 +247,10 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-stand="Aktiv, will mehr" aria-pressed="false"><span>Aktiv — will aufs nächste Level</span></button>
         </div>
         <div class="react" id="r-stand"></div>
-        <div class="foot"><button class="next" data-req="stand" data-go="6"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="4">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stand" data-go="7"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
       </div>
 
-      <div class="q" data-step="6">
+      <div class="q" data-step="7">
         <span class="eyebrow">Deine Stimmung</span>
         <h2>Welche <em>Stimmung</em> bist du?</h2>
         <div class="chips" id="stimmung" role="group" aria-label="Stimmung">
@@ -240,10 +260,10 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-mood="mutig" aria-pressed="false"><span>Kraftvoll &amp; mutig</span></button>
         </div>
         <div class="react" id="r-mood"></div>
-        <div class="foot"><button class="next" data-req="stimmung" data-go="7"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stimmung" data-go="8"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
       </div>
 
-      <div class="q" data-step="7">
+      <div class="q" data-step="8">
         <span class="eyebrow">Zeig dich</span>
         <h2>Magst du dein <em>Profilbild</em> zeigen?</h2>
         <input type="file" id="f-foto" accept="image/*" style="display:none">
@@ -257,10 +277,10 @@ function pageMarkup(turnstileSiteKey) {
         </div>
         <p class="hint" style="text-align:left;margin-top:10px">Optional — dein Feed zeigt es dann wie auf Instagram, mit Story-Ring.</p>
         <div class="react" id="r-foto"></div>
-        <div class="foot"><button class="next" data-go="8"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="7">Zurück</button></div>
       </div>
 
-      <div class="q" data-step="8">
+      <div class="q" data-step="9">
         <span class="eyebrow">Deine Markenfarbe</span>
         <h2>Hat deine Marke eine <em>Farbe</em>?</h2>
         <div class="chips farb-chips" id="farbe" role="group" aria-label="Markenfarbe">
@@ -270,10 +290,10 @@ function pageMarkup(turnstileSiteKey) {
         <input type="color" id="f-farbe-custom" value="#2f6f5e" aria-label="Eigene Markenfarbe" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none">
         <p class="hint" style="text-align:left;margin-top:10px">Optional — ohne Auswahl wählen wir eine, die zu deiner Stimmung passt.</p>
         <div class="react" id="r-farbe"></div>
-        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="7">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="10"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="8">Zurück</button></div>
       </div>
 
-      <div class="q" data-step="9">
+      <div class="q" data-step="10">
         <span class="eyebrow">Letzter Schritt</span>
         <h2>Fast fertig — <em>wohin damit</em>?</h2>
         <div class="field"><div class="field-in"><input type="email" id="f-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
@@ -283,15 +303,15 @@ function pageMarkup(turnstileSiteKey) {
           <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
           <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
-          <button class="back" data-go="8">Zurück</button>
+          <button class="back" data-go="9">Zurück</button>
         </div>
       </div>
 
-      <div class="q" data-step="10">
+      <div class="q" data-step="11">
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
-        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="9">E-Mail ändern</button></div>
+        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
       </div>
     </div>
     <p class="legal"><a href="https://social2scale.com/">Startseite</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
@@ -304,7 +324,7 @@ function pageMarkup(turnstileSiteKey) {
 // wurde von reiner Navigation auf einen echten POST /api/free-content umgestellt.
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
-  const TOTAL=9; let step=0;
+  const TOTAL=10; let step=0;
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOODS={
@@ -319,7 +339,7 @@ const PAGE_SCRIPT = `
     $('#bar').style.transform=\`scaleX(\${s/TOTAL})\`;
     $('#cnt').textContent=\`\${s}/\${TOTAL}\`; $('#cnt').style.visibility=n===0?'hidden':'visible';
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
-    if(n===10){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
+    if(n===11){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
   function react(id,html,cls){const el=$(id);el.innerHTML=html;el.className='react show'+(cls?' '+cls:'');}
   function clr(id){$(id).className='react';}
@@ -329,7 +349,12 @@ const PAGE_SCRIPT = `
   $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, \${v}! Deine Vorschau wird persönlich.\`);}else clr('#r-name');});
   $('#f-handle').addEventListener('input',e=>{let v=e.target.value.trim().replace(/^@+/,'').replace(/\\s+/g,'');pvH.textContent=v||'dein.profil';if(v)bump(pvH);if(v.length>=3)react('#r-handle',\`@\${v} — sieht gut aus, das nehmen wir.\`);else clr('#r-handle');});
   $('#f-thema').addEventListener('input',e=>{const v=e.target.value.trim();pvB.textContent=v?v.slice(0,40)+(v.length>40?'…':''):' ';const tl=document.querySelectorAll('#pv-grid .pv-tile');if(v.length>8){['Dein Thema','Warum jetzt?','3 Schritte'].forEach((t,i)=>tl[i].textContent=t);react('#r-thema',\`Verstanden — daraus bauen wir deine Posts.\`);}else clr('#r-thema');});
-  $('#f-ziel').addEventListener('input',e=>{const v=e.target.value.trim();if(v.length>4)react('#r-ziel',\`Klares Ziel — darauf zahlt jeder Post ein.\`);else clr('#r-ziel');});
+  // Taetigkeit und Ziel werden angetippt (Freitext ging ungefiltert in den KI-Prompt).
+  function waehlen(gruppe,antwort){document.querySelectorAll('#'+gruppe+' .chip').forEach(c=>c.addEventListener('click',()=>{
+    document.querySelectorAll('#'+gruppe+' .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
+    react('#r-'+gruppe,antwort);}));}
+  waehlen('taetigkeit','Danke — so wissen wir, für wen dein Feed spricht.');
+  waehlen('ziel','Klares Ziel — darauf zahlt jeder Post ein.');
   document.querySelectorAll('#stimmung .chip').forEach(c=>c.addEventListener('click',()=>{
     document.querySelectorAll('#stimmung .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
     const m=MOODS[c.dataset.mood],R=document.documentElement.style;
@@ -410,9 +435,9 @@ const PAGE_SCRIPT = `
   function validMail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(v.trim());}
   $('#f-mail').addEventListener('input',e=>{const v=e.target.value.trim(),s=suggest(v);if(s){react('#r-mail',\`Meintest du <b id="tf">\${s}</b>?\`,'warn');$('#tf').onclick=()=>{$('#f-mail').value=s;clr('#r-mail');$('#f-mail').focus();};}else if(validMail(v))react('#r-mail',\`Passt — dahin schicken wir deine Vorschau.\`);else clr('#r-mail');});
 
-  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
+  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');if(req==='taetigkeit'||req==='ziel')return !!document.querySelector('#'+req+' .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
   document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const to=+b.dataset.go,req=b.dataset.req;
-    if(b.classList.contains('next')&&!reqOk(req)){if(req==='f-mail')react('#r-mail','Bitte gib eine gültige E-Mail-Adresse ein.','warn');else{const el=document.getElementById(req)||qs[step].querySelector('input,textarea');if(el&&el.focus){el.closest('.field').style.background='linear-gradient(180deg,rgba(240,168,139,.7),rgba(240,168,139,.2))';el.focus();}}return;}
+    if(b.classList.contains('next')&&!reqOk(req)){if(req==='f-mail')react('#r-mail','Bitte gib eine gültige E-Mail-Adresse ein.','warn');else{const el=document.getElementById(req)||qs[step].querySelector('input,textarea');const feld=el&&el.closest&&el.closest('.field');if(feld){feld.style.background='linear-gradient(180deg,rgba(240,168,139,.7),rgba(240,168,139,.2))';el.focus();}else{react(req==='stimmung'?'#r-mood':'#r-'+req,'Bitte tipp eine Antwort an.','warn');}}return;}
     show(to);});
   $('#resend').addEventListener('click',()=>{const b=$('#resend');const t=b.textContent;b.textContent='Nochmal geschickt — schau ins Postfach';b.disabled=true;setTimeout(()=>{b.textContent=t;b.disabled=false;},3500);});
 
@@ -435,7 +460,8 @@ const PAGE_SCRIPT = `
     handle:'Bitte prüf deinen Instagram-Namen.',
     name:'Bitte gib deinen Namen ein.',
     branche:'Bitte ergänze dein Thema.',
-    ziel:'Bitte ergänze dein Ziel.',
+    ziel:'Bitte wähl dein Ziel.',
+    taetigkeit:'Bitte wähl aus, was du machst.',
     consent:'Bitte bestätige die Einwilligung.',
     captcha:'Sicherheitscheck nicht bestanden — Seite neu laden und nochmal.',
     rate_limited:'Kurz warten und nochmal versuchen.',
@@ -451,7 +477,8 @@ const PAGE_SCRIPT = `
       email:$('#f-mail').value.trim(),
       handle:$('#f-handle').value.trim().replace(/^@+/,'').replace(/\\s+/g,''),
       branche:thema,
-      ziel:$('#f-ziel').value.trim(),
+      ziel:(document.querySelector('#ziel .chip[aria-pressed=true]')||{}).dataset?.ziel||'',
+      taetigkeit:(document.querySelector('#taetigkeit .chip[aria-pressed=true]')||{}).dataset?.taetigkeit||'',
       stimmung:(document.querySelector('#stimmung .chip[aria-pressed=true]')||{}).dataset?.mood||'',
       stand:(document.querySelector('#stand .chip[aria-pressed=true]')||{}).dataset?.stand||'',
       farbe:farbeWahl,
@@ -466,7 +493,7 @@ const PAGE_SCRIPT = `
       const res=await fetch('/api/free-content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;
       try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
-      if(res.ok&&data&&data.ok){show(10);return;}
+      if(res.ok&&data&&data.ok){show(11);return;}
       react('#r-mail',SUBMIT_FEHLER[data&&data.error]||'Kurz warten und nochmal versuchen.','warn');
       turnstileReset();
     }catch(err){

@@ -15,7 +15,7 @@ import { renderAll } from './render.js';
 import { findByToken } from './leads.js';
 import { notifyFounders } from './mail.js';
 import { FRAME_IDS } from './templates/frames.js';
-import { RENDER_VERSUCHE, RENDER_BACKOFF_MS, RENDER_TIMEOUT_MS, FOLLOWUP_TAGE } from './constants.js';
+import { RENDER_VERSUCHE, RENDER_BACKOFF_MS, RENDER_TIMEOUT_MS, FOLLOWUP_TAGE, TAETIGKEITEN } from './constants.js';
 
 /** Was sie waehrend des Bauens liest. Ehrlich, nicht dekorativ. */
 const SCHRITTE = {
@@ -148,7 +148,7 @@ export async function generateFor(env, token) {
 
   const clean = {
     name: lead.name, handle: lead.handle, branche: lead.branche,
-    ziel: lead.ziel, stimmung: lead.stimmung, farbe: lead.farbe,
+    ziel: lead.ziel, stimmung: lead.stimmung, farbe: lead.farbe, taetigkeit: lead.taetigkeit || '',
   };
 
   // Schicht 1 der Marken-Sicherung (Spec §5a): unser Logo, unsere Verantwortung.
@@ -379,6 +379,7 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
   const md =
     '# Free-Content-Lead\n\n' +
     `- **Instagram:** @${handlePur(lead)}\n` +
+    (lead.taetigkeit ? `- **Macht:** ${TAETIGKEITEN[lead.taetigkeit] || lead.taetigkeit}\n` : '') +
     `- **Thema:** ${lead.branche}\n` +
     `- **Ziel:** ${lead.ziel}\n` +
     (lead.stand ? `- **Wo sie heute steht:** ${lead.stand}\n` : '') +
@@ -428,7 +429,7 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
 
   const daten = JSON.stringify({
     handle: lead.handle, branche: lead.branche, ziel: lead.ziel,
-    stimmung: lead.stimmung, farbe: lead.farbe, stand: lead.stand,
+    stimmung: lead.stimmung, farbe: lead.farbe, stand: lead.stand, taetigkeit: lead.taetigkeit || '',
     testimonial_consent: lead.testimonial_consent, source: lead.source,
     token: lead.token, r2_prefix: lead.r2_prefix,
   });

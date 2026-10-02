@@ -104,3 +104,12 @@ export const BODY_MAX_BYTES = 3_500_000;
  * ~10-40s; 120s ist grosszuegig, aber endlich.
  */
 export const RENDER_TIMEOUT_MS = 120_000;
+
+/** Was die Lead-Person beruflich macht (Freebie Schritt 3). Schluessel = Formularwert. */
+export const TAETIGKEITEN = {
+  coach: 'Coach oder Beratung',
+  direktvertrieb: 'Direktvertrieb oder Network',
+  dienstleistung: 'Studio oder Dienstleistung',
+  creator: 'Creator',
+  anders: 'Etwas anderes',
+};

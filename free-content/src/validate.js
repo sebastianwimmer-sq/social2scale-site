@@ -4,7 +4,7 @@
  */
 
 import { DISPOSABLE_DOMAINS } from './disposable.js';
-import { FIELD_LIMITS, FOTO_MAX_CHARS } from './constants.js';
+import { FIELD_LIMITS, FOTO_MAX_CHARS, TAETIGKEITEN } from './constants.js';
 
 const GMAIL_DOMAINS = new Set(['gmail.com', 'googlemail.com']);
 
@@ -150,6 +150,10 @@ export function validateSubmission(input) {
   const stand = clip(raw.stand, FIELD_LIMITS.stand);
   if (stand === null) return { ok: false, error: 'stand' };
 
+  // Was sie macht (Vorqualifizierung, 02.10.2026): nur bekannte Werte. Optional,
+  // damit eine noch offene alte Seite ohne das Feld nicht scheitert.
+  const taetigkeit = Object.prototype.hasOwnProperty.call(TAETIGKEITEN, raw.taetigkeit) ? raw.taetigkeit : '';
+
   const source = clip(raw.source, FIELD_LIMITS.source);
   if (source === null) return { ok: false, error: 'source' };
 
@@ -187,6 +191,7 @@ export function validateSubmission(input) {
       stimmung,
       farbe,
       stand,
+      taetigkeit,
       consent: true,
       testimonialConsent,
       source,
