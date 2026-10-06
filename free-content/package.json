@@ -1,0 +1,17 @@
+{
+  "name": "s2s-free-content",
+  "private": true,
+  "description": "Gratis-Vorschau (start.social2scale.com) — Cloudflare Worker. Versionen = Stand der Auslieferung 06.10.2026.",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "pruefen": "wrangler deploy --dry-run --outdir .wrangler-probe"
+  },
+  "dependencies": {
+    "@cloudflare/puppeteer": "1.1.0",
+    "qrcode-generator": "2.0.4"
+  },
+  "devDependencies": {
+    "wrangler": "4.111.0"
+  }
+}
