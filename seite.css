@@ -158,3 +158,17 @@ p.pr-alt-du{font-size:17px}
   .kopf-beitrag{grid-column:1;grid-row:auto;justify-self:start;max-width:min(62vw,260px);margin-top:clamp(28px,6vw,40px)}
 }
 @media (prefers-reduced-motion:reduce){.kopf-beitrag img{transition:none}}
+
+/* Preise · Einordnung (06.10.2026): Rechnung als Einleitung, Tabelle mit Einheit,
+   unsere Zeile nennt die Startgebuehr dort, wo verglichen wird. */
+.pr-calc .pr-time-label{margin:0 0 var(--s-4,16px)}
+.pr-calc-grid .is-us .l small{display:block;margin-top:4px;font-size:15px;font-weight:400;color:var(--muted,#BEC0BB);letter-spacing:0;text-transform:none}
+@media (min-width:961px){
+  .pr-blk:has(#pr-rechnung) > .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:clamp(48px,6vw,112px);align-items:end}
+  .pr-blk:has(#pr-rechnung) .pr-blk-head{margin-bottom:0}
+  .pr-blk:has(#pr-rechnung) .pr-calc{margin-top:0}
+}
+@media (max-width:960px){
+  .pr-blk:has(#pr-rechnung) .pr-calc-grid > div{display:flex;flex-direction:row;justify-content:space-between;align-items:baseline;gap:16px}
+  .pr-blk:has(#pr-rechnung) .pr-calc-grid .v{white-space:nowrap;flex:0 0 auto}
+}

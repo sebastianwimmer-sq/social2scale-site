@@ -40,7 +40,7 @@
 <script src="/s2s.js" defer></script>
 <noscript><style>.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
 </style></noscript>
-<!-- ANPASSEN: [C1] alle data-cta-url="#" (Strategie-Call/Calendly) -->
+<!-- ANPASSEN: [C1] alle data-cta-url="#" (Erstgespräch/Kalender) -->
 <style>
   /* Tokens, Dark-Hardening, Aurora-Wash, Loader, Typo-Rollen und Header/Nav
      stehen jetzt in /s2s.css — dort aendern, nicht hier. */
@@ -416,31 +416,11 @@
   .pr-split li{position:relative;padding-left:var(--s-5);font-size:.95rem;line-height:1.5;color:var(--muted)}
   .pr-split .du li{color:var(--paper)}
   .pr-split .du .nix{color:var(--faint);font-style:italic}
-
-  /* ===== Aufwands-Zeitstrahl — dein Anteil schrumpft auf null ===== */
-  .pr-time{margin-top:clamp(var(--s-6),3vw,var(--s-7));display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(var(--s-4),2.4vw,var(--s-6))}
-  /* Statt Kreis-und-Linie: die Geister-Nummer der uebrigen Seiten. "Knoten
-     plus Verbindungslinie" ist das generischste Zeitstrahl-Bauteil ueberhaupt —
-     und die Aufwandsbalken darunter sagen ohnehin schon, worum es geht. */
-  .pr-time-step{position:relative;padding-top:0}
-  .pr-time-num{display:block;font-family:"Fraunces",serif;font-weight:440;
-    font-size:clamp(2.2rem,1.4rem + 2vw,3.4rem);line-height:.82;letter-spacing:-.045em;
-    -webkit-text-stroke:1px var(--line-3);color:transparent;margin-bottom:var(--s-4)}
-  .pr-time-step.is-done .pr-time-num{-webkit-text-stroke-color:var(--emerald);color:rgba(0,184,136,.10)}
-  /* Linie durch alle drei Schritte, Knoten je Schritt */
-  .pr-time-when{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
-  .pr-time-what{margin-top:var(--s-3);font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.05rem,.98rem + .4vw,1.3rem);line-height:1.2;letter-spacing:-.015em}
-  .pr-time-bar{margin-top:var(--s-5);height:6px;border-radius:99px;background:var(--line);overflow:hidden}
-  .pr-time-bar i{display:block;width:100%;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--emerald),var(--teal))}
-  .pr-time-you{margin-top:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.05em;color:var(--muted)}
-  .pr-time-step.is-zero .pr-time-you{color:var(--emerald)}
   .pr-time-label{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);margin-top:clamp(var(--s-6),3vw,var(--s-7))}
 
   @media (max-width:760px){
     .pr-split{grid-template-columns:1fr;gap:var(--s-5)}
     .pr-split-rule{height:1px;width:100%;background:var(--line-2)}
-    .pr-time{grid-template-columns:1fr;gap:var(--s-5)}
-    .pr-time-step{padding-left:0}
   }
 
 
@@ -904,43 +884,16 @@
       <div class="pr-blk-head">
         <p class="pr-rh">Einordnung</p>
         <h2 id="pr-rechnung" class="wipe">Was es dich kostet. An <em>Zeit</em> und an Geld.</h2>
-        <p class="lead">Nicht als Drohung, sondern als Rechnung. Beim ersten Weg sieht die Zeitseite so aus:</p>
+        <p class="lead">Zehn Beiträge im Monat. Je Beitrag: Idee, Text, Gestaltung, Hashtags, Veröffentlichung. Rechne mit <b>45 bis 90 Minuten</b>. Macht <b>7,5 bis 15 Stunden</b> im Monat.</p>
       </div>
-
-      <p class="pr-time-label">Dein Aufwand beim Weg „Alles abgeben"</p>
-      <div class="pr-time stagger">
-        <div class="pr-time-step is-done">
-          <span class="pr-time-num" aria-hidden="true">01</span>
-          <p class="pr-time-when">Monat 1</p>
-          <p class="pr-time-what">Dein Profil entsteht.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: gering"><i class="fillbar" style="--fill:.28"></i></div>
-          <p class="pr-time-you">ein Briefing, etwa 30 Minuten</p>
-        </div>
-        <div class="pr-time-step is-zero">
-          <span class="pr-time-num" aria-hidden="true">02</span>
-          <p class="pr-time-when">Monat 2</p>
-          <p class="pr-time-what">Die ersten Beiträge laufen.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>
-          <p class="pr-time-you">nichts</p>
-        </div>
-        <div class="pr-time-step is-zero">
-          <span class="pr-time-num" aria-hidden="true">03</span>
-          <p class="pr-time-when">ab Monat 3</p>
-          <p class="pr-time-what">Es läuft weiter.</p>
-          <div class="pr-time-bar" role="img" aria-label="Dein Aufwand: keiner"><i class="fillbar" style="--fill:0"></i></div>
-          <p class="pr-time-you">nichts</p>
-        </div>
-      </div>
-
-      <p class="pr-time-label" style="margin-top:clamp(var(--s-7),4vw,var(--s-8))">Und wenn du es selbst machst</p>
 
       <div class="pr-calc">
-        <p class="pr-calc-line">Zehn Beiträge im Monat. Je Beitrag: Idee, Text, Gestaltung, Hashtags, Veröffentlichung. Rechne mit <b>45 bis 90 Minuten</b>. Macht <b>7,5 bis 15 Stunden</b> im Monat.</p>
+        <p class="pr-time-label">Im Monat</p>
         <div class="pr-calc-grid stagger">
-          <div><span class="l">Dein Stundensatz 60 €</span><span class="v">450 – 900 €</span></div>
-          <div><span class="l">Dein Stundensatz 80 €</span><span class="v">600 – 1.200 €</span></div>
-          <div><span class="l">Dein Stundensatz 120 €</span><span class="v">900 – 1.800 €</span></div>
-          <div class="is-us"><span class="l">Unsere laufende Betreuung</span><span class="v">523,60 €</span></div>
+          <div><span class="l">Selbst, bei 60 € Stundensatz</span><span class="v">450 – 900 €</span></div>
+          <div><span class="l">Selbst, bei 80 € Stundensatz</span><span class="v">600 – 1.200 €</span></div>
+          <div><span class="l">Selbst, bei 120 € Stundensatz</span><span class="v">900 – 1.800 €</span></div>
+          <div class="is-us"><span class="l">Mit uns, laufende Betreuung<small>zzgl. 523,60 € einmalig zum Start</small></span><span class="v">523,60 €</span></div>
         </div>
       </div>
     </div></section>
