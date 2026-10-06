@@ -15,7 +15,10 @@
 em.fliesst{
   background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%)!important;
   background-size:200% 100%!important;
-  animation:s2-fluss 9s linear infinite;
+  /* EIN Durchlauf, dann steht er (06.10.2026, Sebi): endlos neben Text war
+     WCAG 2.2.2 (Stufe A). 0 % und 200 % sehen gleich aus — das Wort endet
+     also exakt im Ruhebild, nur der Lichtstreif ist einmal darueber gefahren. */
+  animation:s2-fluss 2.4s cubic-bezier(.45,0,.2,1) 1 both;
 }
 
 /* ── 3. Ablauf: der Weg durch die vier Phasen ──
