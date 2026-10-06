@@ -48,7 +48,7 @@
     --emerald:#00B888; --emerald-soft:#1FC998; --teal:#1FA6E0;
     --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
     --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
-    --ease:cubic-bezier(.16,1,.3,1);
+    --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
     color-scheme:dark;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -117,7 +117,7 @@
     display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;
     letter-spacing:.02em;padding:16px 30px;border-radius:9px;text-decoration:none;
     background:transparent;color:var(--paper);border:1px solid var(--line-3);
-    transition:border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease);
+    transition:border-color var(--dur-2, .25s) var(--ease),background var(--dur-2, .25s) var(--ease),transform var(--dur-2, .25s) var(--ease);
   }
   .btn:hover,.btn:focus-visible{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09);transform:translateY(-2px);outline:none}
 
@@ -132,7 +132,7 @@
      abbricht. Der Notausgang erscheint erst, wenn die Weiterleitung haengt:
      nach 1,5 s, ohne Bewegung (auch bei reduce und ohne JavaScript). */
   @keyframes zeigen{to{opacity:1;visibility:visible}}
-  main.card{opacity:0;visibility:hidden;animation:zeigen .01s linear 1.5s forwards}
+  main.card{opacity:0;visibility:hidden;animation:zeigen var(--dur-1, .01s) linear 1.5s forwards}
 </style>
 </head>
 <body>

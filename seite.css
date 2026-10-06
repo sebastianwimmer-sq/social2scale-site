@@ -151,7 +151,7 @@ p.pr-alt-du{font-size:17px}
   background:radial-gradient(50% 50% at 50% 55%,rgba(31,201,152,.22),rgba(70,190,234,.08) 55%,transparent 75%)}
 .kopf-beitrag img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:8px;
   box-shadow:0 1px 0 rgba(255,255,255,.07) inset,0 40px 80px -36px rgba(0,0,0,.9);
-  transform:rotate(1.5deg);transition:transform .8s cubic-bezier(.16,1,.3,1)}
+  transform:rotate(1.5deg);transition:transform var(--dur-4, .8s) cubic-bezier(.16,1,.3,1)}
 @media (hover:hover){.kopf-beitrag:hover img{transform:rotate(0deg) translateY(-6px)}}
 @media (max-width:880px){
   :is(.pr-hero,.fl-hero,.rs-hero,.fw-hero,.ab-hero) > .wrap{grid-template-columns:minmax(0,1fr)}

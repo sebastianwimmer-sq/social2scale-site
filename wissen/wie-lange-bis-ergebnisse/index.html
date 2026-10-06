@@ -31,7 +31,7 @@
   :root{
     --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
     --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
-    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);
+    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
     --px:clamp(20px,5vw,40px);
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -57,7 +57,7 @@
   a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
 
   @keyframes upIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity var(--dur-4, .7s) var(--ease),transform var(--dur-4, .7s) var(--ease)}
   .reveal.on{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1!important;transform:none!important}}
 
@@ -65,7 +65,7 @@
   /* HEADER */
   .site-head{padding:34px 0 8px}
   .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
-  .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn .6s var(--ease) both}
+  .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
   .logo-s2s{display:none!important}
   @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
   .home-link{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;margin-top:4px}
@@ -117,7 +117,7 @@
   .foot-id img{height:30px;width:auto;display:block}
   .foot-id .foot-tag{font-family:"Archivo",sans-serif;font-size:12px;font-weight:500;color:var(--muted);max-width:24ch;line-height:1.45}
   .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;font-family:"Archivo",sans-serif;font-size:13px;font-weight:500}
-  .foot-links a{color:var(--muted);text-decoration:none;transition:color .2s var(--ease)}
+  .foot-links a{color:var(--muted);text-decoration:none;transition:color var(--dur-2, .2s) var(--ease)}
   .foot-links a:hover{color:var(--paper)}
   .foot-meta{max-width:720px;margin:0 auto;padding:0 var(--px) 36px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;color:var(--faint);line-height:1.9}
   .foot-meta .pk{color:var(--emerald-soft)}
@@ -170,7 +170,7 @@
   /* Kopfzeile: Rücksprung statt dekorativem Label */
   .w-zurueck{display:inline-flex;align-items:center;gap:.45rem;font-family:"JetBrains Mono",monospace;
     font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;
-    transition:color .22s var(--ease)}
+    transition:color var(--dur-2, .22s) var(--ease)}
   .w-zurueck:hover{color:var(--emerald)}
   .w-zurueck::before{content:"←";font-size:1.1em}
 
@@ -220,10 +220,10 @@
     }
   /* Einruecken per translate an den KINDERN: die Trennlinie bleibt stehen, und
      es wird kein Layout neu gerechnet (vorher padding-left, motion-loop 06.10.). */
-  .w-index a > *{transition:translate .3s var(--ease)}
+  .w-index a > *{transition:translate var(--dur-2, .3s) var(--ease)}
   .w-index a:hover > *,.w-index a:focus-visible > *{translate:.6rem 0}
   .w-index .nr{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--faint);
-    letter-spacing:.06em;transition:color .3s var(--ease)}
+    letter-spacing:.06em;transition:color var(--dur-2, .3s) var(--ease)}
   .w-index a:hover .nr,.w-index a:focus-visible .nr{color:var(--emerald)}
   /* Moment (motion-loop 06.10.2026): die Fragennummer leuchtet auf, wenn man
      an der Frage vorbeiliest — der Index zeigt, wo man steht. */
@@ -250,7 +250,7 @@
     font-family:"Archivo",sans-serif;font-weight:600;font-size:.93rem;text-decoration:none;
     background:var(--accent-flow);color:var(--emerald-ink);
     box-shadow:0 14px 34px -14px rgba(0,184,136,.55),var(--hi);
-    transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+    transition:transform var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .2s) var(--ease)}
   .w-btn:hover{transform:translateY(-1px);box-shadow:0 18px 42px -14px rgba(0,184,136,.7),var(--hi)}
   .w-btn:active{transform:translateY(0) scale(.985)}
 
@@ -260,13 +260,13 @@
     text-transform:uppercase;color:var(--faint);font-weight:400;margin-bottom:.6rem}
   .w-weiter ul{list-style:none;display:grid;gap:0}
   .w-weiter a{display:block;padding:.62rem 0;color:var(--muted);text-decoration:none;font-size:.95rem;
-    border-bottom:1px solid var(--line);transition:color .22s var(--ease)}
+    border-bottom:1px solid var(--line);transition:color var(--dur-2, .22s) var(--ease)}
   .w-weiter li:last-child a{border-bottom:0}
   .w-weiter a:hover,.w-weiter a:focus-visible{color:var(--paper)}
 
   /* Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite */
   .w-re{opacity:0;transform:translateY(16px)}
-  .w-re.an{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .w-re.an{opacity:1;transform:none;transition:opacity var(--dur-4, .7s) var(--ease),transform var(--dur-4, .7s) var(--ease)}
   @media (prefers-reduced-motion:reduce){
     .w-re{opacity:1!important;transform:none!important;transition:none!important}
     .w-index a,.w-index a > *,.w-weiter a,.w-btn{transition:none}

@@ -29,7 +29,7 @@ em.fliesst{
   background:linear-gradient(90deg,#1FC998,#46BEEA);
   transform:scaleX(var(--weg,1));transform-origin:left center;
 }
-.fl-phase .fl-num{transition:color .5s ease,text-shadow .5s ease}
+.fl-phase .fl-num{transition:color var(--dur-3, .5s) ease,text-shadow var(--dur-3, .5s) ease}
 .fl-phase.ist-erreicht .fl-num{color:#6EE3BF;text-shadow:0 0 18px rgba(31,201,152,.45)}
 
 /* ── 4. Licht folgt der Maus auf den Karten, die eine Entscheidung tragen ──
@@ -39,14 +39,14 @@ em.fliesst{
 [data-licht] > .s2-licht{
   position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;
   background:radial-gradient(420px circle at var(--lx,50%) var(--ly,0%),rgba(31,201,152,.13),rgba(70,190,234,.05) 40%,transparent 65%);
-  opacity:0;transition:opacity .4s ease;
+  opacity:0;transition:opacity var(--dur-3, .4s) ease;
 }
 [data-licht]:hover > .s2-licht{opacity:1}
 
 /* ── 5. Gruender: das Foto oeffnet sich mit einer Blende (am Bild, nicht am
    beobachteten Element — kern.md: clip-path auf Nullflaeche meldet dem
    IntersectionObserver nichts) ── */
-.ab-pic img{transition:clip-path 1.2s cubic-bezier(.16,1,.3,1) .15s,transform 1.6s cubic-bezier(.16,1,.3,1) .15s}
+.ab-pic img{transition:clip-path 1.2s cubic-bezier(.16,1,.3,1) var(--dur-1, .15s),transform 1.6s cubic-bezier(.16,1,.3,1) var(--dur-1, .15s)}
 .reveal:not(.on) .ab-pic img{clip-path:inset(0 0 100% 0);transform:scale(1.06)}
 
 /* ── Stillstand bei reduzierter Bewegung ── */
