@@ -82,24 +82,21 @@ const SHARED_STYLE = `
     radial-gradient(86% 58% at 15% 2%,rgba(0,184,136,.30),transparent 55%),
     radial-gradient(84% 64% at 90% 98%,rgba(20,140,200,.24),transparent 58%),
     linear-gradient(180deg,rgba(3,8,13,.5),rgba(3,8,13,.72) 52%,rgba(3,8,13,.94))}
-  .orb{position:absolute;border-radius:50%;filter:blur(78px);will-change:transform}
-  .orb-a{width:56vmax;height:56vmax;left:-18vmax;top:-24vmax;opacity:.42;background:radial-gradient(circle,rgba(0,184,136,.34),transparent 66%);animation:dA 26s ease-in-out infinite}
-  .orb-b{width:46vmax;height:46vmax;right:-15vmax;bottom:-16vmax;opacity:.3;background:radial-gradient(circle,var(--mood),transparent 64%);transition:background 1.3s var(--e-out);animation:dB 31s ease-in-out infinite}
-  @keyframes dA{0%,100%{transform:translate(0,0)}50%{transform:translate(7vmax,5vmax)}}
-  @keyframes dB{0%,100%{transform:translate(0,0)}50%{transform:translate(-6vmax,-4vmax)}}
+  .orb{position:absolute;border-radius:50%;filter:blur(78px);}
+  /* Das Licht bleibt, das Schweben ist weg (motion-loop 06.10.2026: Licht statt Bewegung, WCAG 2.2.2) */
+  .orb-a{width:56vmax;height:56vmax;left:-18vmax;top:-24vmax;opacity:.42;background:radial-gradient(circle,rgba(0,184,136,.34),transparent 66%);}
+  .orb-b{width:46vmax;height:46vmax;right:-15vmax;bottom:-16vmax;opacity:.3;background:radial-gradient(circle,var(--mood),transparent 64%);transition:background 1.3s var(--e-out);}
   /* Lichtstrahl von oben-links */
   .ray{position:absolute;top:-30%;left:-10%;width:70%;height:120%;transform:rotate(18deg);filter:blur(30px);opacity:.5;background:linear-gradient(90deg,transparent,rgba(31,201,152,.10) 40%,rgba(31,166,224,.06) 60%,transparent);pointer-events:none}
-  #dust{position:absolute;inset:0}
   /* Film-Grain (fixed, ueberlagert alles, keine Events) */
   .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.orb{opacity:.3}#dust{display:none}}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.orb{opacity:.3}}
 `;
 
 const SCENE_MARKUP = `
 <div class="scene">
   <div class="photo"></div>
   <div class="orb orb-a"></div><div class="orb orb-b"></div><div class="ray"></div>
-  <canvas id="dust"></canvas>
 </div>
 <div class="grain"></div>`;
 
