@@ -56,3 +56,17 @@ em.fliesst{
   em.fliesst{animation:none}
   .fl-phase::before{transform:none}
 }
+
+/* ── Auftakt: die große Überschrift steigt aus einer Kante (Sebi 06.10.2026,
+   Fassung B, nur oben). Zeilen sind beim Bauen getrennt (.z), also kein JS und
+   kein Flackern: die Animation laeuft ab dem ersten Bild. Darunter bleibt alles
+   ruhig. Der Lichtstreif auf dem betonten Wort folgt, wenn die Zeile steht. ── */
+h1.steigt .z{display:block;overflow:clip;padding-bottom:.12em;margin-bottom:-.12em}
+h1.steigt .z > span{display:block}
+@keyframes s2-steigen{from{transform:translateY(105%)}to{transform:none}}
+@media (prefers-reduced-motion:no-preference){
+  h1.steigt .z > span{animation:s2-steigen var(--dur-4, .8s) var(--ease) .05s both}
+  h1.steigt .z:nth-child(2) > span{animation-delay:.14s}
+  h1.steigt em.fliesst{animation-delay:.6s}
+}
+@media print{h1.steigt .z > span{animation:none!important;transform:none!important}}
