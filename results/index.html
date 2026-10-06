@@ -541,14 +541,6 @@
   .rs-mlist li svg{width:18px;height:18px;flex:0 0 auto;margin-top:3px;stroke:var(--emerald);stroke-width:2.4;fill:none}
   .rs-mlist .mt{color:var(--paper)}
   .rs-mlist .mt span{display:block;color:var(--muted);font-size:.94rem;margin-top:2px;line-height:1.5}
-  /* Moment (motion-loop 06.10.2026): wer liest, geht die sechs Monate ab —
-     der Punkt vor jedem Zeitabschnitt leuchtet auf, wenn man dort ankommt. */
-  @keyframes rsAnkunft{from{opacity:.25;transform:scale(.6)}to{opacity:1;transform:none}}
-  #verlauf .rs-mlist li::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;margin-top:.55em;
-    background:linear-gradient(135deg,#1FC998,#46BEEA)}
-  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
-    #verlauf .rs-mlist li::before{animation:rsAnkunft linear both;animation-timeline:view();animation-range:cover 20% cover 34%}
-  }}
   @media (max-width:760px){
     .rs-measure{grid-template-columns:1fr}
     .rs-mcol{padding:clamp(var(--s-6),5vw,var(--s-7)) 0}
