@@ -62,7 +62,7 @@ export const REVEAL_STYLE = `
   .rv-h2 em{font-style:italic;font-weight:440;background:var(--flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
   .rv-sub{font-size:1rem;color:var(--muted);max-width:30ch;margin:0 auto}
 
-  .rv{opacity:0;transform:translateY(28px);filter:blur(10px);transition:opacity .9s var(--e-out),transform 1s var(--e-spring),filter .9s var(--e-out)}
+  .rv{opacity:0;transform:translateY(28px);filter:blur(10px);transition:opacity var(--dur-4, .9s) var(--e-out),transform 1s var(--e-spring),filter var(--dur-4, .9s) var(--e-out)}
   .rv.in{opacity:1;transform:none;filter:none}
 
   .rv-hero{position:relative;margin:1.8rem 0 1.3rem;width:100%;display:flex;justify-content:center}
@@ -77,7 +77,7 @@ export const REVEAL_STYLE = `
      Display-Glasglanz weg (er lag als Schleier ueber ihrem Content). */
   .rv-shot-frame{position:relative;width:min(100%,26rem);border-radius:22px;line-height:0;box-shadow:0 60px 120px -45px rgba(0,0,0,.95),0 0 92px -16px rgba(0,184,136,.2),0 0 104px -22px rgba(31,166,224,.15);animation:rvFloat 7.5s ease-in-out infinite}
   @keyframes rvFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-  .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:22px;background:#0c0c0c;opacity:0;transition:opacity .55s var(--e-out)}
+  .rv-shot{display:block;width:100%;aspect-ratio:1080/1350;object-fit:cover;border-radius:22px;background:#0c0c0c;opacity:0;transition:opacity var(--dur-3, .55s) var(--e-out)}
   .rv-shot.loaded{opacity:1}
   /* Aussen VERTIKAL (durch die 3 Posts scrollen), innen HORIZONTAL (Slides
      swipen) — kein horizontal-in-horizontal (Spec §6). */
@@ -95,19 +95,19 @@ export const REVEAL_STYLE = `
   .rv-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;width:100%;border-radius:16px;background:#0c0c0c;box-shadow:0 18px 40px -22px rgba(0,0,0,.85),0 0 0 1.5px #23262b,0 0 60px -18px rgba(0,184,136,.14);scrollbar-width:none}
   .rv-track::-webkit-scrollbar{display:none}
   .rv-slide{flex:0 0 100%;scroll-snap-align:center;aspect-ratio:1080/1350;line-height:0;background:#0c0c0c}
-  .rv-slide img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .5s var(--e-out)}
+  .rv-slide img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity var(--dur-3, .5s) var(--e-out)}
   .rv-slide img.loaded{opacity:1}
   .rv-dots{display:flex;gap:6px;justify-content:center;align-items:center;height:10px}
-  .rv-dot{width:6px;height:6px;border-radius:50%;background:rgba(244,245,243,.22);transition:background .3s var(--e-out),transform .3s var(--e-out)}
+  .rv-dot{width:6px;height:6px;border-radius:50%;background:rgba(244,245,243,.22);transition:background var(--dur-2, .3s) var(--e-out),transform var(--dur-2, .3s) var(--e-out)}
   .rv-dot.act{background:var(--flow);transform:scale(1.3);box-shadow:0 0 8px rgba(0,184,136,.5)}
   .rv-post-cap{display:flex;flex-direction:column;gap:9px;text-align:left;margin-top:.15rem}
   .rv-cap-text{font-size:.82rem;line-height:1.5;color:var(--muted);white-space:pre-wrap;max-height:7.5em;overflow-y:auto;scrollbar-width:thin;padding-right:2px}
-  .rv-cap-copy{align-self:flex-start;font-family:var(--ff-label);font-weight:600;font-size:12px;letter-spacing:.01em;color:var(--emerald-soft);background:rgba(0,184,136,.1);border:1px solid rgba(0,184,136,.25);border-radius:100px;padding:.5rem 1.05rem;cursor:pointer;transition:background .3s var(--e-out),color .3s var(--e-out)}
+  .rv-cap-copy{align-self:flex-start;font-family:var(--ff-label);font-weight:600;font-size:12px;letter-spacing:.01em;color:var(--emerald-soft);background:rgba(0,184,136,.1);border:1px solid rgba(0,184,136,.25);border-radius:100px;padding:.5rem 1.05rem;cursor:pointer;transition:background var(--dur-2, .3s) var(--e-out),color var(--dur-2, .3s) var(--e-out)}
   .rv-cap-copy:hover{background:rgba(0,184,136,.18)}
   .rv-cap-copy.done{color:var(--emerald-ink);background:var(--flow);border-color:transparent}
 
   .rv-switcher{display:inline-flex;gap:4px;padding:4px;border-radius:100px;background:rgba(244,245,243,.05);border:1px solid var(--hair);margin-bottom:2.2rem}
-  .rv-switcher button{font-family:var(--ff-label);font-weight:700;font-size:12.5px;letter-spacing:.02em;color:var(--muted);background:transparent;border:0;padding:.55rem 1.1rem;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;transition:color .3s var(--e-out),background .4s var(--e-out)}
+  .rv-switcher button{font-family:var(--ff-label);font-weight:700;font-size:12.5px;letter-spacing:.02em;color:var(--muted);background:transparent;border:0;padding:.55rem 1.1rem;border-radius:100px;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;transition:color var(--dur-2, .3s) var(--e-out),background var(--dur-3, .4s) var(--e-out)}
   .rv-switcher button .sw{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(255,255,255,.3)}
   .rv-switcher button.act{color:var(--emerald-ink);background:var(--flow)}
   .rv-switcher button.act .sw{border-color:rgba(4,32,26,.35)}
@@ -128,13 +128,13 @@ export const REVEAL_STYLE = `
   .rv-actions{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;margin-top:1.15rem}
   .rv-cta-share{display:inline-flex;align-items:center;gap:.5rem}
   .rv-cta-share svg{opacity:.85}
-  .rv-contact{font-family:var(--ff-label);font-weight:600;font-size:13px;letter-spacing:.01em;color:var(--muted);text-decoration:none;margin-top:1.1rem;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid transparent;transition:border-color .3s var(--e-out),color .3s var(--e-out)}
+  .rv-contact{font-family:var(--ff-label);font-weight:600;font-size:13px;letter-spacing:.01em;color:var(--muted);text-decoration:none;margin-top:1.1rem;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid transparent;transition:border-color var(--dur-2, .3s) var(--e-out),color var(--dur-2, .3s) var(--e-out)}
   .rv-contact:hover{color:var(--ink);border-color:var(--hair-2)}
-  .rv-cta{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--ff-label);font-weight:700;font-size:15px;letter-spacing:.01em;text-decoration:none;padding:1rem 1.1rem 1rem 1.5rem;border-radius:100px;color:var(--emerald-ink);background:var(--flow);box-shadow:0 16px 40px -16px rgba(0,184,136,.6),0 16px 40px -20px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3);transition:transform .4s var(--e-spring)}
+  .rv-cta{display:inline-flex;align-items:center;gap:.7rem;font-family:var(--ff-label);font-weight:700;font-size:15px;letter-spacing:.01em;text-decoration:none;padding:1rem 1.1rem 1rem 1.5rem;border-radius:100px;color:var(--emerald-ink);background:var(--flow);box-shadow:0 16px 40px -16px rgba(0,184,136,.6),0 16px 40px -20px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.3);transition:transform var(--dur-3, .4s) var(--e-spring)}
   .rv-cta:active{transform:scale(.97)}
-  .rv-cta .ic{width:30px;height:30px;border-radius:50%;background:rgba(4,32,26,.16);display:flex;align-items:center;justify-content:center;font-size:15px;transition:transform .4s var(--e-spring)}
+  .rv-cta .ic{width:30px;height:30px;border-radius:50%;background:rgba(4,32,26,.16);display:flex;align-items:center;justify-content:center;font-size:15px;transition:transform var(--dur-3, .4s) var(--e-spring)}
   .rv-cta:hover .ic{transform:translate(3px,-1px)}
-  .rv-cta2{font-family:var(--ff-label);font-weight:600;font-size:13.5px;color:var(--muted);text-decoration:none;padding:.75rem 1.25rem;border-radius:100px;border:1px solid var(--hair);background:rgba(244,245,243,.03);cursor:pointer;transition:border-color .3s var(--e-out),background .3s var(--e-out),color .3s var(--e-out)}
+  .rv-cta2{font-family:var(--ff-label);font-weight:600;font-size:13.5px;color:var(--muted);text-decoration:none;padding:.75rem 1.25rem;border-radius:100px;border:1px solid var(--hair);background:rgba(244,245,243,.03);cursor:pointer;transition:border-color var(--dur-2, .3s) var(--e-out),background var(--dur-2, .3s) var(--e-out),color var(--dur-2, .3s) var(--e-out)}
   .rv-cta2:hover{color:var(--ink);border-color:var(--hair-2);background:rgba(244,245,243,.06)}
   /* --faint auf dem dunklen Grund liegt bei ~4.3:1 und faellt damit unter AA fuer
      Fliesstext dieser Groesse — ausgerechnet bei den zwei Saetzen, die die
@@ -145,14 +145,14 @@ export const REVEAL_STYLE = `
   .rv-why-k{display:block;font-family:var(--ff-label);font-weight:700;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mood,#00B888);margin-bottom:.25rem}
   /* Floating-CTA: gleiche Sprache wie der Haupt-CTA, aber kompakt + verschwindet
      sobald das Angebot selbst im Viewport ist. */
-  .rv-float{position:fixed;left:50%;bottom:calc(1.1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);z-index:60;display:flex;align-items:center;gap:.4rem;transition:transform .6s var(--e-spring)}
+  .rv-float{position:fixed;left:50%;bottom:calc(1.1rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,140%);z-index:60;display:flex;align-items:center;gap:.4rem;transition:transform var(--dur-3, .6s) var(--e-spring)}
   .rv-float.on{transform:translate(-50%,0)}
   .rv-float-cta{white-space:nowrap;font-family:var(--ff-label);font-weight:700;font-size:.88rem;color:var(--emerald-ink,#04201A);background:var(--flow,linear-gradient(90deg,#00B888,#1FA6E0));border-radius:100px;padding:.78rem 1.35rem;text-decoration:none;display:flex;align-items:center;gap:.5rem;box-shadow:0 18px 44px -14px rgba(0,184,136,.65),0 6px 18px rgba(0,0,0,.35)}
-  .rv-float-cta .ic{transition:transform .3s var(--e-out)}
+  .rv-float-cta .ic{transition:transform var(--dur-2, .3s) var(--e-out)}
   .rv-float-cta:hover .ic{transform:translateX(3px)}
   .rv-float-x{width:30px;height:30px;border-radius:50%;border:0;cursor:pointer;background:rgba(10,13,16,.8);color:var(--muted);font-size:1rem;line-height:1;box-shadow:0 4px 14px rgba(0,0,0,.4)}
   @media (prefers-reduced-motion:reduce){.rv-float{transition:none}}
-  .rv-report{background:none;border:0;cursor:pointer;font-size:.74rem;color:var(--faint);margin-top:1.1rem;padding:4px;text-decoration:underline;text-underline-offset:3px;transition:color .25s}
+  .rv-report{background:none;border:0;cursor:pointer;font-size:.74rem;color:var(--faint);margin-top:1.1rem;padding:4px;text-decoration:underline;text-underline-offset:3px;transition:color var(--dur-2, .25s)}
   .rv-report:hover{color:var(--muted)}
   .rv-report.done{text-decoration:none;color:var(--muted);cursor:default}
   .rv-report:disabled{cursor:default}

@@ -69,6 +69,8 @@ const SHARED_STYLE = `
     --ff-body:"Hanken Grotesk",system-ui,sans-serif; --ff-label:"Archivo",sans-serif; --ff-serif:"Fraunces",Georgia,serif;
     --ff-ios:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     --e-out:cubic-bezier(.16,1,.3,1); --e-spring:cubic-bezier(.32,.72,0,1);
+    /* Dauer-Skala wie social2scale.com (motion-loop 06.10.2026) */
+    --dur-1:.15s; --dur-2:.24s; --dur-3:.45s; --dur-4:.8s;
     --mood:#1FA6E0; --mood-t:#123244; --mood-ti:#EAF4F8; --mood-2:#0E7C9C;
   }
   *{margin:0;padding:0;box-sizing:border-box}
