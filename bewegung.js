@@ -5,12 +5,17 @@
   'use strict';
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Gradient-Flow nur im Bild: spart Arbeit ausserhalb des Fensters */
+  /* Lichtstreif: faehrt EINMAL ueber das betonte Wort, wenn es zum ersten Mal
+     ins Bild kommt, dann steht er (WCAG 2.2.2, Entscheidung 06.10.2026). */
   var worte = document.querySelectorAll('main :is(h1,h2,h3,blockquote) em, main .s2em');
   if (!still && 'IntersectionObserver' in window && worte.length) {
     var io = new IntersectionObserver(function (eintraege) {
-      eintraege.forEach(function (e) { e.target.classList.toggle('fliesst', e.isIntersecting); });
-    }, { rootMargin: '80px 0px' });
+      eintraege.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('fliesst');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
     worte.forEach(function (w) { io.observe(w); });
   }
 
