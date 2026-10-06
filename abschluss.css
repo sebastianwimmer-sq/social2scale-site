@@ -157,8 +157,8 @@ body{font-size:17px}
 /* Wer weniger Bewegung will, bekommt keine — auch nicht von spezifischeren
    Regeln (vorher liefen `ring`/`pulse` in der Handy-Attrappe endlos weiter). */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:var(--dur-1, .001ms)!important;animation-iteration-count:1!important;
-    transition-duration:var(--dur-1, .001ms)!important;scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
 
 /* ── Nav-Aktion „Gratis-Vorschau“ (lib/shell.mjs, AKTIONEN) ──
