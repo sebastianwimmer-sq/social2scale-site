@@ -81,8 +81,7 @@ const PAGE_STYLE = `
   .ring-c i{font-style:normal;font-size:13px;color:var(--muted);margin-left:2px;transform:translateY(-.5em)}
   .space{perspective:1600px;perspective-origin:50% 42%;padding:.5rem 0 1rem}
   .phone{position:relative;width:min(80vw,300px);aspect-ratio:300/620;border-radius:52px;padding:11px;will-change:transform;transform-style:preserve-3d;background:linear-gradient(150deg,#23262B,#0B0D10 60%);box-shadow:0 0 0 1.5px #2b2e33,0 2px 2px rgba(255,255,255,.08) inset,0 70px 130px -45px rgba(0,0,0,.9),0 0 80px -14px rgba(0,184,136,.16),0 0 90px -20px rgba(31,166,224,.14)}
-  .phone::after{content:"";position:absolute;left:50%;bottom:-42px;width:60%;height:26px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(0,184,136,.24),rgba(31,166,224,.12),transparent 72%);filter:blur(12px);animation:breathe 5s var(--e-out) infinite}
-  @keyframes breathe{0%,100%{opacity:.45;transform:translateX(-50%) scale(1)}50%{opacity:.8;transform:translateX(-50%) scale(1.12)}}
+  .phone::after{content:"";position:absolute;left:50%;bottom:-42px;width:60%;height:26px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(0,184,136,.24),rgba(31,166,224,.12),transparent 72%);filter:blur(12px)}
   .ios{position:relative;height:100%;border-radius:42px;overflow:hidden;background:#000;font-family:var(--ff-ios);display:flex;flex-direction:column}
   .island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:82px;height:24px;background:#000;border-radius:14px;z-index:40}
   .statusbar{position:relative;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:12px 22px 2px;color:#fff;font-size:12px;font-weight:600}
@@ -375,6 +374,9 @@ const PAGE_SCRIPT = `
     const fertig = done >= total;
     sweepEl.style.display = fertig ? 'none' : '';
     eqEl.style.opacity = fertig ? '0' : '1';
+    // Ladeanzeigen nur waehrend echter Wartezeit (WCAG 2.2.2): danach steht der Spinner
+    document.querySelectorAll('.ring-spin').forEach((r) => { r.style.display = fertig ? 'none' : ''; });
+    eqEl.querySelectorAll('i').forEach((i) => { i.style.animationPlayState = fertig ? 'paused' : ''; });
   }
 
   // ── Fertig: Bloom auf dem Build-Handy + das echte Reveal darunter einblenden ──
@@ -457,39 +459,14 @@ const PAGE_SCRIPT = `
   poll();
   pollTimer = setInterval(poll, POLL_INTERVAL_MS);
 
-  // ── rAF: Handy-Schweben + Bokeh-Staub (Tiefe, portiert aus build.html) ──
-  const phoneEl = $('phone'); let px = 0, py = 0;
-  addEventListener('pointermove', (e) => { px = (e.clientX / innerWidth - .5) * 2; py = (e.clientY / innerHeight - .5) * 2; });
-  const cv = $('dust'), c2 = cv ? cv.getContext('2d') : null; let dust = [];
-  function sizeCanvas() {
-    if (!cv) return;
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; c2.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round(Math.min(innerWidth, 900) / 18);
-    dust = Array.from({ length: n }, () => ({ x: Math.random() * innerWidth, y: Math.random() * innerHeight, z: Math.random(), vx: (Math.random() - .5) * .12, vy: -0.05 - Math.random() * .11 }));
-  }
-  sizeCanvas(); addEventListener('resize', sizeCanvas);
-  let t0 = null;
-  function loop(ts) {
-    if (t0 === null) t0 = ts; const t = (ts - t0) / 1000;
-    const ry = Math.sin(t * .5) * 3.2 + px * 5, rx = -Math.cos(t * .4) * 2.2 - py * 3.5;
-    phoneEl.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(' + (Math.sin(t * .8) * 3) + 'px)';
-    if (c2) {
-      c2.clearRect(0, 0, innerWidth, innerHeight);
-      for (const p of dust) {
-        p.x += p.vx * (0.4 + p.z); p.y += p.vy * (0.4 + p.z);
-        if (p.y < -5) { p.y = innerHeight + 5; p.x = Math.random() * innerWidth; }
-        if (p.x < -5) p.x = innerWidth + 5;
-        if (p.x > innerWidth + 5) p.x = -5;
-        c2.globalAlpha = 0.07 + p.z * 0.24;
-        c2.fillStyle = p.z > .62 ? 'rgba(31,166,224,1)' : (p.z > .32 ? 'rgba(31,201,152,1)' : 'rgba(244,245,243,1)');
-        c2.beginPath(); c2.arc(p.x, p.y, 0.4 + p.z * 1.5, 0, 7); c2.fill();
-      }
-      c2.globalAlpha = 1;
-    }
-    requestAnimationFrame(loop);
-  }
-  if (!reduce) requestAnimationFrame(loop); else if (cv) cv.style.display = 'none';
+  // ── Handy kippt zum Zeiger — nur bei Bewegung, nur mit Maus. Kein Staub, kein
+  // Dauer-Schweben (motion-loop 06.10.2026, WCAG 2.2.2). ──
+  const phoneEl = $('phone'); let px = 0, py = 0, geplant = false;
+  function kippen() { geplant = false; phoneEl.style.transform = 'rotateX(' + (-py * 3.5) + 'deg) rotateY(' + (px * 5) + 'deg)'; }
+  if (!reduce && matchMedia('(hover:hover) and (pointer:fine)').matches) addEventListener('pointermove', (e) => {
+    px = (e.clientX / innerWidth - .5) * 2; py = (e.clientY / innerHeight - .5) * 2;
+    if (!geplant) { geplant = true; requestAnimationFrame(kippen); }
+  });
 `;
 
 /**

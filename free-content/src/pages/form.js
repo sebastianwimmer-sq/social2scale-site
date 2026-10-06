@@ -23,8 +23,7 @@ const PAGE_STYLE = `
   /* dasselbe s2s-Zeichen wie in der Leiste der Website: beim Wechsel springt die Marke nicht (motion-loop 06.10.2026) */
   .wm-logo{height:30px;width:auto;max-width:60px;object-fit:contain;object-position:left center;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
   .prog{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden}
-  .prog>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-soft),var(--emerald) 38%,var(--teal) 66%,var(--emerald-soft));background-size:230% 100%;transform-origin:left;transform:scaleX(.02);box-shadow:0 0 12px rgba(31,201,152,.55);transition:transform .7s var(--e-spring);animation:flow 2.6s linear infinite}
-  @keyframes flow{to{background-position:-230% 0}}
+  .prog>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-soft),var(--emerald) 38%,var(--teal) 66%,var(--emerald-soft));background-size:230% 100%;transform-origin:left;transform:scaleX(.02);box-shadow:0 0 12px rgba(31,201,152,.55);transition:transform .7s var(--e-spring)}
   .cnt{font-family:var(--ff-label);font-size:10.5px;font-weight:600;letter-spacing:.08em;color:var(--faint);font-variant-numeric:tabular-nums}
 
   /* ── BUEHNE mit schwebendem Glas-iPhone ── */
@@ -41,8 +40,7 @@ const PAGE_STYLE = `
   /* Screen-Glare (Glas-Reflexion) */
   .pv::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;background:linear-gradient(133deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.03) 18%,transparent 40%)}
   /* Bodenreflexion */
-  .device .refl{position:absolute;left:8%;right:8%;bottom:-30px;height:36px;border-radius:50%;background:radial-gradient(ellipse,var(--mood),transparent 72%);opacity:.32;filter:blur(13px);transition:background 1.3s var(--e-out);animation:breathe 5.5s var(--e-out) infinite}
-  @keyframes breathe{0%,100%{opacity:.28;transform:scaleX(.96)}50%{opacity:.5;transform:scaleX(1.06)}}
+  .device .refl{position:absolute;left:8%;right:8%;bottom:-30px;height:36px;border-radius:50%;background:radial-gradient(ellipse,var(--mood),transparent 72%);opacity:.32;filter:blur(13px);transition:background 1.3s var(--e-out)}
   .pv-bar{display:flex;align-items:center;padding:8px 11px 5px;color:#fff;font-size:10.5px;font-weight:700}
   .pv-bar .h{transition:opacity .4s}.pv-bar .dots{margin-left:auto;letter-spacing:1px;opacity:.55}
   .pv-prof{display:flex;align-items:center;gap:11px;padding:2px 11px 7px}
@@ -55,8 +53,7 @@ const PAGE_STYLE = `
   .pv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:#000}
   .pv-tile{aspect-ratio:1;position:relative;overflow:hidden;background:#0c0c0c;display:flex;align-items:center;justify-content:center;text-align:center;padding:3px;font-family:var(--ff-label);font-weight:600;font-size:6px;line-height:1.15;color:transparent;transition:background .8s var(--e-out),color .6s var(--e-out)}
   .pv-tile.f1{background:var(--mood-t);color:var(--mood-ti)}.pv-tile.f2{background:var(--mood);color:#04130D}.pv-tile.f3{background:#ECECE4;color:#23201C}
-  .pv-tile.empty::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.05) 50%,transparent 80%);background-size:220% 100%;animation:sh 1.9s linear infinite}
-  @keyframes sh{to{background-position:-220% 0}}
+  .pv-tile.empty::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.05) 50%,transparent 80%);background-size:220% 100%}
   .pop{animation:pop .55s var(--e-spring)}
   @keyframes pop{0%{transform:scale(.85);opacity:.4;filter:blur(3px)}100%{transform:scale(1);opacity:1;filter:blur(0)}}
 
@@ -112,8 +109,6 @@ const PAGE_STYLE = `
   /* Magnetischer Button-in-Button */
   .next{position:relative;text-decoration:none;font-family:var(--ff-label);font-weight:700;font-size:15px;color:var(--emerald-ink);background:var(--flow);border:0;border-radius:100px;padding:6px 6px 6px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;overflow:hidden;
     box-shadow:0 16px 38px -14px rgba(0,184,136,.6),0 16px 38px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.4);transition:transform .35s var(--e-spring)}
-  .next::before{content:"";position:absolute;top:0;left:-30%;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);transition:left .6s var(--e-out)}
-  .next:hover::before{left:130%}
   .next .lab{padding:9px 0}
   .next:active{transform:scale(.975)}
   .next:disabled{opacity:.6;cursor:not-allowed}
@@ -507,19 +502,12 @@ const PAGE_SCRIPT = `
   }
   $('#btnSubmit').addEventListener('click',e=>{e.preventDefault();submitForm(e.currentTarget);});
 
-  // Pointer-Parallaxe am Gerät + Bokeh-Staub (eine rAF)
-  const dev=$('#device');let px=0,py=0;
-  addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;});
-  const cv=$('#dust'),cx=cv.getContext('2d');let dust=[];
-  function sizeC(){const dpr=Math.min(devicePixelRatio||1,2);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0);dust=Array.from({length:Math.round(Math.min(innerWidth,800)/24)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,z:Math.random(),vx:(Math.random()-.5)*.1,vy:-0.04-Math.random()*.1}));}
-  sizeC();addEventListener('resize',sizeC);
-  let t0=null;
-  function loop(ts){if(t0===null)t0=ts;const t=(ts-t0)/1000;
-    dev.style.transform=\`translateY(\${Math.sin(t*.7)*4}px) rotateX(\${-py*4}deg) rotateY(\${px*6+Math.sin(t*.5)*2}deg)\`;
-    cx.clearRect(0,0,innerWidth,innerHeight);
-    for(const p of dust){p.x+=p.vx*(.4+p.z);p.y+=p.vy*(.4+p.z);if(p.y<-4){p.y=innerHeight+4;p.x=Math.random()*innerWidth;}if(p.x<-4)p.x=innerWidth+4;if(p.x>innerWidth+4)p.x=-4;cx.globalAlpha=.05+p.z*.2;cx.fillStyle=p.z>.62?'rgba(31,166,224,1)':(p.z>.32?'rgba(31,201,152,1)':'rgba(244,245,243,1)');cx.beginPath();cx.arc(p.x,p.y,.4+p.z*1.4,0,7);cx.fill();}
-    cx.globalAlpha=1;requestAnimationFrame(loop);}
-  if(!reduce)requestAnimationFrame(loop);else cv.style.display='none';
+  // Die Handy-Vorschau kippt zum Zeiger — gerechnet wird nur, wenn er sich bewegt,
+  // und nur mit Maus. Kein Staub, kein Dauer-Schweben (motion-loop 06.10.2026:
+  // Licht statt Bewegung; eine Schleife ohne Ende ist WCAG 2.2.2).
+  const dev=$('#device');let px=0,py=0,geplant=false;
+  function kippen(){geplant=false;dev.style.transform=\`rotateX(\${-py*4}deg) rotateY(\${px*6}deg)\`;}
+  if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;if(!geplant){geplant=true;requestAnimationFrame(kippen);}});
   show(0);
 `;
 

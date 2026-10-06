@@ -15,6 +15,7 @@ lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
 lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
 lauf "Bewegung"                  node scripts/bewegung-check.mjs
 lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s
+lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$HOME/kit-build/motion-loop/mess.mjs" funnel
 lauf "Aussagen (Register s2s)"   env S2S_SITE="$PWD" python3 "$HOME/kit-build/aussagen-check.py" s2s
 
 echo
