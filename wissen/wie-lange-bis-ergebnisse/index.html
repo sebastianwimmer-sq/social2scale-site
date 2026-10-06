@@ -304,6 +304,13 @@
             mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%)}
   .w-cta h2{font-weight:450;font-size:clamp(1.7rem,1.2rem + 2.2vw,2.5rem);line-height:1.05;letter-spacing:-.025em;margin-bottom:.8rem}
 
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
+  }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Wie lange dauert es, bis Social Media Ergebnisse bringt?","acceptedAnswer":{"@type":"Answer","text":"Erste sichtbare Reaktionen kommen bei konsequentem Posten nach zwei bis vier Wochen, verlässliche Anfragen entstehen meist ab dem dritten Monat. Diese Spanne gilt für einen Neuaufbau mit etwa zehn Beiträgen im Monat; bei bestehenden Profilen mit Publikum geht es schneller. Woche 1 bis 4 Das Profil wird gefunden und verstanden. Sichtbar wird das an steigenden Profilaufrufen, kaum an Followern. Monat 2 Wiedererkennung setzt ein. Erste Nachrichten kommen, meist noch von Menschen aus dem eigenen Umfeld. Monat 3 bis 4 Beiträge erreichen regelmäßig Menschen außerhalb der eigenen Kontakte. Ab hier werden Anfragen planbar statt zufällig. Ab Monat 6 Der Account trägt sich: Ältere Beiträge werden weiter gefunden, das Publikum wächst ohne jedes Mal neuen Anschub. Am stärksten wirkt die Frequenz: Wer zweimal im Monat postet, braucht ein Vielfaches der Zeit. Zehn Beiträge monatlich sind die untere Grenze, bei der Plattformen ein Profil verlässlich ausspielen. Verlängernd wirken häufige Themenwechsel. Ein Profil, das jeden Monat etwas anderes erzählt, muss bei jedem Beitrag neu um Aufmerksamkeit kämpfen — deshalb ist die Positionierung am Anfang wichtiger als jeder einzelne Beitrag."}}],"isPartOf":{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/avatar-s2s.png"},"dateModified":"2026-08-20","inLanguage":"de-DE"}</script>
 </head>

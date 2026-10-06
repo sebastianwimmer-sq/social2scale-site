@@ -3,6 +3,12 @@
    und sichtbar; es fuegt nur Bewegung hinzu. */
 (function () {
   'use strict';
+
+  /* Druck: Lazy-Bilder laden erst beim Scrollen — wer druckt, scrollt nicht,
+     und die Gruenderfotos waren im PDF leere Kaesten (motion-loop 06.10.2026). */
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; });
+  });
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* Lichtstreif: faehrt EINMAL ueber das betonte Wort, wenn es zum ersten Mal

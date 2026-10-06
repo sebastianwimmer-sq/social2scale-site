@@ -275,3 +275,10 @@
             mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%)}
   .w-cta h2{font-weight:450;font-size:clamp(1.7rem,1.2rem + 2.2vw,2.5rem);line-height:1.05;letter-spacing:-.025em;margin-bottom:.8rem}
 
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
+  }
