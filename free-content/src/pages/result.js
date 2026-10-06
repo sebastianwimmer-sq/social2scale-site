@@ -53,7 +53,8 @@ const ASSET_BASE = 'https://social2scale.com/assets';
 
 const PAGE_STYLE = `
   .brandbar{position:relative;z-index:2;display:flex;justify-content:center;padding:1.6rem 1.25rem .4rem}
-  .brandbar .wm-logo{height:22px;width:auto;max-width:158px;object-fit:contain;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  .brandbar /* dasselbe s2s-Zeichen wie in der Leiste der Website: beim Wechsel springt die Marke nicht (motion-loop 06.10.2026) */
+  .wm-logo{height:30px;width:auto;max-width:60px;object-fit:contain;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
   /* Site-Footer (11.08., Sebi: "beim Freebie kommt man nicht mehr raus"):
      schlanker Rueckweg zur Website auf Build- UND Reveal-Screen. */
   .site-foot{position:relative;z-index:2;margin-top:3rem;padding:1.3rem 1rem calc(1.3rem + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--ff-label);font-size:10.5px;letter-spacing:.06em;color:var(--faint);border-top:1px solid rgba(255,255,255,.07)}
@@ -185,7 +186,7 @@ function tilesHtml() {
 
 function pageMarkup() {
   return `
-<header class="brandbar"><a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="22"></a></header>
+<header class="brandbar"><a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/s2s-t.webp" srcset="${ASSET_BASE}/s2s-t.webp 248w, ${ASSET_BASE}/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a></header>
 <div class="stage">
   <div class="caption">
     <span class="kick">social2scale · live</span>

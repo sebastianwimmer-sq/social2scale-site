@@ -20,7 +20,8 @@ const PAGE_STYLE = `
   .app{position:relative;z-index:2;min-height:100dvh;max-width:460px;margin:0 auto;display:flex;flex-direction:column}
   /* Kopfleiste */
   .top{display:flex;align-items:center;gap:12px;padding:1rem 1.25rem .4rem}
-  .wm-logo{height:22px;width:auto;max-width:158px;object-fit:contain;object-position:left center;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
+  /* dasselbe s2s-Zeichen wie in der Leiste der Website: beim Wechsel springt die Marke nicht (motion-loop 06.10.2026) */
+  .wm-logo{height:30px;width:auto;max-width:60px;object-fit:contain;object-position:left center;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
   .prog{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden}
   .prog>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-soft),var(--emerald) 38%,var(--teal) 66%,var(--emerald-soft));background-size:230% 100%;transform-origin:left;transform:scaleX(.02);box-shadow:0 0 12px rgba(31,201,152,.55);transition:transform .7s var(--e-spring);animation:flow 2.6s linear infinite}
   @keyframes flow{to{background-position:-230% 0}}
@@ -153,7 +154,7 @@ function pageMarkup(turnstileSiteKey) {
   return `
 <div class="app">
   <div class="top">
-    <a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/sig-wordmark.png" alt="social2scale" height="24"></a>
+    <a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/s2s-t.webp" srcset="${ASSET_BASE}/s2s-t.webp 248w, ${ASSET_BASE}/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
     <span class="prog"><i id="bar"></i></span>
     <span class="cnt" id="cnt">1/9</span>
   </div>
