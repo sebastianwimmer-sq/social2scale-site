@@ -566,14 +566,6 @@
   .pr-ueb-liste{list-style:none;display:grid;gap:var(--s-3)}
   .pr-ueb-liste li{display:flex;align-items:baseline;gap:var(--s-3);
     font-size:.94rem;line-height:1.4;color:var(--muted)}
-  /* Moment (motion-loop 06.10.2026): was drin ist, Punkt fuer Punkt — der Punkt
-     vor jedem Eintrag leuchtet auf, wenn man ihn liest. Text bleibt voll lesbar. */
-  @keyframes punktLeuchtet{from{opacity:.25;transform:scale(.6)}to{opacity:1;transform:none}}
-  .pr-ueb-liste li::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;margin-top:.55em;
-    background:linear-gradient(135deg,#1FC998,#46BEEA)}
-  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
-    .pr-ueb-liste li::before{animation:punktLeuchtet linear both;animation-timeline:view();animation-range:cover 20% cover 34%}
-  }}
   .pr-ueb-liste .ix{flex:0 0 auto;font-family:"JetBrains Mono",monospace;
     font-size:10px;letter-spacing:.1em;color:rgba(0,184,136,.6)}
 

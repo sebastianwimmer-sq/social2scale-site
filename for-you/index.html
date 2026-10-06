@@ -589,13 +589,6 @@
   .fw-pline .val{font-size:1.0125rem;line-height:1.5}
   .fw-pline.pain .val{color:var(--muted)}
   .fw-pline.win .val{color:var(--paper);font-weight:500}
-  /* Moment (motion-loop 06.10.2026): die Zeile "mit System" wird unterstrichen,
-     waehrend die Karte durchs Bild laeuft — aus "Heute" wird das Ziel. */
-  @keyframes fwZiel{from{background-size:0% 1px}to{background-size:100% 1px}}
-  .fw-pline.win .val{background:linear-gradient(90deg,var(--emerald),#46BEEA) no-repeat 0 100%/100% 1px;padding-bottom:2px}
-  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
-    .fw-pline.win .val{animation:fwZiel linear both;animation-timeline:view();animation-range:cover 20% cover 45%}
-  }}
   .fw-pbody{min-width:0}
   @media (max-width:880px){
     .fw-personas{grid-template-columns:1fr;gap:var(--s-4)}
