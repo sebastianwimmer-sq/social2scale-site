@@ -131,7 +131,7 @@
      accent-flow für em-Wörter, radiale Atmosphäre, gestapelte Oberflächen
      mit Inset-Highlight, Reveal beim Scrollen. */
 
-  .w-page{position:relative;overflow:hidden}
+  .w-page{position:relative;overflow:clip} /* clip statt hidden: sonst haengt view() an der Seite statt am Fenster */
   /* Atmosphäre wie im Startseiten-Hero: zwei weiche Lichtquellen, kein Blob-Klischee */
   .w-page::before{content:"";position:absolute;inset:0 0 auto;height:70vh;pointer-events:none;z-index:0;
     background:radial-gradient(95% 70% at 12% 0%,rgba(0,184,136,.13),transparent 62%),
@@ -196,6 +196,12 @@
   .w-index .nr{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--faint);
     letter-spacing:.06em;transition:color .3s var(--ease)}
   .w-index a:hover .nr,.w-index a:focus-visible .nr{color:var(--emerald)}
+  /* Moment (motion-loop 06.10.2026): die Fragennummer leuchtet auf, wenn man
+     an der Frage vorbeiliest — der Index zeigt, wo man steht. */
+  @keyframes wNr{from{color:var(--faint)}to{color:var(--emerald)}}
+  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
+    .w-index .nr{animation:wNr linear both;animation-timeline:view();animation-range:cover 30% cover 45%}
+  }}
   .w-index h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.16rem,2.7vw,1.6rem);
     line-height:1.24;letter-spacing:-.015em;color:var(--paper);text-wrap:balance;max-width:24ch}
   .w-index p{grid-column:2;color:var(--muted);font-size:.93rem;line-height:1.62;

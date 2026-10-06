@@ -566,32 +566,16 @@
   .pr-ueb-liste{list-style:none;display:grid;gap:var(--s-3)}
   .pr-ueb-liste li{display:flex;align-items:baseline;gap:var(--s-3);
     font-size:.94rem;line-height:1.4;color:var(--muted)}
+  /* Moment (motion-loop 06.10.2026): was drin ist, Punkt fuer Punkt — der Punkt
+     vor jedem Eintrag leuchtet auf, wenn man ihn liest. Text bleibt voll lesbar. */
+  @keyframes punktLeuchtet{from{opacity:.25;transform:scale(.6)}to{opacity:1;transform:none}}
+  .pr-ueb-liste li::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;margin-top:.55em;
+    background:linear-gradient(135deg,#1FC998,#46BEEA)}
+  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
+    .pr-ueb-liste li::before{animation:punktLeuchtet linear both;animation-timeline:view();animation-range:cover 20% cover 34%}
+  }}
   .pr-ueb-liste .ix{flex:0 0 auto;font-family:"JetBrains Mono",monospace;
     font-size:10px;letter-spacing:.1em;color:rgba(0,184,136,.6)}
-
-  /* ===== Verhaeltnis-Balken =====
-     Traegt die Aussage, die die Liste darunter nur aufzaehlt: wie viel bleibt
-     bei dir, wie viel geht an uns. Der emeraldfarbene Teil waechst beim
-     Einscrollen von rechts auf seinen Anteil. Nur scaleX — kein Layout.
-     Ersetzt die Punktliste, die generisch war und nicht zur Zeichensprache
-     der Seite passte (dort: grosse Geister-Nummern, Haarlinien, Mono-Index). */
-  .pr-ratio{margin-top:clamp(var(--s-5),2.6vw,var(--s-6))}
-  .pr-ratio-bar{position:relative;height:38px;border-radius:10px;overflow:hidden;
-    border:1px solid var(--line-2);background:var(--surface-3)}
-  .pr-ratio-bar i{position:absolute;right:0;top:0;bottom:0;
-    width:calc(100% - var(--du,.15) * 100%);
-    background:linear-gradient(90deg,rgba(0,184,136,.28),rgba(31,166,224,.20));
-    border-left:1px solid rgba(0,184,136,.5);
-    transform:scaleX(0);transform-origin:right center;
-    transition:transform 1.1s var(--ease) .15s}
-  .reveal.on .pr-ratio-bar i{transform:scaleX(1)}
-  .pr-ratio-bar span{position:absolute;top:50%;transform:translateY(-50%);
-    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-    opacity:0;transition:opacity .5s var(--ease) .9s}
-  .reveal.on .pr-ratio-bar span{opacity:1}
-  .pr-ratio-bar .l-du{left:12px;color:var(--faint)}
-  .pr-ratio-bar .l-wir{right:12px;color:var(--emerald)}
-  .pr-ratio-note{margin-top:var(--s-3);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint)}
 
   /* ===== Aufgaben als Haarlinien-Zeilen mit Mono-Index =====
      Dieselbe Sprache wie die Tarif-Liste weiter unten. Keine
@@ -656,7 +640,6 @@
   .pr-panel .pr-way-tag,.pr-panel .pr-way-h{display:none}
   /* In der Szene enger gesetzt als in der gestapelten Mobil-Fassung. */
   .pr-panel .pr-way-t{margin-top:0;font-size:.95rem}
-  .pr-panel .pr-ratio{margin-top:var(--s-4)}
   .pr-panel .pr-split{margin-top:var(--s-4);gap:var(--s-5)}
   .pr-panel .pr-split li{padding:9px 0;font-size:.9rem}
   .pr-panel .pr-split ul{margin-top:var(--s-3)}
@@ -676,7 +659,6 @@
     .pr-panel{padding:var(--s-5)}
     .pr-panel .pr-way-t{font-size:.9rem;line-height:1.45}
     .pr-panel .pr-split li{padding:6px 0;font-size:.86rem}
-    .pr-panel .pr-ratio-bar{height:30px}
     .pr-panel .pr-way-p{margin-top:var(--s-4);font-size:1.25rem}
   }
 

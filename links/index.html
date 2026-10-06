@@ -60,6 +60,13 @@
   .marke::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald-soft);box-shadow:0 0 0 4px rgba(31,201,152,.18)}
   .haupt h1{margin:12px 0 8px;font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(30px,8.6vw,36px);line-height:.98;letter-spacing:-.02em}
   .haupt h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+/* Lichtstreif (motion-loop 06.10.2026): dieselbe Signatur wie auf der
+   Startseite — faehrt einmal ueber "vorab.", dann steht er (WCAG 2.2.2). */
+@keyframes lkStreif{from{background-position:0 0}to{background-position:200% 0}}
+@media (prefers-reduced-motion:no-preference){
+  h1 em{background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%);background-size:200% 100%;
+    animation:lkStreif 2.4s cubic-bezier(.45,0,.2,1) .4s 1 both}
+}
   .haupt p{font-size:14px;color:var(--muted);line-height:1.4}
   /* zwei echte Vorschauen, aufgefächert — sie ragen über den Kartenrand */
   /* Handys oben, über den Kartenrand hinaus — Text und Knopf darunter,
