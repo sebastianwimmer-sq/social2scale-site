@@ -127,6 +127,12 @@
     .load span{animation:none;width:100%}
     .btn:hover,.btn:focus-visible{transform:none}
   }
+  /* Bruecke (motion-loop 06.10.2026): die Zwischenseite zeigt nur den Grund,
+     den auch die Vorschau hat — keine Karte, kein Bild, das beim Weiterleiten
+     abbricht. Der Notausgang erscheint erst, wenn die Weiterleitung haengt:
+     nach 1,5 s, ohne Bewegung (auch bei reduce und ohne JavaScript). */
+  @keyframes zeigen{to{opacity:1;visibility:visible}}
+  main.card{opacity:0;visibility:hidden;animation:zeigen .01s linear 1.5s forwards}
 </style>
 </head>
 <body>
