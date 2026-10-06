@@ -58,7 +58,7 @@ const PAGE_STYLE = `
   /* Site-Footer (11.08., Sebi: "beim Freebie kommt man nicht mehr raus"):
      schlanker Rueckweg zur Website auf Build- UND Reveal-Screen. */
   .site-foot{position:relative;z-index:2;margin-top:3rem;padding:1.3rem 1rem calc(1.3rem + env(safe-area-inset-bottom,0px));text-align:center;font-family:var(--ff-label);font-size:10.5px;letter-spacing:.06em;color:var(--faint);border-top:1px solid rgba(255,255,255,.07)}
-  .site-foot a{color:var(--muted);text-decoration:none;margin:0 .55rem;transition:color .2s}
+  .site-foot a{color:var(--muted);text-decoration:none;margin:0 .55rem;transition:color var(--dur-2, .2s)}
   .site-foot a:hover{color:var(--emerald-soft)}
   .stage{position:relative;z-index:2;min-height:calc(100dvh - 4rem);display:flex;flex-direction:column;align-items:center;padding:1.4rem 1.25rem 2.4rem;gap:1.4rem}
   .caption{max-width:34rem;text-align:center;display:flex;flex-direction:column;gap:.5rem}
@@ -73,7 +73,7 @@ const PAGE_STYLE = `
   .ring svg{position:absolute;inset:0;width:100%;height:100%}
   .ring-track{transform:rotate(-90deg)}
   .ring-bg{fill:none;stroke:rgba(244,245,243,.08);stroke-width:6}
-  .ring-fg{fill:none;stroke:var(--emerald-soft);stroke-width:6;stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset .8s var(--e-spring);filter:drop-shadow(0 0 7px rgba(31,201,152,.55))}
+  .ring-fg{fill:none;stroke:var(--emerald-soft);stroke-width:6;stroke-linecap:round;stroke-dasharray:327;stroke-dashoffset:327;transition:stroke-dashoffset var(--dur-4, .8s) var(--e-spring);filter:drop-shadow(0 0 7px rgba(31,201,152,.55))}
   .ring-spin{animation:ringspin 1.3s linear infinite}
   .ring-spin circle{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-dasharray:30 400;opacity:.9}
   @keyframes ringspin{to{transform:rotate(360deg)}}
@@ -114,11 +114,11 @@ const PAGE_STYLE = `
   .tile{aspect-ratio:1;position:relative;overflow:hidden;background:#0c0c0c}
   .tile::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(0,184,136,.12) 50%,transparent 80%);background-size:220% 100%;animation:shimmer 1.5s linear infinite}
   .tile.done::before{animation:none;opacity:0}
-  .tile .fill{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:6px;text-align:center;font-family:var(--ff-label);font-weight:600;font-size:8.5px;letter-spacing:.01em;line-height:1.2;opacity:0;transform:scale(1.08);filter:blur(6px);transition:opacity .5s var(--e-out),transform .6s var(--e-spring),filter .5s var(--e-out)}
+  .tile .fill{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:6px;text-align:center;font-family:var(--ff-label);font-weight:600;font-size:8.5px;letter-spacing:.01em;line-height:1.2;opacity:0;transform:scale(1.08);filter:blur(6px);transition:opacity var(--dur-3, .5s) var(--e-out),transform var(--dur-3, .6s) var(--e-spring),filter var(--dur-3, .5s) var(--e-out)}
   .tile.done .fill{opacity:1;transform:scale(1);filter:blur(0)}
   .tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .tile.land{z-index:3}
-  .tile.land::after{content:"";position:absolute;inset:0;box-shadow:0 0 0 1.5px rgba(0,184,136,.95),0 0 22px 5px rgba(0,184,136,.55);animation:ring .7s var(--e-out) forwards}
+  .tile.land::after{content:"";position:absolute;inset:0;box-shadow:0 0 0 1.5px rgba(0,184,136,.95),0 0 22px 5px rgba(0,184,136,.55);animation:ring var(--dur-4, .7s) var(--e-out) forwards}
   @keyframes ring{0%{opacity:1;transform:scale(.92)}100%{opacity:0;transform:scale(1.14)}}
   /* Platzhalter-Kacheln in der LEIT-WELT der Kundin (CSS-Vars, gesetzt vom
      Poller aus /api/status.welt). Fallbacks = alte Creme-Werte, nur bis der
@@ -135,15 +135,15 @@ const PAGE_STYLE = `
   .sheet .row1{display:flex;align-items:center;gap:8px;margin-bottom:8px}
   .sheet .mark{width:18px;height:18px;border-radius:6px;background:var(--flow);display:flex;align-items:center;justify-content:center;font-family:var(--ff-label);font-weight:800;font-size:9px;color:var(--emerald-ink)}
   .sheet .brand{font-family:var(--ff-label);font-weight:600;font-size:12.5px;letter-spacing:-.005em}
-  .sheet .eq{margin-left:auto;display:flex;align-items:flex-end;gap:2px;height:14px;transition:opacity .4s var(--e-out)}
+  .sheet .eq{margin-left:auto;display:flex;align-items:flex-end;gap:2px;height:14px;transition:opacity var(--dur-3, .4s) var(--e-out)}
   .sheet .eq i{width:2.5px;background:var(--emerald-soft);border-radius:2px;height:40%;animation:eq 1s ease-in-out infinite}
   .sheet .eq i:nth-child(2){animation-delay:.18s;background:var(--teal)}.sheet .eq i:nth-child(3){animation-delay:.36s}.sheet .eq i:nth-child(4){animation-delay:.54s;background:var(--teal)}
   @keyframes eq{0%,100%{height:30%}50%{height:100%}}
   .sheet .track{height:3px;border-radius:3px;background:rgba(244,245,243,.12);overflow:hidden}
-  .sheet .fillbar{height:100%;border-radius:3px;background:var(--flow);transform-origin:left;transform:scaleX(0);transition:transform .8s var(--e-spring);box-shadow:0 0 10px rgba(0,184,136,.5)}
+  .sheet .fillbar{height:100%;border-radius:3px;background:var(--flow);transform-origin:left;transform:scaleX(0);transition:transform var(--dur-4, .8s) var(--e-spring);box-shadow:0 0 10px rgba(0,184,136,.5)}
   .sheet .row2{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-family:var(--ff-body);font-size:12px}
   .sheet .step{color:var(--ink);font-weight:500;position:relative;overflow:hidden;height:16px}
-  .sheet .step span{display:block;transition:transform .4s var(--e-out),opacity .4s var(--e-out)}
+  .sheet .step span{display:block;transition:transform var(--dur-3, .4s) var(--e-out),opacity var(--dur-3, .4s) var(--e-out)}
   .sheet .count{color:var(--faint);font-weight:600;font-variant-numeric:tabular-nums}
   .bloom{position:absolute;inset:0;z-index:25;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 60%,rgba(0,184,136,.5),rgba(31,166,224,.28) 40%,transparent 60%)}
   .bloom.fire{animation:bloom 1.6s var(--e-out) forwards}
