@@ -805,6 +805,22 @@
   .reveal:not(.on) .feed-reihe li{opacity:0;transform:translateY(24px)}
   .feed-reihe li:nth-child(2){transition-delay:.06s}.feed-reihe li:nth-child(3){transition-delay:.12s}
   .feed-reihe li:nth-child(4){transition-delay:.18s}.feed-reihe li:nth-child(5){transition-delay:.24s}.feed-reihe li:nth-child(6){transition-delay:.30s}
+  /* Dein Feed entsteht (Entscheidung 06.10.2026): beim Scrollen landet eine
+     Kachel nach der anderen, wie frisch veroeffentlicht — gekoppelt an den
+     Weg, nicht an die Uhr. Jede Kachel hat ihr eigenes Fenster im Scrollweg
+     (--i). Ohne Scroll-Zeitachse bleibt das gestaffelte Einblenden oben. */
+  @keyframes feedLandet{from{opacity:0;transform:translateY(28px) scale(.94)}to{opacity:1;transform:none}}
+  @supports (animation-timeline: view()){
+    @media (prefers-reduced-motion:no-preference){
+      .feed-reihe li{--i:0;transition:none;animation:feedLandet linear both;animation-timeline:view();
+        animation-range:entry calc(10% + var(--i) * 9%) cover calc(28% + var(--i) * 9%)}
+      .reveal:not(.on) .feed-reihe li{opacity:1;transform:none}
+      .feed-reihe li:nth-child(2){--i:1}.feed-reihe li:nth-child(3){--i:2}
+      .feed-reihe li:nth-child(4){--i:3}.feed-reihe li:nth-child(5){--i:4}.feed-reihe li:nth-child(6){--i:5}
+      /* Handy: zwei Reihen zu drei — jede Reihe zaehlt neu, sonst landet die zweite zu spaet */
+      @media (max-width:760px){.feed-reihe li:nth-child(4){--i:0}.feed-reihe li:nth-child(5){--i:1}.feed-reihe li:nth-child(6){--i:2}}
+    }
+  }
   .feed-link{display:inline-flex;margin-top:clamp(20px,2.4vw,28px)}
   @media (max-width:760px){.feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.feed-reihe img{border-radius:3px}}
   @media (prefers-reduced-motion:reduce){.feed-reihe li,.feed-reihe img{transition:none}.reveal:not(.on) .feed-reihe li{opacity:1;transform:none}}
