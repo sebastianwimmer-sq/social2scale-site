@@ -217,8 +217,11 @@
   .w-index li:last-child{border-bottom:1px solid var(--line)}
   .w-index a{display:grid;grid-template-columns:auto 1fr;gap:0 1.3rem;align-items:baseline;
     padding:clamp(1.2rem,2.6vw,1.9rem) 0;text-decoration:none;
-    transition:padding-left .3s var(--ease)}
-  .w-index a:hover,.w-index a:focus-visible{padding-left:.6rem}
+    }
+  /* Einruecken per translate an den KINDERN: die Trennlinie bleibt stehen, und
+     es wird kein Layout neu gerechnet (vorher padding-left, motion-loop 06.10.). */
+  .w-index a > *{transition:translate .3s var(--ease)}
+  .w-index a:hover > *,.w-index a:focus-visible > *{translate:.6rem 0}
   .w-index .nr{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--faint);
     letter-spacing:.06em;transition:color .3s var(--ease)}
   .w-index a:hover .nr,.w-index a:focus-visible .nr{color:var(--emerald)}
@@ -251,16 +254,16 @@
     text-transform:uppercase;color:var(--faint);font-weight:400;margin-bottom:.6rem}
   .w-weiter ul{list-style:none;display:grid;gap:0}
   .w-weiter a{display:block;padding:.62rem 0;color:var(--muted);text-decoration:none;font-size:.95rem;
-    border-bottom:1px solid var(--line);transition:color .22s var(--ease),padding-left .25s var(--ease)}
+    border-bottom:1px solid var(--line);transition:color .22s var(--ease)}
   .w-weiter li:last-child a{border-bottom:0}
-  .w-weiter a:hover,.w-weiter a:focus-visible{color:var(--paper);padding-left:.4rem}
+  .w-weiter a:hover,.w-weiter a:focus-visible{color:var(--paper)}
 
   /* Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite */
   .w-re{opacity:0;transform:translateY(16px)}
   .w-re.an{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
   @media (prefers-reduced-motion:reduce){
     .w-re{opacity:1!important;transform:none!important;transition:none!important}
-    .w-index a,.w-weiter a,.w-btn{transition:none}
+    .w-index a,.w-index a > *,.w-weiter a,.w-btn{transition:none}
   }
   @media (max-width:560px){
     .w-index a{grid-template-columns:1fr;gap:.15rem}

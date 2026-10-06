@@ -9,10 +9,12 @@ lauf() { echo; echo "── $1"; shift; "$@" || rot=$((rot+1)); }
 
 lauf "Selbsttest Seitenwechsel"  node scripts/uebergang-check.mjs --selbsttest
 lauf "Selbsttest Bewegung"       node scripts/bewegung-check.mjs --selbsttest
+lauf "Selbsttest Motion-Loop"   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
 lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
 lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
 lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
 lauf "Bewegung"                  node scripts/bewegung-check.mjs
+lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s
 lauf "Aussagen (Register s2s)"   env S2S_SITE="$PWD" python3 "$HOME/kit-build/aussagen-check.py" s2s
 
 echo
