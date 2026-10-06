@@ -367,12 +367,12 @@
   .enter{position:absolute;inset:0;transform-origin:50% 60%;opacity:0;transform:scale(.94) translateY(20px);filter:blur(9px);
     transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease);transition-delay:.08s}
   .s2in .enter{opacity:1;transform:none;filter:none}
-  .floatw{position:absolute;inset:0;animation:float 8s ease-in-out infinite}
-  @keyframes float{0%,100%{transform:translateY(-7px)}50%{transform:translateY(9px)}}
+  /* Endlos-Bewegungen der Szene beendet (motion-loop 06.10.2026, WCAG 2.2.2, Licht statt Bewegung):
+     das Handy steht, das Licht dahinter steht; Profil und Live-Punkt melden sich zweimal, dann ruhen sie. */
+  .floatw{position:absolute;inset:0}
 
   .bloom{position:absolute;left:50%;top:50%;width:132%;height:108%;transform:translate(-50%,-50%);z-index:-2;filter:blur(62px);border-radius:50%;
-    background:radial-gradient(closest-side,rgba(0,184,136,calc(.28 + var(--p)*.36)),rgba(31,166,224,.14) 56%,transparent 78%);animation:breathe 6s ease-in-out infinite}
-  @keyframes breathe{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.06)}}
+    background:radial-gradient(closest-side,rgba(0,184,136,calc(.28 + var(--p)*.36)),rgba(31,166,224,.14) 56%,transparent 78%)}
   .reflect{position:absolute;left:50%;bottom:-7%;width:64%;height:14%;transform:translateX(-50%);z-index:-1;filter:blur(22px);border-radius:50%;
     background:radial-gradient(closest-side,rgba(0,184,136,calc(.32 + var(--p)*.34)),transparent 72%)}
 
@@ -405,7 +405,7 @@
   .hdr .u{display:flex;align-items:center;gap:1.6cqw;font-weight:700;font-size:5cqw;letter-spacing:-.015em;color:var(--paper);text-decoration:none;cursor:pointer}
   .hdr a.u:hover{color:var(--emerald-soft)}
   .hdr .u .live{width:2.3cqw;height:2.3cqw;border-radius:50%;background:#33d17a;opacity:0;transition:opacity .5s var(--ease)}
-  .lit .hdr .u .live{opacity:1;animation:pulse 2s ease-out infinite}
+  .lit .hdr .u .live{opacity:1;animation:pulse 2s ease-out 2}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(51,209,122,.5)}70%{box-shadow:0 0 0 2.4cqw rgba(51,209,122,0)}100%{box-shadow:0 0 0 0 rgba(51,209,122,0)}}
   .hdr .u .vf{width:4.6cqw;height:4.6cqw;border-radius:50%;background:var(--accent-flow);display:grid;place-items:center;opacity:0;transform:scale(.3);transition:.55s var(--spring)}
   .hdr .u .vf svg{width:2.8cqw;height:2.8cqw;stroke:#04201a;stroke-width:3.4;fill:none}
@@ -414,7 +414,7 @@
 
   .prof{display:flex;align-items:center;gap:5cqw}
   .ava{position:relative;width:22cqw;height:22cqw;flex:0 0 auto;border-radius:50%;padding:1cqw;background:var(--line-2);transition:.6s var(--ease)}
-  .lit .ava{background:var(--accent-flow);box-shadow:0 1.4cqh 3cqh -1.2cqh rgba(0,184,136,.7);animation:ring 3.4s ease-in-out infinite}
+  .lit .ava{background:var(--accent-flow);box-shadow:0 1.4cqh 3cqh -1.2cqh rgba(0,184,136,.7);animation:ring 3.4s ease-in-out 2}
   @keyframes ring{0%,100%{box-shadow:0 1.4cqh 3cqh -1.2cqh rgba(0,184,136,.55)}50%{box-shadow:0 1.4cqh 4cqh -1cqh rgba(0,184,136,.85)}}
   .ava img{display:block;width:100%;height:100%;border-radius:50%;object-fit:contain;background:#000;padding:11%}
   .stats{display:flex;flex:1;justify-content:space-around;text-align:center}
@@ -496,7 +496,7 @@
   .dots i.s2on{width:26px;border-radius:6px;background:var(--accent-flow)}
   .dots i.s2done{background:rgba(0,184,136,.55)}
   .hint{position:absolute;bottom:2.4vh;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--ff-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:calc(1 - var(--p)*8);transition:opacity .3s var(--ease);pointer-events:none}
-  .hint svg{width:15px;height:15px;stroke:var(--faint);stroke-width:2;fill:none;animation:bob 1.8s ease-in-out infinite}
+  .hint svg{width:15px;height:15px;stroke:var(--faint);stroke-width:2;fill:none;animation:bob 1.8s ease-in-out 3} /* dreimal, dann hat der Hinweis seine Aufgabe erfuellt */
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 
 
