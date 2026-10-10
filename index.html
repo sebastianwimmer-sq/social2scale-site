@@ -259,6 +259,12 @@
   .textlink:hover{transform:none}
   .textlink:hover::after{background:var(--paper)}
 
+  /* Niedriger Handy-Schirm (iPhone SE, 568 px): der Vorschau-Knopf endete 14 px unter dem
+     Falz (besucher-sim.mjs, 10.10.2026). Weniger Luft ueber und vor dem Knopf, sonst nichts. */
+  @media (max-width:700px) and (max-height:600px){
+    .hero{padding-top:var(--s-5) !important}
+    .hero-center .cta-row{margin-top:var(--s-5)}
+  }
   /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}

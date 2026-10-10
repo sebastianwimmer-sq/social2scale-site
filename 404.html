@@ -41,9 +41,11 @@
   p{color:var(--muted);margin-top:16px;max-width:42ch}
   a.btn{margin-top:30px;font-family:"Archivo",sans-serif;font-size:14px;font-weight:700;padding:15px 30px;border-radius:9px;text-decoration:none;background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));color:var(--emerald-ink);box-shadow:0 12px 30px -12px rgba(0,184,136,.8);transition:transform .25s var(--ease)}
   a.btn:hover{transform:translateY(-3px)}
+  /* Ein alter Link ins Leere ist ein Einstieg wie jeder andere: zuerst die Vorschau anbieten. */
+  a.weiter{display:inline-flex;align-items:center;min-height:44px;margin-top:10px;font-size:15px;text-decoration:underline;text-underline-offset:.3em;color:var(--paper)}
 
   /* ===== Footer (lean · Liquid-Glass) ===== */
-  body>img,.code,h1,p,a.btn{flex:0 0 auto}
+  body>img,.code,h1,p,a.btn,a.weiter{flex:0 0 auto}
   .site-footer{position:relative;width:calc(100% + 80px);margin:auto -40px -40px;padding:30px 40px 36px;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);text-align:center}
   .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
   .site-footer img{height:26px!important;margin:0 auto 16px!important;mix-blend-mode:screen}
@@ -83,7 +85,8 @@
   <span class="code">404</span>
   <h1>Diese Seite gibt’s <em>nicht</em>.</h1>
   <p>Vielleicht hat sich ein Tippfehler eingeschlichen — oder die Seite ist umgezogen.</p>
-  <a class="btn" href="/">Zur Startseite →</a>
+  <a class="btn" href="/gratis/">Gratis-Vorschau starten →</a>
+  <a class="weiter" href="/">Oder zur Startseite</a>
 
   <footer class="site-footer">
     <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="52" height="26"></a>

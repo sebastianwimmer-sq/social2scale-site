@@ -118,7 +118,7 @@ p.pr-what{font-size:17px}
 p.pr-note{font-size:15px}
 details.pr-details > summary,details.pr-alt-mehr > summary{min-height:44px;display:flex;align-items:center}
 details.pr-details > summary > span{font-size:15px}
-.rs-quote figcaption{font-size:14px}
+.rs-quote figcaption{font-size:15px}
 ul.ab-creed > li > span{font-size:17px}
 @media (max-width:600px){main p.lead,p.pr-emp-wann{font-size:17px}}
 
