@@ -41,6 +41,20 @@ const PREISE = {
   beitraege: 10,
 };
 
+// Abschluss jeder Wissensseite: die Gratis-Vorschau ist der Hauptweg (Website-Ziel = Freebie,
+// Sebi 01.10.2026), das Erstgespräch der leisere zweite. Bis 10.10.2026 bot keine der sechs
+// Seiten die Vorschau an — wer über Google kam, sah nur „Erstgespräch" (besucher-sim.mjs).
+function abschluss(h2, p) {
+  return `<section class="w-cta w-re">
+        <h2>${h2}</h2>
+        <p>${p}</p>
+        <div class="w-cta-row">
+          <a class="w-btn" href="/gratis/">Gratis-Vorschau starten <span aria-hidden="true">→</span></a>
+          <a class="w-zweit" href="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
+        </div>
+      </section>`;
+}
+
 const SEITEN = [
   {
     slug: "was-kostet-social-media-betreuung",
@@ -293,11 +307,7 @@ ${KOPF}
       <p class="w-lead w-re">${esc(seite.antwort)}</p>
       <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
-      <section class="w-cta w-re">
-        <h2>Unsicher, was davon zu dir <em>passt</em>?</h2>
-        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in deinem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
-      </section>
+      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.")}
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>
         <ul>${andere.map((s) => `<li><a href="/wissen/${s.slug}/">${esc(s.kurz)}</a></li>`).join("")}</ul>
@@ -363,11 +373,7 @@ ${KOPF}
           <p>${esc(s.antwort.split(". ")[0])}.</p>
         </a></li>`).join("")}
       </ul>
-      <section class="w-cta w-re">
-        <h2>Deine Frage ist nicht <em>dabei</em>?</h2>
-        <p>Schreib uns. Wir antworten persönlich, auch wenn daraus kein Auftrag wird.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
-      </section>
+      ${abschluss("Deine Frage ist nicht <em>dabei</em>?", "Sieh dir an, wie dein Auftritt aussehen könnte: in 60 Sekunden, kostenlos. Oder schreib uns, wir antworten persönlich.")}
     </div>
   </main>
 ${FUSS}

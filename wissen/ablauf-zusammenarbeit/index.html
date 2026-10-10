@@ -233,7 +233,7 @@
   }}
   .w-index h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.16rem,2.7vw,1.6rem);
     line-height:1.24;letter-spacing:-.015em;color:var(--paper);text-wrap:balance;max-width:24ch}
-  .w-index p{grid-column:2;color:var(--muted);font-size:.93rem;line-height:1.62;
+  .w-index p{grid-column:2;color:var(--muted);font-size:.95rem;line-height:1.62;
     margin-top:.5rem;max-width:40rem}
 
   /* Abschluss-Block: gestapelte Oberfläche mit Inset-Highlight wie auf der Startseite */
@@ -253,6 +253,11 @@
     transition:transform var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .2s) var(--ease)}
   .w-btn:hover{transform:translateY(-1px);box-shadow:0 18px 42px -14px rgba(0,184,136,.7),var(--hi)}
   .w-btn:active{transform:translateY(0) scale(.985)}
+  .w-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.3rem}
+  /* Zweiter Weg: leiser als der Knopf, aber eine volle Trefferflaeche (44 px). */
+  .w-zweit{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);font-size:.95rem;
+    text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:.3em}
+  .w-zweit:hover{text-decoration-color:var(--emerald)}
 
   /* Weiterlesen: schlichte Zeilen statt Pillen-Wolke */
   .w-weiter{margin-top:clamp(2.2rem,4.5vw,3rem);padding-top:1.3rem;border-top:1px solid var(--line)}
@@ -329,9 +334,12 @@
       <p class="w-stand w-re">Zuletzt geprüft: 20. August 2026</p>
       <section class="w-blk w-re"><h2>Die vier Phasen</h2><dl class="w-liste"><dt>1. Erstgespräch</dt><dd>Etwa zwanzig Minuten: Ziel, Zielgruppe und Ausgangslage klären. Danach steht fest, ob und in welchem Umfang eine Zusammenarbeit sinnvoll ist.</dd><dt>2. Briefing</dt><dd>Einmalig und ausführlich: Wofür du stehst, wen du erreichen willst, was auf keinen Fall vorkommen soll. Das ist der Teil, der über die Qualität aller späteren Beiträge entscheidet.</dd><dt>3. Aufbau</dt><dd>Profil, Positionierung und Bildsprache werden erstellt und abgestimmt. Du siehst alles vor der Veröffentlichung.</dd><dt>4. Laufender Betrieb</dt><dd>10 Beiträge im Monat werden erstellt, eingeplant und veröffentlicht; Anfragen werden an dich weitergeleitet.</dd></dl></section><section class="w-blk w-re"><h2>Was von dir erwartet wird</h2><p>Nach dem Briefing bleibt vor allem eines: Freigaben. Je nach Vereinbarung siehst du jeden Beitrag vorab oder nur größere Themen — beides ist üblich, es sollte nur von Anfang an klar sein.</p><p>Hilfreich, aber nicht zwingend, sind eigene Fotos. Sie machen einen Auftritt persönlicher als jedes gekaufte Bildmaterial, weshalb gute Anbieter danach fragen statt Standardbilder einzusetzen.</p></section>
       <section class="w-cta w-re">
-        <h2>Unsicher, was davon zu dir <em>passt</em>?</h2>
-        <p>Im Erstgespräch klären wir in zwanzig Minuten, was in deinem Fall sinnvoll ist. Unverbindlich und ohne Verkaufsdruck.</p>
-        <a class="w-btn" href="/anfrage/">Erstgespräch anfragen <span aria-hidden="true">→</span></a>
+        <h2>Wie sähe das bei <em>dir</em> aus?</h2>
+        <p>Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.</p>
+        <div class="w-cta-row">
+          <a class="w-btn" href="/gratis/">Gratis-Vorschau starten <span aria-hidden="true">→</span></a>
+          <a class="w-zweit" href="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
+        </div>
       </section>
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>

@@ -30,7 +30,7 @@ const PAGE_STYLE = `
   .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1400px;padding:.4rem 0}
   /* --faint liegt auf dem dunklen Grund bei ~4.3:1 und damit unter AA fuer Text
      dieser Groesse — ausgerechnet beim Satz, der die Erwartung setzt (wie im Reveal). */
-  .disclaimer{font-family:var(--ff-body);font-size:.72rem;line-height:1.45;color:var(--muted);text-align:center;max-width:30ch;margin-top:1rem}
+  .disclaimer{font-family:var(--ff-body);font-size:.94rem;line-height:1.45;color:var(--muted);text-align:center;max-width:34ch;margin-top:1rem}
   .device{position:relative;width:min(60%,232px);will-change:transform}
   /* Doppelrand: aeussere Metallschale */
   .device .shell{position:relative;border-radius:34px;padding:6px;background:linear-gradient(155deg,#31353c 0%,#15171b 38%,#080a0d 100%);
@@ -114,9 +114,9 @@ const PAGE_STYLE = `
   .next:disabled{opacity:.6;cursor:not-allowed}
   .next .ic{width:38px;height:38px;border-radius:50%;background:rgba(4,32,26,.18);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:inset 0 1px 1px rgba(255,255,255,.25);transition:transform var(--dur-2, .35s) var(--e-spring)}
   .next:hover .ic{transform:translate(3px,-1px) scale(1.06)}
-  .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:12.5px;cursor:pointer;align-self:center;padding:4px;transition:color var(--dur-2, .25s)}
+  .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:12.5px;cursor:pointer;align-self:center;padding:0 14px;min-height:44px;transition:color var(--dur-2, .25s)}
   .back:hover{color:var(--muted)}
-  .hint{font-family:var(--ff-body);font-size:.82rem;color:var(--faint);text-align:center}
+  .hint{font-family:var(--ff-body);font-size:.94rem;color:var(--faint);text-align:center}
   .consent{display:flex;gap:9px;align-items:flex-start;font-size:.8rem;color:var(--muted);line-height:1.45}
   .consent input{margin-top:2px;accent-color:var(--emerald)}
   .turnstile-wrap{display:flex;justify-content:center}
@@ -127,7 +127,7 @@ const PAGE_STYLE = `
   .legal a{color:var(--muted);text-decoration:none;transition:color var(--dur-2, .2s)}
   .legal a:hover{color:var(--emerald-soft)}
   /* Kurze Screens (SE & Landscape): Handy skaliert, Sheet passt sich an, nichts ueberlappt den Header */
-  @media (max-height:780px) and (max-width:520px){ .device{width:min(40vw,140px)} .sheet-in{min-height:auto;padding:.9rem 1.3rem 1.15rem} h2{font-size:1.55rem;margin:.5rem 0 .75rem} .disclaimer{margin-top:.5rem;font-size:.66rem} .foot{margin-top:.85rem} .stage{padding:.1rem 0} }
+  @media (max-height:780px) and (max-width:520px){ .device{width:min(40vw,140px)} .sheet-in{min-height:auto;padding:.9rem 1.3rem 1.15rem} h2{font-size:1.55rem;margin:.5rem 0 .75rem} .disclaimer{margin-top:.5rem} .foot{margin-top:.85rem} .stage{padding:.1rem 0} }
   @media (max-height:650px) and (max-width:520px){ .device{width:min(33vw,112px)} h1,h2{font-size:1.35rem} }
   /* ── DESKTOP: 2-Spalten statt einer gequetschten Mitte-Spalte. Phone links,
      Formular rechts, breiter, mit Luft. ── */
@@ -185,7 +185,7 @@ function pageMarkup(turnstileSiteKey) {
       <div class="q" data-step="1">
         <span class="eyebrow">Dein Name</span>
         <h2>Wie dürfen wir dich <em>nennen</em>?</h2>
-        <div class="field"><div class="field-in"><input type="text" id="f-name" placeholder="Dein Vorname" autocomplete="given-name"></div></div>
+        <div class="field"><div class="field-in"><input type="text" id="f-name" placeholder="Dein Vorname" autocomplete="given-name" enterkeyhint="next"></div></div>
         <div class="react" id="r-name"></div>
         <div class="foot"><button class="next" data-req="f-name" data-go="2"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="0">Zurück</button></div>
       </div>
@@ -193,7 +193,7 @@ function pageMarkup(turnstileSiteKey) {
       <div class="q" data-step="2">
         <span class="eyebrow">Dein Handle</span>
         <h2>Dein <em>Instagram-Name</em>?</h2>
-        <div class="field"><div class="field-in"><span class="pre">@</span><input type="text" id="f-handle" class="hashandle" placeholder="deinname" autocapitalize="off" autocorrect="off"></div></div>
+        <div class="field"><div class="field-in"><span class="pre">@</span><input type="text" id="f-handle" class="hashandle" placeholder="deinname" autocapitalize="off" autocorrect="off" enterkeyhint="next"></div></div>
         <div class="react" id="r-handle"></div>
         <div class="foot"><button class="next" data-req="f-handle" data-go="3"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="1">Zurück</button></div>
       </div>
@@ -351,6 +351,16 @@ const PAGE_SCRIPT = `
     react('#r-'+gruppe,antwort);}));}
   waehlen('taetigkeit','Danke — so wissen wir, für wen dein Feed spricht.');
   waehlen('ziel','Klares Ziel — darauf zahlt jeder Post ein.');
+  // Nach einer Antwort lag „Weiter" am iPhone SE in fuenf von zehn Schritten und am 12 mini in
+  // zwei unter dem Falz (besucher-sim.mjs, 10.10.2026). Ein klebender Knopf haette die uebrigen
+  // Antworten verdeckt — also bleibt alles sichtbar, und nach dem Antippen kommt „Weiter" ins Bild.
+  document.addEventListener('click',e=>{const c=e.target.closest('.q.on .chip');if(!c)return;
+    requestAnimationFrame(()=>{const n=c.closest('.q').querySelector('.foot .next');if(!n)return;
+      if(n.getBoundingClientRect().bottom>innerHeight-8)n.scrollIntoView({block:'end',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});
+  // Textschritte: die Weiter-Taste der Handy-Tastatur fuehrt weiter (vorher tat sie nichts, und
+  // „Weiter" lag hinter der Tastatur). Die Pruefung bleibt beim Knopf (reqOk).
+  document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing)return;const f=e.target.closest('.q.on input[type=text]');if(!f)return;
+    e.preventDefault();const n=f.closest('.q').querySelector('.foot .next');if(n&&!n.disabled)n.click();});
   document.querySelectorAll('#stimmung .chip').forEach(c=>c.addEventListener('click',()=>{
     document.querySelectorAll('#stimmung .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
     const m=MOODS[c.dataset.mood],R=document.documentElement.style;
@@ -518,7 +528,15 @@ const PAGE_SCRIPT = `
  */
 export function formPage(env) {
   const turnstileSiteKey = env?.TURNSTILE_SITE_KEY || DEFAULT_TURNSTILE_SITE_KEY;
+  // Beschreibung + og-Felder: der Link geht ueber Instagram und WhatsApp, dort zeigte die
+  // Vorschau bisher nur die Adresse (besucher-sim.mjs, 10.10.2026). Wortlaut wie auf der Startseite.
+  const beschreibung = 'Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.';
   const head =
+    `<meta name="description" content="${beschreibung}">` +
+    '<meta property="og:title" content="Deine Gratis-Vorschau · social2scale">' +
+    `<meta property="og:description" content="${beschreibung}">` +
+    '<meta property="og:type" content="website">' +
+    '<meta property="og:url" content="https://start.social2scale.com/">' +
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' +
     `<style>${PAGE_STYLE}</style>`;
   const body = `${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}</script>`;
