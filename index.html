@@ -13,6 +13,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-growth-1000.webp" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-growth-1800.webp" media="(min-width:701px)">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
 <meta name="theme-color" content="#03080D">
@@ -175,7 +177,9 @@
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
   /* Hero-Hintergrundfoto, dunkel überscrimt → Text bleibt knackig, Foto gibt Tiefe */
-  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.58),rgba(3,8,13,.80) 58%,#03080D 100%),url(/assets/hero-growth.jpg) center 55%/cover no-repeat}
+  /* WebP statt 223-KB-JPEG: am gedrosselten Handy war die Collage das LCP-Element und kam
+     nach 3,2 s (besucher-sim.mjs, 11.10.2026). Handy 26 KB, Desktop 57 KB. */
+  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.58),rgba(3,8,13,.80) 58%,#03080D 100%),url(/assets/hero-growth-1800.webp) center 55%/cover no-repeat}
   .hero>.wrap{position:relative;z-index:1}
   /* CTA-Karte mit Creator-Foto als Hintergrund */
   .band.has-photo{position:relative;overflow:hidden}
@@ -272,7 +276,7 @@
     /* Am Handy fuellt die Foto-Collage die ganze Breite und wird laut. Der
        Abdunkler ist hier deutlich staerker als am Desktop, damit der Text
        traegt statt mit dem Bild zu konkurrieren. */
-    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.82),rgba(3,8,13,.92) 58%,#03080D 100%),url(/assets/hero-growth.jpg) center 55%/cover no-repeat}
+    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.82),rgba(3,8,13,.92) 58%,#03080D 100%),url(/assets/hero-growth-1000.webp) center 55%/cover no-repeat}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */

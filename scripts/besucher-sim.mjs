@@ -165,6 +165,7 @@ function messeImBrowser(cfg) {
   aus.ohneAlt = [...document.images].filter((i) => !i.hasAttribute('alt') && sichtbar(i)).map((i) => (i.getAttribute('src') || '').slice(0, 60));
   aus.cls = window.__sim ? Math.round(window.__sim.cls * 1000) / 1000 : null;
   aus.lcp = window.__sim ? Math.round(window.__sim.lcp) : null;
+  aus.lcpEl = window.__sim ? window.__sim.lcpEl || '' : '';
   return aus;
 }
 
@@ -175,7 +176,7 @@ const BEOBACHTER = `
   window.__sim = { cls: 0, lcp: 0 };
   try {
     new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__sim.cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
-    new PerformanceObserver((l) => { const e = l.getEntries(); if (e.length) window.__sim.lcp = e[e.length - 1].startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
+    new PerformanceObserver((l) => { const e = l.getEntries(); if (e.length) { const x = e[e.length - 1]; window.__sim.lcp = x.startTime; window.__sim.lcpEl = x.element ? x.element.tagName.toLowerCase() + '.' + String(x.element.className).split(' ')[0] + (x.url ? ' ' + x.url.split('/').pop() : '') : x.url || ''; } }).observe({ type: 'largest-contentful-paint', buffered: true });
   } catch (_) {}`;
 
 // Befunde aus einer Seitenmessung ableiten — reine Funktion, im Selbsttest geprüft.
@@ -281,11 +282,22 @@ async function besuche(page, persona, pfad, opts) {
   const antwort = await page.goto(BASIS + pfad, { waitUntil: 'domcontentloaded', timeout: 45000 }).catch((e) => ({ status: () => 0, fehler: e.message }));
   const status = antwort.status();
   await ruhe(page);
+  // LCP ist erst endgültig, wenn kein größeres Element mehr nachkommt — zu früh abgelesen
+  // meldete der Lauf mal 1,0 s, mal 3,2 s (die Hero-Collage kam später). Warten, bis der Wert
+  // eine Sekunde steht, höchstens 8 s.
+  if (opts && opts.lcpWarten) {
+    let alt = -1;
+    for (let i = 0; i < 8; i++) {
+      const jetzt = await page.evaluate(() => (window.__sim ? window.__sim.lcp : 0));
+      if (jetzt === alt) break;
+      alt = jetzt; await page.waitForTimeout(1000);
+    }
+  }
   const oben = await page.evaluate(messeImBrowser, CFG); // erster Schirm, wie sie ankommt
   await durchscrollen(page);
   if (BILDER) await page.screenshot({ path: join(AUS, (persona + pfad).replace(/[^a-z0-9]+/gi, '_') + '.png') }).catch(() => {});
   const ganz = await page.evaluate(messeImBrowser, CFG);
-  const m = { ...ganz, ersteHandlung: oben.ersteHandlung, worteVorVorschau: ganz.worteVorVorschau, vh: oben.vh, lcp: oben.lcp };
+  const m = { ...ganz, ersteHandlung: oben.ersteHandlung, worteVorVorschau: ganz.worteVorVorschau, vh: oben.vh, lcp: oben.lcp, lcpEl: oben.lcpEl };
   const erwartet404 = opts && opts.erwartet404;
   // Leitet die Seite in den Funnel weiter (/gratis/), IST sie die Vorschau.
   if (VORSCHAU.test(page.url())) m.vorschauLinks = Math.max(m.vorschauLinks, 1);
@@ -476,9 +488,9 @@ const PERSONAS = [
       await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
       for (const s of ['/', '/links/']) {
-        const { m } = await besuche(p, w.id, s, { handy: true, einstieg: true });
-        WEGE.push({ persona: w.id, seite: s, lcp: m.lcp });
-        if (m.lcp > LCP_MAX) befund(w.id, s, 'rot', 'Größtes Element erscheint zu spät (LCP ' + (m.lcp / 1000).toFixed(1) + ' s > 2,5 s, gedrosselt)');
+        const { m } = await besuche(p, w.id, s, { handy: true, einstieg: true, lcpWarten: true });
+        WEGE.push({ persona: w.id, seite: s, lcp: m.lcp, lcpEl: m.lcpEl });
+        if (m.lcp > LCP_MAX) befund(w.id, s, 'rot', 'Größtes Element erscheint zu spät (LCP ' + (m.lcp / 1000).toFixed(1) + ' s > 2,5 s, gedrosselt)', m.lcpEl);
       }
     } },
   { id: 'dunkel-ruhig', wer: 'Dunkelmodus + reduzierte Bewegung · iPhone 15 Pro', engine: 'webkit', geraet: { ...devices['iPhone 15 Pro'], colorScheme: 'dark', reducedMotion: 'reduce' },
@@ -583,9 +595,18 @@ async function main() {
   mkdirSync(AUS, { recursive: true });
   for (const w of PERSONAS.filter((x) => !NUR || x.id === NUR)) {
     const t0 = Date.now();
-    const { browser, page } = await oeffne(w.engine, w.geraet);
-    try { await w.lauf(page, w); } catch (e) { befund(w.id, '—', 'rot', 'Lauf abgebrochen', e.message.split('\n')[0]); }
-    await browser.close();
+    // Navigiert die Seite mitten in einer Messung (Seitenwechsel, Weiterleitung), stirbt der
+    // Messkontext — einmal neu, mit frischem Browser. Bricht er wieder ab, bleibt es rot.
+    for (let versuch = 1; versuch <= 2; versuch++) {
+      const vorher = BEFUNDE.length, wege = WEGE.length;
+      const { browser, page } = await oeffne(w.engine, w.geraet);
+      let fehler = null;
+      try { await w.lauf(page, w); } catch (e) { fehler = e; }
+      await browser.close();
+      if (fehler && versuch === 1 && /Execution context was destroyed/.test(fehler.message)) { BEFUNDE.length = vorher; WEGE.length = wege; continue; }
+      if (fehler) befund(w.id, '—', 'rot', 'Lauf abgebrochen', fehler.message.split('\n')[0]);
+      break;
+    }
     const meine = BEFUNDE.filter((b) => b.persona === w.id);
     const z = (s) => meine.filter((b) => b.stufe === s).length;
     console.log(`${z('rot') ? '🔴' : z('gelb') ? '🟡' : '🟢'} ${w.wer} — ${z('rot')} rot · ${z('gelb')} gelb · ${((Date.now() - t0) / 1000).toFixed(0)} s`);
