@@ -329,8 +329,21 @@ const PAGE_SCRIPT = `
     warm:{a:'#D98A5A',t:'#2B1D14',ti:'#F3E6DC',word:'warm & nahbar'},
     mutig:{a:'#E4573C',t:'#2A1310',ti:'#F6E4DF',word:'kraftvoll & mutig'}
   };
+  // Trichter ohne Kennung: je Seitenaufruf meldet jeder Schritt sich EINMAL als
+  // virtueller Pfad (keine Eingaben, kein Cookie) — wie das Anfrage-Formular. Bis 12.10.2026
+  // zaehlte die Vorschau gar nichts. Pfade muessen zu VORSCHAU_TRICHTER im Portal passen.
+  const GEZAEHLT=new Set();
+  function zaehlen(n){
+    if(GEZAEHLT.has(n))return;GEZAEHLT.add(n);
+    try{
+      if(navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
+      const p=n===0?'/vorschau/':n===11?'/vorschau/gesendet/':'/vorschau/frage/'+n+'/';
+      const d=JSON.stringify({p:p,r:document.referrer||'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'});
+      navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([d],{type:'text/plain;charset=UTF-8'}));
+    }catch(e){}
+  }
   function show(n){
-    qs.forEach(q=>q.classList.toggle('on',+q.dataset.step===n)); step=n;
+    qs.forEach(q=>q.classList.toggle('on',+q.dataset.step===n)); step=n; zaehlen(n);
     const s=Math.min(Math.max(n,1),TOTAL);
     $('#bar').style.transform=\`scaleX(\${s/TOTAL})\`;
     $('#cnt').textContent=\`\${s}/\${TOTAL}\`; $('#cnt').style.visibility=n===0?'hidden':'visible';

@@ -49,6 +49,7 @@ const AUS = join(process.env.TMPDIR || os.tmpdir(), 'besucher-sim');
 // Schwellen mit Quelle — jede hat einen roten und einen grünen Fixture im Selbsttest.
 const MIN_ZIEL = 24;        // WCAG 2.2 AA 2.5.8 Target Size (Minimum)
 const GUT_ZIEL = 44;        // kern.md: Trefferflächen ab 44 px
+const FRAGEN_BIS_MAIL = 10;  // Funnel: Frage 10 ist das Mail-Feld (data-step="10" in form.js)
 const MIN_SCHRIFT = 15;     // kern.md: Lesetext nie unter 15 px
 const LESETEXT = 40;        // kern.md: Lesetext ab ~40 Zeichen, darunter Etikett
 const CLS_MAX = 0.1;        // Core Web Vitals 2026, unverändert
@@ -211,13 +212,35 @@ async function oeffne(engine, geraet) {
   const ctx = await browser.newContext({ ...geraet, locale: 'de-DE' });
   await ctx.addInitScript(BEOBACHTER);
   const abgebrochen = new Set();
+  // Zählmeldungen im Browser ablesen: WebKit gibt den Inhalt eines sendBeacon nicht an die
+  // Route weiter (postData null, geprüft 12.10.2026). Die Hülle merkt sich die Blob-Teile und
+  // meldet synchron über eine Bindung — das überlebt auch eine sofortige Weiterleitung.
+  const gezaehlt = [];
+  await ctx.exposeBinding('__zaehlerMeldung', (_q, pfad) => { gezaehlt.push(pfad); });
+  await ctx.addInitScript(() => {
+    const B = window.Blob;
+    window.Blob = class extends B { constructor(teile, o) { super(teile, o); this.__teile = teile; } };
+    const senden = navigator.sendBeacon && navigator.sendBeacon.bind(navigator);
+    if (!senden) return;
+    navigator.sendBeacon = (url, daten) => {
+      try {
+        if (/\/api\/pv\b/.test(String(url))) {
+          const text = typeof daten === 'string' ? daten : (daten && daten.__teile ? daten.__teile.join('') : '');
+          window.__zaehlerMeldung(JSON.parse(text).p);
+        }
+      } catch { /* kein JSON — dann fehlt die Meldung im Tor */ }
+      return senden(url, daten);
+    };
+  });
   await ctx.route('**/*', (r) => {
     const q = r.request();
+    if (/\/api\/pv\b/.test(q.url())) gezaehlt.anfragen = (gezaehlt.anfragen || 0) + 1;
     if (!['GET', 'HEAD'].includes(q.method()) || /\/api\/pv\b/.test(q.url())) { abgebrochen.add(q.url()); return r.abort(); }
     return r.continue();
   });
   const page = await ctx.newPage();
   page.__fehler = [];
+  page.__gezaehlt = gezaehlt;
   // Turnstile (challenges.cloudflare.com) meldet in WebKit eigene Rahmen-Fehler — fremder Code,
   // nicht die Seite. Abbrüche beim Seitenwechsel (Lazy-Bilder) sind kein Fehler.
   const FREMD = /challenges\.cloudflare\.com|WebKitBlobResource/;
@@ -335,6 +358,23 @@ async function uebergaengeFertig(page) {
   ]));
 }
 
+// Zählt der Weg zur Vorschau? Ohne Zähler ist das Ziel der Website unsichtbar (bis 12.10.2026
+// meldeten /gratis/ und die Vorschau nichts). `erwartet` sind Pfade, die gemeldet sein müssen;
+// bis zur Frage `bisFrage` muss jede Frage einmal gezählt sein.
+export function zaehlLuecken(gezaehlt, erwartet, bisFrage) {
+  const soll = [...erwartet];
+  for (let i = 1; i <= bisFrage; i++) soll.push('/vorschau/frage/' + i + '/');
+  return soll.filter((p) => !gezaehlt.includes(p));
+}
+function pruefeZaehler(page, persona, erwartet, f) {
+  const fehlt = zaehlLuecken(page.__gezaehlt, erwartet, f.amZiel ? FRAGEN_BIS_MAIL : 0);
+  // Gemeldet ist nicht gesendet: eine CSP ohne den Zähler-Host blockt still. Jede Meldung
+  // muss als Anfrage aus dem Browser gehen.
+  const raus = page.__gezaehlt.anfragen || 0;
+  if (raus < page.__gezaehlt.length) befund(persona, 'Zähler', 'rot', 'Zählaufrufe gehen nicht raus (CSP connect-src?)', page.__gezaehlt.length + ' gemeldet, ' + raus + ' gesendet');
+  if (fehlt.length) befund(persona, 'Zähler', 'rot', 'Der Weg zur Vorschau wird nicht gezählt', 'fehlt: ' + fehlt.join(' ') + ' · gesehen: ' + (page.__gezaehlt.join(' ') || 'nichts'));
+}
+
 // Funnel bis zum Mail-Feld, nie abschicken. Misst jeden Schritt am Schirm.
 async function funnel(page, persona) {
   const schritte = [];
@@ -413,12 +453,15 @@ const PERSONAS = [
       if (!ziel) return befund(w.id, '/links/', 'rot', 'Kein Vorschau-Knopf auf der Bio-Link-Seite');
       if (FUNNEL !== 'https://start.social2scale.com/') { await p.goto(FUNNEL, { waitUntil: 'load' }); await ruhe(p); }
       const f = await funnel(p, w.id);
+      pruefeZaehler(p, w.id, ['/links/', '/links/klick/gratis/', '/gratis/', '/vorschau/'], f);
       WEGE.push({ persona: w.id, klicks: 1, ...f });
     } },
   { id: 'funnel-mini', wer: 'Funnel direkt · iPhone 12 mini (WebKit)', engine: 'webkit', geraet: devices['iPhone 12 Mini'],
     async lauf(p, w) {
       await p.goto(FUNNEL, { waitUntil: 'load' }); await ruhe(p);
-      WEGE.push({ persona: w.id, ...(await funnel(p, w.id)) });
+      const f = await funnel(p, w.id);
+      pruefeZaehler(p, w.id, ['/vorschau/'], f);
+      WEGE.push({ persona: w.id, ...f });
     } },
   { id: 'neugierig-15pro', wer: 'Startseite · iPhone 15 Pro (WebKit)', engine: 'webkit', geraet: devices['iPhone 15 Pro'],
     async lauf(p, w) {
@@ -558,6 +601,14 @@ async function selbsttest() {
     console.log((da ? '🟢' : '🔴') + ' rot-Fixture meldet: ' + e);
     ok = ok && da;
   }
+  // Zähler-Tor: Weiterleitung ohne Meldung muss rot werden, der volle Weg grün.
+  const fragen = Array.from({ length: FRAGEN_BIS_MAIL }, (_, i) => '/vorschau/frage/' + (i + 1) + '/');
+  const zRot = zaehlLuecken(['/links/', '/links/klick/gratis/', '/vorschau/', ...fragen], ['/links/', '/links/klick/gratis/', '/gratis/', '/vorschau/'], FRAGEN_BIS_MAIL);
+  const zRot2 = zaehlLuecken(['/vorschau/', ...fragen.slice(0, -1)], ['/vorschau/'], FRAGEN_BIS_MAIL);
+  const zGruen = zaehlLuecken(['/links/', '/links/klick/gratis/', '/gratis/', '/vorschau/', ...fragen], ['/links/', '/links/klick/gratis/', '/gratis/', '/vorschau/'], FRAGEN_BIS_MAIL);
+  const zOk = zRot.join() === '/gratis/' && zRot2.length === 1 && !zGruen.length;
+  console.log((zOk ? '🟢' : '🔴') + ' Zähler-Tor: fehlende Weiterleitung und fehlende letzte Frage rot, voller Weg grün');
+  ok = ok && zOk;
   const sauber = g.filter((x) => x.stufe === 'rot');
   console.log((sauber.length ? '🔴' : '🟢') + ' grün-Fixture ohne Rot' + (sauber.length ? ': ' + sauber.map((x) => x.text).join(' | ') : ''));
   return ok && !sauber.length;
@@ -593,7 +644,12 @@ async function main() {
   let server = null;
   if (WURZEL) { server = await lokalerServer(WURZEL); BASIS = 'http://127.0.0.1:' + server.address().port; }
   mkdirSync(AUS, { recursive: true });
-  for (const w of PERSONAS.filter((x) => !NUR || x.id === NUR)) {
+  // --nur=a,b: eine Liste. Ein unbekannter Name ist ein Abbruch, kein „0 Befunde" —
+  // vorher lief bei --nur=a,b keine einzige Besucherin, und das Ergebnis war grün.
+  const nur = NUR ? NUR.split(',').map((s) => s.trim()).filter(Boolean) : [];
+  const unbekannt = nur.filter((id) => !PERSONAS.some((x) => x.id === id));
+  if (unbekannt.length) { console.error('🔴 Unbekannte Besucherin: ' + unbekannt.join(', ') + ' · bekannt: ' + PERSONAS.map((x) => x.id).join(', ')); process.exit(1); }
+  for (const w of PERSONAS.filter((x) => !nur.length || nur.includes(x.id))) {
     const t0 = Date.now();
     // Navigiert die Seite mitten in einer Messung (Seitenwechsel, Weiterleitung), stirbt der
     // Messkontext — einmal neu, mit frischem Browser. Bricht er wieder ab, bleibt es rot.
