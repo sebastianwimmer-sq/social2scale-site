@@ -267,3 +267,19 @@ body{
 .proof-points li::before,.ab-creed li::before{content:none!important}
 .proof-points li,.ab-creed li{padding-left:0}
 .fw-marrow{display:none!important}
+
+/* ── Trefferflächen ab 44 px (kern.md) ─────────────────────────
+   Besucher-Simulation 12.10.2026: rund 50 Ziele lagen zwischen 24 und 44 px —
+   WCAG 2.2 (24 px) erfüllt, für Menschen mit wenig Rechnerroutine zu knapp.
+   Nur die Fläche wächst (min-*), nie die Schrift oder das Bild. */
+.skip{display:inline-flex;align-items:center;min-height:44px}
+.to-top{min-width:44px;min-height:44px}
+.bar .brand,footer .brand,.af-logo{display:inline-flex;align-items:center;min-height:44px}
+.foot-col a,.foot-legal a,.foot-bottom a,.foot-links a{min-width:44px}
+/* Zeilen-Ziele bleiben Blockzeilen (inline-flex zog Mail und Telefon in eine Zeile,
+   flex schluckte im Inhaltsverzeichnis das Leerzeichen nach „01 ·“);
+   die 44 px ersetzen Lücke und Außenabstand, sonst verdoppelt sich der Rhythmus. */
+nav.toc ol{gap:0}
+nav.toc li a{display:block;padding-block:5px;min-height:44px}
+a.rail-link{display:flex;align-items:center;min-height:44px;margin-bottom:0}
+a.rail-cta{display:inline-flex;align-items:center;min-height:44px}

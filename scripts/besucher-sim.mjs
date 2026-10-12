@@ -134,10 +134,12 @@ function messeImBrowser(cfg) {
   // Trefferflächen: WCAG nimmt Links im Fließtext aus (Inline-Ausnahme).
   const imText = (el) => el.tagName === 'A' && el.parentElement && /^(P|LI|SPAN|SMALL|DD|TD|FIGCAPTION|LABEL)$/.test(el.parentElement.tagName) &&
     el.parentElement.textContent.trim().length > el.textContent.trim().length + 3;
-  aus.zuKlein = []; aus.knapp = 0;
+  aus.zuKlein = []; aus.knapp = 0; aus.knappListe = [];
   // 2.5.8 Abstands-Ausnahme: ein zu kleines Ziel besteht, wenn ein Kreis mit 24 px Durchmesser
   // um seine Mitte kein anderes Ziel schneidet und keinen solchen Kreis eines anderen kleinen Ziels.
-  const ziele = klickbar.filter((el) => !imText(el) && el.type !== 'radio' && el.type !== 'checkbox').map((el) => ({ el, r: el.getBoundingClientRect() }));
+  // Wer pointer-events:none trägt, ist gerade nicht antippbar (z. B. „Nach oben“ vor dem Scrollen,
+  // dann auch auf 92 % verkleinert) — gemessen wird die Fläche, die man treffen kann.
+  const ziele = klickbar.filter((el) => !imText(el) && el.type !== 'radio' && el.type !== 'checkbox' && getComputedStyle(el).pointerEvents !== 'none').map((el) => ({ el, r: el.getBoundingClientRect() }));
   const mitte = (r) => [r.left + r.width / 2, r.top + r.height / 2];
   const abstand = ([x, y], r) => Math.hypot(Math.max(r.left - x, 0, x - r.right), Math.max(r.top - y, 0, y - r.bottom));
   const klein = (r) => Math.min(r.width, r.height) < MIN_ZIEL;
@@ -148,7 +150,7 @@ function messeImBrowser(cfg) {
     const k = Math.min(r.width, r.height);
     if (k < MIN_ZIEL && freiGenug(z)) continue;
     if (k < MIN_ZIEL) aus.zuKlein.push((el.textContent.trim() || el.getAttribute('aria-label') || el.tagName).slice(0, 30) + ' ' + Math.round(r.width) + '×' + Math.round(r.height));
-    else if (k < GUT_ZIEL) aus.knapp++;
+    else if (k < GUT_ZIEL) { aus.knapp++; aus.knappListe.push((el.textContent.trim() || el.getAttribute('aria-label') || el.tagName).replace(/\s+/g, ' ').slice(0, 30) + ' ' + Math.round(r.width) + '×' + Math.round(r.height)); }
   }
 
   // Lesetext unter MIN_SCHRIFT und Text, der nach dem Durchscrollen unsichtbar bleibt.
@@ -191,7 +193,7 @@ export function bewerte(pfad, m, { handy, einstieg }) {
   if (einstieg && handy && !m.ersteHandlung) rot('Auf dem ersten Schirm gibt es keinen Knopf');
   if (einstieg && handy && m.worteVorVorschau > WORTE_VOR_VORSCHAU) gelb('Viel Text vor dem ersten Vorschau-Knopf', m.worteVorVorschau + ' Wörter');
   if (m.zuKlein.length) rot('Trefferfläche unter ' + MIN_ZIEL + ' px (WCAG 2.2 · 2.5.8)', m.zuKlein.slice(0, 4).join(' | '));
-  if (handy && m.knapp) gelb(m.knapp + ' Trefferflächen zwischen ' + MIN_ZIEL + ' und ' + GUT_ZIEL + ' px');
+  if (handy && m.knapp) gelb(m.knapp + ' Trefferflächen zwischen ' + MIN_ZIEL + ' und ' + GUT_ZIEL + ' px', (m.knappListe || []).slice(0, 3).join(' | '));
   if (m.kleineSchrift.length) rot('Lesetext unter ' + MIN_SCHRIFT + ' px', m.kleineSchrift.slice(0, 3).join(' | '));
   if (m.unsichtbar.length) rot('Text bleibt nach dem Durchscrollen unsichtbar', m.unsichtbar.slice(0, 3).join(' | '));
   if (m.bilderKaputt.length) rot('Bild lädt nicht', m.bilderKaputt.join(' | '));
@@ -578,6 +580,7 @@ const ROT = `<!doctype html><html><head><meta name="viewport" content="width=dev
   <p style="height:900px">${'Viel Text, der vor dem Knopf steht und die Besucherin erschlägt. '.repeat(30)}</p>
   <a href="https://start.social2scale.com/" style="display:inline-block;background:#0a7;padding:2px">x</a><a href="/y/" style="display:inline-block;padding:2px">y</a>
   <p style="opacity:0">Dieser Absatz ist lang genug, um als Lesetext zu gelten, aber unsichtbar.</p>
+  <button style="position:fixed;right:0;top:300px;width:40px;height:40px">^</button>
   <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" width="10" height="10"></body></html>`;
 // Ohne viewport-Meta (eigener Fixture: sonst rechnet der Browser mit 980 px und Falz/Quer messen Unsinn).
 const ROT_OHNE_VIEWPORT = `<!doctype html><html lang="de"><head><title>t</title></head><body><h1>x</h1><a href="https://start.social2scale.com/">x</a></body></html>`;
@@ -585,7 +588,8 @@ const GRUEN = `<!doctype html><html lang="de"><head><meta name="viewport" conten
   <body style="margin:0;font-size:17px"><h1>Eine Überschrift</h1>
   <a href="https://start.social2scale.com/" style="display:inline-block;background:#0a7;padding:14px 20px;min-height:44px">Gratis-Vorschau starten</a>
   <p>Kurzer Lesetext, gut lesbar und vollständig sichtbar, mit einem <a href="/x/">Link im Text</a>.</p>
-  <div style="margin-top:40px"><a href="/impressum/" style="font-size:14px">Impressum</a></div>
+  <div style="margin-top:40px"><a href="/impressum/" style="font-size:14px;display:inline-block;min-height:44px;min-width:44px">Impressum</a></div>
+  <button style="position:fixed;right:0;top:300px;width:40px;height:40px;opacity:0;pointer-events:none" aria-label="Nach oben"></button>
   <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" width="10" height="10"></body></html>`;
 
 async function selbsttest() {
@@ -594,7 +598,7 @@ async function selbsttest() {
   const lauf = async (html) => { await page.setContent(html); return bewerte('/', await page.evaluate(messeImBrowser, CFG), { handy: true, einstieg: true }); };
   const r = [...(await lauf(ROT)), ...(await lauf(ROT_OHNE_VIEWPORT))], g = await lauf(GRUEN);
   await browser.close();
-  const erwartet = ['quer', 'unter dem Falz', 'Viel Text', 'Trefferfläche unter', 'Lesetext unter', 'unsichtbar', 'alt-Attribut', 'Bild lädt nicht', 'Sprache', 'viewport', 'Hauptüberschrift'];
+  const erwartet = ['quer', 'unter dem Falz', 'Viel Text', 'Trefferfläche unter', 'Lesetext unter', 'unsichtbar', 'alt-Attribut', 'Bild lädt nicht', 'Sprache', 'viewport', 'Hauptüberschrift', 'Trefferflächen zwischen'];
   let ok = true;
   for (const e of erwartet) {
     const da = r.some((x) => x.text.includes(e));
@@ -609,6 +613,9 @@ async function selbsttest() {
   const zOk = zRot.join() === '/gratis/' && zRot2.length === 1 && !zGruen.length;
   console.log((zOk ? '🟢' : '🔴') + ' Zähler-Tor: fehlende Weiterleitung und fehlende letzte Frage rot, voller Weg grün');
   ok = ok && zOk;
+  const versteckt = g.filter((x) => x.text.includes('Trefferflächen zwischen'));
+  console.log((versteckt.length ? '🔴' : '🟢') + ' grün-Fixture: versteckter Knopf (pointer-events:none) zählt nicht als knapp' + (versteckt.length ? ': ' + versteckt[0].beleg : ''));
+  ok = ok && !versteckt.length;
   const sauber = g.filter((x) => x.stufe === 'rot');
   console.log((sauber.length ? '🔴' : '🟢') + ' grün-Fixture ohne Rot' + (sauber.length ? ': ' + sauber.map((x) => x.text).join(' | ') : ''));
   return ok && !sauber.length;

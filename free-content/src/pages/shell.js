@@ -59,6 +59,9 @@ export const SICHERHEITS_HEADER = {
 };
 
 const SHARED_STYLE = `
+  /* Logo-Link: 44 px Trefferflaeche (kern.md), das Bild bleibt 30 px hoch. Der negative
+     Aussenabstand nimmt die 14 px wieder heraus — am iPhone SE rutschte sonst der erste Knopf. */
+  a:has(> .wm-logo){display:inline-flex;align-items:center;min-height:44px;margin-block:-7px}
   @font-face { font-family:"Hanken Grotesk"; font-weight:400 600; font-style:normal; font-display:block; src:url(${FONT_BASE}/hanken-latin.woff2) format("woff2"); }
   @font-face { font-family:"Archivo"; font-weight:400 800; font-style:normal; font-display:block; src:url(${FONT_BASE}/archivo-latin.woff2) format("woff2"); }
   @font-face { font-family:"Fraunces"; font-weight:300 600; font-style:normal; font-display:block; src:url(${FONT_BASE}/fraunces-normal-latin.woff2) format("woff2"); }
