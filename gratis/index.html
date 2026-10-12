@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PBFDI+e/WvaSTKkvh5ZK3Tp9Gz5jIbC5sgDJrs9jIco=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hjkGzfOwi9S/L+0Lv3ChVxomeKnCDl5oBzIL9FBTz8Q=' 'sha256-PBFDI+e/WvaSTKkvh5ZK3Tp9Gz5jIbC5sgDJrs9jIco=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -153,12 +153,9 @@
     <a class="btn" href="https://start.social2scale.com/">Vorschau jetzt starten →</a>
     <p class="fine">Acht kurze Fragen · Mail bestätigen · Vorschau ansehen</p>
   </main>
-  <script>
-    // replace() statt href: kein Eintrag in der Historie, der Zurueck-Knopf
-    // fuehrt zurueck zu Instagram und nicht in eine Weiterleitungsschleife.
-    location.replace("https://start.social2scale.com/");
-  </script>
 <script>
+  // Steht VOR der Weiterleitung: dahinter zählte /gratis/ nie (Besucher-Simulation
+  // 12.10.2026: 0 Aufrufe seit August).
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
   // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
@@ -178,5 +175,10 @@
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
+  <script>
+    // replace() statt href: kein Eintrag in der Historie, der Zurueck-Knopf
+    // fuehrt zurueck zu Instagram und nicht in eine Weiterleitungsschleife.
+    location.replace("https://start.social2scale.com/");
+  </script>
 </body>
 </html>
