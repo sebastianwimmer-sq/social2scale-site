@@ -15,7 +15,7 @@
  */
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
-import { extname, join, resolve } from 'node:path';
+import { extname, join, resolve, sep } from 'node:path';
 
 const { chromium, webkit } = await import('/opt/homebrew/lib/node_modules/playwright/index.mjs');
 const WURZEL = resolve(import.meta.dirname, '..');
@@ -27,8 +27,11 @@ const TYPEN = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascrip
 
 const server = await new Promise((fertig) => {
   const s = createServer(async (anf, ant) => {
-    let pfad = join(WURZEL, decodeURIComponent(anf.url.split('?')[0]));
-    if (pfad.endsWith('/')) pfad += 'index.html';
+    // Nur Dateien IM Baum und nur lokal: join() liess "/../../" aus dem Ordner heraus, und ohne Host
+    // horchte der Server im ganzen WLAN — jede Datei des Macs war waehrend des Laufs lesbar (12.10.2026).
+    let pfad = resolve(WURZEL, '.' + decodeURIComponent(anf.url.split('?')[0]));
+    if (pfad !== WURZEL && !pfad.startsWith(WURZEL + sep)) { ant.writeHead(403); return ant.end('nein'); }
+    if (anf.url.split('?')[0].endsWith('/')) pfad = join(pfad, 'index.html');
     try {
       let inhalt = await readFile(pfad);
       if (SELBSTTEST && pfad.endsWith('/bewegung.css')) inhalt = Buffer.from('/* leer */');
@@ -37,7 +40,7 @@ const server = await new Promise((fertig) => {
       ant.end(inhalt);
     } catch { ant.writeHead(404); ant.end('weg'); }
   });
-  s.listen(0, () => fertig(s));
+  s.listen(0, '127.0.0.1', () => fertig(s));
 });
 const BASIS = `http://localhost:${server.address().port}`;
 const ETIKETTEN = '.ix,.pr-rh,.rs-rh,.fw-rh,.ab-rh';

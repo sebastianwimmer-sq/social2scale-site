@@ -17,7 +17,7 @@
  */
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
-import { join, extname, dirname } from "node:path";
+import { join, extname, dirname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readdirSync, statSync } from "node:fs";
 import pw from "/opt/homebrew/lib/node_modules/playwright/index.js";
@@ -36,7 +36,9 @@ const TYPEN = {
 const server = createServer(async (req, res) => {
   let pfad = decodeURIComponent(req.url.split("?")[0]);
   if (pfad.endsWith("/")) pfad += "index.html";
-  const datei = join(WURZEL, pfad);
+  // Nur Dateien IM Baum: join() liess "/../../" aus dem Ordner heraus (12.10.2026).
+  const datei = resolve(WURZEL, "." + pfad);
+  if (!datei.startsWith(resolve(WURZEL) + sep)) { res.writeHead(403).end("nein"); return; }
   try {
     if ((await stat(datei)).isDirectory()) throw new Error("dir");
     const inhalt = await readFile(datei);
@@ -58,7 +60,7 @@ function seiten(verz, gesammelt = []) {
   return gesammelt;
 }
 
-await new Promise((f) => server.listen(PORT, f));
+await new Promise((f) => server.listen(PORT, '127.0.0.1', f));   // nur lokal, nie ins WLAN
 const liste = seiten(WURZEL).sort();
 const browser = await chromium.launch();
 let fehlerhaft = 0;
