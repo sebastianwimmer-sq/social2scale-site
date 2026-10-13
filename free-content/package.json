@@ -12,6 +12,9 @@
     "qrcode-generator": "2.0.4"
   },
   "devDependencies": {
-    "wrangler": "4.111.0"
+    "wrangler": "4.149.0"
+  },
+  "overrides": {
+    "basic-ftp": "6.2.1"
   }
 }
