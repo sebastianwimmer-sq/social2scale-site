@@ -111,8 +111,8 @@ Yoga-Coach, postest über Rückenschmerzen und weißt nicht, was du sagen darfst
 | `heilversprechen-instagram-abmahnung` | Welche Sätze abmahnfähig sind | Konkrete Formulierungen, jeweils mit erlaubter Alternative. |
 | `impressumspflicht-instagram` | Impressumspflicht auf Instagram (§ 5 DDG) | Kleine Frage, große Angst, klar beantwortbar. |
 
-s2s hat zu beiden Themen echte Berührung aus der Arbeit mit Nicole (HWG) und
-Sabine (UWG). Das ist Rückversicherung gegen sachliche Fehler, keine Quelle für
+s2s hat zu beiden Themen echte Berührung aus der Kundenarbeit (HWG und
+UWG). Das ist Rückversicherung gegen sachliche Fehler, keine Quelle für
 Behauptungen.
 
 ### Bewusst zurückgestellt

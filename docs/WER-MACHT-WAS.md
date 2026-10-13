@@ -84,7 +84,7 @@ an der externen Flaeche fertig ist.
 | Nav-Eintrag „Gratis" auf allen 4 Seiten mit Menü | `f638499` | extern |
 | `#gratis`-Knopf zeigt auf `/gratis/` | `f638499` | **Funnel-Adresse steht jetzt NUR in `gratis/index.html`** |
 | Burger-Umschaltpunkt 819 → 959px | `f638499` | Menüleiste brach zwischen 820 und 959px um |
-| SEO-Technik: llms.txt, Titel, Descriptions, sitemap-lastmod, robots | `4e6d4e7` | llms.txt nannte noch 3× PEAKING |
+| SEO-Technik: llms.txt, Titel, Descriptions, sitemap-lastmod, robots | `4e6d4e7` | llms.txt nannte noch 3× die alte Marke |
 | `/results/` ohne Platzhalterzahlen, mit Definitionen + Messrhythmus | `e478301`, `4c511d7` | Messrhythmus von Sebi gegengelesen |
 
 **Noch offen an der externen Fläche** (gehört der externen Session):

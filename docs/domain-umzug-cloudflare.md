@@ -7,12 +7,12 @@
 
 ## Warum es überhaupt sein muss (drei Gründe, keiner davon Optik)
 
-1. **„peaking" steht in der URL.** Der Funnel läuft auf
-   `s2s-free-content.peaking.workers.dev`. Am 20.07. wurde PEAKING bewusst aus allem
+1. **Der alte Kontoname steht in der URL.** Der Funnel läuft auf
+   `s2s-free-content.<konto>.workers.dev`. Am 20.07. wurde die alte Marke bewusst aus allem
    Kundenseitigen entfernt — und ausgerechnet der Neukunden-Funnel trägt den alten
    Markennamen sichtbar in der Adresse.
 2. **Zustellbarkeit der Bestätigungsmail.** Sie kommt von `social2scale.com` und
-   verlinkt auf `peaking.workers.dev`. Absender ≠ Linkziel ist ein klassisches
+   verlinkt auf `<konto>.workers.dev`. Absender ≠ Linkziel ist ein klassisches
    Spamfilter-Signal, und `workers.dev` ist eine geteilte Domain mit gemischtem Ruf.
    Diese Mail ist der Single Point of Failure des Funnels: Kommt sie nicht an,
    stirbt er lautlos.
@@ -37,7 +37,7 @@ aber **Enterprise-only** (Free: nein · Pro: nein · Business: nein).
 
 **Bleibt:** ganze Zone umziehen — oder auf workers.dev bleiben.
 💡 Ungeprüfte Zwischenlösung, falls der Umzug sich zieht: Die Konto-Subdomain
-„peaking" ist eine Account-Einstellung und lässt sich möglicherweise umbenennen.
+Der Kontoname ist eine Account-Einstellung und lässt sich möglicherweise umbenennen.
 Das würde wenigstens Grund 1 sofort beheben — ändert aber die URLs **aller** Worker
 dieses Accounts. Vorher prüfen, was sonst noch darauf zeigt.
 
@@ -164,7 +164,7 @@ Danach:
 
 ## Wenn der Umzug nicht stattfindet
 
-Der Funnel läuft unverändert auf `https://s2s-free-content.peaking.workers.dev`.
+Der Funnel läuft unverändert auf `https://s2s-free-content.<konto>.workers.dev`.
 Alles funktioniert; die drei Gründe ganz oben bleiben bestehen.
 
 ---
@@ -180,7 +180,7 @@ DNS: IONOS-CNAME `start` → `s2s-start.pages.dev`. PUBLIC_ORIGIN ist geflippt,
 /gratis/ leitet auf die neue Domain, CRM-Bestandslinks sind migriert.
 
 **Ein Zonen-Umzug ist damit für den Funnel NICHT mehr nötig.** Die drei
-Gründe vom 27.07. (peaking-Markenleck, Mail-Zustellbarkeit Absender≠Linkziel,
+Gründe vom 27.07. (Markenleck im Kontonamen, Mail-Zustellbarkeit Absender≠Linkziel,
 QR-Ziel) sind alle durch die Brücke behoben. Dieses Dokument bleibt nur
 relevant, falls künftig ein ANDERER Worker eine Custom Domain braucht —
 dann zuerst das Pages-Proxy-Muster prüfen (Aufwand: Minuten statt Umzug).
