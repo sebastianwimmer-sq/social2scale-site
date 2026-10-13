@@ -11,6 +11,7 @@ lauf "Selbsttest Seitenwechsel"  node scripts/uebergang-check.mjs --selbsttest
 lauf "Selbsttest Bewegung"       node scripts/bewegung-check.mjs --selbsttest
 lauf "Selbsttest Motion-Loop"   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
+lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs tests/bewertungen.test.mjs
 lauf "Server nur lokal"          node "$HOME/kit-build/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
 lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
 lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs

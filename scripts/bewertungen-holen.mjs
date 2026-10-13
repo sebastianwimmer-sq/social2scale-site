@@ -92,7 +92,7 @@ function uebernehmen(r) {
   };
 }
 
-/** "Sabine Rühl" → "SR", "Eva" → "E". Ersetzt das blockierte Profilbild. */
+/** "Anna Muster" → "AM", "Eva" → "E". Ersetzt das blockierte Profilbild. */
 function initialenAus(name) {
   const teile = name.split(/\s+/).filter(Boolean);
   if (teile.length === 0) return '·';

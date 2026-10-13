@@ -118,7 +118,7 @@ describe('Maskierung', () => {
   });
 
   test('MUSS GRUEN: Umlaute bleiben unangetastet', () => {
-    assert.equal(maskieren('Grüße, Rühl'), 'Grüße, Rühl');
+    assert.equal(maskieren('Grüße, Huber'), 'Grüße, Huber');
   });
 });
 

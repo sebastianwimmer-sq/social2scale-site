@@ -4,6 +4,7 @@
  */
 
 import { validateSubmission } from './validate.js';
+import { alteAdresse } from './alte-adresse.js';
 import {
   verifyTurnstile,
   isHoneypotTripped,
@@ -357,6 +358,8 @@ export default {
   },
 
   async fetch(request, env, ctx) {
+    const umleitung = alteAdresse(request);
+    if (umleitung) return umleitung;
     const url = new URL(request.url);
     const cors = corsHeaders(env.ALLOW_ORIGIN || 'https://social2scale.com');
 
