@@ -4,6 +4,7 @@
  */
 
 import { validateSubmission } from './validate.js';
+import { reelWaechter } from './reel-waechter.js';
 import { alteAdresse } from './alte-adresse.js';
 import {
   verifyTurnstile,
@@ -355,6 +356,7 @@ export default {
       console.error('[cron] sweepStaleBuilding fehlgeschlagen:', err);
     }
     await heileRenderAusfaelle(env);
+    await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
   },
 
   async fetch(request, env, ctx) {
