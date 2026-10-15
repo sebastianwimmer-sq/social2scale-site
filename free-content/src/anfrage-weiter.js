@@ -51,7 +51,7 @@ function antwort(body, status, cors) {
 /**
  * Selbsttest der Strecke Funnel → Portal ohne Spuren: das Portal erkennt `probe`
  * nur mit gültigem Schlüssel und antwortet, ohne CRM, Brevo oder Mail zu berühren.
- * @returns {Promise<'ok'|'aus'|'schluessel'|'netz'|'portal'>}
+ * @returns {Promise<string>} 'ok' | 'aus' | 'schluessel' | 'netz' | 'portal:<status>:<typ>'
  */
 export async function anfrageProbe(env, holen = fetch) {
   if (!env.FUNNEL_KEY) return 'aus';
@@ -63,7 +63,10 @@ export async function anfrageProbe(env, holen = fetch) {
     });
     if (res.status === 403) return 'schluessel';
     const j = await res.json().catch(() => ({}));
-    return res.ok && j.probe === true ? 'ok' : 'portal';
+    if (res.ok && j.probe === true) return 'ok';
+    // Grund mitgeben, sonst ist ein rotes Tor nicht diagnostizierbar (15.10.2026).
+    console.error('[anfrage] Probe: Portal antwortete', res.status, res.headers.get('content-type'));
+    return 'portal:' + res.status + ':' + String(res.headers.get('content-type') || '').split(';')[0];
   } catch (err) {
     console.error('[anfrage] Probe: Portal nicht erreichbar:', err);
     return 'netz';

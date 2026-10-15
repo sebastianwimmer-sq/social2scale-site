@@ -79,7 +79,7 @@ import { anfrageProbe } from '../src/anfrage-weiter.js';
 test('Probe: ok nur bei probe:true, 403 heißt falscher Schlüssel, ohne Schlüssel aus', async () => {
   assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('{"success":true,"probe":true}')), 'ok');
   assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('{"success":false}', { status: 403 })), 'schluessel');
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('<html>', { status: 200 })), 'portal');
+  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('<html>', { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } })), 'portal:200:text/html');
   assert.equal(await anfrageProbe({ FUNNEL_KEY: '' }, async () => { throw new Error('nie'); }), 'aus');
   assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => { throw new Error('dns'); }), 'netz');
 });
