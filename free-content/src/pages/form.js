@@ -79,7 +79,7 @@ const PAGE_STYLE = `
   .field:focus-within{background:linear-gradient(180deg,rgba(0,184,136,.6),rgba(31,166,224,.3))}
   .field-in{position:relative;border-radius:15px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));box-shadow:inset 0 1px 1px rgba(255,255,255,.08)}
   .field .pre{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:1.05rem;pointer-events:none;z-index:1}
-  input[type=text],input[type=email],textarea{width:100%;font-family:var(--ff-body);font-size:1.08rem;color:var(--ink);background:transparent;border:0;padding:15px 16px;outline:none}
+  input[type=text],input[type=email],input[type=tel],textarea{width:100%;font-family:var(--ff-body);font-size:1.08rem;color:var(--ink);background:transparent;border:0;padding:15px 16px;outline:none}
   input.hashandle{padding-left:30px}
   textarea{resize:none;min-height:78px;line-height:1.5}
   ::placeholder{color:var(--faint)}
@@ -142,6 +142,31 @@ const PAGE_STYLE = `
     .sheet-in{min-height:auto;padding:2.1rem 2.1rem 2.3rem}
     .grab{display:none}
   }
+  /* Ein Funnel, drei Wege (15.10.2026): die erste Frage teilt. Echte Knoepfe, ganze Flaeche tippbar. */
+  .wege{display:grid;gap:9px}
+  .weg{display:flex;flex-direction:column;gap:2px;text-align:left;width:100%;min-height:58px;cursor:pointer;border-radius:16px;padding:12px 16px;
+    font-family:var(--ff-body);color:var(--ink);border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(18,21,25,.9),rgba(11,13,16,.95));
+    transition:border-color var(--dur-2, .25s),background var(--dur-2, .25s),transform var(--dur-2, .25s) var(--e-out)}
+  .weg b{font-weight:600;font-size:1rem}.weg small{font-size:.86rem;color:var(--muted)}
+  .weg:hover,.weg:focus-visible{border-color:rgba(0,184,136,.7);transform:translateY(-2px);outline:none}
+  .weg:focus-visible{box-shadow:0 0 0 2px var(--emerald-soft)}
+  .quer{margin-top:1rem;padding:.75rem .9rem;border-radius:14px;border:1px dashed rgba(0,184,136,.4);font-size:.9rem;color:var(--muted)}
+  .quer-b{background:none;border:0;padding:0;min-height:44px;color:var(--emerald-soft);font:600 .9rem var(--ff-body);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+  /* Schmales Telefon (iPhone SE): nur die Beitraege-Zahl, sonst wird „Follower“ abgeschnitten. */
+  .pv{container-type:inline-size}
+  @container (max-width:190px){.pv-stat+.pv-stat,.pv-bar .dots{display:none}}
+  /* Kachelschrift waechst mit dem Telefon (Desktop 330 px war sie 6 px). */
+  .pv-grid .pv-tile{font-size:max(6px,3.4cqi)}
+  .bsp{position:absolute;z-index:9;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--ff-label);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--emerald-ink);background:var(--emerald-soft);border-radius:8px;padding:3px 9px;white-space:nowrap}
+  .app:not([data-schritt="0"]) .bsp{display:none}
+  /* Erster Schirm auf kurzen Handys: alle drei Wege ueber dem Falz (iPhone SE, Safari ~568 px). */
+  @media (max-height:700px) and (max-width:520px){
+    .app[data-schritt="0"] .disclaimer,.app[data-schritt="0"] .weg small,.app[data-schritt="0"] .grab{display:none}
+    .app[data-schritt="0"] .weg{min-height:46px;padding:9px 14px}
+    .app[data-schritt="0"] h1{margin:.35rem 0 .7rem}
+  }
+  @media (max-height:780px) and (max-width:520px){ .weg{min-height:52px;padding:9px 14px} .weg small{font-size:.8rem} }
   @media (prefers-reduced-motion:reduce){.q.on>*{opacity:1;transform:none;filter:none}}
 `;
 
@@ -151,16 +176,16 @@ function pageMarkup(turnstileSiteKey) {
   <div class="top">
     <a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/s2s-t.webp" srcset="${ASSET_BASE}/s2s-t.webp 248w, ${ASSET_BASE}/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
     <span class="prog"><i id="bar"></i></span>
-    <span class="cnt" id="cnt">1/9</span>
+    <span class="cnt" id="cnt"></span>
   </div>
 
   <div class="stage">
-    <div class="device" id="device">
+    <div class="device" id="device"><span class="bsp">Beispiel</span>
       <div class="shell"><div class="pv">
         <div class="pv-bar"><span class="h" id="pv-handle">dein.profil</span><span class="dots">···</span></div>
         <div class="pv-prof">
           <div class="pv-av" id="pv-av">·</div>
-          <div class="pv-stats"><div class="pv-stat"><b>9</b><span>Beiträge</span></div><div class="pv-stat"><b>1.2k</b><span>Follower</span></div><div class="pv-stat"><b>318</b><span>Folgt</span></div></div>
+          <div class="pv-stats"><div class="pv-stat"><b id="pv-n">0</b><span>Beiträge</span></div><div class="pv-stat"><b>–</b><span>Follower</span></div><div class="pv-stat"><b>–</b><span>Folgt</span></div></div>
         </div>
         <div class="pv-meta"><div class="n" id="pv-name">&nbsp;</div><div class="b" id="pv-bio">&nbsp;</div></div>
         <div class="pv-grid" id="pv-grid">
@@ -170,16 +195,20 @@ function pageMarkup(turnstileSiteKey) {
       </div></div>
       <div class="refl"></div>
     </div>
-    <p class="disclaimer">&lowast; Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit dir.</p>
+    <p class="disclaimer" id="disclaimer">&lowast; Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit dir.</p>
   </div>
 
   <div class="sheet"><div class="sheet-in">
     <div class="grab"></div>
     <div id="card">
       <div class="q on" data-step="0">
-        <span class="eyebrow">Deine Vorschau</span>
-        <h1>Schau zu, wie dein Feed <em>entsteht</em>.</h1>
-        <div class="foot"><button class="next" data-go="1"><span class="lab">Los geht’s</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><p class="hint">In 60 Sekunden: dein Instagram-Auftritt, maßgeschneidert</p></div>
+        <span class="eyebrow">social2scale</span>
+        <h1>Was brauchst du <em>gerade</em>?</h1>
+        <div class="wege" role="group" aria-label="Was du gerade brauchst">
+          <button class="weg" data-weg="a"><b>Sehen, wie mein Auftritt aussehen kann</b><small>Gratis-Vorschau in 60 Sekunden</small></button>
+          <button class="weg" data-weg="b"><b>Jemanden, der es für mich macht</b><small>Betreuung · Erstgespräch mit Phil</small></button>
+          <button class="weg" data-weg="c"><b>Weiß ich noch nicht</b><small>Eine Frage mehr, dann eine Empfehlung</small></button>
+        </div>
       </div>
 
       <div class="q" data-step="1">
@@ -243,7 +272,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-stand="Aktiv, will mehr" aria-pressed="false"><span>Aktiv — will aufs nächste Level</span></button>
         </div>
         <div class="react" id="r-stand"></div>
-        <div class="foot"><button class="next" data-req="stand" data-go="7"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stand" data-go="weg"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
       </div>
 
       <div class="q" data-step="7">
@@ -297,7 +326,7 @@ function pageMarkup(turnstileSiteKey) {
         <div class="foot">
           <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
           <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
-          <div class="turnstile-wrap"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
+          <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-a" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
           <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
           <button class="back" data-go="9">Zurück</button>
         </div>
@@ -308,6 +337,73 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
         <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
+        <p class="quer">Lieber direkt mit jemandem reden? <button type="button" class="quer-b" data-quer="b">Erstgespräch anfragen</button></p>
+      </div>
+
+      <div class="q" data-step="12">
+        <span class="eyebrow">Betreuung</span>
+        <h2>Welcher <em>Rahmen</em> passt im Monat?</h2>
+        <div class="chips" id="budget" role="group" aria-label="Rahmen im Monat">
+          <button class="chip" data-budget="unter 1.000 €" aria-pressed="false"><span>unter 1.000 €</span></button>
+          <button class="chip" data-budget="1.000–3.000 €" aria-pressed="false"><span>1.000–3.000 €</span></button>
+          <button class="chip" data-budget="3.000 €+" aria-pressed="false"><span>3.000 €+</span></button>
+          <button class="chip" data-budget="Noch unklar" aria-pressed="false"><span>Noch unklar</span></button>
+        </div>
+        <div class="react" id="r-budget"></div>
+        <div class="foot"><button class="next" data-req="budget" data-go="13"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="13">
+        <span class="eyebrow">Betreuung</span>
+        <h2>Wann willst du <em>starten</em>?</h2>
+        <div class="chips" id="start" role="group" aria-label="Start">
+          <button class="chip" data-start="Sofort" aria-pressed="false"><span>Sofort</span></button>
+          <button class="chip" data-start="In 1–3 Monaten" aria-pressed="false"><span>In 1–3 Monaten</span></button>
+          <button class="chip" data-start="Erst informieren" aria-pressed="false"><span>Erst mal informieren</span></button>
+        </div>
+        <div class="react" id="r-start"></div>
+        <div class="foot"><button class="next" data-req="start" data-go="14"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="12">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="14">
+        <span class="eyebrow">Letzter Schritt</span>
+        <h2>Wie erreicht Phil <em>dich</em>?</h2>
+        <div class="field"><div class="field-in"><input type="email" id="b-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
+        <div class="field" style="margin-top:9px"><div class="field-in"><input type="tel" id="b-tel" placeholder="Telefon für den Rückruf" autocomplete="tel" inputmode="tel" maxlength="40"></div></div>
+        <div class="react" id="r-b"></div>
+        <div class="foot">
+          <label class="consent"><input type="checkbox" id="b-consent"><span>Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.</span></label>
+          <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-b" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
+          <button class="next" id="btnAnfrage"><span class="lab">Erstgespräch anfragen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button>
+          <button class="back" data-go="13">Zurück</button>
+        </div>
+      </div>
+
+      <div class="q" data-step="15">
+        <span class="eyebrow">Anfrage ist da</span>
+        <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
+        <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch.</p>
+        <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
+      </div>
+
+      <div class="q" data-step="16">
+        <span class="eyebrow">Orientierung</span>
+        <h2>Wie viel Zeit hast du pro Woche für <em>Social Media</em>?</h2>
+        <div class="chips" id="zeit" role="group" aria-label="Zeit pro Woche">
+          <button class="chip" data-zeit="kaum" aria-pressed="false"><span>Kaum</span></button>
+          <button class="chip" data-zeit="1-3" aria-pressed="false"><span>1–3 Stunden</span></button>
+          <button class="chip" data-zeit="mehr" aria-pressed="false"><span>Mehr als 3 Stunden</span></button>
+        </div>
+        <div class="react" id="r-zeit"></div>
+        <div class="foot"><button class="next" data-req="zeit" data-go="17"><span class="lab">Empfehlung zeigen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
+      </div>
+
+      <div class="q" data-step="17">
+        <span class="eyebrow">Unsere Empfehlung</span>
+        <h2 id="empf-h"></h2>
+        <p class="hint" id="empf-p" style="text-align:left;font-size:.95rem;color:var(--muted)"></p>
+        <div class="foot"><button class="next" id="empf-go"><span class="lab" id="empf-lab"></span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="16">Zurück</button></div>
+        <p class="quer">Oder der andere Weg: <button type="button" class="quer-b" id="empf-quer"></button></p>
       </div>
     </div>
     <p class="legal"><a href="https://social2scale.com/">Startseite</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
@@ -320,7 +416,12 @@ function pageMarkup(turnstileSiteKey) {
 // wurde von reiner Navigation auf einen echten POST /api/free-content umgestellt.
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
-  const TOTAL=10; let step=0;
+  let step=0;
+  // Ein Funnel, drei Wege (15.10.2026): A Vorschau (7–11), B Betreuung (12–15), C unsicher (16–17).
+  // Frage 1–6 sind fuer alle gleich; Schritt 6 verzweigt nach WEG.
+  let WEG='';
+  const GESAMT={a:10,b:9,c:7};
+  const POS={12:7,13:8,14:9,16:7};
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOODS={
@@ -333,20 +434,30 @@ const PAGE_SCRIPT = `
   // virtueller Pfad (keine Eingaben, kein Cookie) — wie das Anfrage-Formular. Bis 12.10.2026
   // zaehlte die Vorschau gar nichts. Pfade muessen zu VORSCHAU_TRICHTER im Portal passen.
   const GEZAEHLT=new Set();
+  function pfad(n){
+    if(typeof n==='string')return '/vorschau/weg/'+n+'/';
+    if(n===0)return '/vorschau/';if(n<=10)return '/vorschau/frage/'+n+'/';if(n===11)return '/vorschau/gesendet/';
+    if(n<=14)return '/vorschau/b/frage/'+(n-11)+'/';if(n===15)return '/vorschau/b/gesendet/';
+    if(n===16)return '/vorschau/c/frage/1/';if(n===17)return '/vorschau/c/empfehlung/';return '';
+  }
   function zaehlen(n){
     if(GEZAEHLT.has(n))return;GEZAEHLT.add(n);
     try{
       if(navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
-      const p=n===0?'/vorschau/':n===11?'/vorschau/gesendet/':'/vorschau/frage/'+n+'/';
+      const p=pfad(n);if(!p)return;
       const d=JSON.stringify({p:p,r:document.referrer||'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'});
       navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([d],{type:'text/plain;charset=UTF-8'}));
     }catch(e){}
   }
   function show(n){
     qs.forEach(q=>q.classList.toggle('on',+q.dataset.step===n)); step=n; zaehlen(n);
-    const s=Math.min(Math.max(n,1),TOTAL);
-    $('#bar').style.transform=\`scaleX(\${s/TOTAL})\`;
-    $('#cnt').textContent=\`\${s}/\${TOTAL}\`; $('#cnt').style.visibility=n===0?'hidden':'visible';
+    beispiel(n===0);document.querySelector('.app').dataset.schritt=n;
+    // Balken und Zaehler folgen dem gewaehlten Weg; vor der Wahl steht der Balken bei 0.
+    const total=GESAMT[WEG]||10,pos=n<=10?n:(POS[n]||total);
+    const fertig=n===11||n===15||n===17;
+    $('#bar').style.transform=\`scaleX(\${n===0?0:fertig?1:pos/total})\`;
+    $('#cnt').textContent=\`\${Math.min(pos,total)}/\${total}\`; $('#cnt').style.visibility=(n===0||fertig)?'hidden':'visible';
+    if(n===17)empfehlung();
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
     if(n===11){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
@@ -354,6 +465,37 @@ const PAGE_SCRIPT = `
   function clr(id){$(id).className='react';}
   const pvH=$('#pv-handle'),pvAv=$('#pv-av'),pvN=$('#pv-name'),pvB=$('#pv-bio');
   function bump(el){if(reduce)return;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');}
+  // Beitraege-Zahl im Profilkopf = gefuellte Kacheln (vorher standen dort erfundene Zahlen).
+  function zaehleKacheln(){$('#pv-n').textContent=document.querySelectorAll('#pv-grid .pv-tile:not(.empty)').length;}
+  // Erster Schirm: ein BEISPIEL-Feed baut sich Kachel fuer Kachel auf (Vokabel „Kachel fuellt sich“),
+  // klar beschriftet. Ab Frage 1 gehoert das Telefon ihr: leer, und jede Antwort fuellt es.
+  const BEISPIEL=[['3 Atemzüge vor dem Meeting','f1'],['Was ist Yin Yoga?','f2'],['Kursplan Herbst','f3'],['Warum Ruhe Arbeit ist','f2'],['Dein erster Kurs','f3'],['Frag mich alles','f1']];
+  const DISCLAIMER=$('#disclaimer').innerHTML;let beispielAn=null,beispielUhr=[];
+  function kachel(t,i,txt,cls){t.classList.remove('empty','f1','f2','f3');if(cls)t.classList.add(cls);else t.classList.add('empty');t.textContent=txt||'';}
+  function beispiel(an){
+    if(beispielAn===an)return;beispielAn=an;
+    beispielUhr.forEach(clearTimeout);beispielUhr=[];
+    const tl=[...document.querySelectorAll('#pv-grid .pv-tile')];
+    if(an){
+      pvH.textContent='beispiel.yoga';pvN.textContent='Beispiel · Yogastudio';pvB.textContent='Ruhe für volle Wochen';pvAv.textContent='B';
+      $('#disclaimer').innerHTML='<b>Beispiel</b> · so sieht ein Ergebnis aus. Deins entsteht aus deinen Antworten.';
+      BEISPIEL.forEach(([txt,cls],i)=>{const los=()=>{kachel(tl[i],i,txt,cls);bump(tl[i]);zaehleKacheln();};if(reduce)los();else beispielUhr.push(setTimeout(los,400+i*260));});
+    }else{
+      const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'');
+      pvH.textContent=h||'dein.profil';pvN.textContent=name||' ';pvB.textContent=$('#f-thema').value.trim().slice(0,40)||' ';
+      if(!pvAv.style.backgroundImage)pvAv.textContent=name?name[0].toUpperCase():'·';
+      $('#disclaimer').innerHTML=DISCLAIMER;
+      tl.forEach((t,i)=>kachel(t,i,'',''));eigeneKacheln(false);
+    }
+  }
+  // Jede Antwort im gemeinsamen Teil fuellt eine Kachel — der Fortschritt steht im eigenen Feed.
+  function eigeneKacheln(animiert){
+    const tl=[...document.querySelectorAll('#pv-grid .pv-tile')];
+    const wahl=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
+    [[wahl('taetigkeit'),'f1'],[wahl('ziel'),'f2'],[wahl('stand'),'f3']].forEach(([txt,cls],i)=>{
+      if(!txt)return;const t=tl[i],neu=t.textContent!==txt;kachel(t,i,txt,cls);if(animiert&&neu)bump(t);});
+    zaehleKacheln();
+  }
 
   $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, \${v}! Deine Vorschau wird persönlich.\`);}else clr('#r-name');});
   $('#f-handle').addEventListener('input',e=>{let v=e.target.value.trim().replace(/^@+/,'').replace(/\\s+/g,'');pvH.textContent=v||'dein.profil';if(v)bump(pvH);if(v.length>=3)react('#r-handle',\`@\${v} — sieht gut aus, das nehmen wir.\`);else clr('#r-handle');});
@@ -364,6 +506,32 @@ const PAGE_SCRIPT = `
     react('#r-'+gruppe,antwort);}));}
   waehlen('taetigkeit','Danke — so wissen wir, für wen dein Feed spricht.');
   waehlen('ziel','Klares Ziel — darauf zahlt jeder Post ein.');
+  waehlen('budget','Danke, so bereitet Phil das Gespräch vor.');
+  waehlen('start','Alles klar.');
+  waehlen('zeit','Danke.');
+  ['taetigkeit','ziel'].forEach(g=>document.querySelectorAll('#'+g+' .chip').forEach(c=>c.addEventListener('click',()=>eigeneKacheln(true))));
+
+  // Die erste Frage: Weg waehlen, dann in den gemeinsamen Teil.
+  function wegWaehlen(w){WEG=w;zaehlen(w);}
+  document.querySelectorAll('.weg').forEach(b=>b.addEventListener('click',()=>{wegWaehlen(b.dataset.weg);show(1);}));
+  // Querwege am Ende: A → B (Erstgespraech) und B → A (Vorschau). Gemeinsames bleibt stehen.
+  document.querySelectorAll('[data-quer]').forEach(b=>b.addEventListener('click',()=>{
+    const w=b.dataset.quer;wegWaehlen(w);
+    if(w==='b'&&!$('#b-mail').value)$('#b-mail').value=$('#f-mail').value;
+    if(w==='a'&&!$('#f-mail').value)$('#f-mail').value=$('#b-mail').value;
+    show(w==='a'?7:12);}));
+  // Weg C: aus Stand und Zeit eine Empfehlung. Wenig Zeit oder „will mehr“ → Betreuung.
+  function empfehlung(){
+    const zeit=(document.querySelector('#zeit .chip[aria-pressed=true]')||{dataset:{}}).dataset.zeit||'';
+    const stand=(document.querySelector('#stand .chip[aria-pressed=true]')||{dataset:{}}).dataset.stand||'';
+    const b=zeit==='kaum'||stand==='Aktiv, will mehr';
+    $('#empf-h').innerHTML=b?'Sprich mit <em>Phil</em>.':'Starte mit der <em>Vorschau</em>.';
+    $('#empf-p').textContent=b?'Du hast wenig Zeit oder willst aufs nächste Level. Dann lohnt sich jemand, der es für dich macht.':'Du baust gerade auf und hast Zeit dafür. Sieh dir in 60 Sekunden an, wie dein Auftritt aussehen kann.';
+    $('#empf-lab').textContent=b?'Erstgespräch anfragen':'Vorschau bauen';
+    $('#empf-quer').textContent=b?'erst die Gratis-Vorschau':'Erstgespräch anfragen';
+    $('#empf-go').onclick=()=>{wegWaehlen(b?'b':'a');show(b?12:7);};
+    $('#empf-quer').onclick=()=>{wegWaehlen(b?'a':'b');show(b?7:12);};
+  }
   // Nach einer Antwort lag „Weiter" am iPhone SE in fuenf von zehn Schritten und am 12 mini in
   // zwei unter dem Falz (besucher-sim.mjs, 10.10.2026). Ein klebender Knopf haette die uebrigen
   // Antworten verdeckt — also bleibt alles sichtbar, und nach dem Antippen kommt „Weiter" ins Bild.
@@ -380,11 +548,11 @@ const PAGE_SCRIPT = `
     R.setProperty('--mood',m.a);R.setProperty('--mood-t',m.t);R.setProperty('--mood-ti',m.ti);
     const tl=document.querySelectorAll('#pv-grid .pv-tile'),cls=['f1','f2','f3','f2','f3','f1'],lab=['Dein Thema','Warum jetzt?','3 Schritte','Zitat','Einblick','Über dich'];
     tl.forEach((t,i)=>{t.classList.remove('empty','f1','f2','f3');t.classList.add(cls[i]);bump(t);if(!t.textContent.trim())t.textContent=lab[i];});
-    bump(pvAv);react('#r-mood',\`\${m.word} — deine Farbwelt steht.\`);
+    bump(pvAv);zaehleKacheln();react('#r-mood',\`\${m.word} — deine Farbwelt steht.\`);
   }));
   document.querySelectorAll('#stand .chip').forEach(c=>c.addEventListener('click',()=>{
     document.querySelectorAll('#stand .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
-    react('#r-stand',\`Alles klar — da holen wir dich genau ab.\`);
+    react('#r-stand',\`Alles klar — da holen wir dich genau ab.\`);eigeneKacheln(true);
   }));
 
   // ── Foto-Upload (optional): clientseitig auf 512px verkleinert, als JPEG-
@@ -454,22 +622,24 @@ const PAGE_SCRIPT = `
   function validMail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(v.trim());}
   $('#f-mail').addEventListener('input',e=>{const v=e.target.value.trim(),s=suggest(v);if(s){react('#r-mail',\`Meintest du <b id="tf">\${s}</b>?\`,'warn');$('#tf').onclick=()=>{$('#f-mail').value=s;clr('#r-mail');$('#f-mail').focus();};}else if(validMail(v))react('#r-mail',\`Passt — dahin schicken wir deine Vorschau.\`);else clr('#r-mail');});
 
-  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');if(req==='taetigkeit'||req==='ziel')return !!document.querySelector('#'+req+' .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const to=+b.dataset.go,req=b.dataset.req;
+  function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');if(['taetigkeit','ziel','budget','start','zeit'].includes(req))return !!document.querySelector('#'+req+' .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const req=b.dataset.req;
+    const to=b.dataset.go==='weg'?({a:7,b:12,c:16}[WEG]||7):+b.dataset.go;
     if(b.classList.contains('next')&&!reqOk(req)){if(req==='f-mail')react('#r-mail','Bitte gib eine gültige E-Mail-Adresse ein.','warn');else{const el=document.getElementById(req)||qs[step].querySelector('input,textarea');const feld=el&&el.closest&&el.closest('.field');if(feld){feld.style.background='linear-gradient(180deg,rgba(240,168,139,.7),rgba(240,168,139,.2))';el.focus();}else{react(req==='stimmung'?'#r-mood':'#r-'+req,'Bitte tipp eine Antwort an.','warn');}}return;}
     show(to);});
   $('#resend').addEventListener('click',()=>{const b=$('#resend');const t=b.textContent;b.textContent='Nochmal geschickt — schau ins Postfach';b.disabled=true;setTimeout(()=>{b.textContent=t;b.disabled=false;},3500);});
 
   // ── Echter Versand (Schritt 5 -> Backend) ──
-  function turnstileToken(){
+  // Zwei Widgets (Weg A und B): immer das eigene ansprechen, sonst liest B das Token von A.
+  function turnstileToken(id){
     if(window.turnstile&&typeof turnstile.getResponse==='function'){
-      try{return turnstile.getResponse()||'';}catch(err){console.error('Turnstile-Token nicht lesbar:',err);return '';}
+      try{return turnstile.getResponse(document.getElementById(id||'ts-a'))||'';}catch(err){console.error('Turnstile-Token nicht lesbar:',err);return '';}
     }
     return '';
   }
-  function turnstileReset(){
+  function turnstileReset(id){
     if(window.turnstile&&typeof turnstile.reset==='function'){
-      try{turnstile.reset();}catch(err){console.error('Turnstile-Reset fehlgeschlagen:',err);}
+      try{turnstile.reset(document.getElementById(id||'ts-a'));}catch(err){console.error('Turnstile-Reset fehlgeschlagen:',err);}
     }
   }
   const SUBMIT_FEHLER={
@@ -525,13 +695,46 @@ const PAGE_SCRIPT = `
   }
   $('#btnSubmit').addEventListener('click',e=>{e.preventDefault();submitForm(e.currentTarget);});
 
+  // ── Weg B: Erstgespraech-Anfrage. Der Worker prueft Turnstile und reicht ans Portal
+  // weiter (anfrage-weiter.js). „Danke“ erst, wenn das Portal angenommen hat. ──
+  const B_FEHLER={email:'Bitte prüf deine E-Mail-Adresse.',email_domain:'Diese E-Mail-Adresse gibt es nicht — bitte prüfen.',
+    phone:'Bitte gib eine Telefonnummer für den Rückruf an.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',
+    rate_limited:'Kurz warten und nochmal versuchen.'};
+  function wahlText(g){const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';}
+  async function anfrageSenden(btn){
+    const mail=$('#b-mail').value.trim(),tel=$('#b-tel').value.trim();
+    if(!validMail(mail)){react('#r-b','Bitte gib eine gültige E-Mail-Adresse ein.','warn');return;}
+    if(tel.replace(/[^0-9]/g,'').length<6){react('#r-b',B_FEHLER.phone,'warn');return;}
+    if(!$('#b-consent').checked){react('#r-b','Bitte bestätige die Datenschutzerklärung.','warn');return;}
+    const tok=turnstileToken('ts-b');
+    if(window.turnstile&&!tok){react('#r-b','Die Sicherheitsprüfung läuft noch. Bitte in ein paar Sekunden erneut.','warn');return;}
+    const label=btn.querySelector('.lab'),war=label.textContent;btn.disabled=true;label.textContent='Wird gesendet…';
+    const thema=$('#f-thema').value.trim(),handle=$('#f-handle').value.trim().replace(/^@+/,'');
+    const payload={name:$('#f-name').value.trim(),email:mail,phone:tel,
+      business:[wahlText('taetigkeit'),thema,handle?'@'+handle:''].filter(Boolean).join(' · '),
+      status:wahlText('stand'),goal:wahlText('ziel'),budget:wahlText('budget'),start:wahlText('start'),
+      turnstile:tok,elapsed:Date.now()-START};
+    try{
+      const res=await fetch('/api/anfrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      let data=null;try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
+      if(res.ok&&data&&data.ok){$('#echo-b').textContent=payload.name||'dir';show(15);return;}
+      react('#r-b',B_FEHLER[data&&data.error]||'Gerade nicht angekommen — bitte kurz warten und nochmal senden.','warn');
+      turnstileReset('ts-b');
+    }catch(err){
+      console.error('Anfrage fehlgeschlagen:',err);
+      react('#r-b','Keine Verbindung — kurz warten und nochmal senden.','warn');turnstileReset('ts-b');
+    }finally{btn.disabled=false;label.textContent=war;}
+  }
+  $('#btnAnfrage').addEventListener('click',e=>{e.preventDefault();anfrageSenden(e.currentTarget);});
+
   // Die Handy-Vorschau kippt zum Zeiger — gerechnet wird nur, wenn er sich bewegt,
   // und nur mit Maus. Kein Staub, kein Dauer-Schweben (motion-loop 06.10.2026:
   // Licht statt Bewegung; eine Schleife ohne Ende ist WCAG 2.2.2).
   const dev=$('#device');let px=0,py=0,geplant=false;
   function kippen(){geplant=false;dev.style.transform=\`rotateX(\${-py*4}deg) rotateY(\${px*6}deg)\`;}
   if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;if(!geplant){geplant=true;requestAnimationFrame(kippen);}});
-  show(0);
+  const vorgewaehlt=new URLSearchParams(location.search).get('weg');
+  if(['a','b','c'].includes(vorgewaehlt)){zaehlen(0);wegWaehlen(vorgewaehlt);show(1);}else show(0);
 `;
 
 /**
