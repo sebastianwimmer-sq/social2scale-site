@@ -58,6 +58,14 @@ test('abgeschaltet, Testkonto, ohne Mail, nicht freigeschaltet → keine Mail; a
   assert.deepEqual(offen, ['wa-4'], 'nur die gesperrte Kundin bleibt offen (wird nach dem Freischalten benachrichtigt)');
 });
 
+test('Testkonto mit eigener Adresse bekommt die Mail, mit fremder nicht', async () => {
+  const w = welt();
+  w.s.exec(`INSERT INTO clients VALUES (37, 'Sebastian', 'info@vegetarianhulk.de', 'sebastian', '[TEST · Sebi selbst]', 1, 1), (2, 'Test', 't@example.org', 'pruefkonto', '[TEST] Prüfkonto', 1, 1);
+            INSERT INTO reel_auftrag VALUES (37, 'wa-1', 'x', 'fehler', 'f', NULL), (2, 'wa-2', 'y', 'fertig', NULL, NULL);`);
+  await reelBescheid(w.env, w.versand);
+  assert.deepEqual(w.post.map((p) => p.to), ['info@vegetarianhulk.de']);
+});
+
 test('Versand scheitert → bleibt offen, nächster Lauf versucht es wieder', async () => {
   const w = welt();
   w.s.exec(`INSERT INTO clients VALUES (1, 'Nicole', 'n@example.org', 'nicole', '', 1, 1); INSERT INTO reel_auftrag VALUES (1, 'wa-1', 'x', 'fertig', NULL, NULL);`);

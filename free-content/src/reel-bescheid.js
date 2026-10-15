@@ -5,7 +5,8 @@
  * Die Reel-Wache läuft auf Sebis Mac und hat keinen Mail-Schlüssel (soll sie auch nicht). Dieser 5-Minuten-Cron sieht in D1,
  * welche Reels seit dem letzten Lauf fertig oder rot geworden sind, schickt EINE Mail je Kundin und merkt es sich
  * (bescheid_am, v56) — nie doppelt. Absender Phil (CRM: MAIL_DEFAULTS.absender). Abschaltbar je Kundin (clients.reel_bescheid).
- * Testkonten ([TEST] in den Notizen) und Kundinnen ohne gültige Mail werden abgehakt, ohne Mail — sonst stünden sie jeden Lauf an.
+ * Testkonten ([TEST] in den Notizen) mit fremder Adresse und Kundinnen ohne gültige Mail werden abgehakt, ohne Mail — sonst stünden
+ * sie jeden Lauf an. Ein Testkonto mit eigener Adresse (EIGENE_DOMAINS) bekommt sie, damit wir sehen, was die Kundin sieht.
  * Scheitert der Versand, bleibt es offen und der nächste Lauf versucht es wieder.
  * WIRFT NIE (ein Fehler hier darf den Funnel-Cron nicht stoppen).
  */
@@ -14,6 +15,9 @@ import { send } from './mail.js';
 export const ABSENDER = 'Phil · social2scale';
 const HUB = 'https://mein.social2scale.com';
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Testkonten bekommen die Mail nur an eigene Adressen (Sebi 15.10.: „mail an mein konto bitte auch schicken“) — nie Testpost nach außen
+const EIGENE_DOMAINS = ['vegetarianhulk.de', 'social2scale.com'];
+const eigeneAdresse = (mail) => EIGENE_DOMAINS.includes(mail.split('@').pop().toLowerCase());
 
 const esc = (v) => String(v ?? '').replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
 const vorname = (n) => String(n ?? '').trim().split(/\s+/)[0] || '';
@@ -64,7 +68,7 @@ export async function reelBescheid(env, versand = send) {
       const test = /^\s*\[TEST\b/i.test(String(k.notes ?? ''));
       const email = String(k.email ?? '').trim();
       let ok = true;
-      if (!test && MAIL.test(email)) {
+      if (MAIL.test(email) && (!test || eigeneAdresse(email))) {
         ok = await versand(env, email, k.name, mailBauen(k, reels), ABSENDER);
         if (ok) gesendet += 1;
       }
