@@ -46,7 +46,7 @@ const SYSTEM =
   'INHALT der Felder (die STRUKTUR gibt das Tool-Schema vor — du fuellst sie hochwertig):\n' +
   '- eyebrow: 2-3 Woerter Kicker. head + headAccent: Headline in ZWEI Teilen, headAccent = farbige Pointe. sub: ein Satz, max 90 Zeichen.\n' +
   '- bio: ihre Instagram-Bio-Zeile, max 40 Zeichen. cells: 9 kurze Feed-Raster-Titel (je max 18 Zeichen).\n' +
-  '- nameLine: der optimierte IG-Anzeigename \u2014 \u201eVorname | Positionierung\u201c (z. B. \u201eAnna | Yoga f\u00fcr Vielarbeiterinnen\u201c), max 34 Zeichen. Der Name ist auf Instagram durchsuchbar: die Positionierung MUSS ein Suchbegriff ihres Themas sein.\n' +
+  '- nameLine: der optimierte IG-Anzeigename \u2014 \u201eVorname | Positionierung\u201c (z. B. \u201eAnna | Yoga f\u00fcr Vielarbeiterinnen\u201c), max 30 Zeichen. Der Name ist auf Instagram durchsuchbar: die Positionierung MUSS ein Suchbegriff ihres Themas sein.\n' +
   '- bioLines: die komplette Bio-Transformation, GENAU 3 kurze Zeilen (je max 36 Zeichen): Zeile 1 = wem sie wie hilft (Positionierung), Zeile 2 = was sie besonders macht (Substanz, kein Erfolgsversprechen), Zeile 3 = sanfte Handlungszeile mit \u2193 oder \u2192.\n' +
   '- highlights: GENAU 4 Story-Highlight-Namen fuer ihr Profil (je max 11 Zeichen, Instagram kuerzt hart): konkret zu ihrem Thema statt generisch (z. B. Yoga: Meine Story / Kurse / Erfolge / FAQ).\n' +
   '- posts (GENAU 3 Karussells): je 3 Slides in der Reihenfolge hook → value → cta.\n' +
