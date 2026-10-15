@@ -77,5 +77,7 @@ test('Versand scheitert → bleibt offen, nächster Lauf versucht es wieder', as
 
 test('Text in der Mail wird entschärft (kein HTML aus Thema oder Erklärung)', () => {
   const m = mailBauen({ name: '<b>X</b>', slug: 's' }, [{ titel: '<script>', status: 'fehler', fehler: '<img src=x>' }]);
-  assert.doesNotMatch(m.htmlContent, /<script>|<img/);
+  assert.doesNotMatch(m.htmlContent, /<script>|<img src=x>|<b>X<\/b>/);
+  assert.match(m.htmlContent, /&lt;script&gt;/);
+  assert.match(m.htmlContent, /&lt;img src=x&gt;/);
 });
