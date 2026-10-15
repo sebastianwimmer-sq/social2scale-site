@@ -1,33 +1,36 @@
 /**
  * Weg B des einen Funnels (15.10.2026): „Jemanden, der es für mich macht“.
  *
- * Die Erstgespräch-Anfrage hat genau EINEN Besitzer: `POST /api/anfrage` im
- * Portal (closing.social2scale.com) schreibt CRM, Brevo und die Mail an Sebi und
- * Phil. Der Funnel baut das nicht nach, er reicht weiter (der ärmere Weg delegiert
- * an den reicheren). Weil die Turnstile-Prüfung des Funnels an SEINEN Schlüssel
- * gebunden ist, prüft dieser Worker sie selbst und weist sich beim Portal mit
- * FUNNEL_KEY aus; das Portal überspringt dann nur Turnstile, alles andere
- * (Pflichtfelder, Mail-Domain, Rate-Limit pro IP) prüft es weiter selbst.
+ * Erst sollte der Funnel an `POST /api/anfrage` im Portal weiterreichen. Live
+ * antwortete das Portal dem Worker aber mit 522, über closing.social2scale.com
+ * UND über s2s-closing.pages.dev: ein Worker erreicht das Pages-Projekt desselben
+ * Kontos nicht über eine öffentliche Adresse, eine Service-Bindung zu Pages gibt
+ * es nicht. Deshalb legt der Funnel die Anfrage selbst an, im SELBEN Format wie
+ * das Portal (`submissions` type 'anfrage', Markdown-Payload, Herkunft „Link:
+ * vorschau-b“, gleiche Zählung in `formular_versuche`) und schickt dieselbe
+ * Founder-Mail. Ändert sich das Format im Portal (_worker.js anfrageVerarbeiten),
+ * muss es hier mitgehen — der Test hält die Felder fest.
  */
 
-import { verifyTurnstile, isHoneypotTripped, registerAttempt } from './protect.js';
+import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } from './protect.js';
+import { send } from './mail.js';
 
 export const ANFRAGE_MAX_BYTES = 16 * 1024;
-const PORTAL_ANFRAGE = 'https://closing.social2scale.com/api/anfrage';
+const VON = 'vorschau-b';
 
-// Feld → Höchstlänge. Was nicht hier steht, geht nicht ans Portal.
+// Feld → Höchstlänge, wie im Portal geclippt. Was nicht hier steht, wird nicht gespeichert.
 const FELDER = { name: 120, email: 160, phone: 60, business: 200, status: 80, goal: 600, budget: 80 };
 
 const clip = (v, n) => (typeof v === 'string' ? v.trim().slice(0, n) : '');
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-/** Baut aus der Funnel-Eingabe genau das, was /api/anfrage versteht. */
+/** Funnel-Eingabe → die Felder einer Erstgespräch-Anfrage. */
 export function anfrageAusFunnel(body) {
   const d = {};
   for (const [k, n] of Object.entries(FELDER)) d[k] = clip(body?.[k], n);
-  // Start-Zeitpunkt hat im Portal kein eigenes Feld — er gehört zum Ziel.
+  // Start-Zeitpunkt hat im CRM kein eigenes Feld — er gehört zum Ziel.
   const start = clip(body?.start, 60);
   if (start) d.goal = (d.goal ? d.goal + ' · ' : '') + 'Start: ' + start;
-  d.von = 'vorschau-b';
   return d;
 }
 
@@ -38,42 +41,84 @@ export function pflichtFehler(d) {
   return '';
 }
 
+/** Markdown wie im Portal — die CRM-Oberfläche zeigt `payload` so an. */
+export function anfrageMarkdown(d) {
+  return '# Erstgespräch-Anfrage\n\n' +
+    '- **Name:** ' + d.name + '\n' +
+    '- **E-Mail:** ' + d.email + '\n' +
+    '- **Telefon:** ' + d.phone + '\n' +
+    (d.business ? '- **Business / Rolle:** ' + d.business + '\n' : '') +
+    (d.status ? '- **Status:** ' + d.status + '\n' : '') +
+    (d.budget ? '- **Budget:** ' + d.budget + '\n' : '') +
+    (d.goal ? '\n**Ziel / Bottleneck:**\n' + d.goal + '\n' : '') +
+    '\n- **Gefunden über:** Link: ' + VON + '\n';
+}
+
+export function founderMail(d) {
+  const zeilen = [['Name', d.name], ['E-Mail', d.email], ['Telefon', d.phone], ['Business / Rolle', d.business],
+    ['Status', d.status], ['Budget', d.budget], ['Ziel / Bottleneck', d.goal], ['Gefunden über', 'Gratis-Vorschau, Weg B (Betreuung)']];
+  return {
+    subject: 'Neue Erstgespräch-Anfrage: ' + d.name,
+    htmlContent: '<h2>Neue Erstgespräch-Anfrage</h2><ul>' +
+      zeilen.filter(([, v]) => v).map(([k, v]) => '<li><b>' + k + ':</b> ' + esc(v) + '</li>').join('') + '</ul>',
+  };
+}
+
+async function kundinZuEmail(db, email) {
+  try {
+    const r = await db.prepare('SELECT id FROM clients WHERE lower(trim(email)) = ?').bind(email.toLowerCase()).all();
+    const ids = (r.results || []).map((x) => x.id);
+    return ids.length === 1 ? ids[0] : null;
+  } catch (err) {
+    console.error('[anfrage] Kundinnen-Abgleich fehlgeschlagen:', err);
+    return null;
+  }
+}
+
+async function zaehle(db, ergebnis) {
+  try {
+    await db.prepare(
+      "INSERT INTO formular_versuche (tag, formular, ergebnis, n) VALUES (date('now'), 'anfrage', ?, 1) " +
+      'ON CONFLICT(tag, formular, ergebnis) DO UPDATE SET n = n + 1'
+    ).bind(ergebnis).run();
+  } catch (err) {
+    console.error('[anfrage] Zählen fehlgeschlagen:', err);
+  }
+}
+
 function antwort(body, status, cors) {
   return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors } });
 }
 
-/**
- * @param {Request} request
- * @param {{TURNSTILE_SECRET?:string, FUNNEL_KEY?:string, DB:any, ANFRAGE_URL?:string}} env
- * @param {Record<string,string>} cors
- * @param {typeof fetch} [holen] nur für Tests austauschbar
- */
-/**
- * Selbsttest der Strecke Funnel → Portal ohne Spuren: das Portal erkennt `probe`
- * nur mit gültigem Schlüssel und antwortet, ohne CRM, Brevo oder Mail zu berühren.
- * @returns {Promise<string>} 'ok' | 'aus' | 'schluessel' | 'netz' | 'portal:<status>:<typ>'
- */
-export async function anfrageProbe(env, holen = fetch) {
-  if (!env.FUNNEL_KEY) return 'aus';
+/** Legt die Anfrage an. true, wenn sie mindestens an EINEM Ort sicher ist (CRM oder Mail). */
+export async function anfrageAnlegen(env, d, mailSenden = send) {
+  const clientId = await kundinZuEmail(env.DB, d.email);
+  let gespeichert = false;
   try {
-    const res = await holen(env.ANFRAGE_URL || PORTAL_ANFRAGE, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Funnel-Key': env.FUNNEL_KEY },
-      body: JSON.stringify({ probe: true }),
-    });
-    if (res.status === 403) return 'schluessel';
-    const j = await res.json().catch(() => ({}));
-    if (res.ok && j.probe === true) return 'ok';
-    // Grund mitgeben, sonst ist ein rotes Tor nicht diagnostizierbar (15.10.2026).
-    console.error('[anfrage] Probe: Portal antwortete', res.status, res.headers.get('content-type'));
-    return 'portal:' + res.status + ':' + String(res.headers.get('content-type') || '').split(';')[0];
+    await env.DB.prepare(
+      `INSERT INTO submissions (type, client_id, name, email, payload, data, logo_key, rating, status)
+       VALUES ('anfrage', ?, ?, ?, ?, ?, '', NULL, 'new')`
+    ).bind(clientId, d.name, d.email, anfrageMarkdown(d), JSON.stringify({ herkunft: { gefunden: '', von: VON, host: '' } })).run();
+    gespeichert = true;
   } catch (err) {
-    console.error('[anfrage] Probe: Portal nicht erreichbar:', err);
-    return 'netz';
+    console.error('[anfrage] CRM-Eingang fehlgeschlagen:', err);
   }
+  let gemailt = false;
+  try {
+    gemailt = await mailSenden(env, env.NOTIFY_TO || env.NOTIFY_FROM, 'social2scale', founderMail(d), 'social2scale Anfrage');
+  } catch (err) {
+    console.error('[anfrage] Founder-Mail fehlgeschlagen:', err);
+  }
+  return gespeichert || gemailt;
 }
 
-export async function handleAnfrage(request, env, cors, holen = fetch) {
+/**
+ * @param {Request} request
+ * @param {{TURNSTILE_SECRET?:string, DB:any, NOTIFY_TO?:string, NOTIFY_FROM?:string, BREVO_API_KEY?:string}} env
+ * @param {Record<string,string>} cors
+ * @param {{mail?:Function, mx?:Function}} [teile] nur für Tests austauschbar
+ */
+export async function handleAnfrage(request, env, cors, teile = {}) {
   if (request.method !== 'POST') return antwort({ ok: false, error: 'method' }, 405, cors);
   if (Number(request.headers.get('content-length') || 0) > ANFRAGE_MAX_BYTES) {
     return antwort({ ok: false, error: 'gross' }, 413, cors);
@@ -87,46 +132,50 @@ export async function handleAnfrage(request, env, cors, holen = fetch) {
   }
   if (isHoneypotTripped(body)) {
     console.error('[anfrage] Abgewiesen: Honeypot ausgeloest');
+    await zaehle(env.DB, 'spam_falle');
     return antwort({ ok: true }, 200, cors);
-  }
-  if (!env.FUNNEL_KEY) {
-    // Ohne Schlüssel nimmt das Portal nichts an — lieber laut scheitern als still verlieren.
-    console.error('[anfrage] FUNNEL_KEY fehlt — Weg B kann nicht weiterreichen');
-    return antwort({ ok: false, error: 'aus' }, 503, cors);
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || 'anon';
   if (!env.TURNSTILE_SECRET || !(await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET))) {
     console.error('[anfrage] Abgewiesen: Turnstile ungueltig/fehlt');
+    await zaehle(env.DB, 'captcha');
     return antwort({ ok: false, error: 'captcha' }, 403, cors);
   }
 
-  const daten = anfrageAusFunnel(body);
-  const fehler = pflichtFehler(daten);
-  if (fehler) return antwort({ ok: false, error: fehler }, 422, cors);
+  const d = anfrageAusFunnel(body);
+  const fehler = pflichtFehler(d);
+  if (fehler) {
+    await zaehle(env.DB, 'pflichtfeld');
+    return antwort({ ok: false, error: fehler }, 422, cors);
+  }
 
   const rl = await registerAttempt(env.DB, ip);
-  if (!rl.ok) return antwort({ ok: false, error: 'rate_limited' }, 429, cors);
-
-  let res;
-  try {
-    res = await holen(env.ANFRAGE_URL || PORTAL_ANFRAGE, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Funnel-Key': env.FUNNEL_KEY, 'X-Funnel-IP': ip },
-      body: JSON.stringify(daten),
-    });
-  } catch (err) {
-    console.error('[anfrage] Portal nicht erreichbar:', err);
-    return antwort({ ok: false, error: 'netz' }, 502, cors);
+  if (!rl.ok) {
+    await zaehle(env.DB, 'rate');
+    return antwort({ ok: false, error: 'rate_limited' }, 429, cors);
   }
-  let j = {};
-  try { j = await res.json(); } catch (err) { console.error('[anfrage] Portal-Antwort nicht lesbar:', err); }
-  if (res.ok && j && j.success === true) return antwort({ ok: true }, 200, cors);
+  if (!(await (teile.mx || hasMailServer)(d.email))) {
+    await zaehle(env.DB, 'mail_domain');
+    return antwort({ ok: false, error: 'email_domain' }, 422, cors);
+  }
 
-  const code = j && j.error === 'email_domain' ? 'email_domain'
-    : res.status === 429 ? 'rate_limited'
-    : j && j.error === 'missing_fields' ? 'phone'
-    : 'portal';
-  console.error('[anfrage] Portal lehnte ab:', res.status, j && j.error);
-  return antwort({ ok: false, error: code }, res.status === 429 ? 429 : 422, cors);
+  if (!(await anfrageAnlegen(env, d, teile.mail))) {
+    return antwort({ ok: false, error: 'speichern' }, 500, cors);
+  }
+  await zaehle(env.DB, 'angekommen');
+  return antwort({ ok: true }, 200, cors);
+}
+
+/** Selbsttest ohne Spuren: sind CRM-Tabellen und Mail-Zugang da? */
+export async function anfrageProbe(env) {
+  if (!env.BREVO_API_KEY) return 'mail';
+  try {
+    await env.DB.prepare('SELECT 1 FROM submissions LIMIT 1').first();
+    await env.DB.prepare('SELECT 1 FROM formular_versuche LIMIT 1').first();
+    return 'ok';
+  } catch (err) {
+    console.error('[anfrage] Probe: CRM-Tabellen nicht lesbar:', err);
+    return 'crm';
+  }
 }
