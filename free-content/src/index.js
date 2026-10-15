@@ -21,6 +21,7 @@ import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
 import { generateFor, buildStatus } from './generate.js';
 import { r2Key } from './render.js';
 import { track, trackBeacon } from './track.js';
+import { handleAnfrage, anfrageProbe } from './anfrage-weiter.js';
 import { formPage } from './pages/form.js';
 import { resultPage } from './pages/result.js';
 import { SICHERHEITS_HEADER } from './pages/shell.js';
@@ -373,11 +374,19 @@ export default {
     // Sonst kann ein Fehl-Deploy (vergessenes Secret) nicht auffallen — und genau
     // das soll beweisbar sein, nicht Vertrauenssache. Das Live-Gate prueft es.
     if (url.pathname === '/api/health') {
+      // ?tief=1 prueft zusaetzlich Weg B bis ins Portal (ohne CRM-/Mail-Spuren, anfrageProbe).
+      const tief = url.searchParams.get('tief') === '1';
       return json(
-        { ok: true, turnstile: !!env.TURNSTILE_SECRET, mail: !!env.BREVO_API_KEY },
+        { ok: true, turnstile: !!env.TURNSTILE_SECRET, mail: !!env.BREVO_API_KEY,
+          ...(tief ? { anfrage: await anfrageProbe(env) } : {}) },
         200,
         cors
       );
+    }
+
+    // Weg B des einen Funnels: Erstgespräch-Anfrage, weitergereicht ans Portal (anfrage-weiter.js).
+    if (url.pathname === '/api/anfrage') {
+      return handleAnfrage(request, env, cors);
     }
 
     if (url.pathname === '/api/free-content') {
