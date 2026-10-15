@@ -55,7 +55,7 @@ export function buildResultMail(lead, publicOrigin) {
   };
 }
 
-async function send(env, to, name, mail) {
+export async function send(env, to, name, mail, absender = 'social2scale') {
   if (!env.BREVO_API_KEY) {
     console.error('[mail] BREVO_API_KEY fehlt — Mail nicht versendet');
     return false;
@@ -69,7 +69,7 @@ async function send(env, to, name, mail) {
         accept: 'application/json',
       },
       body: JSON.stringify({
-        sender: { email: env.NOTIFY_FROM, name: 'social2scale' },
+        sender: { email: env.NOTIFY_FROM, name: absender },
         // Komma-Liste erlaubt: die Founder-Benachrichtigung soll an Sebi UND Phil
         // persoenlich gehen. Ging sie nur ans Sammelpostfach (von dem aus sie auch
         // verschickt wird), uebersieht man sie — bei der ersten echten Interessentin

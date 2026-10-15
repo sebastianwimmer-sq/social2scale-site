@@ -5,6 +5,7 @@
 
 import { validateSubmission } from './validate.js';
 import { reelWaechter } from './reel-waechter.js';
+import { reelBescheid } from './reel-bescheid.js';
 import { alteAdresse } from './alte-adresse.js';
 import {
   verifyTurnstile,
@@ -357,6 +358,7 @@ export default {
     }
     await heileRenderAusfaelle(env);
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
+    await reelBescheid(env);   // „Dein Reel ist fertig“ an die Kundin, einmal je Reel (Phase 6, v56)
   },
 
   async fetch(request, env, ctx) {
