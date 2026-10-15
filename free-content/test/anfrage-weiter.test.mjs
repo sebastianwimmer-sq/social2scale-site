@@ -1,31 +1,52 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { handleAnfrage, anfrageAusFunnel, pflichtFehler } from '../src/anfrage-weiter.js';
+import { DatabaseSync } from 'node:sqlite';
+import { handleAnfrage, anfrageAusFunnel, pflichtFehler, anfrageMarkdown, anfrageProbe } from '../src/anfrage-weiter.js';
 
 const GUT = { name: 'Anna', email: 'anna@beispiel.de', phone: '0171 2345678', business: 'Coach', status: 'Ganz am Anfang', goal: 'Mehr Anfragen', budget: '1.000–3.000 €', start: 'Sofort', turnstile: 'tok' };
 
-function db() {
-  return { prepare: () => ({ bind: () => ({ run: async () => ({}), first: async () => ({ c: 1 }) }) }) };
+// D1-Nachbau auf SQLite: prepare().bind().run()/first()/all() wie in Workers.
+function d1() {
+  const s = new DatabaseSync(':memory:');
+  s.exec(`CREATE TABLE submissions (id INTEGER PRIMARY KEY, type TEXT, client_id INTEGER, name TEXT, email TEXT, payload TEXT, data TEXT, logo_key TEXT, rating INTEGER, status TEXT);
+    CREATE TABLE clients (id INTEGER PRIMARY KEY, email TEXT, contact TEXT);
+    CREATE TABLE formular_versuche (tag TEXT, formular TEXT, ergebnis TEXT, n INTEGER, PRIMARY KEY (tag, formular, ergebnis));
+    CREATE TABLE free_intake_log (ip TEXT, created_at TEXT);`);
+  const db = {
+    prepare(sql) {
+      let args = [];
+      const st = { bind: (...a) => { args = a; return st; },
+        run: async () => s.prepare(sql).run(...args),
+        first: async () => s.prepare(sql).get(...args) ?? null,
+        all: async () => ({ results: s.prepare(sql).all(...args) }) };
+      return st;
+    },
+  };
+  return { db, s };
 }
-function req(body, headers = {}) {
+function req(body) {
   return new Request('https://start.social2scale.com/api/anfrage', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7', ...headers }, body: JSON.stringify(body),
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7' }, body: JSON.stringify(body),
   });
 }
-// Turnstile-Prüfung läuft über globales fetch — im Test beantwortet es dieselbe Attrappe.
-function mitTurnstile(ok, fn) {
+// Turnstile-Prüfung läuft über globales fetch.
+async function mitTurnstile(ok, fn) {
   const alt = globalThis.fetch;
   globalThis.fetch = async () => new Response(JSON.stringify({ success: ok }), { status: 200 });
-  return fn().finally(() => { globalThis.fetch = alt; });
+  try { return await fn(); } finally { globalThis.fetch = alt; }
 }
-const ENV = { TURNSTILE_SECRET: 's', FUNNEL_KEY: 'k', DB: db() };
+function umgebung() {
+  const { db, s } = d1();
+  const mails = [];
+  const teile = { mx: async () => true, mail: async (env, to, name, m) => { mails.push({ to, m }); return true; } };
+  return { env: { TURNSTILE_SECRET: 's', DB: db, NOTIFY_TO: 'sebastian@social2scale.com, philipp@social2scale.com' }, s, mails, teile };
+}
+const zaehler = (s) => Object.fromEntries(s.prepare('SELECT ergebnis, n FROM formular_versuche').all().map((r) => [r.ergebnis, r.n]));
 
 test('Start-Zeitpunkt wandert ins Ziel, fremde Felder fallen weg', () => {
-  const d = anfrageAusFunnel({ ...GUT, foto: 'x', website: '' });
+  const d = anfrageAusFunnel({ ...GUT, foto: 'x' });
   assert.equal(d.goal, 'Mehr Anfragen · Start: Sofort');
-  assert.equal(d.von, 'vorschau-b');
   assert.equal('foto' in d, false);
-  assert.equal('start' in d, false);
 });
 
 test('Telefon ist Pflicht (Erstgespräch läuft telefonisch)', () => {
@@ -33,53 +54,80 @@ test('Telefon ist Pflicht (Erstgespräch läuft telefonisch)', () => {
   assert.equal(pflichtFehler(anfrageAusFunnel(GUT)), '');
 });
 
-test('gültige Anfrage geht mit Schlüssel und echter IP ans Portal', () => mitTurnstile(true, async () => {
-  let gesehen;
-  const holen = async (url, init) => { gesehen = { url, init }; return new Response(JSON.stringify({ success: true }), { status: 200 }); };
-  const r = await handleAnfrage(req(GUT), ENV, {}, holen);
+test('gültige Anfrage: Eingang im CRM wie aus /anfrage/, Mail an beide, gezählt', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(req(GUT), u.env, {}, u.teile);
   assert.equal(r.status, 200);
-  assert.deepEqual(await r.json(), { ok: true });
-  assert.equal(gesehen.url, 'https://closing.social2scale.com/api/anfrage');
-  assert.equal(gesehen.init.headers['X-Funnel-Key'], 'k');
-  assert.equal(gesehen.init.headers['X-Funnel-IP'], '203.0.113.7');
-  assert.equal(JSON.parse(gesehen.init.body).phone, '0171 2345678');
+  const z = u.s.prepare('SELECT * FROM submissions').all();
+  assert.equal(z.length, 1);
+  assert.equal(z[0].type, 'anfrage');
+  assert.equal(z[0].status, 'new');
+  assert.match(z[0].payload, /^# Erstgespräch-Anfrage/);
+  assert.match(z[0].payload, /\*\*Telefon:\*\* 0171 2345678/);
+  assert.match(z[0].payload, /Gefunden über:\*\* Link: vorschau-b/);
+  assert.equal(JSON.parse(z[0].data).herkunft.von, 'vorschau-b');
+  assert.equal(u.mails.length, 1);
+  assert.match(u.mails[0].to, /philipp@/);
+  assert.match(u.mails[0].m.subject, /Erstgespräch-Anfrage: Anna/);
+  assert.deepEqual(zaehler(u.s), { angekommen: 1 });
 }));
 
-test('ohne gültiges Turnstile geht nichts ans Portal', () => mitTurnstile(false, async () => {
-  let gerufen = false;
-  const r = await handleAnfrage(req(GUT), ENV, {}, async () => { gerufen = true; return new Response('{}'); });
+test('bekannte Kundin wird per E-Mail zugeordnet', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  u.s.prepare("INSERT INTO clients (id, email) VALUES (42, 'Anna@Beispiel.de ')").run();
+  await handleAnfrage(req(GUT), u.env, {}, u.teile);
+  assert.equal(u.s.prepare('SELECT client_id FROM submissions').get().client_id, 42);
+}));
+
+test('ohne gültiges Turnstile: nichts gespeichert, keine Mail, als captcha gezählt', () => mitTurnstile(false, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(req(GUT), u.env, {}, u.teile);
   assert.equal(r.status, 403);
-  assert.equal(gerufen, false);
+  assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
+  assert.equal(u.mails.length, 0);
+  assert.deepEqual(zaehler(u.s), { captcha: 1 });
 }));
 
-test('ohne FUNNEL_KEY scheitert Weg B laut statt still', () => mitTurnstile(true, async () => {
-  const r = await handleAnfrage(req(GUT), { ...ENV, FUNNEL_KEY: '' }, {}, async () => new Response('{}'));
-  assert.equal(r.status, 503);
-}));
-
-test('Honeypot antwortet wie Erfolg, ohne weiterzureichen', () => mitTurnstile(true, async () => {
-  let gerufen = false;
-  const r = await handleAnfrage(req({ ...GUT, website: 'x' }), ENV, {}, async () => { gerufen = true; return new Response('{}'); });
-  assert.equal(r.status, 200);
-  assert.equal(gerufen, false);
-}));
-
-test('Portal lehnt Mail-Domain ab → Besucherin erfährt es', () => mitTurnstile(true, async () => {
-  const r = await handleAnfrage(req(GUT), ENV, {}, async () => new Response(JSON.stringify({ success: false, error: 'email_domain' }), { status: 422 }));
+test('Mail-Domain ohne Mailserver → Hinweis statt Danke', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(req(GUT), u.env, {}, { ...u.teile, mx: async () => false });
   assert.equal(r.status, 422);
   assert.equal((await r.json()).error, 'email_domain');
+  assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
 }));
 
-test('Portal antwortet mit Erfolg ohne success:true → kein Danke', () => mitTurnstile(true, async () => {
-  const r = await handleAnfrage(req(GUT), ENV, {}, async () => new Response('<html>CRM</html>', { status: 200 }));
-  assert.equal(r.status, 422);
+test('Honeypot antwortet wie Erfolg, speichert aber nichts', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(req({ ...GUT, website: 'x' }), u.env, {}, u.teile);
+  assert.equal(r.status, 200);
+  assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
+  assert.deepEqual(zaehler(u.s), { spam_falle: 1 });
 }));
 
-import { anfrageProbe } from '../src/anfrage-weiter.js';
-test('Probe: ok nur bei probe:true, 403 heißt falscher Schlüssel, ohne Schlüssel aus', async () => {
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('{"success":true,"probe":true}')), 'ok');
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('{"success":false}', { status: 403 })), 'schluessel');
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => new Response('<html>', { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } })), 'portal:200:text/html');
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: '' }, async () => { throw new Error('nie'); }), 'aus');
-  assert.equal(await anfrageProbe({ FUNNEL_KEY: 'k' }, async () => { throw new Error('dns'); }), 'netz');
+test('CRM kaputt, Mail geht → trotzdem Danke (Anfrage ist sicher)', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  u.s.exec('DROP TABLE submissions');
+  const r = await handleAnfrage(req(GUT), u.env, {}, u.teile);
+  assert.equal(r.status, 200);
+  assert.equal(u.mails.length, 1);
+}));
+
+test('CRM UND Mail kaputt → kein Danke', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  u.s.exec('DROP TABLE submissions');
+  const r = await handleAnfrage(req(GUT), u.env, {}, { ...u.teile, mail: async () => false });
+  assert.equal(r.status, 500);
+}));
+
+test('Markdown nennt nur befüllte Felder', () => {
+  const md = anfrageMarkdown(anfrageAusFunnel({ name: 'Bo', email: 'b@b.de', phone: '0171 1234567' }));
+  assert.doesNotMatch(md, /Budget|Status|Ziel/);
+});
+
+test('Probe: ok mit Tabellen und Mail-Schlüssel, sonst Grund', async () => {
+  const u = umgebung();
+  assert.equal(await anfrageProbe({ ...u.env, BREVO_API_KEY: 'k' }), 'ok');
+  assert.equal(await anfrageProbe(u.env), 'mail');
+  u.s.exec('DROP TABLE formular_versuche');
+  assert.equal(await anfrageProbe({ ...u.env, BREVO_API_KEY: 'k' }), 'crm');
 });
