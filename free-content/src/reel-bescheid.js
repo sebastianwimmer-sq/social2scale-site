@@ -4,7 +4,8 @@
  *
  * Die Reel-Wache läuft auf Sebis Mac und hat keinen Mail-Schlüssel (soll sie auch nicht). Dieser 5-Minuten-Cron sieht in D1,
  * welche Reels seit dem letzten Lauf fertig oder rot geworden sind, schickt EINE Mail je Kundin und merkt es sich
- * (bescheid_am, v56) — nie doppelt. Absender Phil (CRM: MAIL_DEFAULTS.absender). Abschaltbar je Kundin (clients.reel_bescheid).
+ * (bescheid_am, v56) — nie doppelt. Absender social2scale: Systemmail, keine persönliche Nachricht (Sebi 15.10.: „is ja eig eher
+ * allgemein“) — Phil schreibt die echten Nachrichten. Abschaltbar je Kundin (clients.reel_bescheid).
  * Testkonten ([TEST] in den Notizen) mit fremder Adresse und Kundinnen ohne gültige Mail werden abgehakt, ohne Mail — sonst stünden
  * sie jeden Lauf an. Ein Testkonto mit eigener Adresse (EIGENE_DOMAINS) bekommt sie, damit wir sehen, was die Kundin sieht.
  * Scheitert der Versand, bleibt es offen und der nächste Lauf versucht es wieder.
@@ -13,7 +14,7 @@
 import { send } from './mail.js';
 import { reelMailHtml, MAIL_FARBEN } from './pages/confirm-email.js';
 
-export const ABSENDER = 'Phil · social2scale';
+export const ABSENDER = 'social2scale';
 const HUB = 'https://mein.social2scale.com';
 const MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Testkonten bekommen die Mail nur an eigene Adressen (Sebi 15.10.: „mail an mein konto bitte auch schicken“) — nie Testpost nach außen

@@ -20,13 +20,16 @@ function welt() {
   return { s, env: { DB: { prepare: (sql) => prep(sql) } }, post, versand };
 }
 
-test('fertiges Reel → genau EINE Mail, Absender Phil, danach nie wieder', async () => {
+test('fertiges Reel → genau EINE Mail, Absender social2scale, danach nie wieder', async () => {
   const w = welt();
   w.s.exec(`INSERT INTO clients VALUES (1, 'Sabine Rühl', 'sabine@example.org', 'sabine', '', 1, 1);
             INSERT INTO reel_auftrag VALUES (1, 'wa-1', 'Bildungsgutschein', 'fertig', NULL, NULL);`);
   assert.equal(await reelBescheid(w.env, w.versand), 'gesendet 1');
   assert.equal(w.post.length, 1);
   assert.equal(w.post[0].absender, ABSENDER);
+  assert.equal(ABSENDER, 'social2scale');
+  assert.match(w.post[0].mail.htmlContent, /Das social2scale-Team/);
+  assert.doesNotMatch(w.post[0].mail.htmlContent, /Phil ·/);
   assert.match(w.post[0].mail.subject, /Dein Reel ist fertig/);
   assert.match(w.post[0].mail.htmlContent, /Hallo Sabine/);
   assert.match(w.post[0].mail.htmlContent, /mein\.social2scale\.com\/sabine-kit\/hub\//);
