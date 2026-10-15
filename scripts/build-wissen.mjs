@@ -145,7 +145,7 @@ const SEITEN = [
       {
         h: "Was den Zeitraum verkürzt oder verlängert",
         p: [
-          "Am stärksten wirkt die Frequenz: Wer zweimal im Monat postet, braucht ein Vielfaches der Zeit. Zehn Beiträge monatlich sind die untere Grenze, bei der Plattformen ein Profil verlässlich ausspielen.",
+          "Am stärksten wirkt die Frequenz: Wer zweimal im Monat postet, braucht ein Vielfaches der Zeit. Zehn Beiträge im Monat sind bei uns die Untergrenze: Darunter gibt es zu wenig Beiträge, um zu sehen, was bei deinen Leuten ankommt.",
           "Verlängernd wirken häufige Themenwechsel. Ein Profil, das jeden Monat etwas anderes erzählt, muss bei jedem Beitrag neu um Aufmerksamkeit kämpfen — deshalb ist die Positionierung am Anfang wichtiger als jeder einzelne Beitrag.",
         ],
       },
