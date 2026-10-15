@@ -479,7 +479,7 @@ const PAGE_SCRIPT = `
     if(an){
       pvH.textContent='beispiel.yoga';pvN.textContent='Beispiel · Yogastudio';pvB.textContent='Ruhe für volle Wochen';pvAv.textContent='B';
       $('#disclaimer').innerHTML='<b>Beispiel</b> · so sieht ein Ergebnis aus. Deins entsteht aus deinen Antworten.';
-      BEISPIEL.forEach(([txt,cls],i)=>{const los=()=>{kachel(tl[i],i,txt,cls);bump(tl[i]);zaehleKacheln();};if(reduce)los();else beispielUhr.push(setTimeout(los,400+i*260));});
+      BEISPIEL.forEach(([txt,cls],i)=>{const los=()=>{kachel(tl[i],i,txt,cls);bump(tl[i]);zaehleKacheln();};if(reduce)los();else beispielUhr.push(setTimeout(los,250+i*180));});
     }else{
       const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'');
       pvH.textContent=h||'dein.profil';pvN.textContent=name||' ';pvB.textContent=$('#f-thema').value.trim().slice(0,40)||' ';
