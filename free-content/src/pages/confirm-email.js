@@ -26,7 +26,7 @@ const FAINT = '#6E7573';
 
 /**
  * Kopf + Oeffnung der EINEN dunklen Inhaltskarte inkl. gehostetem Logo.
- * title/preheader variieren pro Mail. Die Karte wird in MAIL_SIG_FOOTER geschlossen.
+ * title/preheader variieren pro Mail. Die Karte wird in sigFooter() geschlossen.
  */
 function mailHead(title, preheader) {
   return `<!DOCTYPE html>
@@ -80,13 +80,14 @@ function mailCta(url, label) {
  * Voll statisch → geteilt. Alles sitzt auf der dunklen Karte (kein angreifbarer
  * Seiten-Hintergrund mehr).
  */
-const MAIL_SIG_FOOTER = `
+const VORSCHAU_GRUND = 'Diese Mail ging an dich, weil deine Adresse bei social2scale für die Content-Vorschau eingetragen wurde. Erst mit Bestätigung werden Daten verarbeitet.';
+const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND) => `
           <div style="height:1px;line-height:1px;font-size:1px;background:rgba(255,255,255,0.09);margin:30px 0 22px;">&nbsp;</div>
           <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
             <td style="vertical-align:top;width:52px;padding-right:15px;"><img src="https://social2scale.com/assets/sig-avatar.png" width="52" height="52" alt="social2scale" style="display:block;width:52px;height:52px;border:0;"></td>
             <td style="vertical-align:top;">
               <img src="https://social2scale.com/assets/sig-wordmark.png" width="128" height="19" alt="social2scale" style="display:block;width:128px;height:19px;margin:1px 0 8px;border:0;">
-              <div style="font-family:-apple-system,Arial,sans-serif;font-size:14px;font-weight:700;color:${PAPER};margin-bottom:9px;">Das social2scale-Team</div>
+              <div style="font-family:-apple-system,Arial,sans-serif;font-size:14px;font-weight:700;color:${PAPER};margin-bottom:9px;">${name}</div>
               <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;">
                 <tr><td style="padding:0 9px 4px 0;font-size:8px;font-weight:700;color:#00C896;text-transform:uppercase;letter-spacing:1.4px;">Web</td><td style="padding:0 0 4px;font-size:13px;"><a href="https://social2scale.com" style="color:${PAPER};text-decoration:none;">social2scale.com</a></td></tr>
                 <tr><td style="padding:0 9px 0 0;font-size:8px;font-weight:700;color:#00C896;text-transform:uppercase;letter-spacing:1.4px;">Mail</td><td style="padding:0;font-size:13px;"><a href="mailto:info@social2scale.com" style="color:${PAPER};text-decoration:none;">info@social2scale.com</a></td></tr>
@@ -95,7 +96,7 @@ const MAIL_SIG_FOOTER = `
           </tr></table>
 
           <p style="margin:24px 0 0;font-size:11.5px;line-height:1.7;color:${FAINT};">
-            Diese Mail ging an dich, weil deine Adresse bei social2scale für die Content-Vorschau eingetragen wurde. Erst mit Bestätigung werden Daten verarbeitet.<br>
+            ${grund}<br>
             social2scale &mdash; Philipp Libowicz · Johannes-Hess-Straße 1, 84489 Burghausen &middot; <a href="https://social2scale.com/impressum/" style="color:${FAINT};">Impressum</a> &middot; <a href="https://social2scale.com/datenschutz/" style="color:${FAINT};">Datenschutz</a>
           </p>
         </td></tr>
@@ -159,7 +160,7 @@ export function confirmMailHtml(vorname, confirmUrl) {
           <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Fast geschafft, ${vorname}.</h1>
           <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Ein Klick bestätigt deine Adresse — <strong style="color:${PAPER};">dann entsteht deine persönliche Instagram-Vorschau, live.</strong></p>
           ${mailCta(confirmUrl, 'Meinen Feed bauen')}
-          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Gültig ${TOKEN_TTL_HOURS} Stunden. Nicht du? Ignorier diese Mail einfach.</p>` + MAIL_SIG_FOOTER;
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Gültig ${TOKEN_TTL_HOURS} Stunden. Nicht du? Ignorier diese Mail einfach.</p>` + sigFooter();
 }
 
 /**
@@ -174,5 +175,22 @@ export function resultMailHtml(vorname, resultUrl) {
           <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Schön, dass du wieder da bist, ${vorname}.</h1>
           <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Deine Vorschau liegt bereit — schau sie dir in Ruhe an. Und wenn du loslegen willst oder Fragen hast: <strong style="color:${PAPER};">wir helfen dir gern weiter.</strong></p>
           ${mailCta(resultUrl, 'Meine Vorschau ansehen')}
-          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Antworte einfach auf diese Mail — wir lesen mit und helfen dir persönlich.</p>` + MAIL_SIG_FOOTER;
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Antworte einfach auf diese Mail — wir lesen mit und helfen dir persönlich.</p>` + sigFooter();
 }
+
+/**
+ * Reel-Bescheid an eine Kundin (reel-bescheid.js) in derselben dunklen Karte — vorher schlichtes HTML ohne Hintergrund,
+ * das Apple Mail im Dunkelmodus umfärbte (Knopf blass-mint, Sebi 15.10.: „sieht iwie buggy aus“). Absender Phil.
+ * @param {string} titel - Überschrift, bereits escaped.
+ * @param {string} innen - fertiges, escaptes HTML (Liste der Reels + Satz).
+ * @param {string} url - bereits escaped.
+ */
+export function reelMailHtml(titel, innen, url) {
+  return mailHead(`${titel} — social2scale`, titel) + `
+          <h1 class="h1" style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:29px;line-height:1.15;color:${PAPER};">${titel}</h1>
+          <div style="margin:0 0 28px;font-size:16px;line-height:1.6;color:${MUTED};">${innen}</div>
+          ${mailCta(url, 'In deinen Social Hub')}` +
+    sigFooter('Phil · social2scale', 'Du bekommst diese Mail, weil in deinem Social Hub ein Reel fertig geworden ist. Willst du keine mehr, antworte kurz auf diese Mail.');
+}
+
+export const MAIL_FARBEN = { PAPER, MUTED };
