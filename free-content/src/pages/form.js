@@ -86,7 +86,6 @@ const PAGE_STYLE = `
   .chips{display:flex;flex-wrap:wrap;gap:9px}
   .chip{position:relative;font-family:var(--ff-label);font-weight:600;font-size:13.5px;color:var(--ink);border:0;border-radius:100px;padding:1px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02));cursor:pointer;transition:transform var(--dur-2, .3s) var(--e-spring)}
   .chip span{display:block;border-radius:100px;padding:10px 17px;background:linear-gradient(180deg,rgba(18,21,25,.9),rgba(11,13,16,.95));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:background var(--dur-2, .3s) var(--e-out),color var(--dur-2, .3s)}
-  .chip:hover{transform:translateY(-2px)}
   .chip[aria-pressed=true]{background:var(--flow)}
   .chip[aria-pressed=true] span{background:radial-gradient(130% 130% at 0% 0%,color-mix(in oklab,var(--mood) 30%,transparent),rgba(14,17,20,.92) 62%);color:#fff}
 
@@ -96,7 +95,7 @@ const PAGE_STYLE = `
   /* Foto-Upload: runder Vorschau-Slot im gleichen Glas-Look wie die Felder */
   .foto-row{display:flex;align-items:center;gap:14px}
   .foto-drop{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));border:1px dashed rgba(255,255,255,.22);border-radius:16px;padding:12px 18px 12px 12px;cursor:pointer;color:var(--muted);font-family:var(--ff-label);font-weight:600;font-size:13.5px;transition:border-color var(--dur-2, .3s),transform var(--dur-2, .3s) var(--e-spring)}
-  .foto-drop:hover{border-color:rgba(0,184,136,.55);transform:translateY(-2px)}
+  
   .foto-ph{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:var(--faint)}
   #fotoPrev{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 2px var(--emerald-soft)}
   .react{margin-top:10px;font-size:.9rem;color:var(--emerald-soft);min-height:20px;display:flex;align-items:center;gap:7px;opacity:0;transform:translateY(4px);transition:opacity var(--dur-2, .3s),transform var(--dur-2, .3s) var(--e-out)}
@@ -113,7 +112,7 @@ const PAGE_STYLE = `
   .next:active{transform:scale(.975)}
   .next:disabled{opacity:.6;cursor:not-allowed}
   .next .ic{width:38px;height:38px;border-radius:50%;background:rgba(4,32,26,.18);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:inset 0 1px 1px rgba(255,255,255,.25);transition:transform var(--dur-2, .35s) var(--e-spring)}
-  .next:hover .ic{transform:translate(3px,-1px) scale(1.06)}
+  
   .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:12.5px;cursor:pointer;align-self:center;padding:0 14px;min-height:44px;transition:color var(--dur-2, .25s)}
   .back:hover{color:var(--muted)}
   .hint{font-family:var(--ff-body);font-size:.94rem;color:var(--faint);text-align:center}
@@ -148,8 +147,8 @@ const PAGE_STYLE = `
     font-family:var(--ff-body);color:var(--ink);border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,rgba(18,21,25,.9),rgba(11,13,16,.95));
     transition:border-color var(--dur-2, .25s),background var(--dur-2, .25s),transform var(--dur-2, .25s) var(--e-out)}
   .weg b{font-weight:600;font-size:1rem}.weg small{font-size:.86rem;color:var(--muted)}
-  .weg:hover,.weg:focus-visible{border-color:rgba(0,184,136,.7);transform:translateY(-2px);outline:none}
-  .weg:focus-visible{box-shadow:0 0 0 2px var(--emerald-soft)}
+  
+  
   .quer{margin-top:1rem;padding:.75rem .9rem;border-radius:14px;border:1px dashed rgba(0,184,136,.4);font-size:.9rem;color:var(--muted)}
   .quer-b{background:none;border:0;padding:0;min-height:44px;color:var(--emerald-soft);font:600 .9rem var(--ff-body);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
   /* Schmales Telefon (iPhone SE): nur die Beitraege-Zahl, sonst wird „Follower“ abgeschnitten. */
@@ -167,7 +166,17 @@ const PAGE_STYLE = `
     .app[data-schritt="0"] h1{margin:.35rem 0 .7rem}
   }
   @media (max-height:780px) and (max-width:520px){ .weg{min-height:52px;padding:9px 14px} .weg small{font-size:.8rem} }
-  @media (prefers-reduced-motion:reduce){.q.on>*{opacity:1;transform:none;filter:none}}
+  /* Bedienung wie auf social2scale.com (bedienung.css, 16.10.2026): Hover nur mit Maus und ohne
+     Sprung (am iPhone blieb translateY nach dem Tippen haengen), Druck sofort, eigener Fokus. */
+  @media (hover:hover) and (pointer:fine){
+    .chip:hover{background:linear-gradient(180deg,rgba(0,184,136,.45),rgba(31,166,224,.2))}
+    .foto-drop:hover{border-color:rgba(0,184,136,.55)}
+    .next:hover .ic{transform:translateX(3px)}
+    .weg:hover{border-color:rgba(0,184,136,.7);background:linear-gradient(180deg,rgba(0,184,136,.10),rgba(11,13,16,.95))}
+  }
+  .chip:active,.weg:active,.foto-drop:active{transform:scale(.98);transition-duration:80ms}
+  .chip:focus-visible,.weg:focus-visible,.next:focus-visible,.back:focus-visible,.foto-drop:focus-visible,.quer-b:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){.q.on>*{opacity:1;transform:none;filter:none}.chip:active,.weg:active,.foto-drop:active{transform:none}}
 `;
 
 function pageMarkup(turnstileSiteKey) {

@@ -24,9 +24,9 @@ function d1() {
   };
   return { db, s };
 }
-function req(body) {
+function req(body, ohneOrigin = false) {
   return new Request('https://start.social2scale.com/api/anfrage', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7' }, body: JSON.stringify(body),
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7', ...(ohneOrigin ? {} : { Origin: 'https://start.social2scale.com' }) }, body: JSON.stringify(body),
   });
 }
 // Turnstile-Prüfung läuft über globales fetch.
@@ -66,9 +66,13 @@ test('gültige Anfrage: Eingang im CRM wie aus /anfrage/, Mail an beide, gezähl
   assert.match(z[0].payload, /\*\*Telefon:\*\* 0171 2345678/);
   assert.match(z[0].payload, /Gefunden über:\*\* Link: vorschau-b/);
   assert.equal(JSON.parse(z[0].data).herkunft.von, 'vorschau-b');
-  assert.equal(u.mails.length, 1);
+  assert.equal(u.mails.length, 2);
   assert.match(u.mails[0].to, /philipp@/);
   assert.match(u.mails[0].m.subject, /Erstgespräch-Anfrage: Anna/);
+  // Bestätigung an die Anfragende, mit Weg zur Vorschau
+  assert.equal(u.mails[1].to, 'anna@beispiel.de');
+  assert.equal(u.mails[1].m.subject, 'Deine Anfrage ist angekommen');
+  assert.match(u.mails[1].m.htmlContent, /start\.social2scale\.com\/\?weg=a/);
   assert.deepEqual(zaehler(u.s), { angekommen: 1 });
 }));
 
@@ -109,7 +113,22 @@ test('CRM kaputt, Mail geht → trotzdem Danke (Anfrage ist sicher)', () => mitT
   u.s.exec('DROP TABLE submissions');
   const r = await handleAnfrage(req(GUT), u.env, {}, u.teile);
   assert.equal(r.status, 200);
-  assert.equal(u.mails.length, 1);
+  assert.equal(u.mails.length, 2);
+}));
+
+test('Steuerzeichen im Namen kommen nicht in den Betreff', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  await handleAnfrage(req({ ...GUT, name: 'Anna\r\nBcc: x@y.de' }), u.env, {}, u.teile);
+  assert.doesNotMatch(u.mails[0].m.subject, /[\r\n]/);
+}));
+
+test('Brevo-Kontakt wird angelegt, ohne Liste', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  let body;
+  await handleAnfrage(req(GUT), { ...u.env, BREVO_API_KEY: 'k' }, {}, { ...u.teile, holen: async (url, init) => { body = JSON.parse(init.body); return new Response(null, { status: 201 }); } });
+  assert.equal(body.email, 'anna@beispiel.de');
+  assert.equal(body.attributes.QUELLE, 'vorschau-b');
+  assert.equal('listIds' in body, false);
 }));
 
 test('CRM UND Mail kaputt → kein Danke', () => mitTurnstile(true, async () => {
@@ -131,3 +150,9 @@ test('Probe: ok mit Tabellen und Mail-Schlüssel, sonst Grund', async () => {
   u.s.exec('DROP TABLE formular_versuche');
   assert.equal(await anfrageProbe({ ...u.env, BREVO_API_KEY: 'k' }), 'crm');
 });
+
+test('Versuch ohne Funnel-Origin zählt als fremd (x_), nie als echte Ablehnung', () => mitTurnstile(false, async () => {
+  const u = umgebung();
+  await handleAnfrage(req(GUT, true), u.env, {}, u.teile);
+  assert.deepEqual(zaehler(u.s), { x_captcha: 1 });
+}));

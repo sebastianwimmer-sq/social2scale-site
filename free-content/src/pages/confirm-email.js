@@ -179,6 +179,20 @@ export function resultMailHtml(vorname, resultUrl) {
 }
 
 /**
+ * Bestaetigung fuer Weg B (Erstgespraech, 16.10.2026): vorher sah die Anfragende nur den
+ * Danke-Schirm — wer ihn schloss, wusste nicht mehr, ob es geklappt hat. Systemmail von social2scale.
+ * @param {string} vorname - bereits escaped (esc()).
+ * @param {string} vorschauUrl - bereits escaped (esc()).
+ */
+export function anfrageMailHtml(vorname, vorschauUrl) {
+  return mailHead('Deine Anfrage ist angekommen — social2scale', `Danke, ${vorname} — Phil meldet sich persönlich bei dir.`) + `
+          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Danke, ${vorname}. Deine Anfrage ist da.</h1>
+          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Phil meldet sich persönlich bei dir, per Telefon oder Mail. Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Bis dahin kannst du dir in 60 Sekunden ansehen, wie dein Auftritt aussehen kann:</p>
+          ${mailCta(vorschauUrl, 'Gratis-Vorschau ansehen')}
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Nicht du? Dann ignorier diese Mail einfach. Fragen? Antworte direkt hierauf.</p>` + sigFooter();
+}
+
+/**
  * Reel-Bescheid an eine Kundin (reel-bescheid.js) in derselben dunklen Karte — vorher schlichtes HTML ohne Hintergrund,
  * das Apple Mail im Dunkelmodus umfärbte (Knopf blass-mint, Sebi 15.10.: „sieht iwie buggy aus“). Absender social2scale (Systemmail).
  * @param {string} titel - Überschrift, bereits escaped.
