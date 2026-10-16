@@ -49,8 +49,7 @@ function abschluss(h2, p) {
         <h2>${h2}</h2>
         <p>${p}</p>
         <div class="w-cta-row">
-          <a class="w-btn" href="/gratis/">Gratis-Vorschau starten <span aria-hidden="true">→</span></a>
-          <a class="w-zweit" href="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
+          <a class="w-btn" href="/gratis/">Kostenlos starten <span aria-hidden="true">→</span></a>
         </div>
       </section>`;
 }
@@ -307,7 +306,7 @@ ${KOPF}
       <p class="w-lead w-re">${esc(seite.antwort)}</p>
       <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
-      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.")}
+      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Du wählst im ersten Schritt.")}
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>
         <ul>${andere.map((s) => `<li><a href="/wissen/${s.slug}/">${esc(s.kurz)}</a></li>`).join("")}</ul>

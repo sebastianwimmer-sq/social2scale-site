@@ -3,831 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo=' 'sha256-43sAZFLO6nFVHh8Mv1r8ZAuVdaEBWrJCqs+cN1htLPo=' 'sha256-BUgAeqg+g2pOb2mf2wdnSSA63iluy+QEkQgR+tLa6Hs=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM=' https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; frame-src https://challenges.cloudflare.com https://*.challenges.cloudflare.com https://www.cal.eu https://app.cal.eu https://cal.eu; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hjkGzfOwi9S/L+0Lv3ChVxomeKnCDl5oBzIL9FBTz8Q=' 'sha256-UGdy999BJUWpc5PFtkOCwYdilTljqRwZu5YgSPbp3tc=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#03080D">
+<meta name="robots" content="noindex, follow">
+
+<!-- 16.10.2026: das Anfrage-Formular lebt jetzt im einen Funnel (Weg B). Diese Seite ist
+     nur noch die Bruecke fuer alte Links, Bio und Phils Nachrichten.
+     Sofort-Weiterleitung zum Funnel.
+     WICHTIG: die Funnel-Adresse steht hier an GENAU EINER Stelle (dreimal:
+     meta-refresh, JS, sichtbarer Fallback-Knopf) — bei Domain-/URL-Wechsel
+     nur in dieser Datei anpassen. -->
+<meta http-equiv="refresh" content="0; url=https://start.social2scale.com/?weg=b">
+
+<title>Erstgespräch — social2scale</title>
+<meta name="description" content="Eine Frage zuerst: Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
 <link rel="canonical" href="https://social2scale.com/anfrage/">
-<title>Erstgespräch anfragen — social2scale</title>
-<meta name="description" content="Kurze Anfrage für dein kostenloses Erstgespräch mit social2scale. Wir melden uns persönlich bei dir.">
-<link rel="preload" href="/fonts/fraunces-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:title" content="Erstgespräch — social2scale">
+<meta property="og:description" content="Eine Frage zuerst: Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
+<meta property="og:url" content="https://social2scale.com/anfrage/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://social2scale.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="social2scale — Gratis-Vorschau deines Instagram-Auftritts">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Erstgespräch — social2scale">
+<meta name="twitter:description" content="Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
+<meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
+
+<!-- Die Schriften der Marke. Ohne diese Zeile faellt die Seite auf die
+     Systemschrift zurueck und sieht aus wie eine fremde Website — genau das
+     war der Zustand vor dem 28.07.2026. -->
 <link rel="stylesheet" href="/fonts.css">
-<link rel="stylesheet" href="/s2s.css">
-<script>document.documentElement.classList.add('js')</script>
 <style>
-  /* Erstgespräch — ein Schritt pro Schirm (27.09.2026).
-     Tokens, Aurora-Grund und Korn kommen aus /s2s.css. Hier steht nur, was
-     diese Fläche selbst entscheidet. Präfix af- (Anfrage), damit keine Regel
-     der geteilten Shell hineingreift. */
+  /* Tokens 1:1 aus index.html — damit diese Seite nicht eigene Farben erfindet. */
   :root{
-    --af-r-panel:22px; --af-r-tile:14px;
-    --af-bar-h:76px;
-    --af-q:clamp(1.9rem,1.35rem + 2.1vw,2.9rem);
+    --ink:#03080D; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --teal:#1FA6E0;
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
+    --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
+    color-scheme:dark;
   }
-  body{font-size:17px}
-  /* z-index 3: die fixierte Knopfleiste lebt in diesem Stapelkontext und
-     muss über der Fußzeile (2) liegen, sonst schluckt die den Weiter-Klick. */
-  .af{position:relative;z-index:3;display:grid;grid-template-columns:1fr}
+  *{box-sizing:border-box;margin:0;padding:0}
+  ::selection{background:rgba(0,184,136,.30);color:var(--paper)}
 
-  /* ===== Kopf (nur Handy/Tablet) ===== */
-  .af-kopf{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);
-    padding:calc(env(safe-area-inset-top,0px) + var(--s-3)) var(--px) var(--s-3)}
-  .af-logo img{height:34px;width:auto;display:block}
-  .af-heim{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 var(--s-4);
-    font-family:"Archivo",sans-serif;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;
-    border:1px solid var(--line-2);border-radius:999px;background:rgba(255,255,255,.03);
-    transition:color var(--dur-2, .2s) var(--ease),border-color var(--dur-2, .2s) var(--ease)}
-  .af-heim:hover{color:var(--paper);border-color:rgba(0,184,136,.45)}
-  .af-heim svg{width:15px;height:15px}
-
-  /* ===== Seitenspalte: Einladung + Weg ===== */
-  .af-seite{padding:var(--s-2) var(--px) 0}
-  .af-seite h1{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.7rem,1.2rem + 2vw,3.1rem);
-    line-height:1.05;letter-spacing:-.02em;max-width:14ch}
-  .af-seite h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
-  .af-lede{margin-top:var(--s-4);color:var(--muted);max-width:38ch;line-height:1.55}
-  .af-lede b{color:var(--paper);font-weight:600}
-  .af-duo{display:flex;align-items:center;gap:var(--s-3);margin-top:var(--s-5)}
-  .af-duo-pics{display:inline-flex;flex:none}
-  .af-duo-pics img{width:46px;height:46px;border-radius:50%;object-fit:cover;display:block;border:2px solid #03080D;box-shadow:0 2px 12px rgba(0,0,0,.5)}
-  .af-duo-pics picture+picture img{margin-left:-14px}
-  .af-duo p{font-size:.95rem;line-height:1.45;color:var(--muted)}
-  .af-duo b{color:var(--paper);font-weight:600}
-
-  /* Der Weg: fünf Stationen, die sich mit den eigenen Antworten füllen.
-     Handy: eine schmale Leiste mit Name des Schritts. Desktop: senkrechte
-     Linie, darunter steht je Station, was schon angegeben ist. */
-  .af-weg{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:var(--s-5)}
-  .af-weg li{height:4px;border-radius:4px;background:rgba(242,243,241,.12);overflow:hidden;position:relative}
-  .af-weg li::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--emerald),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform var(--dur-3, .5s) var(--ease)}
-  .af-weg li.ist-fertig::after,.af-weg li.ist-dran::after{transform:scaleX(1)}
-  .af-weg li.ist-dran::after{opacity:.55}
-  .af-weg .af-weg-name,.af-weg .af-weg-wert,.af-weg .af-weg-punkt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-  .af-stand{display:flex;justify-content:space-between;align-items:baseline;margin-top:var(--s-2);
-    font-family:"Archivo",sans-serif;font-size:14px;color:var(--muted)}
-  .af-stand b{color:var(--paper);font-weight:600}
-  .af-danach{display:none}
-
-  /* ===== Bühne: die eine Frage ===== */
-  .af-buehne{padding:var(--s-5) var(--px) var(--s-6);scroll-margin-top:var(--s-3)}
-  .af-form{position:relative}
-  .af-step{border:0;margin:0;padding:0;min-width:0}
-  .js .af-step[hidden]{display:none}
-  .js .af-step.ist-neu{animation:afIn var(--dur-3, .45s) var(--ease) both}
-  .js .af-step.ist-neu.von-hinten{animation-name:afInZurueck}
-  @keyframes afIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
-  @keyframes afInZurueck{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
-  .af-frage{font-family:"Fraunces",serif;font-weight:400;font-size:var(--af-q);line-height:1.08;letter-spacing:-.018em;padding:0;max-width:18ch;outline:none}
-  .af-hilfe{margin-top:var(--s-3);color:var(--muted);max-width:46ch;line-height:1.5}
-  .af-hilfe a{color:var(--emerald-soft);text-decoration:underline;text-underline-offset:3px}
-  .af-antworten{margin-top:var(--s-5)}
-
-  /* Kachel: eine Antwort, ganz anklickbar */
-  .af-kacheln{display:grid;gap:var(--s-3)}
-  .af-kachel{position:relative;display:block;cursor:pointer}
-  .af-kachel input{position:absolute;opacity:0;width:1px;height:1px}
-  .af-kachel-flaeche{display:grid;grid-template-columns:26px 1fr;gap:4px var(--s-4);align-items:center;min-height:72px;
-    padding:var(--s-4) var(--s-5);border-radius:var(--af-r-tile);border:1px solid var(--line-2);
-    background:var(--surf-grad);box-shadow:var(--depth);
-    transition:border-color var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .25s) var(--ease),transform var(--dur-1, .15s) var(--ease),background var(--dur-2, .25s) var(--ease)}
-  .af-kachel-ring{grid-row:1/3;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-3);display:grid;place-items:center;transition:border-color var(--dur-2, .2s) var(--ease),background var(--dur-2, .2s) var(--ease)}
-  .af-kachel-ring::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--emerald-ink);transform:scale(0);transition:transform var(--dur-2, .25s) var(--ease)}
-  .af-kachel-titel{font-family:"Archivo",sans-serif;font-weight:600;font-size:1.05rem;color:var(--paper);line-height:1.3}
-  .af-kachel-zeile{grid-column:2;font-size:.95rem;color:var(--muted);line-height:1.4}
-  .af-kachel:hover .af-kachel-flaeche{border-color:rgba(0,184,136,.4);background:var(--surf-grad-hover);box-shadow:var(--depth-hover)}
-  .af-kachel input:active + .af-kachel-flaeche{transform:scale(.99)}
-  .af-kachel input:checked + .af-kachel-flaeche{border-color:var(--emerald);
-    background:radial-gradient(120% 140% at 0% 0%,rgba(0,184,136,.16),transparent 60%),var(--surf-grad);
-    box-shadow:var(--depth),0 0 0 1px var(--emerald) inset,0 18px 40px -26px rgba(0,184,136,.7)}
-  .af-kachel input:checked + .af-kachel-flaeche .af-kachel-ring{border-color:var(--emerald);background:var(--emerald)}
-  .af-kachel input:checked + .af-kachel-flaeche .af-kachel-ring::after{transform:scale(1)}
-  .af-kachel input:focus-visible + .af-kachel-flaeche{outline:2px solid var(--emerald-soft);outline-offset:3px}
-
-  /* Chips: mehrere Antworten */
-  .af-chips{display:flex;flex-wrap:wrap;gap:10px}
-  .af-chip{position:relative;cursor:pointer}
-  .af-chip input{position:absolute;opacity:0;width:1px;height:1px}
-  .af-chip span{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 var(--s-4) 0 14px;
-    font-family:"Archivo",sans-serif;font-size:15.5px;font-weight:500;color:var(--paper);
-    border:1px solid var(--line-2);border-radius:999px;background:var(--surf-grad);box-shadow:var(--pill-depth);
-    transition:border-color var(--dur-2, .2s) var(--ease),background var(--dur-2, .2s) var(--ease),color var(--dur-2, .2s) var(--ease),transform var(--dur-1, .12s) var(--ease)}
-  .af-chip span::before{content:"";width:18px;height:18px;flex:none;border-radius:6px;border:1.5px solid var(--line-3);
-    background:center/12px no-repeat;transition:background-color var(--dur-2, .2s) var(--ease),border-color var(--dur-2, .2s) var(--ease)}
-  .af-chip:hover span{border-color:rgba(0,184,136,.4)}
-  .af-chip input:checked + span{border-color:var(--emerald);background:linear-gradient(180deg,rgba(0,184,136,.20),rgba(0,184,136,.08)),var(--surface-2)}
-  .af-chip input:checked + span::before{border-color:var(--emerald);background-color:var(--emerald);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2304201A' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4 4L19 7'/%3E%3C/svg%3E")}
-  .af-chip input:focus-visible + span{outline:2px solid var(--emerald-soft);outline-offset:3px}
-  .af-chip input:active + span{transform:scale(.97)}
-
-  /* Felder */
-  .af-felder{display:grid;gap:var(--s-4)}
-  @media (min-width:640px){.af-felder.zwei{grid-template-columns:1fr 1fr}}
-  .af-feld{display:flex;flex-direction:column;gap:6px}
-  .af-feld label{font-family:"Archivo",sans-serif;font-size:15px;font-weight:600;color:var(--paper)}
-  .af-feld label small{font-weight:400;color:var(--muted);font-size:14px}
-  .af-feld input,.af-feld textarea{width:100%;min-height:52px;font:inherit;font-size:17px;color:var(--paper);
-    background:rgba(3,8,13,.55);border:1px solid var(--line-2);border-radius:12px;padding:13px 15px;
-    box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
-    transition:border-color var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .2s) var(--ease),background var(--dur-2, .2s) var(--ease)}
-  .af-feld textarea{min-height:96px;resize:vertical;line-height:1.5}
-  .af-feld input::placeholder,.af-feld textarea::placeholder{color:var(--faint)}
-  .af-feld input:hover,.af-feld textarea:hover{border-color:rgba(0,184,136,.35)}
-  .af-feld input:focus,.af-feld textarea:focus{outline:none;border-color:var(--emerald);background:rgba(3,8,13,.75);box-shadow:0 0 0 3px rgba(0,184,136,.2)}
-  .af-feld input[aria-invalid="true"]{border-color:#ff8b7d;box-shadow:0 0 0 3px rgba(255,139,125,.14)}
-  .af-anders{margin-top:var(--s-4)}
-  .af-gefunden{margin:var(--s-5) 0}
-  .af-gefunden[hidden],.af-gefunden-danke[hidden]{display:none}
-  .af-gefunden-danke{margin:var(--s-5) 0;color:var(--emerald-soft)}
-  .af-frei{color:var(--muted);font-size:.9em}
-  .af-anders[hidden]{display:none}
-
-  .af-fehler{margin-top:var(--s-3);min-height:1.4em;color:#ff9d91;font-size:.95rem;line-height:1.4}
-  .af-fehler:empty{min-height:0;margin-top:0}
-  .af-feld .af-fehler{margin-top:0}
-
-  /* Prüfen & senden */
-  .af-uebersicht{margin-top:var(--s-5);border-radius:var(--af-r-panel);border:1px solid var(--line-2);background:var(--surf-grad);box-shadow:var(--depth-lg);overflow:hidden}
-  .af-zeile{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px var(--s-4);padding:var(--s-3) var(--s-5)}
-  .af-zeile+.af-zeile{border-top:1px solid var(--line)}
-  .af-zeile dt{font-family:"Archivo",sans-serif;font-size:14px;color:var(--muted)}
-  .af-zeile dd{grid-column:1;color:var(--paper);line-height:1.4;overflow-wrap:anywhere}
-  .af-aendern{grid-column:2;grid-row:1/3;min-height:44px;padding:0 var(--s-3);font:600 14px "Archivo",sans-serif;color:var(--emerald-soft);background:none;border:0;border-radius:8px;cursor:pointer}
-  .af-aendern:hover{color:var(--paper)}
-  .af-ok{display:flex;align-items:flex-start;gap:var(--s-3);margin-top:var(--s-5);cursor:pointer;color:var(--muted);line-height:1.5}
-  .af-ok input{position:absolute;opacity:0;width:1px;height:1px}
-  .af-ok-box{flex:none;width:26px;height:26px;margin-top:-1px;border-radius:7px;border:1.5px solid var(--line-3);background:rgba(3,8,13,.5);display:grid;place-items:center;transition:background var(--dur-2, .2s) var(--ease),border-color var(--dur-2, .2s) var(--ease)}
-  .af-ok-box svg{width:15px;height:15px;opacity:0;transform:scale(.4);transition:opacity var(--dur-2, .2s) var(--ease),transform var(--dur-2, .2s) var(--ease)}
-  .af-ok input:checked + .af-ok-box{background:var(--emerald);border-color:var(--emerald)}
-  .af-ok input:checked + .af-ok-box svg{opacity:1;transform:none}
-  .af-ok input:focus-visible + .af-ok-box{outline:2px solid var(--emerald-soft);outline-offset:3px}
-  .af-ok a{color:var(--paper);text-decoration:underline;text-underline-offset:3px}
-  .af-ts{margin-top:var(--s-4)}
-  /* Handy: die Uebersicht war mit echten Angaben 410-510 px hoch und schob die
-     Einwilligung unter die feste Knopfleiste (iPhone 15 Pro: 107 px). */
-  @media (max-width:759px){
-    .af-uebersicht{margin-top:12px}
-    .af-zeile{padding:4px 6px 4px 14px;gap:0 6px}
-    .af-zeile dt{font-size:12px;line-height:1.2}
-    .af-zeile dd{font-size:15px;line-height:1.3}
-    .af-ok{margin-top:14px}
+  /* Aurora-Doppelton wie auf der Startseite: Emerald oben links, Teal unten
+     rechts, ueber dunkler Diagonale. Vorher lag hier ein einzelner flacher
+     Radial-Verlauf — der Grund, warum die Seite "billig" wirkte. */
+  /* 16.10.2026: das KI-Arbeitsplatzfoto ist raus (Sebi: „KI-Slop“) — Licht statt Bild. */
+  body{
+    min-height:100dvh;
+    background:
+      radial-gradient(120% 90% at 12% -10%, rgba(0,184,136,.18), transparent 58%),
+      radial-gradient(110% 90% at 88% 108%, rgba(31,166,224,.14), transparent 60%),
+      linear-gradient(165deg,rgba(10,17,20,.90) 0%,rgba(3,8,13,.94) 62%),
+      var(--ink);
+    color:var(--paper);
+    font-family:"Hanken Grotesk",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:grid;place-items:center;padding:clamp(24px,6vw,56px);text-align:center;
   }
-  .af-ts .cf-turnstile{max-width:100%}
-  .af-duo-senden{margin-top:var(--s-4)}
-  .hp{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
 
-  /* ===== Knopfleiste: immer an derselben Stelle ===== */
-  .af-leiste{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);
-    padding:var(--s-3) var(--px) calc(var(--s-3) + env(safe-area-inset-bottom,0px));
-    background:linear-gradient(180deg,rgba(5,15,20,.72),rgba(3,8,13,.94));
-    -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
-    border-top:1px solid var(--line-2);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
-  .af-leiste[hidden]{display:none}
-  .af-zurueck{display:inline-flex;align-items:center;gap:6px;min-height:52px;padding:0 var(--s-4);
-    font:600 15px "Archivo",sans-serif;color:var(--muted);background:none;border:1px solid transparent;border-radius:12px;cursor:pointer;
-    transition:color var(--dur-2, .2s) var(--ease),border-color var(--dur-2, .2s) var(--ease)}
-  .af-zurueck:hover{color:var(--paper);border-color:var(--line-2)}
-  .af-zurueck[disabled]{visibility:hidden}
-  .af-zurueck svg,.af-weiter svg{width:18px;height:18px}
-  .af-weiter{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;min-width:9.5em;padding:0 var(--s-6);
-    font:700 16px "Archivo",sans-serif;letter-spacing:.01em;color:var(--emerald-ink);border:0;border-radius:14px;cursor:pointer;overflow:hidden;
-    background:linear-gradient(180deg,var(--emerald-soft),var(--emerald));
-    box-shadow:0 16px 38px -14px rgba(0,184,136,.7),0 16px 38px -18px rgba(31,166,224,.5),inset 0 1px 0 rgba(255,255,255,.45);
-    transition:transform var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .25s) var(--ease),opacity var(--dur-2, .2s)}
-  .af-weiter:hover:not(:disabled){transform:translateY(-2px)}
-  .af-weiter:active:not(:disabled){transform:scale(.98)}
-  .af-weiter:disabled{opacity:.65;cursor:progress}
-  .af-weiter .af-kreis{display:none;width:18px;height:18px;border:2px solid rgba(4,32,26,.3);border-top-color:var(--emerald-ink);border-radius:50%;animation:afDreh var(--dur-4, .7s) linear infinite}
-  .af-weiter.laedt .af-kreis{display:inline-block}
-  .af-weiter.laedt svg{display:none}
-  @keyframes afDreh{to{transform:rotate(360deg)}}
+  .card{position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(18px,2.4vw,26px);max-width:34rem;
+    padding:clamp(28px,5vw,48px) clamp(24px,4vw,44px);
+    border:1px solid rgba(242,243,241,.10);border-radius:20px;
+    background:linear-gradient(180deg,rgba(20,21,24,.62),rgba(10,11,13,.50));
+    -webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 40px 90px -50px rgba(0,0,0,.9)}
+  .wordmark{height:28px;width:auto;mix-blend-mode:screen}
 
-  /* ===== Erfolg ===== */
-  .af-erfolg{outline:none}
-  .af-erfolg[hidden]{display:none}
-  .af-haken{width:76px;height:76px;display:grid;place-items:center;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,184,136,.24),rgba(0,184,136,.05));border:1px solid rgba(0,184,136,.45);
-    box-shadow:0 26px 60px -30px rgba(0,184,136,.9);animation:afPop var(--dur-3, .55s) var(--ease) both}
-  .af-haken svg{width:40px;height:40px}
-  .af-haken path{stroke-dasharray:36;stroke-dashoffset:36;animation:afZeichnen var(--dur-3, .55s) var(--ease) .35s forwards}
-  @keyframes afPop{0%{opacity:0;transform:scale(.5)}60%{transform:scale(1.06)}100%{opacity:1;transform:none}}
-  @keyframes afZeichnen{to{stroke-dashoffset:0}}
-  .af-erfolg h2{font-family:"Fraunces",serif;font-weight:400;font-size:var(--af-q);line-height:1.08;letter-spacing:-.018em;margin-top:var(--s-5);max-width:18ch}
-  .af-erfolg p{margin-top:var(--s-3);color:var(--muted);max-width:46ch}
-  .af-kalender{min-height:560px;margin-top:var(--s-5);border-radius:var(--af-r-panel);border:1px solid var(--line-2);background:rgba(10,14,18,.6);overflow:hidden}
-  .af-kalender-link{display:inline-flex;align-items:center;min-height:44px;margin-top:var(--s-3);color:var(--emerald-soft);font:600 15px "Archivo",sans-serif}
-  .af-noscript{margin-top:var(--s-5);padding:var(--s-4) var(--s-5);border-radius:var(--af-r-tile);border:1px solid rgba(255,157,145,.4);color:var(--paper)}
-
-  .af-fuss{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:var(--s-2) var(--s-5);padding:var(--s-5) var(--px) calc(var(--af-bar-h) + var(--s-5) + env(safe-area-inset-bottom,0px));
-    font:500 14px "Archivo",sans-serif;color:var(--faint)}
-  .af-fuss a{color:var(--muted);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
-  .af-fuss a:hover{color:var(--paper)}
-  .skip{position:absolute;left:-9999px}
-  .skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:8px}
-
-  /* ===== Desktop: links die Einladung und der Weg, rechts die Frage ===== */
-  @media (min-width:960px){
-    .af{grid-template-columns:minmax(320px,5fr) 7fr;max-width:1240px;margin:0 auto;min-height:calc(100svh - 96px)}
-    .af-kopf{grid-column:1/-1;padding-top:var(--s-5)}
-    .af-seite{position:sticky;top:0;align-self:start;padding:var(--s-7) var(--s-6) var(--s-7) var(--px)}
-    .af-lede{font-size:1.1rem}
-    .af-weg{display:block;margin-top:var(--s-7);border-left:1px solid var(--line-2);padding-left:0}
-    .af-weg li{height:auto;background:none;overflow:visible;position:relative;padding:0 0 var(--s-5) var(--s-5);border-radius:0}
-    .af-weg li:last-child{padding-bottom:0}
-    .af-weg li::after{inset:0 auto 0 -1px;width:2px;height:auto;transform:scaleY(0);transform-origin:top;border-radius:2px}
-    .af-weg li.ist-fertig::after{transform:scaleY(1);opacity:1}
-    .af-weg li.ist-dran::after{transform:scaleY(.5);opacity:1}
-    .af-weg .af-weg-punkt{position:absolute;left:-7px;top:4px;width:13px;height:13px;clip:auto;overflow:visible;border-radius:50%;background:#0B1217;border:1.5px solid var(--line-3);transition:background var(--dur-2, .3s) var(--ease),border-color var(--dur-2, .3s) var(--ease),box-shadow var(--dur-2, .3s) var(--ease);z-index:1}
-    .af-weg li.ist-dran .af-weg-punkt{border-color:var(--emerald);box-shadow:0 0 0 5px rgba(0,184,136,.16)}
-    .af-weg li.ist-fertig .af-weg-punkt{background:var(--emerald);border-color:var(--emerald)}
-    .af-weg .af-weg-name{position:static;width:auto;height:auto;overflow:visible;clip:auto;display:block;font:600 15px/1.3 "Archivo",sans-serif;color:var(--faint);transition:color var(--dur-2, .3s) var(--ease)}
-    .af-weg li.ist-dran .af-weg-name,.af-weg li.ist-fertig .af-weg-name{color:var(--paper)}
-    .af-weg .af-weg-wert{position:static;width:auto;height:auto;overflow:hidden;clip:auto;display:block;margin-top:2px;font-size:.93rem;color:var(--muted);line-height:1.4;
-      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-    .af-weg .af-weg-wert:empty{display:none}
-    .af-stand{display:none}
-    .af-danach{display:block;margin-top:var(--s-6);font-size:.95rem;color:var(--muted);max-width:34ch;line-height:1.5}
-    .af-buehne{padding:var(--s-7) var(--px) var(--s-7) var(--s-6)}
-    .af-form,.af-erfolg{border-radius:28px;border:1px solid var(--line-2);padding:var(--s-7) var(--s-7) var(--s-6);
-      background:radial-gradient(120% 90% at 100% 0%,rgba(31,166,224,.08),transparent 55%),linear-gradient(180deg,rgba(32,34,39,.72),rgba(20,21,24,.78));
-      -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:var(--depth-lg)}
-    .af-leiste{position:static;margin-top:var(--s-6);padding:var(--s-5) 0 0;background:none;border-top:1px solid var(--line);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-    .af-duo-senden{display:none}
-    .af-fuss{padding-bottom:var(--s-6);max-width:1240px;margin:0 auto;justify-content:flex-end}
+  .klabel{
+    font-family:"Archivo",sans-serif;font-size:11px;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
   }
-  /* Handy: Einladung nur beim ersten Schritt, danach zählt die Frage. */
-  @media (max-width:959px){
-    .af[data-schritt]:not([data-schritt="1"]) .af-einladung{display:none}
-    .af-vorschlag{margin-left:6px;padding:6px 12px;min-height:44px;border-radius:999px;border:1px solid var(--emerald,#00B888);background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}
-    .af-vorschlag:hover,.af-vorschlag:focus-visible{background:rgba(0,184,136,.14);outline:none}
-    .af[data-schritt]:not([data-schritt="1"]) .af-weg{margin-top:var(--s-2)}
-    .af-einladung .af-duo{display:none}
+
+  h1{
+    font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(2.1rem,1.3rem + 2.8vw,3.2rem);line-height:1.04;letter-spacing:-.025em;
+    font-variation-settings:"opsz" 144;
+    /* Umbruch erzwingen: einzeilig wirkt die Zeile klein, gestapelt entspricht
+       sie der Editorial-Typografie der uebrigen Seiten. */
+    max-width:15ch;
+    text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45);
   }
+  h1 em{
+    font-style:italic;font-weight:400;
+    background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:var(--emerald);
+  }
+
+  p.lead{color:var(--muted);font-size:1.02rem;line-height:1.55;max-width:38ch}
+
+  /* Fortschritt als laufendes Licht statt rotierendem Kreis — dieselbe
+     Bildsprache wie der Build-Screen im Funnel. Nur transform, damit es
+     auf dem Compositor laeuft. */
+  .load{width:min(260px,64vw);height:2px;border-radius:2px;background:var(--line-2);overflow:hidden}
+  .load span{display:block;height:100%;width:38%;border-radius:2px;background:var(--accent-flow);animation:rutsch 1.4s var(--ease) infinite}
+  @keyframes rutsch{0%{transform:translateX(-110%)}100%{transform:translateX(380%)}}
+
+  /* Rahmen-Knopf wie in der Gratis-Sektion der Startseite. Bewusst KEIN
+     Emerald-Leuchten: das bleibt dem Erstgespraech-CTA vorbehalten. */
+  .btn{
+    display:inline-block;font-family:"Archivo",sans-serif;font-size:14.5px;font-weight:700;
+    letter-spacing:.02em;padding:16px 30px;border-radius:9px;text-decoration:none;
+    background:transparent;color:var(--paper);border:1px solid var(--line-3);
+    transition:border-color var(--dur-2, .25s) var(--ease),background var(--dur-2, .25s) var(--ease),transform var(--dur-2, .25s) var(--ease);
+  }
+  .btn:hover,.btn:focus-visible{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09);transform:translateY(-2px);outline:none}
+
+  .fine{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--faint);line-height:1.8}
+
   @media (prefers-reduced-motion:reduce){
-    .js .af-step.ist-neu,.af-haken,.af-haken path{animation:none}
-    .af-haken path{stroke-dashoffset:0}
-    .af-weg li::after,.af-kachel-flaeche,.af-chip span{transition:none}
+    .load span{animation:none;width:100%}
+    .btn:hover,.btn:focus-visible{transform:none}
+  }
+  /* Bruecke (motion-loop 06.10.2026): die Zwischenseite zeigt nur den Grund,
+     den auch die Vorschau hat — keine Karte, kein Bild, das beim Weiterleiten
+     abbricht. Der Notausgang erscheint erst, wenn die Weiterleitung haengt:
+     nach 1,5 s, ohne Bewegung (auch bei reduce und ohne JavaScript). */
+  @keyframes zeigen{to{opacity:1;visibility:visible}}
+  main.card{opacity:0;visibility:hidden;animation:zeigen .01s linear 1.5s forwards}
+
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
   }
 </style>
-<link rel="stylesheet" href="/abschluss.css">
 </head>
 <body>
-  <a class="skip" href="#af-buehne">Direkt zur Anfrage</a>
-
-  <div class="af" id="af" data-schritt="1">
-    <header class="af-kopf">
-      <a class="af-logo" href="/" aria-label="social2scale, zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="68" height="34"></a>
-      <a class="af-heim" href="/"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Startseite</a>
-    </header>
-
-    <aside class="af-seite" aria-label="Dein Weg zum Erstgespräch">
-      <div class="af-einladung">
-        <h1>Lass uns über dein <em>Wachstum</em> reden.</h1>
-        <p class="af-lede">Fünf kurze Fragen. Danach <b>melden wir uns persönlich</b> bei dir, kostenlos und unverbindlich.</p>
-        <div class="af-duo">
-          <span class="af-duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="46" height="46" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="46" height="46" decoding="async"></picture></span>
-          <p>Deine Anfrage landet direkt bei <b>Sebi &amp; Phil</b>.</p>
-        </div>
-      </div>
-      <ol class="af-weg" id="af-weg">
-        <li data-weg="1"><span class="af-weg-punkt" aria-hidden="true"></span><span class="af-weg-name">Deine Lage</span><span class="af-weg-wert"></span></li>
-        <li data-weg="2"><span class="af-weg-punkt" aria-hidden="true"></span><span class="af-weg-name">Deine Ziele</span><span class="af-weg-wert"></span></li>
-        <li data-weg="3"><span class="af-weg-punkt" aria-hidden="true"></span><span class="af-weg-name">Dein Rahmen</span><span class="af-weg-wert"></span></li>
-        <li data-weg="4"><span class="af-weg-punkt" aria-hidden="true"></span><span class="af-weg-name">Kontakt</span><span class="af-weg-wert"></span></li>
-        <li data-weg="5"><span class="af-weg-punkt" aria-hidden="true"></span><span class="af-weg-name">Prüfen &amp; senden</span><span class="af-weg-wert"></span></li>
-      </ol>
-      <p class="af-stand" aria-live="polite"><b id="af-stand-name">Deine Lage</b><span id="af-stand-zahl">1 von 5</span></p>
-      <p class="af-danach">Nach dem Absenden kannst du direkt einen Termin wählen. Wenn nicht, rufen wir dich an.</p>
-    </aside>
-
-    <main class="af-buehne" id="af-buehne">
-      <form class="af-form" id="anfrage-form" novalidate aria-label="Anfrage für ein Erstgespräch">
-        <div class="hp" aria-hidden="true">
-          <label for="website-hp">Webseite</label>
-          <input type="text" id="website-hp" name="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <fieldset class="af-step" data-step="1" aria-describedby="af-f1">
-          <legend class="af-frage" tabindex="-1">Wo stehst du gerade mit Social Media?</legend>
-          <div class="af-antworten af-kacheln">
-            <label class="af-kachel"><input type="radio" name="status" value="Noch keiner" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Noch gar nicht</span><span class="af-kachel-zeile">Es gibt noch kein Profil, oder es ruht.</span></span></label>
-            <label class="af-kachel"><input type="radio" name="status" value="Vorhanden, aber schwach" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Da, aber es bringt wenig</span><span class="af-kachel-zeile">Du postest, doch es kommt kaum etwas zurück.</span></span></label>
-            <label class="af-kachel"><input type="radio" name="status" value="Läuft — will skalieren" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Läuft, soll wachsen</span><span class="af-kachel-zeile">Es funktioniert und soll jetzt mehr bringen.</span></span></label>
-          </div>
-          <p class="af-fehler" id="af-f1" role="alert"></p>
-        </fieldset>
-
-        <fieldset class="af-step" data-step="2" aria-describedby="af-f2" hidden>
-          <legend class="af-frage" tabindex="-1">Was soll sich ändern?</legend>
-          <p class="af-hilfe">Tipp alles an, was passt.</p>
-          <div class="af-antworten af-chips">
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Mehr Sichtbarkeit & Reichweite"><span>Mehr Sichtbarkeit</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Planbar mehr Leads & Anfragen"><span>Planbar mehr Anfragen</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Mehr Umsatz aus Social"><span>Mehr Umsatz aus Social</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Personal Brand stärken"><span>Meine Marke stärken</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Keine Zeit für Content"><span>Keine Zeit für Content</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Kein / schwacher Social-Auftritt"><span>Erst mal ein Auftritt</span></label>
-            <label class="af-chip"><input type="checkbox" name="goalpick" value="Anderes" id="af-anders-an"><span>Etwas anderes</span></label>
-          </div>
-          <div class="af-feld af-anders" id="af-anders" hidden>
-            <label for="goal">Worum geht es dir?</label>
-            <textarea id="goal" name="goal" maxlength="600" placeholder="Ein Satz reicht."></textarea>
-          </div>
-          <p class="af-fehler" id="af-f2" role="alert"></p>
-        </fieldset>
-
-        <fieldset class="af-step" data-step="3" aria-describedby="af-f3" hidden>
-          <legend class="af-frage" tabindex="-1">Welcher Rahmen passt dir im Monat?</legend>
-          <p class="af-hilfe">Freiwillig. Unsere Pakete stehen offen auf der <a href="/preise/" target="_blank" rel="noopener">Preisseite</a>.</p>
-          <div class="af-antworten af-kacheln">
-            <label class="af-kachel"><input type="radio" name="budget" value="Noch unklar" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Weiß ich noch nicht</span></span></label>
-            <label class="af-kachel"><input type="radio" name="budget" value="unter 1.000 €" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Unter 1.000 €</span></span></label>
-            <label class="af-kachel"><input type="radio" name="budget" value="1.000–3.000 €" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">1.000 bis 3.000 €</span></span></label>
-            <label class="af-kachel"><input type="radio" name="budget" value="3.000 €+" data-weiter><span class="af-kachel-flaeche"><span class="af-kachel-ring"></span><span class="af-kachel-titel">Über 3.000 €</span></span></label>
-          </div>
-          <p class="af-fehler" id="af-f3" role="alert"></p>
-        </fieldset>
-
-        <fieldset class="af-step" data-step="4" hidden>
-          <legend class="af-frage" tabindex="-1">Wie erreichen wir dich?</legend>
-          <div class="af-antworten af-felder zwei">
-            <div class="af-feld">
-              <label for="name">Dein Name</label>
-              <input type="text" id="name" name="name" autocomplete="name" maxlength="80" required aria-describedby="af-f-name">
-              <p class="af-fehler" id="af-f-name" role="alert"></p>
-            </div>
-            <div class="af-feld">
-              <label for="email">E-Mail</label>
-              <input type="email" id="email" name="email" autocomplete="email" inputmode="email" maxlength="120" required aria-describedby="af-f-email">
-              <p class="af-fehler" id="af-f-email" role="alert"></p>
-            </div>
-            <div class="af-feld">
-              <label for="phone">Telefon <small>für den Rückruf</small></label>
-              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" maxlength="40" required placeholder="+49" aria-describedby="af-f-phone">
-              <p class="af-fehler" id="af-f-phone" role="alert"></p>
-            </div>
-            <div class="af-feld">
-              <label for="business">Business oder Rolle</label>
-              <input type="text" id="business" name="business" autocomplete="organization" maxlength="120" required placeholder="z. B. Coach für Führungskräfte" aria-describedby="af-f-business">
-              <p class="af-fehler" id="af-f-business" role="alert"></p>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="af-step" data-step="5" aria-describedby="af-f5" hidden>
-          <legend class="af-frage" tabindex="-1">Passt alles so?</legend>
-          <dl class="af-uebersicht" id="af-uebersicht"></dl>
-          <label class="af-ok">
-            <input type="checkbox" id="consent" name="consent" required>
-            <span class="af-ok-box"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12.5l4 4L19 7" stroke="#04201A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span>Ich habe die <a href="/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.</span>
-          </label>
-          <div class="af-ts">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADqwI4cSayZDteOs" data-theme="dark" data-language="de" data-size="flexible" data-appearance="interaction-only"></div>
-          </div>
-          <p class="af-fehler" id="af-f5" role="alert"></p>
-          <div class="af-duo af-duo-senden">
-            <span class="af-duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="46" height="46" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="46" height="46" loading="lazy" decoding="async"></picture></span>
-            <p>Landet direkt bei <b>Sebi &amp; Phil</b>.</p>
-          </div>
-        </fieldset>
-
-        <noscript><p class="af-noscript">Das Formular braucht JavaScript. Schreib uns sonst direkt an info@social2scale.com.</p></noscript>
-
-        <div class="af-leiste" id="af-leiste">
-          <button type="button" class="af-zurueck" id="af-zurueck" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Zurück</button>
-          <button type="submit" class="af-weiter" id="af-weiter"><span class="af-kreis" aria-hidden="true"></span><span id="af-weiter-text">Weiter</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        </div>
-      </form>
-
-      <section class="af-erfolg" id="af-erfolg" tabindex="-1" aria-live="polite" hidden>
-        <div class="af-haken" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.2 4.2L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h2 id="af-erfolg-titel">Danke, deine Anfrage ist da.</h2>
-        <p>Wenn du magst, such dir gleich einen Termin aus. Sonst rufen wir dich an.</p>
-        <div class="af-gefunden" id="af-gefunden" role="group" aria-labelledby="af-gefunden-t" hidden>
-          <p class="af-hilfe" id="af-gefunden-t">Eine kurze Frage noch: Wie hast du uns gefunden? <span class="af-frei">freiwillig</span></p>
-          <div class="af-chips">
-            <label class="af-chip"><input type="radio" name="gefunden" value="instagram"><span>Instagram</span></label>
-            <label class="af-chip"><input type="radio" name="gefunden" value="empfehlung"><span>Empfehlung</span></label>
-            <label class="af-chip"><input type="radio" name="gefunden" value="google"><span>Google</span></label>
-            <label class="af-chip"><input type="radio" name="gefunden" value="anders"><span>Anders</span></label>
-          </div>
-        </div>
-        <p class="af-gefunden-danke" id="af-gefunden-danke" role="status" hidden>Danke dir, das hilft uns sehr.</p>
-        <div class="af-kalender" id="cal-inline" aria-label="Terminkalender Erstgespräch"></div>
-        <a class="af-kalender-link" href="https://cal.eu/social2scale/social2scale-erstgesprach" target="_blank" rel="noopener noreferrer">Kalender lädt nicht? Hier direkt buchen</a>
-      </section>
-    </main>
-  </div>
-
-  <footer class="af-fuss">
-    <a href="/impressum/">Impressum</a>
-    <a href="/datenschutz/">Datenschutz</a>
-    <a href="mailto:info@social2scale.com">info@social2scale.com</a>
-  </footer>
-
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script>
-  (function () {
-    var ENDPOINT = 'https://closing.social2scale.com/api/anfrage';
-    var HERKUNFT_ENDPOINT = 'https://closing.social2scale.com/api/anfrage-herkunft';
-    var ENTWURF = 's2s-anfrage-entwurf-v1';
-    var ANZAHL = 5;
-    var NAMEN = ['Deine Lage', 'Deine Ziele', 'Dein Rahmen', 'Kontakt', 'Prüfen & senden'];
-    var geladenUm = Date.now();
-
-    var huelle = document.getElementById('af');
-    var form = document.getElementById('anfrage-form');
-    var schritte = Array.prototype.slice.call(form.querySelectorAll('.af-step'));
-    var weg = Array.prototype.slice.call(document.querySelectorAll('#af-weg li'));
-    var zurueck = document.getElementById('af-zurueck');
-    var weiter = document.getElementById('af-weiter');
-    var weiterText = document.getElementById('af-weiter-text');
-    var buehne = document.getElementById('af-buehne');
-    var erfolg = document.getElementById('af-erfolg');
-    var andersAn = document.getElementById('af-anders-an');
-    var andersFeld = document.getElementById('af-anders');
-    var ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var aktuell = 1;
-    var perZeiger = false;
-
-    function el(id) { return document.getElementById(id); }
-    function wert(id) { var e = el(id); return e ? e.value.trim() : ''; }
-    function gewaehlt(name) { var e = form.querySelector('input[name="' + name + '"]:checked'); return e ? e.value : ''; }
-    function vonLink() { try { return (new URLSearchParams(location.search).get('von') || '').toLowerCase().replace(/[^a-z0-9-]/g, '').slice(0, 30); } catch (e) { return ''; } }
-    function herkunftHost() { try { var h = document.referrer ? new URL(document.referrer).hostname : ''; return h === location.hostname ? '' : h.slice(0, 80); } catch (e) { return ''; } }
-    function ziele() { return Array.prototype.slice.call(form.querySelectorAll('input[name="goalpick"]:checked')).map(function (c) { return c.value; }); }
-    function anzeigeText(input) { var t = input && input.parentNode.querySelector('.af-kachel-titel'); return t ? t.textContent : ''; }
-    function zielTexte() {
-      return Array.prototype.slice.call(form.querySelectorAll('input[name="goalpick"]:checked'))
-        .filter(function (c) { return c.value !== 'Anderes'; })
-        .map(function (c) { return c.nextElementSibling.textContent; });
-    }
-
-    // ---- Entwurf: Abbruch ist nie Verlust ----
-    function speichern() {
-      try {
-        localStorage.setItem(ENTWURF, JSON.stringify({
-          status: gewaehlt('status'), budget: gewaehlt('budget'), ziele: ziele(), goal: wert('goal'),
-          name: wert('name'), email: wert('email'), phone: wert('phone'), business: wert('business'), schritt: aktuell
-        }));
-      } catch (e) {}
-    }
-    function laden() {
-      try { return JSON.parse(localStorage.getItem(ENTWURF) || 'null'); } catch (e) { return null; }
-    }
-    function setzeWahl(name, v) {
-      if (!v) return;
-      Array.prototype.forEach.call(form.querySelectorAll('input[name="' + name + '"]'), function (i) { i.checked = i.value === v; });
-    }
-    function einsetzen(d) {
-      if (!d) return;
-      setzeWahl('status', d.status);
-      setzeWahl('budget', d.budget);
-      (d.ziele || []).forEach(function (v) {
-        Array.prototype.forEach.call(form.querySelectorAll('input[name="goalpick"]'), function (i) { if (i.value === v) i.checked = true; });
-      });
-      ['goal', 'name', 'email', 'phone', 'business'].forEach(function (k) { if (d[k] && el(k) && !el(k).value) el(k).value = String(d[k]).slice(0, 600); });
-    }
-
-    // ---- Seitenleiste: der Weg zeigt, was schon angegeben ist ----
-    function wegAktualisieren() {
-      var status = form.querySelector('input[name="status"]:checked');
-      var budget = form.querySelector('input[name="budget"]:checked');
-      var z = zielTexte(); if (wert('goal')) z.push(wert('goal'));
-      var werte = [status ? anzeigeText(status) : '', z.join(', '), budget ? anzeigeText(budget) : '', wert('name'), ''];
-      weg.forEach(function (li, i) {
-        var n = i + 1;
-        li.classList.toggle('ist-fertig', n < aktuell);
-        li.classList.toggle('ist-dran', n === aktuell);
-        if (n === aktuell) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
-        li.querySelector('.af-weg-wert').textContent = n < aktuell ? werte[i] : '';
-      });
-      el('af-stand-name').textContent = NAMEN[aktuell - 1];
-      el('af-stand-zahl').textContent = aktuell + ' von ' + ANZAHL;
-    }
-
-    function uebersichtBauen() {
-      var dl = el('af-uebersicht');
-      while (dl.firstChild) dl.removeChild(dl.firstChild);
-      var status = form.querySelector('input[name="status"]:checked');
-      var budget = form.querySelector('input[name="budget"]:checked');
-      var z = zielTexte(); if (wert('goal')) z.push(wert('goal'));
-      var zeilen = [
-        ['Deine Lage', status ? anzeigeText(status) : '', 1],
-        ['Deine Ziele', z.join(', '), 2],
-        ['Dein Rahmen', budget ? anzeigeText(budget) : 'Keine Angabe', 3],
-        ['Kontakt', [wert('name'), wert('email'), wert('phone'), wert('business')].filter(Boolean).join(' · '), 4]
-      ];
-      zeilen.forEach(function (z) {
-        var box = document.createElement('div'); box.className = 'af-zeile';
-        var dt = document.createElement('dt'); dt.textContent = z[0];
-        var dd = document.createElement('dd'); dd.textContent = z[1];
-        var b = document.createElement('button'); b.type = 'button'; b.className = 'af-aendern'; b.textContent = 'Ändern';
-        b.setAttribute('aria-label', z[0] + ' ändern');
-        b.addEventListener('click', function () { zeige(z[2], true); });
-        box.appendChild(dt); box.appendChild(dd); box.appendChild(b); dl.appendChild(box);
-      });
-    }
-
-    // ---- Prüfen je Schritt: klar sagen, was fehlt ----
-    function fehler(id, text, feld) {
-      var f = el(id); if (f) f.textContent = text || '';
-      if (feld) { if (text) feld.setAttribute('aria-invalid', 'true'); else feld.removeAttribute('aria-invalid'); }
-      return !text;
-    }
-    // ---- Tippfehler in der E-Mail-Domain vorschlagen, BEVOR abgeschickt wird ----
-    // Am 01.10.2026 scheiterten fünf Versuche an einer Domain, die es nicht gibt.
-    // Ein Vorschlag mit einem Tipp verhindert das, statt es hinterher zu erklären.
-    // Nicht blockierend: wer die Adresse so meint, klickt einfach noch einmal weiter.
-    var BEKANNT = ['gmail.com', 'googlemail.com', 'gmx.de', 'gmx.net', 'gmx.at', 'gmx.ch', 'gmx.com', 'web.de', 't-online.de',
-      'outlook.com', 'outlook.de', 'hotmail.com', 'hotmail.de', 'live.de', 'live.com', 'icloud.com', 'me.com', 'yahoo.com',
-      'yahoo.de', 'aol.com', 'freenet.de', 'posteo.de', 'mail.de', 'arcor.de', 'online.de'];
-    function abstand(a, b) {            // Damerau (Vertauschung zählt als ein Fehler)
-      var d = [], i, j;
-      for (i = 0; i <= a.length; i++) { d[i] = [i]; }
-      for (j = 0; j <= b.length; j++) { d[0][j] = j; }
-      for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) {
-        var k = a[i - 1] === b[j - 1] ? 0 : 1;
-        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + k);
-        if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
-      }
-      return d[a.length][b.length];
-    }
-    function vorschlag(adresse) {
-      var t = String(adresse).split('@');
-      if (t.length !== 2 || !t[1]) return '';
-      var dom = t[1].toLowerCase(), best = '', min = 3;
-      if (BEKANNT.indexOf(dom) > -1) return '';
-      BEKANNT.forEach(function (k) { var x = abstand(dom, k); if (x < min) { min = x; best = k; } });
-      return best ? t[0] + '@' + best : '';
-    }
-    var vorschlagGezeigt = '';
-    function zeigeVorschlag(v) {
-      var f = el('af-f-email');
-      f.textContent = 'Meintest du ';
-      var b = document.createElement('b'); b.textContent = v; f.appendChild(b);
-      f.appendChild(document.createTextNode('? '));
-      var k = document.createElement('button');
-      k.type = 'button'; k.className = 'af-vorschlag'; k.textContent = 'Übernehmen';
-      k.addEventListener('click', function () { el('email').value = v; fehler('af-f-email', '', el('email')); speichern(); el('email').focus(); });
-      f.appendChild(k);
-      el('email').setAttribute('aria-invalid', 'true');
-    }
-
-    function pruefe(n) {
-      if (n === 1) return fehler('af-f1', gewaehlt('status') ? '' : 'Wähl die Antwort, die am ehesten passt.');
-      if (n === 2) {
-        var z = ziele();
-        if (!z.length) return fehler('af-f2', 'Wähl mindestens ein Ziel aus.');
-        if (z.indexOf('Anderes') > -1 && !wert('goal')) { el('goal').focus(); return fehler('af-f2', 'Schreib kurz, worum es dir geht.'); }
-        return fehler('af-f2', '');
-      }
-      if (n === 4) {
-        var ok = true, erstes = null;
-        function feld(id, text) { var e = el(id); var gut = fehler('af-f-' + id, text, e); if (!gut && !erstes) erstes = e; ok = ok && gut; }
-        feld('name', wert('name').length >= 2 ? '' : 'Wie dürfen wir dich ansprechen?');
-        feld('email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(wert('email')) ? '' : 'Die E-Mail-Adresse sieht unvollständig aus.');
-        var ziffern = wert('phone').replace(/\D/g, '');
-        feld('phone', (/^[0-9+()\/ .\-]+$/.test(wert('phone')) && ziffern.length >= 6) ? '' : 'Bitte eine Telefonnummer mit mindestens 6 Ziffern.');
-        feld('business', wert('business') ? '' : 'Ein Stichwort reicht, z. B. dein Angebot.');
-        var v = ok || el('af-f-email').textContent === '' ? vorschlag(wert('email')) : '';
-        if (v && vorschlagGezeigt !== wert('email')) {
-          vorschlagGezeigt = wert('email');
-          zeigeVorschlag(v);
-          if (!erstes) erstes = el('email');
-          ok = false;
-        }
-        if (erstes) erstes.focus();
-        return ok;
-      }
-      if (n === 5) {
-        if (el('consent').checked) return fehler('af-f5', '');
-        // Am Handy lag die Einwilligung unter der festen Knopfleiste: ohne Sprung
-        // sah der Tipp auf „Anfrage senden" aus wie ein toter Knopf.
-        var box = el('consent').closest('.af-ok');
-        try { box.scrollIntoView({ block: 'center', behavior: ruhig ? 'auto' : 'smooth' }); } catch (e) {}
-        try { el('consent').focus({ preventScroll: true }); } catch (e) {}
-        return fehler('af-f5', 'Bitte bestätige die Datenschutzerklärung.');
-      }
-      return true;
-    }
-
-    // ---- Schritt wechseln: immer oben beginnen ----
-    // Trichter: jeder gezeigte Schritt einmal je Besuch an die eigene Zählung —
-    // ohne Eingaben, ohne Kennung (Datenschutz §05). So sehen wir, wo das Formular
-    // zu kompliziert ist.
-    var gemeldet = {};
-    function melde(pfad) {
-      if (gemeldet[pfad]) return;
-      gemeldet[pfad] = true;
-      try {
-        if (navigator.doNotTrack === '1' || window.doNotTrack === '1' || !navigator.sendBeacon) return;
-        var d = JSON.stringify({ p: pfad, r: '', d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
-        navigator.sendBeacon('https://closing.social2scale.com/api/pv', new Blob([d], { type: 'text/plain;charset=UTF-8' }));
-      } catch (e) { /* Zählung darf das Formular nie stören */ }
-    }
-
-    function zeige(n, verlauf, rueckwaerts) {
-      n = Math.max(1, Math.min(ANZAHL, n));
-      var vorher = aktuell; aktuell = n;
-      melde('/anfrage/schritt/' + n + '/');
-      huelle.setAttribute('data-schritt', String(n));
-      schritte.forEach(function (s) {
-        var an = Number(s.getAttribute('data-step')) === n;
-        s.hidden = !an;
-        s.classList.remove('ist-neu', 'von-hinten');
-        if (an && vorher !== n) { void s.offsetWidth; s.classList.add('ist-neu'); if (rueckwaerts || n < vorher) s.classList.add('von-hinten'); }
-      });
-      zurueck.disabled = n === 1;
-      weiterText.textContent = n === ANZAHL ? 'Anfrage senden' : (n === 3 && !gewaehlt('budget') ? 'Ohne Angabe weiter' : 'Weiter');
-      if (n === ANZAHL) uebersichtBauen();
-      wegAktualisieren();
-      if (verlauf && vorher !== n) { try { history.pushState({ schritt: n }, '', '#schritt-' + n); } catch (e) {} }
-      if (vorher && vorher !== n) {
-        try { huelle.scrollIntoView({ block: 'start', behavior: ruhig ? 'auto' : 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
-        var kopf = schritte[n - 1].querySelector('.af-frage');
-        if (kopf) { try { kopf.focus({ preventScroll: true }); } catch (e) { kopf.focus(); } }
-      }
-      speichern();
-    }
-
-    window.addEventListener('popstate', function (ev) {
-      var n = ev.state && ev.state.schritt ? ev.state.schritt : 1;
-      if (!erfolg.hidden) return;
-      zeige(n, false, n < aktuell);
-    });
-
-    zurueck.addEventListener('click', function () { if (aktuell > 1) history.back(); });
-
-    // Einzelwahl per Maus/Finger: gleich weiter. Per Tastatur nicht —
-    // die Pfeiltasten wechseln die Auswahl, Enter geht weiter.
-    form.addEventListener('pointerdown', function () { perZeiger = true; });
-    form.addEventListener('keydown', function (ev) {
-      perZeiger = false;
-      if (ev.key === 'Enter' && ev.target.tagName !== 'TEXTAREA' && ev.target.tagName !== 'BUTTON' && ev.target.tagName !== 'A') { ev.preventDefault(); vor(); }
-    });
-    form.addEventListener('change', function (ev) {
-      var t = ev.target;
-      if (t === andersAn) { andersFeld.hidden = !t.checked; if (t.checked) el('goal').focus(); }
-      if (aktuell === 3) weiterText.textContent = gewaehlt('budget') ? 'Weiter' : 'Ohne Angabe weiter';
-      fehler('af-f' + aktuell, '');
-      speichern();
-      if (t.hasAttribute('data-weiter') && perZeiger) setTimeout(function () { if (t.checked) vor(); }, ruhig ? 0 : 220);
-    });
-    form.addEventListener('input', function (ev) {
-      if (ev.target.getAttribute('aria-invalid') === 'true') fehler('af-f-' + ev.target.id, '', ev.target);
-      speichern();
-    });
-
-    function vor() {
-      if (!pruefe(aktuell)) return;
-      if (aktuell < ANZAHL) zeige(aktuell + 1, true);
-      else senden();
-    }
-
-    form.addEventListener('submit', function (ev) { ev.preventDefault(); vor(); });
-
-    // ---- Senden ----
-    function senden() {
-      var hp = el('website-hp');
-      if (hp && hp.value.trim() !== '') { fertig(); return; }
-      for (var n = 1; n < ANZAHL; n++) { if (!pruefe(n)) { zeige(n, true); return; } }
-
-      var z = ziele().filter(function (p) { return p !== 'Anderes'; }).join(', ');
-      if (wert('goal')) z += (z ? ' · ' : '') + wert('goal');
-      var tsTok = (document.querySelector('[name="cf-turnstile-response"]') || {}).value || '';
-      if (window.turnstile && !tsTok) { fehler('af-f5', 'Die Sicherheitsprüfung läuft noch. Bitte in ein paar Sekunden erneut senden.'); return; }
-
-      var daten = {
-        name: wert('name'), email: wert('email'), phone: wert('phone'), business: wert('business'),
-        status: gewaehlt('status'), goal: z, budget: gewaehlt('budget'),
-        turnstile: tsTok, elapsed: Date.now() - geladenUm,
-        // Herkunft ohne Speicherung im Browser: ein ?von= aus unseren eigenen
-        // Links und nur der Domainname der vorigen Seite.
-        von: vonLink(), herkunft: herkunftHost()
-      };
-      weiter.classList.add('laedt'); weiter.disabled = true; zurueck.disabled = true;
-      fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(daten) })
-        .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
-        .then(function (r) {
-          if (r.ok && r.json && (r.json.success === true || r.json.ok === true)) { nachfrage = r.json.nachfrage || ''; fertig(); }
-          else { var err = new Error('abgelehnt'); err.code = (r.json && r.json.error) || ''; throw err; }
-        })
-        .catch(function (e) {
-          weiter.classList.remove('laedt'); weiter.disabled = false; zurueck.disabled = false;
-          try { window.turnstile && window.turnstile.reset(); } catch (x) {}
-          // Den Grund nennen, statt immer „nicht angekommen": am 01.10.2026 scheiterten
-          // fünf Versuche an einer E-Mail-Domain, die es nicht gibt — mit der alten
-          // Meldung schickt man denselben Tippfehler einfach noch einmal ab.
-          var code = (e && e.code) || '';
-          if (code === 'email_domain') {
-            zeige(4, true);
-            fehler('af-f-email', 'An diese Adresse kann keine E-Mail zugestellt werden. Prüf bitte die Schreibweise, zum Beispiel gmail.com statt gmial.com.', el('email'));
-            try { el('email').focus(); } catch (x) {}
-            return;
-          }
-          var text = {
-            captcha: 'Die Sicherheitsprüfung ist abgelaufen. Schick die Anfrage bitte einfach noch einmal ab.',
-            missing_fields: 'Name, E-Mail oder Telefon fehlen noch. Bitte in Schritt 4 ergänzen.'
-          }[code] || (/zu viele/i.test(String(code)) ? 'Zu viele Versuche in kurzer Zeit. Bitte in ein paar Minuten noch einmal.' :
-            'Die Anfrage ist nicht angekommen. Deine Angaben bleiben gespeichert. Versuch es noch einmal oder schreib an info@social2scale.com.');
-          fehler('af-f5', text);
-        });
-    }
-
-    // Freiwillige Nachfrage nach dem Absenden: kostet die Anfrage nichts. Der
-    // Schluessel gehoert nur zu DIESER Anfrage; das Danke kommt erst nach dem Server.
-    var nachfrage = '';
-    function nachfrageZeigen() {
-      var box = el('af-gefunden');
-      if (!box || !/^[a-f0-9]{32}$/.test(nachfrage)) return;
-      box.hidden = false;
-      Array.prototype.forEach.call(box.querySelectorAll('input[name="gefunden"]'), function (r) {
-        r.addEventListener('change', function () {
-          Array.prototype.forEach.call(box.querySelectorAll('input'), function (i) { i.disabled = true; });
-          fetch(HERKUNFT_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nachfrage: nachfrage, gefunden: r.value }) })
-            .then(function (res) {
-              if (!res.ok) throw new Error('nein');
-              box.hidden = true; el('af-gefunden-danke').hidden = false;
-            })
-            .catch(function () { box.hidden = true; });
-        });
-      });
-    }
-    function fertig() {
-      melde('/anfrage/fertig/');
-      var vorname = wert('name').split(/\s+/)[0];
-      if (vorname) el('af-erfolg-titel').textContent = 'Danke, ' + vorname + '. Deine Anfrage ist da.';
-      try { localStorage.removeItem(ENTWURF); } catch (e) {}
-      form.hidden = true;
-      erfolg.hidden = false;
-      aktuell = ANZAHL + 1; wegAktualisieren();
-      el('af-stand-name').textContent = 'Angekommen'; el('af-stand-zahl').textContent = '';
-      try { history.replaceState({ fertig: true }, '', location.pathname + location.search); } catch (e) {}
-      try { huelle.scrollIntoView({ block: 'start', behavior: ruhig ? 'auto' : 'smooth' }); } catch (e) {}
-      try { erfolg.focus({ preventScroll: true }); } catch (e) {}
-      nachfrageZeigen();
-      try { window.s2sInitCal && window.s2sInitCal(); } catch (e) {}
-    }
-
-    // ---- Start: Entwurf zurück in die Felder, dann Angaben aus dem Link ----
-    var entwurf = laden();
-    einsetzen(entwurf);
-    try {
-      var p = new URLSearchParams(location.search);
-      var nm = (p.get('name') || '').trim().slice(0, 80); if (nm && !wert('name')) el('name').value = nm;
-      var em = (p.get('email') || '').trim().slice(0, 120); if (em && !wert('email')) el('email').value = em;
-      var ig = (p.get('ig') || '').trim().replace(/^@+/, '').replace(/[^A-Za-z0-9._]/g, '').slice(0, 40);
-      if (ig && !wert('goal')) { el('goal').value = 'Instagram: @' + ig; andersAn.checked = true; }
-    } catch (e) {}
-    andersFeld.hidden = !andersAn.checked;
-    var start = 1;
-    var anker = /^#schritt-(\d)$/.exec(location.hash);
-    if (anker && entwurf) start = Number(anker[1]);
-    else if (entwurf && entwurf.schritt) start = entwurf.schritt;
-    // Nur so weit vorspringen, wie die Angaben davor vollständig sind.
-    var ziel = 1;
-    while (ziel < start && pruefeStill(ziel)) ziel++;
-    function pruefeStill(n) {
-      if (n === 1) return !!gewaehlt('status');
-      if (n === 2) return ziele().length > 0 && (ziele().indexOf('Anderes') < 0 || !!wert('goal'));
-      if (n === 4) return wert('name').length >= 2 && !!wert('email') && !!wert('phone') && !!wert('business');
-      return true;
-    }
-    aktuell = 0;
-    zeige(ziel, false);
-    try { history.replaceState({ schritt: ziel }, '', ziel > 1 ? '#schritt-' + ziel : location.pathname + location.search); } catch (e) {}
-  })();
-  </script>
-  <script>
-  /* Cal.com (EU) Inline-Embed — startet erst nach dem Absenden über window.s2sInitCal. */
-  (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://www.cal.eu/embed/embed.js", "init");
-  var s2sCalInited = false;
-  window.s2sInitCal = function () {
-    if (s2sCalInited) return;
-    s2sCalInited = true;
-    Cal("init", "erstgespraech", { origin: "https://www.cal.eu" });
-    Cal.ns.erstgespraech("inline", {
-      elementOrSelector: "#cal-inline",
-      calLink: "social2scale/social2scale-erstgesprach",
-      layout: "month_view"
-    });
-    Cal.ns.erstgespraech("ui", {
-      theme: "dark",
-      hideEventTypeDetails: false,
-      cssVarsPerTheme: { dark: { "cal-brand": "#00B888" } }
-    });
-  };
-  </script>
+  <main class="card">
+    <img class="wordmark" src="/assets/sig-wordmark.png" alt="social2scale" width="180" height="28">
+    <p class="klabel">Kostenlos</p>
+    <h1>Dein Erstgespräch, <em>gleich</em>.</h1>
+    <p class="lead">Einen Moment — wir bringen dich hin. Falls nichts passiert, geht es auch von Hand:</p>
+    <div class="load" role="status" aria-label="Weiterleitung läuft"><span></span></div>
+    <a class="btn" href="https://start.social2scale.com/?weg=b">Weiter zum Erstgespräch →</a>
+    <p class="fine">Ein paar Fragen · Phil ruft dich zurück</p>
+  </main>
 <script>
+  // Steht VOR der Weiterleitung: dahinter zählte /gratis/ nie (Besucher-Simulation
+  // 12.10.2026: 0 Aufrufe seit August).
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
   // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
@@ -847,5 +174,10 @@
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
+  <script>
+    // replace() statt href: kein Eintrag in der Historie, der Zurueck-Knopf
+    // fuehrt zurueck zu Instagram und nicht in eine Weiterleitungsschleife.
+    location.replace("https://start.social2scale.com/?weg=b");
+  </script>
 </body>
 </html>

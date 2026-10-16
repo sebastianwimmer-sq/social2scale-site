@@ -377,12 +377,25 @@ function pruefeZaehler(page, persona, erwartet, f) {
   if (fehlt.length) befund(persona, 'Zähler', 'rot', 'Der Weg zur Vorschau wird nicht gezählt', 'fehlt: ' + fehlt.join(' ') + ' · gesehen: ' + (page.__gezaehlt.join(' ') || 'nichts'));
 }
 
+// Seit 15.10.2026 beginnt der Funnel mit „Was brauchst du gerade?“ (drei Wege). Die Besucherin
+// nimmt Weg A (Vorschau); alle drei Wege muessen ueber dem Falz liegen.
+async function wegA(page, persona) {
+  const wege = page.locator('button.weg:visible');
+  if (!(await wege.count())) return false;
+  const unten = await page.evaluate(() => Math.max(...[...document.querySelectorAll('button.weg')].filter((b) => b.offsetParent).map((b) => b.getBoundingClientRect().bottom)) - innerHeight);
+  if (persona && unten > 0) befund(persona, 'Funnel 0', 'rot', 'Nicht alle drei Wege der ersten Frage liegen über dem Falz', Math.round(unten) + ' px darunter');
+  await page.locator('button.weg[data-weg="a"]').click().catch(() => {});
+  await uebergaengeFertig(page);
+  return true;
+}
+
 // Funnel bis zum Mail-Feld, nie abschicken. Misst jeden Schritt am Schirm.
 async function funnel(page, persona) {
   const schritte = [];
   for (let i = 0; i < 14; i++) {
     if (await page.locator('#f-mail').isVisible().catch(() => false)) break;
     await uebergaengeFertig(page);
+    if (await wegA(page, i === 0 ? persona : null)) continue;
     const stand = await page.evaluate(() => {
       const weiter = [...document.querySelectorAll('button.next')].find((b) => b.offsetParent && b.id !== 'btnSubmit');
       if (!weiter) return null;
@@ -428,7 +441,8 @@ async function funnel(page, persona) {
       const nachher = await page.locator('#f-name').inputValue().catch(() => '');
       const weiterHinten = await page.evaluate(() => ![...document.querySelectorAll('#f-name')].some((f) => f.offsetParent));
       if (vorher && !nachher && !weiterHinten) befund(persona, 'Funnel ' + (i + 1), 'gelb', 'Neuladen mitten im Funnel löscht ihre Antworten', 'Name vorher „' + vorher + '", danach leer');
-      // Nach dem Neuladen wieder vorne beginnen: durch die bereits beantworteten Schritte.
+      // Nach dem Neuladen wieder vorne beginnen: Weg waehlen, dann durch die beantworteten Schritte.
+      await wegA(page, null);
       const vorne = page.locator('button.next:visible').first();
       for (let j = 0; j < 4 && !(await page.locator('#f-mail').isVisible().catch(() => false)); j++) {
         if (await page.locator('#f-name').isVisible().catch(() => false) && !(await page.locator('#f-name').inputValue())) break;
@@ -488,18 +502,14 @@ const PERSONAS = [
       await nav.click(); await ruhe(p);
       await besuche(p, w.id, '/preise/', { einstieg: true });
     } },
-  { id: 'skeptisch', wer: 'Skeptikerin: Ergebnisse → Über uns → Anfrage · iPhone 15 Pro', engine: 'webkit', geraet: devices['iPhone 15 Pro'],
+  // Seit 16.10.2026 lebt das Erstgespraech im Funnel (Weg B); /anfrage/ leitet nur noch weiter.
+  { id: 'skeptisch', wer: 'Skeptikerin: Ergebnisse → Über uns → Ablauf → Knopf · iPhone 15 Pro', engine: 'webkit', geraet: devices['iPhone 15 Pro'],
     async lauf(p, w) {
       for (const s of ['/results/', '/about/', '/ablauf/']) await besuche(p, w.id, s, { handy: true });
-      await besuche(p, w.id, '/anfrage/', { handy: true });
-      // Leer absenden: sagt das Formular, was fehlt? (Abschicken wird ohnehin abgebrochen.)
-      const knopf = p.locator('form button:visible, form [type="submit"]:visible').first();
-      if (await knopf.count()) {
-        await knopf.click().catch(() => {});
-        await ruhe(p);
-        const sagt = await p.evaluate(() => !![...document.querySelectorAll('[aria-invalid="true"], [role="alert"], .fehler, .error, :invalid')].find((e) => e.offsetParent && e.tagName !== 'FORM'));
-        if (!sagt) befund(w.id, '/anfrage/', 'rot', 'Leeres Absenden zeigt keinen Hinweis, was fehlt');
-      }
+      const knopf = p.locator('a[href="/gratis/"]:visible').first();
+      if (!(await knopf.count())) return befund(w.id, '/ablauf/', 'rot', 'Kein sichtbarer Knopf in den Funnel');
+      const n = await p.locator('a[href^="/anfrage/"]:visible').count();
+      if (n) befund(w.id, '/ablauf/', 'rot', `${n} Knopf/Knöpfe führen noch an den Funnel vorbei zu /anfrage/`);
     } },
   { id: 'tastatur', wer: 'Nur Tastatur · Desktop (Chromium)', engine: 'chromium', geraet: { viewport: { width: 1280, height: 800 } },
     async lauf(p, w) {
