@@ -12,8 +12,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1000.webp" media="(max-width:700px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1600.webp" media="(min-width:701px)">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1600.webp" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -196,9 +195,16 @@
   .sec-bg.wave{background-image:url(/assets/sec-wave.jpg)}
   .sec-bg.wave::after{background:linear-gradient(180deg,rgba(3,8,13,.78),rgba(3,8,13,.9))}
   /* Foto-Reveal: nur aktiv wenn JS die Klasse setzt (sonst sofort sichtbar) */
-  .hero-bg,.sec-bg{transition:opacity 1.2s ease,transform 1.5s cubic-bezier(.16,1,.3,1)}
-  .anim-ready .hero-bg,.anim-ready .sec-bg{opacity:0;transform:scale(1.07)}
-  .hero-bg.in,.sec-bg.in{opacity:1;transform:scale(1)}
+  /* Einblenden ohne Hereinzoomen (16.10.2026): scale(1.07) vergroesserte die ohnehin knappen Bilder weiter. */
+  .hero-bg,.sec-bg{transition:opacity 1.2s ease}
+  .anim-ready .hero-bg,.anim-ready .sec-bg{opacity:0}
+  .hero-bg.in,.sec-bg.in{opacity:1}
+  /* Schaerfe am Handy (16.10.2026, gemessen): ein Abschnitt ist dort 3× so hoch wie breit, „cover“
+     vergroesserte growth 3,9-fach und das Hero-Licht 3,7-fach. Das Bild deckt jetzt nur den oberen
+     Teil und laeuft weich ins Dunkel aus; das Hero-Licht steht unten rechts, wo die Linie ist. */
+  @media (max-width:700px){
+    .sec-bg{bottom:auto;height:min(100%,118vw);-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent)}
+  }
   @media (prefers-reduced-motion:reduce){.hero-bg{background-attachment:scroll}.anim-ready .hero-bg,.anim-ready .sec-bg{opacity:1;transform:none}}
   .hero .wrap{position:relative;z-index:1}
   .hero-center{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:980px;margin:0 auto}
@@ -273,7 +279,7 @@
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
     .hero-logo{--lw:clamp(230px,70vw,340px)}
-    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-licht-1000.webp) center 70%/cover no-repeat}
+    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-licht-1600.webp) 72% 100%/190% auto no-repeat,#03080D}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
@@ -1346,7 +1352,8 @@
   }
   .hero h1{text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45)}
   /* Scroll-Helligkeit: Foto-Layer lesen --photb / --phots (per JS pro Frame) */
-  .hero-bg,.sec-bg{filter:brightness(var(--photb,1)) saturate(var(--phots,1));will-change:filter}
+  /* ohne will-change: eine dauerhaft eigene Ebene rastern Browser einmal und strecken sie danach */
+  .hero-bg,.sec-bg{filter:brightness(var(--photb,1)) saturate(var(--phots,1))}
   .band.has-photo::before{filter:brightness(var(--photb,1)) saturate(var(--phots,1))}
   @media (prefers-reduced-motion:reduce){
     .hero .hero-center{transform:none!important}
