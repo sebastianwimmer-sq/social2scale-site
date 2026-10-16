@@ -11,7 +11,7 @@
  */
 
 import { htmlDoc } from './shell.js';
-import { FARB_CHIPS } from '../constants.js';
+import { FARB_CHIPS, ERSTGESPRAECH_URL } from '../constants.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
@@ -391,7 +391,8 @@ function pageMarkup(turnstileSiteKey) {
       <div class="q" data-step="15">
         <span class="eyebrow">Anfrage ist da</span>
         <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
-        <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch.</p>
+        <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Lieber gleich einen festen Termin? Such ihn dir selbst aus.</p>
+        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><p class="hint">Oder Phil ruft dich an, beides geht.</p></div>
         <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
       </div>
 
@@ -426,6 +427,7 @@ function pageMarkup(turnstileSiteKey) {
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
   let step=0;
+  const BUCHUNG='${ERSTGESPRAECH_URL}';
   // Ein Funnel, drei Wege (15.10.2026): A Vorschau (7–11), B Betreuung (12–15), C unsicher (16–17).
   // Frage 1–6 sind fuer alle gleich; Schritt 6 verzweigt nach WEG.
   let WEG='';
@@ -444,6 +446,7 @@ const PAGE_SCRIPT = `
   // zaehlte die Vorschau gar nichts. Pfade muessen zu VORSCHAU_TRICHTER im Portal passen.
   const GEZAEHLT=new Set();
   function pfad(n){
+    if(n==='termin')return '/vorschau/b/termin/';
     if(typeof n==='string')return '/vorschau/weg/'+n+'/';
     if(n===0)return '/vorschau/';if(n<=10)return '/vorschau/frage/'+n+'/';if(n===11)return '/vorschau/gesendet/';
     if(n<=14)return '/vorschau/b/frage/'+(n-11)+'/';if(n===15)return '/vorschau/b/gesendet/';
@@ -726,7 +729,10 @@ const PAGE_SCRIPT = `
     try{
       const res=await fetch('/api/anfrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
-      if(res.ok&&data&&data.ok){$('#echo-b').textContent=payload.name||'dir';show(15);return;}
+      if(res.ok&&data&&data.ok){$('#echo-b').textContent=payload.name||'dir';
+        // Buchungslink mit Name + E-Mail vorbefuellt (Calendly ?name=&email=), sonst tippt sie alles doppelt.
+        $('#termin-b').href=BUCHUNG+'?name='+encodeURIComponent(payload.name)+'&email='+encodeURIComponent(payload.email);
+        show(15);return;}
       react('#r-b',B_FEHLER[data&&data.error]||'Gerade nicht angekommen — bitte kurz warten und nochmal senden.','warn');
       turnstileReset('ts-b');
     }catch(err){
@@ -735,6 +741,8 @@ const PAGE_SCRIPT = `
     }finally{btn.disabled=false;label.textContent=war;}
   }
   $('#btnAnfrage').addEventListener('click',e=>{e.preventDefault();anfrageSenden(e.currentTarget);});
+  // Termin-Klick zaehlt als eigene Stufe von Weg B (wer bucht direkt, wer wartet auf den Anruf?).
+  $('#termin-b').addEventListener('click',()=>zaehlen('termin'));
 
   // Die Handy-Vorschau kippt zum Zeiger — gerechnet wird nur, wenn er sich bewegt,
   // und nur mit Maus. Kein Staub, kein Dauer-Schweben (motion-loop 06.10.2026:

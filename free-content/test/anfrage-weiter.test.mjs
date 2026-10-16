@@ -73,6 +73,8 @@ test('gültige Anfrage: Eingang im CRM wie aus /anfrage/, Mail an beide, gezähl
   assert.equal(u.mails[1].to, 'anna@beispiel.de');
   assert.equal(u.mails[1].m.subject, 'Deine Anfrage ist angekommen');
   assert.match(u.mails[1].m.htmlContent, /start\.social2scale\.com\/\?weg=a/);
+  // und Phils Calendly mit vorbefülltem Namen + E-Mail
+  assert.match(u.mails[1].m.htmlContent, /calendly\.com\/philipplibowicz\/neues-meeting\?name=Anna&amp;email=anna%40beispiel\.de/);
   assert.deepEqual(zaehler(u.s), { angekommen: 1 });
 }));
 
@@ -156,3 +158,9 @@ test('Versuch ohne Funnel-Origin zählt als fremd (x_), nie als echte Ablehnung'
   await handleAnfrage(req(GUT, true), u.env, {}, u.teile);
   assert.deepEqual(zaehler(u.s), { x_captcha: 1 });
 }));
+
+import { buchungsLink, ERSTGESPRAECH_URL } from '../src/constants.js';
+test('Buchungslink kodiert Leerzeichen als %20 und Sonderzeichen sicher', () => {
+  assert.equal(buchungsLink('Anna Maria Müller', 'a+b@x.de'), ERSTGESPRAECH_URL + '?name=Anna%20Maria%20M%C3%BCller&email=a%2Bb%40x.de');
+  assert.equal(buchungsLink('', ''), ERSTGESPRAECH_URL);
+});

@@ -113,3 +113,17 @@ export const TAETIGKEITEN = {
   creator: 'Creator',
   anders: 'Etwas anderes',
 };
+
+// Erstgespraech buchen: Phils Calendly (Sebi/Phil 16.10.2026, loest cal.eu ab). Steht NUR hier —
+// Funnel Weg B (Danke-Schirm) und Bestaetigungsmail lesen es von hier.
+export const ERSTGESPRAECH_URL = 'https://calendly.com/philipplibowicz/neues-meeting';
+
+/** Buchungslink mit vorbefuelltem Namen und E-Mail (Calendly: ?name=&email=, alle Tarife). */
+export function buchungsLink(name, email) {
+  // encodeURIComponent statt URLSearchParams: Calendly dokumentiert %20 fuer Leerzeichen, nicht +.
+  const teile = [];
+  if (name) teile.push('name=' + encodeURIComponent(String(name).slice(0, 120)));
+  if (email) teile.push('email=' + encodeURIComponent(String(email).slice(0, 160)));
+  const s = teile.join('&');
+  return ERSTGESPRAECH_URL + (s ? '?' + s : '');
+}

@@ -184,11 +184,12 @@ export function resultMailHtml(vorname, resultUrl) {
  * @param {string} vorname - bereits escaped (esc()).
  * @param {string} vorschauUrl - bereits escaped (esc()).
  */
-export function anfrageMailHtml(vorname, vorschauUrl) {
+export function anfrageMailHtml(vorname, vorschauUrl, buchungUrl) {
   return mailHead('Deine Anfrage ist angekommen — social2scale', `Danke, ${vorname} — Phil meldet sich persönlich bei dir.`) + `
           <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Danke, ${vorname}. Deine Anfrage ist da.</h1>
-          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Phil meldet sich persönlich bei dir, per Telefon oder Mail. Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Bis dahin kannst du dir in 60 Sekunden ansehen, wie dein Auftritt aussehen kann:</p>
-          ${mailCta(vorschauUrl, 'Gratis-Vorschau ansehen')}
+          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Phil meldet sich persönlich bei dir, per Telefon oder Mail. Lieber gleich einen festen Termin? Dann such ihn dir selbst aus:</p>
+          ${mailCta(buchungUrl, 'Termin direkt buchen')}
+          <p style="margin:24px 0 0;font-size:15px;line-height:1.6;color:${MUTED};">Bis dahin kannst du dir in 60 Sekunden ansehen, wie dein Auftritt aussehen kann: <a href="${vorschauUrl}" style="color:${PAPER};">Gratis-Vorschau ansehen</a></p>
           <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Nicht du? Dann ignorier diese Mail einfach. Fragen? Antworte direkt hierauf.</p>` + sigFooter();
 }
 
