@@ -10,7 +10,7 @@ import { chromium, webkit, devices } from '/opt/homebrew/lib/node_modules/playwr
 import { readFile } from 'node:fs/promises'; import { resolve, extname } from 'node:path';
 const W = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
-const MAX_FAKTOR = 2.0; // ab hier wirkt ein Foto auf Retina sichtbar weich (16.10.2026: 3,9 → klar unscharf)
+const MAX_FAKTOR = 1.5; // 16.10.2026: Sebi sah den Hero bei ×2,0 noch „verschwommen“; mit den Originalen liegen alle ≤ 1,2
 const befunde = [];
 // Fixture: 400-px-Bild als cover auf voller Breite (zu klein) und dasselbe Bild auf 200 px (scharf)
 const FIX = { '/fix-rot/': '<!doctype html><body style="margin:0"><div style="height:900px;background:url(/assets/workspace.webp) center/cover"></div></body>', '/fix-gruen/': '<!doctype html><body style="margin:0"><div style="width:300px;height:170px;background:url(/assets/growth.webp) center/cover"></div></body>' };

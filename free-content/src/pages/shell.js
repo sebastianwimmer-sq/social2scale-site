@@ -83,7 +83,10 @@ const SHARED_STYLE = `
 
   /* ── SZENE (echtes Marken-Foto + atmosphaerischer Wash) ── */
   .scene{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(150deg,#04140F,#05131C 52%,#03080D)}
-  .photo{position:absolute;inset:0;background:url("${ASSET_BASE}/workspace-portrait.webp") center 22%/cover no-repeat;opacity:.42}
+  /* Schaerfe (16.10.2026): das alte Hochformat (1024 px) wurde am Retina-Desktop 2,8-fach vergroessert.
+     Neu erzeugt in 4k (Higgsfield gpt_image_2, Jobs 2d5f87cf/5b642857): Handy hoch, ab 701 px quer. */
+  .photo{position:absolute;inset:0;background:url("${ASSET_BASE}/workspace-hoch-1440.webp") center 40%/cover no-repeat;opacity:.5}
+  @media (min-width:701px){.photo{background-image:url("${ASSET_BASE}/workspace-quer-2880.webp");background-position:center 55%}}
   .photo::after{content:"";position:absolute;inset:0;background:
     radial-gradient(86% 58% at 15% 2%,rgba(0,184,136,.30),transparent 55%),
     radial-gradient(84% 64% at 90% 98%,rgba(20,140,200,.24),transparent 58%),

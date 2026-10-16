@@ -12,7 +12,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1600.webp" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-linie-1600.webp" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-linie-2880.webp" media="(min-width:701px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -177,8 +178,11 @@
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
   /* Hero-Hintergrund dunkel ueberscrimt → Text bleibt knackig, Bild gibt Tiefe.
      16.10.2026: die KI-Collage mit erfundenen Zahlen (+5,902 · +218 % · 28,7K) ist raus (Sebi:
-     „KI-Slop-Bubbles“) — an ihrer Stelle die Lichtlinie ohne Zahlen. Handy 15 KB, Desktop 30 KB. */
-  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.45),rgba(3,8,13,.72) 58%,#03080D 100%),url(/assets/hero-licht-1600.webp) center 60%/cover no-repeat}
+     „KI-Slop-Bubbles“). Die Lichtlinie war schon im Original weich (Bokeh) und wirkte „verschwommen“ —
+     neu erzeugt scharf (Higgsfield gpt_image_2 4k, Job 849ccaef), 2880 px fuer Retina. */
+  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.45),rgba(3,8,13,.72) 58%,#03080D 100%),url(/assets/hero-linie-2880.webp) center 60%/cover no-repeat}
+  /* Die Linie laeuft nie durch den Text (kern.md): hinter dem zentrierten Textblock weich ausgeblendet. */
+  .hero-bg{-webkit-mask-image:radial-gradient(ellipse 34% 46% at 50% 52%,transparent 35%,#000 100%);mask-image:radial-gradient(ellipse 34% 46% at 50% 52%,transparent 35%,#000 100%)}
   .hero>.wrap{position:relative;z-index:1}
   /* CTA-Karte mit Creator-Foto als Hintergrund */
   .band.has-photo{position:relative;overflow:hidden}
@@ -189,7 +193,8 @@
   .photo-sec>*:not(.sec-bg){position:relative;z-index:1}
   .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
   .sec-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.84),rgba(3,8,13,.92))}
-  .sec-bg.growth{background-image:url(/assets/growth.webp)}
+  /* growth-2880: neu erzeugt 16.10.2026 (Higgsfield gpt_image_2 4k, Job dfc735f5 — das Juni-Original war nur 1672 px) */
+  .sec-bg.growth{background-image:url(/assets/growth-2880.webp)}
   .sec-bg.collab{background-image:url(/assets/collab.webp)}
   .sec-bg.flat{background-image:url(/assets/flat.webp)}
   .sec-bg.wave{background-image:url(/assets/sec-wave.jpg)}
@@ -279,7 +284,7 @@
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
     .hero-logo{--lw:clamp(230px,70vw,340px)}
-    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-licht-1600.webp) 72% 100%/190% auto no-repeat,#03080D}
+    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-linie-1600.webp) 72% 100%/190% auto no-repeat,#03080D}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
