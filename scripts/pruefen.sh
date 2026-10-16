@@ -10,6 +10,7 @@ lauf() { echo; echo "── $1"; shift; "$@" || rot=$((rot+1)); }
 lauf "Selbsttest Seitenwechsel"  node scripts/uebergang-check.mjs --selbsttest
 lauf "Selbsttest Bewegung"       node scripts/bewegung-check.mjs --selbsttest
 lauf "Selbsttest Bedienung"      node scripts/bedienung-check.mjs --selbsttest
+lauf "Selbsttest Bildschärfe"    node scripts/bild-schaerfe-check.mjs --selbsttest
 lauf "Selbsttest Motion-Loop"   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
 lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs tests/bewertungen.test.mjs
@@ -19,6 +20,7 @@ lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
 lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
 lauf "Bewegung"                  node scripts/bewegung-check.mjs
 lauf "Bedienung (Knöpfe)"        node scripts/bedienung-check.mjs
+lauf "Bildschärfe"              node scripts/bild-schaerfe-check.mjs
 lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s
 lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$HOME/kit-build/motion-loop/mess.mjs" funnel
 lauf "Selbsttest Besucher"       node scripts/besucher-sim.mjs --selbsttest
