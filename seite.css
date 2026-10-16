@@ -38,18 +38,24 @@ main p b,main p strong{
 }
 
 
-/* ── Leitsaetze als eigenes Band ────────────────────────────── */
-.rs-quote,.fw-quote,.ab-quote{
-  background:linear-gradient(180deg,var(--surface,#141518),#0E0F12);
-  border-block:1px solid var(--line,rgba(242,243,241,.08));
+/* ── Leitsaetze: Licht statt Band (16.10.2026) ──────────────────
+   Vorher graue deckende Flaeche mit Haarlinien oben und unten. Sebi 16.10.: „eher
+   blockartig, nicht unser high end level“. Jetzt ein weicher Lichtteich, der innerhalb
+   des Abschnitts vollstaendig auslaeuft; der durchgehende Grund bleibt sichtbar. */
+:root .rs-quote,:root .fw-quote,:root .ab-quote{
+  background:radial-gradient(48% 42% at 50% 50%,rgba(0,184,136,.08),rgba(31,166,224,.03) 60%,transparent 100%);
+  border-block:0;
 }
 .rs-quote::before,.fw-quote::before,.ab-quote::before,
 .rs-quote::after,.fw-quote::after,.ab-quote::after{opacity:.5}
 
-/* ── Abschnittsgrenzen: Haarlinie statt Lichtwechsel ────────── */
-main > section + section:not(.abschluss):not(.rs-quote):not(.fw-quote):not(.ab-quote){
-  border-top:1px solid var(--line,rgba(242,243,241,.08));
-}
+/* ── Abschnittsgrenzen: keine Linie (16.10.2026) ─────────────────
+   Die Haarlinie ueber volle Breite stapelte die Seite in Bloecke. Der Rhythmus kommt aus
+   dem Abstand; die Seitenkoepfe ruecken naeher an den ersten Abschnitt. */
+:root main > section{border-top:0}
+:root :is(.pr-hero,.fl-hero,.rs-hero,.fw-hero,.ab-hero){padding-bottom:clamp(16px,2vw,32px)}
+/* Fuss ohne harte Kante: laeuft aus dem Grund heraus */
+:root .site-footer{background:linear-gradient(180deg,rgba(10,11,13,0),#0A0B0D 160px);border-top:0;box-shadow:none}
 
 /* ── Nav-Aktion (Gratis-Vorschau) ───────────────────────────── */
 .nav-soft{font-family:"Hanken Grotesk",sans-serif}
