@@ -307,7 +307,7 @@ ${KOPF}
       <p class="w-lead w-re">${esc(seite.antwort)}</p>
       <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
-      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Du wählst im ersten Schritt.")}
+      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.")}
       <nav class="w-weiter" aria-label="Weitere Antworten">
         <h2>Weitere Antworten</h2>
         <ul>${andere.map((s) => `<li><a href="/wissen/${s.slug}/">${esc(s.kurz)}</a></li>`).join("")}</ul>

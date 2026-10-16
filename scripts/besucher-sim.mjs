@@ -377,13 +377,19 @@ function pruefeZaehler(page, persona, erwartet, f) {
   if (fehlt.length) befund(persona, 'Zähler', 'rot', 'Der Weg zur Vorschau wird nicht gezählt', 'fehlt: ' + fehlt.join(' ') + ' · gesehen: ' + (page.__gezaehlt.join(' ') || 'nichts'));
 }
 
-// Seit 15.10.2026 beginnt der Funnel mit „Was brauchst du gerade?“ (drei Wege). Die Besucherin
-// nimmt Weg A (Vorschau); alle drei Wege muessen ueber dem Falz liegen.
+// Seit 16.10.2026 beginnt der Funnel mit „Passt du zu uns?“: erst der Check (Frage 1–6 + Zeit),
+// dann das Ergebnis mit der Wahl. Die Besucherin nimmt Weg A (Vorschau); der empfohlene Weg muss
+// nach dem Ergebnis ueber dem Falz liegen (16.10.: lag am Handy darunter).
 async function wegA(page, persona) {
+  // Auf dem Ergebnis-Schirm laufen erst die Pruefpunkte ein; die Wahl erscheint danach.
+  if (await page.evaluate(() => document.querySelector('.q.on')?.dataset.step === '17')) {
+    await page.waitForFunction(() => !document.querySelector('#passt-ergebnis')?.hidden, null, { timeout: 6000 }).catch(() => {});
+    await page.evaluate(async () => { let alt = -1; for (let i = 0; i < 60 && alt !== scrollY; i++) { alt = scrollY; await new Promise((r) => setTimeout(r, 50)); } });
+  }
   const wege = page.locator('button.weg:visible');
   if (!(await wege.count())) return false;
-  const unten = await page.evaluate(() => Math.max(...[...document.querySelectorAll('button.weg')].filter((b) => b.offsetParent).map((b) => b.getBoundingClientRect().bottom)) - innerHeight);
-  if (persona && unten > 0) befund(persona, 'Funnel 0', 'rot', 'Nicht alle drei Wege der ersten Frage liegen über dem Falz', Math.round(unten) + ' px darunter');
+  const unten = await page.evaluate(() => { const e = document.querySelector('#passt-wege .ist-empf') || document.querySelector('button.weg'); return e ? e.getBoundingClientRect().bottom - innerHeight : 0; });
+  if (persona && unten > 0) befund(persona, 'Funnel Ergebnis', 'rot', 'Der empfohlene Weg liegt nach dem Ergebnis unter dem Falz', Math.round(unten) + ' px darunter');
   await page.locator('button.weg[data-weg="a"]').click().catch(() => {});
   await uebergaengeFertig(page);
   return true;
@@ -392,10 +398,10 @@ async function wegA(page, persona) {
 // Funnel bis zum Mail-Feld, nie abschicken. Misst jeden Schritt am Schirm.
 async function funnel(page, persona) {
   const schritte = [];
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 22; i++) {
     if (await page.locator('#f-mail').isVisible().catch(() => false)) break;
     await uebergaengeFertig(page);
-    if (await wegA(page, i === 0 ? persona : null)) continue;
+    if (await wegA(page, persona)) continue;
     const stand = await page.evaluate(() => {
       const weiter = [...document.querySelectorAll('button.next')].find((b) => b.offsetParent && b.id !== 'btnSubmit');
       if (!weiter) return null;
