@@ -24,7 +24,7 @@ const PAGE_STYLE = `
   .wm-logo{height:30px;width:auto;max-width:60px;object-fit:contain;object-position:left center;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
   .prog{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden}
   .prog>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-soft),var(--emerald) 38%,var(--teal) 66%,var(--emerald-soft));background-size:230% 100%;transform-origin:left;transform:scaleX(.02);box-shadow:0 0 12px rgba(31,201,152,.55);transition:transform var(--dur-4, .7s) var(--e-spring)}
-  .cnt{font-family:var(--ff-label);font-size:10.5px;font-weight:600;letter-spacing:.08em;color:var(--faint);font-variant-numeric:tabular-nums}
+  .cnt{font-family:var(--ff-label);font-size:0.6562rem;font-weight:600;letter-spacing:.08em;color:var(--faint);font-variant-numeric:tabular-nums}
 
   /* ── BUEHNE mit schwebendem Glas-iPhone ── */
   .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1400px;padding:.4rem 0}
@@ -41,14 +41,14 @@ const PAGE_STYLE = `
   .pv::after{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;background:linear-gradient(133deg,rgba(255,255,255,.14) 0%,rgba(255,255,255,.03) 18%,transparent 40%)}
   /* Bodenreflexion */
   .device .refl{position:absolute;left:8%;right:8%;bottom:-30px;height:36px;border-radius:50%;background:radial-gradient(ellipse,var(--mood),transparent 72%);opacity:.32;filter:blur(13px);transition:background 1.3s var(--e-out)}
-  .pv-bar{display:flex;align-items:center;padding:8px 11px 5px;color:#fff;font-size:10.5px;font-weight:700}
+  .pv-bar{display:flex;align-items:center;padding:8px 11px 5px;color:#fff;font-size:0.6562rem;font-weight:700}
   .pv-bar .h{transition:opacity var(--dur-3, .4s)}.pv-bar .dots{margin-left:auto;letter-spacing:1px;opacity:.55}
   .pv-prof{display:flex;align-items:center;gap:11px;padding:2px 11px 7px}
-  .pv-av{width:42px;height:42px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;color:#04130D;background:linear-gradient(135deg,var(--mood),#0E1319);box-shadow:inset 0 1px 2px rgba(255,255,255,.3);transition:background 1s var(--e-out),transform var(--dur-3, .5s) var(--e-spring)}
+  .pv-av{width:42px;height:42px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.0625rem;color:#04130D;background:linear-gradient(135deg,var(--mood),#0E1319);box-shadow:inset 0 1px 2px rgba(255,255,255,.3);transition:background 1s var(--e-out),transform var(--dur-3, .5s) var(--e-spring)}
   .pv-stats{display:flex;gap:9px;flex:1;justify-content:space-around;color:#fff}
-  .pv-stat{text-align:center;white-space:nowrap}.pv-stat b{display:block;font-size:11px;font-weight:700}.pv-stat span{font-size:7.5px;color:rgba(255,255,255,.65)}
+  .pv-stat{text-align:center;white-space:nowrap}.pv-stat b{display:block;font-size:0.6875rem;font-weight:700}.pv-stat span{font-size:7.5px;color:rgba(255,255,255,.65)}
   .pv-meta{padding:0 11px 7px;color:#fff}
-  .pv-meta .n{font-size:10.5px;font-weight:700;min-height:12px;transition:opacity var(--dur-3, .4s)}
+  .pv-meta .n{font-size:0.6562rem;font-weight:700;min-height:12px;transition:opacity var(--dur-3, .4s)}
   .pv-meta .b{font-size:9.5px;color:rgba(255,255,255,.8);min-height:11px;line-height:1.3;transition:opacity var(--dur-3, .4s)}
   .pv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:#000}
   .pv-tile{aspect-ratio:1;position:relative;overflow:hidden;background:#0c0c0c;display:flex;align-items:center;justify-content:center;text-align:center;padding:3px;font-family:var(--ff-label);font-weight:600;font-size:6px;line-height:1.15;color:transparent;transition:background var(--dur-4, .8s) var(--e-out),color var(--dur-3, .6s) var(--e-out)}
@@ -66,7 +66,7 @@ const PAGE_STYLE = `
   .q.on>*{opacity:0;transform:translateY(14px);filter:blur(6px);animation:rise var(--dur-3, .6s) var(--e-out) forwards}
   .q.on>*:nth-child(1){animation-delay:.02s}.q.on>*:nth-child(2){animation-delay:.09s}.q.on>*:nth-child(3){animation-delay:.16s}.q.on>*:nth-child(4){animation-delay:.23s}.q.on>*:nth-child(5){animation-delay:.3s}
   @keyframes rise{to{opacity:1;transform:none;filter:none}}
-  .eyebrow{font-family:var(--ff-label);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
+  .eyebrow{font-family:var(--ff-label);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
   /* h1 und h2 teilen sich die Gestaltung: der erste Schritt traegt die
      Seitenueberschrift als h1, die weiteren Schritte sind Fragen (h2).
      Ohne h1 hier haette die Seite gar keine — 11 Ueberschriften, alle ab
@@ -84,7 +84,7 @@ const PAGE_STYLE = `
   textarea{resize:none;min-height:78px;line-height:1.5}
   ::placeholder{color:var(--faint)}
   .chips{display:flex;flex-wrap:wrap;gap:9px}
-  .chip{position:relative;font-family:var(--ff-label);font-weight:600;font-size:13.5px;color:var(--ink);border:0;border-radius:100px;padding:1px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02));cursor:pointer;transition:transform var(--dur-2, .3s) var(--e-spring)}
+  .chip{position:relative;font-family:var(--ff-label);font-weight:600;font-size:0.8438rem;color:var(--ink);border:0;border-radius:100px;padding:1px;background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.02));cursor:pointer;transition:transform var(--dur-2, .3s) var(--e-spring)}
   .chip span{display:block;border-radius:100px;padding:10px 17px;background:linear-gradient(180deg,rgba(18,21,25,.9),rgba(11,13,16,.95));box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:background var(--dur-2, .3s) var(--e-out),color var(--dur-2, .3s)}
   .chip[aria-pressed=true]{background:var(--flow)}
   .chip[aria-pressed=true] span{background:radial-gradient(130% 130% at 0% 0%,color-mix(in oklab,var(--mood) 30%,transparent),rgba(14,17,20,.92) 62%);color:#fff}
@@ -94,26 +94,33 @@ const PAGE_STYLE = `
   .sw-multi{background:conic-gradient(#c2410c,#2563eb,#2f6f5e,#be185d,#c2410c)}
   /* Foto-Upload: runder Vorschau-Slot im gleichen Glas-Look wie die Felder */
   .foto-row{display:flex;align-items:center;gap:14px}
-  .foto-drop{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));border:1px dashed rgba(255,255,255,.22);border-radius:16px;padding:12px 18px 12px 12px;cursor:pointer;color:var(--muted);font-family:var(--ff-label);font-weight:600;font-size:13.5px;transition:border-color var(--dur-2, .3s),transform var(--dur-2, .3s) var(--e-spring)}
+  .foto-drop{display:flex;align-items:center;gap:14px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));border:1px dashed rgba(255,255,255,.22);border-radius:16px;padding:12px 18px 12px 12px;cursor:pointer;color:var(--muted);font-family:var(--ff-label);font-weight:600;font-size:0.8438rem;transition:border-color var(--dur-2, .3s),transform var(--dur-2, .3s) var(--e-spring)}
   
-  .foto-ph{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:var(--faint)}
+  .foto-ph{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.04);border:1.5px dashed rgba(31,201,152,.55);display:block}
   #fotoPrev{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 2px var(--emerald-soft)}
   .react{margin-top:10px;font-size:.9rem;color:var(--emerald-soft);min-height:20px;display:flex;align-items:center;gap:7px;opacity:0;transform:translateY(4px);transition:opacity var(--dur-2, .3s),transform var(--dur-2, .3s) var(--e-out)}
   .react.show{opacity:1;transform:none}
   .react .tick{display:inline-flex;align-items:center;color:var(--emerald-soft)}
-  .next .ic svg,.react .tick svg{display:block}
+  .react .tick svg{display:block}
   .react.warn{color:#F0C08B}.react.warn b{color:var(--emerald-soft);cursor:pointer;border-bottom:1px solid rgba(0,184,136,.4)}
 
   .foot{margin-top:1.15rem;display:flex;flex-direction:column;gap:11px}
   /* Magnetischer Button-in-Button */
-  .next{position:relative;text-decoration:none;font-family:var(--ff-label);font-weight:700;font-size:15px;color:var(--emerald-ink);background:var(--flow);border:0;border-radius:100px;padding:6px 6px 6px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;overflow:hidden;
+  .next{position:relative;text-decoration:none;font-family:var(--ff-label);font-weight:700;font-size:0.9375rem;color:var(--emerald-ink);background:var(--flow);border:0;border-radius:100px;padding:6px 6px 6px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;overflow:hidden;
     box-shadow:0 16px 38px -14px rgba(0,184,136,.6),0 16px 38px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.4);transition:transform var(--dur-2, .35s) var(--e-spring)}
   .next .lab{padding:9px 0}
   .next:active{transform:scale(.975)}
   .next:disabled{opacity:.6;cursor:not-allowed}
-  .next .ic{width:38px;height:38px;border-radius:50%;background:rgba(4,32,26,.18);display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:inset 0 1px 1px rgba(255,255,255,.25);transition:transform var(--dur-2, .35s) var(--e-spring)}
+  /* Eigenes Zeichen statt Pfeil im Kreis (16.10.2026, Sebi: „KI-Slop-Icons raus, was Eigenes, das zum
+     Design-System passt“): die drei aufsteigenden Balken der Bildmarke „People Climb“ (BRAND.md §8,
+     Hoehen 26/42/60, Deckkraft .5/.78/1, skewX −5°), klein gesetzt. */
+  .next .ic{height:38px;display:flex;align-items:flex-end;gap:3px;padding:0 14px 12px 10px;transition:transform var(--dur-2, .35s) var(--e-spring)}
+  .ic i,.pk-m i{display:block;width:4px;border-radius:2px;background:currentColor;transform:skewX(-5deg)}
+  .ic i:nth-child(1),.pk-m i:nth-child(1){height:6px;opacity:.5}
+  .ic i:nth-child(2),.pk-m i:nth-child(2){height:10px;opacity:.78}
+  .ic i:nth-child(3),.pk-m i:nth-child(3){height:14px}
   
-  .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:12.5px;cursor:pointer;align-self:center;padding:0 14px;min-height:44px;transition:color var(--dur-2, .25s)}
+  .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:0.7812rem;cursor:pointer;align-self:center;padding:0 14px;min-height:44px;transition:color var(--dur-2, .25s)}
   .back:hover{color:var(--muted)}
   .hint{font-family:var(--ff-body);font-size:.94rem;color:var(--faint);text-align:center}
   .consent{display:flex;gap:9px;align-items:flex-start;font-size:.8rem;color:var(--muted);line-height:1.45}
@@ -122,7 +129,7 @@ const PAGE_STYLE = `
 
   .consent a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.35)}
   .consent-opt{margin-top:8px;font-size:.74rem;opacity:.82;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
-  .legal{margin-top:.9rem;text-align:center;font-family:var(--ff-label);font-size:10px;letter-spacing:.06em;color:var(--faint)}
+  .legal{margin-top:.9rem;text-align:center;font-family:var(--ff-label);font-size:0.625rem;letter-spacing:.06em;color:var(--faint)}
   .legal a{color:var(--muted);text-decoration:none;transition:color var(--dur-2, .2s)}
   .legal a:hover{color:var(--emerald-soft)}
   /* Kurze Screens (SE & Landscape): Handy skaliert, Sheet passt sich an, nichts ueberlappt den Header */
@@ -142,13 +149,48 @@ const PAGE_STYLE = `
     .grab{display:none}
   }
   /* Ein Funnel, drei Wege (15.10.2026): die erste Frage teilt. Echte Knoepfe, ganze Flaeche tippbar. */
+  /* Grosse Bildschirme (16.10.2026, Sebi: am Mac alles groesser, wirkt zusammengedrueckt): Grundgroesse
+     und Breite wachsen wie auf der Website (abschluss.css). */
+  @media (min-width:1440px){html{font-size:1.125rem}.app{max-width:1240px!important}}
+  @media (min-width:1680px){html{font-size:1.2188rem}.app{max-width:1400px!important}}
   .wege{display:grid;gap:9px}
+  /* Steckbrief: ein Blatt, kein Feed. Zeilen erscheinen, sobald sie beantwortet sind. */
+  .app[data-ansicht="brief"] .device,.app[data-ansicht="brief"] .disclaimer{display:none}
+  .app[data-ansicht="feed"] .brief{display:none}
+  .brief{width:min(100%,25rem);position:relative;border-radius:22px;padding:1.6rem 1.7rem 1.5rem;
+    background:linear-gradient(160deg,rgba(0,184,136,.10),rgba(31,166,224,.04) 55%,rgba(7,10,13,.55)),rgba(7,10,13,.72);
+    border:1px solid rgba(31,201,152,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 80px -40px rgba(0,0,0,.85)}
+  .br-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;font-family:var(--ff-label);font-size:0.6875rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+  .br-eb{color:var(--emerald-soft)}.br-status{color:var(--faint);letter-spacing:.08em}
+  .br-name{font-family:var(--ff-serif);font-weight:440;font-size:2.1rem;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin:.7rem 0 1.1rem;min-height:1.1em;overflow-wrap:anywhere}
+  .br-zeilen{margin:0;display:grid}
+  .br-zeilen>div{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.8rem;padding:.62rem 0;border-top:1px solid rgba(255,255,255,.07)}
+  .br-zeilen dt{font-size:.82rem;color:var(--faint)}
+  .br-zeilen dd{margin:0;font-size:.95rem;line-height:1.4;color:var(--ink);opacity:0;transform:translateY(4px);transition:opacity var(--dur-3, .45s) var(--e-out),transform var(--dur-3, .45s) var(--e-out);overflow-wrap:anywhere}
+  .br-zeilen>div:not(.voll) dd::before{content:"";display:block;height:.5em;margin-top:.45em;width:46%;border-radius:4px;background:rgba(255,255,255,.06)}
+  .br-zeilen>div:not(.voll) dd{opacity:1;transform:none}
+  .br-zeilen>div.voll dd{opacity:1;transform:none}
+  .br-stempel{display:none;margin-top:1rem;align-items:center;gap:.6rem;font-family:var(--ff-serif);font-style:italic;font-size:1.5rem;color:var(--emerald-soft)}
+  .br-stempel .pk-m{position:static}
+  .brief.passt .br-stempel{display:flex}
+  .brief.passt{border-color:rgba(31,201,152,.45)}
+  @media (prefers-reduced-motion:reduce){.br-zeilen dd{transition:none}}
+  /* Handy: eine schmale Leiste mit sechs Segmenten statt Blatt, die Frage braucht den Platz */
+  @media (max-width:899px){
+    .brief{width:100%;padding:.75rem 1rem;border-radius:16px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"name status" "zeilen zeilen";column-gap:.8rem;row-gap:.5rem;align-items:center}
+    .br-kopf{display:contents}.br-eb{display:none}.br-status{grid-area:status;justify-self:end;font-size:0.625rem}
+    .br-name{grid-area:name;font-size:1.15rem;margin:0}
+    .br-zeilen{grid-area:zeilen;grid-template-columns:repeat(6,1fr);gap:4px}
+    .br-zeilen>div{display:block;padding:0;border:0;height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
+    .br-zeilen>div.voll{background:var(--emerald-soft)}
+    .br-zeilen dt,.br-zeilen dd{display:none}
+    .br-stempel{display:none!important}
+    .brief.passt .br-status{color:var(--emerald-soft)}
+  }
   .intro{font-family:var(--ff-body);font-size:1.02rem;line-height:1.55;color:var(--muted);margin:.7rem 0 .2rem;max-width:38ch}
   .pk{list-style:none;margin:.9rem 0 0;padding:0;display:grid;gap:9px}
   .pk li{position:relative;padding-left:28px;font-size:.98rem;line-height:1.45;color:var(--ink);opacity:0;transform:translateY(6px);transition:opacity var(--dur-2, .3s) var(--e-out),transform var(--dur-2, .3s) var(--e-out)}
-  .pk li::before{content:"";position:absolute;left:0;top:.18em;width:18px;height:18px;border-radius:50%;background:var(--accent-flow,linear-gradient(135deg,#1FC998,#46BEEA));
-    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-1.6 17.2-5-5 1.8-1.8 3.2 3.2 6.6-6.6 1.8 1.8z'/%3E%3C/svg%3E") center/contain no-repeat;
-            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-1.6 17.2-5-5 1.8-1.8 3.2 3.2 6.6-6.6 1.8 1.8z'/%3E%3C/svg%3E") center/contain no-repeat}
+  .pk-m{position:absolute;left:2px;top:.28em;display:flex;align-items:flex-end;gap:2.5px;color:var(--emerald-soft)}
   .pk li.an{opacity:1;transform:none}
   .passt-ergebnis{margin-top:1.1rem}
   .passt-ergebnis[hidden]{display:none}
@@ -176,7 +218,7 @@ const PAGE_STYLE = `
   @container (max-width:190px){.pv-stat+.pv-stat,.pv-bar .dots{display:none}}
   /* Kachelschrift waechst mit dem Telefon (Desktop 330 px war sie 6 px). */
   .pv-grid .pv-tile{font-size:max(6px,3.4cqi)}
-  .bsp{position:absolute;z-index:9;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--ff-label);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  .bsp{position:absolute;z-index:9;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--ff-label);font-size:0.6562rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
     color:var(--emerald-ink);background:var(--emerald-soft);border-radius:8px;padding:3px 9px;white-space:nowrap}
   .app:not([data-schritt="0"]) .bsp{display:none}
   /* Erster Schirm auf kurzen Handys: alle drei Wege ueber dem Falz (iPhone SE, Safari ~568 px). */
@@ -209,6 +251,22 @@ function pageMarkup(turnstileSiteKey) {
   </div>
 
   <div class="stage">
+    <!-- Steckbrief (16.10.2026, Sebi: links soll sich etwas aufbauen, aber nicht als Feed; der Feed
+         erst, wenn er gewaehlt ist). Was eine Agentur im Erstgespraech anlegt: Zeile fuer Zeile aus
+         ihren Antworten, beim Ergebnis der Vermerk „Passt“. Spiegelt nur Eingaben, daher aria-hidden. -->
+    <div class="brief" id="brief" aria-hidden="true">
+      <div class="br-kopf"><span class="br-eb">Steckbrief</span><span class="br-status" id="br-status">wird angelegt</span></div>
+      <div class="br-name" id="br-name">Du</div>
+      <dl class="br-zeilen">
+        <div data-k="handle"><dt>Instagram</dt><dd></dd></div>
+        <div data-k="taetigkeit"><dt>Was du machst</dt><dd></dd></div>
+        <div data-k="thema"><dt>Thema</dt><dd></dd></div>
+        <div data-k="ziel"><dt>Ziel</dt><dd></dd></div>
+        <div data-k="stand"><dt>Heute</dt><dd></dd></div>
+        <div data-k="zeit"><dt>Zeit pro Woche</dt><dd></dd></div>
+      </dl>
+      <div class="br-stempel" id="br-stempel"><span class="pk-m"><i></i><i></i><i></i></span>Passt</div>
+    </div>
     <div class="device" id="device"><span class="bsp">Beispiel</span>
       <div class="shell"><div class="pv">
         <div class="pv-bar"><span class="h" id="pv-handle">dein.profil</span><span class="dots">···</span></div>
@@ -234,7 +292,7 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">social2scale</span>
         <h1>Passt du zu <em>uns</em>?</h1>
         <p class="intro">Wir sind zu zweit und betreuen jeden Auftritt selbst. Darum schauen wir erst, ob wir dir wirklich helfen können.</p>
-        <div class="foot"><button class="next" id="checkStart" data-go="1"><span class="lab">Kurz checken</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button></div>
+        <div class="foot"><button class="next" id="checkStart" data-go="1"><span class="lab">Kurz checken</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button></div>
         <p class="hint">7 kurze Fragen · etwa eine Minute · kostenlos</p>
       </div>
 
@@ -243,7 +301,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Wie dürfen wir dich <em>nennen</em>?</h2>
         <div class="field"><div class="field-in"><input type="text" id="f-name" placeholder="Dein Vorname" autocomplete="given-name" enterkeyhint="next"></div></div>
         <div class="react" id="r-name"></div>
-        <div class="foot"><button class="next" data-req="f-name" data-go="2"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="0">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-name" data-go="2"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="0">Zurück</button></div>
       </div>
 
       <div class="q" data-step="2">
@@ -251,7 +309,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Dein <em>Instagram-Name</em>?</h2>
         <div class="field"><div class="field-in"><span class="pre">@</span><input type="text" id="f-handle" class="hashandle" placeholder="deinname" autocapitalize="off" autocorrect="off" enterkeyhint="next"></div></div>
         <div class="react" id="r-handle"></div>
-        <div class="foot"><button class="next" data-req="f-handle" data-go="3"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="1">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-handle" data-go="3"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="1">Zurück</button></div>
       </div>
 
       <div class="q" data-step="3">
@@ -265,7 +323,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-taetigkeit="anders" aria-pressed="false"><span>Etwas anderes</span></button>
         </div>
         <div class="react" id="r-taetigkeit"></div>
-        <div class="foot"><button class="next" data-req="taetigkeit" data-go="4"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="2">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="taetigkeit" data-go="4"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="2">Zurück</button></div>
       </div>
 
       <div class="q" data-step="4">
@@ -273,7 +331,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Worum geht’s <em>bei dir</em>?</h2>
         <div class="field"><div class="field-in"><textarea id="f-thema" placeholder="z.B. Yoga & Achtsamkeit für gestresste Berufstätige."></textarea></div></div>
         <div class="react" id="r-thema"></div>
-        <div class="foot"><button class="next" data-req="f-thema" data-go="5"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="3">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-thema" data-go="5"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="3">Zurück</button></div>
       </div>
 
       <div class="q" data-step="5">
@@ -287,7 +345,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-ziel="Meine Marke stärken" aria-pressed="false"><span>Meine Marke stärken</span></button>
         </div>
         <div class="react" id="r-ziel"></div>
-        <div class="foot"><button class="next" data-req="ziel" data-go="6"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="4">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="ziel" data-go="6"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="4">Zurück</button></div>
       </div>
 
       <div class="q" data-step="6">
@@ -299,7 +357,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-stand="Aktiv, will mehr" aria-pressed="false"><span>Aktiv — will aufs nächste Level</span></button>
         </div>
         <div class="react" id="r-stand"></div>
-        <div class="foot"><button class="next" data-req="stand" data-go="16"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="5">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stand" data-go="16"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="5">Zurück</button></div>
       </div>
 
       <div class="q" data-step="7">
@@ -312,7 +370,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-mood="mutig" aria-pressed="false"><span>Kraftvoll &amp; mutig</span></button>
         </div>
         <div class="react" id="r-mood"></div>
-        <div class="foot"><button class="next" data-req="stimmung" data-go="8"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="17">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stimmung" data-go="8"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="17">Zurück</button></div>
       </div>
 
       <div class="q" data-step="8">
@@ -321,7 +379,7 @@ function pageMarkup(turnstileSiteKey) {
         <input type="file" id="f-foto" accept="image/*" style="display:none">
         <div class="foto-row">
           <button type="button" class="foto-drop" id="fotoBtn">
-            <span class="foto-ph" id="fotoPh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.4-2h5.2L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.4"/></svg></span>
+            <span class="foto-ph" id="fotoPh"></span>
             <img id="fotoPrev" alt="" hidden>
             <span class="foto-lab" id="fotoLab">Foto auswählen</span>
           </button>
@@ -329,7 +387,7 @@ function pageMarkup(turnstileSiteKey) {
         </div>
         <p class="hint" style="text-align:left;margin-top:10px">Optional — dein Feed zeigt es dann wie auf Instagram, mit Story-Ring.</p>
         <div class="react" id="r-foto"></div>
-        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="7">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="7">Zurück</button></div>
       </div>
 
       <div class="q" data-step="9">
@@ -342,7 +400,7 @@ function pageMarkup(turnstileSiteKey) {
         <input type="color" id="f-farbe-custom" value="#2f6f5e" aria-label="Eigene Markenfarbe" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none">
         <p class="hint" style="text-align:left;margin-top:10px">Optional — ohne Auswahl wählen wir eine, die zu deiner Stimmung passt.</p>
         <div class="react" id="r-farbe"></div>
-        <div class="foot"><button class="next" data-go="10"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="8">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="10"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="8">Zurück</button></div>
       </div>
 
       <div class="q" data-step="10">
@@ -354,7 +412,7 @@ function pageMarkup(turnstileSiteKey) {
           <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
           <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-a" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
-          <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></button>
+          <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button>
           <button class="back" data-go="9">Zurück</button>
         </div>
       </div>
@@ -363,7 +421,7 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
-        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
+        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
         <p class="quer">Lieber direkt mit jemandem reden? <button type="button" class="quer-b" data-quer="b">Erstgespräch anfragen</button></p>
       </div>
 
@@ -377,7 +435,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-budget="Noch unklar" aria-pressed="false"><span>Noch unklar</span></button>
         </div>
         <div class="react" id="r-budget"></div>
-        <div class="foot"><button class="next" data-req="budget" data-go="13"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="17">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="budget" data-go="13"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="17">Zurück</button></div>
       </div>
 
       <div class="q" data-step="13">
@@ -389,7 +447,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-start="Erst informieren" aria-pressed="false"><span>Erst mal informieren</span></button>
         </div>
         <div class="react" id="r-start"></div>
-        <div class="foot"><button class="next" data-req="start" data-go="14"><span class="lab">Weiter</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="12">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="start" data-go="14"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="12">Zurück</button></div>
       </div>
 
       <div class="q" data-step="14">
@@ -401,7 +459,7 @@ function pageMarkup(turnstileSiteKey) {
         <div class="foot">
           <label class="consent"><input type="checkbox" id="b-consent"><span>Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-b" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
-          <button class="next" id="btnAnfrage"><span class="lab">Erstgespräch anfragen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button>
+          <button class="next" id="btnAnfrage"><span class="lab">Erstgespräch anfragen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button>
           <button class="back" data-go="13">Zurück</button>
         </div>
       </div>
@@ -410,7 +468,7 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">Anfrage ist da</span>
         <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Lieber gleich einen festen Termin? Such ihn dir selbst aus.</p>
-        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
+        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
         <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
       </div>
 
@@ -423,7 +481,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-zeit="mehr" aria-pressed="false"><span>Mehr als 3 Stunden</span></button>
         </div>
         <div class="react" id="r-zeit"></div>
-        <div class="foot"><button class="next" data-req="zeit" data-go="17"><span class="lab">Ergebnis zeigen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></button><button class="back" data-go="6">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="zeit" data-go="17"><span class="lab">Ergebnis zeigen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="6">Zurück</button></div>
       </div>
 
       <div class="q" data-step="17">
@@ -493,6 +551,8 @@ const PAGE_SCRIPT = `
     qs.forEach(q=>q.classList.toggle('on',+q.dataset.step===n)); step=n; zaehlen(n);
     if(vonErgebnis)scrollTo(0,0);
     beispiel(n===0);document.querySelector('.app').dataset.schritt=n;
+    document.querySelector('.app').dataset.ansicht=(n>=7&&n<=11)?'feed':'brief';briefFuellen();
+    if(n<=6||n===16){$('#brief').classList.remove('passt');$('#br-status').textContent='wird angelegt';}
     // Balken und Zaehler folgen dem gewaehlten Weg; vor der Wahl steht der Balken bei 0.
     const folge=FOLGE[WEG]||FOLGE.a,total=folge.length,pos=Math.max(0,folge.indexOf(n)+1);
     const fertig=n===11||n===15;
@@ -502,6 +562,16 @@ const PAGE_SCRIPT = `
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
     if(n===11){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
+  // Steckbrief aus den Eingaben fuellen (Text, kein HTML).
+  function briefFuellen(){
+    const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'').replace(/\s+/g,'');
+    const w=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
+    const werte={handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit')};
+    $('#br-name').textContent=name||'Du';
+    document.querySelectorAll('.br-zeilen>div').forEach(z=>{const v=werte[z.dataset.k]||'';z.querySelector('dd').textContent=v;z.classList.toggle('voll',!!v);});
+  }
+  document.addEventListener('input',e=>{if(e.target.closest('.sheet'))briefFuellen();});
+  document.addEventListener('click',e=>{if(e.target.closest('.chip'))requestAnimationFrame(briefFuellen);});
   function react(id,html,cls){const el=$(id);el.innerHTML=html;el.className='react show'+(cls?' '+cls:'');}
   function clr(id){$(id).className='react';}
   const pvH=$('#pv-handle'),pvAv=$('#pv-av'),pvN=$('#pv-name'),pvB=$('#pv-bio');
@@ -545,7 +615,7 @@ const PAGE_SCRIPT = `
   function waehlen(gruppe,antwort){document.querySelectorAll('#'+gruppe+' .chip').forEach(c=>c.addEventListener('click',()=>{
     document.querySelectorAll('#'+gruppe+' .chip').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
     react('#r-'+gruppe,antwort);}));}
-  waehlen('taetigkeit','Danke — so wissen wir, für wen dein Feed spricht.');
+  waehlen('taetigkeit','Danke, so wissen wir, für wen wir bauen.');
   waehlen('ziel','Klares Ziel — darauf zahlt jeder Post ein.');
   waehlen('budget','Danke, so bereitet Phil das Gespräch vor.');
   waehlen('start','Alles klar.');
@@ -577,7 +647,7 @@ const PAGE_SCRIPT = `
     const ziel=gewaehlt('ziel','ziel'),stand=gewaehlt('stand','stand'),zeit=gewaehlt('zeit','zeit');
     const punkte=[PUNKTE.taetigkeit[gewaehlt('taetigkeit','taetigkeit')],ziel?'Dein Ziel: '+ziel+'. Darauf zahlt jeder Beitrag ein.':'',PUNKTE.stand[stand],PUNKTE.zeit[zeit]].filter(Boolean);
     const ul=$('#passt-punkte');ul.innerHTML='';
-    punkte.forEach(txt=>{const li=document.createElement('li');li.textContent=txt;ul.appendChild(li);});
+    punkte.forEach(txt=>{const li=document.createElement('li');li.innerHTML='<span class="pk-m" aria-hidden="true"><i></i><i></i><i></i></span>';li.appendChild(document.createTextNode(txt));ul.appendChild(li);});
     const name=$('#f-name').value.trim();
     $('#passt-h').innerHTML='Du passt zu <em>uns</em>'+(name?', '+name.replace(/[<>&"]/g,''):'')+'.';
     const empf=VORWAHL||((zeit==='kaum'||stand==='Aktiv, will mehr')?'b':'a');
@@ -586,7 +656,9 @@ const PAGE_SCRIPT = `
     wege.prepend(erst);
     const erg=$('#passt-ergebnis'),eb=$('#passt-eb'),lis=[...ul.children];
     erg.hidden=true;eb.textContent='Wir schauen kurz';
+    const brief=$('#brief');brief.classList.remove('passt');$('#br-status').textContent='wird geprüft';
     const fertig=()=>{lis.forEach(l=>l.classList.add('an'));eb.textContent='Ergebnis';erg.hidden=false;
+      brief.classList.add('passt');$('#br-status').textContent='geprüft';
       // Das Urteil beginnt oben im Bild; darunter die Wahl.
       requestAnimationFrame(()=>{const h=$('#passt-h'),r=h.getBoundingClientRect(),w=$('#passt-wege').getBoundingClientRect();
         if(r.top<0||w.bottom>innerHeight)h.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'});});};
