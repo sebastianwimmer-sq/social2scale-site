@@ -77,8 +77,8 @@ const PAGE_STYLE = `
      Seitenueberschrift als h1, die weiteren Schritte sind Fragen (h2).
      Ohne h1 hier haette die Seite gar keine — 11 Ueberschriften, alle ab
      h2, was Suchmaschinen und Vorleseprogramme bemaengeln. */
-  h1,h2{font-family:var(--ff-serif);font-weight:460;font-size:clamp(1.7rem,1.3rem + 2.6vw,2.3rem);line-height:1.02;letter-spacing:-.025em;margin:.65rem 0 1rem;text-wrap:balance}
-  h2 em{font-style:italic;font-weight:430;background:var(--flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  h1,h2{font-family:var(--ff-serif);font-weight:520;font-size:clamp(1.7rem,1.3rem + 2.6vw,2.3rem);line-height:1.02;letter-spacing:-.025em;margin:.65rem 0 1rem;text-wrap:balance}
+  h1 em,h2 em{font-style:italic;font-weight:500;background:var(--flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
   /* Doppelrand-Glas-Eingabe */
   .field{border-radius:16px;padding:1px;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.02));transition:background var(--dur-2, .3s) var(--e-out)}
@@ -112,19 +112,23 @@ const PAGE_STYLE = `
 
   .foot{margin-top:1.15rem;display:flex;flex-direction:column;gap:11px}
   /* Magnetischer Button-in-Button */
-  .next{position:relative;text-decoration:none;font-family:var(--ff-label);font-weight:700;font-size:0.9375rem;color:var(--emerald-ink);background:var(--flow);border:0;border-radius:100px;padding:6px 6px 6px 24px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;overflow:hidden;
-    box-shadow:0 16px 38px -14px rgba(0,184,136,.6),0 16px 38px -18px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.4);transition:transform var(--dur-2, .35s) var(--e-spring)}
+  /* Hauptknopf wie „Kostenlos starten →“ im Hero (social2scale.com .btn-primary, 16.10.2026):
+     Hanken Grotesk 700, Radius 9 px, Verlauf Emerald → Teal, Pfeil als Schriftzeichen. */
+  .next{position:relative;text-decoration:none;font-family:var(--ff-body);font-weight:700;font-size:0.9062rem;letter-spacing:.02em;color:var(--emerald-ink);
+    background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);border:0;border-radius:9px;padding:6px 24px;min-height:56px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32);transition:transform var(--dur-2, .24s) var(--e-out),box-shadow var(--dur-2, .24s) var(--e-out)}
   .next .lab{padding:9px 0}
   .next:active{transform:scale(.975)}
   .next:disabled{opacity:.6;cursor:not-allowed}
   /* Eigenes Zeichen statt Pfeil im Kreis (16.10.2026, Sebi: „KI-Slop-Icons raus, was Eigenes, das zum
      Design-System passt“): die drei aufsteigenden Balken der Bildmarke „People Climb“ (BRAND.md §8,
      Hoehen 26/42/60, Deckkraft .5/.78/1, skewX −5°), klein gesetzt. */
-  .next .ic{height:38px;display:flex;align-items:flex-end;gap:3px;padding:0 14px 12px 10px;transition:transform var(--dur-2, .35s) var(--e-spring)}
-  .ic i,.pk-m i{display:block;width:4px;border-radius:2px;background:currentColor;transform:skewX(-5deg)}
-  .ic i:nth-child(1),.pk-m i:nth-child(1){height:6px;opacity:.5}
-  .ic i:nth-child(2),.pk-m i:nth-child(2){height:10px;opacity:.78}
-  .ic i:nth-child(3),.pk-m i:nth-child(3){height:14px}
+  .next .ic{font-weight:700;transition:transform var(--dur-2, .24s) var(--e-out)}
+  .pk-m i{display:block;width:4px;border-radius:2px;background:currentColor;transform:skewX(-5deg)}
+  .pk-m i:nth-child(1){height:6px;opacity:.5}
+  .pk-m i:nth-child(2){height:10px;opacity:.78}
+  .pk-m i:nth-child(3){height:14px}
   
   .back{background:none;border:0;color:var(--faint);font-family:var(--ff-label);font-weight:600;font-size:0.7812rem;cursor:pointer;align-self:center;padding:0 14px;min-height:44px;transition:color var(--dur-2, .25s)}
   .back:hover{color:var(--muted)}
@@ -160,6 +164,20 @@ const PAGE_STYLE = `
   @media (min-width:1440px){html{font-size:1.125rem}.app{max-width:1240px!important}}
   @media (min-width:1680px){html{font-size:1.2188rem}.app{max-width:1400px!important}}
   .wege{display:grid;gap:9px}
+  .mitbringen{display:grid;gap:9px;margin-top:.9rem}
+  .mb{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;min-height:58px;text-align:left;cursor:pointer;border-radius:12px;padding:12px 16px;
+    font:inherit;color:var(--ink);background:linear-gradient(180deg,rgba(16,19,23,.85),rgba(9,11,14,.92));border:1px solid rgba(255,255,255,.12);transition:border-color var(--dur-2, .24s) ease-out,background var(--dur-2, .24s) ease-out}
+  .mb-t{display:flex;flex-direction:column;gap:2px;min-width:0}.mb-t b{font-weight:600;font-size:1rem}.mb-t small{font-size:.86rem;color:var(--muted);line-height:1.4}
+  .mb-s{flex:none;font-family:var(--ff-serif);font-style:italic;font-size:1.05rem;color:var(--faint);opacity:.5;transition:color var(--dur-2, .24s) ease-out,opacity var(--dur-2, .24s) ease-out}
+  .mb[aria-pressed="true"]{border-color:rgba(31,201,152,.55);background:linear-gradient(180deg,rgba(0,184,136,.14),rgba(11,13,16,.95))}
+  .mb[aria-pressed="true"] .mb-s{color:var(--emerald-soft);opacity:1}
+  .mb:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:3px}
+  @media (hover:hover) and (pointer:fine){.mb:hover{border-color:rgba(0,184,136,.5)}}
+  /* Kurze Handys: die drei Punkte enger, die Erklaersaetze bleiben (sie sind der Grund fuers „passt“) */
+  @media (max-height:780px) and (max-width:520px){.q[data-step="18"] .intro{margin:.3rem 0 0;font-size:.95rem}.mitbringen{gap:6px;margin-top:.6rem}.mb{min-height:0;padding:9px 13px}.mb-t small{font-size:.8rem;line-height:1.3}}
+  /* iPhone SE (568 px): ohne Antippen lag „Weiter“ 130 px unter dem Falz (besucher-sim 17.10.) — wer
+     nichts davon mitbringt, muss trotzdem ohne Suchen weiterkommen. Statuszeile und Einleitung weichen. */
+  @media (max-height:700px) and (max-width:520px){.app[data-schritt="18"] .stage{display:none}.q[data-step="18"] .intro{display:none}.q[data-step="18"] h2{margin-bottom:.3rem}}
   /* Steckbrief: ein Blatt, kein Feed. Zeilen erscheinen, sobald sie beantwortet sind. */
   .app[data-ansicht="brief"] .device,.app[data-ansicht="brief"] .disclaimer{display:none}
   .app[data-ansicht="feed"] .brief{display:none}
@@ -189,7 +207,7 @@ const PAGE_STYLE = `
     .brief{width:100%;padding:.75rem 1rem;border-radius:16px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"name status" "zeilen zeilen";column-gap:.8rem;row-gap:.5rem;align-items:center}
     .br-kopf{display:contents}.br-eb{display:none}.br-status{grid-area:status;justify-self:end;font-size:0.625rem}
     .br-name{grid-area:name;font-size:1.15rem;margin:0}
-    .br-zeilen{grid-area:zeilen;grid-template-columns:repeat(7,1fr);gap:4px}
+    .br-zeilen{grid-area:zeilen;grid-template-columns:repeat(8,1fr);gap:4px}
     .br-zeilen>div,.br-zeilen>div.nur-handy{display:block;padding:0;border:0;height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
     .br-zeilen>div.voll{background:var(--emerald-soft)}
     .br-zeilen dt,.br-zeilen dd{display:none}
@@ -275,6 +293,7 @@ function pageMarkup(turnstileSiteKey) {
         <div data-k="ziel"><dt>Ziel</dt><dd></dd></div>
         <div data-k="stand"><dt>Heute</dt><dd></dd></div>
         <div data-k="zeit"><dt>Zeit pro Woche</dt><dd></dd></div>
+        <div data-k="mitbringen"><dt>Bringst du mit</dt><dd></dd></div>
       </dl>
       <div class="br-stempel" id="br-stempel"><span class="pk-m"><i></i><i></i><i></i></span>Passt</div>
     </div>
@@ -303,8 +322,8 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">social2scale</span>
         <h1>Passt du zu <em>uns</em>?</h1>
         <p class="intro">Wir sind zu zweit und betreuen jeden Auftritt selbst. Darum schauen wir erst, ob wir dir wirklich helfen können.</p>
-        <div class="foot"><button class="next" id="checkStart" data-go="1"><span class="lab">Kurz checken</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button></div>
-        <p class="hint">7 Fragen · eine Minute · kostenlos</p>
+        <div class="foot"><button class="next" id="checkStart" data-go="1"><span class="lab">Ja, kurz checken</span><span class="ic" aria-hidden="true">→</span></button></div>
+        <p class="hint">8 Fragen · eine Minute · kostenlos</p>
       </div>
 
       <div class="q" data-step="1">
@@ -312,7 +331,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Wie dürfen wir dich <em>nennen</em>?</h2>
         <div class="field"><div class="field-in"><input type="text" id="f-name" placeholder="Dein Vorname" autocomplete="given-name" enterkeyhint="next"></div></div>
         <div class="react" id="r-name"></div>
-        <div class="foot"><button class="next" data-req="f-name" data-go="2"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="0">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-name" data-go="2"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="0">Zurück</button></div>
       </div>
 
       <div class="q" data-step="2">
@@ -320,7 +339,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Dein <em>Instagram-Name</em>?</h2>
         <div class="field"><div class="field-in"><span class="pre">@</span><input type="text" id="f-handle" class="hashandle" placeholder="deinname" autocapitalize="off" autocorrect="off" enterkeyhint="next"></div></div>
         <div class="react" id="r-handle"></div>
-        <div class="foot"><button class="next" data-req="f-handle" data-go="3"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="1">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-handle" data-go="3"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="1">Zurück</button></div>
       </div>
 
       <div class="q" data-step="3">
@@ -334,7 +353,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-taetigkeit="anders" aria-pressed="false"><span>Etwas anderes</span></button>
         </div>
         <div class="react" id="r-taetigkeit"></div>
-        <div class="foot"><button class="next" data-req="taetigkeit" data-go="4"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="2">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="taetigkeit" data-go="4"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="2">Zurück</button></div>
       </div>
 
       <div class="q" data-step="4">
@@ -342,7 +361,7 @@ function pageMarkup(turnstileSiteKey) {
         <h2>Worum geht’s <em>bei dir</em>?</h2>
         <div class="field"><div class="field-in"><textarea id="f-thema" placeholder="z.B. Yoga & Achtsamkeit für gestresste Berufstätige."></textarea></div></div>
         <div class="react" id="r-thema"></div>
-        <div class="foot"><button class="next" data-req="f-thema" data-go="5"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="3">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="f-thema" data-go="5"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="3">Zurück</button></div>
       </div>
 
       <div class="q" data-step="5">
@@ -356,7 +375,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-ziel="Meine Marke stärken" aria-pressed="false"><span>Meine Marke stärken</span></button>
         </div>
         <div class="react" id="r-ziel"></div>
-        <div class="foot"><button class="next" data-req="ziel" data-go="6"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="4">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="ziel" data-go="6"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="4">Zurück</button></div>
       </div>
 
       <div class="q" data-step="6">
@@ -368,7 +387,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-stand="Aktiv, will mehr" aria-pressed="false"><span>Aktiv — will aufs nächste Level</span></button>
         </div>
         <div class="react" id="r-stand"></div>
-        <div class="foot"><button class="next" data-req="stand" data-go="16"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="5">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stand" data-go="16"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="5">Zurück</button></div>
       </div>
 
       <div class="q" data-step="7">
@@ -381,7 +400,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-mood="mutig" aria-pressed="false"><span>Kraftvoll &amp; mutig</span></button>
         </div>
         <div class="react" id="r-mood"></div>
-        <div class="foot"><button class="next" data-req="stimmung" data-go="8"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="17">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="stimmung" data-go="8"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="17">Zurück</button></div>
       </div>
 
       <div class="q" data-step="8">
@@ -398,7 +417,7 @@ function pageMarkup(turnstileSiteKey) {
         </div>
         <p class="hint" style="text-align:left;margin-top:10px">Optional — dein Feed zeigt es dann wie auf Instagram, mit Story-Ring.</p>
         <div class="react" id="r-foto"></div>
-        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="7">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="9"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="7">Zurück</button></div>
       </div>
 
       <div class="q" data-step="9">
@@ -411,7 +430,7 @@ function pageMarkup(turnstileSiteKey) {
         <input type="color" id="f-farbe-custom" value="#2f6f5e" aria-label="Eigene Markenfarbe" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none">
         <p class="hint" style="text-align:left;margin-top:10px">Optional — ohne Auswahl wählen wir eine, die zu deiner Stimmung passt.</p>
         <div class="react" id="r-farbe"></div>
-        <div class="foot"><button class="next" data-go="10"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="8">Zurück</button></div>
+        <div class="foot"><button class="next" data-go="10"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="8">Zurück</button></div>
       </div>
 
       <div class="q" data-step="10">
@@ -423,7 +442,7 @@ function pageMarkup(turnstileSiteKey) {
           <label class="consent"><input type="checkbox" id="f-consent"><span>Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.</span></label>
           <label class="consent consent-opt"><input type="checkbox" id="f-testimonial"><span>Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-a" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
-          <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button>
+          <button class="next" id="btnSubmit" data-req="f-mail"><span class="lab">Meinen Feed bauen</span><span class="ic" aria-hidden="true">→</span></button>
           <button class="back" data-go="9">Zurück</button>
         </div>
       </div>
@@ -432,7 +451,7 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
-        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
+        <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic" aria-hidden="true">→</span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
         <p class="quer">Lieber direkt mit jemandem reden? <button type="button" class="quer-b" data-quer="b">Erstgespräch anfragen</button></p>
       </div>
 
@@ -446,7 +465,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-budget="Noch unklar" aria-pressed="false"><span>Noch unklar</span></button>
         </div>
         <div class="react" id="r-budget"></div>
-        <div class="foot"><button class="next" data-req="budget" data-go="13"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="17">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="budget" data-go="13"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="17">Zurück</button></div>
       </div>
 
       <div class="q" data-step="13">
@@ -458,7 +477,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-start="Erst informieren" aria-pressed="false"><span>Erst mal informieren</span></button>
         </div>
         <div class="react" id="r-start"></div>
-        <div class="foot"><button class="next" data-req="start" data-go="14"><span class="lab">Weiter</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="12">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="start" data-go="14"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="12">Zurück</button></div>
       </div>
 
       <div class="q" data-step="14">
@@ -470,7 +489,7 @@ function pageMarkup(turnstileSiteKey) {
         <div class="foot">
           <label class="consent"><input type="checkbox" id="b-consent"><span>Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.</span></label>
           <div class="turnstile-wrap"><div class="cf-turnstile" id="ts-b" data-sitekey="${turnstileSiteKey}" data-theme="dark"></div></div>
-          <button class="next" id="btnAnfrage"><span class="lab">Erstgespräch anfragen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button>
+          <button class="next" id="btnAnfrage"><span class="lab">Erstgespräch anfragen</span><span class="ic" aria-hidden="true">→</span></button>
           <button class="back" data-go="13">Zurück</button>
         </div>
       </div>
@@ -479,12 +498,12 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">Anfrage ist da</span>
         <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Lieber gleich einen festen Termin? Such ihn dir selbst aus.</p>
-        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
+        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic" aria-hidden="true">→</span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
         <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
       </div>
 
       <div class="q" data-step="16">
-        <span class="eyebrow">Letzte Frage</span>
+        <span class="eyebrow">Deine Zeit</span>
         <h2>Wie viel Zeit hast du pro Woche für <em>Social Media</em>?</h2>
         <div class="chips" id="zeit" role="group" aria-label="Zeit pro Woche">
           <button class="chip" data-zeit="kaum" aria-pressed="false"><span>Kaum</span></button>
@@ -492,7 +511,7 @@ function pageMarkup(turnstileSiteKey) {
           <button class="chip" data-zeit="mehr" aria-pressed="false"><span>Mehr als 3 Stunden</span></button>
         </div>
         <div class="react" id="r-zeit"></div>
-        <div class="foot"><button class="next" data-req="zeit" data-go="17"><span class="lab">Ergebnis zeigen</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button><button class="back" data-go="6">Zurück</button></div>
+        <div class="foot"><button class="next" data-req="zeit" data-go="18"><span class="lab">Weiter</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="6">Zurück</button></div>
       </div>
 
       <div class="q" data-step="17">
@@ -502,11 +521,26 @@ function pageMarkup(turnstileSiteKey) {
           <h2 id="passt-h"></h2>
           <p class="intro" id="passt-p">Dein Platz ist freigeschaltet. Wie soll es weitergehen?</p>
           <div class="wege" id="passt-wege" role="group" aria-label="Wie es weitergeht">
-            <button class="weg" data-weg="a"><span class="empf">Unsere Empfehlung</span><b>Erst sehen, wie mein Auftritt aussehen kann</b><small>Gratis-Vorschau in 60 Sekunden</small></button>
-            <button class="weg" data-weg="b"><span class="empf">Unsere Empfehlung</span><b>Gleich mit Phil sprechen</b><small>Erstgespräch · Phil kennt deine Antworten schon</small></button>
+            <button class="weg" data-weg="a"><span class="empf">Unsere Empfehlung</span><b>Ja, zeig mir meine Vorschau</b><small>So kann mein Auftritt aussehen · gratis, in 60 Sekunden</small></button>
+            <button class="weg" data-weg="b"><span class="empf">Unsere Empfehlung</span><b>Ja, ich will mit Phil sprechen</b><small>Erstgespräch · Phil kennt deine Antworten schon</small></button>
           </div>
         </div>
-        <div class="foot"><button class="back" data-go="16">Zurück</button></div>
+        <div class="foot"><button class="back" data-go="18">Zurück</button></div>
+      </div>
+      <!-- Commitment (16.10.2026, Sebi: „mehr Bestaetigung bzw. Commitment holen“). Die drei Punkte sind
+           die echten Voraussetzungen von /ablauf/ („Was wir von dir brauchen“), woertlich. Keine harte
+           Grenze: wer nicht alles antippt, kommt weiter; das Ergebnis sagt ehrlich, was offen ist. -->
+      <div class="q" data-step="18">
+        <span class="eyebrow">Was du mitbringst</span>
+        <h2>Was du <em>mitbringst</em></h2>
+        <p class="intro">Damit es läuft, brauchen wir drei Dinge von dir. Tipp an, was für dich passt.</p>
+        <div class="mitbringen" id="mitbringen" role="group" aria-label="Was du mitbringst">
+          <button class="mb" type="button" data-mb="Briefing-Zeit" aria-pressed="false"><span class="mb-t"><b>Eine halbe Stunde</b><small>Das Briefing im ersten Monat. Danach nur noch, wenn du mitreden willst.</small></span><span class="mb-s">passt</span></button>
+          <button class="mb" type="button" data-mb="Zugang" aria-pressed="false"><span class="mb-t"><b>Zugang zum Account</b><small>Bestehendes Profil oder wir legen eines an. Die Rechte bleiben bei dir. Immer.</small></span><span class="mb-s">passt</span></button>
+          <button class="mb" type="button" data-mb="Bilder" aria-pressed="false"><span class="mb-t"><b>Bildmaterial</b><small>Was da ist, reicht meist. Wenn nicht, organisieren wir einen Foto-Termin.</small></span><span class="mb-s">passt</span></button>
+        </div>
+        <div class="react" id="r-mb"></div>
+        <div class="foot"><button class="next" data-go="17"><span class="lab">Ergebnis zeigen</span><span class="ic" aria-hidden="true">→</span></button><button class="back" data-go="16">Zurück</button></div>
       </div>
     </div>
     <p class="legal"><a href="https://social2scale.com/">Startseite</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a></p>
@@ -527,8 +561,9 @@ const PAGE_SCRIPT = `
   // Ablauf: 0 Einstieg → 1–6 + 16 Check → 17 Ergebnis mit Wahl → A Vorschau (7–11) | B Betreuung (12–15).
   let WEG='',VORWAHL='';
   // Drei Abschnitte; je Abschnitt eine eigene Zaehlung, die nie springt.
-  const CHECK=[1,2,3,4,5,6,16],WEG_A=[7,8,9,10],WEG_B=[12,13,14];
+  const CHECK=[1,2,3,4,5,6,16,18],WEG_A=[7,8,9,10],WEG_B=[12,13,14];
   function phaseZeigen(n){
+    if(n===18)mbGesehen=true;
     const ph=CHECK.includes(n)?'check':n===17?'ergebnis':n===0?'':'weg';
     const reihe=['check','ergebnis','weg'];
     $('#ph-weg').textContent=WEG==='a'?'Vorschau':WEG==='b'?'Gespräch':'Dein Weg';
@@ -557,7 +592,7 @@ const PAGE_SCRIPT = `
     if(typeof n==='string')return '/vorschau/weg/'+n+'/';
     if(n===0)return '/vorschau/';if(n<=10)return '/vorschau/frage/'+n+'/';if(n===11)return '/vorschau/gesendet/';
     if(n<=14)return '/vorschau/b/frage/'+(n-11)+'/';if(n===15)return '/vorschau/b/gesendet/';
-    if(n===16)return '/vorschau/check/zeit/';if(n===17)return '/vorschau/passt/';return '';
+    if(n===16)return '/vorschau/check/zeit/';if(n===17)return '/vorschau/passt/';if(n===18)return '/vorschau/check/mitbringen/';return '';
   }
   function zaehlen(n){
     if(GEZAEHLT.has(n))return;GEZAEHLT.add(n);
@@ -576,17 +611,26 @@ const PAGE_SCRIPT = `
     if(vonErgebnis)scrollTo(0,0);
     beispiel(n===0);document.querySelector('.app').dataset.schritt=n;
     document.querySelector('.app').dataset.ansicht=(n>=7&&n<=11)?'feed':'brief';briefFuellen();
-    if(n<=6||n===16){$('#brief').classList.remove('passt');$('#br-status').textContent='wird angelegt';}
+    if(n<=6||n===16||n===18){$('#brief').classList.remove('passt');$('#br-status').textContent='wird angelegt';}
     phaseZeigen(n);
     if(n===17)passt();
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
     if(n===11){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
   }
+  // Commitment: was sie mitbringt (Mehrfachauswahl). Erst nach Besuch der Frage zaehlt „0 von 3“.
+  let mbGesehen=false;
+  function mbWahl(){return [...document.querySelectorAll('#mitbringen .mb[aria-pressed=true]')].map(b=>b.dataset.mb);}
+  function mbText(){const n=mbWahl().length;return mbGesehen?n+' von 3':'';}
+  document.querySelectorAll('#mitbringen .mb').forEach(b=>b.addEventListener('click',()=>{
+    b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');
+    const n=mbWahl().length;
+    if(n===3)react('#r-mb','Du bringst alles mit, was es braucht.');else if(n)react('#r-mb','Gut. Den Rest klären wir im Gespräch.');else clr('#r-mb');
+    briefFuellen();}));
   // Steckbrief aus den Eingaben fuellen (Text, kein HTML).
   function briefFuellen(){
     const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'').replace(/\s+/g,'');
     const w=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
-    const werte={name,handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit')};
+    const werte={name,handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit'),mitbringen:mbText()};
     $('#br-name').textContent=name||'Du';
     document.querySelectorAll('.br-zeilen>div').forEach(z=>{const v=werte[z.dataset.k]||'';z.querySelector('dd').textContent=v;z.classList.toggle('voll',!!v);});
   }
@@ -660,12 +704,13 @@ const PAGE_SCRIPT = `
     stand:{'Ganz am Anfang':'Du fängst neu an. Wir bauen von null.','Poste unregelmäßig':'Es gibt dich schon. Wir machen daraus ein System.','Aktiv, will mehr':'Du bist aktiv. Jetzt kommt das nächste Level.'},
     zeit:{kaum:'Wenig Zeit. Dann übernehmen wir.','1-3':'Ein bis drei Stunden. Damit lässt sich arbeiten.',mehr:'Du hast Zeit. Vieles kannst du selbst machen.'}
   };
+  function mbPunkt(){const n=mbWahl().length;return n===3?'Du bringst alles mit, was es braucht.':n?'Du bringst '+n+' von 3 mit. Den Rest klären wir im Gespräch.':'Was du mitbringst, klären wir im Gespräch.';}
   let passtUhr=[];
   function gewaehlt(g,attr){const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.dataset[attr]:'';}
   function passt(){
     passtUhr.forEach(clearTimeout);passtUhr=[];
     const ziel=gewaehlt('ziel','ziel'),stand=gewaehlt('stand','stand'),zeit=gewaehlt('zeit','zeit');
-    const punkte=[PUNKTE.taetigkeit[gewaehlt('taetigkeit','taetigkeit')],ziel?'Dein Ziel: '+ziel+'. Darauf zahlt jeder Beitrag ein.':'',PUNKTE.stand[stand],PUNKTE.zeit[zeit]].filter(Boolean);
+    const punkte=[PUNKTE.taetigkeit[gewaehlt('taetigkeit','taetigkeit')],ziel?'Dein Ziel: '+ziel+'. Darauf zahlt jeder Beitrag ein.':'',PUNKTE.stand[stand],PUNKTE.zeit[zeit],mbPunkt()].filter(Boolean);
     const ul=$('#passt-punkte');ul.innerHTML='';
     punkte.forEach(txt=>{const li=document.createElement('li');li.innerHTML='<span class="pk-m" aria-hidden="true"><i></i><i></i><i></i></span>';li.appendChild(document.createTextNode(txt));ul.appendChild(li);});
     const name=$('#f-name').value.trim();
@@ -689,7 +734,7 @@ const PAGE_SCRIPT = `
   // Nach einer Antwort lag „Weiter" am iPhone SE in fuenf von zehn Schritten und am 12 mini in
   // zwei unter dem Falz (besucher-sim.mjs, 10.10.2026). Ein klebender Knopf haette die uebrigen
   // Antworten verdeckt — also bleibt alles sichtbar, und nach dem Antippen kommt „Weiter" ins Bild.
-  document.addEventListener('click',e=>{const c=e.target.closest('.q.on .chip');if(!c)return;
+  document.addEventListener('click',e=>{const c=e.target.closest('.q.on .chip, .q.on .mb');if(!c)return;
     requestAnimationFrame(()=>{const n=c.closest('.q').querySelector('.foot .next');if(!n)return;
       if(n.getBoundingClientRect().bottom>innerHeight-8)n.scrollIntoView({block:'end',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});});
   // Textschritte: die Weiter-Taste der Handy-Tastatur fuehrt weiter (vorher tat sie nichts, und
@@ -866,7 +911,7 @@ const PAGE_SCRIPT = `
     const thema=$('#f-thema').value.trim(),handle=$('#f-handle').value.trim().replace(/^@+/,'');
     const payload={name:$('#f-name').value.trim(),email:mail,phone:tel,
       business:[wahlText('taetigkeit'),thema,handle?'@'+handle:''].filter(Boolean).join(' · '),
-      status:wahlText('stand'),goal:wahlText('ziel'),budget:wahlText('budget'),start:wahlText('start'),
+      status:wahlText('stand'),goal:[wahlText('ziel'),mbWahl().length?'Bringt mit: '+mbWahl().join(', '):''].filter(Boolean).join(' · '),budget:wahlText('budget'),start:wahlText('start'),
       turnstile:tok,elapsed:Date.now()-START};
     try{
       const res=await fetch('/api/anfrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
