@@ -78,7 +78,12 @@ async function kundinZuEmail(db, email) {
   }
 }
 
-async function zaehle(db, ergebnis) {
+// Versuche, die nicht von der Funnel-Seite kommen (kein/fremder Origin), zaehlen getrennt mit
+// „x_“ — wie im Portal. Sonst taeten Bots, die /api/anfrage direkt ansprechen, im Controlling so,
+// als halte das Formular Menschen ab (16.10.2026).
+const FUNNEL_ORIGIN = 'https://start.social2scale.com';
+async function zaehle(db, ergebnis, echt = true) {
+  ergebnis = (echt ? '' : 'x_') + ergebnis;
   try {
     await db.prepare(
       "INSERT INTO formular_versuche (tag, formular, ergebnis, n) VALUES (date('now'), 'anfrage', ?, 1) " +
@@ -164,33 +169,34 @@ export async function handleAnfrage(request, env, cors, teile = {}) {
     console.error('[anfrage] Body ist kein JSON:', err);
     return antwort({ ok: false, error: 'bad_json' }, 400, cors);
   }
+  const echt = (request.headers.get('Origin') || '') === (env.PUBLIC_ORIGIN || FUNNEL_ORIGIN);
   if (isHoneypotTripped(body)) {
     console.error('[anfrage] Abgewiesen: Honeypot ausgeloest');
-    await zaehle(env.DB, 'spam_falle');
+    await zaehle(env.DB, 'spam_falle', echt);
     return antwort({ ok: true }, 200, cors);
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || 'anon';
   if (!env.TURNSTILE_SECRET || !(await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET))) {
     console.error('[anfrage] Abgewiesen: Turnstile ungueltig/fehlt');
-    await zaehle(env.DB, 'captcha');
+    await zaehle(env.DB, 'captcha', echt);
     return antwort({ ok: false, error: 'captcha' }, 403, cors);
   }
 
   const d = anfrageAusFunnel(body);
   const fehler = pflichtFehler(d);
   if (fehler) {
-    await zaehle(env.DB, 'pflichtfeld');
+    await zaehle(env.DB, 'pflichtfeld', echt);
     return antwort({ ok: false, error: fehler }, 422, cors);
   }
 
   const rl = await registerAttempt(env.DB, ip);
   if (!rl.ok) {
-    await zaehle(env.DB, 'rate');
+    await zaehle(env.DB, 'rate', echt);
     return antwort({ ok: false, error: 'rate_limited' }, 429, cors);
   }
   if (!(await (teile.mx || hasMailServer)(d.email))) {
-    await zaehle(env.DB, 'mail_domain');
+    await zaehle(env.DB, 'mail_domain', echt);
     return antwort({ ok: false, error: 'email_domain' }, 422, cors);
   }
 
@@ -198,7 +204,7 @@ export async function handleAnfrage(request, env, cors, teile = {}) {
     return antwort({ ok: false, error: 'speichern' }, 500, cors);
   }
   await Promise.all([bestaetigen(env, d, teile.mail), brevoKontakt(env, d, teile.holen)]);
-  await zaehle(env.DB, 'angekommen');
+  await zaehle(env.DB, 'angekommen', echt);
   return antwort({ ok: true }, 200, cors);
 }
 

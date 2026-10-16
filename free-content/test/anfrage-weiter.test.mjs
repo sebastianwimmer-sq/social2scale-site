@@ -24,9 +24,9 @@ function d1() {
   };
   return { db, s };
 }
-function req(body) {
+function req(body, ohneOrigin = false) {
   return new Request('https://start.social2scale.com/api/anfrage', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7' }, body: JSON.stringify(body),
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7', ...(ohneOrigin ? {} : { Origin: 'https://start.social2scale.com' }) }, body: JSON.stringify(body),
   });
 }
 // Turnstile-Prüfung läuft über globales fetch.
@@ -150,3 +150,9 @@ test('Probe: ok mit Tabellen und Mail-Schlüssel, sonst Grund', async () => {
   u.s.exec('DROP TABLE formular_versuche');
   assert.equal(await anfrageProbe({ ...u.env, BREVO_API_KEY: 'k' }), 'crm');
 });
+
+test('Versuch ohne Funnel-Origin zählt als fremd (x_), nie als echte Ablehnung', () => mitTurnstile(false, async () => {
+  const u = umgebung();
+  await handleAnfrage(req(GUT, true), u.env, {}, u.teile);
+  assert.deepEqual(zaehler(u.s), { x_captcha: 1 });
+}));
