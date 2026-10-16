@@ -57,13 +57,15 @@
   /* Aurora-Doppelton wie auf der Startseite: Emerald oben links, Teal unten
      rechts, ueber dunkler Diagonale. Vorher lag hier ein einzelner flacher
      Radial-Verlauf — der Grund, warum die Seite "billig" wirkte. */
-  /* 16.10.2026: das KI-Arbeitsplatzfoto ist raus (Sebi: „KI-Slop“) — Licht statt Bild. */
+  /* Atmosphaere statt leerer Flaeche: unter dem Aurora-Doppelton liegt dasselbe
+     Arbeitsplatz-Foto wie auf der Preisseite, stark abgedunkelt. */
   body{
     min-height:100dvh;
     background:
       radial-gradient(120% 90% at 12% -10%, rgba(0,184,136,.18), transparent 58%),
       radial-gradient(110% 90% at 88% 108%, rgba(31,166,224,.14), transparent 60%),
       linear-gradient(165deg,rgba(10,17,20,.90) 0%,rgba(3,8,13,.94) 62%),
+      url(/assets/workspace.webp) center/cover no-repeat,
       var(--ink);
     color:var(--paper);
     font-family:"Hanken Grotesk",system-ui,sans-serif;

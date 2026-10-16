@@ -273,10 +273,11 @@
      laute Karten nebeneinander.
      ============================================================ */
   .pr-hero{padding:clamp(var(--s-9),8vw,var(--s-11)) 0 clamp(var(--s-7),4vw,var(--s-8))}
-  /* 16.10.2026: KI-Arbeitsplatzfoto raus — Licht in den Markenfarben statt Bild. */
+  /* Foto mit dunklem Schleier — dieselbe Technik wie auf /results/ und /about/.
+     Ohne Bild war die Preisseite die einzige komplett flache Seite der Site. */
   .pr-hero-bg{position:absolute;inset:-22% 0;z-index:0;
-    background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),
-      var(--ink, #03080D)}
+    background:linear-gradient(168deg,rgba(3,8,13,.66),rgba(3,8,13,.86) 62%,#03080D 100%),
+      url(/assets/workspace.webp) center/cover no-repeat}
   .pr-rh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:var(--s-3)}
   .pr-rh b{color:var(--emerald);font-weight:600}
   .pr-hero h1{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2.6rem,1.2rem + 5vw,5.2rem);line-height:.98;letter-spacing:-.03em;max-width:15ch;margin-top:var(--s-4);font-variation-settings:"opsz" 144}
