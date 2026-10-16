@@ -77,6 +77,7 @@ export async function send(env, to, name, mail, absender = 'social2scale') {
         to: String(to).split(',').map((e) => e.trim()).filter(Boolean).map((email) => ({ email, name })),
         subject: mail.subject,
         htmlContent: mail.htmlContent,
+        ...(mail.replyTo ? { replyTo: mail.replyTo } : {}),
       }),
     });
     if (!res.ok) {
