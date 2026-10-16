@@ -16,6 +16,7 @@ import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } fr
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
 import { anfrageMailHtml } from './pages/confirm-email.js';
+import { buchungsLink } from './constants.js';
 
 export const ANFRAGE_MAX_BYTES = 16 * 1024;
 const VON = 'vorschau-b';
@@ -122,7 +123,7 @@ export async function brevoKontakt(env, d, holen = fetch) {
 export async function bestaetigen(env, d, mailSenden = send) {
   const vorname = esc(d.name.split(/\s+/)[0] || 'du');
   try {
-    return await mailSenden(env, d.email, d.name, { subject: 'Deine Anfrage ist angekommen', htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL)) }, 'social2scale');
+    return await mailSenden(env, d.email, d.name, { subject: 'Deine Anfrage ist angekommen', htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL), esc(buchungsLink(d.name, d.email))) }, 'social2scale');
   } catch (err) {
     console.error('[anfrage] Bestaetigungsmail fehlgeschlagen:', err);
     return false;
