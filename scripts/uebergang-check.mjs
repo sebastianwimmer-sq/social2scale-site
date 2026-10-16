@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-/* uebergang-check.mjs — laeuft der Weg zur Anfrage so, wie uebergang.js ihn plant?
+/* uebergang-check.mjs — wandert die Marke beim Seitenwechsel mit (abschluss.css @view-transition)?
+ * Bis 16.10.2026 mass es auch den Weg zur Anfrage-Seite; die ist jetzt nur noch eine Weiterleitung.
  *
  * Ein Seitenuebergang, der ausfaellt, meldet sich nirgends: die Seite laedt
  * dann einfach ohne. Gemessen wird deshalb IN der neuen Seite, beim Aufdecken:
@@ -7,7 +8,7 @@
  * wirklich von der vorigen Seite.
  *
  * Aufruf:  node scripts/uebergang-check.mjs [--selbsttest]
- *   --selbsttest liefert ein leeres uebergang.js aus — das Tor MUSS rot werden.
+ *   --selbsttest schaltet @view-transition in abschluss.css ab — das Tor MUSS rot werden.
  */
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -29,7 +30,7 @@ const server = await new Promise((fertig) => {
     if (anf.url.split('?')[0].endsWith('/')) pfad = join(pfad, 'index.html');
     try {
       let inhalt = await readFile(pfad);
-      if (SELBSTTEST && pfad.endsWith('/uebergang.js')) inhalt = Buffer.from('/* leer */');
+      if (SELBSTTEST && pfad.endsWith('/abschluss.css')) inhalt = Buffer.from(inhalt.toString().replace(/@view-transition\s*\{[^}]*\}/, ''));
       /* WebKit hebt http://localhost sonst auf https und laedt kein CSS (kern.md). */
       if (pfad.endsWith('.html')) inhalt = Buffer.from(inhalt.toString().replace(/;?\s*upgrade-insecure-requests/, ''));
       ant.writeHead(200, { 'Content-Type': TYPEN[extname(pfad)] || 'application/octet-stream' });
@@ -68,8 +69,12 @@ async function schritt(name, start, klick, erwartet, verboten = []) {
   await s.goto(BASIS + start, { waitUntil: 'load' });
   await s.evaluate(() => { window.__vt = null; });
   const el = s.locator(klick).first();
-  await el.scrollIntoViewIfNeeded(); await s.waitForTimeout(700);
-  await Promise.all([s.waitForURL('**/anfrage/**').catch(() => s.waitForLoadState('load')), el.click()]);
+  await el.scrollIntoViewIfNeeded();
+  // Erst klicken, wenn die Seite steht: Schriften geladen, zwei Bilder gemalt (in der Kette war
+  // „Startseite -> Preise“ einmal ohne Uebergang, einzeln 3/3 gruen — 16.10.2026).
+  await s.evaluate(async () => { await document.fonts.ready; await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); });
+  await s.waitForTimeout(700);
+  await Promise.all([s.waitForURL((u) => u.pathname !== start).catch(() => s.waitForLoadState('load')), el.click()]);
   await s.waitForFunction(() => window.__vt && window.__vt.fertig, null, { timeout: 5000 }).catch(() => {});
   const vt = await s.evaluate(() => window.__vt || {});
   await ctx.close();
@@ -81,8 +86,9 @@ async function schritt(name, start, klick, erwartet, verboten = []) {
   for (const n of verboten) if (alt.includes(n)) befunde.push(`${name}: ${n} haette nicht wandern duerfen`);
 }
 
-await schritt('Abschluss-Knopf -> Anfrage', '/', '#cta-bottom', ['anfrage-karte', 'anfrage-titel', 'marke']);
-await schritt('Nav-Knopf -> Anfrage', '/preise/', '#cta-top', ['anfrage-karte', 'marke'], ['anfrage-titel']);
+/* Seit 16.10.2026 fuehrt jeder Knopf in den Funnel (andere Domain = harter Schnitt, Bruecke
+   /gratis/); /anfrage/ ist nur noch Weiterleitung. Gemessen werden die Wechsel innerhalb der Site. */
+await schritt('Preise -> Ablauf (Logo bleibt)', '/preise/', 'header.bar a[href="/ablauf/"]', ['marke']);
 /* Die Kopfleiste selbst steht mit animation:none still — ohne Animation sieht
    die Sonde sie nicht. Gemessen wird das Logo, das in ihr sitzt. */
 await schritt('Startseite -> Preise (Logo bleibt)', '/', 'header.bar a[href="/preise/"]', ['marke'], ['anfrage-karte', 'anfrage-titel']);
@@ -91,8 +97,8 @@ await browser.close();
 server.close();
 
 if (SELBSTTEST) {
-  if (befunde.length) { console.log(`\n✓ Selbsttest: ohne uebergang.js schlaegt das Tor an (${befunde.length} Befunde).`); process.exit(0); }
-  console.error('\n✗ SELBSTTEST: ohne uebergang.js blieb das Tor gruen.'); process.exit(1);
+  if (befunde.length) { console.log(`\n✓ Selbsttest: ohne @view-transition schlaegt das Tor an (${befunde.length} Befunde).`); process.exit(0); }
+  console.error('\n✗ SELBSTTEST: ohne @view-transition blieb das Tor gruen.'); process.exit(1);
 }
 if (befunde.length) { console.error(`\n✗ uebergang-check: ${befunde.length} Befund(e):`); befunde.forEach((b) => console.error('    ' + b)); process.exit(1); }
-console.log('\n✓ uebergang-check: Knopf wird Karte, Satz wandert mit, Kopf bleibt stehen.');
+console.log('\n✓ uebergang-check: die Marke wandert beim Seitenwechsel mit, der Kopf bleibt stehen.');

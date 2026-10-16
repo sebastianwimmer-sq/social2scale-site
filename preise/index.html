@@ -273,11 +273,10 @@
      laute Karten nebeneinander.
      ============================================================ */
   .pr-hero{padding:clamp(var(--s-9),8vw,var(--s-11)) 0 clamp(var(--s-7),4vw,var(--s-8))}
-  /* Foto mit dunklem Schleier — dieselbe Technik wie auf /results/ und /about/.
-     Ohne Bild war die Preisseite die einzige komplett flache Seite der Site. */
+  /* 16.10.2026: KI-Arbeitsplatzfoto raus — Licht in den Markenfarben statt Bild. */
   .pr-hero-bg{position:absolute;inset:-22% 0;z-index:0;
-    background:linear-gradient(168deg,rgba(3,8,13,.66),rgba(3,8,13,.86) 62%,#03080D 100%),
-      url(/assets/workspace.webp) center/cover no-repeat}
+    background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),
+      var(--ink, #03080D)}
   .pr-rh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:var(--s-3)}
   .pr-rh b{color:var(--emerald);font-weight:600}
   .pr-hero h1{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(2.6rem,1.2rem + 5vw,5.2rem);line-height:.98;letter-spacing:-.03em;max-width:15ch;margin-top:var(--s-4);font-variation-settings:"opsz" 144}
@@ -724,9 +723,8 @@
         <li><a href="/results/">Prüf uns</a></li>
         <li><a href="/about/">Über uns</a></li>
       </ul>
-      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
 <!-- /SHELL:NAV -->
-      <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
+      <a class="nav-cta" id="cta-top" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -741,9 +739,8 @@
     <a class="m-link" href="/for-you/">Für wen</a>
     <a class="m-link" href="/results/">Prüf uns</a>
     <a class="m-link" href="/about/">Über uns</a>
-    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
 <!-- /SHELL:MOBIL -->
-    <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen</a>  </nav>
+    <a class="m-cta" id="cta-menu" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten</a>  </nav>
 
   <main id="main" tabindex="-1">
 
@@ -808,7 +805,7 @@
         </div>
         <div class="pr-emp-fuss">
           <p class="pr-emp-preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
-          <a class="btn btn-primary" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
+          <a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a>
         </div>
       </div>
 
@@ -984,8 +981,7 @@
         <h2 id="pr-cta" class="wipe">Dann lass uns kurz <em>reden</em>.</h2>
         <p class="lead">Ein Gespräch, kein Termin-Marathon. Wir sagen dir auch, wenn du noch keins der drei brauchst.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen →</a>
-          <a class="btn btn-ghost" id="cta-vorschau" href="/gratis/">Erst die Gratis-Vorschau ansehen</a>
+          <a class="btn btn-primary" id="cta-bottom" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a>
         </div>
       </div>
     </div></section>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-rKqS+2pDvOc/O1mKrjVKlHPezFdptKcNeHm0iOc52Ms=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-GMSi3nCLVjKBvou95d+5ZgDPwFmXOpq5R+jeFyqxzK8=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -13,8 +13,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-growth-1000.webp" media="(max-width:700px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-growth-1800.webp" media="(min-width:701px)">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
 <meta name="theme-color" content="#03080D">
@@ -176,23 +174,20 @@
 
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
-  /* Hero-Hintergrundfoto, dunkel überscrimt → Text bleibt knackig, Foto gibt Tiefe */
-  /* WebP statt 223-KB-JPEG: am gedrosselten Handy war die Collage das LCP-Element und kam
-     nach 3,2 s (besucher-sim.mjs, 11.10.2026). Handy 26 KB, Desktop 57 KB. */
-  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.58),rgba(3,8,13,.80) 58%,#03080D 100%),url(/assets/hero-growth-1800.webp) center 55%/cover no-repeat}
+  /* 16.10.2026: die KI-Collage mit erfundenen Zahlen (+5,902 · +218 % · 28,7K) ist raus —
+     Sebi: „KI-Slop-Bubbles“, und keine Zahl ohne Beleg. Licht in den Markenfarben statt Bild. */
+  .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),linear-gradient(180deg,rgba(3,8,13,0),#03080D 100%)}
   .hero>.wrap{position:relative;z-index:1}
-  /* CTA-Karte mit Creator-Foto als Hintergrund */
+  /* CTA-Karte: Licht statt KI-Foto (16.10.2026) */
   .band.has-photo{position:relative;overflow:hidden}
-  .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(165deg,rgba(4,20,15,.80),rgba(3,8,13,.90)),url(/assets/creator.webp) center/cover no-repeat}
+  .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),linear-gradient(165deg,rgba(4,20,15,.6),rgba(3,8,13,.9))}
   .band.has-photo>*{position:relative;z-index:1}
   /* Wiederverwendbare Section-Hintergrundfotos (dunkel überscrimt, Text obenauf) */
   .photo-sec{position:relative;overflow:hidden}
   .photo-sec>*:not(.sec-bg){position:relative;z-index:1}
-  .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
+  /* Ohne eigenes Bild traegt ein Abschnitt nur Licht (KI-Fotos mit erfundenen Diagrammen raus, 16.10.2026). */
+  .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-image:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%)}
   .sec-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.84),rgba(3,8,13,.92))}
-  .sec-bg.growth{background-image:url(/assets/growth.webp)}
-  .sec-bg.collab{background-image:url(/assets/collab.webp)}
-  .sec-bg.flat{background-image:url(/assets/flat.webp)}
   .sec-bg.wave{background-image:url(/assets/sec-wave.jpg)}
   .sec-bg.wave::after{background:linear-gradient(180deg,rgba(3,8,13,.78),rgba(3,8,13,.9))}
   /* Foto-Reveal: nur aktiv wenn JS die Klasse setzt (sonst sofort sichtbar) */
@@ -273,10 +268,6 @@
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
     .hero-logo{--lw:clamp(230px,70vw,340px)}
-    /* Am Handy fuellt die Foto-Collage die ganze Breite und wird laut. Der
-       Abdunkler ist hier deutlich staerker als am Desktop, damit der Text
-       traegt statt mit dem Bild zu konkurrieren. */
-    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.82),rgba(3,8,13,.92) 58%,#03080D 100%),url(/assets/hero-growth-1000.webp) center 55%/cover no-repeat}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
@@ -902,9 +893,8 @@
         <li><a href="/results/">Prüf uns</a></li>
         <li><a href="/about/">Über uns</a></li>
       </ul>
-      <a class="nav-soft" href="/gratis/">Gratis-Vorschau</a>
 <!-- /SHELL:NAV -->
-      <a class="nav-cta" id="cta-top" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch</a>
+      <a class="nav-cta" id="cta-top" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu">
       <span></span><span></span><span></span>
@@ -919,9 +909,8 @@
     <a class="m-link" href="/for-you/">Für wen</a>
     <a class="m-link" href="/results/">Prüf uns</a>
     <a class="m-link" href="/about/">Über uns</a>
-    <a class="m-link" href="/gratis/">Gratis-Vorschau</a>
 <!-- /SHELL:MOBIL -->
-    <a class="m-cta" id="cta-menu" href="/anfrage/" data-cta-url="/anfrage/">Erstgespräch anfragen</a>
+    <a class="m-cta" id="cta-menu" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten</a>
     
   </nav>
 
@@ -940,10 +929,9 @@
           </h1>
           <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn. <b>Du musst nichts können außer reden.</b></p>
           <div class="cta-row r" style="animation-delay:.38s">
-            <a class="btn btn-primary" id="cta" href="/gratis/">Gratis-Vorschau starten →</a>
-            <a class="textlink" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
+            <a class="btn btn-primary" id="cta" href="/gratis/">Kostenlos starten →</a>
           </div>
-          <p class="cta-note r" style="animation-delay:.42s">Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.</p>
+          <p class="cta-note r" style="animation-delay:.42s">Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Du wählst im ersten Schritt.</p>
           <div class="duo hero-duo r" style="animation-delay:.46s">
             <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
             <p class="duo-txt">Zwei Gründer, die selbst Hand anlegen: <b>Sebi &amp; Phil</b>.</p>
@@ -1029,8 +1017,8 @@
                     <div class="ava"><img src="/assets/s2s.webp" alt="social2scale"></div>
                     <div class="stats">
                       <div class="st"><span class="num" data-k="posts">0</span><span class="lb">Beiträge</span></div>
-                      <div class="st"><span class="num" data-k="foll">2</span><span class="lb">Follower</span></div>
-                      <div class="st"><span class="num" data-k="follo">2</span><span class="lb">Gefolgt</span></div>
+                      <div class="st"><span class="num" data-k="foll">–</span><span class="lb">Follower</span></div>
+                      <div class="st"><span class="num" data-k="follo">–</span><span class="lb">Gefolgt</span></div>
                     </div>
                   </div>
                   <div class="bio">
@@ -1188,10 +1176,9 @@
     <section class="blk abschluss"><div class="wrap reveal">
       <div class="band">
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Dein Feed-Entwurf in 60 Sekunden. Kostenlos, mit deinem Foto und deiner Farbe.</p>
+        <p class="lead">Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Du wählst im ersten Schritt.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" id="cta-vorschau" href="/gratis/">Gratis-Vorschau starten →</a>
-          <a class="textlink" id="cta-bottom" href="/anfrage/" data-cta-url="/anfrage/">Oder direkt: Erstgespräch anfragen</a>
+          <a class="btn btn-primary" id="cta-bottom" href="/gratis/">Kostenlos starten →</a>
         </div>
         <div class="duo">
           <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
@@ -1430,15 +1417,14 @@
   var MSG = [
     'Strategiegespräch ✓ Ziel, Zielgruppe &amp; Plan stehen.',
     'Setup live — Profil, Branding &amp; Content stehen.',
-    '🚀 +3.900 Follower diese Woche — dein Content zündet.',
-    '◆ +218% Reichweite · 47 Leads · €4,8k Umsatz.'
+    'Du gibst frei, wir posten — jede Woche.',
+    'Monatsbericht: was lief, was wir als Nächstes ändern.'
   ];
 
   function easeInOut(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
   function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
   function phaseOf(pp){ for(var i=0;i<4;i++){ if(pp < B[i+1]) return i; } return 3; }
   function seg(arr){ var ph=phaseOf(p), f=easeInOut(clamp((p-B[ph])/(B[ph+1]-B[ph]),0,1)); return arr[ph]+(arr[ph+1]-arr[ph])*f; }
-  function kFmt(v){ if(v>=1000){var k=v/1000;return (k<10?k.toFixed(1):Math.round(k).toString()).replace('.',',')+'k';} return Math.round(v).toString(); }
 
   var p = 0, lastPhase = -1, notiTimer;
   function popNoti(phase){
@@ -1459,8 +1445,8 @@
     }
 
     nums.posts.textContent = Math.round(seg([0,0,7,16,24]));
-    nums.foll.textContent  = kFmt(seg([2,2,340,4200,12400]));
-    nums.follo.textContent = Math.round(seg([2,2,16,30,41]));
+    /* Follower zaehlen nicht mehr hoch (16.10.2026): 2 → 12.400 war ein Wachstumsversprechen
+       ohne Beleg. Was waechst, ist der Feed, den wir bauen — die Beitraege. */
 
     app.classList.toggle('lit', phase>=1);
     app.classList.toggle('v2', phase>=2);
@@ -1523,8 +1509,8 @@
   </script>
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <div class="inner">
-    <span class="txt"><b>Deine Gratis-Vorschau</b>Feed-Entwurf in 60 Sekunden.</span>
-    <a class="btn btn-primary" href="/gratis/">Vorschau&nbsp;starten&nbsp;→</a>
+    <span class="txt"><b>Vorschau oder Gespräch</b>Du wählst im ersten Schritt.</span>
+    <a class="btn btn-primary" href="/gratis/">Kostenlos&nbsp;starten&nbsp;→</a>
   </div>
 </div>
 <script>

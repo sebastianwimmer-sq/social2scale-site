@@ -22,10 +22,10 @@
 <meta http-equiv="refresh" content="0; url=https://start.social2scale.com/">
 
 <title>Gratis-Vorschau — social2scale</title>
-<meta name="description" content="Acht kurze Fragen, Mail bestätigen — und du siehst eine Vorschau, wie dein Instagram-Auftritt aussehen könnte. Kostenlos, ohne Gespräch.">
+<meta name="description" content="Eine Frage zuerst: Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
 <link rel="canonical" href="https://social2scale.com/gratis/">
 <meta property="og:title" content="Deine Gratis-Vorschau — social2scale">
-<meta property="og:description" content="Acht kurze Fragen, Mail bestätigen — und du siehst eine Vorschau, wie dein Instagram-Auftritt aussehen könnte. Kostenlos, ohne Gespräch.">
+<meta property="og:description" content="Eine Frage zuerst: Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
 <meta property="og:url" content="https://social2scale.com/gratis/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
@@ -34,7 +34,7 @@
 <meta property="og:image:alt" content="social2scale — Gratis-Vorschau deines Instagram-Auftritts">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Deine Gratis-Vorschau — social2scale">
-<meta name="twitter:description" content="Acht kurze Fragen, Mail bestätigen — und du siehst deine Instagram-Vorschau. Kostenlos, ohne Gespräch.">
+<meta name="twitter:description" content="Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Kostenlos.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 
 <!-- Die Schriften der Marke. Ohne diese Zeile faellt die Seite auf die
@@ -57,16 +57,13 @@
   /* Aurora-Doppelton wie auf der Startseite: Emerald oben links, Teal unten
      rechts, ueber dunkler Diagonale. Vorher lag hier ein einzelner flacher
      Radial-Verlauf — der Grund, warum die Seite "billig" wirkte. */
-  /* Atmosphaere statt leerer Flaeche: unter dem Aurora-Doppelton liegt jetzt
-     dasselbe Arbeitsplatz-Foto wie auf der Preisseite, stark abgedunkelt. Auf
-     grossen Bildschirmen stand die Karte vorher in einem leeren Raum. */
+  /* 16.10.2026: das KI-Arbeitsplatzfoto ist raus (Sebi: „KI-Slop“) — Licht statt Bild. */
   body{
     min-height:100dvh;
     background:
       radial-gradient(120% 90% at 12% -10%, rgba(0,184,136,.18), transparent 58%),
       radial-gradient(110% 90% at 88% 108%, rgba(31,166,224,.14), transparent 60%),
       linear-gradient(165deg,rgba(10,17,20,.90) 0%,rgba(3,8,13,.94) 62%),
-      url(/assets/workspace.webp) center/cover no-repeat,
       var(--ink);
     color:var(--paper);
     font-family:"Hanken Grotesk",system-ui,sans-serif;
@@ -146,12 +143,12 @@
 <body>
   <main class="card">
     <img class="wordmark" src="/assets/sig-wordmark.png" alt="social2scale" width="180" height="28">
-    <p class="klabel">Kostenlos · ohne Gespräch</p>
-    <h1>Deine Vorschau wird <em>geöffnet</em>.</h1>
+    <p class="klabel">Kostenlos</p>
+    <h1>Es geht <em>los</em>.</h1>
     <p class="lead">Einen Moment — wir bringen dich hin. Falls nichts passiert, geht es auch von Hand:</p>
     <div class="load" role="status" aria-label="Weiterleitung läuft"><span></span></div>
-    <a class="btn" href="https://start.social2scale.com/">Vorschau jetzt starten →</a>
-    <p class="fine">Acht kurze Fragen · Mail bestätigen · Vorschau ansehen</p>
+    <a class="btn" href="https://start.social2scale.com/">Jetzt starten →</a>
+    <p class="fine">Vorschau in 60 Sekunden · oder direkt ein Gespräch</p>
   </main>
 <script>
   // Steht VOR der Weiterleitung: dahinter zählte /gratis/ nie (Besucher-Simulation
