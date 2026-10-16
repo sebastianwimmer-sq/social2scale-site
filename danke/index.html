@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-A51QCubyXWaEPpxu8+Z6P16ejCIhJvR4+RiI3o+Vdfk=' 'sha256-mjFGYByiU4nfS45cGhmdkhdfN0GlThk2gbcyqTVBMk8=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-A51QCubyXWaEPpxu8+Z6P16ejCIhJvR4+RiI3o+Vdfk=' 'sha256-fR0+gLs7oxMsrrFOyuETiydzxmRmTRBrJxyR7tzUw6Y=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-eHS/YudZ8J9HkVgE4+FpSo5yeA8aCXgwLQ/+a1/2wZM=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -327,147 +327,37 @@
     <a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
   </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" id="hero">
-      <div class="celebrate" aria-hidden="true"></div>
-      <div class="wrap">
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" stroke="#00B888" stroke-width="1.6"/><path d="M7 12.5l3.2 3.2L17 8.5" stroke="#00B888" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>Zahlung erfolgreich</span>
-        <h1 id="hero-greet">Willkommen an Bord<span id="vorname-sep">, </span><span id="vorname">…</span>.</h1>
-        <p class="sub">Dein Platz bei social2scale ist gesichert — <b>du hast gerade richtig gewählt.</b> Ab jetzt bauen wir dein Wachstum gemeinsam. Nur noch ein Schritt, dann legen wir los.</p>
-        <p class="scrollhint">So geht&rsquo;s weiter<span aria-hidden="true">&darr;</span></p>
-      </div>
-    </section>
-
-    <!-- DEIN START — interaktiver Momentum-Block -->
-    <section class="start" id="start" aria-labelledby="start-h">
-      <div class="wrap reveal">
-        <p class="ix"><b>00</b> Dein Start</p>
-        <span class="klabel">Leg los</span>
-        <h2 id="start-h">Worauf willst du <em>als Erstes</em> los?</h2>
-        <div class="panel">
-          <div class="goalpick" role="group" aria-label="Dein erstes Ziel wählen">
-            <button type="button" class="goal" id="goal-reach" data-goal="reach" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Sichtbarkeit</span>
-              <span class="gt">Reichweite</span>
-            </button>
-            <button type="button" class="goal" id="goal-leads" data-goal="leads" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Anfragen</span>
-              <span class="gt">Leads</span>
-            </button>
-            <button type="button" class="goal" id="goal-revenue" data-goal="revenue" aria-pressed="false">
-              <span class="dot" aria-hidden="true"></span>
-              <span class="gk">Wachstum</span>
-              <span class="gt">Umsatz</span>
-            </button>
-          </div>
-
-          <figure class="growth" id="growth" role="group" aria-label="Beispielhafter Wachstumsverlauf">
-            <div class="ghead">
-              <figcaption class="glabel" id="growth-label">Deine <b>Reichweite</b>: heute &rarr; in 90 Tagen</figcaption>
-              <span class="gtag" aria-hidden="true">Beispielhafter Verlauf</span>
-            </div>
-            <div class="chart">
-              <svg id="growth-svg" viewBox="0 0 640 220" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-                <defs>
-                  <linearGradient id="startStroke" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0" stop-color="#1FC998"/>
-                    <stop offset="1" stop-color="#46BEEA"/>
-                  </linearGradient>
-                  <linearGradient id="startFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stop-color="rgba(0,184,136,.30)"/>
-                    <stop offset="1" stop-color="rgba(0,184,136,0)"/>
-                  </linearGradient>
-                </defs>
-                <path class="garea" id="growth-area" d=""/>
-                <path class="gline" id="growth-line" d=""/>
-                <circle class="gtip" id="growth-tip" r="4.5" cx="0" cy="0"/>
-              </svg>
-            </div>
-            <div class="axis" aria-hidden="true"><span>Heute</span><span>In 90 Tagen</span></div>
-          </figure>
-
-          <p class="commit" id="commit" aria-live="polite">
-            <span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="#1FC998" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span id="commit-text">Ziel gesetzt &#x2713; &mdash; jetzt wird&rsquo;s gebaut.</span>
-          </p>
-
-          <div class="cta-row">
-            <a class="btn btn-primary" id="start-cta" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen &mdash; los geht&rsquo;s <span class="arr">&rarr;</span></a>
-            <span class="hint">Schritt 1 von 2 &mdash; danach buchst du direkt deinen Kickoff-Termin.</span>
-          </div>
+  <main class="dk">
+    <section class="dk-start" aria-labelledby="hero-greet">
+      <div class="dk-wrap">
+        <div class="dk-text">
+          <p class="dk-status"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M5.8 10.3l2.7 2.7 5.7-6"/></svg>Zahlung bestätigt</p>
+          <h1 id="hero-greet">Willkommen an Bord<span id="vorname-sep">, </span><span id="vorname">…</span>.</h1>
+          <p class="dk-lead">Dein Platz bei social2scale ist gesichert. Damit wir sofort für dich arbeiten können, brauchen wir als Erstes ein paar Angaben zu dir, deinem Angebot und deinen Zielen.</p>
+          <a class="dk-cta" id="cta-form" href="../onboarding/" data-form-url="../onboarding/">Onboarding starten</a>
+          <p class="dk-hinweis">Danach buchst du direkt deinen Kickoff-Termin mit uns.</p>
         </div>
-      </div>
-    </section>
-
-    <!-- SO GEHT'S WEITER -->
-    <section class="blk" aria-labelledby="steps-h">
-      <div class="wrap reveal">
-        <div class="blk-head">
-          <p class="ix"><b>01</b> Dein Start</p>
-          <span class="klabel">So geht&rsquo;s weiter</span>
-          <h2 id="steps-h">Drei Schritte — <em>dann läuft&rsquo;s</em>.</h2>
-        </div>
-        <ol class="steps">
-          <li>
-            <span class="num" aria-hidden="true">1</span>
-            <div class="body">
-              <h3>Kurzes Onboarding ausfüllen</h3>
-              <p>Ein paar Fragen zu dir, deinem Angebot und deinen Zielen — damit wir vom ersten Tag an passgenau für dich arbeiten. Das ist dein erster Schritt.</p>
-            </div>
-          </li>
-          <li>
-            <span class="num" aria-hidden="true">2</span>
-            <div class="body">
-              <h3>Kickoff-Call buchen</h3>
-              <p>Direkt nach dem Onboarding buchst du deinen Termin für den Strategie-Call. Hier lernen wir uns kennen und legen die Richtung für deinen Auftritt fest.</p>
-            </div>
-          </li>
-          <li>
-            <span class="num" aria-hidden="true">3</span>
-            <div class="body">
-              <h3>Wir legen los &mdash; du verfolgst alles in deinem Bereich</h3>
-              <p>Wir bauen, betreuen und skalieren deinen Auftritt. Reichweite, Leads und Fortschritt siehst du jederzeit transparent in deinem Bereich.</p>
-            </div>
-          </li>
+        <ol class="dk-weg" aria-label="So geht es weiter">
+          <li class="dk-schritt fertig"><span class="dk-punkt" aria-hidden="true"></span><b>Zahlung bestätigt</b><span>Dein Paket ist gebucht.</span></li>
+          <li class="dk-schritt jetzt" aria-current="step"><span class="dk-punkt" aria-hidden="true"></span><b>Onboarding</b><span>Wer du bist, was du anbietest, wohin du willst.</span></li>
+          <li class="dk-schritt"><span class="dk-punkt" aria-hidden="true"></span><b>Kickoff-Termin</b><span>Wir lernen uns kennen und legen die Richtung fest.</span></li>
+          <li class="dk-schritt"><span class="dk-punkt" aria-hidden="true"></span><b>Start in deinem Social Hub</b><span>Dort siehst du jederzeit, woran wir für dich arbeiten.</span></li>
         </ol>
       </div>
     </section>
 
-    <!-- COMMIT / CTA -->
-    <section class="blk" aria-labelledby="cta-h">
-      <div class="wrap reveal">
-        <div class="band">
-          <span class="micro">Schritt 1 &rarr; Schritt 2</span>
-          <h2 id="cta-h">Dein erster Schritt: <em>Onboarding</em>.</h2>
-          <p class="lead">Fülle kurz das Onboarding aus — direkt danach buchst du deinen Kickoff-Termin. So haben wir vom Start weg alles, um passgenau für dich loszulegen.</p>
-          <div class="cta-row">
-            <a class="btn btn-primary" id="cta-call" href="../onboarding/" data-form-url="../onboarding/">Onboarding ausfüllen <span class="arr">&rarr;</span></a>
-            <p class="quick">Schritt 2 folgt direkt im Anschluss: <a id="cta-form" href="../onboarding/" data-form-url="../onboarding/">Onboarding-Fragebogen ausfüllen</a></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOUNDER NOTE -->
-    <section class="blk" aria-labelledby="founder-h">
-      <div class="wrap reveal">
-        <div class="blk-head">
-          <p class="ix"><b>02</b> Persönlich von uns</p>
-          <span class="klabel">Schön, dass du da bist</span>
-          <h2 id="founder-h">Wir freuen uns <em>riesig</em>.</h2>
-        </div>
-        <div class="founder">
-          <span class="pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
+    <section class="dk-wir" aria-labelledby="wir-h">
+      <div class="dk-wrap dk-schmal">
+        <div class="dk-gruender">
+          <span class="dk-fotos" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
           <div>
-            <p>Hey<span id="vorname2"></span>, <b>wir sind Sebi &amp; Phil</b>. <span class="m">Danke für dein Vertrauen — wir freuen uns riesig, dich an Bord zu haben. Wir nehmen deinen Auftrag so ernst wie unseren eigenen und machen dein Wachstum ab jetzt zu unserem.</span></p>
-            <div class="sig">— Sebi &amp; Phil</div>
+            <h2 id="wir-h">Hey<span id="vorname2"></span>, wir sind Sebi &amp; Phil.</h2>
+            <p>Danke für dein Vertrauen. Wir freuen uns riesig, dich an Bord zu haben. Wir nehmen deinen Auftrag so ernst wie unseren eigenen und machen dein Wachstum ab jetzt zu unserem.</p>
+            <p class="dk-sig">Sebi &amp; Phil</p>
           </div>
         </div>
-        <p class="support">Fragen vor dem Start? Schreib uns jederzeit an <a id="support" data-support-mail="info@social2scale.com" href="mailto:info@social2scale.com">info@social2scale.com</a> — wir sind für dich da.</p>
-        <p class="mandatory">Die Abbuchung erfolgt durch Digistore24. Läuft dein Paket monatlich, verlängert es sich automatisch und ist jederzeit über Digistore24 kündbar.</p>
+        <p class="dk-support">Fragen vor dem Start? Schreib uns an <a id="support" data-support-mail="info@social2scale.com" href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <p class="dk-pflicht">Die Abbuchung erfolgt durch Digistore24. Läuft dein Paket monatlich, verlängert es sich automatisch und ist jederzeit über Digistore24 kündbar.</p>
       </div>
     </section>
   </main>
@@ -536,95 +426,6 @@
       var el=document.getElementById(x[0]);if(!el)return;
       var u=el.getAttribute(x[1]);if(u&&u!=='#')el.setAttribute('href',u);
     });
-    // ===== DEIN START — interaktiver Momentum-Block =====
-    (function(){
-      var W=640,H=220,PAD=14;                 // SVG-Koordinatensystem (viewBox)
-      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var growth=document.getElementById('growth');
-      var lineEl=document.getElementById('growth-line');
-      var areaEl=document.getElementById('growth-area');
-      var tipEl=document.getElementById('growth-tip');
-      var labelEl=document.getElementById('growth-label');
-      var commit=document.getElementById('commit');
-      var buttons=Array.prototype.slice.call(document.querySelectorAll('.goal'));
-      if(!growth||!lineEl||!buttons.length)return;
-
-      // Pro Ziel: Wortlaut + leicht abweichende Kurvenform (curve = Steilheit/Verlauf).
-      var GOALS={
-        reach:  {label:'Deine <b>Reichweite</b>: heute &rarr; in 90 Tagen', curve:0.40},
-        leads:  {label:'Deine <b>Leads</b>: heute &rarr; in 90 Tagen',      curve:0.62},
-        revenue:{label:'Dein <b>Umsatz</b>: heute &rarr; in 90 Tagen',      curve:0.82}
-      };
-
-      // Smooth ansteigende Kurve (heute niedrig links -> in 90 Tagen hoch rechts).
-      // bias verschiebt die Beschleunigung: kleiner = früher steil, größer = später steil.
-      function buildPath(bias){
-        var n=7,pts=[];
-        for(var i=0;i<=n;i++){
-          var t=i/n;
-          // ease-in/out je nach bias -> spürbar andere Form pro Ziel
-          var e=Math.pow(t,1+bias*1.6);
-          var x=PAD+t*(W-PAD*2);
-          var y=(H-PAD)-e*(H-PAD*2);
-          pts.push([x,y]);
-        }
-        // Catmull-Rom -> Bézier für eine weiche Linie
-        var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
-        for(var j=0;j<pts.length-1;j++){
-          var p0=pts[j>0?j-1:0],p1=pts[j],p2=pts[j+1],p3=pts[j+2<pts.length?j+2:j+1];
-          var c1x=p1[0]+(p2[0]-p0[0])/6, c1y=p1[1]+(p2[1]-p0[1])/6;
-          var c2x=p2[0]-(p3[0]-p1[0])/6, c2y=p2[1]-(p3[1]-p1[1])/6;
-          d+=' C'+c1x.toFixed(1)+' '+c1y.toFixed(1)+','+c2x.toFixed(1)+' '+c2y.toFixed(1)+','+p2[0].toFixed(1)+' '+p2[1].toFixed(1);
-        }
-        return {d:d,end:pts[pts.length-1]};
-      }
-
-      var firstPick=true;
-      function render(goal){
-        var cfg=GOALS[goal]||GOALS.reach;
-        var path=buildPath(cfg.curve);
-        lineEl.setAttribute('d',path.d);
-        areaEl.setAttribute('d',path.d+' L'+(W-PAD)+' '+(H-PAD)+' L'+PAD+' '+(H-PAD)+' Z');
-        tipEl.setAttribute('cx',path.end[0].toFixed(1));
-        tipEl.setAttribute('cy',path.end[1].toFixed(1));
-        labelEl.innerHTML=cfg.label;
-
-        // Draw-Animation (nur wenn Motion erlaubt)
-        if(!reduce){
-          var len=0;try{len=lineEl.getTotalLength();}catch(e){len=900;}
-          growth.style.setProperty('--len',len);
-          growth.classList.add('draw');
-          growth.classList.remove('run');
-          // Reflow erzwingen, damit die Transition jedes Mal neu startet
-          void lineEl.getBoundingClientRect();
-          requestAnimationFrame(function(){requestAnimationFrame(function(){growth.classList.add('run');});});
-        }
-        growth.classList.add('show');
-        commit.classList.add('show');
-        firstPick=false;
-      }
-
-      buttons.forEach(function(btn){
-        btn.addEventListener('click',function(){
-          buttons.forEach(function(b){b.setAttribute('aria-pressed', b===btn?'true':'false');});
-          render(btn.getAttribute('data-goal'));
-        });
-      });
-
-      // Default: "Reichweite" vorausgewählt — Kurve & Commitment direkt sichtbar,
-      // ohne Draw-Animation beim Laden (fühlt sich ruhiger an).
-      var def=document.getElementById('goal-reach');
-      if(def){
-        def.setAttribute('aria-pressed','true');
-        var cfg=GOALS.reach,path=buildPath(cfg.curve);
-        lineEl.setAttribute('d',path.d);
-        areaEl.setAttribute('d',path.d+' L'+(W-PAD)+' '+(H-PAD)+' L'+PAD+' '+(H-PAD)+' Z');
-        tipEl.setAttribute('cx',path.end[0].toFixed(1));
-        tipEl.setAttribute('cy',path.end[1].toFixed(1));
-        labelEl.innerHTML=cfg.label;
-        growth.classList.add('show');
-      }
-    })();
 
     // Scroll-Reveal
     var els=document.querySelectorAll('.reveal');
@@ -672,6 +473,70 @@
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
+
+  <style>
+  /* Danke-Seite neu (16.10.2026): EIN nächster Schritt, „Der Weg“ als einziger Moment (Linie zeichnet bis zur jetzigen Station) */
+  .dk{--dk-weg:linear-gradient(180deg,var(--emerald-soft),var(--teal))}
+  .dk-wrap{width:min(1120px,100% - 32px);margin:0 auto}
+  .dk-start{position:relative;padding:clamp(96px,14vh,150px) 0 clamp(64px,10vh,110px);overflow:clip;
+    background:radial-gradient(60% 70% at 18% 0%,color-mix(in srgb,var(--emerald) 20%,transparent),transparent 70%),
+               radial-gradient(50% 60% at 100% 30%,color-mix(in srgb,var(--teal) 14%,transparent),transparent 70%)}
+  .dk-start .dk-wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,7vw,110px);align-items:center}
+  .dk-status{display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;font-size:16px;font-weight:600;color:var(--emerald-soft)}
+  .dk-status svg circle{fill:color-mix(in srgb,var(--emerald) 18%,transparent);stroke:var(--emerald-soft);stroke-width:1.5}
+  .dk-status svg path{fill:none;stroke:var(--emerald-soft);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .dk h1{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(2.7rem,1.6rem + 4.4vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:0;text-wrap:balance}
+  .dk-lead{max-width:34em;margin:26px 0 34px;font-size:clamp(17px,1rem + .3vw,19px);line-height:1.6;color:var(--muted)}
+  .dk-cta{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 34px;border-radius:12px;font-weight:700;font-size:17px;
+    color:var(--emerald-ink);text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft),var(--emerald) 55%,var(--teal));
+    box-shadow:0 18px 40px -14px color-mix(in srgb,var(--emerald) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease)}
+  .dk-cta:hover{transform:translateY(-2px);box-shadow:0 24px 48px -14px color-mix(in srgb,var(--emerald) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
+  .dk-cta:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
+  .dk-hinweis{margin:16px 0 0;font-size:15px;color:var(--faint)}
+  /* Der Weg: graue Spur über alle Stationen, darauf die Markenlinie bis zur jetzigen Station */
+  .dk-weg{position:relative;list-style:none;margin:0;padding:6px 0 6px 0;display:grid;gap:30px;--dk-bis:0}
+  .dk-weg::before,.dk-weg::after{content:"";position:absolute;left:11px;top:16px;width:2px;border-radius:2px}
+  .dk-weg::before{bottom:16px;background:var(--line-2)}
+  .dk-weg::after{height:calc(var(--dk-hoehe,0px) * var(--dk-bis));background:var(--dk-weg);box-shadow:0 0 18px color-mix(in srgb,var(--emerald) 55%,transparent)}
+  .dk-schritt{position:relative;display:grid;gap:4px;padding-left:44px}
+  .dk-schritt b{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.25rem,1.05rem + .6vw,1.55rem);line-height:1.15;color:var(--paper)}
+  .dk-schritt span:last-child{font-size:16px;line-height:1.5;color:var(--muted)}
+  .dk-schritt:not(.fertig):not(.jetzt) b{color:color-mix(in srgb,var(--paper) 62%,transparent)}
+  .dk-punkt{position:absolute;left:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--line-3)}
+  .dk-schritt.fertig .dk-punkt{background:var(--dk-weg);box-shadow:none}
+  .dk-schritt.fertig .dk-punkt::after{content:"";position:absolute;left:8px;top:5px;width:6px;height:10px;border:solid var(--emerald-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .dk-schritt.jetzt .dk-punkt{background:var(--ink);box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
+  .dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:dk-licht 1.4s var(--ease) .9s 1 both}
+  @keyframes dk-licht{0%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
+    100%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 14px color-mix(in srgb,var(--emerald) 0%,transparent)}}
+  .dk-weg.an::after{transition:height .9s var(--ease)}
+  .dk-wir{position:relative;padding:clamp(64px,10vh,110px) 0 clamp(72px,11vh,120px);border-top:1px solid var(--line);background:var(--ink)}   /* deckt den alten Seiten-Schein ab (endete hart mitten im Abschnitt) */
+  .dk-schmal{max-width:760px}
+  .dk-gruender{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+  .dk-fotos{display:flex}.dk-fotos img{width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px var(--ink)}
+  .dk-fotos picture+picture img{margin-left:-18px}
+  .dk h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.7rem,1.3rem + 1.4vw,2.4rem);line-height:1.1;letter-spacing:-.02em;margin:4px 0 14px}
+  .dk-gruender p{margin:0;font-size:17px;line-height:1.65;color:var(--muted)}
+  .dk-sig{margin-top:14px!important;font-family:"Fraunces",serif;font-style:italic;font-size:19px!important;color:var(--paper)!important}
+  .dk-support{margin:40px 0 0;font-size:16px;color:var(--muted)}.dk-support a{color:var(--paper)}
+  .dk-pflicht{margin:12px 0 0;font-size:14px;line-height:1.55;color:var(--faint)}
+  @media (max-width:860px){
+    .dk-start .dk-wrap{grid-template-columns:1fr;gap:56px}
+    .dk-gruender{grid-template-columns:1fr;gap:18px}
+  }
+  @media (prefers-reduced-motion:reduce){.dk-weg.an::after{transition:none}.dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:none}.dk-cta{transition:none}}
+  </style>
+  <script>
+  // Der Weg: Markenlinie zeichnet einmal bis zur jetzigen Station (Höhe gemessen, nicht geraten); ohne JS/Bewegung steht sie fertig da
+  (function(){var w=document.querySelector('.dk-weg');if(!w)return;var j=w.querySelector('.jetzt .dk-punkt');
+    function mass(){var o=w.getBoundingClientRect(),p=j.getBoundingClientRect();w.style.setProperty('--dk-hoehe',Math.max(0,p.top-o.top-6)+'px');}
+    mass();addEventListener('resize',mass);
+    var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(still){w.style.setProperty('--dk-bis','1');return;}
+    requestAnimationFrame(function(){requestAnimationFrame(function(){w.classList.add('an');w.style.setProperty('--dk-bis','1');});});
+  })();
+  </script>
 <script src="/uebergang.js" defer></script>
 </body>
 </html>
