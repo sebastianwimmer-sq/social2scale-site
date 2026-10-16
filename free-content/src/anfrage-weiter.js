@@ -16,7 +16,7 @@ import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } fr
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
 import { anfrageMailHtml } from './pages/confirm-email.js';
-import { buchungsLink } from './constants.js';
+import { buchungsLink, PHIL } from './constants.js';
 
 export const ANFRAGE_MAX_BYTES = 16 * 1024;
 const VON = 'vorschau-b';
@@ -63,8 +63,11 @@ export function founderMail(d) {
     ['Status', d.status], ['Budget', d.budget], ['Ziel / Bottleneck', d.goal], ['Gefunden über', 'Gratis-Vorschau, Weg B (Betreuung)']];
   return {
     subject: 'Neue Erstgespräch-Anfrage: ' + d.name,
-    htmlContent: '<h2>Neue Erstgespräch-Anfrage</h2><ul>' +
-      zeilen.filter(([, v]) => v).map(([k, v]) => '<li><b>' + k + ':</b> ' + esc(v) + '</li>').join('') + '</ul>',
+    // „Antworten“ geht direkt an die Anfragende; die Nummer ist ein Anruf-Link fuers Handy.
+    replyTo: { email: d.email, name: d.name },
+    htmlContent: '<h2>Neue Erstgespräch-Anfrage</h2><p><a href="tel:' + esc(d.phone.replace(/[^0-9+]/g, '')) + '">Jetzt anrufen: ' + esc(d.phone) + '</a></p><ul>' +
+      zeilen.filter(([, v]) => v).map(([k, v]) => '<li><b>' + k + ':</b> ' + esc(v) + '</li>').join('') + '</ul>' +
+      '<p>Im CRM steht ein Anruf-Termin für heute (Kalender › Termine).</p>',
   };
 }
 
@@ -123,7 +126,11 @@ export async function brevoKontakt(env, d, holen = fetch) {
 export async function bestaetigen(env, d, mailSenden = send) {
   const vorname = esc(d.name.split(/\s+/)[0] || 'du');
   try {
-    return await mailSenden(env, d.email, d.name, { subject: 'Deine Anfrage ist angekommen', htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL), esc(buchungsLink(d.name, d.email))) }, 'social2scale');
+    return await mailSenden(env, d.email, d.name, {
+      subject: 'Deine Anfrage ist bei mir angekommen',
+      replyTo: { email: PHIL.mail, name: PHIL.name },
+      htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL), esc(buchungsLink(d.name, d.email)), esc(PHIL.tel), esc(PHIL.telHref)),
+    }, PHIL.name + ' · social2scale');
   } catch (err) {
     console.error('[anfrage] Bestaetigungsmail fehlgeschlagen:', err);
     return false;
@@ -142,6 +149,15 @@ export async function anfrageAnlegen(env, d, mailSenden = send) {
     gespeichert = true;
   } catch (err) {
     console.error('[anfrage] CRM-Eingang fehlgeschlagen:', err);
+  }
+  // Damit sich wirklich jemand kuemmert: ein Anruf-Termin fuer heute im CRM-Kalender (Phil sieht ihn
+  // unter Termine). Nicht fatal — CRM-Eingang und Mail sichern die Anfrage schon.
+  try {
+    await env.DB.prepare("INSERT INTO events (client_id, title, date, time, type, note, done) VALUES (?, ?, date('now'), '', 'call', ?, 0)")
+      .bind(clientId, 'Anrufen: Erstgespräch-Anfrage ' + d.name,
+        [d.phone, d.email, d.budget && 'Rahmen: ' + d.budget, d.goal, 'Termin evtl. schon direkt gebucht (Calendly)'].filter(Boolean).join(' · ')).run();
+  } catch (err) {
+    console.error('[anfrage] Anruf-Termin im CRM fehlgeschlagen:', err);
   }
   let gemailt = false;
   try {

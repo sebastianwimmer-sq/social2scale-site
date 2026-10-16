@@ -180,17 +180,19 @@ export function resultMailHtml(vorname, resultUrl) {
 
 /**
  * Bestaetigung fuer Weg B (Erstgespraech, 16.10.2026): vorher sah die Anfragende nur den
- * Danke-Schirm — wer ihn schloss, wusste nicht mehr, ob es geklappt hat. Systemmail von social2scale.
+ * Danke-Schirm — wer ihn schloss, wusste nicht mehr, ob es geklappt hat. Kommt von Phil (Ich-Form,
+ * seine Nummer, Antworten an ihn): Sebi 16.10. „die an den kunden direkt mit phil“.
  * @param {string} vorname - bereits escaped (esc()).
  * @param {string} vorschauUrl - bereits escaped (esc()).
  */
-export function anfrageMailHtml(vorname, vorschauUrl, buchungUrl) {
-  return mailHead('Deine Anfrage ist angekommen — social2scale', `Danke, ${vorname} — Phil meldet sich persönlich bei dir.`) + `
-          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Danke, ${vorname}. Deine Anfrage ist da.</h1>
-          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Phil meldet sich persönlich bei dir, per Telefon oder Mail. Lieber gleich einen festen Termin? Dann such ihn dir selbst aus:</p>
+export function anfrageMailHtml(vorname, vorschauUrl, buchungUrl, tel, telHref) {
+  return mailHead('Deine Anfrage ist bei mir angekommen', `Danke, ${vorname}. Ich melde mich persönlich bei dir.`) + `
+          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Danke, ${vorname}. Ich kümmere mich.</h1>
+          <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:${MUTED};">Deine Anfrage ist bei mir angekommen. Ich melde mich persönlich bei dir, telefonisch oder per Mail. Wenn du nicht warten willst, such dir direkt einen Termin aus:</p>
           ${mailCta(buchungUrl, 'Termin direkt buchen')}
-          <p style="margin:24px 0 0;font-size:15px;line-height:1.6;color:${MUTED};">Bis dahin kannst du dir in 60 Sekunden ansehen, wie dein Auftritt aussehen kann: <a href="${vorschauUrl}" style="color:${PAPER};">Gratis-Vorschau ansehen</a></p>
-          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Nicht du? Dann ignorier diese Mail einfach. Fragen? Antworte direkt hierauf.</p>` + sigFooter();
+          <p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:${MUTED};">Oder ruf mich an: <a href="tel:${telHref}" style="color:${PAPER};font-weight:700;text-decoration:none;">${tel}</a>. Antworten auf diese Mail landen direkt bei mir.</p>
+          <p style="margin:18px 0 0;font-size:14px;line-height:1.6;color:${FAINT};">Bis dahin kannst du dir in 60 Sekunden ansehen, wie dein Auftritt aussehen kann: <a href="${vorschauUrl}" style="color:${MUTED};">Gratis-Vorschau</a></p>` +
+    sigFooter('Phil · social2scale', 'Du bekommst diese Mail, weil du auf social2scale.com ein Erstgespräch angefragt hast.');
 }
 
 /**

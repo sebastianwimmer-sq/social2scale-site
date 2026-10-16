@@ -11,7 +11,7 @@
  */
 
 import { htmlDoc } from './shell.js';
-import { FARB_CHIPS, ERSTGESPRAECH_URL } from '../constants.js';
+import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL } from '../constants.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
@@ -392,7 +392,7 @@ function pageMarkup(turnstileSiteKey) {
         <span class="eyebrow">Anfrage ist da</span>
         <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Lieber gleich einen festen Termin? Such ihn dir selbst aus.</p>
-        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><p class="hint">Oder Phil ruft dich an, beides geht.</p></div>
+        <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
         <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
       </div>
 

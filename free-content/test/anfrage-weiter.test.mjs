@@ -11,7 +11,8 @@ function d1() {
   s.exec(`CREATE TABLE submissions (id INTEGER PRIMARY KEY, type TEXT, client_id INTEGER, name TEXT, email TEXT, payload TEXT, data TEXT, logo_key TEXT, rating INTEGER, status TEXT);
     CREATE TABLE clients (id INTEGER PRIMARY KEY, email TEXT, contact TEXT);
     CREATE TABLE formular_versuche (tag TEXT, formular TEXT, ergebnis TEXT, n INTEGER, PRIMARY KEY (tag, formular, ergebnis));
-    CREATE TABLE free_intake_log (ip TEXT, created_at TEXT);`);
+    CREATE TABLE free_intake_log (ip TEXT, created_at TEXT);
+    CREATE TABLE events (id INTEGER PRIMARY KEY, client_id INTEGER, title TEXT, date TEXT, time TEXT, type TEXT, note TEXT, done INTEGER);`);
   const db = {
     prepare(sql) {
       let args = [];
@@ -38,7 +39,7 @@ async function mitTurnstile(ok, fn) {
 function umgebung() {
   const { db, s } = d1();
   const mails = [];
-  const teile = { mx: async () => true, mail: async (env, to, name, m) => { mails.push({ to, m }); return true; } };
+  const teile = { mx: async () => true, mail: async (env, to, name, m, absender) => { mails.push({ to, m, absender }); return true; } };
   return { env: { TURNSTILE_SECRET: 's', DB: db, NOTIFY_TO: 'sebastian@social2scale.com, philipp@social2scale.com' }, s, mails, teile };
 }
 const zaehler = (s) => Object.fromEntries(s.prepare('SELECT ergebnis, n FROM formular_versuche').all().map((r) => [r.ergebnis, r.n]));
@@ -71,7 +72,20 @@ test('gültige Anfrage: Eingang im CRM wie aus /anfrage/, Mail an beide, gezähl
   assert.match(u.mails[0].m.subject, /Erstgespräch-Anfrage: Anna/);
   // Bestätigung an die Anfragende, mit Weg zur Vorschau
   assert.equal(u.mails[1].to, 'anna@beispiel.de');
-  assert.equal(u.mails[1].m.subject, 'Deine Anfrage ist angekommen');
+  assert.equal(u.mails[1].m.subject, 'Deine Anfrage ist bei mir angekommen');
+  // kommt von Phil: Antworten an ihn, seine Nummer im Text
+  assert.equal(u.mails[1].m.replyTo.email, 'philipp@social2scale.com');
+  assert.match(u.mails[1].m.htmlContent, /tel:\+491515914278/);
+  assert.match(u.mails[1].absender, /^Phil/);
+  // Founder-Mail: Antworten an die Anfragende, Anruf-Link
+  assert.equal(u.mails[0].m.replyTo.email, 'anna@beispiel.de');
+  assert.match(u.mails[0].m.htmlContent, /href="tel:01712345678"/);
+  // Anruf-Termin fuer heute im CRM
+  const ev = u.s.prepare('SELECT * FROM events').all();
+  assert.equal(ev.length, 1);
+  assert.equal(ev[0].type, 'call');
+  assert.match(ev[0].title, /Anrufen: Erstgespräch-Anfrage Anna/);
+  assert.match(ev[0].note, /0171 2345678/);
   assert.match(u.mails[1].m.htmlContent, /start\.social2scale\.com\/\?weg=a/);
   // und Phils Calendly mit vorbefülltem Namen + E-Mail
   assert.match(u.mails[1].m.htmlContent, /calendly\.com\/philipplibowicz\/neues-meeting\?name=Anna&amp;email=anna%40beispiel\.de/);

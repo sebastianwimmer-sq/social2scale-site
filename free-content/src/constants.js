@@ -127,3 +127,7 @@ export function buchungsLink(name, email) {
   const s = teile.join('&');
   return ERSTGESPRAECH_URL + (s ? '?' + s : '');
 }
+
+// Phil beantwortet Erstgespraech-Anfragen selbst (Sebi 16.10.2026: „die an den kunden direkt mit
+// phil, er macht ja alles also auch direkt nummer“). Nummer = Impressum social2scale.com.
+export const PHIL = Object.freeze({ name: 'Phil', mail: 'philipp@social2scale.com', tel: '+49 1515 914278', telHref: '+491515914278' });
