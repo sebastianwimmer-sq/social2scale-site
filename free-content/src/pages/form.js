@@ -22,9 +22,15 @@ const PAGE_STYLE = `
   .top{display:flex;align-items:center;gap:12px;padding:1rem 1.25rem .4rem}
   /* dasselbe s2s-Zeichen wie in der Leiste der Website: beim Wechsel springt die Marke nicht (motion-loop 06.10.2026) */
   .wm-logo{height:30px;width:auto;max-width:60px;object-fit:contain;object-position:left center;display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))}
-  .prog{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.09);overflow:hidden}
-  .prog>i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--emerald-soft),var(--emerald) 38%,var(--teal) 66%,var(--emerald-soft));background-size:230% 100%;transform-origin:left;transform:scaleX(.02);box-shadow:0 0 12px rgba(31,201,152,.55);transition:transform var(--dur-4, .7s) var(--e-spring)}
-  .cnt{font-family:var(--ff-label);font-size:0.6562rem;font-weight:600;letter-spacing:.08em;color:var(--faint);font-variant-numeric:tabular-nums}
+  /* Kopf (16.10.2026, Sebi: „die Linie oben sieht verwirrt aus“): vorher Linie + „3/12“, dazu der
+     Steckbrief als zweite Fortschrittsanzeige, und 12 widersprach „7 kurze Fragen“. Jetzt drei
+     Abschnitte in Worten; die genaue Stelle steht ueber der Frage („Frage 3 von 7“). */
+  .phasen{list-style:none;margin:0 0 0 auto;padding:0;display:flex;align-items:center;gap:.25rem;font-family:var(--ff-label);font-size:0.6875rem;font-weight:600;letter-spacing:.06em;color:var(--faint)}
+  .phasen li{padding:.3rem .2rem;transition:color var(--dur-2, .24s) ease-out}
+  .phasen li+li::before{content:"·";margin-right:.45rem;color:rgba(255,255,255,.22)}
+  .phasen li[aria-current="step"]{color:var(--ink)}
+  .phasen li.fertig{color:var(--emerald-soft)}
+  .app[data-schritt="0"] .phasen{visibility:hidden}
 
   /* ── BUEHNE mit schwebendem Glas-iPhone ── */
   .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1400px;padding:.4rem 0}
@@ -164,6 +170,7 @@ const PAGE_STYLE = `
   .br-eb{color:var(--emerald-soft)}.br-status{color:var(--faint);letter-spacing:.08em}
   .br-name{font-family:var(--ff-serif);font-weight:440;font-size:2.1rem;line-height:1.05;letter-spacing:-.02em;color:var(--ink);margin:.7rem 0 1.1rem;min-height:1.1em;overflow-wrap:anywhere}
   .br-zeilen{margin:0;display:grid}
+  .br-zeilen>div.nur-handy{display:none}
   .br-zeilen>div{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.8rem;padding:.62rem 0;border-top:1px solid rgba(255,255,255,.07)}
   .br-zeilen dt{font-size:.82rem;color:var(--faint)}
   .br-zeilen dd{margin:0;font-size:.95rem;line-height:1.4;color:var(--ink);opacity:0;transform:translateY(4px);transition:opacity var(--dur-3, .45s) var(--e-out),transform var(--dur-3, .45s) var(--e-out);overflow-wrap:anywhere}
@@ -177,11 +184,13 @@ const PAGE_STYLE = `
   @media (prefers-reduced-motion:reduce){.br-zeilen dd{transition:none}}
   /* Handy: eine schmale Leiste mit sechs Segmenten statt Blatt, die Frage braucht den Platz */
   @media (max-width:899px){
+    /* Am Handy ist der Steckbrief eine Statuszeile direkt unter dem Kopf, kein schwebendes Element */
+    .app[data-ansicht="brief"] .stage{justify-content:flex-start;padding-top:.2rem}
     .brief{width:100%;padding:.75rem 1rem;border-radius:16px;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"name status" "zeilen zeilen";column-gap:.8rem;row-gap:.5rem;align-items:center}
     .br-kopf{display:contents}.br-eb{display:none}.br-status{grid-area:status;justify-self:end;font-size:0.625rem}
     .br-name{grid-area:name;font-size:1.15rem;margin:0}
-    .br-zeilen{grid-area:zeilen;grid-template-columns:repeat(6,1fr);gap:4px}
-    .br-zeilen>div{display:block;padding:0;border:0;height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
+    .br-zeilen{grid-area:zeilen;grid-template-columns:repeat(7,1fr);gap:4px}
+    .br-zeilen>div,.br-zeilen>div.nur-handy{display:block;padding:0;border:0;height:4px;border-radius:2px;background:rgba(255,255,255,.1)}
     .br-zeilen>div.voll{background:var(--emerald-soft)}
     .br-zeilen dt,.br-zeilen dd{display:none}
     .br-stempel{display:none!important}
@@ -246,8 +255,9 @@ function pageMarkup(turnstileSiteKey) {
 <div class="app">
   <div class="top">
     <a href="https://social2scale.com/" aria-label="Zur social2scale-Startseite"><img class="wm-logo" src="${ASSET_BASE}/s2s-t.webp" srcset="${ASSET_BASE}/s2s-t.webp 248w, ${ASSET_BASE}/s2s-t-320.webp 320w" sizes="60px" alt="social2scale" width="60" height="30"></a>
-    <span class="prog"><i id="bar"></i></span>
-    <span class="cnt" id="cnt"></span>
+    <ol class="phasen" id="phasen" aria-label="Wo du gerade bist">
+      <li data-ph="check">Check</li><li data-ph="ergebnis">Ergebnis</li><li data-ph="weg" id="ph-weg">Dein Weg</li>
+    </ol>
   </div>
 
   <div class="stage">
@@ -258,6 +268,7 @@ function pageMarkup(turnstileSiteKey) {
       <div class="br-kopf"><span class="br-eb">Steckbrief</span><span class="br-status" id="br-status">wird angelegt</span></div>
       <div class="br-name" id="br-name">Du</div>
       <dl class="br-zeilen">
+        <div data-k="name" class="nur-handy"><dt>Name</dt><dd></dd></div>
         <div data-k="handle"><dt>Instagram</dt><dd></dd></div>
         <div data-k="taetigkeit"><dt>Was du machst</dt><dd></dd></div>
         <div data-k="thema"><dt>Thema</dt><dd></dd></div>
@@ -282,7 +293,7 @@ function pageMarkup(turnstileSiteKey) {
       </div></div>
       <div class="refl"></div>
     </div>
-    <p class="disclaimer" id="disclaimer">&lowast; Schnellentwurf aus deinen Antworten — dein echter Auftritt entsteht danach mit dir.</p>
+    <p class="disclaimer" id="disclaimer">Entwurf aus deinen Antworten. Den echten Auftritt bauen wir mit dir.</p>
   </div>
 
   <div class="sheet"><div class="sheet-in">
@@ -293,7 +304,7 @@ function pageMarkup(turnstileSiteKey) {
         <h1>Passt du zu <em>uns</em>?</h1>
         <p class="intro">Wir sind zu zweit und betreuen jeden Auftritt selbst. Darum schauen wir erst, ob wir dir wirklich helfen können.</p>
         <div class="foot"><button class="next" id="checkStart" data-go="1"><span class="lab">Kurz checken</span><span class="ic" aria-hidden="true"><i></i><i></i><i></i></span></button></div>
-        <p class="hint">7 kurze Fragen · etwa eine Minute · kostenlos</p>
+        <p class="hint">7 Fragen · eine Minute · kostenlos</p>
       </div>
 
       <div class="q" data-step="1">
@@ -515,7 +526,20 @@ const PAGE_SCRIPT = `
   // im Erstgespraech. Keine Warteschlangen-Zahl, kein Countdown (UWG §5, Anhang Nr. 7).
   // Ablauf: 0 Einstieg → 1–6 + 16 Check → 17 Ergebnis mit Wahl → A Vorschau (7–11) | B Betreuung (12–15).
   let WEG='',VORWAHL='';
-  const FOLGE={a:[1,2,3,4,5,6,16,17,7,8,9,10],b:[1,2,3,4,5,6,16,17,12,13,14]};
+  // Drei Abschnitte; je Abschnitt eine eigene Zaehlung, die nie springt.
+  const CHECK=[1,2,3,4,5,6,16],WEG_A=[7,8,9,10],WEG_B=[12,13,14];
+  function phaseZeigen(n){
+    const ph=CHECK.includes(n)?'check':n===17?'ergebnis':n===0?'':'weg';
+    const reihe=['check','ergebnis','weg'];
+    $('#ph-weg').textContent=WEG==='a'?'Vorschau':WEG==='b'?'Gespräch':'Dein Weg';
+    document.querySelectorAll('#phasen li').forEach(li=>{const i=reihe.indexOf(li.dataset.ph),j=reihe.indexOf(ph);
+      if(li.dataset.ph===ph)li.setAttribute('aria-current','step');else li.removeAttribute('aria-current');
+      li.classList.toggle('fertig',j>i||n===11||n===15);});
+    const eb=qs[n].querySelector('.eyebrow');if(!eb)return;
+    if(!eb.dataset.alt)eb.dataset.alt=eb.textContent;
+    const stelle=(liste,wort)=>wort+' '+(liste.indexOf(n)+1)+' von '+liste.length;
+    eb.textContent=CHECK.includes(n)?stelle(CHECK,'Frage'):WEG_A.includes(n)?stelle(WEG_A,'Vorschau · Schritt'):WEG_B.includes(n)?stelle(WEG_B,'Gespräch · Schritt'):eb.dataset.alt;
+  }
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const MOODS={
@@ -553,11 +577,7 @@ const PAGE_SCRIPT = `
     beispiel(n===0);document.querySelector('.app').dataset.schritt=n;
     document.querySelector('.app').dataset.ansicht=(n>=7&&n<=11)?'feed':'brief';briefFuellen();
     if(n<=6||n===16){$('#brief').classList.remove('passt');$('#br-status').textContent='wird angelegt';}
-    // Balken und Zaehler folgen dem gewaehlten Weg; vor der Wahl steht der Balken bei 0.
-    const folge=FOLGE[WEG]||FOLGE.a,total=folge.length,pos=Math.max(0,folge.indexOf(n)+1);
-    const fertig=n===11||n===15;
-    $('#bar').style.transform=\`scaleX(\${n===0?0:fertig?1:pos/total})\`;
-    $('#cnt').textContent=\`\${Math.min(pos,total)}/\${total}\`; $('#cnt').style.visibility=(n===0||fertig)?'hidden':'visible';
+    phaseZeigen(n);
     if(n===17)passt();
     const inp=qs[n].querySelector('input,textarea'); if(inp) setTimeout(()=>inp.focus(),160);
     if(n===11){$('#echo').textContent=($('#f-name').value.trim()||'schön');const WM={'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','web.de':'https://web.de','gmx.de':'https://www.gmx.net','gmx.net':'https://www.gmx.net','t-online.de':'https://email.t-online.de','outlook.com':'https://outlook.live.com','outlook.de':'https://outlook.live.com','hotmail.com':'https://outlook.live.com','hotmail.de':'https://outlook.live.com','yahoo.com':'https://mail.yahoo.com','yahoo.de':'https://mail.yahoo.com','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail'};const mv=$('#f-mail').value.trim();const dom=mv.slice(mv.lastIndexOf('@')+1).toLowerCase();const om=$('#openmail');if(WM[dom]){om.href=WM[dom];om.style.display='';}else{om.style.display='none';}}
@@ -566,7 +586,7 @@ const PAGE_SCRIPT = `
   function briefFuellen(){
     const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'').replace(/\s+/g,'');
     const w=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
-    const werte={handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit')};
+    const werte={name,handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit')};
     $('#br-name').textContent=name||'Du';
     document.querySelectorAll('.br-zeilen>div').forEach(z=>{const v=werte[z.dataset.k]||'';z.querySelector('dd').textContent=v;z.classList.toggle('voll',!!v);});
   }
@@ -608,7 +628,7 @@ const PAGE_SCRIPT = `
     zaehleKacheln();
   }
 
-  $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, \${v}! Deine Vorschau wird persönlich.\`);}else clr('#r-name');});
+  $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, dich kennenzulernen, \${v}.\`);}else clr('#r-name');});
   $('#f-handle').addEventListener('input',e=>{let v=e.target.value.trim().replace(/^@+/,'').replace(/\\s+/g,'');pvH.textContent=v||'dein.profil';if(v)bump(pvH);if(v.length>=3)react('#r-handle',\`@\${v} — sieht gut aus, das nehmen wir.\`);else clr('#r-handle');});
   $('#f-thema').addEventListener('input',e=>{const v=e.target.value.trim();pvB.textContent=v?v.slice(0,40)+(v.length>40?'…':''):' ';const tl=document.querySelectorAll('#pv-grid .pv-tile');if(v.length>8){['Dein Thema','Warum jetzt?','3 Schritte'].forEach((t,i)=>tl[i].textContent=t);react('#r-thema',\`Verstanden — daraus bauen wir deine Posts.\`);}else clr('#r-thema');});
   // Taetigkeit und Ziel werden angetippt (Freitext ging ungefiltert in den KI-Prompt).
