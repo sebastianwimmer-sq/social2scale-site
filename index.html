@@ -902,6 +902,79 @@
     .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
     .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
   }
+
+  /* ===== Tiefe R1 (16.10.2026) — gegen „extrem flach“ (Sebi) =====
+     Kritik (impeccable, 28/40): 6 von 9 Abschnitten ohne eigene Flaeche, jede H2 57,6 px,
+     jeder Abschnitt 104/104 px, Feed 166 px, Gruender nur 46-px-Kreise.
+     Belege: kit-build/web-tiefe-evidenz.json (Ebenen ueber Helligkeit auf Dunkel: Material +
+     Apple HIG; NN/g Flat-UI-Studie 2017; Robins & Holmes 2008 Aesthetik -> Glaubwuerdigkeit).
+     Akzentwort: Verlauf nur in Hero, Ablauf und Abschluss (Design-System, Sebi 16.10.). */
+  :root{
+    --grund:#03080D;                  /* Seitengrund (body background-color) */
+    --band-1:#0A1117;                 /* erhoehtes Band, leicht teal getoent */
+    --band-2:#0E161D;                 /* Buehne */
+    --kante:inset 0 1px 0 rgba(255,255,255,.05);
+    --sec-eng:clamp(var(--s-8),4vw + var(--s-5),var(--s-9));
+    --sec-buehne:clamp(var(--s-9),9vw + var(--s-6),200px);
+    --h2-buehne:clamp(2.6rem,1.4rem + 4.4vw,5.6rem);
+  }
+  /* Akzentwort: kursiv bleibt die Stimme der Fraunces, der Verlauf ist das Markenzeichen
+     und steht nur dreimal (Hero, Ablauf .s2em, Abschluss). */
+  h2 em{background:none;-webkit-text-fill-color:currentColor;color:inherit}
+
+  /* Rhythmus: eng · normal · Buehne */
+  #stand.kap{padding-bottom:var(--sec-eng)}
+  #faq.blk{padding:var(--sec-eng) 0}
+
+  /* Baender: ganze Abschnitte liegen eine Ebene hoeher */
+  #warum.kap,#leistungen.blk{background:linear-gradient(180deg,var(--band-1),var(--grund) 140%);border-top:0;box-shadow:var(--kante)}
+  #warum .wa-row.is-us{margin-top:var(--s-4);padding:clamp(20px,2.4vw,28px) clamp(18px,2.4vw,28px);border:1px solid var(--line-2);border-radius:14px;
+    background:var(--surf-grad);box-shadow:var(--depth-lg)}
+  #warum .wa-row.is-us + *{border-top:0}
+
+  /* Feed als Buehne: randlos ueber die volle Breite, Licht von unten */
+  .feed-band{padding:var(--sec-buehne) 0;overflow-x:clip;border-top:0;
+    background:radial-gradient(70% 55% at 50% 100%,rgba(0,184,136,.16),transparent 70%),linear-gradient(180deg,var(--grund),var(--band-2) 60%);box-shadow:var(--kante)}
+  .feed-kopf h2,#gruender-h{font-size:var(--h2-buehne);line-height:.98;letter-spacing:-.03em}
+  .feed-reihe{width:100vw;margin-left:calc(50% - 50vw);gap:0}
+  .feed-reihe img{border-radius:0;box-shadow:none}
+  @media (hover:hover){.feed-reihe li:hover img{transform:none;box-shadow:none;filter:brightness(1.08)}}
+  .feed-reihe img{transition:filter var(--dur-2, .24s) ease-out}
+  @media (max-width:760px){.feed-reihe{gap:0}.feed-reihe img{border-radius:0}}
+
+  /* Gruender: zwei Aufnahmen randlos nebeneinander, Satz darunter auf festem Grund */
+  .gruender{padding:var(--sec-buehne) 0 0;border-top:1px solid var(--line)}
+  .gr-kopf{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
+  .gr-reihe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gr-person{margin:0;min-width:0;display:flex;flex-direction:column}
+  .gr-bild{position:relative;overflow:hidden;aspect-ratio:4/5;max-height:min(74vh,700px);width:100%}
+  .gr-bild img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+  .gr-bild::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(168deg,rgba(0,184,136,.07),transparent 42%),linear-gradient(0deg,var(--grund),rgba(3,8,13,.10) 34%,transparent 58%)}
+  /* Sebastians Aufnahme hat einen hellen Studiogrund: in voller Breite stach er heraus
+     (16.10. angesehen). Kraeftigere Vignette + leicht gedaempft, Gesicht bleibt im hellen Kern. */
+  .gr-bild.is-hell img{filter:brightness(.86) saturate(.95)}
+  .gr-bild.is-hell::after{background:
+    radial-gradient(70% 62% at 52% 40%,transparent 30%,rgba(3,8,13,.55) 70%,rgba(3,8,13,.9) 100%),
+    linear-gradient(168deg,rgba(0,184,136,.07),transparent 44%),
+    linear-gradient(0deg,var(--grund),rgba(3,8,13,.24) 36%,transparent 64%)}
+  .gr-person figcaption{padding:var(--s-5) clamp(16px,4vw,56px) 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s-2) var(--s-4)}
+  .gr-name{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(1.8rem,1.3rem + 1.6vw,2.6rem);line-height:.95;letter-spacing:-.03em;color:var(--paper)}
+  .gr-rolle{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .gr-satz{flex-basis:100%;font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.15rem,.95rem + .8vw,1.5rem);line-height:1.32;color:var(--muted);max-width:30ch;quotes:"„" "“"}
+  .gr-fuss{padding:clamp(var(--s-6),3vw,var(--s-7)) clamp(16px,4vw,56px) 0}
+  @media (max-width:760px){
+    .gr-person figcaption{padding:var(--s-4) var(--s-4) 0}
+    .gr-satz{font-size:1.02rem}
+  }
+
+  /* Hero-Claim: am Desktop eine Stufe groesser (74 -> 85 px bei 1440), am Handy unveraendert
+     (Knopf bleibt ueber dem Falz). */
+  .hero h1 .claim{font-size:clamp(2.5rem,1.2rem + 4.6vw,6rem)}
+
+  /* Abschluss als Buehne */
+  section.abschluss{padding-bottom:var(--sec-buehne);
+    background:radial-gradient(60% 70% at 50% 100%,rgba(0,184,136,.12),transparent 70%)}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
@@ -1110,12 +1183,12 @@
         <h2 id="feed-h">Wir behaupten nicht. Wir <em>zeigen</em>.</h2>
       </div>
       <ul class="feed-reihe">
-        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Vier Wochen, kaum neue Follower." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Keine Kennzahl." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Ein Wort, eine Abmahnung." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 31vw, 190px" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Vier Wochen, kaum neue Follower." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Keine Kennzahl." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Ein Wort, eine Abmahnung." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." loading="lazy" decoding="async"></li>
       </ul>
       <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Auf Instagram ansehen</a>
     </div></section>
@@ -1209,16 +1282,40 @@
       </div>
     </div></section>
 
+    <!-- Tiefe R1 (16.10.2026): Menschen dort, wo entschieden wird. Sebi: Foto aus /about/.
+         Aufnahmen und Zitate wie auf /about/ (dort schon auf einen Look gerechnet). -->
+    <section class="gruender" aria-labelledby="gruender-h">
+      <div class="wrap gr-kopf">
+        <p class="ix">Wer das baut</p>
+        <h2 id="gruender-h">Sebi &amp; Phil. Kein Team dazwischen.</h2>
+      </div>
+      <div class="gr-reihe">
+        <figure class="gr-person">
+          <div class="gr-bild"><picture>
+            <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:760px) 50vw, 50vw">
+            <img src="/assets/founder-philipp-560.jpg" alt="Philipp, Gründer von social2scale" width="560" height="700" loading="lazy" decoding="async">
+          </picture></div>
+          <figcaption><span class="gr-name">Philipp</span><span class="gr-rolle">Technik &amp; Vertrieb</span>
+            <q class="gr-satz">Ich verkaufe niemandem etwas, das ich hinterher nicht nachrechnen kann.</q></figcaption>
+        </figure>
+        <figure class="gr-person">
+          <div class="gr-bild is-hell"><picture>
+            <source type="image/webp" srcset="/assets/founder-sebastian-560.webp 560w, /assets/founder-sebastian-768.webp 768w" sizes="(max-width:760px) 50vw, 50vw">
+            <img src="/assets/founder-sebastian-560.jpg" alt="Sebastian, Gründer von social2scale" width="560" height="700" loading="lazy" decoding="async">
+          </picture></div>
+          <figcaption><span class="gr-name">Sebastian</span><span class="gr-rolle">Content &amp; Reichweite</span>
+            <q class="gr-satz">Ich poste für dich nichts, was ich auf meinem eigenen Account nicht posten würde.</q></figcaption>
+        </figure>
+      </div>
+      <div class="gr-fuss"><a class="textlink" href="/about/">Mehr über uns</a></div>
+    </section>
+
     <section class="blk abschluss"><div class="wrap reveal">
       <div class="band">
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
         <p class="lead">Vorschau deines Feeds in 60 Sekunden oder direkt ein Erstgespräch. Du wählst im ersten Schritt.</p>
         <div class="cta-row">
           <a class="btn btn-primary" id="cta-bottom" href="/gratis/">Kostenlos starten →</a>
-        </div>
-        <div class="duo">
-          <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
-          <p class="duo-txt"><b>Sebi &amp; Phil</b>. Wir zwei bauen das, kein Team dazwischen. <a href="/about/">Über uns</a></p>
         </div>
       </div>
     </div></section>
