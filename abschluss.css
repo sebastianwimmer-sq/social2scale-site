@@ -250,6 +250,16 @@ body{
   }
 }
 
+/* ── Korn (16.10.2026): Material statt glatter Flaeche, auf JEDER Seite ──
+   Stand bisher nur in s2s.css (Preise, Ablauf, Links); Startseite, Pruef uns,
+   Ueber uns, Fuer wen waren glatt (Kritik 16.10.). Gleiche Regel, eine Quelle mehr
+   fuer die Seiten ohne s2s.css; wo beide laden, ist es dieselbe Deklaration. */
+body::after{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
+opacity:.055;mix-blend-mode:overlay;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+background-size:140px 140px}
+@media (prefers-reduced-motion:reduce){body::after{opacity:.04}}
+
 /* Grautoene fuer das Licht: --faint/--muted waren auf Fast-Schwarz gerechnet;
    auf dem Emerald-Licht fielen Etiketten und Unterzeilen auf 3,0–4,4:1
    (gemessen an echten Pixeln, 01.10.2026). Eine Stelle fuer alle Seiten. */
