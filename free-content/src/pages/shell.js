@@ -81,31 +81,26 @@ const SHARED_STYLE = `
   html,body{height:100%}
   body{background:var(--bg-0);color:var(--ink);font-family:var(--ff-body);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden;overflow-y:auto}
 
-  /* ── SZENE (echtes Marken-Foto + atmosphaerischer Wash) ── */
-  .scene{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(150deg,#04140F,#05131C 52%,#03080D)}
-  /* Schaerfe (16.10.2026): das alte Hochformat (1024 px) wurde am Retina-Desktop 2,8-fach vergroessert.
-     Neu erzeugt in 4k (Higgsfield gpt_image_2, Jobs 2d5f87cf/5b642857): Handy hoch, ab 701 px quer. */
-  .photo{position:absolute;inset:0;background:url("${ASSET_BASE}/workspace-hoch-1440.webp") center 40%/cover no-repeat;opacity:.5}
-  @media (min-width:701px){.photo{background-image:url("${ASSET_BASE}/workspace-quer-2880.webp");background-position:center 55%}}
-  .photo::after{content:"";position:absolute;inset:0;background:
-    radial-gradient(86% 58% at 15% 2%,rgba(0,184,136,.30),transparent 55%),
-    radial-gradient(84% 64% at 90% 98%,rgba(20,140,200,.24),transparent 58%),
-    linear-gradient(180deg,rgba(3,8,13,.5),rgba(3,8,13,.72) 52%,rgba(3,8,13,.94))}
-  .orb{position:absolute;border-radius:50%;filter:blur(78px);}
-  /* Das Licht bleibt, das Schweben ist weg (motion-loop 06.10.2026: Licht statt Bewegung, WCAG 2.2.2) */
-  .orb-a{width:56vmax;height:56vmax;left:-18vmax;top:-24vmax;opacity:.42;background:radial-gradient(circle,rgba(0,184,136,.34),transparent 66%);}
-  .orb-b{width:46vmax;height:46vmax;right:-15vmax;bottom:-16vmax;opacity:.3;background:radial-gradient(circle,var(--mood),transparent 64%);transition:background 1.3s var(--e-out);}
-  /* Lichtstrahl von oben-links */
-  .ray{position:absolute;top:-30%;left:-10%;width:70%;height:120%;transform:rotate(18deg);filter:blur(30px);opacity:.5;background:linear-gradient(90deg,transparent,rgba(31,201,152,.10) 40%,rgba(31,166,224,.06) 60%,transparent);pointer-events:none}
+  /* ── SZENE wie das Hero von social2scale.com (16.10.2026, Sebi: „vom Design-System der Hero-Landing-
+     page bleiben, selbst im Funnel“): derselbe Grund (Emerald-Licht oben links, Teal unten rechts) und
+     dieselbe Lichtlinie mit Punkte-Feld (hero-linie). Vorher ein Raum-Foto mit Pflanzen und drei
+     schwebende Licht-Blobs, die es auf der Website nicht gibt. ── */
+  .scene{position:fixed;inset:0;z-index:0;overflow:hidden;background:
+    radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.34),transparent 55%),
+    radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.30),transparent 56%),
+    linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%)}
+  .photo{position:absolute;inset:0;background:url("${ASSET_BASE}/hero-linie-1600.webp") 62% 88%/cover no-repeat;opacity:.55;
+    -webkit-mask-image:radial-gradient(90% 80% at 70% 70%,#000 40%,transparent 100%);mask-image:radial-gradient(90% 80% at 70% 70%,#000 40%,transparent 100%)}
+  @media (min-width:701px){.photo{background-image:url("${ASSET_BASE}/hero-linie-2880.webp");background-position:center 80%;opacity:.6}}
+  .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.35),rgba(3,8,13,.55) 58%,rgba(3,8,13,.8))}
   /* Film-Grain (fixed, ueberlagert alles, keine Events) */
   .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
-  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.orb{opacity:.3}}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
 `;
 
 const SCENE_MARKUP = `
 <div class="scene">
   <div class="photo"></div>
-  <div class="orb orb-a"></div><div class="orb orb-b"></div><div class="ray"></div>
 </div>
 <div class="grain"></div>`;
 
