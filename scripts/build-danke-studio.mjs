@@ -342,8 +342,8 @@ ${TOKENS}
   }
   .r{opacity:0;animation:upIn .7s var(--s2-ease) forwards}
 
-  .eyebrow{display:inline-flex;align-items:center;gap:var(--s2-sp-2);font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-faint)}
-  .klabel{font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent);display:block}
+  .eyebrow{display:inline-flex;align-items:center;gap:var(--s2-sp-2);font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-faint)}
+  .klabel{font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent);display:block}
   h2{font-family:var(--s2-ff-display);font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s2-sp-3)}
   h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--s2-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--s2-accent)}
   .lead{color:var(--s2-muted);max-width:58ch;margin-top:var(--s2-sp-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
@@ -351,7 +351,7 @@ ${TOKENS}
   .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
   .bar .brand img{height:30px;width:auto;display:block}
 
-  .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:15px;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
+  .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:0.9375rem;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
   .btn:hover{transform:translateY(-3px)}
   .btn-primary{background:linear-gradient(135deg,var(--s2-accent-soft) 0%,var(--s2-accent) 52%,var(--s2-accent-2) 100%);color:var(--s2-on-accent-2);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
   .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
@@ -369,20 +369,20 @@ ${TOKENS}
      ueber dem hellen Hero — 3,72:1. Sichtbar wurde das erst, als das
      Pruefwerkzeug die Einblend-Animation ans Ende setzt; vorher war der Chip
      zum Messzeitpunkt durchsichtig. */
-  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--s2-ff-ui);font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent-soft);background:var(--s2-surface);border:1px solid color-mix(in srgb,var(--s2-accent) 34%,transparent);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--s2-ease) .12s both}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent-soft);background:var(--s2-surface);border:1px solid color-mix(in srgb,var(--s2-accent) 34%,transparent);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--s2-ease) .12s both}
   .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--s2-ease) .55s forwards}
   .hero h1{font-family:var(--s2-ff-display);font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s2-sp-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--s2-ease) .26s both}
   .hero .sub{color:var(--s2-muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s2-sp-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--s2-ease) .38s both}
   .hero .sub b{color:var(--s2-ink);font-weight:600}
   .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s2-sp-3);margin-top:var(--s2-sp-6);animation:upIn .7s var(--s2-ease) .5s both}
-    .hero .hint{font-family:var(--s2-ff-mono);font-size:11px;letter-spacing:.08em;color:var(--s2-faint);text-shadow:0 1px 10px rgba(0,0,0,.85)}
+    .hero .hint{font-family:var(--s2-ff-mono);font-size:0.6875rem;letter-spacing:.08em;color:var(--s2-faint);text-shadow:0 1px 10px rgba(0,0,0,.85)}
 
   section.blk{padding:clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)) 0}
   .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--s2-line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--s2-e-3)}
   .offer .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
   .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);flex-wrap:wrap}
   .cd{display:inline-flex;align-items:baseline;gap:10px;background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.32);border-radius:999px;padding:8px 16px}
-  .cd-k{font-family:var(--s2-ff-ui);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
+  .cd-k{font-family:var(--s2-ff-ui);font-size:0.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
   .cd-t{font-family:var(--s2-ff-mono);font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
   .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s2-sp-6);margin-top:var(--s2-sp-6);background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--s2-e-2)}
   .oc-big{font-family:var(--s2-ff-display);font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s2-sp-2)}
@@ -417,16 +417,17 @@ ${TOKENS}
   .notecard b{color:var(--s2-ink)}
   .notecard a{color:var(--s2-accent-soft);text-decoration:none}
   .notecard a:hover{text-decoration:underline}
-  .mandatory{font-family:var(--s2-ff-mono);font-size:11.5px;letter-spacing:.03em;color:var(--s2-muted)}
+  .mandatory{font-family:var(--s2-ff-mono);font-size:0.7188rem;letter-spacing:.03em;color:var(--s2-muted)}
 
   .site-footer{margin-top:var(--s2-sp-8);border-top:1px solid var(--s2-line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--s2-bg-2)}
-  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:11px;letter-spacing:.04em;color:var(--s2-faint)}
+  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:0.6875rem;letter-spacing:.04em;color:var(--s2-faint)}
   .site-footer img{height:34px;width:auto;display:block}
   .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s2-sp-4)}
   .site-footer a{display:inline-flex;align-items:center;min-height:24px;color:var(--s2-muted);text-decoration:none}
   .site-footer a:hover{color:var(--s2-ink)}
 </style>
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
+<link rel="stylesheet" href="/bedienung.css">
 </head>
 <body>
   <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>

@@ -56,15 +56,13 @@ function esc(v) {
   );
 }
 
-/** Story-Highlight-Icons — EINE kohaerente Linien-Ikonografie (accent = currentColor)
- *  statt zusammengewuerfelter Unicode-Zeichen. Fill none, stroke via .hl-c color. */
-const SVG = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"';
-const HL_ICONS = {
-  person: `<svg ${SVG}><circle cx="12" cy="8.5" r="3.2"/><path d="M5.8 19.2c.5-3.3 3-5.1 6.2-5.1s5.7 1.8 6.2 5.1"/></svg>`,
-  spark: `<svg ${SVG}><path d="M12 3.5l1.6 5a2 2 0 0 0 1.4 1.4l5 1.6-5 1.6a2 2 0 0 0-1.4 1.4l-1.6 5-1.6-5a2 2 0 0 0-1.4-1.4l-5-1.6 5-1.6a2 2 0 0 0 1.4-1.4z"/></svg>`,
-  heart: `<svg ${SVG}><path d="M12 20s-6.6-4.2-6.6-9.1A3.6 3.6 0 0 1 12 8.3a3.6 3.6 0 0 1 6.6 2.6C18.6 15.8 12 20 12 20z"/></svg>`,
-  chat: `<svg ${SVG}><path d="M5 5.5h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5h-7L8 19v-2.5H5A1.5 1.5 0 0 1 3.5 15V7A1.5 1.5 0 0 1 5 5.5z"/></svg>`,
-};
+/** Story-Highlight-Cover: der Anfangsbuchstabe des Highlights in der Display-Schrift, kursiv
+ *  (16.10.2026, Sebi: „die ganzen KI-Slop-Icons raus, lieber was Eigenes, das zum Design-System
+ *  passt“). Vorher ein Linien-Icon-Satz (Person, Funken, Herz, Sprechblase). */
+function hlBuchstabe(name) {
+  const z = [...String(name || '').trim()][0] || '·';
+  return `<span class="hl-l" aria-hidden="true">${esc(z.toLocaleUpperCase('de'))}</span>`;
+}
 
 /**
  * Palette als Inline-Tokens — Look B traegt jede Farbwelt (belegt: design/b-hell.png).
@@ -174,9 +172,9 @@ function hlHtml(copy) {
     copy.highlights.every((h) => typeof h === 'string' && h.trim())
     ? copy.highlights
     : ['Über mich', 'Angebot', 'Stimmen', 'Fragen'];
-  const icons = [HL_ICONS.person, HL_ICONS.spark, HL_ICONS.heart, HL_ICONS.chat];
+
   return namen
-    .map((n, i) => `<div class="hl-i"><div class="hl-c">${icons[i]}</div>${esc(n)}</div>`)
+    .map((n, i) => `<div class="hl-i"><div class="hl-c">${hlBuchstabe(n)}</div>${esc(n)}</div>`)
     .join('');
 }
 

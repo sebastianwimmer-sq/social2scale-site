@@ -193,6 +193,7 @@ export const LOOK_CSS = `
     font-family: var(--ff-display); font-size: 20px; font-weight: 600;
     background: color-mix(in oklab, var(--accent) 12%, var(--paper)); color: var(--accent);
   }
+  .hl-l { font-style: italic; font-weight: 400; font-size: 28px; line-height: 1; transform: translateY(-1px); }
   /* Tab-Leiste wie in der App: Grid aktiv (Unterstrich in Ink), Reels, Markiert. */
   .tabs { display: flex; margin-top: 14px; }
   .tab { flex: 1; display: flex; justify-content: center; padding: 10px 0 9px;

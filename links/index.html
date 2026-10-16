@@ -34,7 +34,7 @@
     --kante:rgba(242,243,241,.10);
     --focus:0 0 0 2px #03080D,0 0 0 4px var(--emerald-soft);
   }
-  body{font-size:16px;min-height:100svh}
+  body{font-size:1rem;min-height:100svh}
   .blatt{position:relative;z-index:2;width:min(100%,var(--col));margin-inline:auto;
     padding:calc(env(safe-area-inset-top,0px) + 40px) 18px calc(env(safe-area-inset-bottom,0px) + 26px)}
 
@@ -42,8 +42,8 @@
   .profil{display:flex;align-items:center;gap:14px}
   .profil img{width:62px;height:62px;border-radius:50%;flex:0 0 auto;display:block;
     box-shadow:0 0 0 2px #03080D,0 0 0 3.5px rgba(31,201,152,.75),0 10px 24px -8px rgba(0,184,136,.45)}
-  .profil b{display:block;font-size:17px;font-weight:700;letter-spacing:.005em}
-  .profil span{display:block;font-size:14px;color:var(--muted);line-height:1.35}
+  .profil b{display:block;font-size:1.0625rem;font-weight:700;letter-spacing:.005em}
+  .profil span{display:block;font-size:0.875rem;color:var(--muted);line-height:1.35}
 
   /* ===== Hauptweg ===== */
   .haupt{position:relative;display:block;border-radius:26px;text-decoration:none;color:inherit;isolation:isolate;
@@ -55,7 +55,7 @@
     box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(31,201,152,.28),0 40px 80px -40px rgba(0,184,136,.6),0 20px 40px -24px rgba(0,0,0,.8);
     transition:transform var(--dur-3, .6s) var(--ease),box-shadow var(--dur-3, .6s) var(--ease)}
   .haupt__text{position:relative;z-index:2;display:block}
-  .marke{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:700;
+  .marke{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:0.6562rem;font-weight:700;
     letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
   .marke::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald-soft);box-shadow:0 0 0 4px rgba(31,201,152,.18)}
   .haupt h1{margin:12px 0 8px;font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(30px,8.6vw,36px);line-height:.98;letter-spacing:-.02em}
@@ -67,7 +67,7 @@
   h1 em{background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%);background-size:200% 100%;
     animation:lkStreif 2.4s cubic-bezier(.45,0,.2,1) var(--dur-3, .4s) 1 both}
 }
-  .haupt p{font-size:14px;color:var(--muted);line-height:1.4}
+  .haupt p{font-size:0.875rem;color:var(--muted);line-height:1.4}
   /* zwei echte Vorschauen, aufgefächert — sie ragen über den Kartenrand */
   /* Handys oben, über den Kartenrand hinaus — Text und Knopf darunter,
      nichts überdeckt sich */
@@ -80,7 +80,7 @@
   .geraete .hinten{margin-left:clamp(-128px,-31vw,-100px);transform:rotate(-8deg) translateY(10px)}
   .geraete .vorn{margin-left:-14px;transform:rotate(5deg)}
   .los{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;margin-top:20px;min-height:54px;padding:0 8px 0 22px;
-    border-radius:999px;font-weight:700;font-size:16px;color:var(--emerald-ink);
+    border-radius:999px;font-weight:700;font-size:1rem;color:var(--emerald-ink);
     background:linear-gradient(135deg,#1FC998,#46BEEA);box-shadow:0 14px 30px -12px rgba(0,184,136,.75),inset 0 1px 0 rgba(255,255,255,.45)}
   .los i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#04201A;color:#7FF0CB;font-style:normal;
     transition:transform var(--dur-3, .45s) var(--ease)}
@@ -97,20 +97,24 @@
   .tafel li+li{border-top:1px solid var(--kante)}
   .zeile{display:grid;grid-template-columns:minmax(0,1fr) auto 22px;align-items:center;gap:12px;min-height:64px;padding:10px 16px 10px 20px;
     text-decoration:none;color:var(--paper);transition:background var(--dur-2, .35s) var(--ease)}
-  .zeile b{font-size:16.5px;font-weight:650;display:flex;align-items:center;gap:12px}
-  .fakt{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
-  .zeile svg{width:22px;height:22px;color:var(--faint);transition:transform var(--dur-2, .35s) var(--ease),color var(--dur-2, .35s) var(--ease)}
+  .zeile b{font-size:1.0312rem;font-weight:650;display:flex;align-items:center;gap:12px}
+  .fakt{font-family:"Archivo",sans-serif;font-size:0.6562rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+  /* Eigenes Zeichen statt Linien-Pfeil (16.10.2026), wie abschluss.css .s2-mark */
+  .s2-mark{display:inline-flex;align-items:flex-end;gap:3px;height:16px;color:currentColor}
+  .s2-mark i{display:block;width:4px;border-radius:2px;background:currentColor;transform:skewX(-5deg)}
+  .s2-mark i:nth-child(1){height:6px;opacity:.5}.s2-mark i:nth-child(2){height:10px;opacity:.78}.s2-mark i:nth-child(3){height:15px}
+  .zeile .s2-mark{color:var(--faint);transition:transform var(--dur-2, .35s) var(--ease),color var(--dur-2, .35s) var(--ease)}
   .gesichter{display:flex}
   .gesichter img{width:30px;height:30px;border-radius:50%;border:2px solid #111c1d;object-fit:cover;display:block}
   .gesichter img+img{margin-left:-9px}
   .zeile:hover{background:linear-gradient(90deg,rgba(0,184,136,.10),rgba(0,184,136,0))}
-  .zeile:hover svg{transform:translateX(3px);color:var(--emerald-soft)}
+  .zeile:hover .s2-mark{transform:translateY(-2px);color:var(--emerald-soft)}
   .zeile:hover .fakt{color:var(--muted)}
   .zeile:active{background:rgba(0,184,136,.14)}
   .zeile:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--emerald-soft)}
 
   @media (max-width:360px){.fakt{display:none}}
-  .fuss{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:13px}
+  .fuss{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:0.8125rem}
   .fuss a{color:var(--faint);text-decoration:none;padding:12px 2px;min-height:44px;display:inline-flex;align-items:center}
   .fuss a:hover{color:var(--paper)}
   .fuss a:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:2px;border-radius:4px}
@@ -149,13 +153,13 @@
   <ul class="tafel auf" style="--i:2">
     <li><a class="zeile" href="/preise/" data-ziel="preise">
       <b>Preise</b><span class="fakt">7 Pakete</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg></a></li>
+      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
     <li><a class="zeile" href="/results/" data-ziel="results">
       <b>Prüf uns</b><span class="fakt">3 Kennzahlen</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg></a></li>
+      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
     <li><a class="zeile" href="/wissen/" data-ziel="wissen">
       <b>Ehrliche Antworten</b><span class="fakt">5 Fragen</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg></a></li>
+      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
   </ul>
 
   <footer class="fuss">
