@@ -55,6 +55,9 @@ async function maus(browser, seiten, fixtures, befunde) {
     await p.evaluate(() => document.addEventListener('click', (e) => e.preventDefault(), true));
     // Sanftes Scrollen der Seite liefe nach dem Hinscrollen weiter und zoege den Knopf unter der Maus weg (16.10.).
     await p.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+    // Einblendungen erst fertig laufen lassen (kern.md: endliche finish(), endlose pause()) —
+    // unter Last stand der Hero-Knopf sonst noch versetzt und „unter“ seinem Container.
+    await p.evaluate(() => document.getAnimations().forEach((a) => { try { a.effect && a.effect.getComputedTiming().iterations === Infinity ? a.pause() : a.finish(); } catch { /* laeuft nicht mehr */ } }));
     const n = await p.locator(KNOPF).count();
     let gemessen = 0;
     for (let i = 0; i < n; i++) {
