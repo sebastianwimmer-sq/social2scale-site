@@ -21,7 +21,7 @@ Persönlich, ehrlich, ruhig-premium; dabei klar, kompetent, planbar. Zwei echte 
 
 ## Design Principles
 1. **Belegt statt behauptet.** Jede Zahl, jedes Versprechen hat eine Quelle auf der eigenen Seite; was nicht belegt ist, steht nicht da.
-   **Ausnahme (Sebi, 29.09.2026):** Die animierte Handy-Szene auf der Startseite („+3.900 Follower“, „+218 % · 47 Leads · €4,8k“) und das Hero-Bild (`hero-growth.jpg`, „+342 %“) zeigen bewusst illustrative Kennzahlen. Sie bleiben. Prüfungen sollen sie nicht erneut als Befund melden; neue Zahlen ausserhalb dieser zwei Stellen fallen weiter unter die Regel.
+   **Ausnahme aufgehoben (Sebi, 16.10.2026):** Die illustrativen Kennzahlen der Handy-Szene („+3.900 Follower“, „+218 % · 47 Leads · €4,8k“) sind raus, das Hero-Bild `hero-growth.jpg` („+342 %“) ebenso. Sebi auf die Frage, ob die Zahlen zurück sollen: „Leave them out“. Es gibt keine Ausnahme mehr: jede Zahl auf der Website ist belegt.
 2. **Menschen vor Maschine.** Sebi und Phil sind sichtbar, wo eine Entscheidung fällt.
 3. **Ruhe als Qualität.** Premium heißt Zurückhaltung: Atmosphäre in wenigen Momenten, sonst ruhige Flächen und klare Typografie.
 4. **Zeigen statt erklären.** Echte Einblicke (Bereich, Beiträge, Ablauf) statt Deko und Methodik-Text.
