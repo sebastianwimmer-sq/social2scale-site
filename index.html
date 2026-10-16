@@ -908,7 +908,10 @@
      jeder Abschnitt 104/104 px, Feed 166 px, Gruender nur 46-px-Kreise.
      Belege: kit-build/web-tiefe-evidenz.json (Ebenen ueber Helligkeit auf Dunkel: Material +
      Apple HIG; NN/g Flat-UI-Studie 2017; Robins & Holmes 2008 Aesthetik -> Glaubwuerdigkeit).
-     Akzentwort: Verlauf nur in Hero, Ablauf und Abschluss (Design-System, Sebi 16.10.). */
+     R2 (16.10. abends, Sebi: „wirkt sehr flach … eher blockartig, nicht unser high end level“):
+     keine deckenden Baender mehr (sie schnitten den durchgehenden Aurora-Grund in Rechtecke),
+     Tiefe kommt aus Licht, das an allen Raendern auslaeuft; Fotos loesen sich ins Dunkel auf;
+     Verlaufswort wieder in jeder Ueberschrift (Sebi 01.10. + 16.10.). */
   :root{
     --grund:#03080D;                  /* Seitengrund (body background-color) */
     --band-1:#0A1117;                 /* erhoehtes Band, leicht teal getoent */
@@ -918,36 +921,41 @@
     --sec-buehne:clamp(var(--s-9),9vw + var(--s-6),200px);
     --h2-buehne:clamp(2.6rem,1.4rem + 4.4vw,5.6rem);
   }
-  /* Akzentwort: kursiv bleibt die Stimme der Fraunces, der Verlauf ist das Markenzeichen
-     und steht nur dreimal (Hero, Ablauf .s2em, Abschluss). */
-  h2 em{background:none;-webkit-text-fill-color:currentColor;color:inherit}
 
   /* Rhythmus: eng · normal · Buehne */
   #stand.kap{padding-bottom:var(--sec-eng)}
   #faq.blk{padding:var(--sec-eng) 0}
 
-  /* Baender: ganze Abschnitte liegen eine Ebene hoeher */
-  #warum.kap,#leistungen.blk{background:linear-gradient(180deg,var(--band-1),var(--grund) 140%);border-top:0;box-shadow:var(--kante)}
-  #warum .wa-row.is-us{margin-top:var(--s-4);padding:clamp(20px,2.4vw,28px) clamp(18px,2.4vw,28px);border:1px solid var(--line-2);border-radius:14px;
-    background:var(--surf-grad);box-shadow:var(--depth-lg)}
+  /* Licht statt Baender: ein weicher Lichtteich hinter dem Abschnitt, der an allen Raendern
+     ausläuft, ueber dem durchgehenden Grund. Keine Kante, keine deckende Flaeche. */
+  #warum.kap,#leistungen.blk{position:relative;isolation:isolate}
+  #warum.kap::before,#leistungen.blk::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(45% 40% at 22% 45%,rgba(0,184,136,.075),transparent 100%),radial-gradient(38% 34% at 85% 62%,rgba(31,166,224,.06),transparent 100%)}
+  #warum .wa-row.is-us{margin-top:var(--s-4);padding:clamp(20px,2.4vw,28px) clamp(18px,2.4vw,28px);border-radius:14px;
+    border:1px solid rgba(31,201,152,.22);
+    background:linear-gradient(135deg,rgba(0,184,136,.10),rgba(31,166,224,.05) 60%,rgba(3,8,13,0));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 60px -36px rgba(0,184,136,.35)}
   #warum .wa-row.is-us + *{border-top:0}
 
   /* Feed als Buehne: randlos ueber die volle Breite, Licht von unten */
-  .feed-band{padding:var(--sec-buehne) 0;overflow-x:clip;border-top:0;
-    background:radial-gradient(70% 55% at 50% 100%,rgba(0,184,136,.16),transparent 70%),linear-gradient(180deg,var(--grund),var(--band-2) 60%);box-shadow:var(--kante)}
+  .feed-band{padding:var(--sec-buehne) 0;overflow-x:clip;
+    background:radial-gradient(55% 30% at 50% 66%,rgba(0,184,136,.13),transparent 100%)}
   .feed-kopf h2,#gruender-h{font-size:var(--h2-buehne);line-height:.98;letter-spacing:-.03em}
-  .feed-reihe{width:100vw;margin-left:calc(50% - 50vw);gap:0}
-  .feed-reihe img{border-radius:0;box-shadow:none}
+  /* Feed: ueber die volle Breite, feine Fugen, laeuft an beiden Seiten ins Dunkel aus */
+  .feed-reihe{width:100vw;margin-left:calc(50% - 50vw);gap:clamp(6px,.7vw,10px);padding-inline:clamp(6px,.7vw,10px);
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent)}
+  .feed-reihe img{border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 60px -34px rgba(0,0,0,.9)}
   @media (hover:hover){.feed-reihe li:hover img{transform:none;box-shadow:none;filter:brightness(1.08)}}
   .feed-reihe img{transition:filter var(--dur-2, .24s) ease-out}
-  @media (max-width:760px){.feed-reihe{gap:0}.feed-reihe img{border-radius:0}}
+  @media (max-width:760px){.feed-reihe{gap:4px;padding-inline:4px;-webkit-mask-image:none;mask-image:none}.feed-reihe img{border-radius:4px}}
 
   /* Gruender: zwei Aufnahmen randlos nebeneinander, Satz darunter auf festem Grund */
-  .gruender{padding:var(--sec-buehne) 0 0;border-top:1px solid var(--line)}
+  .gruender{padding:var(--sec-buehne) 0 0}
   .gr-kopf{margin-bottom:clamp(var(--s-6),4vw,var(--s-8))}
-  .gr-reihe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gr-reihe{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,40px);max-width:1180px;margin:0 auto;padding-inline:var(--px)}
   .gr-person{margin:0;min-width:0;display:flex;flex-direction:column}
-  .gr-bild{position:relative;overflow:hidden;aspect-ratio:4/5;max-height:min(74vh,700px);width:100%}
+  .gr-bild{position:relative;overflow:hidden;aspect-ratio:4/5;max-height:min(74vh,660px);width:100%;
+    -webkit-mask-image:radial-gradient(78% 72% at 50% 38%,#000 52%,transparent 100%);mask-image:radial-gradient(78% 72% at 50% 38%,#000 52%,transparent 100%)}
   .gr-bild img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
   .gr-bild::after{content:"";position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(168deg,rgba(0,184,136,.07),transparent 42%),linear-gradient(0deg,var(--grund),rgba(3,8,13,.10) 34%,transparent 58%)}
@@ -958,13 +966,13 @@
     radial-gradient(70% 62% at 52% 40%,transparent 30%,rgba(3,8,13,.55) 70%,rgba(3,8,13,.9) 100%),
     linear-gradient(168deg,rgba(0,184,136,.07),transparent 44%),
     linear-gradient(0deg,var(--grund),rgba(3,8,13,.24) 36%,transparent 64%)}
-  .gr-person figcaption{padding:var(--s-5) clamp(16px,4vw,56px) 0;display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s-2) var(--s-4)}
+  .gr-person figcaption{margin-top:calc(-1 * clamp(28px,4vw,56px));position:relative;padding:0 clamp(8px,2vw,24px);display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--s-2) var(--s-4)}
   .gr-name{font-family:"Fraunces",serif;font-weight:480;font-size:clamp(1.8rem,1.3rem + 1.6vw,2.6rem);line-height:.95;letter-spacing:-.03em;color:var(--paper)}
   .gr-rolle{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
   .gr-satz{flex-basis:100%;font-family:"Fraunces",serif;font-style:italic;font-weight:430;font-size:clamp(1.15rem,.95rem + .8vw,1.5rem);line-height:1.32;color:var(--muted);max-width:30ch;quotes:"„" "“"}
-  .gr-fuss{padding:clamp(var(--s-6),3vw,var(--s-7)) clamp(16px,4vw,56px) 0}
+  .gr-fuss{max-width:1180px;margin:0 auto;padding:clamp(var(--s-6),3vw,var(--s-7)) var(--px) 0}
   @media (max-width:760px){
-    .gr-person figcaption{padding:var(--s-4) var(--s-4) 0}
+    .gr-person figcaption{padding:0 2px;margin-top:-20px}
     .gr-satz{font-size:1.02rem}
   }
 
@@ -972,9 +980,24 @@
      (Knopf bleibt ueber dem Falz). */
   .hero h1 .claim{font-size:clamp(2.5rem,1.2rem + 4.6vw,6rem)}
 
+  /* Keine Kanten (R2): Abschnitte laufen ineinander, Rhythmus kommt aus dem Abstand.
+     Gemessen 16.10.: Hero endete deckend, #leistungen trug eine graue Flaeche,
+     Haarlinien ueber die volle Breite zwischen allen Abschnitten, Fuss mit harter Kante. */
+  main > section,main > section.kap,main > section.blk,main > section.feed-band,main > section.proof{border-top:0}
+  .hero-bg{-webkit-mask-image:linear-gradient(180deg,#000 78%,transparent);mask-image:linear-gradient(180deg,#000 78%,transparent)}
+  #leistungen.blk{background:none}
+  /* Handy-Szene: Licht bleibt, der deckende Grund (#06170F -> #03080D) faellt weg */
+  .s2hero{background:radial-gradient(55% 32% at 78% 26%,rgba(0,184,136,.10),transparent 100%),radial-gradient(45% 30% at 12% 72%,rgba(31,166,224,.06),transparent 100%)}
+  /* Dein Bereich: Bild + Abdeckung laufen oben und unten aus, das Gitter faellt weg */
+  .proof{background:none}
+  /* Vignetten dunkelten bis an die Abschnittskante ab (55 %) und zeichneten so ein Rechteck */
+  .s2hero .vignette,.proof::before{-webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent)}
+  .proof .sec-bg.growth{-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 22%,#000 70%,transparent)}
+  .site-footer{background:linear-gradient(180deg,rgba(10,11,13,0),#0A0B0D 160px);border-top:0;box-shadow:none}
+
   /* Abschluss als Buehne */
   section.abschluss{padding-bottom:var(--sec-buehne);
-    background:radial-gradient(60% 70% at 50% 100%,rgba(0,184,136,.12),transparent 70%)}
+    background:radial-gradient(50% 38% at 50% 60%,rgba(0,184,136,.12),transparent 100%)}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
