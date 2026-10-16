@@ -65,3 +65,11 @@
   :root .btn-primary, :root .w-btn { transition: box-shadow var(--dur-2, .24s) ease-out; }
   :root .btn:active, :root .w-btn:active, :root .nav-cta:active, :root .m-cta:active { transform: none; }
 }
+
+/* 7 · Nach-oben-Knopf am Handy (16.10.2026): Wo unten die Leiste mit „Kostenlos starten“
+   klebt, lag der runde Knopf darueber im Lesetext (Kritik: verdeckt „Ein eingeschlafener
+   Auftritt …“). Am Touch-Schirm springt iOS per Tipp auf die Statusleiste nach oben;
+   der Knopf bleibt auf Seiten ohne Leiste und ueberall mit Maus. */
+@media (max-width: 760px) and (hover: none) {
+  :root body:has(.bar) .to-top { display: none; }
+}
