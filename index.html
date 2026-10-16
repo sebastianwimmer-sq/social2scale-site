@@ -12,8 +12,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-linie-1600.webp" media="(max-width:700px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="/assets/hero-linie-2880.webp" media="(min-width:701px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-1600.avif" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-2880.avif" media="(min-width:701px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -181,6 +181,8 @@
      „KI-Slop-Bubbles“). Die Lichtlinie war schon im Original weich (Bokeh) und wirkte „verschwommen“ —
      neu erzeugt scharf (Higgsfield gpt_image_2 4k, Job 849ccaef), 2880 px fuer Retina. */
   .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.45),rgba(3,8,13,.72) 58%,#03080D 100%),url(/assets/hero-linie-2880.webp) center 60%/cover no-repeat}
+  /* AVIF: halbe Datei bei gleicher Schaerfe (16.10.2026, LCP am gedrosselten Handy 2,7 s mit WebP) */
+  @supports (background-image:image-set("x.avif" type("image/avif"))){.hero-bg{background-image:linear-gradient(180deg,rgba(3,8,13,.45),rgba(3,8,13,.72) 58%,#03080D 100%),image-set("/assets/hero-linie-2880.avif" type("image/avif"),"/assets/hero-linie-2880.webp" type("image/webp"))}}
   /* Die Linie laeuft nie durch den Text (kern.md): hinter dem zentrierten Textblock weich ausgeblendet. */
   .hero-bg{-webkit-mask-image:radial-gradient(ellipse 34% 46% at 50% 52%,transparent 35%,#000 100%);mask-image:radial-gradient(ellipse 34% 46% at 50% 52%,transparent 35%,#000 100%)}
   .hero>.wrap{position:relative;z-index:1}
@@ -285,6 +287,7 @@
     .hero{padding-top:var(--s-7)}
     .hero-logo{--lw:clamp(230px,70vw,340px)}
     .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-linie-1600.webp) 72% 100%/190% auto no-repeat,#03080D}
+    @supports (background-image:image-set("x.avif" type("image/avif"))){.hero-bg{background-image:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),image-set("/assets/hero-linie-1600.avif" type("image/avif"),"/assets/hero-linie-1600.webp" type("image/webp"))}}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */

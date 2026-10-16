@@ -15,7 +15,7 @@ const befunde = [];
 // Fixture: 400-px-Bild als cover auf voller Breite (zu klein) und dasselbe Bild auf 200 px (scharf)
 const FIX = { '/fix-rot/': '<!doctype html><body style="margin:0"><div style="height:900px;background:url(/assets/workspace.webp) center/cover"></div></body>', '/fix-gruen/': '<!doctype html><body style="margin:0"><div style="width:300px;height:170px;background:url(/assets/growth.webp) center/cover"></div></body>' };
 const SEITEN = SELBSTTEST ? Object.keys(FIX) : ['/', '/preise/', '/onboarding/', '/about/', '/results/', '/for-you/'] /* /gratis/ und /anfrage/ leiten sofort weiter */;
-const TYP = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2' };
+const TYP = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2' };
 for (const [name, eng, opt] of [['Desktop 1440 @2x', chromium, { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }], ['iPhone 15 Pro @3x', webkit, devices['iPhone 15 Pro']]]) {
   const b = await eng.launch(); const c = await b.newContext(opt);
   await c.route(/closing|start\.social|challenges/, r => r.fulfill({ status: 204 }));
@@ -27,7 +27,7 @@ for (const [name, eng, opt] of [['Desktop 1440 @2x', chromium, { viewport: { wid
       const out = [];
       for (const el of document.querySelectorAll('*')) {
         for (const pseudo of [null, '::before']) {
-          const st = getComputedStyle(el, pseudo); const m = st.backgroundImage.match(/url\("?([^")]+\.(?:webp|jpg|png))"?\)/); if (!m) continue;
+          const st = getComputedStyle(el, pseudo); const m = st.backgroundImage.match(/url\("?([^")]+\.(?:avif|webp|jpg|png))"?\)/); if (!m) continue;
           const img = new Image(); img.src = m[1]; await img.decode().catch(() => {});
           if (!img.naturalWidth) continue;
           const box = el.getBoundingClientRect(); if (box.width < 150 || box.height < 150 || getComputedStyle(el).display === 'none') continue;
