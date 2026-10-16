@@ -294,6 +294,7 @@ function seiteHtml(seite) {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/bedienung.css">
 <style>${CSS}</style>
 ${schema(seite)}
 </head>
@@ -354,6 +355,7 @@ function uebersichtHtml() {
 <link rel="manifest" href="/site.webmanifest">
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/bedienung.css">
 <style>${CSS}</style>
 <script type="application/ld+json">${JSON.stringify(daten)}</script>
 </head>

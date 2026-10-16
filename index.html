@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-NiXaBtFUoMfYfrfzmqAdQDlf8Jx+lx0UPztlNaBIbQU=' 'sha256-GMSi3nCLVjKBvou95d+5ZgDPwFmXOpq5R+jeFyqxzK8=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-hV3Lvgg1vSKUCz6OaQ0LW4if1J4Q1MEeAJ+vsw58yD8=' 'sha256-GMSi3nCLVjKBvou95d+5ZgDPwFmXOpq5R+jeFyqxzK8=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -12,6 +12,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1000.webp" media="(max-width:700px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/hero-licht-1600.webp" media="(min-width:701px)">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -174,20 +176,24 @@
 
   /* ===== hero — centered, brand-anchored, conversion-first ===== */
   .hero{position:relative;overflow:hidden;padding:clamp(var(--s-8),7vw,var(--s-10)) 0 clamp(var(--s-8),6vw,var(--s-9))}
-  /* 16.10.2026: die KI-Collage mit erfundenen Zahlen (+5,902 · +218 % · 28,7K) ist raus —
-     Sebi: „KI-Slop-Bubbles“, und keine Zahl ohne Beleg. Licht in den Markenfarben statt Bild. */
-  .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),linear-gradient(180deg,rgba(3,8,13,0),#03080D 100%)}
+  /* Hero-Hintergrund dunkel ueberscrimt → Text bleibt knackig, Bild gibt Tiefe.
+     16.10.2026: die KI-Collage mit erfundenen Zahlen (+5,902 · +218 % · 28,7K) ist raus (Sebi:
+     „KI-Slop-Bubbles“) — an ihrer Stelle die Lichtlinie ohne Zahlen. Handy 15 KB, Desktop 30 KB. */
+  .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(3,8,13,.45),rgba(3,8,13,.72) 58%,#03080D 100%),url(/assets/hero-licht-1600.webp) center 60%/cover no-repeat}
   .hero>.wrap{position:relative;z-index:1}
-  /* CTA-Karte: Licht statt KI-Foto (16.10.2026) */
+  /* CTA-Karte mit Creator-Foto als Hintergrund */
   .band.has-photo{position:relative;overflow:hidden}
-  .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%),linear-gradient(165deg,rgba(4,20,15,.6),rgba(3,8,13,.9))}
+  .band.has-photo::before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(165deg,rgba(4,20,15,.80),rgba(3,8,13,.90)),url(/assets/creator.webp) center/cover no-repeat}
   .band.has-photo>*{position:relative;z-index:1}
   /* Wiederverwendbare Section-Hintergrundfotos (dunkel überscrimt, Text obenauf) */
   .photo-sec{position:relative;overflow:hidden}
   .photo-sec>*:not(.sec-bg){position:relative;z-index:1}
-  /* Ohne eigenes Bild traegt ein Abschnitt nur Licht (KI-Fotos mit erfundenen Diagrammen raus, 16.10.2026). */
-  .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;background-image:radial-gradient(110% 80% at 15% -5%,rgba(0,184,136,.20),transparent 60%),radial-gradient(90% 70% at 92% 105%,rgba(31,166,224,.14),transparent 62%)}
+  .sec-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center}
   .sec-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.84),rgba(3,8,13,.92))}
+  /* growth/flat zeigten Handys mit erfundenen Diagrammen — seit 16.10.2026 Fotos ohne Zahlen. */
+  .sec-bg.growth{background-image:url(/assets/workspace.webp)}
+  .sec-bg.collab{background-image:url(/assets/collab.webp)}
+  .sec-bg.flat{background-image:url(/assets/formbg.webp)}
   .sec-bg.wave{background-image:url(/assets/sec-wave.jpg)}
   .sec-bg.wave::after{background:linear-gradient(180deg,rgba(3,8,13,.78),rgba(3,8,13,.9))}
   /* Foto-Reveal: nur aktiv wenn JS die Klasse setzt (sonst sofort sichtbar) */
@@ -268,6 +274,7 @@
   @media (max-width:700px){
     .hero{padding-top:var(--s-7)}
     .hero-logo{--lw:clamp(230px,70vw,340px)}
+    .hero-bg{background:linear-gradient(180deg,rgba(3,8,13,.55),rgba(3,8,13,.82) 58%,#03080D 100%),url(/assets/hero-licht-1000.webp) center 70%/cover no-repeat}
     .panel-tag.t1{top:70px;right:16px}
   }
   /* mobile report panel: stack KPI cells 1-col, hairlines stay crisp */
@@ -870,6 +877,7 @@
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
+<link rel="stylesheet" href="/bedienung.css">
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -1338,9 +1346,6 @@
     text-shadow:0 1px 0 rgba(0,200,150,.45),0 2px 0 rgba(0,170,126,.34),0 3px 0 rgba(0,140,104,.24),0 5px 12px rgba(0,0,0,.5);
   }
   .hero h1{text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45)}
-  /* Tilt-Wrapper – nur der Container kippt; Kinder behalten ihre .r-Entrance */
-  .hero{perspective:1200px}
-  .hero .hero-center{transform-style:preserve-3d;transition:transform var(--dur-3, .45s) cubic-bezier(.16,1,.3,1);will-change:transform}
   /* Scroll-Helligkeit: Foto-Layer lesen --photb / --phots (per JS pro Frame) */
   .hero-bg,.sec-bg{filter:brightness(var(--photb,1)) saturate(var(--phots,1));will-change:filter}
   .band.has-photo::before{filter:brightness(var(--photb,1)) saturate(var(--phots,1))}
@@ -1375,23 +1380,8 @@
     window.addEventListener('resize', function(){ vh = window.innerHeight||document.documentElement.clientHeight; onScroll(); }, {passive:true});
     frame();
 
-    /* 3D-Tilt im Hero – nur Zeiger-Geräte (Maus/Trackpad) */
-    var hero = document.getElementById('hero');
-    var hc = hero && hero.querySelector('.hero-center');
-    if (hc && matchMedia('(hover:hover) and (pointer:fine)').matches){
-      var raf = 0;
-      hero.addEventListener('pointermove', function(ev){
-        if (raf) return;
-        var r = hero.getBoundingClientRect();
-        var px = (ev.clientX - r.left)/r.width - .5;
-        var py = (ev.clientY - r.top)/r.height - .5;
-        raf = requestAnimationFrame(function(){
-          raf = 0;
-          hc.style.transform = 'rotateY('+(px*6).toFixed(2)+'deg) rotateX('+(-py*5).toFixed(2)+'deg)';
-        });
-      }, {passive:true});
-      hero.addEventListener('pointerleave', function(){ hc.style.transform=''; });
-    }
+    /* Kein 3D-Kippen des Hero mehr (16.10.2026): der Block drehte sich weg, waehrend man auf den
+       Knopf zielte — Hover kam verzoegert, bedienung-check sah den Knopf „unter“ seinem Container. */
   })();
   </script>
   <script>

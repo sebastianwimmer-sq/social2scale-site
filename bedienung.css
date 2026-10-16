@@ -1,0 +1,67 @@
+/* bedienung.css — eine Bedien-Schicht fuer alle Knoepfe der Site (16.10.2026).
+ *
+ * Warum: Sebi 16.10. „wenn ich über den Button fahre, sieht das noch sehr schlecht
+ * programmiert aus“. Gemessen: Glanzstreifen per Keyframe auf :hover::after (springt
+ * beim Wegfahren), 3-px-Sprung ohne Schattenwechsel, kein :active, kein eigener
+ * Fokus, Hover auch am iPhone (bleibt nach dem Tippen haengen).
+ * Regeln + Quellen: kit-build/motion-loop/evidenz.json (hover-nur-bei-maus,
+ * fokus-sichtbar-eigener-zustand, druck-sofort-rueckmeldung, ui-dauer-unter-300-ease-out,
+ * haeufige-aktion-wenig-bewegung, glint-keyframe-springt-beim-wegfahren).
+ *
+ * Die Knopf-Regeln stehen in jeder Seite kopiert. :root davor hebt die Spezifitaet um
+ * eins, damit diese Schicht unabhaengig von der Ladereihenfolge gewinnt.
+ * Tor: scripts/bedienung-check.mjs (in pruefen.sh).
+ */
+
+/* 1 · Kein Effekt ohne Maus: die alten Hover-Spruenge gelten nirgends mehr. */
+:root .btn:hover, :root .w-btn:hover, :root .nav-cta:hover, :root .m-cta:hover { transform: none; }
+:root .btn-primary::after { content: none; animation: none; }
+
+/* 2 · Grundzustand: der Verlauf liegt doppelt breit, damit er beim Hover weiterfliessen kann. */
+:root .btn-primary, :root .w-btn {
+  background-size: 160% 100%;
+  background-position: 0% 50%;
+  transition:
+    background-position var(--dur-2, .24s) cubic-bezier(.2, .8, .2, 1),
+    box-shadow var(--dur-2, .24s) cubic-bezier(.2, .8, .2, 1),
+    transform var(--dur-2, .24s) cubic-bezier(.2, .8, .2, 1);
+}
+:root .btn-primary { background-image: linear-gradient(135deg, var(--emerald-soft, #1FC998) 0%, var(--emerald, #00B888) 34%, var(--teal, #1FA6E0) 72%, #46BEEA 100%); }
+:root .nav-cta, :root .m-cta, :root .btn-ghost {
+  transition:
+    border-color var(--dur-1, .15s) ease-out,
+    background-color var(--dur-1, .15s) ease-out,
+    box-shadow var(--dur-2, .24s) ease-out,
+    transform var(--dur-2, .24s) cubic-bezier(.2, .8, .2, 1);
+}
+
+/* 3 · Hover nur mit Maus/Trackpad: Licht statt Sprung, der Verlauf fliesst Richtung Teal. */
+@media (hover: hover) and (pointer: fine) {
+  :root .btn-primary:hover, :root .w-btn:hover {
+    background-position: 100% 50%;
+    box-shadow: 0 18px 44px -12px rgba(0, 184, 136, .72), 0 18px 44px -16px rgba(31, 166, 224, .55), inset 0 1px 0 rgba(255, 255, 255, .45);
+  }
+  :root .nav-cta:hover, :root .m-cta:hover {
+    border-color: rgba(0, 184, 136, .55);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 10px 26px -14px rgba(0, 184, 136, .45);
+  }
+  :root .btn-ghost:hover { border-color: rgba(0, 184, 136, .55); background-color: rgba(0, 184, 136, .09); }
+}
+
+/* 4 · Druck: sofort sichtbar (kurz), Loslassen gleitet ueber die Transition zurueck. */
+:root .btn:active, :root .w-btn:active, :root .nav-cta:active, :root .m-cta:active {
+  transform: scale(.97);
+  transition-duration: 80ms;
+}
+
+/* 5 · Tastatur: eigener Fokus, 2 px, nicht an Hover gekoppelt. */
+:root .btn:focus-visible, :root .w-btn:focus-visible, :root .nav-cta:focus-visible, :root .m-cta:focus-visible, :root .btn-ghost:focus-visible {
+  outline: 2px solid var(--emerald-soft, #1FC998);
+  outline-offset: 3px;
+}
+
+/* 6 · Reduzierte Bewegung: Licht und Farbe bleiben, kein Fliessen, kein Druck-Schrumpfen. */
+@media (prefers-reduced-motion: reduce) {
+  :root .btn-primary, :root .w-btn { transition: box-shadow var(--dur-2, .24s) ease-out; }
+  :root .btn:active, :root .w-btn:active, :root .nav-cta:active, :root .m-cta:active { transform: none; }
+}
