@@ -168,6 +168,26 @@ Browser im Meta-Tag grundsätzlich — deshalb der Rahmenschutz per Skript, der
 die Seite aus einem fremden Rahmen heraussetzt. Für echte Header müsste die
 Seite hinter Cloudflare laufen; `_headers` liegt dafür fertig im Repo.
 
+## Zweisprachig: jede Seite hat eine englische Schwester (seit 17.10.2026)
+
+Sebi 17.10.2026: die Website gibt es komplett auf Englisch, als fester Haken für die Zukunft.
+Echte Seiten unter `/en/`, keine Übersetzung im Browser: KI-Crawler und Suchmaschinen klicken
+keinen Umschalter, sie lesen nur ausgeliefertes HTML.
+
+- **Eine Quelle:** `lib/sprachen.mjs` (Seitenpaare DE ↔ EN). Neue Besucherseite → Paar dort
+  eintragen, EN-Seite anlegen, sonst ist `pruefen.sh` rot.
+- **DE-Seite geändert →** EN-Seite im selben Zug nachziehen, dann
+  `node scripts/sprachen-stempel.mjs <en-pfad>` (Stempel = „ist nachgezogen“, kein Pflaster).
+- **Wissen:** englische Antworten in `scripts/wissen-en.mjs`, gebaut von `build-wissen.mjs`.
+- **Reihenfolge nach jedem Bau:** `build-wissen.mjs` → `build-pages.mjs` (Navigation,
+  Umschalter, hreflang-Kopf) → `csp-haerten.mjs` → `sitemap-sprachen.mjs` → `sitemap-lastmod.sh`.
+- **Tor:** `scripts/sprachen-check.mjs` (in `pruefen.sh`, mit `--selbsttest`): fehlende oder
+  veraltete EN-Schwester, falsches `lang`/`og:locale`, fehlender hreflang-Kopf oder Umschalter,
+  deutsche Wörter auf EN-Seiten, fehlende Sitemap-Adresse.
+- **Englisch hat keine Gratis-Vorschau** (der Funnel erzeugt deutsche Beiträge). Hauptweg ist
+  `/en/contact/` → Phils Calendly (`utm_campaign=en-contact`). Ticket #353: englisches Formular.
+- Impressum und Datenschutz bleiben Deutsch; EN-Seiten verlinken sie mit „(German)“.
+
 ## Menüpunkt ändern, hinzufügen, entfernen
 
 1. `lib/shell.mjs` bearbeiten — das ist die einzige Stelle.
