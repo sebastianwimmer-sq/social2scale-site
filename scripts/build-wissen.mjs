@@ -20,9 +20,11 @@
  *
  * Aufruf: node scripts/build-wissen.mjs
  */
-import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SEITEN_EN } from "./wissen-en.mjs";
+import { umschalter, STEMPEL_MUSTER } from "../lib/sprachen.mjs";
 
 const WURZEL = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BASIS = "https://social2scale.com";
@@ -44,12 +46,12 @@ const PREISE = {
 // Abschluss jeder Wissensseite: die Gratis-Vorschau ist der Hauptweg (Website-Ziel = Freebie,
 // Sebi 01.10.2026), das Erstgespräch der leisere zweite. Bis 10.10.2026 bot keine der sechs
 // Seiten die Vorschau an — wer über Google kam, sah nur „Erstgespräch" (besucher-sim.mjs).
-function abschluss(h2, p) {
+function abschluss(h2, p, L) {
   return `<section class="w-cta w-re">
         <h2>${h2}</h2>
         <p>${p}</p>
         <div class="w-cta-row">
-          <a class="w-btn" href="/gratis/">Kostenlos starten <span aria-hidden="true">→</span></a>
+          <a class="w-btn" href="${L.ctaHref}">${L.cta} <span aria-hidden="true">→</span></a>
         </div>
       </section>`;
 }
@@ -208,6 +210,46 @@ const SEITEN = [
   },
 ];
 
+// Zweisprachig (17.10.2026, lib/sprachen.mjs): dieselben Bausteine je Sprache.
+// Auf Englisch gibt es keine Gratis-Vorschau (der Funnel erzeugt deutsche
+// Beitraege), der Weg ist das Erstgespraech.
+const SPRACHEN = {
+  de: {
+    lang: "de", locale: "de_DE", inLanguage: "de-DE", pfad: "/wissen/", start: "/", seiten: SEITEN,
+    stand: "Zuletzt geprüft: " + STAND,
+    zurueck: "Alle Antworten", zurStart: "Zur Startseite",
+    cta: "Kostenlos starten", ctaHref: "/gratis/",
+    abschlussH2: "Wie sähe das bei <em>dir</em> aus?",
+    abschlussP: "Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.",
+    weiter: "Weitere Antworten",
+    ueTitel: "Wissen — ehrliche Antworten zu Social-Media-Betreuung | social2scale",
+    ueBeschr: "Was kostet Social-Media-Betreuung, wie lange dauert der Aufbau, selbst machen oder abgeben? Konkrete Antworten mit echten Zahlen — ohne Verkaufsgerede.",
+    ueOgTitel: "Wissen — ehrliche Antworten zu Social-Media-Betreuung",
+    ueOgBeschr: "Preise, Zeiträume und Auswahlkriterien — konkret beantwortet, mit echten Zahlen.",
+    ueH1: "Ehrliche Antworten statt <em>Verkaufsgerede</em>.",
+    ueLead: "Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Mach es selbst.",
+    ueAbschlussH2: "Deine Frage ist nicht <em>dabei</em>?",
+    ueAbschlussP: "Sieh dir an, wie dein Auftritt aussehen könnte: in 60 Sekunden, kostenlos. Oder schreib uns, wir antworten persönlich.",
+  },
+  en: {
+    lang: "en", locale: "en_US", inLanguage: "en-US", pfad: "/en/knowledge/", start: "/en/", seiten: SEITEN_EN,
+    stand: "Last reviewed: August 20, 2026",
+    zurueck: "All answers", zurStart: "Back to the homepage",
+    cta: "Book a free intro call", ctaHref: "/en/contact/",
+    abschlussH2: "What would this look like for <em>you</em>?",
+    abschlussP: "A free intro call of about 20 minutes to see if we’re a good fit. No obligation.",
+    weiter: "More answers",
+    ueTitel: "Knowledge — honest answers about social media management | social2scale",
+    ueBeschr: "How much does social media management cost, how long does it take to build, do it yourself or hand it off? Concrete answers with real numbers — no sales talk.",
+    ueOgTitel: "Knowledge — honest answers about social media management",
+    ueOgBeschr: "Prices, timeframes and selection criteria — answered concretely, with real numbers.",
+    ueH1: "Honest answers instead of <em>sales talk</em>.",
+    ueLead: "The questions we get asked most on intro calls, answered here with real numbers. Even when the answer is: do it yourself.",
+    ueAbschlussH2: "Your question isn’t <em>here</em>?",
+    ueAbschlussP: "Write to us at info@social2scale.com or book a free intro call. We answer personally.",
+  },
+};
+
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 // Headline im Marken-Stil: EIN Wort im Aurora-Verlauf hervorgehoben.
@@ -233,7 +275,7 @@ function antwortText(seite) {
   return teile.join(" ");
 }
 
-function schema(seite) {
+function schema(seite, L) {
   const daten = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -248,7 +290,7 @@ function schema(seite) {
       logo: BASIS + "/assets/avatar-s2s.png",
     },
     dateModified: "2026-08-20",
-    inLanguage: "de-DE",
+    inLanguage: L.inLanguage,
   };
   return '<script type="application/ld+json">' + JSON.stringify(daten) + "</script>";
 }
@@ -265,13 +307,44 @@ function abschnittHtml(a) {
 
 const CSS = readFileSync(join(WURZEL, "scripts", "wissen.css"), "utf8");
 const KOPF = readFileSync(join(WURZEL, "scripts", "wissen-kopf.html"), "utf8");
-const FUSS = readFileSync(join(WURZEL, "scripts", "wissen-fuss.html"), "utf8");
+const FUSS_ROH = readFileSync(join(WURZEL, "scripts", "wissen-fuss.html"), "utf8");
 
-function seiteHtml(seite) {
-  const url = BASIS + "/wissen/" + seite.slug + "/";
-  const andere = SEITEN.filter((s) => s.slug !== seite.slug);
+// Kopf mit Sprach-Umschalter (leer, solange die Schwester fehlt).
+function kopf(pfad) {
+  const marke = 'alt="social2scale">';
+  if (!KOPF.includes(marke)) throw new Error("wissen-kopf.html: Logo-Marke fehlt");
+  const wechsel = umschalter(pfad, "sprache", WURZEL);
+  return wechsel ? KOPF.replace(marke, marke + "\n      " + wechsel) : KOPF;
+}
+
+// Fusszeile je Sprache. Die Rechts-Links waren relativ (../impressum/) und
+// fuehrten von /wissen/<artikel>/ auf /wissen/impressum/ — eine Seite, die es
+// nicht gibt (gefunden 17.10.2026). Jetzt feste Pfade.
+const FUSS_EN = [
+  ['aria-label="social2scale — zur Startseite"', 'aria-label="social2scale — to the homepage"'],
+  ['href="/" aria-label="social2scale — to the homepage"', 'href="/en/" aria-label="social2scale — to the homepage"'],
+  ["Premium Social-Growth für Coaches &amp; Experten.", "Done-for-you social media growth for coaches &amp; experts."],
+  ['aria-label="Rechtliche Seiten"', 'aria-label="Legal pages"'],
+  ['<a href="/impressum/">Impressum</a>', '<a href="/impressum/" hreflang="de">Legal notice (German)</a>'],
+  ['<a href="/datenschutz/">Datenschutz</a>', '<a href="/datenschutz/" hreflang="de">Privacy policy (German)</a>'],
+];
+function fuss(L) {
+  let f = FUSS_ROH.replace('href="../impressum/"', 'href="/impressum/"').replace('href="../datenschutz/"', 'href="/datenschutz/"');
+  if (L.lang === "en") {
+    for (const [alt, neu] of FUSS_EN) {
+      if (!f.includes(alt)) throw new Error("wissen-fuss.html: " + alt + " fehlt");
+      f = f.replace(alt, neu);
+    }
+  }
+  return f;
+}
+
+function seiteHtml(seite, L) {
+  const pfad = L.pfad + seite.slug + "/";
+  const url = BASIS + pfad;
+  const andere = L.seiten.filter((s) => s.slug !== seite.slug);
   return `<!DOCTYPE html>
-<html lang="de">
+<html lang="${L.lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -281,7 +354,7 @@ function seiteHtml(seite) {
 <meta name="description" content="${esc(seite.beschreibung)}">
 <link rel="canonical" href="${url}">
 <meta property="og:site_name" content="social2scale">
-<meta property="og:locale" content="de_DE">
+<meta property="og:locale" content="${L.locale}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(seite.titel)}">
 <meta property="og:description" content="${esc(seite.beschreibung)}">
@@ -296,57 +369,57 @@ function seiteHtml(seite) {
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bedienung.css">
 <style>${CSS}</style>
-${schema(seite)}
+${schema(seite, L)}
 </head>
 <body>
-${KOPF}
+${kopf(pfad)}
   <main id="main" class="w-page">
     <article class="wrap w-art">
-      <a class="w-zurueck" href="/wissen/">Alle Antworten</a>
+      <a class="w-zurueck" href="${L.pfad}">${L.zurueck}</a>
       <h1 class="w-re">${headline(seite)}</h1>
       <p class="w-lead w-re">${esc(seite.antwort)}</p>
-      <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
+      <p class="w-stand w-re">${L.stand}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
-      ${abschluss("Wie sähe das bei <em>dir</em> aus?", "Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.")}
-      <nav class="w-weiter" aria-label="Weitere Antworten">
-        <h2>Weitere Antworten</h2>
-        <ul>${andere.map((s) => `<li><a href="/wissen/${s.slug}/">${esc(s.kurz)}</a></li>`).join("")}</ul>
+      ${abschluss(L.abschlussH2, L.abschlussP, L)}
+      <nav class="w-weiter" aria-label="${L.weiter}">
+        <h2>${L.weiter}</h2>
+        <ul>${andere.map((s) => `<li><a href="${L.pfad}${s.slug}/">${esc(s.kurz)}</a></li>`).join("")}</ul>
       </nav>
     </article>
   </main>
-${FUSS}
+${fuss(L)}
 </body>
 </html>`;
 }
 
-function uebersichtHtml() {
+function uebersichtHtml(L) {
   const daten = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: SEITEN.map((s) => ({
+    mainEntity: L.seiten.map((s) => ({
       "@type": "Question",
       name: s.titel,
-      acceptedAnswer: { "@type": "Answer", text: s.antwort, url: BASIS + "/wissen/" + s.slug + "/" },
+      acceptedAnswer: { "@type": "Answer", text: s.antwort, url: BASIS + L.pfad + s.slug + "/" },
     })),
-    inLanguage: "de-DE",
+    inLanguage: L.inLanguage,
     dateModified: "2026-08-20",
   };
   return `<!DOCTYPE html>
-<html lang="de">
+<html lang="${L.lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
      scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
-<title>Wissen — ehrliche Antworten zu Social-Media-Betreuung | social2scale</title>
-<meta name="description" content="Was kostet Social-Media-Betreuung, wie lange dauert der Aufbau, selbst machen oder abgeben? Konkrete Antworten mit echten Zahlen — ohne Verkaufsgerede.">
-<link rel="canonical" href="${BASIS}/wissen/">
+<title>${L.ueTitel}</title>
+<meta name="description" content="${L.ueBeschr}">
+<link rel="canonical" href="${BASIS}${L.pfad}">
 <meta property="og:site_name" content="social2scale">
-<meta property="og:locale" content="de_DE">
+<meta property="og:locale" content="${L.locale}">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Wissen — ehrliche Antworten zu Social-Media-Betreuung">
-<meta property="og:description" content="Preise, Zeiträume und Auswahlkriterien — konkret beantwortet, mit echten Zahlen.">
-<meta property="og:url" content="${BASIS}/wissen/">
+<meta property="og:title" content="${L.ueOgTitel}">
+<meta property="og:description" content="${L.ueOgBeschr}">
+<meta property="og:url" content="${BASIS}${L.pfad}">
 <meta property="og:image" content="${BASIS}/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -360,37 +433,57 @@ function uebersichtHtml() {
 <script type="application/ld+json">${JSON.stringify(daten)}</script>
 </head>
 <body>
-${KOPF}
+${kopf(L.pfad)}
   <main id="main" class="w-page">
     <div class="wrap w-art">
-      <a class="w-zurueck" href="/">Zur Startseite</a>
-      <h1 class="w-re">Ehrliche Antworten statt <em>Verkaufsgerede</em>.</h1>
-      <p class="w-lead w-re">Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Mach es selbst.</p>
-      <p class="w-stand w-re">Zuletzt geprüft: ${STAND}</p>
+      <a class="w-zurueck" href="${L.start}">${L.zurStart}</a>
+      <h1 class="w-re">${L.ueH1}</h1>
+      <p class="w-lead w-re">${L.ueLead}</p>
+      <p class="w-stand w-re">${L.stand}</p>
       <ul class="w-index w-re">
-        ${SEITEN.map((s, i) => `<li><a href="/wissen/${s.slug}/">
+        ${L.seiten.map((s, i) => `<li><a href="${L.pfad}${s.slug}/">
           <span class="nr">${String(i + 1).padStart(2, "0")}</span>
           <h2>${esc(s.titel)}</h2>
           <p>${esc(s.antwort.split(". ")[0])}.</p>
         </a></li>`).join("")}
       </ul>
-      ${abschluss("Deine Frage ist nicht <em>dabei</em>?", "Sieh dir an, wie dein Auftritt aussehen könnte: in 60 Sekunden, kostenlos. Oder schreib uns, wir antworten persönlich.")}
+      ${abschluss(L.ueAbschlussH2, L.ueAbschlussP, L)}
     </div>
   </main>
-${FUSS}
+${fuss(L)}
 </body>
 </html>`;
 }
 
+// EN zuerst: der Umschalter einer Seite erscheint nur, wenn ihre Schwester
+// schon auf der Platte liegt.
+// Der Aktualitaets-Stempel einer EN-Seite bleibt beim Neubau erhalten — neu
+// gesetzt wird er nur mit scripts/sprachen-stempel.mjs, wenn der englische
+// Text wirklich nachgezogen ist.
+function schreibe(datei, html, L) {
+  let aus = html;
+  if (L.lang === "en" && existsSync(datei)) {
+    const alt = readFileSync(datei, "utf8").match(STEMPEL_MUSTER);
+    if (alt) aus = aus.replace('<meta charset="UTF-8">', '<meta charset="UTF-8">\n' + alt[0]);
+  }
+  writeFileSync(datei, aus);
+}
+
 let n = 0;
-for (const seite of SEITEN) {
-  const ordner = join(WURZEL, "wissen", seite.slug);
-  mkdirSync(ordner, { recursive: true });
-  writeFileSync(join(ordner, "index.html"), seiteHtml(seite));
-  console.log("  ✓ /wissen/" + seite.slug + "/");
+for (const L of [SPRACHEN.en, SPRACHEN.de]) {
+  if (L.lang === "en" && SEITEN_EN.length !== SEITEN.length) {
+    throw new Error(`wissen-en.mjs hat ${SEITEN_EN.length} Seiten, build-wissen.mjs ${SEITEN.length}`);
+  }
+  for (const seite of L.seiten) {
+    const ordner = join(WURZEL, L.pfad.slice(1), seite.slug);
+    mkdirSync(ordner, { recursive: true });
+    schreibe(join(ordner, "index.html"), seiteHtml(seite, L), L);
+    console.log("  ✓ " + L.pfad + seite.slug + "/");
+    n++;
+  }
+  mkdirSync(join(WURZEL, L.pfad.slice(1)), { recursive: true });
+  schreibe(join(WURZEL, L.pfad.slice(1), "index.html"), uebersichtHtml(L), L);
+  console.log("  ✓ " + L.pfad + " (Übersicht)");
   n++;
 }
-mkdirSync(join(WURZEL, "wissen"), { recursive: true });
-writeFileSync(join(WURZEL, "wissen", "index.html"), uebersichtHtml());
-console.log("  ✓ /wissen/ (Übersicht)");
-console.log(`\n${n + 1} Seiten gebaut. Denk an: sitemap.xml ergänzen.`);
+console.log(`\n${n} Seiten gebaut. Danach: node scripts/build-pages.mjs (hreflang) und csp-haerten.mjs.`);

@@ -36,6 +36,8 @@
   /* HEADER */
   .site-head{padding:34px 0 8px}
   .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* Sprach-Umschalter (17.10.2026) rechts neben dem Logo, nicht darunter */
+  .site-head .wrap:has(.sprache){flex-direction:row;align-items:center;justify-content:space-between}
   .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
   .logo-s2s{display:none!important}
   @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}

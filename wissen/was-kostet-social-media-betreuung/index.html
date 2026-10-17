@@ -66,6 +66,8 @@
   /* HEADER */
   .site-head{padding:34px 0 8px}
   .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* Sprach-Umschalter (17.10.2026) rechts neben dem Logo, nicht darunter */
+  .site-head .wrap:has(.sprache){flex-direction:row;align-items:center;justify-content:space-between}
   .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
   .logo-s2s{display:none!important}
   @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
@@ -319,12 +321,19 @@
   }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Was kostet Social-Media-Betreuung für Coaches und B2B?","acceptedAnswer":{"@type":"Answer","text":"Professionelle Social-Media-Betreuung kostet im deutschen Mittelstand typischerweise zwischen 400 und 2.000 Euro im Monat, je nachdem wie viel Arbeit abgegeben wird. Bei social2scale kostet der komplette Aufbau 1.547,00 € einmalig und danach 464,10 € im Monat; wer nur die laufende Erstellung abgibt, zahlt ab 523,60 € monatlich (zzgl. 523,60 € einmalig zum Start). Der größte Kostenblock ist nicht das Posten, sondern alles davor: Positionierung, Bildsprache, Textkonzept und ein Plan, der zur Zielgruppe passt. Deshalb trennen seriöse Anbieter zwischen einem einmaligen Aufbau und der laufenden Betreuung. Bei social2scale umfasst der einmalige Teil den Profilaufbau samt Branding und Positionierung. Die monatliche Betreuung deckt 10 fertige Beiträge, das Veröffentlichen nach Plan, eine Hashtag-Strategie je Beitrag und das Weiterleiten eingehender Anfragen ab. Alles abgeben Aufbau plus laufende Betreuung. 1.547,00 € einmalig, danach 464,10 € im Monat. Für alle, die bei null starten oder sich gar nicht kümmern wollen. Nur das Laufende abgeben Das Profil steht bereits, es fehlt der Content. Ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Einmalige Starthilfe Neun gestaltete Beiträge samt Captions, danach postet man selbst. Ab 446,25 € einmalig; mit Profil, Bio und Branding 1.297,10 €. Angebote unter etwa 300 Euro monatlich decken selten mehr ab als das Einplanen fertiger Vorlagen. Wer für diesen Preis individuelle Beiträge, Bildbearbeitung und Betreuung verspricht, rechnet meist mit sehr wenig Zeit pro Kunde — oder gibt die Arbeit weiter. Umgekehrt heißt teuer nicht automatisch besser: Große Agenturen kalkulieren Projektleitung und Team mit ein. Entscheidend ist, wer die Arbeit am Ende wirklich macht und wie viele Kundinnen dieselbe Person betreut."}}],"isPartOf":{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/avatar-s2s.png"},"dateModified":"2026-08-20","inLanguage":"de-DE"}</script>
+<!-- SPRACHE:KOPF -->
+<link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/">
+<link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/social-media-management-cost/">
+<link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/">
+<meta property="og:locale:alternate" content="en_US">
+<!-- /SPRACHE:KOPF -->
 </head>
 <body>
 <!-- HEADER -->
   <header class="site-head">
     <div class="wrap">
       <img class="logo" src="/assets/wordmark.png" alt="social2scale">
+      <a class="sprache" href="/en/knowledge/social-media-management-cost/" hreflang="en" lang="en" data-sprache="en"><svg class="sprache-flagge" viewBox="0 0 60 30" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#012169" d="M0 0v30h60V0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30m0-30L0 30"/><path stroke="#C8102E" stroke-width="4" d="M0 0l60 30m0-30L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#C8102E" stroke-width="6" d="M30 0v30M0 15h60"/></svg><span>English</span></a>
     </div>
   </header>
   <main id="main" class="w-page">
@@ -354,8 +363,8 @@
         <span class="foot-tag">Premium Social-Growth für Coaches &amp; Experten.</span>
       </div>
       <nav class="foot-links" aria-label="Rechtliche Seiten">
-        <a href="../impressum/">Impressum</a>
-        <a href="../datenschutz/">Datenschutz</a>
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
         <a href="mailto:info@social2scale.com">info@social2scale.com</a>
       </nav>
     </div>
