@@ -66,6 +66,8 @@
   /* HEADER */
   .site-head{padding:34px 0 8px}
   .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* Sprach-Umschalter (17.10.2026) rechts neben dem Logo, nicht darunter */
+  .site-head .wrap:has(.sprache){flex-direction:row;align-items:center;justify-content:space-between}
   .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
   .logo-s2s{display:none!important}
   @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
@@ -319,12 +321,19 @@
   }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Social Media selbst machen oder an eine Agentur abgeben?","acceptedAnswer":{"@type":"Answer","text":"Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten — bei 523,60 € im Monat (zzgl. 523,60 € einmalig zum Start) ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall. Für zehn Beiträge im Monat sollte man mit siebeneinhalb bis fünfzehn Stunden rechnen — 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt. Dazu kommt der Einarbeitungsaufwand am Anfang: Bildformate, Textaufbau und ein wiedererkennbarer Look brauchen ein paar Anläufe. Diese Lernkurve ist der Hauptgrund, warum viele nach zwei Monaten wieder aufhören. Selbst machen Wenn du gern schreibst, ein klares Thema hast und die Zeit verlässlich freihalten kannst. Der Vorteil: deine Stimme ist unverfälscht. Abgeben Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder du einen einheitlichen Auftritt brauchst, ohne sich damit zu beschäftigen. Mischform Einmal aufbauen lassen, danach selbst weitermachen. Bei social2scale Profil und Branding für 1.297,10 €, nur die Beiträge ab 446,25 € einmalig."}}],"isPartOf":{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/avatar-s2s.png"},"dateModified":"2026-08-20","inLanguage":"de-DE"}</script>
+<!-- SPRACHE:KOPF -->
+<link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/">
+<link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/diy-or-agency/">
+<link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/">
+<meta property="og:locale:alternate" content="en_US">
+<!-- /SPRACHE:KOPF -->
 </head>
 <body>
 <!-- HEADER -->
   <header class="site-head">
     <div class="wrap">
       <img class="logo" src="/assets/wordmark.png" alt="social2scale">
+      <a class="sprache" href="/en/knowledge/diy-or-agency/" hreflang="en" lang="en" data-sprache="en"><svg class="sprache-flagge" viewBox="0 0 60 30" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#012169" d="M0 0v30h60V0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30m0-30L0 30"/><path stroke="#C8102E" stroke-width="4" d="M0 0l60 30m0-30L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#C8102E" stroke-width="6" d="M30 0v30M0 15h60"/></svg><span>English</span></a>
     </div>
   </header>
   <main id="main" class="w-page">
@@ -354,8 +363,8 @@
         <span class="foot-tag">Premium Social-Growth für Coaches &amp; Experten.</span>
       </div>
       <nav class="foot-links" aria-label="Rechtliche Seiten">
-        <a href="../impressum/">Impressum</a>
-        <a href="../datenschutz/">Datenschutz</a>
+        <a href="/impressum/">Impressum</a>
+        <a href="/datenschutz/">Datenschutz</a>
         <a href="mailto:info@social2scale.com">info@social2scale.com</a>
       </nav>
     </div>

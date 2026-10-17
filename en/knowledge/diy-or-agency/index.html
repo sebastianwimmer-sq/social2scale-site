@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- SICHERHEIT:AUTO -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-9kjZ5hAPZNiGSU+xCrShEPjTdAFtZHqVmEU0j18aLfg=' 'sha256-rAzS+225y3mVyDjKHwXW+9Ni19jrzLFWhDuoWyzgUxQ=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
+<!-- /SICHERHEIT:AUTO -->
+<meta name="s2s-quelle" content="/wissen/selbst-machen-oder-agentur/@8d5a4e14fa3f1075">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
+     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
+<title>Should you do social media yourself or hand it off to an agency? | social2scale</title>
+<meta name="description" content="The honest math: when an agency is worth it and when doing it yourself makes more sense — with time spent and a cost comparison.">
+<link rel="canonical" href="https://social2scale.com/en/knowledge/diy-or-agency/">
+<meta property="og:site_name" content="social2scale">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Should you do social media yourself or hand it off to an agency?">
+<meta property="og:description" content="The honest math: when an agency is worth it and when doing it yourself makes more sense — with time spent and a cost comparison.">
+<meta property="og:url" content="https://social2scale.com/en/knowledge/diy-or-agency/">
+<meta property="og:image" content="https://social2scale.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/fonts.css">
+<link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/bedienung.css">
+<style>
+  :root{
+    --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
+    --px:clamp(20px,5vw,40px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* ===== Fix-Dark Hardening — dunkel in JEDEM OS-Modus (Dark-Audit) ===== */
+  :root{color-scheme:dark}
+  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,textarea:-webkit-autofill,select:-webkit-autofill{-webkit-text-fill-color:#F2F3F1;caret-color:#F2F3F1;-webkit-box-shadow:0 0 0 1000px #16161A inset;box-shadow:0 0 0 1000px #16161A inset;transition:background-color 9999s ease-out 0s}
+  *{scrollbar-color:#7C7E78 transparent;scrollbar-width:thin}
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:#000}
+  ::-webkit-scrollbar-thumb{background:#2a2a2e;border-radius:7px;border:2px solid #000}
+  ::-webkit-scrollbar-thumb:hover{background:#37373c}
+  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.65;overflow-x:hidden;
+    background-image:
+      radial-gradient(120% 70% at 50% -8%, rgba(0,184,136,.10), transparent 52%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px);}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
+  .wrap{width:100%;max-width:720px;margin:0 auto;padding:0 var(--px)}
+  a{color:var(--emerald-soft)}
+  a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
+
+  @keyframes upIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity var(--dur-4, .7s) var(--ease),transform var(--dur-4, .7s) var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1!important;transform:none!important}}
+
+
+  /* HEADER */
+  .site-head{padding:34px 0 8px}
+  .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  /* Sprach-Umschalter (17.10.2026) rechts neben dem Logo, nicht darunter */
+  .site-head .wrap:has(.sprache){flex-direction:row;align-items:center;justify-content:space-between}
+  .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
+  .logo-s2s{display:none!important}
+  @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
+  .home-link{font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;margin-top:4px}
+  .home-link:hover{color:var(--paper)}
+
+  /* HERO TITLE */
+  .lead-block{padding:clamp(28px,5vw,52px) 0 8px}
+  .klabel{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald)}
+  h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.4rem,1.6rem + 3.4vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:14px}
+  h1 em{font-style:italic;color:var(--emerald)}
+  .lead{color:var(--muted);font-size:1.05rem;margin-top:18px;max-width:54ch}
+  .meta{font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);margin-top:20px}
+
+  /* TOC */
+  .toc{margin-top:26px;background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,22px)}
+  .toc p{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
+  .toc ol{margin:12px 0 0;padding-left:0;list-style:none;counter-reset:t;display:grid;gap:6px}
+  .toc li{counter-increment:t;color:var(--muted)}
+  .toc li a{color:var(--muted);text-decoration:none}
+  .toc li a:hover{color:var(--paper)}
+  .toc li a::before{content:counter(t,decimal-leading-zero)" · ";font-family:"JetBrains Mono",monospace;color:var(--emerald);font-size:.85em}
+
+  /* SECTIONS */
+  article{padding:clamp(20px,4vw,32px) 0 60px}
+  section.blk{padding:clamp(26px,5vw,40px) 0;border-top:1px solid var(--line);scroll-margin-top:80px}
+  h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.5rem,1.1rem + 1.6vw,2.1rem);line-height:1.14;letter-spacing:-.01em}
+  h2 em{font-style:italic;color:var(--emerald)}
+  h2 .n{font-family:"JetBrains Mono",monospace;font-size:.6em;color:var(--emerald);margin-right:10px;vertical-align:.12em}
+  h3{font-family:"Archivo",sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-top:24px}
+  p{margin-top:14px;color:var(--paper)}
+  p.muted{color:var(--muted)}
+  ul{margin:14px 0 0;padding-left:0;list-style:none;display:grid;gap:8px}
+  ul li{position:relative;padding-left:20px;color:var(--paper)}
+  ul li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:rgba(0,184,136,.6);border:1px solid var(--emerald)}
+  .legal{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.06em;color:var(--faint);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
+
+  .data{margin-top:18px;background:linear-gradient(180deg,rgba(22,22,26,.8),rgba(12,12,14,.8));border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,24px)}
+  .data dl{display:grid;grid-template-columns:auto 1fr;gap:6px 22px}
+  .data dt{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+  .data dd{color:var(--paper)}
+  @media (max-width:520px){.data dl{grid-template-columns:1fr;gap:2px 0}.data dt{padding-top:12px}.data dt:first-child{padding-top:0}}
+  .ph{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--emerald-soft);background:rgba(0,184,136,.10);border:1px dashed rgba(0,184,136,.40);border-radius:5px;padding:1px 7px;max-width:100%;overflow-wrap:anywhere}
+
+  /* ===== Footer (lean · Liquid-Glass) ===== */
+  .site-footer{position:relative;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-top:56px}
+  .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
+  .foot-inner{max-width:720px;margin:0 auto;padding:36px var(--px) 44px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+  .foot-id{display:flex;align-items:center;gap:12px}
+  .foot-id img{height:30px;width:auto;display:block}
+  .foot-id .foot-tag{font-family:"Archivo",sans-serif;font-size:0.75rem;font-weight:500;color:var(--muted);max-width:24ch;line-height:1.45}
+  .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;font-family:"Archivo",sans-serif;font-size:0.8125rem;font-weight:500}
+  .foot-links a{color:var(--muted);text-decoration:none;transition:color var(--dur-2, .2s) var(--ease)}
+  .foot-links a:hover{color:var(--paper)}
+  .foot-meta{max-width:720px;margin:0 auto;padding:0 var(--px) 36px;font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.04em;color:var(--faint);line-height:1.9}
+  .foot-meta .pk{color:var(--emerald-soft)}
+  @media (max-width:560px){.foot-inner{flex-direction:column;align-items:flex-start;gap:18px}}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  
+    /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
+  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    .bar, header.top{
+      -webkit-backdrop-filter:blur(22px) saturate(185%);
+      backdrop-filter:blur(22px) saturate(185%);
+      background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.68),rgba(7,11,14,.55));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 1px 0 rgba(0,0,0,.22),0 16px 36px -26px rgba(0,0,0,.85);
+    }
+    .mobile-menu{
+      -webkit-backdrop-filter:blur(26px) saturate(180%);
+      backdrop-filter:blur(26px) saturate(180%);
+      background:radial-gradient(120% 80% at 18% 0%,rgba(255,255,255,.08),transparent 48%),linear-gradient(180deg,rgba(12,20,17,.78),rgba(7,11,14,.72));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
+    }
+    .nav-cta,.m-cta{-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+  }
+  .nav-cta{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px -16px rgba(0,0,0,.7)}
+  .nav-cta:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(0,184,136,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -14px rgba(0,184,136,.4);transform:translateY(-1px)}
+  .nav-cta:active{transform:scale(.97)}
+  .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
+  .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
+  
+  /* Marken-Tokens, die im Basis-CSS der Rechtsseiten fehlen — 1:1 aus der
+     Startseite übernommen, damit die Wissens-Seiten dieselbe Sprache sprechen. */
+  :root{
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --teal:#1FA6E0;
+    --hi:inset 0 1px 0 rgba(255,255,255,.05);
+  }
+
+  /* ===== Wissens-Sektion — Editorial im s2s-Aurora-Look =====
+     Übernimmt die Marken-Mittel der Startseite statt eigener Erfindungen:
+     accent-flow für em-Wörter, radiale Atmosphäre, gestapelte Oberflächen
+     mit Inset-Highlight, Reveal beim Scrollen. */
+
+  .w-page{position:relative;overflow:clip} /* clip statt hidden: sonst haengt view() an der Seite statt am Fenster */
+  /* Atmosphäre wie im Startseiten-Hero: zwei weiche Lichtquellen, kein Blob-Klischee */
+  .w-page::before{content:"";position:absolute;inset:0 0 auto;height:70vh;pointer-events:none;z-index:0;
+    background:radial-gradient(95% 70% at 12% 0%,rgba(0,184,136,.13),transparent 62%),
+               radial-gradient(80% 60% at 88% 6%,rgba(31,166,224,.09),transparent 58%)}
+  .w-art{position:relative;z-index:1;max-width:44rem;padding-block:clamp(2.2rem,6vw,4.2rem) clamp(3rem,8vw,6rem)}
+
+  /* Kopfzeile: Rücksprung statt dekorativem Label */
+  .w-zurueck{display:inline-flex;align-items:center;gap:.45rem;font-family:"JetBrains Mono",monospace;
+    font-size:0.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;
+    transition:color var(--dur-2, .22s) var(--ease)}
+  .w-zurueck:hover{color:var(--emerald)}
+  .w-zurueck::before{content:"←";font-size:1.1em}
+
+  .w-art h1{font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(1.9rem,4.8vw,3.1rem);line-height:1.1;letter-spacing:-.022em;
+    margin:1.4rem 0 0;text-wrap:balance;max-width:20ch}
+  .w-art h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;
+    background-clip:text;color:transparent;padding-bottom:.08em}
+
+  /* Die direkte Antwort: der wichtigste Absatz der Seite, also auch der größte.
+     Kein Zitat-Balken (das wäre ein fremdes Muster), sondern echter Lead-Text. */
+  .w-lead{font-family:"Hanken Grotesk",system-ui,sans-serif;
+    font-size:clamp(1.08rem,2.4vw,1.32rem);line-height:1.58;color:var(--paper);
+    margin:1.25rem 0 0;max-width:34ch;text-wrap:pretty}
+  .w-lead::first-letter{font-family:"Fraunces",serif;font-size:1.15em;line-height:1;color:var(--emerald-soft)}
+  .w-stand{margin-top:1.6rem;padding-top:1rem;border-top:1px solid var(--line);
+    font-family:"JetBrains Mono",monospace;font-size:0.6562rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint)}
+
+  /* Abschnitte: Rhythmus über Größe und Abstand, nicht über Kästen */
+  .w-blk{margin-top:clamp(2.4rem,5vw,3.6rem)}
+  .w-blk h2{font-family:"Archivo",sans-serif;font-weight:600;
+    font-size:clamp(1.08rem,2.4vw,1.36rem);letter-spacing:-.014em;line-height:1.25;
+    margin-bottom:.85rem;text-wrap:balance;max-width:26ch}
+  .w-blk p{color:var(--muted);line-height:1.78;margin-bottom:.9rem;max-width:36rem}
+  .w-blk p:last-child{margin-bottom:0}
+
+  /* Aufzählungen als Editorial-Zeilen: Hairline nur oben, Begriff trägt die Farbe.
+     Bewusst keine Karten und keine Linie unter jeder Zeile. */
+  .w-liste{margin-top:1.1rem;display:grid;gap:0}
+  .w-liste dt{font-family:"Archivo",sans-serif;font-weight:600;font-size:.97rem;color:var(--paper);
+    padding-top:1.05rem;margin-top:1.05rem;border-top:1px solid var(--line)}
+  .w-liste dt:first-of-type{border-top:0;margin-top:0;padding-top:0}
+  .w-liste dd{color:var(--muted);line-height:1.72;margin:.35rem 0 0;max-width:34rem;font-size:.95rem}
+
+  /* Übersicht: eine editorial gesetzte Liste mit wachsender Nummer,
+     keine gleichförmigen Karten (das war der Slop-Punkt). */
+  .w-index{list-style:none;margin-top:clamp(2rem,4vw,3rem);display:grid;gap:0}
+  /* Das Basis-CSS setzt einen grünen Punkt vor jedes li — hier stört er,
+     die Nummer ist der Marker. */
+  .w-index li::before,.w-weiter li::before{display:none;content:none}
+  .w-index li,.w-weiter li{padding-left:0}
+  .w-index li{border-top:1px solid var(--line)}
+  .w-index li:last-child{border-bottom:1px solid var(--line)}
+  .w-index a{display:grid;grid-template-columns:auto 1fr;gap:0 1.3rem;align-items:baseline;
+    padding:clamp(1.2rem,2.6vw,1.9rem) 0;text-decoration:none;
+    }
+  /* Einruecken per translate an den KINDERN: die Trennlinie bleibt stehen, und
+     es wird kein Layout neu gerechnet (vorher padding-left, motion-loop 06.10.). */
+  .w-index a > *{transition:translate var(--dur-2, .3s) var(--ease)}
+  .w-index a:hover > *,.w-index a:focus-visible > *{translate:.6rem 0}
+  .w-index .nr{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--faint);
+    letter-spacing:.06em;transition:color var(--dur-2, .3s) var(--ease)}
+  .w-index a:hover .nr,.w-index a:focus-visible .nr{color:var(--emerald)}
+  /* Moment (motion-loop 06.10.2026): die Fragennummer leuchtet auf, wenn man
+     an der Frage vorbeiliest — der Index zeigt, wo man steht. */
+  @keyframes wNr{from{color:var(--faint)}to{color:var(--emerald)}}
+  @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
+    .w-index .nr{animation:wNr linear both;animation-timeline:view();animation-range:cover 30% cover 45%}
+  }}
+  .w-index h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.16rem,2.7vw,1.6rem);
+    line-height:1.24;letter-spacing:-.015em;color:var(--paper);text-wrap:balance;max-width:24ch}
+  .w-index p{grid-column:2;color:var(--muted);font-size:.95rem;line-height:1.62;
+    margin-top:.5rem;max-width:40rem}
+
+  /* Abschluss-Block: gestapelte Oberfläche mit Inset-Highlight wie auf der Startseite */
+  .w-cta{position:relative;margin-top:clamp(2.8rem,6vw,4rem);padding:clamp(1.5rem,3.4vw,2.1rem);
+    border:1px solid var(--line-2);border-radius:20px;overflow:hidden;
+    background:linear-gradient(158deg,var(--surface-2),var(--surface));box-shadow:var(--hi)}
+  .w-cta::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(80% 120% at 100% 0%,rgba(0,184,136,.12),transparent 60%)}
+  .w-cta > *{position:relative}
+  .w-cta h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.2rem,2.7vw,1.55rem);
+    line-height:1.22;letter-spacing:-.015em;margin-bottom:.5rem;text-wrap:balance}
+  .w-cta p{color:var(--muted);line-height:1.68;margin-bottom:1.2rem;max-width:32rem;font-size:.95rem}
+  .w-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.82rem 1.35rem;border-radius:12px;
+    font-family:"Archivo",sans-serif;font-weight:600;font-size:.93rem;text-decoration:none;
+    background:var(--accent-flow);color:var(--emerald-ink);
+    box-shadow:0 14px 34px -14px rgba(0,184,136,.55),var(--hi);
+    transition:transform var(--dur-2, .2s) var(--ease),box-shadow var(--dur-2, .2s) var(--ease)}
+  .w-btn:hover{transform:translateY(-1px);box-shadow:0 18px 42px -14px rgba(0,184,136,.7),var(--hi)}
+  .w-btn:active{transform:translateY(0) scale(.985)}
+  .w-cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.3rem}
+  /* Zweiter Weg: leiser als der Knopf, aber eine volle Trefferflaeche (44 px). */
+  .w-zweit{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);font-size:.95rem;
+    text-decoration:underline;text-decoration-color:var(--line-2);text-underline-offset:.3em}
+  .w-zweit:hover{text-decoration-color:var(--emerald)}
+
+  /* Weiterlesen: schlichte Zeilen statt Pillen-Wolke */
+  .w-weiter{margin-top:clamp(2.2rem,4.5vw,3rem);padding-top:1.3rem;border-top:1px solid var(--line)}
+  .w-weiter h2{font-family:"JetBrains Mono",monospace;font-size:0.6562rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--faint);font-weight:400;margin-bottom:.6rem}
+  .w-weiter ul{list-style:none;display:grid;gap:0}
+  .w-weiter a{display:block;padding:.62rem 0;color:var(--muted);text-decoration:none;font-size:.95rem;
+    border-bottom:1px solid var(--line);transition:color var(--dur-2, .22s) var(--ease)}
+  .w-weiter li:last-child a{border-bottom:0}
+  .w-weiter a:hover,.w-weiter a:focus-visible{color:var(--paper)}
+
+  /* Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite */
+  .w-re{opacity:0;transform:translateY(16px)}
+  .w-re.an{opacity:1;transform:none;transition:opacity var(--dur-4, .7s) var(--ease),transform var(--dur-4, .7s) var(--ease)}
+  @media (prefers-reduced-motion:reduce){
+    .w-re{opacity:1!important;transform:none!important;transition:none!important}
+    .w-index a,.w-index a > *,.w-weiter a,.w-btn{transition:none}
+  }
+  @media (max-width:560px){
+    .w-index a{grid-template-columns:1fr;gap:.15rem}
+    .w-index p{grid-column:1}
+  }
+
+  /* ===== Markenwelt wie die Hauptseiten (28.09.2026) =====
+     /wissen/ stand auf reinem Schwarz mit Karogitter, Zwischentitel in fetter
+     Archivo und einem Kasten als Abschluss — beim Klick von der Startseite
+     wechselte man die Website. Jetzt dieselben Flaechen-Tokens und dieselbe
+     Aurora wie index.html, Fraunces fuer Zwischentitel, Abschluss ohne Kasten. */
+  :root{--ink:#0A0B0D; --surface:#141518; --surface-2:#1B1D21; --faint:#8E918B;
+    --line:rgba(242,243,241,.08); --line-2:rgba(242,243,241,.14)}
+  body{
+    background:
+      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.30),transparent 55%),
+      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.26),transparent 56%),
+      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
+    background-attachment:fixed;background-color:#03080D}
+  @media (max-width:700px){body{background-attachment:scroll}}
+  ::-webkit-scrollbar-track{background:var(--ink)}
+
+  .w-blk h2{font-family:"Fraunces",serif;font-weight:450;letter-spacing:-.015em;
+    font-size:clamp(1.35rem,1.05rem + 1.1vw,1.8rem);line-height:1.18;text-transform:none}
+
+  .w-cta{border:0;border-radius:0;background:none;box-shadow:none;overflow:visible;
+    border-top:1px solid var(--line-2);padding:clamp(2.4rem,6vw,3.6rem) 0 0;isolation:isolate}
+  .w-cta::before{inset:0 -8% -20%;z-index:-1;
+    background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1.5px);
+    background-size:22px 22px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%);
+            mask-image:radial-gradient(ellipse 60% 70% at 30% 40%,#000 15%,transparent 75%)}
+  .w-cta h2{font-weight:450;font-size:clamp(1.7rem,1.2rem + 2.2vw,2.5rem);line-height:1.05;letter-spacing:-.025em;margin-bottom:.8rem}
+
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should you do social media yourself or hand it off to an agency?","acceptedAnswer":{"@type":"Answer","text":"Doing it yourself is worth it if you can reliably keep seven and a half to fifteen hours a month free and enjoy writing. Handing it off is worth it as soon as that time is missing or your working hour is worth more than the cost of management — at €523.60 a month (plus a one-time €523.60 to get started), that’s the case for most self-employed people from an hourly rate of about €60. For ten posts a month, plan on seven and a half to fifteen hours — 45 to 90 minutes per post: finding topics, writing, designing, scheduling and replying to comments. The work doesn’t come in one block but is spread out — which makes it harder to plan in everyday life than the bare number of hours suggests. On top of that comes the learning curve at the start: image formats, how to structure copy and a recognizable look take a few attempts. That learning curve is the main reason many people stop again after two months. Do it yourself If you like writing, have a clear topic and can reliably keep the time free. The upside: your voice stays completely your own. Hand it off If time is short, your profile has already gone quiet several times, or you need a consistent presence without having to deal with it. A mix Have it set up once, then carry on yourself. At social2scale, profile and branding for €1,297.10, just the posts from €446.25 one-time."}}],"isPartOf":{"@type":"WebSite","@id":"https://social2scale.com/#website","name":"social2scale","url":"https://social2scale.com/"},"publisher":{"@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","url":"https://social2scale.com/","logo":"https://social2scale.com/assets/avatar-s2s.png"},"dateModified":"2026-08-20","inLanguage":"en-US"}</script>
+<!-- SPRACHE:KOPF -->
+<link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/">
+<link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/diy-or-agency/">
+<link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/">
+<meta property="og:locale:alternate" content="de_DE">
+<!-- /SPRACHE:KOPF -->
+</head>
+<body>
+<!-- HEADER -->
+  <header class="site-head">
+    <div class="wrap">
+      <img class="logo" src="/assets/wordmark.png" alt="social2scale">
+      <a class="sprache" href="/wissen/selbst-machen-oder-agentur/" hreflang="de" lang="de" data-sprache="de"><svg class="sprache-flagge" viewBox="0 0 5 3" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#D00" d="M0 1h5v1H0z"/><path fill="#FFCE00" d="M0 2h5v1H0z"/></svg><span>Deutsch</span></a>
+    </div>
+  </header>
+  <main id="main" class="w-page">
+    <article class="wrap w-art">
+      <a class="w-zurueck" href="/en/knowledge/">All answers</a>
+      <h1 class="w-re">Should you do social media <em>yourself</em> or hand it off to an agency?</h1>
+      <p class="w-lead w-re">Doing it yourself is worth it if you can reliably keep seven and a half to fifteen hours a month free and enjoy writing. Handing it off is worth it as soon as that time is missing or your working hour is worth more than the cost of management — at €523.60 a month (plus a one-time €523.60 to get started), that’s the case for most self-employed people from an hourly rate of about €60.</p>
+      <p class="w-stand w-re">Last reviewed: August 20, 2026</p>
+      <section class="w-blk w-re"><h2>The real time it takes to do it yourself</h2><p>For ten posts a month, plan on seven and a half to fifteen hours — 45 to 90 minutes per post: finding topics, writing, designing, scheduling and replying to comments. The work doesn’t come in one block but is spread out — which makes it harder to plan in everyday life than the bare number of hours suggests.</p><p>On top of that comes the learning curve at the start: image formats, how to structure copy and a recognizable look take a few attempts. That learning curve is the main reason many people stop again after two months.</p></section><section class="w-blk w-re"><h2>When which option makes more sense</h2><dl class="w-liste"><dt>Do it yourself</dt><dd>If you like writing, have a clear topic and can reliably keep the time free. The upside: your voice stays completely your own.</dd><dt>Hand it off</dt><dd>If time is short, your profile has already gone quiet several times, or you need a consistent presence without having to deal with it.</dd><dt>A mix</dt><dd>Have it set up once, then carry on yourself. At social2scale, profile and branding for €1,297.10, just the posts from €446.25 one-time.</dd></dl></section>
+      <section class="w-cta w-re">
+        <h2>What would this look like for <em>you</em>?</h2>
+        <p>A free intro call of about 20 minutes to see if we’re a good fit. No obligation.</p>
+        <div class="w-cta-row">
+          <a class="w-btn" href="/en/contact/">Book a free intro call <span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+      <nav class="w-weiter" aria-label="More answers">
+        <h2>More answers</h2>
+        <ul><li><a href="/en/knowledge/social-media-management-cost/">How much does social media management cost?</a></li><li><a href="/en/knowledge/choosing-a-social-media-agency/">How do I choose an agency?</a></li><li><a href="/en/knowledge/how-long-until-results/">When do the first results come?</a></li><li><a href="/en/knowledge/how-we-work-together/">How does working together work?</a></li></ul>
+      </nav>
+    </article>
+  </main>
+<footer class="site-footer">
+    <div class="foot-inner">
+      <div class="foot-id">
+        <a class="brand" href="/en/" aria-label="social2scale — to the homepage"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
+        <span class="foot-tag">Done-for-you social media growth for coaches &amp; experts.</span>
+      </div>
+      <nav class="foot-links" aria-label="Legal pages">
+        <a href="/impressum/" hreflang="de">Legal notice (German)</a>
+        <a href="/datenschutz/" hreflang="de">Privacy policy (German)</a>
+        <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </nav>
+    </div>
+    <p class="foot-meta">© <span id="yr"></span> social2scale</p>
+  </footer><script src="/uebergang.js" defer></script><script>
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      var daten = JSON.stringify({ p: location.pathname, r: document.referrer || "",
+        d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop" });
+      var url = "https://closing.social2scale.com/api/pv";
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
+    } catch (e) {}
+  })();
+</script>
+<script>
+  // Reveal beim Scrollen — dieselbe Mechanik wie auf der Startseite.
+  // Ohne JS bleibt alles sichtbar (kein opacity:0 als Grundzustand im noscript-Fall).
+  (function () {
+    var els = document.querySelectorAll(".w-re");
+    if (!els.length) return;
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      els.forEach(function (e) { e.classList.add("an"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (eintraege) {
+      eintraege.forEach(function (e, i) {
+        if (!e.isIntersecting) return;
+        setTimeout(function () { e.target.classList.add("an"); }, Math.min(i * 60, 240));
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+
+</body>
+</html>
