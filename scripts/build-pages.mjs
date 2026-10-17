@@ -27,6 +27,8 @@ const SEITEN = [
   { datei: 'en/about/index.html', aktiv: 'about' },
   { datei: 'en/for-you/index.html', aktiv: 'for-you' },
   { datei: 'en/results/index.html', aktiv: 'results' },
+  // ohne Schwester: /anfrage/ ist nur eine Weiterleitung in den deutschen Funnel
+  { datei: 'en/contact/index.html', aktiv: 'kontakt' },
 ];
 
 // Datei → URL-Pfad ('preise/index.html' → '/preise/').
