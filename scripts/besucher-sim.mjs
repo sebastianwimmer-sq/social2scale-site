@@ -66,6 +66,10 @@ const VORSCHAU = /start\.social2scale\.com|\/gratis\/?(\?|#|$)/i;
 // und /anfrage/, das Erstgespräch-Formular ist selbst schon der Abschluss (ein Vorschau-Knopf
 // dort würde aus dem Formular herausführen).
 const OHNE_VORSCHAU = /^\/(impressum|datenschutz|danke|onboarding|anfrage)(\/|$)/;
+// Englische Seiten (17.10.2026, lib/sprachen.mjs): die Gratis-Vorschau erzeugt deutsche
+// Beitraege und ist dort bewusst nicht der Weg — der Hauptweg ist das Erstgespraech.
+const ENGLISCH = /^\/en(\/|$)/;
+const KONTAKT_EN = /\/en\/contact\/?(\?|#|$)|calendly\.com\//i;
 
 const BEFUNDE = [];
 const WEGE = [];
@@ -76,8 +80,9 @@ function befund(persona, wo, stufe, text, beleg = '') {
 // ── Messung im Browser (eine Funktion, damit der Selbsttest dieselbe prüft) ──────────
 // Läuft als page.evaluate — darf nichts von außen benutzen.
 function messeImBrowser(cfg) {
-  const { VORSCHAU_QUELLE, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT } = cfg;
+  const { VORSCHAU_QUELLE, KONTAKT_EN_QUELLE, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT } = cfg;
   const vorschau = new RegExp(VORSCHAU_QUELLE, 'i');
+  const kontaktEn = new RegExp(KONTAKT_EN_QUELLE, 'i');
   const sichtbar = (el) => {
     const r = el.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) return false;
@@ -104,6 +109,7 @@ function messeImBrowser(cfg) {
   const klickbar = [...document.querySelectorAll('a[href], button, [role="button"], input:not([type="hidden"]), select, textarea, summary')].filter(sichtbar);
   const vorschauLinks = klickbar.filter((a) => a.tagName === 'A' && vorschau.test(a.getAttribute('href') || ''));
   aus.vorschauLinks = vorschauLinks.length;
+  aus.kontaktEnLinks = klickbar.filter((a) => a.tagName === 'A' && kontaktEn.test(a.getAttribute('href') || '')).length;
   // Erste Handlung = erster sichtbare, knopfartige Link/Knopf in Lesereihenfolge (Seite oben).
   const knopfartig = (el) => {
     const s = getComputedStyle(el);
@@ -172,7 +178,7 @@ function messeImBrowser(cfg) {
   return aus;
 }
 
-const CFG = { VORSCHAU_QUELLE: VORSCHAU.source, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT };
+const CFG = { VORSCHAU_QUELLE: VORSCHAU.source, KONTAKT_EN_QUELLE: KONTAKT_EN.source, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT };
 
 // LCP und CLS von Anfang an mitschreiben (vor jedem Skript der Seite).
 const BEOBACHTER = `
@@ -188,7 +194,9 @@ export function bewerte(pfad, m, { handy, einstieg }) {
   const rot = (t, x = '') => b.push({ stufe: 'rot', text: t, beleg: x });
   const gelb = (t, x = '') => b.push({ stufe: 'gelb', text: t, beleg: x });
   if (m.querscrollen > 1) rot('Seite scrollt quer', m.querscrollen + ' px zu breit');
-  if (!OHNE_VORSCHAU.test(pfad) && !m.vorschauLinks) rot('Kein Weg zur Gratis-Vorschau auf dieser Seite');
+  const englisch = ENGLISCH.test(pfad);
+  if (englisch && !m.kontaktEnLinks) rot('Kein Weg zum Erstgespräch auf dieser englischen Seite');
+  if (!englisch && !OHNE_VORSCHAU.test(pfad) && !m.vorschauLinks) rot('Kein Weg zur Gratis-Vorschau auf dieser Seite');
   if (einstieg && handy && m.ersteHandlung && m.ersteHandlung.unten > m.vh) rot('Erste Handlung liegt unter dem Falz', m.ersteHandlung.text + ' endet bei ' + m.ersteHandlung.unten + ' px, Schirm ' + m.vh + ' px');
   if (einstieg && handy && !m.ersteHandlung) rot('Auf dem ersten Schirm gibt es keinen Knopf');
   if (einstieg && handy && m.worteVorVorschau > WORTE_VOR_VORSCHAU) gelb('Viel Text vor dem ersten Vorschau-Knopf', m.worteVorVorschau + ' Wörter');
@@ -200,7 +208,8 @@ export function bewerte(pfad, m, { handy, einstieg }) {
   if (m.ohneAlt.length) rot('Bild ohne alt-Attribut', m.ohneAlt.slice(0, 3).join(' | '));
   if (!m.titel) rot('Seite ohne Titel');
   if (!m.beschreibung) gelb('Keine Meta-Beschreibung (Suchergebnis zeigt Zufallstext)');
-  if (!/^de/i.test(m.lang)) rot('Sprache nicht als Deutsch ausgezeichnet', 'lang="' + m.lang + '"');
+  if (englisch && !/^en/i.test(m.lang)) rot('Sprache nicht als Englisch ausgezeichnet', 'lang="' + m.lang + '"');
+  if (!englisch && !/^de/i.test(m.lang)) rot('Sprache nicht als Deutsch ausgezeichnet', 'lang="' + m.lang + '"');
   if (m.h1 !== 1) gelb('Nicht genau eine Hauptüberschrift', m.h1 + '× h1');
   if (!m.viewport) rot('Kein viewport-Meta — Handy zeigt die Desktopseite verkleinert');
   if (m.cls != null && m.cls > CLS_MAX) rot('Layout springt (CLS ' + m.cls + ' > ' + CLS_MAX + ')');
@@ -613,7 +622,6 @@ async function selbsttest() {
   const page = await browser.newPage({ ...devices['iPhone SE'] });
   const lauf = async (html) => { await page.setContent(html); return bewerte('/', await page.evaluate(messeImBrowser, CFG), { handy: true, einstieg: true }); };
   const r = [...(await lauf(ROT)), ...(await lauf(ROT_OHNE_VIEWPORT))], g = await lauf(GRUEN);
-  await browser.close();
   const erwartet = ['quer', 'unter dem Falz', 'Viel Text', 'Trefferfläche unter', 'Lesetext unter', 'unsichtbar', 'alt-Attribut', 'Bild lädt nicht', 'Sprache', 'viewport', 'Hauptüberschrift', 'Trefferflächen zwischen'];
   let ok = true;
   for (const e of erwartet) {
@@ -632,8 +640,17 @@ async function selbsttest() {
   const versteckt = g.filter((x) => x.text.includes('Trefferflächen zwischen'));
   console.log((versteckt.length ? '🔴' : '🟢') + ' grün-Fixture: versteckter Knopf (pointer-events:none) zählt nicht als knapp' + (versteckt.length ? ': ' + versteckt[0].beleg : ''));
   ok = ok && !versteckt.length;
+  // Englisch (17.10.2026): EN-Seite ohne Weg zum Erstgespraech und mit lang="de" rot, sauber gruen.
+  const enLauf = async (html) => { await page.setContent(html); return bewerte('/en/', await page.evaluate(messeImBrowser, CFG), { handy: false, einstieg: false }); };
+  const enRot = await enLauf(GRUEN);
+  const enGruen = await enLauf(GRUEN.replace('lang="de"', 'lang="en"').replace('https://start.social2scale.com/', '/en/contact/'));
+  const enOk = enRot.some((x) => x.text.includes('Erstgespräch auf dieser englischen')) && enRot.some((x) => x.text.includes('als Englisch'))
+    && !enGruen.some((x) => x.stufe === 'rot');
+  console.log((enOk ? '🟢' : '🔴') + ' Englisch: ohne Erstgespräch-Weg und mit lang="de" rot, sauber grün' + (enOk ? '' : ': ' + [...enRot, ...enGruen].map((x) => x.text).join(' | ')));
+  ok = ok && enOk;
   const sauber = g.filter((x) => x.stufe === 'rot');
   console.log((sauber.length ? '🔴' : '🟢') + ' grün-Fixture ohne Rot' + (sauber.length ? ': ' + sauber.map((x) => x.text).join(' | ') : ''));
+  await browser.close();
   return ok && !sauber.length;
 }
 
