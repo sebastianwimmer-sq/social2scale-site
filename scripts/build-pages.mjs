@@ -10,6 +10,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { navigation, mobilMenue, fusszeile } from '../lib/shell.mjs';
+import { PAARE, datei, kopfZeilen } from '../lib/sprachen.mjs';
 
 const SEITEN = [
   { datei: 'index.html', aktiv: 'start' },
@@ -18,7 +19,30 @@ const SEITEN = [
   { datei: 'about/index.html', aktiv: 'about' },
   { datei: 'for-you/index.html', aktiv: 'for-you' },
   { datei: 'results/index.html', aktiv: 'results' },
+  // Englische Schwestern (lib/sprachen.mjs) — fehlen sie noch, werden sie
+  // uebersprungen wie jede andere fehlende Datei.
+  { datei: 'en/index.html', aktiv: 'start' },
+  { datei: 'en/process/index.html', aktiv: 'ablauf' },
+  { datei: 'en/pricing/index.html', aktiv: 'preise' },
+  { datei: 'en/about/index.html', aktiv: 'about' },
+  { datei: 'en/for-you/index.html', aktiv: 'for-you' },
+  { datei: 'en/results/index.html', aktiv: 'results' },
 ];
+
+// Datei → URL-Pfad ('preise/index.html' → '/preise/').
+const urlPfad = (d) => `/${d.replace(/index\.html$/, '')}`;
+
+// hreflang + og:locale direkt vor </head>, fuer JEDE zweisprachige Seite —
+// auch die ohne Shell-Marker (Wissen, Kontakt). build-wissen.mjs schreibt
+// die Wissen-Seiten neu, deshalb laeuft dieser Schritt NACH build-wissen.
+const KOPF = /\n?<!-- SPRACHE:KOPF -->[\s\S]*?<!-- \/SPRACHE:KOPF -->/;
+function setzeKopf(html, pfad) {
+  const zeilen = kopfZeilen(pfad);
+  const ohne = html.replace(KOPF, '');
+  if (!zeilen) return ohne;
+  if (!ohne.includes('</head>')) throw new Error(`</head> fehlt in ${datei(pfad)}`);
+  return ohne.replace('</head>', `<!-- SPRACHE:KOPF -->\n${zeilen}\n<!-- /SPRACHE:KOPF -->\n</head>`);
+}
 
 function ersetze(html, name, inhalt, datei) {
   const muster = new RegExp(
@@ -44,13 +68,13 @@ for (const seite of SEITEN) {
 
   const neu = ersetze(
     ersetze(
-      ersetze(html, 'NAV', navigation(seite.aktiv), seite.datei),
+      ersetze(html, 'NAV', navigation(seite.aktiv, urlPfad(seite.datei)), seite.datei),
       'MOBIL',
-      mobilMenue(seite.aktiv),
+      mobilMenue(seite.aktiv, urlPfad(seite.datei)),
       seite.datei
     ),
     'FOOTER',
-    fusszeile(seite.aktiv),
+    fusszeile(seite.aktiv, urlPfad(seite.datei)),
     seite.datei
   );
 
@@ -60,6 +84,21 @@ for (const seite of SEITEN) {
     geaendert++;
   } else {
     console.log(`unveraendert: ${seite.datei}`);
+  }
+}
+
+for (const pfad of PAARE.flatMap((p) => [p.de, p.en])) {
+  let html;
+  try {
+    html = readFileSync(datei(pfad), 'utf8');
+  } catch {
+    continue;
+  }
+  const neu = setzeKopf(html, pfad);
+  if (neu !== html) {
+    writeFileSync(datei(pfad), neu, 'utf8');
+    console.log(`Sprach-Kopf: ${datei(pfad)}`);
+    geaendert++;
   }
 }
 console.log(`fertig — ${geaendert} Datei(en) geaendert.`);
