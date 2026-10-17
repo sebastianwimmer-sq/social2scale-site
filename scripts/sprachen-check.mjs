@@ -47,6 +47,7 @@ function pruefePaar(wurzel, { de, en }, sitemap) {
 
   if (!/<html lang="de"/.test(deHtml)) befunde.push(`${de}: <html lang="de"> fehlt`);
   if (!/<html lang="en"/.test(enHtml)) befunde.push(`${en}: <html lang="en"> fehlt`);
+  if (/<meta property="og:locale" content="de_DE">/.test(enHtml)) befunde.push(`${en}: og:locale steht noch auf de_DE`);
 
   for (const [pfad, html] of [[de, deHtml], [en, enHtml]]) {
     const soll = kopfZeilen(pfad, wurzel);
@@ -129,6 +130,14 @@ function selbsttest() {
         writeFileSync(f, readFileSync(f, 'utf8').replace('We build your presence.', 'Wir bauen für dich und mit dir die Seite.'));
       },
       erwartet: /deutsche Wörter/,
+    },
+    {
+      name: 'EN als deutsch markiert',
+      kaputt: (w) => {
+        const f = join(w, datei(paar.en));
+        writeFileSync(f, readFileSync(f, 'utf8').replace('<head>', '<head><meta property="og:locale" content="de_DE">'));
+      },
+      erwartet: /og:locale steht noch auf de_DE/,
     },
     {
       name: 'Umschalter fehlt',
