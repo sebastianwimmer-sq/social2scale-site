@@ -1,44 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://social2scale.com/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/"/>
   </url>
   <url>
     <loc>https://social2scale.com/for-you/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/for-you/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/for-you/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/for-you/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/for-you/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/for-you/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/for-you/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/for-you/"/>
   </url>
   <url>
     <loc>https://social2scale.com/results/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/results/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/results/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/results/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/results/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/results/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/results/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/results/"/>
   </url>
   <url>
     <loc>https://social2scale.com/preise/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/preise/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/preise/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/pricing/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/preise/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/preise/"/>
   </url>
   <url>
     <loc>https://social2scale.com/about/</loc>
-    <lastmod>2026-09-27</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/about/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/about/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/about/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/about/"/>
   </url>
   <url>
     <loc>https://social2scale.com/impressum/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-10-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://social2scale.com/datenschutz/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-10-17</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -47,6 +107,18 @@
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/ablauf/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/process/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/ablauf/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/process/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/ablauf/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/process/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/ablauf/"/>
   </url>
   <url>
     <loc>https://social2scale.com/gratis/</loc>
@@ -59,35 +131,113 @@
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/"/>
   </url>
   <url>
     <loc>https://social2scale.com/wissen/was-kostet-social-media-betreuung/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/social-media-management-cost/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/social-media-management-cost/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/social-media-management-cost/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/was-kostet-social-media-betreuung/"/>
   </url>
   <url>
     <loc>https://social2scale.com/wissen/social-media-agentur-auswaehlen/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/social-media-agentur-auswaehlen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/choosing-a-social-media-agency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/social-media-agentur-auswaehlen/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/choosing-a-social-media-agency/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/social-media-agentur-auswaehlen/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/choosing-a-social-media-agency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/social-media-agentur-auswaehlen/"/>
   </url>
   <url>
     <loc>https://social2scale.com/wissen/wie-lange-bis-ergebnisse/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/wie-lange-bis-ergebnisse/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/how-long-until-results/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/wie-lange-bis-ergebnisse/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/how-long-until-results/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/wie-lange-bis-ergebnisse/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/how-long-until-results/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/wie-lange-bis-ergebnisse/"/>
   </url>
   <url>
     <loc>https://social2scale.com/wissen/selbst-machen-oder-agentur/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/diy-or-agency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/diy-or-agency/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/diy-or-agency/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/selbst-machen-oder-agentur/"/>
   </url>
   <url>
     <loc>https://social2scale.com/wissen/ablauf-zusammenarbeit/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/ablauf-zusammenarbeit/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/how-we-work-together/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/ablauf-zusammenarbeit/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/knowledge/how-we-work-together/</loc>
+    <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/wissen/ablauf-zusammenarbeit/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/how-we-work-together/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/ablauf-zusammenarbeit/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/contact/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

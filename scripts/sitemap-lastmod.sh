@@ -20,6 +20,15 @@ SEITEN=(
   "/about/:about/index.html"
   "/impressum/:impressum/index.html"
   "/datenschutz/:datenschutz/index.html"
+  # Englische Schwestern (17.10.2026, lib/sprachen.mjs)
+  "/en/:en/index.html"
+  "/en/pricing/:en/pricing/index.html"
+  "/en/process/:en/process/index.html"
+  "/en/for-you/:en/for-you/index.html"
+  "/en/results/:en/results/index.html"
+  "/en/about/:en/about/index.html"
+  "/en/contact/:en/contact/index.html"
+  "/en/knowledge/:en/knowledge/index.html"
 )
 
 for eintrag in "${SEITEN[@]}"; do
