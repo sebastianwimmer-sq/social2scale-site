@@ -216,7 +216,12 @@ export async function handleAnfrage(request, env, cors, teile = {}) {
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || 'anon';
-  if (!env.TURNSTILE_SECRET || !(await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET))) {
+  // Website und Funnel haben je ein eigenes Turnstile-Widget (Sebi 20.10.2026: nicht mischen).
+  // Kommt die Anfrage von der Website, gilt NUR deren Secret — fehlt es, wird abgelehnt,
+  // nie mit dem Funnel-Secret geprueft (das wuerde jedes Website-Token verwerfen).
+  const vonWebsite = !!env.ALLOW_ORIGIN && herkunft === env.ALLOW_ORIGIN;
+  const secret = vonWebsite ? env.TURNSTILE_SECRET_WEBSITE : env.TURNSTILE_SECRET;
+  if (!secret || !(await verifyTurnstile(body.turnstile, ip, secret))) {
     console.error('[anfrage] Abgewiesen: Turnstile ungueltig/fehlt');
     await zaehle(env.DB, 'captcha', echt);
     return antwort({ ok: false, error: 'captcha' }, 403, cors);

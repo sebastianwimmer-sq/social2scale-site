@@ -189,7 +189,7 @@ const EN = { name: 'Jane Doe', email: 'jane@example.com', phone: '+1 415 555 010
 
 test('englische Anfrage: CRM und Phils Mail sagen Englisch, Bestätigung auf Englisch, als echt gezählt', () => mitTurnstile(true, async () => {
   const u = umgebung();
-  const r = await handleAnfrage(reqVon(EN, 'https://social2scale.com'), { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com' }, {}, u.teile);
+  const r = await handleAnfrage(reqVon(EN, 'https://social2scale.com'), { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com', TURNSTILE_SECRET_WEBSITE: 'w' }, {}, u.teile);
   assert.equal(r.status, 200);
   const z = u.s.prepare('SELECT * FROM submissions').get();
   assert.match(z.payload, /\*\*Sprache:\*\* Englisch/);
@@ -213,3 +213,24 @@ test('unbekannte Sprache wird ignoriert (deutsch), Herkunft bleibt vorschau-b', 
   assert.match(anfrageMarkdown(d), /Link: vorschau-b/);
   assert.doesNotMatch(anfrageMarkdown(d), /Sprache/);
 });
+
+// Eigenes Turnstile-Widget fuer die Website (Sebi 20.10.: Funnel und Website nicht mischen).
+async function mitTurnstileSecret(fn) {
+  const alt = globalThis.fetch; const genutzt = [];
+  globalThis.fetch = async (url, init) => { genutzt.push(String(init.body).match(/secret=([^&]+)/)?.[1]); return new Response(JSON.stringify({ success: true }), { status: 200 }); };
+  try { await fn(); return genutzt; } finally { globalThis.fetch = alt; }
+}
+test('Website-Anfrage prüft mit dem Website-Secret, der Funnel mit seinem', async () => {
+  const u = umgebung();
+  const env = { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com', TURNSTILE_SECRET_WEBSITE: 'web' };
+  const web = await mitTurnstileSecret(() => handleAnfrage(reqVon(EN, 'https://social2scale.com'), env, {}, u.teile));
+  assert.deepEqual(web, ['web']);
+  const funnel = await mitTurnstileSecret(() => handleAnfrage(reqVon(GUT, 'https://start.social2scale.com'), env, {}, u.teile));
+  assert.deepEqual(funnel, ['s']);
+});
+test('Website-Anfrage ohne Website-Secret: abgelehnt, nicht mit dem Funnel-Secret durchgewunken', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(reqVon(EN, 'https://social2scale.com'), { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com' }, {}, u.teile);
+  assert.equal(r.status, 403);
+  assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
+}));
