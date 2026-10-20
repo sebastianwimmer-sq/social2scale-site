@@ -16,7 +16,7 @@ import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } fr
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
 import { anfrageMailHtml, anfrageMailHtmlEn } from './pages/confirm-email.js';
-import { buchungsLink, PHIL } from './constants.js';
+import { buchungsLink, buchungsNotiz, PHIL } from './constants.js';
 
 export const ANFRAGE_MAX_BYTES = 16 * 1024;
 const VON = 'vorschau-b';
@@ -138,7 +138,7 @@ export async function bestaetigen(env, d, mailSenden = send) {
       return await mailSenden(env, d.email, d.name, {
         subject: 'Your inquiry has reached me',
         replyTo: { email: PHIL.mail, name: PHIL.name },
-        htmlContent: anfrageMailHtmlEn(vorname, esc(buchungsLink(d.name, d.email)), esc(PHIL.tel), esc(PHIL.telHref)),
+        htmlContent: anfrageMailHtmlEn(vorname, esc(buchungsLink(d.name, d.email, buchungsNotiz(d, d.sprache))), esc(PHIL.tel), esc(PHIL.telHref)),
       }, PHIL.name + ' · social2scale');
     } catch (err) {
       console.error('[anfrage] Bestaetigungsmail (en) fehlgeschlagen:', err);
@@ -149,7 +149,7 @@ export async function bestaetigen(env, d, mailSenden = send) {
     return await mailSenden(env, d.email, d.name, {
       subject: 'Deine Anfrage ist bei mir angekommen',
       replyTo: { email: PHIL.mail, name: PHIL.name },
-      htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL), esc(buchungsLink(d.name, d.email)), esc(PHIL.tel), esc(PHIL.telHref)),
+      htmlContent: anfrageMailHtml(vorname, esc(VORSCHAU_URL), esc(buchungsLink(d.name, d.email, buchungsNotiz(d, d.sprache))), esc(PHIL.tel), esc(PHIL.telHref)),
     }, PHIL.name + ' · social2scale');
   } catch (err) {
     console.error('[anfrage] Bestaetigungsmail fehlgeschlagen:', err);

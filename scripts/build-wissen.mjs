@@ -193,7 +193,7 @@ const SEITEN = [
       {
         h: "Die vier Phasen",
         liste: [
-          ["1. Erstgespräch", "Etwa zwanzig Minuten: Ziel, Zielgruppe und Ausgangslage klären. Danach steht fest, ob und in welchem Umfang eine Zusammenarbeit sinnvoll ist."],
+          ["1. Erstgespräch", "Etwa 45 Minuten: Ziel, Zielgruppe und Ausgangslage klären. Danach steht fest, ob und in welchem Umfang eine Zusammenarbeit sinnvoll ist."],
           ["2. Briefing", "Einmalig und ausführlich: Wofür du stehst, wen du erreichen willst, was auf keinen Fall vorkommen soll. Das ist der Teil, der über die Qualität aller späteren Beiträge entscheidet."],
           ["3. Aufbau", "Profil, Positionierung und Bildsprache werden erstellt und abgestimmt. Du siehst alles vor der Veröffentlichung."],
           ["4. Laufender Betrieb", PREISE.beitraege + " Beiträge im Monat werden erstellt, eingeplant und veröffentlicht; Anfragen werden an dich weitergeleitet."],
@@ -237,7 +237,7 @@ const SPRACHEN = {
     zurueck: "All answers", zurStart: "Back to the homepage",
     cta: "Book a free intro call", ctaHref: "/en/contact/",
     abschlussH2: "What would this look like for <em>you</em>?",
-    abschlussP: "A free intro call of about 20 minutes to see if we’re a good fit. No obligation.",
+    abschlussP: "A free intro call of about 45 minutes to see if we’re a good fit. No obligation.",
     weiter: "More answers",
     ueTitel: "Knowledge — honest answers about social media management | social2scale",
     ueBeschr: "How much does social media management cost, how long does it take to build, do it yourself or hand it off? Concrete answers with real numbers — no sales talk.",

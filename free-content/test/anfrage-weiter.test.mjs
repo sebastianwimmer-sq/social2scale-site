@@ -234,3 +234,43 @@ test('Website-Anfrage ohne Website-Secret: abgelehnt, nicht mit dem Funnel-Secre
   assert.equal(r.status, 403);
   assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
 }));
+
+// Calendly-Vorbereitungsfeld (a1, 20.10.2026): was sie im Formular schrieb, steht schon drin.
+import { buchungsNotiz } from '../src/constants.js';
+import { formPage } from '../src/pages/form.js';
+test('buchungsNotiz: Felder in fester Reihenfolge, leere fallen weg, englische Etiketten', () => {
+  assert.equal(buchungsNotiz({ goal: 'Mehr Anfragen', business: '', budget: 'unter 1.000 €', phone: '0171 2345678' }, 'de'),
+    'Ziel: Mehr Anfragen\nRahmen: unter 1.000 €\nRückruf: 0171 2345678');
+  assert.equal(buchungsNotiz({ goal: 'More leads', start: 'Sofort' }, 'en'), 'Goal: More leads\nStart: Right away');
+  assert.equal(buchungsNotiz({}, 'de'), '');
+  assert.equal(buchungsNotiz({ goal: 'x'.repeat(900) }, 'de').length, 600);
+});
+test('Buchungslink trägt die Notiz als a1, ohne Notiz bleibt er wie bisher', () => {
+  assert.equal(buchungsLink('Anna', 'a@x.de', 'Ziel: A B'), ERSTGESPRAECH_URL + '?name=Anna&email=a%40x.de&a1=Ziel%3A%20A%20B');
+  assert.equal(buchungsLink('Anna', 'a@x.de'), ERSTGESPRAECH_URL + '?name=Anna&email=a%40x.de');
+});
+test('Bestätigungsmail verlinkt Calendly mit vorbefülltem Ziel', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  await handleAnfrage(req(GUT), u.env, {}, u.teile);
+  assert.match(u.mails[1].m.htmlContent, /a1=Ziel%3A%20Mehr%20Anfragen/);
+}));
+test('Funnel Weg B rechnet im Browser denselben Link wie der Worker', async () => {
+  const html = await formPage({ TURNSTILE_SITE_KEY: 'x' }).text();
+  const von = html.indexOf("const ERSTGESPRAECH_URL='"), bis = html.indexOf('// „Passt du zu uns?“', von);
+  assert.ok(von > 0 && bis > von, 'eingesetzte Funktionen nicht gefunden');
+  const imBrowser = new Function(html.slice(von, bis) + '\nreturn {buchungsLink, buchungsNotiz};')();
+  const p = { name: 'Anna Müller', email: 'a+b@x.de', goal: 'Mehr Anfragen', phone: '0171 2345678' };
+  assert.equal(imBrowser.buchungsLink(p.name, p.email, imBrowser.buchungsNotiz(p, 'de')), buchungsLink(p.name, p.email, buchungsNotiz(p, 'de')));
+  assert.match(html, /\$\('#termin-b'\)\.href=buchungsLink\(payload\.name,payload\.email,buchungsNotiz\(payload,'de'\)\)/);
+});
+
+import { WAHL_EN } from '../src/constants.js';
+import { readFileSync } from 'node:fs';
+test('EN-Mail: Rahmen/Start erscheinen so, wie sie sie auf der EN-Seite angeklickt hat', () => {
+  const seite = readFileSync(new URL('../../en/contact/index.html', import.meta.url), 'utf8');
+  const paare = [...seite.matchAll(/name="(?:budget|start)" value="([^"]*)"><span>([^<]*)/g)].map((m) => [m[1], m[2]]);
+  assert.ok(paare.length >= 7, 'Radios nicht gefunden');
+  for (const [wert, text] of paare) assert.equal(WAHL_EN[wert], text, wert);
+  assert.equal(buchungsNotiz({ budget: 'unter 1.000 €', start: 'Sofort' }, 'en'), 'Budget: under €1,000\nStart: Right away');
+  assert.equal(buchungsNotiz({ budget: 'unter 1.000 €' }, 'de'), 'Rahmen: unter 1.000 €');
+});

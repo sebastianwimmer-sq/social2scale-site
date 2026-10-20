@@ -22,6 +22,15 @@
 
   function zeige(text) { meldung.textContent = text; meldung.hidden = false; meldung.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
   function wert(id) { return (document.getElementById(id).value || '').trim(); }
+  // Calendly-Feld a1 (Phils Vorbereitungsfrage) mit dem vorbefuellen, was sie schon geschrieben hat —
+  // gleiche Reihenfolge und Grenze wie buchungsNotiz() im Worker (free-content/src/constants.js).
+  var NOTIZ = [['goal', 'Goal'], ['business', 'Business'], ['budget', 'Budget'], ['start', 'Start'], ['phone', 'Call back']];
+  function notiz(p) {
+    return NOTIZ.filter(function (z) { return p[z[0]]; })
+      .map(function (z) { return z[1] + ': ' + p[z[0]]; }).join('\n').slice(0, 600);
+  }
+  // Im Calendly-Feld liest sie ihre eigene (englische) Wahl, nicht den deutschen Wert fuer den Worker.
+  function wahlText(name) { var el = form.querySelector('input[name="' + name + '"]:checked'); return el && el.nextElementSibling ? el.nextElementSibling.textContent.trim() : ''; }
   function wahl(name) { var el = form.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; }
   function token() { try { return (window.turnstile && window.turnstile.getResponse()) || ''; } catch (e) { return ''; } }
   function zuruecksetzen() { try { if (window.turnstile) window.turnstile.reset(); } catch (e) { /* noop */ } }
@@ -54,6 +63,7 @@
       if (res.ok && data && data.ok) {
         document.getElementById('en-vorname').textContent = name.split(/\s+/)[0] || 'there';
         document.getElementById('en-termin').href = BUCHUNG + '?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email)
+          + '&a1=' + encodeURIComponent(notiz(Object.assign({}, payload, { budget: wahlText('budget'), start: wahlText('start') })))
           + '&utm_source=social2scale&utm_medium=website&utm_campaign=en-contact';
         form.hidden = true;
         var danke = document.getElementById('en-danke');
