@@ -377,7 +377,7 @@ export default {
       // ?tief=1 prueft zusaetzlich Weg B bis ins Portal (ohne CRM-/Mail-Spuren, anfrageProbe).
       const tief = url.searchParams.get('tief') === '1';
       return json(
-        { ok: true, turnstile: !!env.TURNSTILE_SECRET, mail: !!env.BREVO_API_KEY,
+        { ok: true, turnstile: !!env.TURNSTILE_SECRET, turnstileWebsite: !!env.TURNSTILE_SECRET_WEBSITE, mail: !!env.BREVO_API_KEY,
           ...(tief ? { anfrage: await anfrageProbe(env) } : {}) },
         200,
         cors

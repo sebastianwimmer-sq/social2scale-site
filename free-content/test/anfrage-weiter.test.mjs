@@ -178,3 +178,59 @@ test('Buchungslink kodiert Leerzeichen als %20 und Sonderzeichen sicher', () => 
   assert.equal(buchungsLink('Anna Maria Müller', 'a+b@x.de'), ERSTGESPRAECH_URL + '?name=Anna%20Maria%20M%C3%BCller&email=a%2Bb%40x.de');
   assert.equal(buchungsLink('', ''), ERSTGESPRAECH_URL);
 });
+
+// Englische Website (/en/contact/, Ticket #353): dieselbe Anfrage, kenntlich als englisch.
+function reqVon(body, origin) {
+  return new Request('https://start.social2scale.com/api/anfrage', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.7', Origin: origin }, body: JSON.stringify(body),
+  });
+}
+const EN = { name: 'Jane Doe', email: 'jane@example.com', phone: '+1 415 555 0100', business: 'Coach', goal: 'More inquiries', sprache: 'en', turnstile: 'tok' };
+
+test('englische Anfrage: CRM und Phils Mail sagen Englisch, Bestätigung auf Englisch, als echt gezählt', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(reqVon(EN, 'https://social2scale.com'), { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com', TURNSTILE_SECRET_WEBSITE: 'w' }, {}, u.teile);
+  assert.equal(r.status, 200);
+  const z = u.s.prepare('SELECT * FROM submissions').get();
+  assert.match(z.payload, /\*\*Sprache:\*\* Englisch/);
+  assert.match(z.payload, /Gefunden über:\*\* Link: en-contact/);
+  assert.equal(JSON.parse(z.data).herkunft.von, 'en-contact');
+  assert.match(u.mails[0].m.subject, /^\[EN\] Neue Erstgespräch-Anfrage: Jane Doe/);
+  assert.match(u.mails[0].m.htmlContent, /Sprache:<\/b> Englisch/);
+  assert.equal(u.mails[1].to, 'jane@example.com');
+  assert.equal(u.mails[1].m.subject, 'Your inquiry has reached me');
+  assert.match(u.mails[1].m.htmlContent, /Thanks, Jane/);
+  assert.match(u.mails[1].m.htmlContent, /calendly\.com\/philipplibowicz\/neues-meeting\?name=Jane%20Doe/);
+  assert.doesNotMatch(u.mails[1].m.htmlContent, /Gratis-Vorschau|Danke/);
+  const ev = u.s.prepare('SELECT * FROM events').get();
+  assert.match(ev.note, /Englisch/);
+  assert.deepEqual(zaehler(u.s), { angekommen: 1 });
+}));
+
+test('unbekannte Sprache wird ignoriert (deutsch), Herkunft bleibt vorschau-b', () => {
+  const d = anfrageAusFunnel({ ...GUT, sprache: '<script>' });
+  assert.equal(d.sprache, '');
+  assert.match(anfrageMarkdown(d), /Link: vorschau-b/);
+  assert.doesNotMatch(anfrageMarkdown(d), /Sprache/);
+});
+
+// Eigenes Turnstile-Widget fuer die Website (Sebi 20.10.: Funnel und Website nicht mischen).
+async function mitTurnstileSecret(fn) {
+  const alt = globalThis.fetch; const genutzt = [];
+  globalThis.fetch = async (url, init) => { genutzt.push(String(init.body).match(/secret=([^&]+)/)?.[1]); return new Response(JSON.stringify({ success: true }), { status: 200 }); };
+  try { await fn(); return genutzt; } finally { globalThis.fetch = alt; }
+}
+test('Website-Anfrage prüft mit dem Website-Secret, der Funnel mit seinem', async () => {
+  const u = umgebung();
+  const env = { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com', TURNSTILE_SECRET_WEBSITE: 'web' };
+  const web = await mitTurnstileSecret(() => handleAnfrage(reqVon(EN, 'https://social2scale.com'), env, {}, u.teile));
+  assert.deepEqual(web, ['web']);
+  const funnel = await mitTurnstileSecret(() => handleAnfrage(reqVon(GUT, 'https://start.social2scale.com'), env, {}, u.teile));
+  assert.deepEqual(funnel, ['s']);
+});
+test('Website-Anfrage ohne Website-Secret: abgelehnt, nicht mit dem Funnel-Secret durchgewunken', () => mitTurnstile(true, async () => {
+  const u = umgebung();
+  const r = await handleAnfrage(reqVon(EN, 'https://social2scale.com'), { ...u.env, ALLOW_ORIGIN: 'https://social2scale.com' }, {}, u.teile);
+  assert.equal(r.status, 403);
+  assert.equal(u.s.prepare('SELECT COUNT(*) AS c FROM submissions').get().c, 0);
+}));
