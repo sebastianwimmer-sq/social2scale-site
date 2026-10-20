@@ -15,11 +15,14 @@
 import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } from './protect.js';
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
-import { anfrageMailHtml } from './pages/confirm-email.js';
+import { anfrageMailHtml, anfrageMailHtmlEn } from './pages/confirm-email.js';
 import { buchungsLink, PHIL } from './constants.js';
 
 export const ANFRAGE_MAX_BYTES = 16 * 1024;
 const VON = 'vorschau-b';
+// Englische Website: social2scale.com/en/contact/ schickt sprache='en' (Ticket #353, 20.10.2026).
+const VON_EN = 'en-contact';
+const von = (d) => (d.sprache === 'en' ? VON_EN : VON);
 
 // Feld → Höchstlänge, wie im Portal geclippt. Was nicht hier steht, wird nicht gespeichert.
 const FELDER = { name: 120, email: 160, phone: 60, business: 200, status: 80, goal: 600, budget: 80 };
@@ -35,6 +38,8 @@ export function anfrageAusFunnel(body) {
   // Start-Zeitpunkt hat im CRM kein eigenes Feld — er gehört zum Ziel.
   const start = clip(body?.start, 60);
   if (start) d.goal = (d.goal ? d.goal + ' · ' : '') + 'Start: ' + start;
+  // Nur ein bekannter Wert, sonst deutsch — nichts Freies aus dem Body landet hier.
+  d.sprache = body?.sprache === 'en' ? 'en' : '';
   return d;
 }
 
@@ -54,15 +59,18 @@ export function anfrageMarkdown(d) {
     (d.business ? '- **Business / Rolle:** ' + d.business + '\n' : '') +
     (d.status ? '- **Status:** ' + d.status + '\n' : '') +
     (d.budget ? '- **Budget:** ' + d.budget + '\n' : '') +
+    (d.sprache === 'en' ? '- **Sprache:** Englisch — auf Englisch antworten\n' : '') +
     (d.goal ? '\n**Ziel / Bottleneck:**\n' + d.goal + '\n' : '') +
-    '\n- **Gefunden über:** Link: ' + VON + '\n';
+    '\n- **Gefunden über:** Link: ' + von(d) + '\n';
 }
 
 export function founderMail(d) {
   const zeilen = [['Name', d.name], ['E-Mail', d.email], ['Telefon', d.phone], ['Business / Rolle', d.business],
-    ['Status', d.status], ['Budget', d.budget], ['Ziel / Bottleneck', d.goal], ['Gefunden über', 'Gratis-Vorschau, Weg B (Betreuung)']];
+    ['Status', d.status], ['Budget', d.budget], ['Ziel / Bottleneck', d.goal],
+    ...(d.sprache === 'en' ? [['Sprache', 'Englisch']] : []),
+    ['Gefunden über', d.sprache === 'en' ? 'social2scale.com/en/contact (englische Website)' : 'Gratis-Vorschau, Weg B (Betreuung)']];
   return {
-    subject: 'Neue Erstgespräch-Anfrage: ' + d.name,
+    subject: (d.sprache === 'en' ? '[EN] ' : '') + 'Neue Erstgespräch-Anfrage: ' + d.name,
     // „Antworten“ geht direkt an die Anfragende; die Nummer ist ein Anruf-Link fuers Handy.
     replyTo: { email: d.email, name: d.name },
     htmlContent: '<h2>Neue Erstgespräch-Anfrage</h2><p><a href="tel:' + esc(d.phone.replace(/[^0-9+]/g, '')) + '">Jetzt anrufen: ' + esc(d.phone) + '</a></p><ul>' +
@@ -112,7 +120,7 @@ export async function brevoKontakt(env, d, holen = fetch) {
     const res = await holen(BREVO_KONTAKT, {
       method: 'POST',
       headers: { 'api-key': env.BREVO_API_KEY, 'Content-Type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ email: d.email, attributes: { VORNAME: d.name, BUSINESS: d.business, STATUS: d.status, ZIEL: d.goal, BUDGET: d.budget, QUELLE: VON }, updateEnabled: true }),
+      body: JSON.stringify({ email: d.email, attributes: { VORNAME: d.name, BUSINESS: d.business, STATUS: d.status, ZIEL: d.goal, BUDGET: d.budget, QUELLE: von(d) }, updateEnabled: true }),
     });
     if (!res.ok && res.status !== 204) console.error('[anfrage] Brevo-Kontakt:', res.status, await res.text().catch(() => ''));
     return res.ok;
@@ -124,7 +132,19 @@ export async function brevoKontakt(env, d, holen = fetch) {
 
 /** Bestaetigung an die Anfragende — sie soll wissen, dass es geklappt hat. Nicht fatal. */
 export async function bestaetigen(env, d, mailSenden = send) {
-  const vorname = esc(d.name.split(/\s+/)[0] || 'du');
+  const vorname = esc(d.name.split(/\s+/)[0] || (d.sprache === 'en' ? 'there' : 'du'));
+  if (d.sprache === 'en') {
+    try {
+      return await mailSenden(env, d.email, d.name, {
+        subject: 'Your inquiry has reached me',
+        replyTo: { email: PHIL.mail, name: PHIL.name },
+        htmlContent: anfrageMailHtmlEn(vorname, esc(buchungsLink(d.name, d.email)), esc(PHIL.tel), esc(PHIL.telHref)),
+      }, PHIL.name + ' · social2scale');
+    } catch (err) {
+      console.error('[anfrage] Bestaetigungsmail (en) fehlgeschlagen:', err);
+      return false;
+    }
+  }
   try {
     return await mailSenden(env, d.email, d.name, {
       subject: 'Deine Anfrage ist bei mir angekommen',
@@ -145,7 +165,7 @@ export async function anfrageAnlegen(env, d, mailSenden = send) {
     await env.DB.prepare(
       `INSERT INTO submissions (type, client_id, name, email, payload, data, logo_key, rating, status)
        VALUES ('anfrage', ?, ?, ?, ?, ?, '', NULL, 'new')`
-    ).bind(clientId, d.name, d.email, anfrageMarkdown(d), JSON.stringify({ herkunft: { gefunden: '', von: VON, host: '' } })).run();
+    ).bind(clientId, d.name, d.email, anfrageMarkdown(d), JSON.stringify({ herkunft: { gefunden: '', von: von(d), host: '' } })).run();
     gespeichert = true;
   } catch (err) {
     console.error('[anfrage] CRM-Eingang fehlgeschlagen:', err);
@@ -155,7 +175,7 @@ export async function anfrageAnlegen(env, d, mailSenden = send) {
   try {
     await env.DB.prepare("INSERT INTO events (client_id, title, date, time, type, note, done) VALUES (?, ?, date('now'), '', 'call', ?, 0)")
       .bind(clientId, 'Anrufen: Erstgespräch-Anfrage ' + d.name,
-        [d.phone, d.email, d.budget && 'Rahmen: ' + d.budget, d.goal, 'Termin evtl. schon direkt gebucht (Calendly)'].filter(Boolean).join(' · ')).run();
+        [d.sprache === 'en' && 'Englisch', d.phone, d.email, d.budget && 'Rahmen: ' + d.budget, d.goal, 'Termin evtl. schon direkt gebucht (Calendly)'].filter(Boolean).join(' · ')).run();
   } catch (err) {
     console.error('[anfrage] Anruf-Termin im CRM fehlgeschlagen:', err);
   }
@@ -186,7 +206,9 @@ export async function handleAnfrage(request, env, cors, teile = {}) {
     console.error('[anfrage] Body ist kein JSON:', err);
     return antwort({ ok: false, error: 'bad_json' }, 400, cors);
   }
-  const echt = (request.headers.get('Origin') || '') === (env.PUBLIC_ORIGIN || FUNNEL_ORIGIN);
+  // Echt sind der Funnel UND die englische Kontaktseite auf der Website (ALLOW_ORIGIN).
+  const herkunft = request.headers.get('Origin') || '';
+  const echt = herkunft === (env.PUBLIC_ORIGIN || FUNNEL_ORIGIN) || (!!env.ALLOW_ORIGIN && herkunft === env.ALLOW_ORIGIN);
   if (isHoneypotTripped(body)) {
     console.error('[anfrage] Abgewiesen: Honeypot ausgeloest');
     await zaehle(env.DB, 'spam_falle', echt);

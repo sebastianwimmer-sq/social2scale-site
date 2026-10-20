@@ -116,8 +116,14 @@ function inlineSkripte(html) {
   return treffer;
 }
 
+// Englisches Anfrageformular (/en/contact/, 20.10.2026): fetch an den Funnel-Worker.
+// Ausloeser ist das data-Attribut des Formulars, nicht jeder Link auf start.social2scale.com.
+const ANFRAGE_ZIEL = "https://start.social2scale.com";
+const ANFRAGE_MARKE = 'data-endpunkt="https://start.social2scale.com/api/anfrage"';
+
 function cspFuer(html) {
   const brauchtTurnstile = html.includes(TURNSTILE);
+  const brauchtAnfrage = html.includes(ANFRAGE_MARKE);
   const brauchtFormular = html.includes(FORMULAR_ZIEL);
   const brauchtKalender = html.includes("cal.eu/embed/");
 
@@ -136,6 +142,7 @@ function cspFuer(html) {
   // connect-src, nicht form-action. Fehlte vom 20.08. bis 01.10.2026: jede Kundin
   // sah nach dem Absenden „fehlgeschlagen", die Mail über Web3Forms kam nie an.
   if (brauchtFormular) verbinden.push(FORMULAR_ZIEL);
+  if (brauchtAnfrage) verbinden.push(ANFRAGE_ZIEL);
 
   const rahmen = [];
   if (brauchtTurnstile) rahmen.push(TURNSTILE, TURNSTILE_SUB);

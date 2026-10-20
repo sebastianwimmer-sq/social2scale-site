@@ -195,6 +195,17 @@ export function anfrageMailHtml(vorname, vorschauUrl, buchungUrl, tel, telHref) 
     sigFooter('Phil · social2scale', 'Du bekommst diese Mail, weil du auf social2scale.com ein Erstgespräch angefragt hast.');
 }
 
+/** Englische Fassung fuer Anfragen von social2scale.com/en/contact/ (Ticket #353). Ohne
+ * Gratis-Vorschau: die erzeugt deutsche Beitraege. */
+export function anfrageMailHtmlEn(vorname, buchungUrl, tel, telHref) {
+  return mailHead('Your inquiry has reached me', `Thanks, ${vorname}. I’ll get back to you personally.`) + `
+          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Thanks, ${vorname}. I’m on it.</h1>
+          <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:${MUTED};">Your inquiry has reached me. I’ll get back to you personally, by phone or email. If you don’t want to wait, just pick a time for our intro call:</p>
+          ${mailCta(buchungUrl, 'Book a time')}
+          <p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:${MUTED};">Or call me: <a href="tel:${telHref}" style="color:${PAPER};font-weight:700;text-decoration:none;">${tel}</a>. Replies to this email come straight to me.</p>` +
+    sigFooter('Phil · social2scale', 'You’re receiving this email because you requested an intro call on social2scale.com.');
+}
+
 /**
  * Reel-Bescheid an eine Kundin (reel-bescheid.js) in derselben dunklen Karte — vorher schlichtes HTML ohne Hintergrund,
  * das Apple Mail im Dunkelmodus umfärbte (Knopf blass-mint, Sebi 15.10.: „sieht iwie buggy aus“). Absender social2scale (Systemmail).
