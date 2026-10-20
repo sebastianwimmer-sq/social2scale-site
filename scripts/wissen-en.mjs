@@ -159,7 +159,7 @@ export const SEITEN_EN = [
       {
         h: "The four phases",
         liste: [
-          ["1. Intro call", "About twenty minutes: clarify your goal, audience and starting point. After that, it’s clear whether working together makes sense and to what extent."],
+          ["1. Intro call", "About 45 minutes: clarify your goal, audience and starting point. After that, it’s clear whether working together makes sense and to what extent."],
           ["2. Briefing", "Once and in depth: what you stand for, who you want to reach, what should never appear. This is the part that decides the quality of every post that follows."],
           ["3. Setup", "Profile, positioning and visual style are created and agreed on. You see everything before it’s published."],
           ["4. Ongoing management", P.beitraege + " posts a month are created, scheduled and published; inquiries are forwarded to you."],

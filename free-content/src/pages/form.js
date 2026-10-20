@@ -11,7 +11,7 @@
  */
 
 import { htmlDoc } from './shell.js';
-import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL } from '../constants.js';
+import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL, buchungsLink, buchungsNotiz } from '../constants.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
@@ -554,7 +554,11 @@ function pageMarkup(turnstileSiteKey) {
 const PAGE_SCRIPT = `
   const $=(s)=>document.querySelector(s), qs=[...document.querySelectorAll('.q')];
   let step=0;
-  const BUCHUNG='${ERSTGESPRAECH_URL}';
+  // Dieselben Funktionen wie in der Bestaetigungsmail (constants.js), als Quelltext eingesetzt.
+  const ERSTGESPRAECH_URL='${ERSTGESPRAECH_URL}';
+  const NOTIZ_MAX=600,NOTIZ_LABEL={de:{goal:'Ziel',business:'Business',status:'Stand',budget:'Rahmen',start:'Start',phone:'Rückruf'}},WAHL_EN={};
+  const buchungsNotiz=${buchungsNotiz.toString()};
+  const buchungsLink=${buchungsLink.toString()};
   // „Passt du zu uns?“ (16.10.2026, Sebi: die Leute sollen nicht direkt eintragen, sondern erst
   // schauen, ob sie zu uns passen). Echte Knappheit, keine erfundene: zwei Leute, Phil entscheidet
   // im Erstgespraech. Keine Warteschlangen-Zahl, kein Countdown (UWG §5, Anhang Nr. 7).
@@ -917,8 +921,8 @@ const PAGE_SCRIPT = `
       const res=await fetch('/api/anfrage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;try{data=await res.json();}catch(err){console.error('Antwort nicht lesbar:',err);}
       if(res.ok&&data&&data.ok){$('#echo-b').textContent=payload.name||'dir';
-        // Buchungslink mit Name + E-Mail vorbefuellt (Calendly ?name=&email=), sonst tippt sie alles doppelt.
-        $('#termin-b').href=BUCHUNG+'?name='+encodeURIComponent(payload.name)+'&email='+encodeURIComponent(payload.email);
+        // Buchungslink mit allem vorbefuellt, was sie schon geschrieben hat — sonst tippt sie es doppelt.
+        $('#termin-b').href=buchungsLink(payload.name,payload.email,buchungsNotiz(payload,'de'));
         show(15);return;}
       react('#r-b',B_FEHLER[data&&data.error]||'Gerade nicht angekommen — bitte kurz warten und nochmal senden.','warn');
       turnstileReset('ts-b');

@@ -118,12 +118,40 @@ export const TAETIGKEITEN = {
 // Funnel Weg B (Danke-Schirm) und Bestaetigungsmail lesen es von hier.
 export const ERSTGESPRAECH_URL = 'https://calendly.com/philipplibowicz/neues-meeting';
 
-/** Buchungslink mit vorbefuelltem Namen und E-Mail (Calendly: ?name=&email=, alle Tarife). */
-export function buchungsLink(name, email) {
+// Calendly-Antwortfeld a1 = Phils erste Frage („alles, was bei der Vorbereitung hilft“). Ohne Vorbefuellung
+// tippt die Interessentin dort ihr Ziel ein zweites Mal ein (Sebi 20.10.2026: „mies unnoetig“).
+const NOTIZ_MAX = 600;
+const NOTIZ_LABEL = Object.freeze({
+  de: { goal: 'Ziel', business: 'Business', status: 'Stand', budget: 'Rahmen', start: 'Start', phone: 'Rückruf' },
+  en: { goal: 'Goal', business: 'Business', status: 'Status', budget: 'Budget', start: 'Start', phone: 'Call back' },
+});
+
+// Die EN-Seite schickt Rahmen/Start mit deutschen Werten (CRM einheitlich); in ihrer Mail liest sie ihre
+// englische Wahl. Muss zu den Radio-Beschriftungen in en/contact/index.html passen (Test prueft das).
+export const WAHL_EN = Object.freeze({
+  'unter 1.000 €': 'under €1,000', '1.000–3.000 €': '€1,000–3,000', '3.000 €+': '€3,000+', 'Noch unklar': 'Not sure yet',
+  'Sofort': 'Right away', 'In 1–3 Monaten': 'In 1–3 months', 'Erst informieren': 'Just looking for now',
+});
+
+/** Text fuer Calendlys Vorbereitungsfeld aus dem, was sie im Formular schon geschrieben hat. Rein, wirft nie. */
+export function buchungsNotiz(d, sprache) {
+  const l = NOTIZ_LABEL[sprache === 'en' ? 'en' : 'de'];
+  return Object.keys(l)
+    .map((k) => [l[k], String((d && d[k]) || '').trim()])
+    .map(([k, v]) => [k, sprache === 'en' && WAHL_EN[v] ? WAHL_EN[v] : v])
+    .filter(([, v]) => v)
+    .map(([k, v]) => k + ': ' + v)
+    .join('\n')
+    .slice(0, NOTIZ_MAX);
+}
+
+/** Buchungslink mit vorbefuelltem Namen, E-Mail und Vorbereitungsfeld (Calendly: ?name=&email=&a1=, alle Tarife). */
+export function buchungsLink(name, email, notiz = '') {
   // encodeURIComponent statt URLSearchParams: Calendly dokumentiert %20 fuer Leerzeichen, nicht +.
   const teile = [];
   if (name) teile.push('name=' + encodeURIComponent(String(name).slice(0, 120)));
   if (email) teile.push('email=' + encodeURIComponent(String(email).slice(0, 160)));
+  if (notiz) teile.push('a1=' + encodeURIComponent(String(notiz).slice(0, NOTIZ_MAX)));
   const s = teile.join('&');
   return ERSTGESPRAECH_URL + (s ? '?' + s : '');
 }
