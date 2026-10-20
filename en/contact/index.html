@@ -186,7 +186,9 @@
          denselben Endpunkt wie Weg B im Funnel (start.social2scale.com/api/anfrage) mit
          sprache=en: die Anfrage landet im CRM mit „Sprache: Englisch“, Phils Mail traegt [EN],
          die Bestaetigung kommt auf Englisch. Feldwerte fuer Rahmen/Start bleiben die deutschen
-         des Funnels, damit das CRM einheitlich bleibt. Logik: /en/contact/anfrage.js. -->
+         des Funnels, damit das CRM einheitlich bleibt. Logik: /en/contact/anfrage.js.
+         Captcha: eigenes Widget „social2scale“ (nicht das des Funnels), Worker prueft
+         mit TURNSTILE_SECRET_WEBSITE. -->
     <section class="fl-hero">
       <div class="wrap reveal">
         <p class="ix">Contact</p>
@@ -212,7 +214,7 @@
           </fieldset>
           <div class="en-falle" aria-hidden="true"><label for="f-website">Leave this field empty</label><input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
           <label class="en-einwilligung"><input type="checkbox" id="f-consent"><span>I’ve read the <a href="/datenschutz/" hreflang="de">privacy policy (German)</a> and agree to Phil contacting me about my inquiry.</span></label>
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAD5FwCxWtZhzGlpX" data-theme="dark"></div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADqwI4cSayZDteOs" data-theme="dark"></div>
           <p class="en-meldung" id="en-meldung" role="alert" hidden></p>
           <div class="fl-cta-row"><button class="btn btn-primary" type="submit" id="en-senden">Request my intro call →</button></div>
         </form>
