@@ -61,7 +61,8 @@ NOTIFY_TO = "sebastian@social2scale.com, philipp@social2scale.com"
 # Live gelesen am 28.09.2026 (API /schedules): alle 5 Minuten.
 [triggers]
 crons = ["*/5 * * * *"]
-TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
+# (Hier stand bis 20.10.2026 ein doppelter TURNSTILE_SITE_KEY — unter [triggers]
+#  ist er wirkungslos und erzeugte nur eine wrangler-Warnung; gilt: [vars].)
 
 # ⚠️ BESTÄTIGEN — die Anzeige schneidet den Wert ab:
 #    "sebastian@social2scale.com, philipp@s…"
@@ -77,7 +78,7 @@ TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
 # crons = ["*/5 * * * *"]
 
 # Geheimnisse stehen NICHT hier. Im Deployment hinterlegt sind:
-#   ANTHROPIC_API_KEY · BREVO_API_KEY · TURNSTILE_SECRET
+#   ANTHROPIC_API_KEY · BREVO_API_KEY · TURNSTILE_SECRET · TURNSTILE_SECRET_WEBSITE (Widget „social2scale“ fuer /en/contact/, seit 20.10.2026)
 # Sie bleiben beim Deployen erhalten, solange sie nicht überschrieben werden.
 #
 # Im Quelltext wird ausserdem env.MODERATION_MODEL gelesen, das im Deployment
