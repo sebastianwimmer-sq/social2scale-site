@@ -49,8 +49,9 @@ MARKEN = {
     's4': {'klaert': 0, 'ziel': 2, 'gruppe': 4, 'stand': 7, 'weg': 15},
     's5': {'kostenlos': 3, 'termin': 9},
 }
-# Pegel: Rohstimmen liegen bei ~-23 LUFS, am Handy zu leise -> +4,5 dB, Limiter faengt die Spitzen.
-PEGEL = 'volume=4.5dB,alimiter=limit=0.89:level=disabled'
+# Pegel: Rohstimmen liegen bei ~-23 LUFS, am Handy zu leise. Runde 4b („kratzig“): vorher +4,5 dB in einen
+# harten Begrenzer (bis 3 dB Spitzen abgeschnitten); jetzt weicher Kompressor, dann Verstaerkung, Spitzen < -1 dBFS.
+PEGEL = 'acompressor=threshold=0.125:ratio=3:attack=10:release=150:knee=4,volume=6.5dB'
 # Toene (Runde 3, Sebi 17.10.: „evtl. noch so paar sound effekte“): selbst erzeugt (quelle/sfx/HERKUNFT.md),
 # an denselben Stellen, an denen die Szene sich bewegt. Pegel: Spitzen ~-20 dBFS unter der Stimme (-18 LUFS).
 SFX = {'swish': -11, 'tick': 8, 'pop': 5, 'riser': -8}
@@ -84,7 +85,7 @@ def toene_mischen(roh, ziel, ereignisse):
         ms = int(z * 1000)
         graph.append(f'[{k}:a]aresample=48000,aformat=channel_layouts=mono,volume={SFX[n]}dB,adelay={ms}:all=1[e{k}]')
     alle = '[0:a]aformat=channel_layouts=mono[st];[st]' + ''.join(f'[e{k}]' for k in range(1, len(ereignisse) + 1))
-    graph.append(f'{alle}amix=inputs={len(ereignisse) + 1}:normalize=0:duration=first,alimiter=limit=0.89:level=disabled[a]')
+    graph.append(f'{alle}amix=inputs={len(ereignisse) + 1}:normalize=0:duration=first,alimiter=limit=0.89:attack=2:release=80:level=disabled[a]')
     lauf('ffmpeg', '-loglevel', 'error', '-y', *eingaenge, '-filter_complex', ';'.join(graph),
          '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '128k',
          '-movflags', '+faststart', '-map_metadata', '-1', str(ziel))
@@ -125,33 +126,60 @@ def ton(b):
     sys.exit(f'{b}: Ton fehlt in {Q}')
 
 
+DEHNEN_MAX = 0.12   # je Satzteil hoechstens 12 % schneller/langsamer: darueber klingt atempo kratzig
+LIPPEN_MAX = 0.09   # Rest-Versatz je Wort, ab dem ein Satzteil an seinem schlechtesten Wort geteilt wird
+
+
+def lippen_plan(q, c):
+    """Satzteile (Wortindizes von..bis) mit Startzeit im Clip und Dehnfaktor. Runde 4b (Sebi 23.10.:
+    „ton is kratzig“): nicht mehr je Wort dehnen (0,58-1,31x), sondern je Satzteil, geschnitten in
+    Sprechpausen; nur wo der Rest-Versatz zu gross bleibt, an einem Wortanfang mit Ueberblendung."""
+    gruppen = [[0]]
+    for i in range(1, len(q)):
+        (gruppen.append([i]) if q[i]['start'] - q[i - 1]['end'] >= 0.02 else gruppen[-1].append(i))
+
+    def lage(g, ab):
+        a, z = g[0], g[-1]
+        qs, qe, cs, ce = q[a]['start'], q[z]['end'], c[a]['start'], c[z]['end']
+        f = min(1 + DEHNEN_MAX, max(1 - DEHNEN_MAX, (ce - cs) / (qe - qs) if qe > qs else 1.0))
+        s = max(cs, ab)
+        return s, f, [s + (q[i]['start'] - qs) * f - c[i]['start'] for i in g], s + (qe - qs) * f
+
+    plan, ab, offen = [], 0.0, list(gruppen)
+    while offen:
+        g = offen.pop(0)
+        s, f, fehl, ende = lage(g, ab)
+        k = max(range(len(g)), key=lambda j: abs(fehl[j]))
+        if abs(fehl[k]) > LIPPEN_MAX and len(g) >= 2 and 0 < k:
+            offen[:0] = [g[:k], g[k:]]
+            continue
+        plan.append({'von': g[0], 'bis': g[-1], 'start': s, 'faktor': f, 'fehler': max(map(abs, fehl))})
+        ab = ende
+    return plan
+
+
 def angleichen(b, ziel):
-    """Stimme Wort fuer Wort auf die Lippen des Avatar-Clips legen (Sebi 23.10.: „mundbewegungen sind
-    teils asynchron“; gemessen bis 0,38 s Versatz). Der Clip-Ton selbst verschluckt Woerter
-    („kostenlos“), darum die saubere Stimme, zeitlich gedehnt/gestaucht zwischen den Wortanfaengen."""
+    """Stimme auf die Lippen des Avatar-Clips legen (Sebi 23.10.: „mundbewegungen sind teils asynchron“,
+    gemessen bis 0,38 s). Der Clip-Ton selbst verschluckt Woerter („kostenlos“), darum die saubere
+    Stimme: jeder Satzteil ungeschnitten, sanft gedehnt, an seine Stelle im Clip gelegt, 8 ms Blende."""
     q, c = worte(b), worte('avatar-' + b)
     if len(q) != len(c):
         sys.exit(f'{b}: {len(q)} Woerter in der Stimme, {len(c)} im Clip')
-    anker = [(q[0]['start'], c[0]['start'])]
-    for a, z in zip(q[1:], c[1:]):
-        if a['start'] - anker[-1][0] >= 0.12 and z['start'] - anker[-1][1] >= 0.12:
-            anker.append((a['start'], z['start']))
-    anker.append((q[-1]['end'], c[-1]['end']))
-    teile, graph = [], []
-    vor = anker[0][1] - anker[0][0]
-    if vor > 0:
-        graph.append(f'aevalsrc=0:d={vor:.3f}:s=48000[v0]'); teile.append('[v0]')
-    start0 = max(0.0, -vor)
-    for k in range(len(anker) - 1):
-        (qa, ca), (qz, cz) = anker[k], anker[k + 1]
-        qa = max(qa, start0) if k == 0 else qa
-        tempo = min(2.0, max(0.5, (qz - qa) / (cz - ca)))
-        graph.append(f'[0:a]atrim={qa:.3f}:{qz:.3f},asetpts=PTS-STARTPTS,aresample=48000,atempo={tempo:.4f},apad,atrim=0:{cz - ca:.4f}[s{k}]')  # exakte Laenge, sonst laeuft der Versatz auf
-        teile.append(f'[s{k}]')
-    graph.append(f'[0:a]atrim={anker[-1][0]:.3f},asetpts=PTS-STARTPTS,aresample=48000[rest]'); teile.append('[rest]')
-    graph.append(''.join(teile) + f'concat=n={len(teile)}:v=0:a=1[o]')
+    plan = lippen_plan(q, c)
+    graph, n = [], len(plan)
+    for k, s in enumerate(plan):
+        # Schnitt in der Pause (Mitte zum Nachbarwort), bei einer Teilung am Wortanfang
+        qa = q[s['von']]['start'] - (min(0.12, (q[s['von']]['start'] - q[s['von'] - 1]['end']) / 2) if s['von'] else 0.12)
+        qz = q[s['bis']]['end'] + (min(0.12, (q[s['bis'] + 1]['start'] - q[s['bis']]['end']) / 2) if s['bis'] + 1 < len(q) else 0.4)
+        qa, vorlauf = max(0.0, qa), q[s['von']]['start'] - max(0.0, qa)
+        beginn = max(0.0, s['start'] - vorlauf * s['faktor'])
+        graph.append(f'[0:a]atrim={qa:.3f}:{qz:.3f},asetpts=PTS-STARTPTS,aresample=48000,atempo={1 / s["faktor"]:.4f},'
+                     f'afade=t=in:d=0.008,areverse,afade=t=in:d=0.008,areverse,adelay={int(beginn * 1000)}:all=1[s{k}]')
+    graph.append(''.join(f'[s{k}]' for k in range(n)) + f'amix=inputs={n}:normalize=0:duration=longest[o]')
     lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(ton(b)), '-filter_complex', ';'.join(graph),
          '-map', '[o]', '-ar', '48000', str(ziel))
+    print(f'  {b}: {n} Satzteile, Dehnung {min(s["faktor"] for s in plan):.2f}-{max(s["faktor"] for s in plan):.2f}, '
+          f'Rest-Versatz <= {max(s["fehler"] for s in plan):.2f} s')
     return ziel
 
 
