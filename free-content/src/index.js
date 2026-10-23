@@ -14,7 +14,7 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
-import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding, reportLead, loescheLeadAblage } from './leads.js';
+import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding, reportLead, loescheLeadAblage, findByToken } from './leads.js';
 import { speichereAvatar } from './avatar.js';
 import { BODY_MAX_BYTES } from './constants.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
@@ -23,10 +23,13 @@ import { r2Key } from './render.js';
 import { track, trackBeacon } from './track.js';
 import { handleAnfrage, anfrageProbe } from './anfrage-weiter.js';
 import { formPage } from './pages/form.js';
+import { formPageEn } from './pages/form-en.js';
 import { resultPage } from './pages/result.js';
+import { resultPageEn } from './pages/result-en.js';
 import { SICHERHEITS_HEADER } from './pages/shell.js';
 
 const ANFRAGE_URL = 'https://social2scale.com/anfrage/';
+const ANFRAGE_URL_EN = 'https://start.social2scale.com/en/?weg=b';
 
 // Beacon-Events (Spec Plan 3 Task 6): 'cta_call' wird bereits von reveal.js per
 // navigator.sendBeacon geschickt (Task 4) — die Allowlist MUSS ihn kennen.
@@ -215,8 +218,8 @@ async function handleSubmit(request, env, ctx, cors) {
 // Gebrandete Info-/Fehlerseite (frueher eine nackte weisse Seite mit zwei Zeilen —
 // wirkte wie ein Bug). Selbe Markensprache wie das Erlebnis: dunkler Wash, Logo,
 // Fraunces-Headline, Emerald-Akzent. Gehostete Assets, kein base64.
-function htmlPage(title, body) {
-  const html = `<!doctype html><html lang="de"><head><meta charset="utf-8">
+function htmlPage(title, body, lang = 'de') {
+  const html = `<!doctype html><html lang="${lang}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark light">
 <title>${title} · social2scale</title>
@@ -249,7 +252,8 @@ function htmlPage(title, body) {
  * Als Funktion statt Konstante: das Formular liegt jetzt am Worker selbst
  * (`/`, env.PUBLIC_ORIGIN) statt an der frueheren statischen `/free-content/`-Seite.
  */
-function confirmFehler(formularUrl, anfrageUrl) {
+function confirmFehler(formularUrl, anfrageUrl, sprache = 'de') {
+  if (sprache === 'en') return confirmFehlerEn(formularUrl + 'en/', ANFRAGE_URL_EN);
   return {
     used: {
       title: 'Diesen Link hast du schon benutzt',
@@ -281,6 +285,47 @@ function confirmFehler(formularUrl, anfrageUrl) {
   };
 }
 
+/** Englische Fassung fuer Leads aus dem Funnel /en/ (Sebi 23.10.2026: „immer beides 1/1“). */
+function confirmFehlerEn(formularUrl, anfrageUrl) {
+  return {
+    used: {
+      title: 'You’ve already used this link',
+      body:
+        '<p>No problem — just sign up again and we’ll send you a fresh link.</p>' +
+        `<p><a href="${formularUrl}">Sign up again</a></p>`,
+    },
+    expired: {
+      title: 'This link is no longer valid',
+      body:
+        '<p>Links are valid for 24 hours. Sign up again and you’ll get a new one right away.</p>' +
+        `<p><a href="${formularUrl}">Get a new link</a></p>`,
+    },
+    not_found: {
+      title: 'We don’t recognise this link anymore',
+      body:
+        '<p>Maybe a typo when copying? Just sign up again.</p>' +
+        `<p><a href="${formularUrl}">Sign up again</a></p>`,
+    },
+    handle_taken: {
+      title: 'Someone has already signed up this account',
+      body:
+        '<p>A free preview is already running for <strong>this Instagram account</strong>. ' +
+        'If it’s your account, just get in touch — we’ll sort it out in two minutes.</p>' +
+        `<p><a href="${anfrageUrl}">Get in touch</a></p>`,
+    },
+  };
+}
+
+/** Sprache eines Leads; unbekannt oder Fehler → Deutsch (wirft nie). */
+async function spracheZu(db, token) {
+  try {
+    return (await findByToken(db, token))?.sprache === 'en' ? 'en' : 'de';
+  } catch (err) {
+    console.error('[sprache] Lead nicht lesbar, nehme Deutsch:', err);
+    return 'de';
+  }
+}
+
 async function handleConfirm(token, env, ctx) {
   const formularUrl = `${env.PUBLIC_ORIGIN || 'https://start.social2scale.com'}/`;
   const fehlerSeiten = confirmFehler(formularUrl, ANFRAGE_URL);
@@ -294,8 +339,10 @@ async function handleConfirm(token, env, ctx) {
   }
 
   if (!res.ok) {
-    const fehler = fehlerSeiten[res.reason] ?? fehlerSeiten.not_found;
-    return htmlPage(fehler.title, fehler.body);
+    const sprache = await spracheZu(env.DB, token);
+    const seiten = sprache === 'en' ? confirmFehler(formularUrl, ANFRAGE_URL, 'en') : fehlerSeiten;
+    const fehler = seiten[res.reason] ?? seiten.not_found;
+    return htmlPage(fehler.title, fehler.body, sprache);
   }
 
   ctx.waitUntil(track(env, { event: 'confirmed', token }));
@@ -412,7 +459,7 @@ export default {
     // Zweig fiele HEAD bis zur abschliessenden 404 durch (der GET-Zweig unten matcht
     // nur GET). Antwort ohne Body (HEAD-Semantik verlangt genau das), aber mit
     // denselben Sicherheits-Headern wie die ausgelieferte Seite.
-    if (url.pathname === '/' && request.method === 'HEAD') {
+    if ((url.pathname === '/' || url.pathname === '/en/') && request.method === 'HEAD') {
       return new Response(null, {
         status: 200,
         headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER },
@@ -423,6 +470,15 @@ export default {
     // statische Seite zu verweisen (Plan 3).
     if (url.pathname === '/' && request.method === 'GET') {
       return formPage(env);
+    }
+
+    // Englischer Funnel: dieselbe Seite, uebersetzt (form-en.js). /en ohne Schraegstrich leitet um,
+    // damit relative Pfade und der hreflang-Verweis immer auf /en/ zeigen.
+    if (url.pathname === '/en' && (request.method === 'GET' || request.method === 'HEAD')) {
+      return Response.redirect(url.origin + '/en/' + url.search, 301);
+    }
+    if (url.pathname === '/en/' && request.method === 'GET') {
+      return formPageEn(env);
     }
 
     // Token ist server-generierter Hex — alles andere ist gar kein Token von uns.
@@ -518,7 +574,9 @@ export default {
     // Build-/Ergebnisseite (Plan 3): pollt /api/status/:token selbst,
     // kein Server-seitiger Datenzugriff hier noetig.
     const resultMatch = url.pathname.match(/^\/r\/([a-f0-9]{8,128})$/);
-    if (resultMatch) return resultPage(resultMatch[1]);
+    if (resultMatch) {
+      return (await spracheZu(env.DB, resultMatch[1])) === 'en' ? resultPageEn(resultMatch[1]) : resultPage(resultMatch[1]);
+    }
 
     return json({ ok: false, error: 'not_found' }, 404, cors);
   },

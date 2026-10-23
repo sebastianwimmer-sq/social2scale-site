@@ -177,6 +177,8 @@ export function validateSubmission(input) {
   // Separates, freiwilliges Testimonial-Einverstaendnis (DSGVO-Kopplungsverbot):
   // NICHT an consent gekoppelt, Default false. Nur true, wenn ausdruecklich gesetzt.
   const testimonialConsent = raw.testimonialConsent === true;
+  // Sprache des Funnels (/en/ schickt 'en'): bestimmt Texte, Bilder und Mails. Alles andere ist Deutsch.
+  const sprache = raw.sprache === 'en' ? 'en' : 'de';
 
   return {
     ok: true,
@@ -194,6 +196,7 @@ export function validateSubmission(input) {
       taetigkeit,
       consent: true,
       testimonialConsent,
+      sprache,
       source,
       foto,
     },

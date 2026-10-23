@@ -15,6 +15,10 @@ import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL, buchungsLink, buchungsNotiz } from
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
+// Sprachumschalter wie auf social2scale.com (lib/sprachen.mjs, gleiche Flaggen). Die Seite /en/ ist die
+// Uebersetzung DIESER Seite (form-en.js), sie tauscht Ziel und Flagge (Sebi 23.10.2026: „immer beides 1/1“).
+export const FLAGGE_EN = '<svg class="sprache-flagge" viewBox="0 0 60 30" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#012169" d="M0 0v30h60V0z"/><path stroke="#fff" stroke-width="6" d="M0 0l60 30m0-30L0 30"/><path stroke="#C8102E" stroke-width="4" d="M0 0l60 30m0-30L0 30"/><path stroke="#fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="#C8102E" stroke-width="6" d="M30 0v30M0 15h60"/></svg>';
+export const FLAGGE_DE = '<svg class="sprache-flagge" viewBox="0 0 5 3" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#D00" d="M0 1h5v1H0z"/><path fill="#FFCE00" d="M0 2h5v1H0z"/></svg>';
 
 const PAGE_STYLE = `
   .app{position:relative;z-index:2;min-height:100dvh;max-width:460px;margin:0 auto;display:flex;flex-direction:column}
@@ -26,11 +30,27 @@ const PAGE_STYLE = `
      Steckbrief als zweite Fortschrittsanzeige, und 12 widersprach „7 kurze Fragen“. Jetzt drei
      Abschnitte in Worten; die genaue Stelle steht ueber der Frage („Frage 3 von 7“). */
   .phasen{list-style:none;margin:0 0 0 auto;padding:0;display:flex;align-items:center;gap:.25rem;font-family:var(--ff-label);font-size:0.6875rem;font-weight:600;letter-spacing:.06em;color:var(--faint)}
-  .phasen li{padding:.3rem .2rem;transition:color var(--dur-2, .24s) ease-out}
+  .phasen li{padding:.3rem .2rem;white-space:nowrap;transition:color var(--dur-2, .24s) ease-out}
   .phasen li+li::before{content:"·";margin-right:.45rem;color:rgba(255,255,255,.22)}
   .phasen li[aria-current="step"]{color:var(--ink)}
   .phasen li.fertig{color:var(--emerald-soft)}
   .app[data-schritt="0"] .phasen{visibility:hidden}
+  .sprache{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;min-width:44px;justify-content:center;padding:0 .35rem;margin-left:.15rem;
+    color:var(--muted);text-decoration:none;font-family:var(--ff-label);font-size:0.75rem;font-weight:600;letter-spacing:.02em;border-radius:10px;
+    transition:color var(--dur-2, .24s) ease-out,background-color var(--dur-2, .24s) ease-out}
+  .sprache:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+  .sprache:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:2px}
+  .sprache-flagge{display:block;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+  /* Schmale Handys: nur die Flagge, und die Phasen ruecken zusammen — „Check · Ergebnis · Gespräch“
+     plus Umschalter lief am iPhone SE sonst 21 px ueber den Rand (funnel-vergleich 23.10.2026). */
+  @media (max-width:400px){
+    .sprache span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .sprache{margin-left:0;padding:0}
+    .top{gap:8px}
+    .phasen{letter-spacing:.02em}
+    .phasen li{padding:.3rem .05rem}
+    .phasen li+li::before{margin-right:.3rem}
+  }
 
   /* ── BUEHNE mit schwebendem Glas-iPhone ── */
   .stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;perspective:1400px;padding:.4rem 0}
@@ -276,6 +296,7 @@ function pageMarkup(turnstileSiteKey) {
     <ol class="phasen" id="phasen" aria-label="Wo du gerade bist">
       <li data-ph="check">Check</li><li data-ph="ergebnis">Ergebnis</li><li data-ph="weg" id="ph-weg">Dein Weg</li>
     </ol>
+    <a class="sprache" href="/en/" hreflang="en" lang="en" data-sprache="en" aria-label="English">${FLAGGE_EN}<span>English</span></a>
   </div>
 
   <div class="stage">
@@ -963,6 +984,11 @@ export function formPage(env) {
     `<meta property="og:description" content="${beschreibung}">` +
     '<meta property="og:type" content="website">' +
     '<meta property="og:url" content="https://start.social2scale.com/">' +
+    '<meta property="og:locale" content="de_DE">' +
+    '<meta property="og:locale:alternate" content="en_US">' +
+    '<link rel="alternate" hreflang="de" href="https://start.social2scale.com/">' +
+    '<link rel="alternate" hreflang="en" href="https://start.social2scale.com/en/">' +
+    '<link rel="alternate" hreflang="x-default" href="https://start.social2scale.com/">' +
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' +
     `<style>${PAGE_STYLE}</style>`;
   const body = `${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}</script>`;

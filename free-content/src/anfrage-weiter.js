@@ -112,6 +112,7 @@ function antwort(body, status, cors) {
 
 const BREVO_KONTAKT = 'https://api.brevo.com/v3/contacts';
 const VORSCHAU_URL = 'https://start.social2scale.com/?weg=a';
+const VORSCHAU_URL_EN = 'https://start.social2scale.com/en/?weg=a';
 
 /** Brevo-Kontakt wie im Portal (ohne Liste: Newsletter braucht eine eigene Einwilligung). Nicht fatal. */
 export async function brevoKontakt(env, d, holen = fetch) {
@@ -138,7 +139,7 @@ export async function bestaetigen(env, d, mailSenden = send) {
       return await mailSenden(env, d.email, d.name, {
         subject: 'Your inquiry has reached me',
         replyTo: { email: PHIL.mail, name: PHIL.name },
-        htmlContent: anfrageMailHtmlEn(vorname, esc(buchungsLink(d.name, d.email, buchungsNotiz(d, d.sprache))), esc(PHIL.tel), esc(PHIL.telHref)),
+        htmlContent: anfrageMailHtmlEn(vorname, esc(VORSCHAU_URL_EN), esc(buchungsLink(d.name, d.email, buchungsNotiz(d, d.sprache))), esc(PHIL.tel), esc(PHIL.telHref)),
       }, PHIL.name + ' · social2scale');
     } catch (err) {
       console.error('[anfrage] Bestaetigungsmail (en) fehlgeschlagen:', err);

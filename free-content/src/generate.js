@@ -149,6 +149,7 @@ export async function generateFor(env, token) {
   const clean = {
     name: lead.name, handle: lead.handle, branche: lead.branche,
     ziel: lead.ziel, stimmung: lead.stimmung, farbe: lead.farbe, taetigkeit: lead.taetigkeit || '',
+    sprache: lead.sprache === 'en' ? 'en' : 'de',
   };
 
   // Schicht 1 der Marken-Sicherung (Spec §5a): unser Logo, unsere Verantwortung.
@@ -378,6 +379,7 @@ export async function mirrorToCrm(db, lead, publicOrigin = '') {
   const feedUrl = publicOrigin ? `${publicOrigin}/r/${lead.token}` : '';
   const md =
     '# Free-Content-Lead\n\n' +
+    (lead.sprache === 'en' ? '- **Sprache:** Englisch — auf Englisch antworten\n' : '') +
     `- **Instagram:** @${handlePur(lead)}\n` +
     (lead.taetigkeit ? `- **Macht:** ${TAETIGKEITEN[lead.taetigkeit] || lead.taetigkeit}\n` : '') +
     `- **Thema:** ${lead.branche}\n` +

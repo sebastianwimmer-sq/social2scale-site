@@ -28,9 +28,9 @@ const FAINT = '#6E7573';
  * Kopf + Oeffnung der EINEN dunklen Inhaltskarte inkl. gehostetem Logo.
  * title/preheader variieren pro Mail. Die Karte wird in sigFooter() geschlossen.
  */
-function mailHead(title, preheader) {
+function mailHead(title, preheader, lang = 'de') {
   return `<!DOCTYPE html>
-<html lang="de" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="${lang}" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -81,7 +81,10 @@ function mailCta(url, label) {
  * Seiten-Hintergrund mehr).
  */
 const VORSCHAU_GRUND = 'Diese Mail ging an dich, weil deine Adresse bei social2scale für die Content-Vorschau eingetragen wurde. Erst mit Bestätigung werden Daten verarbeitet.';
-const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND) => `
+const VORSCHAU_GRUND_EN = 'You’re receiving this email because your address was entered at social2scale for the content preview. Your data is only processed once you confirm.';
+// Rechtsfuss je Sprache: Impressum und Datenschutz gibt es nur auf Deutsch, die Beschriftung folgt der Mail.
+const RECHT = { de: ['Impressum', 'Datenschutz'], en: ['Legal notice', 'Privacy (German)'] };
+const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND, lang = 'de') => `
           <div style="height:1px;line-height:1px;font-size:1px;background:rgba(255,255,255,0.09);margin:30px 0 22px;">&nbsp;</div>
           <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
             <td style="vertical-align:top;width:52px;padding-right:15px;"><img src="https://social2scale.com/assets/sig-avatar.png" width="52" height="52" alt="social2scale" style="display:block;width:52px;height:52px;border:0;"></td>
@@ -97,7 +100,7 @@ const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND) => `
 
           <p style="margin:24px 0 0;font-size:11.5px;line-height:1.7;color:${FAINT};">
             ${grund}<br>
-            social2scale &mdash; Philipp Libowicz · Johannes-Hess-Straße 1, 84489 Burghausen &middot; <a href="https://social2scale.com/impressum/" style="color:${FAINT};">Impressum</a> &middot; <a href="https://social2scale.com/datenschutz/" style="color:${FAINT};">Datenschutz</a>
+            social2scale &mdash; Philipp Libowicz · Johannes-Hess-Straße 1, 84489 Burghausen &middot; <a href="https://social2scale.com/impressum/" style="color:${FAINT};">${RECHT[lang][0]}</a> &middot; <a href="https://social2scale.com/datenschutz/" style="color:${FAINT};">${RECHT[lang][1]}</a>
           </p>
         </td></tr>
       </table>
@@ -163,6 +166,24 @@ export function confirmMailHtml(vorname, confirmUrl) {
           <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Gültig ${TOKEN_TTL_HOURS} Stunden. Nicht du? Ignorier diese Mail einfach.</p>` + sigFooter();
 }
 
+/** Englische Bestaetigung (Funnel /en/). Gleicher Aufbau wie confirmMailHtml. */
+export function confirmMailHtmlEn(vorname, confirmUrl) {
+  return mailHead('Confirm your preview — social2scale', `One click, ${vorname} — then your preview gets built, live.`, 'en') + `
+          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Almost there, ${vorname}.</h1>
+          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">One click confirms your address — <strong style="color:${PAPER};">then your personal Instagram preview gets built, live.</strong></p>
+          ${mailCta(confirmUrl, 'Build my feed')}
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Valid for ${TOKEN_TTL_HOURS} hours. Not you? Just ignore this email.</p>` + sigFooter('The social2scale team', VORSCHAU_GRUND_EN, 'en');
+}
+
+/** Englische Ergebnismail (Funnel /en/). Gleicher Aufbau wie resultMailHtml. */
+export function resultMailHtmlEn(vorname, resultUrl) {
+  return mailHead('Good to have you back — social2scale', `Good to have you back, ${vorname}. Your preview is ready.`, 'en') + `
+          <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Good to have you back, ${vorname}.</h1>
+          <p style="margin:0 0 30px;font-size:16px;line-height:1.6;color:${MUTED};">Your preview is ready — take your time looking through it. And if you want to get started or have questions: <strong style="color:${PAPER};">we’re happy to help.</strong></p>
+          ${mailCta(resultUrl, 'View my preview')}
+          <p style="margin:20px 0 0;font-size:12.5px;line-height:1.6;color:${FAINT};">Just reply to this email — we read every reply and help you personally.</p>` + sigFooter('The social2scale team', VORSCHAU_GRUND_EN, 'en');
+}
+
 /**
  * Ergebnismail: wird geschickt, wenn eine Besucherin mit bereits fertiger
  * Vorschau erneut eintraegt (leads.js: mail:'result'). Fuehrt zurueck auf /r/:token.
@@ -195,15 +216,16 @@ export function anfrageMailHtml(vorname, vorschauUrl, buchungUrl, tel, telHref) 
     sigFooter('Phil · social2scale', 'Du bekommst diese Mail, weil du auf social2scale.com ein Erstgespräch angefragt hast.');
 }
 
-/** Englische Fassung fuer Anfragen von social2scale.com/en/contact/ (Ticket #353). Ohne
- * Gratis-Vorschau: die erzeugt deutsche Beitraege. */
-export function anfrageMailHtmlEn(vorname, buchungUrl, tel, telHref) {
-  return mailHead('Your inquiry has reached me', `Thanks, ${vorname}. I’ll get back to you personally.`) + `
+/** Englische Fassung (Funnel /en/, Sebi 23.10.2026: „immer beides 1/1“) — gleicher Aufbau wie
+ * anfrageMailHtml, mit dem Weg zur englischen Gratis-Vorschau. */
+export function anfrageMailHtmlEn(vorname, vorschauUrl, buchungUrl, tel, telHref) {
+  return mailHead('Your inquiry has reached me', `Thanks, ${vorname}. I’ll get back to you personally.`, 'en') + `
           <h1 class="h1" style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:31px;line-height:1.12;color:${PAPER};">Thanks, ${vorname}. I’m on it.</h1>
           <p style="margin:0 0 22px;font-size:16px;line-height:1.6;color:${MUTED};">Your inquiry has reached me. I’ll get back to you personally, by phone or email. If you don’t want to wait, just pick a time for our intro call:</p>
           ${mailCta(buchungUrl, 'Book a time')}
-          <p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:${MUTED};">Or call me: <a href="tel:${telHref}" style="color:${PAPER};font-weight:700;text-decoration:none;">${tel}</a>. Replies to this email come straight to me.</p>` +
-    sigFooter('Phil · social2scale', 'You’re receiving this email because you requested an intro call on social2scale.com.');
+          <p style="margin:24px 0 0;font-size:16px;line-height:1.6;color:${MUTED};">Or call me: <a href="tel:${telHref}" style="color:${PAPER};font-weight:700;text-decoration:none;">${tel}</a>. Replies to this email come straight to me.</p>
+          <p style="margin:18px 0 0;font-size:14px;line-height:1.6;color:${FAINT};">Until then, see what your presence could look like in 60 seconds: <a href="${vorschauUrl}" style="color:${MUTED};">free preview</a></p>` +
+    sigFooter('Phil · social2scale', 'You’re receiving this email because you requested an intro call on social2scale.com.', 'en');
 }
 
 /**

@@ -11,6 +11,7 @@
  */
 
 import { COPY_VERSUCHE, COPY_BACKOFF_MS, TAETIGKEITEN } from './constants.js';
+import { SYSTEM_EN, WINKEL_EN, AUFGABE_EN, basisEn, buildFallbackEn } from './copy-en.js';
 
 const API = 'https://api.anthropic.com/v1/messages';
 // Die Copy war der wahre Flaschenhals der Wartezeit (~37s): EIN Call musste Profil
@@ -147,6 +148,7 @@ const POST_TOOL = {
  */
 export function buildFallback(clean) {
   const name = clip(clean?.name, 40);
+  if (clean?.sprache === 'en') return buildFallbackEn(name);
   const gruss = name ? `, ${name}` : '';
 
   return {
@@ -254,7 +256,7 @@ function transient(status) {
 }
 
 /** Ein einzelner Claude-Call. Wirft bei transienten Fehlern, damit callClaude erneut darf. */
-async function einVersuch(env, tool, user, label) {
+async function einVersuch(env, tool, user, label, system) {
   const res = await fetch(API, {
     method: 'POST',
     headers: {
@@ -270,7 +272,7 @@ async function einVersuch(env, tool, user, label) {
       // Post ab, aufgefangen vom Fallback, also unsichtbar. Wir wollen hier reine
       // Ausgabe: die Struktur gibt das Tool-Schema vor, es gibt nichts zu ergruebeln.
       thinking: { type: 'disabled' },
-      system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+      system: [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }],
       tools: [{ ...tool, cache_control: { type: 'ephemeral' } }],
       tool_choice: { type: 'tool', name: tool.name },
       messages: [{ role: 'user', content: user }],
@@ -298,10 +300,10 @@ async function einVersuch(env, tool, user, label) {
  * kosten. Gibt bei endgueltigem Scheitern null zurueck — WIRFT NIE, der Aufrufer
  * entscheidet dann ueber Fallback bzw. Backfill.
  */
-async function callClaude(env, tool, user, label) {
+async function callClaude(env, tool, user, label, system = SYSTEM) {
   for (let versuch = 1; versuch <= COPY_VERSUCHE; versuch++) {
     try {
-      return await einVersuch(env, tool, user, label);
+      return await einVersuch(env, tool, user, label, system);
     } catch (err) {
       console.error(`[copy] ${label}: Versuch ${versuch}/${COPY_VERSUCHE} fehlgeschlagen:`, err);
       if (versuch < COPY_VERSUCHE) {
@@ -328,7 +330,10 @@ export async function generateCopy(env, clean) {
     return fb('no_key');
   }
 
-  const basis =
+  // Englischer Funnel (/en/): eigener System-Prompt, Angaben und Auftraege auf Englisch.
+  const en = clean?.sprache === 'en';
+  const system = en ? SYSTEM_EN : SYSTEM;
+  const basis = en ? basisEn(clean, clip) :
     `Kundin: ${clip(clean?.name, 60)} (@${clip(clean?.handle, 40)})\n` +
     `Thema: ${clip(clean?.branche, 200)}\n` +
     `Ziel: ${clip(clean?.ziel, 400)}\n` +
@@ -339,7 +344,7 @@ export async function generateCopy(env, clean) {
   // Drei feste Blickwinkel, damit die 3 unabhaengigen (parallelen) Post-Calls sich
   // NICHT wiederholen — die Coherenz, die frueher der eine gemeinsame Call sicherte,
   // steckt jetzt in diesen Vorgaben.
-  const winkel = [
+  const winkel = en ? WINKEL_EN : [
     'Post 1 von 3 — der AUFMACHER: die zentrale Ueberzeugung oder der groesste Irrtum in ihrem Thema. Kontra-intuitiver Hook.',
     'Post 2 von 3 — das WIE: ein konkreter Weg, eine Methode oder ein Schritt aus ihrem Thema. Klar anderer Blickwinkel als Post 1.',
     'Post 3 von 3 — PERSOENLICH: eine Erkenntnis oder kleine Geschichte aus ihrem Alltag zum Thema. Klar anderer Blickwinkel als Post 1 und 2.',
@@ -347,8 +352,8 @@ export async function generateCopy(env, clean) {
 
   // Alle 4 Calls gleichzeitig — Wall-Zeit = langsamster Call, nicht Summe.
   const [prof, ...rohPosts] = await Promise.all([
-    callClaude(env, PROFILE_TOOL, basis + '\n\nAufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, nameLine, bioLines, 4 highlights, 9 kurze Feed-Raster-Titel). KEINE Posts.', 'profil'),
-    ...winkel.map((w, i) => callClaude(env, POST_TOOL, basis + '\n\nAufgabe: Genau EIN Karussell (3 Slides hook→value→cta) + fertige Caption.\n' + w, `post${i + 1}`)),
+    callClaude(env, PROFILE_TOOL, basis + '\n\n' + (en ? AUFGABE_EN.profil : 'Aufgabe: Nur der Profil-Kern (Reveal-Headline eyebrow/head/headAccent/sub, Bio, nameLine, bioLines, 4 highlights, 9 kurze Feed-Raster-Titel). KEINE Posts.'), 'profil', system),
+    ...winkel.map((w, i) => callClaude(env, POST_TOOL, basis + '\n\n' + (en ? AUFGABE_EN.post : 'Aufgabe: Genau EIN Karussell (3 Slides hook→value→cta) + fertige Caption.') + '\n' + w, `post${i + 1}`, system)),
   ]);
 
   // Das Profil ist der Kern (Bio, Feed-Raster, Headline). Faellt es aus (API/Guthaben),

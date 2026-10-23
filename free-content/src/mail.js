@@ -5,7 +5,7 @@
  */
 
 import { stripControlChars } from './validate.js';
-import { confirmMailHtml, resultMailHtml, founderMailHtml } from './pages/confirm-email.js';
+import { confirmMailHtml, resultMailHtml, confirmMailHtmlEn, resultMailHtmlEn, founderMailHtml } from './pages/confirm-email.js';
 
 const BREVO_MAIL_URL = 'https://api.brevo.com/v3/smtp/email';
 
@@ -38,6 +38,9 @@ function firstName(name, fallback = 'du') {
  */
 export function buildConfirmMail(lead, publicOrigin) {
   const link = `${publicOrigin}/c/${encodeURIComponent(lead.token)}`;
+  if (lead.sprache === 'en') {
+    return { subject: 'One click to your first social2scale preview', htmlContent: confirmMailHtmlEn(esc(firstName(lead.name, 'there')), esc(link)) };
+  }
   const vorname = esc(firstName(lead.name, 'schön'));
 
   return {
@@ -48,6 +51,9 @@ export function buildConfirmMail(lead, publicOrigin) {
 
 export function buildResultMail(lead, publicOrigin) {
   const link = `${publicOrigin}/r/${encodeURIComponent(lead.token)}`;
+  if (lead.sprache === 'en') {
+    return { subject: 'Your feed is ready — take a look', htmlContent: resultMailHtmlEn(esc(firstName(lead.name, 'there')), esc(link)) };
+  }
   const vorname = esc(firstName(lead.name, 'schön'));
   return {
     subject: 'Dein Feed ist fertig — sieh ihn dir an',
@@ -145,10 +151,11 @@ function buildFounderMail(lead, action, publicOrigin = '') {
     ['Ziel', esc(lead.ziel)],
     ['Stimmung', esc(lead.stimmung)],
     ['Quelle', esc(lead.source)],
+    ...(lead?.sprache === 'en' ? [['Sprache', 'Englisch — auf Englisch antworten']] : []),
     ['Status', esc(action)],
   ];
   return {
-    subject: subjectSafe(`Free-Content-Lead: ${lead.name} (${action})`),
+    subject: subjectSafe(`${lead?.sprache === 'en' ? '[EN] ' : ''}Free-Content-Lead: ${lead.name} (${action})`),
     htmlContent: founderMailHtml(`Free-Content-Lead: ${esc(lead.name)}`, zeilen, esc(feedUrl)),
   };
 }

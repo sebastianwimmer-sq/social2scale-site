@@ -265,10 +265,10 @@ test('Funnel Weg B rechnet im Browser denselben Link wie der Worker', async () =
 });
 
 import { WAHL_EN } from '../src/constants.js';
-import { readFileSync } from 'node:fs';
-test('EN-Mail: Rahmen/Start erscheinen so, wie sie sie auf der EN-Seite angeklickt hat', () => {
-  const seite = readFileSync(new URL('../../en/contact/index.html', import.meta.url), 'utf8');
-  const paare = [...seite.matchAll(/name="(?:budget|start)" value="([^"]*)"><span>([^<]*)/g)].map((m) => [m[1], m[2]]);
+import { formPageEn } from '../src/pages/form-en.js';
+test('EN-Mail: Rahmen/Start erscheinen so, wie sie sie im englischen Funnel angeklickt hat', async () => {
+  const seite = await (await formPageEn({ TURNSTILE_SITE_KEY: 'x' })).text();
+  const paare = [...seite.matchAll(/data-(?:budget|start)="([^"]*)" aria-pressed="false"><span>([^<]*)/g)].map((m) => [m[1], m[2]]);
   assert.ok(paare.length >= 7, 'Radios nicht gefunden');
   for (const [wert, text] of paare) assert.equal(WAHL_EN[wert], text, wert);
   assert.equal(buchungsNotiz({ budget: 'unter 1.000 €', start: 'Sofort' }, 'en'), 'Budget: under €1,000\nStart: Right away');
