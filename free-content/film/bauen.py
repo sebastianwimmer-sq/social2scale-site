@@ -30,23 +30,24 @@ CUES = {
            ('und erkläre dir kurz, was jetzt passiert.', 15)],
     's2a': [('Deine Gratis-Vorschau ist unterwegs.', 0), ('Bestätige kurz die Mail in deinem Postfach,', 5),
             ('dann baut sich dein Feed fertig.', 12)],
-    's2b': [('Phil, einer unserer beiden Gründer,', 0), ('kennt deine Antworten schon.', 5),
-            ('Im Erstgespräch nimmt er sich', 9), ('etwa 45 Minuten für dich.', 14)],
-    's3a': [('Wenn du danach mehr willst:', 0), ('Im Erstgespräch nimmt sich Phil,', 5),
-            ('einer unserer beiden Gründer,', 10), ('etwa 45 Minuten für dich.', 14)],
-    's4': [('Ihr klärt dein Ziel, deine Zielgruppe', 0), ('und wo du heute stehst.', 6),
-           ('Danach sagen wir dir,', 11), ('welcher Weg zu dir passt.', 15)],
+    's2b': [('Phil hat deine Antworten schon gelesen:', 0), ('dein Thema, dein Ziel', 6),
+            ('und wo du heute stehst.', 10)],
+    's3a': [('Die Vorschau zeigt dir,', 0), ('wie dein Auftritt aussehen kann.', 4),
+            ('Was sie nicht zeigt:', 9), ('wie du damit dein Ziel erreichst.', 13)],
+    's4': [('Genau das klärt Phil mit dir im Erstgespräch:', 0), ('wo du heute stehst, wo du hinwillst', 8),
+           ('und welcher Weg dich dorthin bringt.', 16), ('Danach weißt du, was du als Nächstes tust.', 22)],
     's5': [('Das Gespräch ist kostenlos.', 0), ('Such dir am besten gleich einen Termin aus.', 4),
            ('Bis bald.', 12)],
 }
 # Wortmarken, an denen die Szene etwas zeigt (Index im Wortlauf).
 MARKEN = {
-    # Runde 4 (Sebi 23.10.: Zwischenszenen „sehr flach“): mehr Marken, jede bewegt etwas Eigenes.
+    # Runde 5 (Sebi/Phil 23.10.: Framing über ihr Ergebnis statt unseren Ablauf; „Kunde braucht
+    # Klarheit, ein Ziel und Nachvollziehbarkeit seiner Situation“). Jede Marke bewegt etwas.
     's1': {'name': 0},
     's2a': {'titel': 0, 'unterwegs': 4, 'mail': 5, 'post': 11, 'feed': 13},
-    's2b': {'phil': 0, 'beide': 3, 'antworten': 6, 'gespraech': 9, 'zeit': 14},
-    's3a': {'mehr': 0, 'gespraech': 5, 'phil': 9, 'beide': 12, 'zeit': 14, 'dich': 17},
-    's4': {'klaert': 0, 'ziel': 2, 'gruppe': 4, 'stand': 7, 'weg': 15},
+    's2b': {'phil': 0, 'antworten': 2, 'thema': 6, 'ziel': 8, 'stand': 10},
+    's3a': {'vorschau': 0, 'auftritt': 6, 'nicht': 9, 'ziel': 16},
+    's4': {'phil': 3, 'stand': 8, 'ziel': 12, 'weg': 16, 'plan': 22},
     's5': {'kostenlos': 3, 'termin': 9},
 }
 # Pegel: Rohstimmen liegen bei ~-23 LUFS, am Handy zu leise. Runde 4b („kratzig“): vorher +4,5 dB in einen
@@ -59,21 +60,23 @@ SFX = {'swish': -11, 'tick': 8, 'pop': 5, 'riser': -8}
 FEED_KACHELN = 3
 
 
+# Ton je Wortmarke: (Ton, Versatz, Abstand, Anzahl). Swish kommt an jeden Szenenwechsel (Irisblende).
+TOENE = {
+    'feed': ('pop', 0.55, 0.14, FEED_KACHELN), 'mail': ('tick', 0, 0, 1), 'auftritt': ('swish', 0, 0, 1),
+    'thema': ('tick', 0, 0, 1), 'ziel': ('tick', 0, 0, 1), 'stand': ('tick', 0, 0, 1),
+    'weg': ('pop', 0.35, 0.4, 4), 'plan': ('swish', 0.1, 0, 1),
+}
+IRIS = 0.6  # Sekunden, in denen die Szene vor/nach dem Avatar als Kreis auf- bzw. zugeht (film.js)
+
+
 def sfx_ereignisse(abschnitte, dauer_gesamt):
-    """(Zeit, Ton) je Bewegung: Szenenwechsel, Kacheln, Antworten, zweiter Gruender, Schluss."""
-    ev = [(a['von'] - 0.18, 'swish') for a in abschnitte[1:]]
+    """(Zeit, Ton) je Bewegung: Irisblende an jedem Szenenwechsel, dann je Wortmarke, Riser zum Schluss."""
+    ev = [(a['von'] - IRIS + 0.05, 'swish') for a in abschnitte[1:]]
     for a in abschnitte:
-        m = a['marken']
-        if 'feed' in m:
-            ev += [(m['feed'] + 0.1 + i * 0.14, 'pop') for i in range(FEED_KACHELN)]
-        if 'antworten' in m:
-            ev += [(m['antworten'] + i * 0.25, 'tick') for i in range(3)]
-        ev += [(m[k], 'tick') for k in ('ziel', 'gruppe', 'stand') if k in m]
-        if 'beide' in m:
-            ev.append((m['beide'], 'swish'))
-        ev += [(m[k], 'tick') for k in ('mail', 'zeit') if k in m]
-        if 'weg' in m:
-            ev += [(m['weg'] + 0.1 + i * 0.09, 'pop') for i in range(3)]  # drei Balken der Bildmarke
+        for m, z in a['marken'].items():
+            if m in TOENE:
+                ton_, vers, abst, n = TOENE[m]
+                ev += [(z + vers + i * abst, ton_) for i in range(n)]
     ev.append((dauer_gesamt - 0.75, 'riser'))
     return sorted((round(max(0.0, z), 3), n) for z, n in ev)
 
@@ -93,9 +96,9 @@ def toene_mischen(roh, ziel, ereignisse):
 
 # (Baustein, Art, Szene) je Fassung. Art 'avatar' = Clip mit eigenem Bild, 'szene' = Grund + Stimme.
 FASSUNGEN = {
-    'a': [('s1', 'avatar', 'hallo'), ('s2a', 'szene', 'post'), ('s3a', 'szene', 'phil'),
-          ('s4', 'szene', 'klaeren'), ('s5', 'avatar', 'termin')],
-    'b': [('s1', 'avatar', 'hallo'), ('s2b', 'szene', 'kennt'), ('s4', 'szene', 'klaeren'),
+    'a': [('s1', 'avatar', 'hallo'), ('s2a', 'szene', 'post'), ('s3a', 'szene', 'luecke'),
+          ('s4', 'szene', 'plan'), ('s5', 'avatar', 'termin')],
+    'b': [('s1', 'avatar', 'hallo'), ('s2b', 'szene', 'kennt'), ('s4', 'szene', 'plan'),
           ('s5', 'avatar', 'termin')],
 }
 
@@ -216,7 +219,17 @@ def cues(b, start, versatz, ende, art='szene'):
         bis = start + versatz + (w[liste[i + 1][1]]['start'] - 0.05 if i + 1 < len(liste) else w[-1]['end'] + 0.35)
         if i + 1 == len(liste):
             bis = ende - 0.05  # Sebi 23.10.: Untertitel in jedem Bereich, auch in der Sprechpause bis zum Schnitt
-        out.append({'von': round(von, 2), 'bis': round(min(bis, ende), 2), 'text': text})
+        # Wortzeiten: Skriptwoerter auf die Whisper-Woerter dieses Untertitels verteilen (Anzahl kann
+        # abweichen: „social2scale“ vs. „Social to Scale“, „hinwillst“ vs. „hin willst“)
+        ww = w[idx:liste[i + 1][1] if i + 1 < len(liste) else len(w)]
+        sw = text.split(' ')
+        if len(sw) == len(ww):
+            zeiten = [x['start'] for x in ww]
+        else:
+            a0, a1 = ww[0]['start'], ww[-1]['end']
+            zeiten = [a0 + (a1 - a0) * k / len(sw) for k in range(len(sw))]
+        out.append({'von': round(von, 2), 'bis': round(min(bis, ende), 2), 'text': text,
+                    'worte': [round(start + versatz + z, 2) for z in zeiten]})
     return out
 
 
