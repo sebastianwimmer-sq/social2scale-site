@@ -12,8 +12,9 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { DOMAIN, PAARE, datei } from '../lib/sprachen.mjs';
 
-// Englische Seiten ohne deutsche Schwester (siehe lib/sprachen.mjs).
-const EINZELN_EN = ['/en/contact/'];
+// Englische Seiten ohne deutsche Schwester (siehe lib/sprachen.mjs). Seit 23.10.2026 keine:
+// /en/contact/ und /en/free/ sind Weiterleitungen (noindex) wie /anfrage/ und /gratis/.
+const EINZELN_EN = [];
 const NS = 'xmlns:xhtml="http://www.w3.org/1999/xhtml"';
 
 let xml = readFileSync('sitemap.xml', 'utf8');
