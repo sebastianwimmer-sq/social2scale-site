@@ -1,0 +1,96 @@
+/**
+ * Englische Build- und Ergebnisseite (`/r/:token` fuer Leads aus dem Funnel /en/) — dieselbe Seite
+ * wie result.js, nur uebersetzt (Sebi 23.10.2026: „immer beides 1/1“). Gleiches Verfahren wie
+ * form-en.js: jede Zeile muss in der deutschen Seite vorkommen, sonst bricht der Bau ab.
+ */
+
+import { resultPage } from './result.js';
+import { uebersetzen } from './form-en.js';
+
+export const TABELLE_RESULT = [
+  ['<html lang="de">', '<html lang="en">'],
+  ['<title>Dein Feed entsteht · social2scale</title>', '<title>Your feed is being built · social2scale</title>'],
+  ['aria-label="Zur social2scale-Startseite"', 'aria-label="To the social2scale home page"'],
+  ['aria-label="Fortschritt"', 'aria-label="Progress"'],
+  ['alt="Deine komplette Instagram-Vorschau"', 'alt="Your complete Instagram preview"'],
+  ['aria-label="Farbwelt wählen"', 'aria-label="Choose a colour world"'],
+  ['aria-label="Hinweis schließen"', 'aria-label="Close hint"'],
+  ['<h2>Dein Feed entsteht <em>gerade</em>.', '<h2>Your feed is being built <em>right now</em>.'],
+  ['Das dauert meist unter einer Minute — dein Feed baut sich Stück für Stück auf. Bleib dran.', 'This usually takes under a minute — your feed builds itself piece by piece. Stay tuned.'],
+  ['<span id="ig-handle">dein.profil</span>', '<span id="ig-handle">your.profile</span>'],
+  ['<b>9</b><span>Beiträge</span>', '<b>9</b><span>posts</span>'],
+  ['<b>1.2k</b><span>Follower</span>', '<b>1.2k</b><span>followers</span>'],
+  ['<b>318</b><span>Gefolgt</span>', '<b>318</b><span>following</span>'],
+  ['<div class="n">Dein Feed</div>', '<div class="n">Your feed</div>'],
+  ['>entsteht gerade, live.<', '>being built right now, live.<'],
+  ['>Profil bearbeiten</button><button>Teilen</button>', '>Edit profile</button><button>Share profile</button>'],
+  ['>Dein Thema</div>', '>Your topic</div>'],
+  ['>Warum jetzt?</div>', '>Why now?</div>'],
+  ['>3 Schritte</div>', '>3 steps</div>'],
+  ['>Zitat</div>', '>Quote</div>'],
+  ['>Vorher / Nachher</div>', '>Before / after</div>'],
+  ['>Deine Frage?</div>', '>Your question?</div>'],
+  ['>Einblick</div>', '>Insight</div>'],
+  ['>Über dich</div>', '>About you</div>'],
+  ['>Nächster Schritt</div>', '>Next step</div>'],
+  ['social2scale baut deinen Feed', 'social2scale is building your feed'],
+  ['Wir lesen deine Marke …', 'Reading your brand …'],
+  ['Deine Texte entstehen …', 'Writing your copy …'],
+  ['Deine Farbwelten entstehen …', 'Creating your colour worlds …'],
+  ['Wir setzen deinen Feed …', 'Laying out your feed …'],
+  ['Fertig — scroll dich rein.', 'Done — scroll in.'],
+  ['social2scale · dein Freebie', 'social2scale · your freebie'],
+  ['Fertig. Das ist', 'Done. This is'],
+  ['>dein Feed.<', '>your feed.<'],
+  ['Zwei Farbwelten, fertig zum Posten. Wähl deine — und sieh, wie sie wirkt.', 'Two colour worlds, ready to post. Pick yours — and see how it looks.'],
+  ['</span>Farbwelt A</button>', '</span>Colour world A</button>'],
+  ['</span>Farbwelt B</button>', '</span>Colour world B</button>'],
+  ['Deine ersten Posts — fertig zum Posten', 'Your first posts — ready to post'],
+  ['>Warum dieser Post<', '>Why this post<'],
+  ['Der Aufmacher. Neue Besucherinnen entscheiden in Sekunden, ob sie bleiben — dieser Post positioniert dich mit einer klaren Haltung statt mit Floskeln.',
+    'The opener. New visitors decide in seconds whether they stay — this post positions you with a clear stance instead of empty phrases.'],
+  ['Die Substanz. Ein konkreter Weg aus deiner Praxis zeigt, WIE du arbeitest — gezeigtes Können überzeugt mehr als jede Behauptung.',
+    'The substance. A concrete approach from your practice shows HOW you work — skill you show convinces more than any claim.'],
+  ['Die Nähe. Menschen folgen Menschen: ein persönlicher Einblick macht aus stillen Mitleserinnen Followerinnen, die dir schreiben.',
+    'The closeness. People follow people: a personal insight turns silent readers into followers who message you.'],
+  ['Caption wird geladen …', 'Loading caption …'],
+  ['>Caption kopieren<', '>Copy caption<'],
+  ['>Du willst mehr?<', '>Want more?<'],
+  ["'Du willst mehr, ' + name + '?'", "'Want more, ' + name + '?'"],
+  ['Das hier hat eine Maschine in unter einer Minute aus drei Antworten gebaut. Stell dir vor, was entsteht, wenn wir uns eine Stunde mit dir hinsetzen.',
+    'A machine built this in under a minute from three answers. Imagine what happens when we sit down with you for an hour.'],
+  ['Deine komplette Marken-Handschrift', 'Your complete brand signature'],
+  ['Alle Texte, Hooks &amp; Vorlagen — von uns gemacht', 'All copy, hooks &amp; templates — made by us'],
+  ['Ohne Wasserzeichen, bereit zum Posten', 'No watermark, ready to post'],
+  ['href="https://social2scale.com/anfrage/">Lass uns starten <span', 'href="https://start.social2scale.com/en/?weg=b">Let’s get started <span'],
+  ['>Vorschau speichern<', '>Save preview<'],
+  ['>Mit Followern teilen<', '>Share with followers<'],
+  ['Noch Fragen? Schreib uns direkt', 'Questions? Write to us directly'],
+  ['Dein Freebie trägt ein dezentes s2s-Zeichen — behalt es, ganz ohne Kauf.', 'Your freebie carries a subtle s2s mark — keep it, no purchase needed.'],
+  ['&lowast; Das ist ein KI-gestützt erstellter Schnellentwurf aus deinen Antworten — bewusst grob. Dein echter Auftritt entsteht mit dir: von Hand, in deiner Sprache, ohne unser Zeichen.',
+    '&lowast; This is a quick AI-assisted draft from your answers — deliberately rough. Your real presence is created with you: by hand, in your language, without our mark.'],
+  ['Stimmt hier etwas nicht? Missbrauch melden', 'Something wrong here? Report abuse'],
+  ['>scroll<', '>scroll<'],
+  ["'Danke — wir haben die Vorschau offline genommen und melden uns.'", "'Thanks — we’ve taken the preview offline and will be in touch.'"],
+  ["'Melden hat nicht geklappt — bitte nochmal versuchen.'", "'Reporting didn’t work — please try again.'"],
+  ["const url = 'https://social2scale.com';", "const url = 'https://social2scale.com/en/';"],
+  ["'Schau dir meinen neuen Feed an ✨ gebaut mit social2scale.\\n\\nWillst du auch so einen? Kostenlos testen: '", "'Check out my new feed ✨ built with social2scale.\\n\\nWant one too? Try it free: '"],
+  ["'Bild gespeichert · Text kopiert ✓'", "'Image saved · text copied ✓'"],
+  ["'Deine persönliche Caption gestalten wir im Paket mit dir.'", "'We craft your personal caption together with you in the package.'"],
+  ["'Kopiert ✓'", "'Copied ✓'"],
+  // Fehlerzustaende (ERROR_COPY als JSON im Skript)
+  ['"title":"Lass uns kurz persönlich sprechen.","body":"Dieses Thema können wir leider nicht automatisch aufbauen — lass uns kurz persönlich sprechen.","ctaHref":"https://social2scale.com/anfrage/","ctaLabel":"Kurz sprechen"',
+    '"title":"Let’s have a quick personal chat.","body":"Unfortunately we can’t build this topic automatically — let’s have a quick personal chat.","ctaHref":"https://start.social2scale.com/en/?weg=b","ctaLabel":"Quick chat"'],
+  ['"title":"Nicht deine Schuld.","body":"Da ist beim Bauen etwas schiefgelaufen — nicht deine Schuld. Probier\'s gleich nochmal, oder schreib uns direkt, dann kümmern wir uns persönlich drum.","ctaHref":"/","ctaLabel":"Nochmal eintragen","contactHref":"mailto:info@social2scale.com?subject=Meine%20Vorschau%20hat%20nicht%20geklappt","contactLabel":"Direkt an uns schreiben"',
+    '"title":"Not your fault.","body":"Something went wrong while building — not your fault. Try again right away, or write to us directly and we’ll take care of it personally.","ctaHref":"/en/","ctaLabel":"Try again","contactHref":"mailto:info@social2scale.com?subject=My%20preview%20didn%27t%20work","contactLabel":"Write to us directly"'],
+  ['"title":"Diesen Link kennen wir nicht.","body":"Trag dich einfach nochmal ein — dauert nur eine Minute.","ctaHref":"/","ctaLabel":"Zum Formular"',
+    '"title":"We don’t recognise this link.","body":"Just sign up again — it only takes a minute.","ctaHref":"/en/","ctaLabel":"To the form"'],
+  ['"title":"Das dauert länger als sonst.","body":"Dein Feed baut sich im Hintergrund fertig — lad diese Seite in einer Minute einfach nochmal, dann liegt er für dich bereit."',
+    '"title":"This is taking longer than usual.","body":"Your feed is finishing in the background — just reload this page in a minute and it will be ready for you."'],
+];
+
+/** Englische Ergebnisseite, gleiche Header wie die deutsche. */
+export async function resultPageEn(token) {
+  const de = resultPage(token);
+  return new Response(uebersetzen(await de.text(), TABELLE_RESULT), { status: de.status, headers: de.headers });
+}

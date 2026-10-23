@@ -32,8 +32,8 @@ const PFLICHT_IM_FORMULAR = [
 
 /** Felder, die das Backend lesen muss, damit der Lead vollstaendig ankommt. */
 const PFLICHT_IM_BACKEND = {
-  'src/validate.js': ['branche', 'ziel', 'stand', 'testimonialConsent'],
-  'src/leads.js': ['branche', 'ziel', 'stand', 'testimonialConsent'],
+  'src/validate.js': ['branche', 'ziel', 'stand', 'testimonialConsent', 'sprache'],
+  'src/leads.js': ['branche', 'ziel', 'stand', 'testimonialConsent', 'sprache'],
 };
 
 function lies(pfad) {

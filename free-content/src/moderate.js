@@ -63,20 +63,23 @@ const MUSTER = [
       'heil(?:e|st|t|en|te|ten|ung)|geheilt'
       + '|linder(?:e|st|t|n|ung)'
       + '|schmerzfrei(?:e|es|er|en|em)?'
-      + '|krebs|diagnose|therapier(?:e|st|t|en)',
+      + '|krebs|diagnose|therapier(?:e|st|t|en)'
+      // Englisch (Funnel /en/, 23.10.2026): dieselben Versprechen in der zweiten Sprache.
+      + '|cure[sd]?|curing|heal(?:s|ed|ing)?|pain[\\s-]?free|cancer|diagnos(?:e|es|is)',
   ) },
   // 'hass[\s-]+auf': der Bindestrich ist hier Teil der Schreibweise, nicht der
   // Grenze — 'Hass-auf Frauen' ist dieselbe Aussage wie 'Hass auf Frauen'.
   { grund: 'hass', re: new RegExp(
       `${VOR}(?:hasse|hass[\\s-]+auf)${NACH}.{0,20}${VOR}(?:auslaender|ausländer|juden|muslime|schwule|frauen|maenner|männer)${NACH}`
-      + `|${VOR}volksverhetz`, 'i',
+      + `|${VOR}volksverhetz`
+      + `|${VOR}hate${NACH}.{0,20}${VOR}(?:foreigners|immigrants|jews|muslims|gays|women|men)${NACH}`, 'i',
   ) },
-  { grund: 'sexuell',  re: stamm('escort|erotik|porno|sexcam|onlyfans|prostitu') },
+  { grund: 'sexuell',  re: stamm('escort|erotik|erotic|porn|sexcam|onlyfans|prostitu') },
   // 'Anti-AfD-Kampagne' wird abgelehnt: der Bindestrich ist eine Wortgrenze,
   // also greift der Stamm auch im Kompositum. Beabsichtigt — politischer
   // Content bleibt draussen, in welche Richtung er auch zeigt.
   { grund: 'politik',  re: stamm('afd|npd|reichsbuerger|reichsbürger|querdenk') },
-  { grund: 'illegal',  re: wort('drogen|kokain|waffen|betrug|geldwaesche|geldwäsche|schwarzarbeit') },
+  { grund: 'illegal',  re: wort('drogen|kokain|waffen|betrug|geldwaesche|geldwäsche|schwarzarbeit|drugs|cocaine|weapons|guns|fraud|money laundering') },
 ];
 
 /**

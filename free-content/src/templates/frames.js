@@ -89,11 +89,23 @@ function tokens(p) {
  * Linie mit — das Loch sieht man sofort.
  * NIEMALS trennen. Das ist der ganze Punkt.
  */
+// Feste Woerter in den Bildern je Sprache (englischer Funnel /en/, Sebi 23.10.2026: „immer beides 1/1“).
+// Instagram zeigt sie in der App genau so: Posts / Followers / Following, Follow / Message.
+const WORTE = {
+  de: { erstellt: 'erstellt mit', folgeMehr: 'Folge für mehr', beitraege: 'Beiträge', follower: 'Follower', gefolgt: 'Gefolgt',
+    zahl: '1.240', folgen: 'Folgen', nachricht: 'Nachricht', kicker: 'Der Post, der scrollen stoppt', head: 'Dein Content,',
+    accent: 'der auffällt.', plat: 'Instagram · frische Vorschau', fuss: 'Auch dein Feed — <em>gratis in Minuten.</em>' },
+  en: { erstellt: 'made with', folgeMehr: 'Follow for more', beitraege: 'posts', follower: 'followers', gefolgt: 'following',
+    zahl: '1,240', folgen: 'Follow', nachricht: 'Message', kicker: 'The post that stops the scroll', head: 'Your content',
+    accent: 'that stands out.', plat: 'Instagram · fresh preview', fuss: 'Your feed too — <em>free in minutes.</em>' },
+};
+const worte = (clean) => WORTE[clean?.sprache === 'en' ? 'en' : 'de'];
+
 function lock(clean) {
   return `<div class="lock wm-soft">
     <span class="handle">@${esc(clean.handle)}</span>
     <span class="spacer"></span>
-    <span class="mark"><span class="dot"></span>erstellt mit <i class="wm-logo" role="img" aria-label="social2scale"></i></span>
+    <span class="mark"><span class="dot"></span>${worte(clean).erstellt} <i class="wm-logo" role="img" aria-label="social2scale"></i></span>
   </div>`;
 }
 
@@ -127,7 +139,7 @@ function ctaBody(s, clean) {
       <div class="cta-handle">@${esc(clean.handle)}</div>
       <h1 class="head head-cta">${esc(s.head)}<br><em>${esc(s.headAccent)}</em></h1>
       <p class="sub">${esc(s.sub)}</p>
-      <div class="cta-follow"><span class="cta-plus">+</span> Folge für mehr</div>`;
+      <div class="cta-follow"><span class="cta-plus">+</span> ${worte(clean).folgeMehr}</div>`;
 }
 
 /**
@@ -217,9 +229,9 @@ function profil(id, clean, copy, p) {
         <div class="prof-top">
           <div class="pfp-ring"><div class="avatar">${avatarInhalt}</div></div>
           <div class="stats">
-            <div class="stat"><b>9</b><span>Beiträge</span></div>
-            <div class="stat"><b>1.240</b><span>Follower</span></div>
-            <div class="stat"><b>318</b><span>Gefolgt</span></div>
+            <div class="stat"><b>9</b><span>${worte(clean).beitraege}</span></div>
+            <div class="stat"><b>${worte(clean).zahl}</b><span>${worte(clean).follower}</span></div>
+            <div class="stat"><b>318</b><span>${worte(clean).gefolgt}</span></div>
           </div>
         </div>
         <div class="bio">
@@ -227,8 +239,8 @@ function profil(id, clean, copy, p) {
           <div class="l">${bioHtml(copy)}</div>
         </div>
         <div class="cta-row">
-          <span class="btn-follow">Folgen</span>
-          <span class="btn-msg">Nachricht</span>
+          <span class="btn-follow">${worte(clean).folgen}</span>
+          <span class="btn-msg">${worte(clean).nachricht}</span>
         </div>
         <div class="hl">${hlHtml(copy)}</div>
         <div class="tabs">
@@ -254,9 +266,10 @@ function shareFrame(clean, copy, shareUrl) {
   // dezente Signatur + QR drunter (viraler Loop). Hook = 1. Slide (kind:'hook')
   // des 1. Posts; Fallback auf die Profil-Headline, nie leer.
   const hook = (Array.isArray(copy?.posts) && copy.posts[0] && copy.posts[0].slides && copy.posts[0].slides[0]) || {};
-  const kicker = esc(hook.eyebrow || 'Der Post, der scrollen stoppt');
-  const head = esc(hook.head || copy?.head || 'Dein Content,');
-  const accent = esc(hook.headAccent || copy?.headAccent || 'der auffällt.');
+  const w = worte(clean);
+  const kicker = esc(hook.eyebrow || w.kicker);
+  const head = esc(hook.head || copy?.head || w.head);
+  const accent = esc(hook.headAccent || copy?.headAccent || w.accent);
   const sub = esc(hook.sub || '');
   // Ihr echtes Foto klein neben dem Handle: der geteilte Post wird persoenlich,
   // nicht generisch. Ohne Foto faellt der Block auf reinen Text zurueck.
@@ -269,7 +282,7 @@ function shareFrame(clean, copy, shareUrl) {
       <div class="share-top">
         <div class="share-id">${sharePfp}<div class="share-who">
           <span class="share-at">@${esc(clean.handle)}</span>
-          <span class="share-plat">Instagram · frische Vorschau</span>
+          <span class="share-plat">${w.plat}</span>
         </div></div>
         <img class="share-mark" src="https://social2scale.com/assets/sig-avatar.png" alt="social2scale">
       </div>
@@ -281,10 +294,10 @@ function shareFrame(clean, copy, shareUrl) {
       <div class="share-foot">
         <div class="share-foot-l">
           <img class="share-logo" src="https://social2scale.com/assets/sig-wordmark.png" alt="social2scale">
-          <span class="share-foot-t">Auch dein Feed — <em>gratis in Minuten.</em></span>
+          <span class="share-foot-t">${w.fuss}</span>
         </div>
         <div class="share-qr-wrap">
-          <div class="share-qr">${qrSvg(shareUrl, 210)}</div>
+          <div class="share-qr">${qrSvg(clean?.sprache === 'en' ? shareUrl.replace(/\/?$/, '/en/') : shareUrl, 210)}</div>
           <span class="share-scan">Scan <span class="share-arrow">→</span></span>
         </div>
       </div>
@@ -322,7 +335,7 @@ export function buildPage(clean, copy, palettes, shareUrl, onlyIds) {
     })
     .join('');
 
-  return `<!doctype html><html lang="de"><head><meta charset="utf-8">
+  return `<!doctype html><html lang="${clean?.sprache === 'en' ? 'en' : 'de'}"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="${FONTS}" rel="stylesheet">
