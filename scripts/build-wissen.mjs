@@ -210,9 +210,8 @@ const SEITEN = [
   },
 ];
 
-// Zweisprachig (17.10.2026, lib/sprachen.mjs): dieselben Bausteine je Sprache.
-// Auf Englisch gibt es keine Gratis-Vorschau (der Funnel erzeugt deutsche
-// Beitraege), der Weg ist das Erstgespraech.
+// Zweisprachig (17.10.2026, lib/sprachen.mjs): dieselben Bausteine je Sprache,
+// 1:1 auch hinter dem Knopf (Sebi 23.10.2026): /en/free/ fuehrt in den englischen Funnel.
 const SPRACHEN = {
   de: {
     lang: "de", locale: "de_DE", inLanguage: "de-DE", pfad: "/wissen/", start: "/", seiten: SEITEN,
@@ -235,9 +234,9 @@ const SPRACHEN = {
     lang: "en", locale: "en_US", inLanguage: "en-US", pfad: "/en/knowledge/", start: "/en/", seiten: SEITEN_EN,
     stand: "Last reviewed: August 20, 2026",
     zurueck: "All answers", zurStart: "Back to the homepage",
-    cta: "Book a free intro call", ctaHref: "/en/contact/",
+    cta: "Get started free", ctaHref: "/en/free/",
     abschlussH2: "What would this look like for <em>you</em>?",
-    abschlussP: "A free intro call of about 45 minutes to see if we’re a good fit. No obligation.",
+    abschlussP: "First we take a quick look at whether we’re a good fit. Then a preview or a call.",
     weiter: "More answers",
     ueTitel: "Knowledge — honest answers about social media management | social2scale",
     ueBeschr: "How much does social media management cost, how long does it take to build, do it yourself or hand it off? Concrete answers with real numbers — no sales talk.",
@@ -246,7 +245,7 @@ const SPRACHEN = {
     ueH1: "Honest answers instead of <em>sales talk</em>.",
     ueLead: "The questions we get asked most on intro calls, answered here with real numbers. Even when the answer is: do it yourself.",
     ueAbschlussH2: "Your question isn’t <em>here</em>?",
-    ueAbschlussP: "Write to us at info@social2scale.com or book a free intro call. We answer personally.",
+    ueAbschlussP: "See what your presence could look like: in 60 seconds, free. Or write to us, we answer personally.",
   },
 };
 

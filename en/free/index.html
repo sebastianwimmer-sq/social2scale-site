@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- SICHERHEIT:AUTO -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hjkGzfOwi9S/L+0Lv3ChVxomeKnCDl5oBzIL9FBTz8Q=' 'sha256-AM9BGfkNR3fXCgGNRSouH64mc2O0XUBG/eQYKxHW+oE=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
+<!-- /SICHERHEIT:AUTO -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#03080D">
+<meta name="robots" content="noindex, follow">
+
+<!-- Sofort-Weiterleitung zum Funnel. Marken-Link fuer die Instagram-Bio.
+     WICHTIG: die Funnel-Adresse steht hier an GENAU EINER Stelle (dreimal:
+     meta-refresh, JS, sichtbarer Fallback-Knopf) — bei Domain-/URL-Wechsel
+     nur in dieser Datei anpassen. -->
+<meta http-equiv="refresh" content="0; url=https://start.social2scale.com/en/">
+
+<title>Free preview — social2scale</title>
+<meta name="description" content="Are we the right fit? Quick check, then a preview of your feed in 60 seconds or an intro call. Free.">
+<link rel="canonical" href="https://social2scale.com/en/free/">
+<meta property="og:title" content="Your free preview — social2scale">
+<meta property="og:description" content="Are we the right fit? Quick check, then a preview of your feed in 60 seconds or an intro call. Free.">
+<meta property="og:url" content="https://social2scale.com/en/free/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://social2scale.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="social2scale — a free preview of your Instagram presence">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your free preview — social2scale">
+<meta name="twitter:description" content="Are we the right fit? Quick check, then a preview or an intro call. Free.">
+<meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
+
+<!-- Die Schriften der Marke. Ohne diese Zeile faellt die Seite auf die
+     Systemschrift zurueck und sieht aus wie eine fremde Website — genau das
+     war der Zustand vor dem 28.07.2026. -->
+<link rel="stylesheet" href="/fonts.css">
+<style>
+  /* Tokens 1:1 aus index.html — damit diese Seite nicht eigene Farben erfindet. */
+  :root{
+    --ink:#03080D; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --teal:#1FA6E0;
+    --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+    --line-2:rgba(242,243,241,.14); --line-3:rgba(242,243,241,.20);
+    --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  ::selection{background:rgba(0,184,136,.30);color:var(--paper)}
+
+  /* Aurora-Doppelton wie auf der Startseite: Emerald oben links, Teal unten
+     rechts, ueber dunkler Diagonale. Vorher lag hier ein einzelner flacher
+     Radial-Verlauf — der Grund, warum die Seite "billig" wirkte. */
+  /* Atmosphaere statt leerer Flaeche: unter dem Aurora-Doppelton liegt dasselbe
+     Arbeitsplatz-Foto wie auf der Preisseite, stark abgedunkelt. */
+  body{
+    min-height:100dvh;
+    background:
+      radial-gradient(120% 90% at 12% -10%, rgba(0,184,136,.18), transparent 58%),
+      radial-gradient(110% 90% at 88% 108%, rgba(31,166,224,.14), transparent 60%),
+      linear-gradient(165deg,rgba(10,17,20,.90) 0%,rgba(3,8,13,.94) 62%),
+      url(/assets/workspace.webp) center/cover no-repeat,
+      var(--ink);
+    color:var(--paper);
+    font-family:"Hanken Grotesk",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:grid;place-items:center;padding:clamp(24px,6vw,56px);text-align:center;
+  }
+
+  .card{position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(18px,2.4vw,26px);max-width:34rem;
+    padding:clamp(28px,5vw,48px) clamp(24px,4vw,44px);
+    border:1px solid rgba(242,243,241,.10);border-radius:20px;
+    background:linear-gradient(180deg,rgba(20,21,24,.62),rgba(10,11,13,.50));
+    -webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 40px 90px -50px rgba(0,0,0,.9)}
+  .wordmark{height:28px;width:auto;mix-blend-mode:screen}
+
+  .klabel{
+    font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+  }
+
+  h1{
+    font-family:"Fraunces",serif;font-weight:400;
+    font-size:clamp(2.1rem,1.3rem + 2.8vw,3.2rem);line-height:1.04;letter-spacing:-.025em;
+    font-variation-settings:"opsz" 144;
+    /* Umbruch erzwingen: einzeilig wirkt die Zeile klein, gestapelt entspricht
+       sie der Editorial-Typografie der uebrigen Seiten. */
+    max-width:15ch;
+    text-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px rgba(0,0,0,.45);
+  }
+  h1 em{
+    font-style:italic;font-weight:400;
+    background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:var(--emerald);
+  }
+
+  p.lead{color:var(--muted);font-size:1.02rem;line-height:1.55;max-width:38ch}
+
+  /* Fortschritt als laufendes Licht statt rotierendem Kreis — dieselbe
+     Bildsprache wie der Build-Screen im Funnel. Nur transform, damit es
+     auf dem Compositor laeuft. */
+  .load{width:min(260px,64vw);height:2px;border-radius:2px;background:var(--line-2);overflow:hidden}
+  .load span{display:block;height:100%;width:38%;border-radius:2px;background:var(--accent-flow);animation:rutsch 1.4s var(--ease) infinite}
+  @keyframes rutsch{0%{transform:translateX(-110%)}100%{transform:translateX(380%)}}
+
+  /* Rahmen-Knopf wie in der Gratis-Sektion der Startseite. Bewusst KEIN
+     Emerald-Leuchten: das bleibt dem Erstgespraech-CTA vorbehalten. */
+  .btn{
+    display:inline-block;font-family:"Archivo",sans-serif;font-size:0.9062rem;font-weight:700;
+    letter-spacing:.02em;padding:16px 30px;border-radius:9px;text-decoration:none;
+    background:transparent;color:var(--paper);border:1px solid var(--line-3);
+    transition:border-color var(--dur-2, .25s) var(--ease),background var(--dur-2, .25s) var(--ease),transform var(--dur-2, .25s) var(--ease);
+  }
+  .btn:hover,.btn:focus-visible{border-color:rgba(0,184,136,.55);background:rgba(0,184,136,.09);transform:translateY(-2px);outline:none}
+
+  .fine{font-family:"JetBrains Mono",monospace;font-size:0.6562rem;letter-spacing:.06em;color:var(--faint);line-height:1.8}
+
+  @media (prefers-reduced-motion:reduce){
+    .load span{animation:none;width:100%}
+    .btn:hover,.btn:focus-visible{transform:none}
+  }
+  /* Bruecke (motion-loop 06.10.2026): die Zwischenseite zeigt nur den Grund,
+     den auch die Vorschau hat — keine Karte, kein Bild, das beim Weiterleiten
+     abbricht. Der Notausgang erscheint erst, wenn die Weiterleitung haengt:
+     nach 1,5 s, ohne Bewegung (auch bei reduce und ohne JavaScript). */
+  @keyframes zeigen{to{opacity:1;visibility:visible}}
+  main.card{opacity:0;visibility:hidden;animation:zeigen .01s linear 1.5s forwards}
+
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
+  }
+</style>
+<link rel="stylesheet" href="/bedienung.css">
+</head>
+<body>
+  <main class="card">
+    <img class="wordmark" src="/assets/sig-wordmark.png" alt="social2scale" width="180" height="28">
+    <p class="klabel">Free</p>
+    <h1>Here we <em>go</em>.</h1>
+    <p class="lead">One moment — we’re taking you there. If nothing happens, you can also continue by hand:</p>
+    <div class="load" role="status" aria-label="Redirecting"><span></span></div>
+    <a class="btn" href="https://start.social2scale.com/en/">Start now →</a>
+    <p class="fine">Preview in 60 seconds · or a call right away</p>
+  </main>
+<script>
+  // Steht VOR der Weiterleitung: dahinter zählte /gratis/ nie (Besucher-Simulation
+  // 12.10.2026: 0 Aufrufe seit August).
+  // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
+  // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
+  // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
+  // Seite weiterhin keinen Cookie-Banner. Fehler bleiben stumm.
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      var daten = JSON.stringify({
+        p: location.pathname,
+        r: document.referrer || "",
+        d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop"
+      });
+      var url = "https://closing.social2scale.com/api/pv";
+      // sendBeacon überlebt auch schnelles Weiterklicken und blockiert nichts.
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
+    } catch (e) { /* Statistik darf die Seite nie stören */ }
+  })();
+</script>
+  <script>
+    // replace() statt href: kein Eintrag in der Historie, der Zurueck-Knopf
+    // fuehrt zurueck zu Instagram und nicht in eine Weiterleitungsschleife.
+    location.replace("https://start.social2scale.com/en/");
+  </script>
+</body>
+</html>

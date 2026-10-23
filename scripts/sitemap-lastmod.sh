@@ -27,7 +27,6 @@ SEITEN=(
   "/en/for-you/:en/for-you/index.html"
   "/en/results/:en/results/index.html"
   "/en/about/:en/about/index.html"
-  "/en/contact/:en/contact/index.html"
   "/en/knowledge/:en/knowledge/index.html"
 )
 

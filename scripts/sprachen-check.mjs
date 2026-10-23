@@ -20,7 +20,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import {
-  DOMAIN, PAARE, STEMPEL_MUSTER, datei, kopfZeilen, sichtbarerText, stempelZeile, textHash,
+  DOMAIN, PAARE, STEMPEL_MUSTER, datei, enZiel, kopfZeilen, sichtbarerText, stempelZeile, textHash,
 } from '../lib/sprachen.mjs';
 
 // Ab so vielen deutschen Treffern im sichtbaren Text gilt eine EN-Seite als
@@ -65,8 +65,36 @@ function pruefePaar(wurzel, { de, en }, sitemap) {
     befunde.push(`${en}: ${reste.length} deutsche Wörter im sichtbaren Text (${[...new Set(reste)].slice(0, 8).join(', ')})`);
   }
 
+  // 1:1-Regel: dieselben Wege hinter denselben Knoepfen (Sebi 23.10.2026).
+  befunde.push(...wegeVergleich(de, en, deHtml, enHtml));
+
   for (const pfad of [de, en]) {
     if (sitemap !== null && !sitemap.includes(`<loc>${DOMAIN}${pfad}</loc>`)) befunde.push(`${pfad}: fehlt in sitemap.xml`);
+  }
+  return befunde;
+}
+
+/** Ziele aller Links im Seitenkoerper, ohne Umschalter und ohne die Kopfzeilen; relative gegen den Seitenpfad aufgeloest. */
+function linkZiele(html, pfad) {
+  const koerper = html.replace(/<head[\s\S]*?<\/head>/i, '').replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi, '');
+  return [...koerper.matchAll(/<a\b([^>]*)>/g)]
+    .filter((m) => !/class="[^"]*\bsprache\b/.test(m[1]))
+    .map((m) => (m[1].match(/\bhref="([^"]*)"/) || [])[1])
+    .filter((h) => h !== undefined)
+    .map((h) => h.replace(/&amp;/g, '&'))
+    .map((h) => (/^([a-z]+:|\/|#)/i.test(h) ? h : (() => { const u = new URL(h, DOMAIN + pfad); return u.pathname + u.search + u.hash; })()));
+}
+
+const zaehle = (liste) => liste.reduce((m, x) => m.set(x, (m.get(x) || 0) + 1), new Map());
+
+/** Jeder deutsche Link muss auf der englischen Seite als Link auf seine EN-Schwester stehen, gleich oft. */
+export function wegeVergleich(de, en, deHtml, enHtml) {
+  const soll = zaehle(linkZiele(deHtml, de).map((h) => enZiel(h) ?? `(kein EN-Ziel fuer ${h})`));
+  const ist = zaehle(linkZiele(enHtml, en));
+  const befunde = [];
+  for (const ziel of new Set([...soll.keys(), ...ist.keys()])) {
+    const s = soll.get(ziel) || 0, i = ist.get(ziel) || 0;
+    if (s !== i) befunde.push(`${en}: Link ${ziel} ${i}× statt ${s}× wie auf ${de} (1:1-Regel)`);
   }
   return befunde;
 }
@@ -138,6 +166,16 @@ function selbsttest() {
         writeFileSync(f, readFileSync(f, 'utf8').replace('<head>', '<head><meta property="og:locale" content="de_DE">'));
       },
       erwartet: /og:locale steht noch auf de_DE/,
+    },
+    {
+      name: 'anderer Weg hinter dem Knopf',
+      kaputt: (w) => {
+        const f = join(w, datei(paar.en));
+        writeFileSync(f, readFileSync(f, 'utf8').replace('</body>', '<a href="/en/contact/">Book a call</a></body>'));
+        const g = join(w, datei(paar.de));
+        writeFileSync(g, readFileSync(g, 'utf8').replace('</body>', '<a href="/gratis/">Kostenlos starten</a></body>'));
+      },
+      erwartet: /Link \/en\/free\/ 0× statt 1×/,
     },
     {
       name: 'Umschalter fehlt',
