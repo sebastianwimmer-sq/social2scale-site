@@ -18,9 +18,11 @@ export const FILM = {
     "art": "szene",
     "szene": "post",
     "marken": {
-     "mail": 8.31,
+     "titel": 8.31,
+     "unterwegs": 9.59,
+     "mail": 10.59,
      "post": 12.39,
-     "feed": 13.31
+     "feed": 13.43
     }
    },
    {
@@ -29,9 +31,12 @@ export const FILM = {
     "art": "szene",
     "szene": "phil",
     "marken": {
-     "phil": 17.6,
+     "mehr": 15.86,
+     "gespraech": 17.6,
+     "phil": 19.18,
      "beide": 20.34,
-     "zeit": 21.52
+     "zeit": 21.52,
+     "dich": 22.88
     }
    },
    {
@@ -40,9 +45,10 @@ export const FILM = {
     "art": "szene",
     "szene": "klaeren",
     "marken": {
-     "ziel": 25.09,
-     "gruppe": 26.07,
-     "stand": 27.85,
+     "klaert": 24.45,
+     "ziel": 24.95,
+     "gruppe": 25.87,
+     "stand": 27.21,
      "weg": 30.21
     }
    },
@@ -52,7 +58,7 @@ export const FILM = {
     "art": "avatar",
     "szene": "termin",
     "marken": {
-     "kostenlos": 32.89,
+     "kostenlos": 32.99,
      "termin": 34.99
     }
    }
@@ -60,17 +66,17 @@ export const FILM = {
   "untertitel": [
    {
     "von": 0.0,
-    "bis": 1.89,
+    "bis": 2.07,
     "text": "Hallo, schön, dass du da bist."
    },
    {
-    "von": 1.94,
-    "bis": 4.61,
+    "von": 2.12,
+    "bis": 5.01,
     "text": "Ich bin die KI-Assistenz von social2scale"
    },
    {
-    "von": 4.66,
-    "bis": 7.27,
+    "von": 5.06,
+    "bis": 8.01,
     "text": "und erkläre dir kurz, was jetzt passiert."
    },
    {
@@ -85,7 +91,7 @@ export const FILM = {
    },
    {
     "von": 13.31,
-    "bis": 15.08,
+    "bis": 15.56,
     "text": "dann baut sich dein Feed fertig."
    },
    {
@@ -105,7 +111,7 @@ export const FILM = {
    },
    {
     "von": 21.52,
-    "bis": 23.81,
+    "bis": 24.15,
     "text": "etwa 45 Minuten für dich."
    },
    {
@@ -125,7 +131,7 @@ export const FILM = {
    },
    {
     "von": 30.21,
-    "bis": 31.78,
+    "bis": 32.08,
     "text": "welcher Weg zu dir passt."
    },
    {
@@ -135,12 +141,12 @@ export const FILM = {
    },
    {
     "von": 33.79,
-    "bis": 36.12,
+    "bis": 36.04,
     "text": "Such dir am besten gleich einen Termin aus."
    },
    {
-    "von": 36.17,
-    "bis": 37.04,
+    "von": 36.09,
+    "bis": 37.14,
     "text": "Bis bald."
    }
   ]
@@ -163,8 +169,11 @@ export const FILM = {
     "art": "szene",
     "szene": "kennt",
     "marken": {
-     "antworten": 10.65,
-     "zeit": 12.13
+     "phil": 8.31,
+     "beide": 9.69,
+     "antworten": 10.81,
+     "gespraech": 12.13,
+     "zeit": 13.75
     }
    },
    {
@@ -173,9 +182,10 @@ export const FILM = {
     "art": "szene",
     "szene": "klaeren",
     "marken": {
-     "ziel": 17.28,
-     "gruppe": 18.26,
-     "stand": 20.04,
+     "klaert": 16.64,
+     "ziel": 17.14,
+     "gruppe": 18.06,
+     "stand": 19.4,
      "weg": 22.4
     }
    },
@@ -185,7 +195,7 @@ export const FILM = {
     "art": "avatar",
     "szene": "termin",
     "marken": {
-     "kostenlos": 25.09,
+     "kostenlos": 25.19,
      "termin": 27.19
     }
    }
@@ -193,17 +203,17 @@ export const FILM = {
   "untertitel": [
    {
     "von": 0.0,
-    "bis": 1.89,
+    "bis": 2.07,
     "text": "Hallo, schön, dass du da bist."
    },
    {
-    "von": 1.94,
-    "bis": 4.61,
+    "von": 2.12,
+    "bis": 5.01,
     "text": "Ich bin die KI-Assistenz von social2scale"
    },
    {
-    "von": 4.66,
-    "bis": 7.27,
+    "von": 5.06,
+    "bis": 8.01,
     "text": "und erkläre dir kurz, was jetzt passiert."
    },
    {
@@ -223,7 +233,7 @@ export const FILM = {
    },
    {
     "von": 13.75,
-    "bis": 16.0,
+    "bis": 16.34,
     "text": "etwa 45 Minuten für dich."
    },
    {
@@ -243,7 +253,7 @@ export const FILM = {
    },
    {
     "von": 22.4,
-    "bis": 23.97,
+    "bis": 24.28,
     "text": "welcher Weg zu dir passt."
    },
    {
@@ -253,12 +263,12 @@ export const FILM = {
    },
    {
     "von": 25.99,
-    "bis": 28.32,
+    "bis": 28.24,
     "text": "Such dir am besten gleich einen Termin aus."
    },
    {
-    "von": 28.37,
-    "bis": 29.24,
+    "von": 28.29,
+    "bis": 29.33,
     "text": "Bis bald."
    }
   ]

@@ -41,11 +41,12 @@ CUES = {
 }
 # Wortmarken, an denen die Szene etwas zeigt (Index im Wortlauf).
 MARKEN = {
+    # Runde 4 (Sebi 23.10.: Zwischenszenen „sehr flach“): mehr Marken, jede bewegt etwas Eigenes.
     's1': {'name': 0},
-    's2a': {'mail': 0, 'post': 11, 'feed': 12},
-    's2b': {'antworten': 5, 'zeit': 9},
-    's3a': {'phil': 5, 'beide': 12, 'zeit': 14},
-    's4': {'ziel': 3, 'gruppe': 5, 'stand': 10, 'weg': 15},
+    's2a': {'titel': 0, 'unterwegs': 4, 'mail': 5, 'post': 11, 'feed': 13},
+    's2b': {'phil': 0, 'beide': 3, 'antworten': 6, 'gespraech': 9, 'zeit': 14},
+    's3a': {'mehr': 0, 'gespraech': 5, 'phil': 9, 'beide': 12, 'zeit': 14, 'dich': 17},
+    's4': {'klaert': 0, 'ziel': 2, 'gruppe': 4, 'stand': 7, 'weg': 15},
     's5': {'kostenlos': 3, 'termin': 9},
 }
 # Pegel: Rohstimmen liegen bei ~-23 LUFS, am Handy zu leise -> +4,5 dB, Limiter faengt die Spitzen.
@@ -69,6 +70,9 @@ def sfx_ereignisse(abschnitte, dauer_gesamt):
         ev += [(m[k], 'tick') for k in ('ziel', 'gruppe', 'stand') if k in m]
         if 'beide' in m:
             ev.append((m['beide'], 'swish'))
+        ev += [(m[k], 'tick') for k in ('mail', 'zeit') if k in m]
+        if 'weg' in m:
+            ev += [(m['weg'] + 0.1 + i * 0.09, 'pop') for i in range(3)]  # drei Balken der Bildmarke
     ev.append((dauer_gesamt - 0.75, 'riser'))
     return sorted((round(max(0.0, z), 3), n) for z, n in ev)
 
@@ -121,6 +125,36 @@ def ton(b):
     sys.exit(f'{b}: Ton fehlt in {Q}')
 
 
+def angleichen(b, ziel):
+    """Stimme Wort fuer Wort auf die Lippen des Avatar-Clips legen (Sebi 23.10.: „mundbewegungen sind
+    teils asynchron“; gemessen bis 0,38 s Versatz). Der Clip-Ton selbst verschluckt Woerter
+    („kostenlos“), darum die saubere Stimme, zeitlich gedehnt/gestaucht zwischen den Wortanfaengen."""
+    q, c = worte(b), worte('avatar-' + b)
+    if len(q) != len(c):
+        sys.exit(f'{b}: {len(q)} Woerter in der Stimme, {len(c)} im Clip')
+    anker = [(q[0]['start'], c[0]['start'])]
+    for a, z in zip(q[1:], c[1:]):
+        if a['start'] - anker[-1][0] >= 0.12 and z['start'] - anker[-1][1] >= 0.12:
+            anker.append((a['start'], z['start']))
+    anker.append((q[-1]['end'], c[-1]['end']))
+    teile, graph = [], []
+    vor = anker[0][1] - anker[0][0]
+    if vor > 0:
+        graph.append(f'aevalsrc=0:d={vor:.3f}:s=48000[v0]'); teile.append('[v0]')
+    start0 = max(0.0, -vor)
+    for k in range(len(anker) - 1):
+        (qa, ca), (qz, cz) = anker[k], anker[k + 1]
+        qa = max(qa, start0) if k == 0 else qa
+        tempo = min(2.0, max(0.5, (qz - qa) / (cz - ca)))
+        graph.append(f'[0:a]atrim={qa:.3f}:{qz:.3f},asetpts=PTS-STARTPTS,aresample=48000,atempo={tempo:.4f},apad,atrim=0:{cz - ca:.4f}[s{k}]')  # exakte Laenge, sonst laeuft der Versatz auf
+        teile.append(f'[s{k}]')
+    graph.append(f'[0:a]atrim={anker[-1][0]:.3f},asetpts=PTS-STARTPTS,aresample=48000[rest]'); teile.append('[rest]')
+    graph.append(''.join(teile) + f'concat=n={len(teile)}:v=0:a=1[o]')
+    lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(ton(b)), '-filter_complex', ';'.join(graph),
+         '-map', '[o]', '-ar', '48000', str(ziel))
+    return ziel
+
+
 def stueck(b, art, ziel):
     """Ein Abschnitt als einheitliches MP4 (720², 30 fps, AAC 48 kHz), Laenge zurueck."""
     if art == 'avatar':
@@ -128,7 +162,8 @@ def stueck(b, art, ziel):
         if not clip.exists():
             sys.exit(f'{clip.name} fehlt')
         d = dauer(clip)
-        lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(clip), '-i', str(ton(b)),
+        stimme = angleichen(b, ziel.with_suffix('.stimme.wav'))
+        lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(clip), '-i', str(stimme),
              '-filter_complex', f'[0:v]scale={GROESSE}:{GROESSE}:flags=lanczos,fps=30,format=yuv420p[v];'
              f'[1:a]aresample=48000,{PEGEL},apad,atrim=0:{d:.3f}[a]',
              '-map', '[v]', '-map', '[a]', '-t', f'{d:.3f}', '-c:v', 'libx264', '-crf', '23', '-preset', 'slow',
@@ -142,8 +177,8 @@ def stueck(b, art, ziel):
     return d, VOR
 
 
-def cues(b, start, versatz, ende):
-    w = worte(b)
+def cues(b, start, versatz, ende, art='szene'):
+    w = worte('avatar-' + b) if art == 'avatar' else worte(b)
     liste = CUES[b]
     out = []
     for i, (text, idx) in enumerate(liste):
@@ -151,6 +186,8 @@ def cues(b, start, versatz, ende):
             sys.exit(f'{b}: Wortindex {idx} fehlt')
         von = start + versatz + w[idx]['start']
         bis = start + versatz + (w[liste[i + 1][1]]['start'] - 0.05 if i + 1 < len(liste) else w[-1]['end'] + 0.35)
+        if i + 1 == len(liste):
+            bis = ende - 0.05  # Sebi 23.10.: Untertitel in jedem Bereich, auch in der Sprechpause bis zum Schnitt
         out.append({'von': round(von, 2), 'bis': round(min(bis, ende), 2), 'text': text})
     return out
 
@@ -161,10 +198,10 @@ def fassung(name, tmp):
         datei = tmp / f'{name}-{b}.mp4'
         d, versatz = stueck(b, art, datei)
         teile.append(datei)
-        w = worte(b)
+        w = worte('avatar-' + b) if art == 'avatar' else worte(b)
         marken = {k: round(t + versatz + w[i]['start'], 2) for k, i in MARKEN.get(b, {}).items()}
         abschnitte.append({'von': round(t, 2), 'bis': round(t + d, 2), 'art': art, 'szene': szene, 'marken': marken})
-        untertitel += cues(b, t, versatz, t + d)
+        untertitel += cues(b, t, versatz, t + d, art)
         t += d
     liste = tmp / f'{name}.txt'
     liste.write_text(''.join(f"file '{p}'\n" for p in teile))
