@@ -61,15 +61,14 @@ const LCP_MAX = 2500;       // Core Web Vitals 2026, unverändert (ms)
 const WORTE_VOR_VORSCHAU = 150;
 
 // Was zur Gratis-Vorschau führt.
-const VORSCHAU = /start\.social2scale\.com|\/gratis\/?(\?|#|$)/i;
+const VORSCHAU = /start\.social2scale\.com|\/(gratis|en\/free)\/?(\?|#|$)/i;
 // Seiten, die bewusst nicht zur Vorschau führen müssen: Recht, nach dem Kauf, Kundinnen —
 // und /anfrage/, das Erstgespräch-Formular ist selbst schon der Abschluss (ein Vorschau-Knopf
 // dort würde aus dem Formular herausführen).
-const OHNE_VORSCHAU = /^\/(impressum|datenschutz|danke|onboarding|anfrage)(\/|$)/;
-// Englische Seiten (17.10.2026, lib/sprachen.mjs): die Gratis-Vorschau erzeugt deutsche
-// Beitraege und ist dort bewusst nicht der Weg — der Hauptweg ist das Erstgespraech.
+const OHNE_VORSCHAU = /^\/(impressum|datenschutz|danke|onboarding|anfrage|en\/contact)(\/|$)/;
+// Englische Seiten (lib/sprachen.mjs): seit 23.10.2026 1:1 wie Deutsch — derselbe Funnel auf
+// Englisch (/en/free/ → start.social2scale.com/en/), also dieselbe Regel; geprueft wird die Sprache.
 const ENGLISCH = /^\/en(\/|$)/;
-const KONTAKT_EN = /\/en\/contact\/?(\?|#|$)|calendly\.com\//i;
 
 const BEFUNDE = [];
 const WEGE = [];
@@ -80,9 +79,8 @@ function befund(persona, wo, stufe, text, beleg = '') {
 // ── Messung im Browser (eine Funktion, damit der Selbsttest dieselbe prüft) ──────────
 // Läuft als page.evaluate — darf nichts von außen benutzen.
 function messeImBrowser(cfg) {
-  const { VORSCHAU_QUELLE, KONTAKT_EN_QUELLE, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT } = cfg;
+  const { VORSCHAU_QUELLE, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT } = cfg;
   const vorschau = new RegExp(VORSCHAU_QUELLE, 'i');
-  const kontaktEn = new RegExp(KONTAKT_EN_QUELLE, 'i');
   const sichtbar = (el) => {
     const r = el.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) return false;
@@ -109,7 +107,6 @@ function messeImBrowser(cfg) {
   const klickbar = [...document.querySelectorAll('a[href], button, [role="button"], input:not([type="hidden"]), select, textarea, summary')].filter(sichtbar);
   const vorschauLinks = klickbar.filter((a) => a.tagName === 'A' && vorschau.test(a.getAttribute('href') || ''));
   aus.vorschauLinks = vorschauLinks.length;
-  aus.kontaktEnLinks = klickbar.filter((a) => a.tagName === 'A' && kontaktEn.test(a.getAttribute('href') || '')).length;
   // Erste Handlung = erster sichtbare, knopfartige Link/Knopf in Lesereihenfolge (Seite oben).
   const knopfartig = (el) => {
     const s = getComputedStyle(el);
@@ -178,7 +175,7 @@ function messeImBrowser(cfg) {
   return aus;
 }
 
-const CFG = { VORSCHAU_QUELLE: VORSCHAU.source, KONTAKT_EN_QUELLE: KONTAKT_EN.source, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT };
+const CFG = { VORSCHAU_QUELLE: VORSCHAU.source, MIN_ZIEL, GUT_ZIEL, MIN_SCHRIFT, LESETEXT };
 
 // LCP und CLS von Anfang an mitschreiben (vor jedem Skript der Seite).
 const BEOBACHTER = `
@@ -195,8 +192,7 @@ export function bewerte(pfad, m, { handy, einstieg }) {
   const gelb = (t, x = '') => b.push({ stufe: 'gelb', text: t, beleg: x });
   if (m.querscrollen > 1) rot('Seite scrollt quer', m.querscrollen + ' px zu breit');
   const englisch = ENGLISCH.test(pfad);
-  if (englisch && !m.kontaktEnLinks) rot('Kein Weg zum Erstgespräch auf dieser englischen Seite');
-  if (!englisch && !OHNE_VORSCHAU.test(pfad) && !m.vorschauLinks) rot('Kein Weg zur Gratis-Vorschau auf dieser Seite');
+  if (!OHNE_VORSCHAU.test(pfad) && !m.vorschauLinks) rot('Kein Weg zur Gratis-Vorschau auf dieser Seite');
   if (einstieg && handy && m.ersteHandlung && m.ersteHandlung.unten > m.vh) rot('Erste Handlung liegt unter dem Falz', m.ersteHandlung.text + ' endet bei ' + m.ersteHandlung.unten + ' px, Schirm ' + m.vh + ' px');
   if (einstieg && handy && !m.ersteHandlung) rot('Auf dem ersten Schirm gibt es keinen Knopf');
   if (einstieg && handy && m.worteVorVorschau > WORTE_VOR_VORSCHAU) gelb('Viel Text vor dem ersten Vorschau-Knopf', m.worteVorVorschau + ' Wörter');
@@ -640,13 +636,13 @@ async function selbsttest() {
   const versteckt = g.filter((x) => x.text.includes('Trefferflächen zwischen'));
   console.log((versteckt.length ? '🔴' : '🟢') + ' grün-Fixture: versteckter Knopf (pointer-events:none) zählt nicht als knapp' + (versteckt.length ? ': ' + versteckt[0].beleg : ''));
   ok = ok && !versteckt.length;
-  // Englisch (17.10.2026): EN-Seite ohne Weg zum Erstgespraech und mit lang="de" rot, sauber gruen.
+  // Englisch (1:1 seit 23.10.2026): EN-Seite ohne Weg in den Funnel und mit lang="de" rot, sauber gruen.
   const enLauf = async (html) => { await page.setContent(html); return bewerte('/en/', await page.evaluate(messeImBrowser, CFG), { handy: false, einstieg: false }); };
-  const enRot = await enLauf(GRUEN);
-  const enGruen = await enLauf(GRUEN.replace('lang="de"', 'lang="en"').replace('https://start.social2scale.com/', '/en/contact/'));
-  const enOk = enRot.some((x) => x.text.includes('Erstgespräch auf dieser englischen')) && enRot.some((x) => x.text.includes('als Englisch'))
+  const enRot = await enLauf(GRUEN.replace(/https:\/\/start\.social2scale\.com\//g, '/en/about/'));
+  const enGruen = await enLauf(GRUEN.replace('lang="de"', 'lang="en"').replace('https://start.social2scale.com/', '/en/free/'));
+  const enOk = enRot.some((x) => x.text.includes('Kein Weg zur Gratis-Vorschau')) && enRot.some((x) => x.text.includes('als Englisch'))
     && !enGruen.some((x) => x.stufe === 'rot');
-  console.log((enOk ? '🟢' : '🔴') + ' Englisch: ohne Erstgespräch-Weg und mit lang="de" rot, sauber grün' + (enOk ? '' : ': ' + [...enRot, ...enGruen].map((x) => x.text).join(' | ')));
+  console.log((enOk ? '🟢' : '🔴') + ' Englisch: ohne Funnel-Weg und mit lang="de" rot, sauber grün' + (enOk ? '' : ': ' + [...enRot, ...enGruen].map((x) => x.text).join(' | ')));
   ok = ok && enOk;
   const sauber = g.filter((x) => x.stufe === 'rot');
   console.log((sauber.length ? '🔴' : '🟢') + ' grün-Fixture ohne Rot' + (sauber.length ? ': ' + sauber.map((x) => x.text).join(' | ') : ''));

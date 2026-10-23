@@ -234,10 +234,4 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/knowledge/how-we-work-together/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/wissen/ablauf-zusammenarbeit/"/>
   </url>
-  <url>
-    <loc>https://social2scale.com/en/contact/</loc>
-    <lastmod>2026-10-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
 </urlset>
