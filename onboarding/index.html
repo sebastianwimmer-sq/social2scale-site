@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0awV0laenbOPCC4Hr3j+XdKAylys/fMUGCz7wHN8s4A=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://api.web3forms.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-wvqCWgHPG1IRrL6764PECgAHjADzOS/fPO8YOywuuCg=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -19,12 +19,10 @@
 <link rel="stylesheet" href="/fonts.css">
 <noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
   </style></noscript>
-<!-- ============================================================
-   ANPASSEN (Sebi/Phil):
-   [W3F]  Web3Forms Access Key  →  <input name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
-          Kostenlos holen auf https://web3forms.com  (E-Mail info@social2scale.com eintragen,
-          Key per Mail erhalten, hier einsetzen). Antworten landen dann bei info@social2scale.com.
-   ============================================================ -->
+<!-- Versand: direkt ins CRM (closing.social2scale.com/api/intake, Typ onboarding); das CRM meldet
+     jeden Eingang selbst (sendIntakeNotifications). Bis 25.10.2026 lief zusaetzlich Web3Forms mit dem
+     Platzhalter-Schluessel DEIN_WEB3FORMS_ACCESS_KEY — der Versand scheiterte immer und die Kundin
+     sah direkt nach dem Kauf „Da ist etwas schiefgelaufen“, obwohl ihre Antworten im CRM lagen. -->
 <style>
   :root{
     --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
@@ -238,15 +236,10 @@
 
   <main class="wrap reveal">
     <!-- FORM -->
-    <form id="onboarding-form" action="https://api.web3forms.com/submit" method="POST" novalidate aria-labelledby="form-heading">
+    <form id="onboarding-form" method="POST" novalidate aria-labelledby="form-heading">
       <h2 id="form-heading" class="skip">Onboarding-Fragebogen</h2>
 
-      <!-- Web3Forms hidden fields -->
-      <!-- ANPASSEN [W3F]: echten Access Key von web3forms.com (kostenlos) hier eintragen -->
-      <input type="hidden" name="access_key" value="DEIN_WEB3FORMS_ACCESS_KEY">
-      <input type="hidden" name="subject" value="Neues Onboarding — social2scale">
-      <input type="hidden" name="from_name" value="social2scale Onboarding">
-      <!-- Honeypot (Web3Forms Spam-Schutz) -->
+      <!-- Honeypot: markiert im CRM als Spam, verwirft nie (Autofill kann ihn fuellen) -->
       <div class="hp" aria-hidden="true"><label>Bitte leer lassen<input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off"></label></div>
 
       <!-- 1 — KONTAKT -->
@@ -452,7 +445,7 @@
       els.forEach(function (e) { ob.observe(e); });
     }
 
-    // Web3Forms submit via fetch → eigener Success-State
+    // Versand ins CRM; „Danke“ erst nach dessen Bestaetigung (success:true).
     // Kickoff-Buchungslink: leer, bis Phil dafuer einen eigenen Calendly-Termin-Typ anlegt.
     // Vorher stand hier eine Platzhalter-Adresse des alten Buchungsdienstes; rechts-loop zaehlte sie als
     // geladenen Dienst ohne Eintrag in der Datenschutzerklaerung (16.10.2026).
@@ -474,34 +467,27 @@
       btn.disabled = true;
 
       var data = new FormData(form);
+      var lines = [], vor = '', nach = '', em = '';
+      data.forEach(function (v, k) {
+        if (k === 'botcheck' || typeof v !== 'string' || !v.trim()) return;
+        if (k === 'Vorname') vor = v;
+        else if (k === 'Nachname') nach = v;
+        else if (k === 'E-Mail') em = v;
+        lines.push('- **' + k + ':** ' + v);
+      });
 
-      // Zusätzlich ins CRM-Intake spiegeln (non-fatal) — landet in „Eingänge".
-      try {
-        if (!data.get('botcheck')) {
-          var skip = { access_key: 1, botcheck: 1, from_name: 1, subject: 1, referrer: 1, redirect: 1 };
-          var lines = [], vor = '', nach = '', em = '';
-          data.forEach(function (v, k) {
-            if (skip[k] || typeof v !== 'string' || !v.trim()) return;
-            if (k === 'Vorname') vor = v;
-            else if (k === 'Nachname') nach = v;
-            else if (k === 'E-Mail') em = v;
-            lines.push('- **' + k + ':** ' + v);
-          });
-          fetch('https://closing.social2scale.com/api/intake', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              type: 'onboarding',
-              name: (vor + ' ' + nach).trim(),
-              email: em,
-              payload: '# Onboarding (Website)\n\n' + lines.join('\n'),
-              website: ''
-            })
-          }).catch(function () {});
-        }
-      } catch (e) {}
-
-      fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } })
+      fetch('https://closing.social2scale.com/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'onboarding',
+          name: (vor + ' ' + nach).trim(),
+          email: em,
+          payload: '# Onboarding (Website)\n\n' + lines.join('\n'),
+          // Honeypot-Treffer gehen mit und werden im CRM als Spam markiert, nie still verworfen.
+          website: data.get('botcheck') ? 'botcheck' : ''
+        })
+      })
         .then(function (res) { return res.json().catch(function () { return {}; }).then(function (j) { return { ok: res.ok, json: j }; }); })
         .then(function (r) {
           if (r.ok && r.json && r.json.success) {
@@ -525,7 +511,7 @@
         .catch(function (e) {
           btn.classList.remove('loading');
           btn.disabled = false;
-          errEl.textContent = 'Da ist etwas schiefgelaufen. Bitte versuch es erneut oder schreib uns an info@social2scale.com.';
+          errEl.textContent = 'Deine Antworten sind noch nicht bei uns angekommen. Bitte nochmal senden — oder schreib uns an info@social2scale.com.';
         });
     });
   </script>
