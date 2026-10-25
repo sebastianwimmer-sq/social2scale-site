@@ -67,8 +67,7 @@ const SZENEN = {
   post: `
               <div class="fs fs-post">
                 <div class="fs-kopf">
-                  <p class="fs-h" data-m="titel">${kw('Deine Vorschau')}</p>
-                  <p class="fs-h" data-m="unterwegs">${kw('ist unterwegs.', 'unterwegs.')}</p>
+                  <p class="fs-h"><span data-m="titel">${kw('Deine Vorschau')}</span><br><span data-m="unterwegs">${kw('ist unterwegs.', 'unterwegs.')}</span></p>
                   <p class="fs-mail" data-m="mail"><span class="fx-mail"></span></p>
                 </div>
                 <div class="fs-feed fx-feed" data-m="feed"></div>
@@ -99,8 +98,10 @@ const SZENEN = {
   // Weg B: Phil hat ihre Antworten gelesen; sie laufen im Takt ein und raeumen dann den Weg frei.
   kennt: `
               <div class="fs fs-kennt">
-                <p class="fs-riesig" data-m="phil">${kw('Phil')}</p>
-                <p class="fs-unter" data-m="antworten">${kw('hat deine Antworten gelesen')}</p>
+                <div class="fs-name">
+                  <p class="fs-riesig" data-m="phil">${kw('Phil')}</p>
+                  <p class="fs-unter" data-m="antworten">${kw('hat deine Antworten gelesen')}</p>
+                </div>
                 <dl class="fs-antworten">
                   <div data-m="thema"><dt>Thema</dt><dd class="fx-thema"></dd></div>
                   <div data-m="ziel"><dt>Ziel</dt><dd class="fx-ziel"></dd></div>
@@ -195,6 +196,9 @@ export const FILM_STYLE = `
   .fs-avatar{transform:none}
   .fs-sperre{background:#070a0a;transform:none}
   .film:not(.laeuft):not(.fertig):not(.stumm) .fs-sperre{opacity:1}
+  /* Weg B baut keinen Feed: vor dem Start steht dort das Standbild der Frau statt einer leeren Vorlage */
+  .film[data-film="b"] .fs-sperre{display:none}
+  .film[data-film="b"]:not(.laeuft):not(.fertig) .film-scrim{opacity:1}
   .film[data-szene="post"] .fs-post,.film[data-szene="luecke"] .fs-luecke,.film[data-szene="kennt"] .fs-kennt,
   .film[data-szene="plan"] .fs-plan{opacity:1}
   .fs p{margin:0}
@@ -277,8 +281,9 @@ export const FILM_STYLE = `
   .fs-plan:has(.fs-gipfel.an) .fs-ziel-l{translate:0 -1.4em}
 
   /* Weg B: Phil, dann ihre Antworten im Takt der Stimme; zum Ende raeumen sie den Weg frei */
-  .fs-riesig{position:absolute;left:0;right:0;top:15%;text-align:center;font-family:var(--ff-serif);font-weight:520;font-size:5em;line-height:.95;letter-spacing:-.04em;transition:opacity .5s,translate .8s var(--e-out)}
-  .fs-unter{position:absolute;left:8%;right:8%;top:calc(15% + 5.6em);text-align:center;font-size:.98em;color:var(--muted);transition:opacity .5s}
+  .fs-name{position:absolute;left:8%;right:8%;top:14%;display:grid;justify-items:center;gap:.35em;text-align:center}
+  .fs-riesig{font-family:var(--ff-serif);font-weight:520;font-size:5em;line-height:1.05;letter-spacing:-.04em;transition:opacity .5s,translate .8s var(--e-out)}
+  .fs-unter{font-size:.98em;color:var(--muted);transition:opacity .5s,translate .8s var(--e-out)}
   .fs-antworten{position:absolute;left:9%;right:9%;top:44%;margin:0;display:grid;gap:.75em}
   .fs-antworten>div{padding-top:.55em;border-top:1px solid rgba(242,243,241,.14);opacity:0;translate:1.6em 0;transition:opacity .5s var(--e-out),translate .8s var(--e-out)}
   .fs-antworten>div.an{opacity:1;translate:0 0}
@@ -294,10 +299,11 @@ export const FILM_STYLE = `
   .film:is([data-szene="luecke"],[data-szene="plan"]) .film-licht{opacity:.12}
 
   .film-ut{position:absolute;left:7%;right:7%;bottom:7.5%;margin:0;text-align:center;font-size:clamp(.8rem,5.2cqi,.98rem);font-weight:600;line-height:1.35;color:#F2F3F1;z-index:3;
-    text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.7);text-wrap:balance;min-height:4.05em;display:flex;flex-wrap:wrap;align-content:flex-end;justify-content:center;column-gap:.28em}
+    text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.7);text-wrap:balance;min-height:4.05em;display:flex;align-items:flex-end;justify-content:center}
+  .film-ut-z{display:block;text-wrap:balance}
   /* das gesprochene Wort leuchtet mit (Wortzeiten aus bauen.py), die kommenden stehen schon da */
-  .film-ut span{opacity:.58;transition:opacity .12s linear}.film-ut span.ist{opacity:1}
-  .film-ki{position:absolute;top:8.2%;left:6%;z-index:4;font-family:var(--ff-label);font-size:.62rem;font-weight:600;letter-spacing:.04em;padding:.3rem .5rem;border-radius:7px;
+  .film-ut-z span{opacity:.58;transition:opacity .12s linear}.film-ut-z span.ist{opacity:1}
+  .film-ki{position:absolute;top:8.2%;left:6%;z-index:6;font-family:var(--ff-label);font-size:.62rem;font-weight:600;letter-spacing:.04em;padding:.3rem .5rem;border-radius:7px;
     color:#F2F3F1;background:rgba(3,8,13,.62);border:1px solid var(--hair-2)}
   /* Start: eine Taste mit Ton ueber ihrem Feed */
   .film-start{position:absolute;left:5%;right:5%;bottom:6%;z-index:5;display:flex;align-items:center;gap:.7rem;padding:.65rem .75rem;border-radius:16px;cursor:pointer;text-align:left;
@@ -451,8 +457,11 @@ export const FILM_SCRIPT = `
     }
     function untertitel(t){
       const c=d.untertitel.find(x=>t>=x.von&&t<x.bis)||null;
-      if(c!==cue){cue=c;ut.replaceChildren(...(c?c.text.split(' ').map(w=>{const s=document.createElement('span');s.textContent=w;return s;}):[]));}
-      if(c&&c.worte)[...ut.children].forEach((s,k)=>s.classList.toggle('ist',t>=(c.worte[k]??c.von)));
+      // Woerter als Spans MIT echten Leerzeichen dazwischen (kopierbar, vorlesbar), in einer Zeilenbox
+      if(c!==cue){cue=c;const z=document.createElement('span');z.className='film-ut-z';
+        if(c)c.text.split(' ').forEach((w,k)=>{if(k)z.append(' ');const s=document.createElement('span');s.textContent=w;z.append(s);});
+        ut.replaceChildren(...(c?[z]:[]));}
+      if(c&&c.worte&&ut.firstChild)[...ut.firstChild.children].forEach((s,k)=>s.classList.toggle('ist',t>=(c.worte[k]??c.von)));
     }
     function stand(){
       const t=v.currentTime,a=d.abschnitte.find(x=>t>=x.von&&t<x.bis)||d.abschnitte[d.abschnitte.length-1];
