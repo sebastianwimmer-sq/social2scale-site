@@ -66,3 +66,20 @@ test('Gegenprobe: ein verlorener Backslash wird gesehen, ein richtiger nicht', (
   assert.deepEqual(verloreneEscapes("v.replace(/\\s+/g,'')"), []);
   assert.deepEqual(verloreneEscapes("v.replace(/^@+/,'')"), []);
 });
+
+// Keine erfundenen Follower-Zahlen auf IHREM Profil (25.10.2026: 1.240 / 1.2k / 318 standen seit August
+// in Bild und Ergebnis) — wir kennen ihre echten Zahlen nicht, eine Zahl dort liest sich als Versprechen.
+import { buildPage } from '../src/templates/frames.js';
+import { buildFallback } from '../src/copy.js';
+const PAL = [{ a: '#5FA88C', t: '#1B2C24', ti: '#E7EFE9' }, { a: '#1FA6E0', t: '#123244', ti: '#EAF4F8' }];
+export const erfundeneZahlen = (h) => [...h.matchAll(/<b>([^<]*)<\/b><span>(Follower|Gefolgt|followers|following)<\/span>/g)]
+  .filter((m) => m[1] !== '–').map((m) => `${m[1]} ${m[2]}`);
+test('Ergebnis und Profilbild zeigen keine erfundenen Follower-Zahlen (DE und EN)', async () => {
+  const seiten = [await resultPage('t').text(), await (await resultPageEn('t')).text(),
+    ...['de', 'en'].map((sprache) => buildPage({ name: 'Anna', handle: 'anna.yoga', sprache }, buildFallback({ name: 'Anna' }), PAL, 'https://start.social2scale.com'))];
+  for (const h of seiten) assert.deepEqual(erfundeneZahlen(String(h)), []);
+  assert.ok(seiten.every((h) => /<b>–<\/b><span>(Follower|followers)<\/span>/.test(String(h))), 'Follower-Feld muss da sein (sonst prueft der Test nichts)');
+});
+test('Gegenprobe: eine erfundene Follower-Zahl wird gesehen', () => {
+  assert.deepEqual(erfundeneZahlen('<b>1.2k</b><span>Follower</span><b>–</b><span>Gefolgt</span>'), ['1.2k Follower']);
+});
