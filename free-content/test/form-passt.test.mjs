@@ -46,3 +46,23 @@ test('Commitment fragt die echten Voraussetzungen von /ablauf/ ab und fuehrt zum
   assert.match(s18, /class="next" data-go="17"/);
   assert.match(s18, /class="back" data-go="16"/);
 });
+
+// Ein Regex im eingesetzten Skript steht im Quelltext in einem Template-Literal: dort wird
+// aus `\s` ein `s`. 25.10.2026: der Steckbrief strich so jedes „s“ aus dem Instagram-Namen
+// („@sebastian“ → „@ebatian“), DE und EN. Gesucht wird das, was AUSGELIEFERT wird.
+import { formPageEn } from '../src/pages/form-en.js';
+import { resultPage } from '../src/pages/result.js';
+import { resultPageEn } from '../src/pages/result-en.js';
+const skripte = (h) => [...h.matchAll(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
+export const verloreneEscapes = (js) => [...js.matchAll(/(?:replace|match|split|test)\(\/((?:[^/\\\n]|\\.)+)\/[gimsuy]*/g)]
+  .map((m) => m[1]).filter((r) => /(^|[^\\\w])[sdwSDW][+*?{]/.test(r));
+test('Eingesetzte Skripte: kein Regex hat seinen Backslash verloren (DE, EN, Ergebnis)', async () => {
+  const seiten = { de: html, en: await (await formPageEn({ TURNSTILE_SITE_KEY: 'x' })).text(),
+    ergebnis: await resultPage('t').text(), ergebnisEn: await (await resultPageEn('t')).text() };
+  for (const [name, h] of Object.entries(seiten)) assert.deepEqual(verloreneEscapes(skripte(h)), [], name);
+});
+test('Gegenprobe: ein verlorener Backslash wird gesehen, ein richtiger nicht', () => {
+  assert.deepEqual(verloreneEscapes("v.replace(/s+/g,'')"), ['s+']);
+  assert.deepEqual(verloreneEscapes("v.replace(/\\s+/g,'')"), []);
+  assert.deepEqual(verloreneEscapes("v.replace(/^@+/,'')"), []);
+});

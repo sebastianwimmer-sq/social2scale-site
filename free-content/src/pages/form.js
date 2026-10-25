@@ -662,7 +662,7 @@ const PAGE_SCRIPT = `
     briefFuellen();}));
   // Steckbrief aus den Eingaben fuellen (Text, kein HTML).
   function briefFuellen(){
-    const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'').replace(/\s+/g,'');
+    const name=$('#f-name').value.trim(),h=$('#f-handle').value.trim().replace(/^@+/,'').replace(/\\s+/g,'');
     const w=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
     const werte={name,handle:h?'@'+h:'',taetigkeit:w('taetigkeit'),thema:$('#f-thema').value.trim().slice(0,90),ziel:w('ziel'),stand:w('stand'),zeit:w('zeit'),mitbringen:mbText()};
     $('#br-name').textContent=name||'Du';
