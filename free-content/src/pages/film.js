@@ -27,7 +27,46 @@
  * (/wissen/ablauf-zusammenarbeit/, Calendly), kostenlos (Anfrage).
  */
 
-import { FILM } from './film-daten.js';
+import { FILM as FILM_DE } from './film-daten.js';
+import { FILM as FILM_EN } from './film-daten-en.js';
+
+/* Ein Film, zwei Sprachen (Sebi 25.10.: „ja eig soll alles auch so klappen am ende“, #378): gleiche
+   Gestaltung, gleiche Zeitleiste-Bauart, nur die Wörter tauschen. Jede Zeichenkette des Films steht hier. */
+const FILM_JE = { de: FILM_DE, en: FILM_EN };
+const TEXTE = {
+  de: {
+    vorschau: 'Deine Vorschau', unterwegs: ['ist unterwegs.', 'unterwegs.'], fehlt: ['Was fehlt: der Weg.', 'Weg.'],
+    gespraech: 'Im Erstgespräch mit Phil', schritt: ['Dein nächster Schritt.', 'Schritt.'], heute: 'Heute', ziel: 'Dein Ziel',
+    gelesen: 'hat deine Antworten gelesen', thema: 'Thema', zielKurz: 'Ziel',
+    video: 'Film: was dich jetzt erwartet, mit Untertiteln', ki: 'KI-generiert', start: 'Was dich jetzt erwartet', mitTon: 'mit Ton',
+    tonAn: 'Ton an', tonAnLang: 'Ton an, Film von vorn', tonAus: 'Ton aus', pause: 'Pause', weiter: 'Weiter abspielen',
+    endeH: 'Hol dir deinen <span class="flow">Plan</span>', endeS: 'Erstgespräch mit Phil, einem der zwei Gründer<br>etwa 45 Minuten · kostenlos',
+    termin: 'Termin aussuchen', nochmal: 'Nochmal ansehen',
+    unterschrift: 'Avatar und Stimme sind KI-generiert. Was sie sagt, kommt von uns.', tasten: 'Leertaste: Pause · M: Ton',
+    nachlesen: 'Text zum Film', offen: 'klären wir gemeinsam',
+  },
+  en: {
+    vorschau: 'Your preview', unterwegs: ['is on its way.', 'way.'], fehlt: ['Missing: the path.', 'path.'],
+    gespraech: 'On the intro call with Phil', schritt: ['Your next step.', 'step.'], heute: 'Today', ziel: 'Your goal',
+    gelesen: 'has read your answers', thema: 'Topic', zielKurz: 'Goal',
+    video: 'Film: what happens next, with subtitles', ki: 'AI-generated', start: 'What happens next', mitTon: 'with sound',
+    tonAn: 'Sound on', tonAnLang: 'Sound on, film from the start', tonAus: 'Sound off', pause: 'Pause', weiter: 'Play',
+    endeH: 'Get your <span class="flow">plan</span>', endeS: 'Intro call with Phil, one of the two founders<br>about 45 minutes · free',
+    termin: 'Pick a time', nochmal: 'Watch again',
+    unterschrift: 'The avatar and voice are AI-generated. What she says comes from us.', tasten: 'Space: pause · M: sound',
+    nachlesen: 'Transcript', offen: 'we’ll work it out together',
+  },
+};
+/** JS-Zeichenkette in einfachen Anführungszeichen (wie der übrige Skript-Code) */
+const sq = (s) => "'" + String(s).replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
+function sprachDaten(sprache) {
+  const d = FILM_JE[sprache], T = TEXTE[sprache];
+  if (!d || !T) throw new Error('Sprache fehlt: ' + sprache);
+  return { d, T };
+}
+/* Englische Filme liegen als film-<weg>-en.mp4 daneben (bauen.py --sprache en). */
+const DATEI = (weg, sprache) => `film-${weg}${sprache === 'de' ? '' : '-' + sprache}.mp4`;
+const POSTER = (sprache) => `film-poster${sprache === 'de' ? '' : '-' + sprache}.jpg`;
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 
@@ -56,18 +95,18 @@ function knoten(m) {
   return `<div class="fs-knoten"${m}>${WEG.map(([x, y]) =>
     `<i style="left:${x}%;top:${y}%;--d:${((x - x0) / (x1 - x0)).toFixed(2)}"></i>`).join('')}</div>`;
 }
-const HEUTE = (m) => `<p class="fs-heute"${m}><small>Heute</small><span class="fx-stand"></span></p>`;
-const ZIEL = (m) => `<p class="fs-ziel-l"${m}><small>Dein Ziel</small><span class="fx-ziel"></span></p>`;
+const HEUTE = (T, m) => `<p class="fs-heute"${m}><small>${T.heute}</small><span class="fx-stand"></span></p>`;
+const ZIEL = (T, m) => `<p class="fs-ziel-l"${m}><small>${T.ziel}</small><span class="fx-ziel"></span></p>`;
 const KARTE = (m) => `<div class="fs-karte"${m}><div class="fs-feed fx-feed"></div></div>`;
 const FEST = ' data-fest';
 
-const SZENEN = {
+const SZENEN = (T) => ({
   hallo: `
               <div class="fs fs-hallo fs-avatar"></div>`,
   post: `
               <div class="fs fs-post">
                 <div class="fs-kopf">
-                  <p class="fs-h"><span data-m="titel">${kw('Deine Vorschau')}</span><br><span data-m="unterwegs">${kw('ist unterwegs.', 'unterwegs.')}</span></p>
+                  <p class="fs-h"><span data-m="titel">${kw(T.vorschau)}</span><br><span data-m="unterwegs">${kw(...T.unterwegs)}</span></p>
                   <p class="fs-mail" data-m="mail"><span class="fx-mail"></span></p>
                 </div>
                 <div class="fs-feed fx-feed" data-m="feed"></div>
@@ -77,22 +116,22 @@ const SZENEN = {
   luecke: `
               <div class="fs fs-luecke">
                 ${KARTE(' data-m="auftritt"')}
-                <p class="fs-oben" data-m="nicht">${kw('Was fehlt: der Weg.', 'Weg.')}</p>
+                <p class="fs-oben" data-m="nicht">${kw(...T.fehlt)}</p>
                 ${linie('fs-linie-blass', ' data-m="nicht"')}
                 ${knoten(' data-m="nicht"')}
-                ${ZIEL(' data-m="ziel"')}
+                ${ZIEL(T, ' data-m="ziel"')}
               </div>`,
   // Im Erstgespraech: heute, Ziel, dann zeichnet sich der Weg durch; am Ziel waechst die Bildmarke.
   plan: `
               <div class="fs fs-plan">
                 ${KARTE(FEST)}
-                <p class="fs-oben" data-m="phil">${kw('Im Erstgespräch mit Phil')}</p>
-                <p class="fs-oben fs-oben-2" data-m="plan">${kw('Dein nächster Schritt.', 'Schritt.')}</p>
+                <p class="fs-oben" data-m="phil">${kw(T.gespraech)}</p>
+                <p class="fs-oben fs-oben-2" data-m="plan">${kw(...T.schritt)}</p>
                 ${linie('fs-linie-blass', FEST)}
                 ${linie('fs-linie-voll', ' data-m="weg"')}
                 ${knoten(' data-m="weg"')}
-                ${HEUTE(' data-m="stand"')}
-                ${ZIEL(' data-m="ziel"')}
+                ${HEUTE(T, ' data-m="stand"')}
+                ${ZIEL(T, ' data-m="ziel"')}
                 <span class="fs-gipfel" data-m="plan">${MARKE}</span>
               </div>`,
   // Weg B: Phil hat ihre Antworten gelesen; sie laufen im Takt ein und raeumen dann den Weg frei.
@@ -100,37 +139,37 @@ const SZENEN = {
               <div class="fs fs-kennt">
                 <div class="fs-name">
                   <p class="fs-riesig" data-m="phil">${kw('Phil')}</p>
-                  <p class="fs-unter" data-m="antworten">${kw('hat deine Antworten gelesen')}</p>
+                  <p class="fs-unter" data-m="antworten">${kw(T.gelesen)}</p>
                 </div>
                 <dl class="fs-antworten">
-                  <div data-m="thema"><dt>Thema</dt><dd class="fx-thema"></dd></div>
-                  <div data-m="ziel"><dt>Ziel</dt><dd class="fx-ziel"></dd></div>
-                  <div data-m="stand"><dt>Heute</dt><dd class="fx-stand"></dd></div>
+                  <div data-m="thema"><dt>${T.thema}</dt><dd class="fx-thema"></dd></div>
+                  <div data-m="ziel"><dt>${T.zielKurz}</dt><dd class="fx-ziel"></dd></div>
+                  <div data-m="stand"><dt>${T.heute}</dt><dd class="fx-stand"></dd></div>
                 </dl>
                 <i data-m="ende" hidden></i>
               </div>`,
   termin: `
               <div class="fs fs-termin fs-avatar"></div>`,
-};
+});
 
 /** Ganzer Text des Films zum Nachlesen (barrierefrei, auch ohne Ton und ohne Bild). */
 function textZumFilm(d) {
   return d.untertitel.map((c) => c.text).join(' ');
 }
 
-/** Markup eines Films; weg = 'a' | 'b'. Inhalte der Szene setzt das Skript als Text. */
-export function filmMarkup(weg) {
-  const d = FILM[weg];
+/** Markup eines Films; weg = 'a' | 'b', sprache = 'de' | 'en'. Inhalte der Szene setzt das Skript als Text. */
+export function filmMarkup(weg, sprache = 'de') {
+  const { d: alle, T } = sprachDaten(sprache), d = alle[weg], sz = SZENEN(T);
   if (!d) throw new Error('Film fehlt: ' + weg);
   const szenen = [...new Set(d.abschnitte.map((a) => a.szene))].map((s) => {
-    if (!SZENEN[s]) throw new Error('Szene fehlt: ' + s);
-    return SZENEN[s];
+    if (!sz[s]) throw new Error('Szene fehlt: ' + s);
+    return sz[s];
   }).join('');
   return `
         <figure class="film" data-film="${weg}">
           <div class="film-geraet">
             <div class="film-buehne">
-              <video class="film-v" playsinline preload="none" poster="${ASSET_BASE}/film-poster.jpg" src="${ASSET_BASE}/film-${weg}.mp4" aria-label="Film: was dich jetzt erwartet, mit Untertiteln"></video>
+              <video class="film-v" playsinline preload="none" poster="${ASSET_BASE}/${POSTER(sprache)}" src="${ASSET_BASE}/${DATEI(weg, sprache)}" aria-label="${T.video}"></video>
               <span class="film-scrim" aria-hidden="true"></span>
               <div class="film-szene" aria-hidden="true">
                 <span class="film-licht"></span>
@@ -138,25 +177,25 @@ export function filmMarkup(weg) {
               </div>
               <span class="film-insel" aria-hidden="true"></span>
               <p class="film-ut" aria-hidden="true"></p>
-              <span class="film-ki">KI-generiert</span>
-              <button type="button" class="film-start"><span class="film-play" aria-hidden="true"></span><span class="film-start-t"><b>Was dich jetzt erwartet</b><small>${sekunden(d.dauer)} · mit Ton</small></span></button>
-              <button type="button" class="film-ton-an" hidden aria-label="Ton an, Film von vorn"><span class="film-lsp" aria-hidden="true"></span>Ton an</button>
+              <span class="film-ki">${T.ki}</span>
+              <button type="button" class="film-start"><span class="film-play" aria-hidden="true"></span><span class="film-start-t"><b>${T.start}</b><small>${sekunden(d.dauer)} · ${T.mitTon}</small></span></button>
+              <button type="button" class="film-ton-an" hidden aria-label="${T.tonAnLang}"><span class="film-lsp" aria-hidden="true"></span>${T.tonAn}</button>
               <div class="film-ende" hidden>
                 <div class="film-ende-t">
                   ${MARKE}
-                  <p class="film-ende-h">Hol dir deinen <span class="flow">Plan</span></p>
-                  <p class="film-ende-s">Erstgespräch mit Phil, einem der zwei Gründer<br>etwa 45 Minuten · kostenlos</p>
-                  <a class="next film-termin" target="_blank" rel="noopener"><span class="lab">Termin aussuchen</span><span class="ic" aria-hidden="true">→</span></a>
-                  <button type="button" class="back film-nochmal">Nochmal ansehen</button>
+                  <p class="film-ende-h">${T.endeH}</p>
+                  <p class="film-ende-s">${T.endeS}</p>
+                  <a class="next film-termin" target="_blank" rel="noopener"><span class="lab">${T.termin}</span><span class="ic" aria-hidden="true">→</span></a>
+                  <button type="button" class="back film-nochmal">${T.nochmal}</button>
                 </div>
               </div>
-              <button type="button" class="film-ton" hidden aria-label="Ton aus" aria-pressed="false"></button>
-              <button type="button" class="film-pause" hidden aria-label="Pause"></button>
+              <button type="button" class="film-ton" hidden aria-label="${T.tonAus}" aria-pressed="false"></button>
+              <button type="button" class="film-pause" hidden aria-label="${T.pause}"></button>
               <span class="film-home" aria-hidden="true"></span>
             </div>
           </div>
-          <figcaption>Avatar und Stimme sind KI-generiert. Was sie sagt, kommt von uns. <span class="film-tasten">Leertaste: Pause · M: Ton</span></figcaption>
-          <details class="film-text"><summary>Text zum Film</summary><p>${textZumFilm(d)}</p></details>
+          <figcaption>${T.unterschrift} <span class="film-tasten">${T.tasten}</span></figcaption>
+          <details class="film-text"><summary>${T.nachlesen}</summary><p>${textZumFilm(d)}</p></details>
         </figure>`;
 }
 
@@ -358,7 +397,9 @@ export const FILM_STYLE = `/*FILM:ANFANG*/
  * Szene, Untertitel, Zoom und --p folgen video.currentTime; keine eigene Uhr, damit Pause/Springen stimmen.
  * filmZeigen(n) ruft show() auf, auch vor diesem Block (show(0) beim Laden): darum nur DOM, kein FILM.
  */
-export const FILM_SCRIPT = `/*FILM:ANFANG*/
+export function filmScript(sprache = 'de') {
+  const { d: FILM, T } = sprachDaten(sprache);
+  return `/*FILM:ANFANG*/
   function filmZeigen(n){
     const weg=n===11?'a':n===15?'b':'';
     const app=document.querySelector('.app'),stage=document.querySelector('.stage');
@@ -401,7 +442,7 @@ export const FILM_SCRIPT = `/*FILM:ANFANG*/
   }
   function filmWerte(){
     const w=g=>{const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';};
-    const offen='klären wir gemeinsam';
+    const offen=${sq(T.offen)};
     const name=$('#f-name').value.trim();
     return {name:name||'dich',thema:$('#f-thema').value.trim().slice(0,80)||offen,ziel:w('ziel')||offen,stand:w('stand')||offen,gruppe:offen};
   }
@@ -478,7 +519,7 @@ export const FILM_SCRIPT = `/*FILM:ANFANG*/
     }
     function schleife(){stand();if(!v.paused&&!v.ended)raf=requestAnimationFrame(schleife);}
     function tonZeigen(){
-      ton.setAttribute('aria-pressed',String(v.muted));ton.setAttribute('aria-label',v.muted?'Ton an':'Ton aus');
+      ton.setAttribute('aria-pressed',String(v.muted));ton.setAttribute('aria-label',v.muted?${sq(T.tonAn)}:${sq(T.tonAus)});
       f.classList.toggle('stumm',v.muted&&!v.paused);tonAn.hidden=!v.muted;
     }
     // stumm=true: von selbst gestartet (Browser erlauben ohne Antippen nur ohne Ton)
@@ -498,9 +539,9 @@ export const FILM_SCRIPT = `/*FILM:ANFANG*/
     f.querySelector('.film-termin').addEventListener('click',()=>zaehlen('film-'+weg+'-termin'));
     pause.addEventListener('click',()=>{if(v.paused)v.play();else v.pause();});
     ton.addEventListener('click',()=>f._ton());
-    v.addEventListener('play',()=>{f.classList.add('laeuft');pause.hidden=false;ton.hidden=false;pause.classList.remove('steht');pause.setAttribute('aria-label','Pause');
+    v.addEventListener('play',()=>{f.classList.add('laeuft');pause.hidden=false;ton.hidden=false;pause.classList.remove('steht');pause.setAttribute('aria-label',${sq(T.pause)});
       if(document.activeElement===start)pause.focus({preventScroll:true});tonZeigen();cancelAnimationFrame(raf);schleife();});
-    v.addEventListener('pause',()=>{pause.classList.add('steht');pause.setAttribute('aria-label','Weiter abspielen');tonZeigen();stand();});
+    v.addEventListener('pause',()=>{pause.classList.add('steht');pause.setAttribute('aria-label',${sq(T.weiter)});tonZeigen();stand();});
     v.addEventListener('volumechange',tonZeigen);
     v.addEventListener('seeked',stand);
     v.addEventListener('ended',()=>{f.classList.remove('laeuft','stumm');f.classList.add('fertig');pause.hidden=true;ton.hidden=true;tonAn.hidden=true;ende.hidden=false;zaehlen('film-'+weg+'-ende');
@@ -518,3 +559,5 @@ export const FILM_SCRIPT = `/*FILM:ANFANG*/
   });
   matchMedia('(min-width:900px)').addEventListener('change',()=>filmZeigen(step));
 /*FILM:ENDE*/`;
+}
+export const FILM_SCRIPT = filmScript('de');

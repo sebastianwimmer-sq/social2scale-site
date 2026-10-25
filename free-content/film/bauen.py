@@ -15,9 +15,16 @@ import sys
 from pathlib import Path
 
 HIER = Path(__file__).resolve().parent
-Q = HIER / 'quelle'
+# Sprache (Sebi 25.10.: der Film soll auch im englischen Funnel laufen, #378): --sprache en baut aus
+# quelle/en/ die Dateien film-<weg>-en.mp4, film-poster-en.jpg und film-daten-en.js. Ohne Angabe: deutsch.
+SPRACHE = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--sprache=')), 'de')
+if SPRACHE not in ('de', 'en'):
+    sys.exit(f'unbekannte Sprache: {SPRACHE}')
+ENDUNG = '' if SPRACHE == 'de' else '-' + SPRACHE
+Q = HIER / 'quelle' / ('' if SPRACHE == 'de' else SPRACHE)
+SFX_ORDNER = HIER / 'quelle' / 'sfx'
 ASSETS = HIER.parent.parent / 'assets'
-DATEN = HIER.parent / 'src' / 'pages' / 'film-daten.js'
+DATEN = HIER.parent / 'src' / 'pages' / f'film-daten{ENDUNG}.js'
 GROESSE = 720
 GRUND = '0x04100d'
 VOR, NACH = 0.25, 0.45  # Luft um eine Szene, damit die Ueberblendung nicht ins Wort faellt
@@ -25,7 +32,7 @@ VOR, NACH = 0.25, 0.45  # Luft um eine Szene, damit die Ueberblendung nicht ins 
 # Untertitel je Baustein: (Text wie im Skript, Index des ersten Worts im Whisper-Wortlauf).
 # Der Text kommt aus dem Skript, nie aus Whisper ("Social to Scale").
 # Erstgespraech etwa 45 Minuten (Calendly blockt 45, PR #62; Stimme am 23.10.2026 neu).
-CUES = {
+CUES_DE = {
     's1': [('Hallo, schön, dass du da bist.', 0), ('Ich bin die KI-Assistenz von social2scale', 6),
            ('und erkläre dir kurz, was jetzt passiert.', 15)],
     's2a': [('Deine Gratis-Vorschau ist unterwegs.', 0), ('Bestätige kurz die Mail in deinem Postfach,', 5),
@@ -40,7 +47,7 @@ CUES = {
            ('Bis bald.', 12)],
 }
 # Wortmarken, an denen die Szene etwas zeigt (Index im Wortlauf).
-MARKEN = {
+MARKEN_DE = {
     # Runde 5 (Sebi/Phil 23.10.: Framing über ihr Ergebnis statt unseren Ablauf; „Kunde braucht
     # Klarheit, ein Ziel und Nachvollziehbarkeit seiner Situation“). Jede Marke bewegt etwas.
     's1': {'name': 0},
@@ -50,6 +57,30 @@ MARKEN = {
     's4': {'phil': 3, 'stand': 8, 'ziel': 12, 'weg': 16, 'plan': 22},
     's5': {'kostenlos': 3, 'termin': 9},
 }
+# Englisch: gleiche Aussagen, Wortindizes aus dem englischen Whisper-Lauf (quelle/en/w-*.json)
+CUES_EN = {
+    's1': [('Hi, great to have you here.', 0), ("I'm the AI assistant from social2scale,", 6),
+           ("and I'll quickly walk you through what happens next.", 14)],
+    's2a': [('Your free preview is on its way.', 0), ('Quickly confirm the email in your inbox,', 7),
+            ('and your feed will finish building.', 14)],
+    's2b': [('Phil has already read your answers:', 0), ('your topic, your goal', 6),
+            ('and where you stand today.', 10)],
+    's3a': [('The preview shows you', 0), ('what your profile could look like.', 4),
+            ("What it doesn't show:", 10), ('how you get to your goal with it.', 14)],
+    's4': [("That's exactly what Phil works out with you on the intro call:", 0), ('where you are today, where you want to go', 12),
+           ('and which path gets you there.', 21), ("Afterwards, you'll know your next step.", 27)],
+    's5': [('The call is free.', 0), ('Pick a time that works for you right away.', 4), ('See you soon.', 13)],
+}
+MARKEN_EN = {
+    's1': {'name': 0},
+    's2a': {'titel': 0, 'unterwegs': 3, 'mail': 7, 'post': 13, 'feed': 16},
+    's2b': {'phil': 0, 'antworten': 3, 'thema': 6, 'ziel': 8, 'stand': 10},
+    's3a': {'vorschau': 0, 'auftritt': 6, 'nicht': 10, 'ziel': 18},
+    's4': {'phil': 3, 'stand': 12, 'ziel': 16, 'weg': 21, 'plan': 27},
+    's5': {'kostenlos': 3, 'termin': 6},
+}
+CUES = CUES_DE if SPRACHE == 'de' else CUES_EN
+MARKEN = MARKEN_DE if SPRACHE == 'de' else MARKEN_EN
 # Pegel: Rohstimmen liegen bei ~-23 LUFS, am Handy zu leise. Runde 4b („kratzig“): vorher +4,5 dB in einen
 # harten Begrenzer (bis 3 dB Spitzen abgeschnitten); jetzt weicher Kompressor, dann Verstaerkung, Spitzen < -1 dBFS.
 PEGEL = 'acompressor=threshold=0.125:ratio=3:attack=10:release=150:knee=4,volume=6.5dB'
@@ -84,7 +115,7 @@ def sfx_ereignisse(abschnitte, dauer_gesamt):
 def toene_mischen(roh, ziel, ereignisse):
     eingaenge, graph = ['-i', str(roh)], []
     for k, (z, n) in enumerate(ereignisse, start=1):
-        eingaenge += ['-i', str(Q / 'sfx' / f'{n}.wav')]
+        eingaenge += ['-i', str(SFX_ORDNER / f'{n}.wav')]
         ms = int(z * 1000)
         graph.append(f'[{k}:a]aresample=48000,aformat=channel_layouts=mono,volume={SFX[n]}dB,adelay={ms}:all=1[e{k}]')
     alle = '[0:a]aformat=channel_layouts=mono[st];[st]' + ''.join(f'[e{k}]' for k in range(1, len(ereignisse) + 1))
@@ -249,22 +280,22 @@ def fassung(name, tmp):
     roh = tmp / f'{name}-roh.mp4'
     lauf('ffmpeg', '-loglevel', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', str(liste),
          '-c', 'copy', str(roh))
-    ziel = ASSETS / f'film-{name}.mp4'
+    ziel = ASSETS / f'film-{name}{ENDUNG}.mp4'
     toene_mischen(roh, ziel, sfx_ereignisse(abschnitte, dauer(roh)))
     return {'dauer': round(dauer(ziel), 2), 'abschnitte': abschnitte, 'untertitel': untertitel}
 
 
 def main():
-    tmp = HIER / '.bau'
-    tmp.mkdir(exist_ok=True)
+    tmp = HIER / '.bau' / SPRACHE
+    tmp.mkdir(parents=True, exist_ok=True)
     daten = {n: fassung(n, tmp) for n in FASSUNGEN}
     lauf('ffmpeg', '-loglevel', 'error', '-y', '-ss', '0.4', '-i', str(Q / 'avatar-s1.mp4'), '-frames:v', '1',
-         '-vf', f'scale={GROESSE}:{GROESSE}:flags=lanczos', '-q:v', '3', str(ASSETS / 'film-poster.jpg'))
+         '-vf', f'scale={GROESSE}:{GROESSE}:flags=lanczos', '-q:v', '3', str(ASSETS / f'film-poster{ENDUNG}.jpg'))
     kopf = '// ERZEUGT von free-content/film/bauen.py, nicht von Hand aendern.\n'
     DATEN.write_text(kopf + 'export const FILM = ' + json.dumps(daten, ensure_ascii=False, indent=1) + ';\n')
     for n, d in daten.items():
-        groesse = (ASSETS / f'film-{n}.mp4').stat().st_size / 1e6
-        print(f'film-{n}.mp4  {d["dauer"]:.1f} s  {groesse:.2f} MB  {len(d["untertitel"])} Untertitel')
+        groesse = (ASSETS / f'film-{n}{ENDUNG}.mp4').stat().st_size / 1e6
+        print(f'film-{n}{ENDUNG}.mp4  {d["dauer"]:.1f} s  {groesse:.2f} MB  {len(d["untertitel"])} Untertitel')
 
 
 if __name__ == '__main__':
