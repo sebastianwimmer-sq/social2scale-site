@@ -64,3 +64,10 @@ test('Zaehlpfade des Films passen zur Portal-Freigabe (VORSCHAU_FILM: Start, aut
   for (const was of ["'-auto'", "'-ton'", "'-ende'", "'-termin'"]) assert.ok(skript.includes(was), was);
   assert.match(html, /n\.startsWith\('film-'\)\)return '\/vorschau\/'\+n\.split\('-'\)\.join\('\/'\)\+'\/'/);
 });
+
+test('englische Seite: kein deutscher Film, Vorschau bleibt (ansicht nur mit Film)', async () => {
+  const { formPageEn } = await import('../src/pages/form-en.js');
+  const en = await formPageEn({ TURNSTILE_SITE_KEY: 'x' }).then((r) => r.text());
+  assert.doesNotMatch(en, /<figure class="film"|KI-generiert|Hol dir deinen|Text zum Film/);
+  assert.match(html, /if\(weg&&document\.querySelector\('\.film\[data-film="'\+weg\+'"\]'\)\)app\.dataset\.ansicht='film'/);
+});

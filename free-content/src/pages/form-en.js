@@ -117,7 +117,7 @@ export const TABELLE = [
   ['<span class="lab">Meinen Feed bauen</span>', '<span class="lab">Build my feed</span>'],
   ['<span class="eyebrow">Fast geschafft</span>', '<span class="eyebrow">Almost there</span>'],
   ['<h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>', '<h2>Check your <em>inbox</em>, <span id="echo">…</span>.</h2>'],
-  ['Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.', 'A confirmation link is on its way. One click — and your feed above gets built live.'],
+  ['Ein Bestätigungs-Link ist unterwegs. Ein Klick darauf, und dein Feed wird fertig gebaut.', 'A confirmation link is on its way. One click on it, and your feed gets built.'],
   ['<span class="lab">Postfach öffnen</span>', '<span class="lab">Open inbox</span>'],
   ['>Mail nicht angekommen? Nochmal schicken</button>', '>Email didn’t arrive? Send it again</button>'],
   ['>E-Mail ändern</button>', '>Change email</button>'],
@@ -271,5 +271,14 @@ export function uebersetzen(html, tabelle = TABELLE) {
  */
 export async function formPageEn(env) {
   const de = formPage(env);
-  return new Response(uebersetzen(await de.text()), { status: de.status, headers: de.headers });
+  return new Response(ohneFilm(uebersetzen(await de.text())), { status: de.status, headers: de.headers });
+}
+
+/** Der Setting-Film (film.js) spricht Deutsch: auf der englischen Seite bleibt er weg (25.10.2026). */
+export function ohneFilm(html) {
+  // Markup, Stil und Skript raus; show() ruft filmZeigen() weiter auf, darum bleibt sie leer stehen
+  const neu = html.replace(/\n?[ \t]*<figure class="film" data-film="[ab]">[\s\S]*?<\/figure>/g, '')
+    .replace(/\/\*FILM:ANFANG\*\/[\s\S]*?\/\*FILM:ENDE\*\//g, (m) => (m.includes('function filmZeigen') ? 'function filmZeigen(){}' : ''));
+  if (/class="film"|FILM:ANFANG|filmKamera/.test(neu)) throw new Error('form-en: Film nicht vollständig entfernt');
+  return neu;
 }
