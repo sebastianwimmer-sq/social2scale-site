@@ -224,8 +224,8 @@ function pageMarkup() {
             <div class="ig-av" id="avatar"><div>·</div></div>
             <div class="ig-stats">
               <div class="ig-stat"><b>9</b><span>Beiträge</span></div>
-              <div class="ig-stat"><b>1.2k</b><span>Follower</span></div>
-              <div class="ig-stat"><b>318</b><span>Gefolgt</span></div>
+              <div class="ig-stat"><b>–</b><span>Follower</span></div>
+              <div class="ig-stat"><b>–</b><span>Gefolgt</span></div>
             </div>
           </div>
           <div class="ig-meta">

@@ -89,14 +89,16 @@ function tokens(p) {
  * Linie mit — das Loch sieht man sofort.
  * NIEMALS trennen. Das ist der ganze Punkt.
  */
+// Follower/Gefolgt stehen als „–“ (25.10.2026): ihre echten Zahlen kennen wir nicht, eine erfundene
+// Zahl auf IHREM Profil liest sich als Versprechen (kern: jede Zahl belegt, auch Beispielwerte).
 // Feste Woerter in den Bildern je Sprache (englischer Funnel /en/, Sebi 23.10.2026: „immer beides 1/1“).
 // Instagram zeigt sie in der App genau so: Posts / Followers / Following, Follow / Message.
 const WORTE = {
   de: { erstellt: 'erstellt mit', folgeMehr: 'Folge für mehr', beitraege: 'Beiträge', follower: 'Follower', gefolgt: 'Gefolgt',
-    zahl: '1.240', folgen: 'Folgen', nachricht: 'Nachricht', kicker: 'Der Post, der scrollen stoppt', head: 'Dein Content,',
+    zahl: '–', folgen: 'Folgen', nachricht: 'Nachricht', kicker: 'Der Post, der scrollen stoppt', head: 'Dein Content,',
     accent: 'der auffällt.', plat: 'Instagram · frische Vorschau', fuss: 'Auch dein Feed — <em>gratis in Minuten.</em>' },
   en: { erstellt: 'made with', folgeMehr: 'Follow for more', beitraege: 'posts', follower: 'followers', gefolgt: 'following',
-    zahl: '1,240', folgen: 'Follow', nachricht: 'Message', kicker: 'The post that stops the scroll', head: 'Your content',
+    zahl: '–', folgen: 'Follow', nachricht: 'Message', kicker: 'The post that stops the scroll', head: 'Your content',
     accent: 'that stands out.', plat: 'Instagram · fresh preview', fuss: 'Your feed too — <em>free in minutes.</em>' },
 };
 const worte = (clean) => WORTE[clean?.sprache === 'en' ? 'en' : 'de'];
@@ -231,7 +233,7 @@ function profil(id, clean, copy, p) {
           <div class="stats">
             <div class="stat"><b>9</b><span>${worte(clean).beitraege}</span></div>
             <div class="stat"><b>${worte(clean).zahl}</b><span>${worte(clean).follower}</span></div>
-            <div class="stat"><b>318</b><span>${worte(clean).gefolgt}</span></div>
+            <div class="stat"><b>–</b><span>${worte(clean).gefolgt}</span></div>
           </div>
         </div>
         <div class="bio">
