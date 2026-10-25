@@ -160,7 +160,7 @@ export function filmMarkup(weg) {
         </figure>`;
 }
 
-export const FILM_STYLE = `
+export const FILM_STYLE = `/*FILM:ANFANG*/
   /* Ein Geraet: am Desktop steht der Film dort, wo die Vorschau stand; am Handy weicht die Vorschau */
   .app[data-ansicht="film"] .device,.app[data-ansicht="film"] .disclaimer,.app[data-ansicht="film"] .brief{display:none}
   @media (max-width:899px){.app[data-ansicht="film"] .stage{display:none}}
@@ -350,6 +350,7 @@ export const FILM_STYLE = `
     .fs-linie{transition:opacity .4s;clip-path:none!important;opacity:0}.fs-linie.an,.fs-linie[data-fest]{opacity:1}
     .fs-knoten i{transition-delay:0s!important;scale:none!important}
   }
+/*FILM:ENDE*/
 `;
 
 /**
@@ -357,14 +358,15 @@ export const FILM_STYLE = `
  * Szene, Untertitel, Zoom und --p folgen video.currentTime; keine eigene Uhr, damit Pause/Springen stimmen.
  * filmZeigen(n) ruft show() auf, auch vor diesem Block (show(0) beim Laden): darum nur DOM, kein FILM.
  */
-export const FILM_SCRIPT = `
+export const FILM_SCRIPT = `/*FILM:ANFANG*/
   function filmZeigen(n){
     const weg=n===11?'a':n===15?'b':'';
     const app=document.querySelector('.app'),stage=document.querySelector('.stage');
     const dev=[document.getElementById('device'),document.getElementById('brief')].find(e=>e&&e.offsetParent);
     const breit=matchMedia('(min-width:900px)').matches;
     const vorher=weg&&dev?dev.getBoundingClientRect():null;
-    if(weg)app.dataset.ansicht='film';
+    // nur wenn diese Seite einen Film hat (die englische Seite hat keinen, dort bleibt die Vorschau)
+    if(weg&&document.querySelector('.film[data-film="'+weg+'"]'))app.dataset.ansicht='film';
     clearTimeout(window.__filmAuto);
     document.querySelectorAll('.film').forEach(f=>{
       if(!f._heim){f._heim=document.createComment('film');f.before(f._heim);}
@@ -515,4 +517,4 @@ export const FILM_SCRIPT = `
     e.preventDefault();if(k==='k')f._umschalten();else f._ton();
   });
   matchMedia('(min-width:900px)').addEventListener('change',()=>filmZeigen(step));
-`;
+/*FILM:ENDE*/`;
