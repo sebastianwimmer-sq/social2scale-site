@@ -612,6 +612,9 @@ const PAGE_SCRIPT = `
   // virtueller Pfad (keine Eingaben, kein Cookie) — wie das Anfrage-Formular. Bis 12.10.2026
   // zaehlte die Vorschau gar nichts. Pfade muessen zu VORSCHAU_TRICHTER im Portal passen.
   const GEZAEHLT=new Set();
+  // Der englische Funnel (/en/, dieselbe Seite uebersetzt) meldet dieselben Schritte unter /en/ —
+  // eigener Trichter im CRM (siteviews.js VORSCHAU_EN, Ticket #372, 25.10.2026).
+  const PFAD_VOR=document.documentElement.lang==='en'?'/en':'';
   function pfad(n){
     if(n==='termin')return '/vorschau/b/termin/';
     if(typeof n==='string')return '/vorschau/weg/'+n+'/';
@@ -624,7 +627,7 @@ const PAGE_SCRIPT = `
     try{
       if(navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
       const p=pfad(n);if(!p)return;
-      const d=JSON.stringify({p:p,r:document.referrer||'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'});
+      const d=JSON.stringify({p:PFAD_VOR+p,r:document.referrer||'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'});
       navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([d],{type:'text/plain;charset=UTF-8'}));
     }catch(e){}
   }
