@@ -82,3 +82,21 @@ test('Themen-Filter kennt englische Versprechen, laesst normale englische Themen
   for (const branche of ['Yoga for busy professionals', 'Healthy recipes for families', 'Leadership coaching for founders'])
     assert.equal(checkInput({ branche, ziel: 'Mehr Anfragen' }).ok, true, branche);
 });
+
+// Zaehlung getrennt (Ticket #372): der echte Zaehl-Code beider Seiten, mit nachgebautem Browser.
+import vm from 'node:vm';
+function gemeldet(html, lang) {
+  const code = html.slice(html.indexOf('const GEZAEHLT'), html.indexOf('function show(n){'));
+  const raus = [];
+  const ctx = {
+    document: { documentElement: { lang }, referrer: '' }, window: {},
+    navigator: { doNotTrack: '0', sendBeacon: (_u, b) => raus.push(b) },
+    matchMedia: () => ({ matches: true }), Blob: class { constructor([s]) { this.s = s; } }, JSON, Set,
+  };
+  vm.runInNewContext(code + ';[0,16,17,"b",15,"termin"].forEach(zaehlen);', ctx);
+  return raus.map((b) => JSON.parse(b.s).p);
+}
+test('EN-Funnel meldet seine Schritte unter /en/, der deutsche ohne — eigener Trichter im CRM', () => {
+  assert.deepEqual(gemeldet(de, 'de'), ['/vorschau/', '/vorschau/check/zeit/', '/vorschau/passt/', '/vorschau/weg/b/', '/vorschau/b/gesendet/', '/vorschau/b/termin/']);
+  assert.deepEqual(gemeldet(en, 'en'), ['/en/vorschau/', '/en/vorschau/check/zeit/', '/en/vorschau/passt/', '/en/vorschau/weg/b/', '/en/vorschau/b/gesendet/', '/en/vorschau/b/termin/']);
+});
