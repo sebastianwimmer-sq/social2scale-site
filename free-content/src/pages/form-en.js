@@ -10,6 +10,7 @@
  */
 
 import { formPage, FLAGGE_EN, FLAGGE_DE } from './form.js';
+import { filmMarkup, filmScript } from './film.js';
 
 export const TABELLE = [
   // ── Kopf ──
@@ -271,14 +272,19 @@ export function uebersetzen(html, tabelle = TABELLE) {
  */
 export async function formPageEn(env) {
   const de = formPage(env);
-  return new Response(ohneFilm(uebersetzen(await de.text())), { status: de.status, headers: de.headers });
+  return new Response(mitEnglischemFilm(uebersetzen(await de.text())), { status: de.status, headers: de.headers });
 }
 
-/** Der Setting-Film (film.js) spricht Deutsch: auf der englischen Seite bleibt er weg (25.10.2026). */
-export function ohneFilm(html) {
-  // Markup, Stil und Skript raus; show() ruft filmZeigen() weiter auf, darum bleibt sie leer stehen
-  const neu = html.replace(/\n?[ \t]*<figure class="film" data-film="[ab]">[\s\S]*?<\/figure>/g, '')
-    .replace(/\/\*FILM:ANFANG\*\/[\s\S]*?\/\*FILM:ENDE\*\//g, (m) => (m.includes('function filmZeigen') ? 'function filmZeigen(){}' : ''));
-  if (/class="film"|FILM:ANFANG|filmKamera/.test(neu)) throw new Error('form-en: Film nicht vollständig entfernt');
+/**
+ * Der Setting-Film auf Englisch (Sebi 25.10.: „ja eig soll alles auch so klappen am ende“, #378):
+ * gleicher Film, gleiche Gestaltung — die beiden deutschen Filme und das deutsche Film-Skript werden
+ * gegen ihre englischen Fassungen getauscht (film.js filmMarkup/filmScript mit 'en'). Der Stil bleibt.
+ */
+export function mitEnglischemFilm(html) {
+  let n = 0;
+  let neu = html.replace(/<figure class="film" data-film="([ab])">[\s\S]*?<\/figure>/g, (_, w) => { n++; return filmMarkup(w, 'en').trim(); });
+  let s = 0;
+  neu = neu.replace(/\/\*FILM:ANFANG\*\/[\s\S]*?\/\*FILM:ENDE\*\//g, (m) => (m.includes('function filmZeigen') ? (s++, filmScript('en')) : m));
+  if (n !== 2 || s !== 1) throw new Error(`form-en: Film nicht getauscht (Filme ${n}/2, Skript ${s}/1)`);
   return neu;
 }

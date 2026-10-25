@@ -65,9 +65,13 @@ test('Zaehlpfade des Films passen zur Portal-Freigabe (VORSCHAU_FILM: Start, aut
   assert.match(html, /n\.startsWith\('film-'\)\)return '\/vorschau\/'\+n\.split\('-'\)\.join\('\/'\)\+'\/'/);
 });
 
-test('englische Seite: kein deutscher Film, Vorschau bleibt (ansicht nur mit Film)', async () => {
+test('englische Seite: derselbe Film auf Englisch (#378), keine deutsche Film-Zeile', async () => {
   const { formPageEn } = await import('../src/pages/form-en.js');
   const en = await formPageEn({ TURNSTILE_SITE_KEY: 'x' }).then((r) => r.text());
-  assert.doesNotMatch(en, /<figure class="film"|KI-generiert|Hol dir deinen|Text zum Film/);
+  for (const w of ['a', 'b']) assert.match(en, new RegExp(`<figure class="film" data-film="${w}">[\\s\\S]*?film-${w}-en\\.mp4`));
+  assert.match(en, /<span class="film-ki">AI-generated<\/span>/);
+  assert.match(en, /Get your <span class="flow">plan<\/span>/);
+  assert.doesNotMatch(en, /KI-generiert|Hol dir deinen|Text zum Film|klären wir gemeinsam|film-[ab]\.mp4/);
+  assert.equal((en.match(/function filmZeigen/g) || []).length, 1);
   assert.match(html, /if\(weg&&document\.querySelector\('\.film\[data-film="'\+weg\+'"\]'\)\)app\.dataset\.ansicht='film'/);
 });
