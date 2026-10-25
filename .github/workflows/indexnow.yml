@@ -1,0 +1,22 @@
+# Meldet nach jedem GitHub-Pages-Build alle Sitemap-Seiten an IndexNow
+# (Bing, DuckDuckGo, Ecosia, Yahoo). Vorher lief das nur von Hand —
+# ein Nachlauf-Schritt, den man vergessen kann, gehoert automatisiert.
+name: IndexNow
+on:
+  page_build:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  melden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Warten, bis die Schluesseldatei live ist, dann melden
+        run: |
+          for i in $(seq 1 20); do
+            if bash scripts/indexnow.sh; then exit 0; fi
+            sleep 20
+          done
+          exit 1
