@@ -34,6 +34,8 @@ const CSP = [
   // blob: fuer die lokale Foto-Vorschau im Wizard (URL.createObjectURL -> <img>).
   "img-src 'self' data: blob: https://social2scale.com",
   "font-src 'self' https://social2scale.com",
+  // Setting-Film nach dem Eintragen (film.js) liegt neben den Bildern auf social2scale.com/assets.
+  "media-src https://social2scale.com",
   // closing. = Zaehler /api/pv (Trichter ohne Kennung, siehe form.js zaehlen()).
   "connect-src 'self' https://challenges.cloudflare.com https://closing.social2scale.com",
   "frame-src https://challenges.cloudflare.com",

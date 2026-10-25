@@ -12,6 +12,7 @@
 
 import { htmlDoc } from './shell.js';
 import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL, buchungsLink, buchungsNotiz } from '../constants.js';
+import { filmMarkup, FILM_STYLE, FILM_SCRIPT } from './film.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
@@ -471,8 +472,9 @@ function pageMarkup(turnstileSiteKey) {
       <div class="q" data-step="11">
         <span class="eyebrow">Fast geschafft</span>
         <h2>Schau in dein <em>Postfach</em>, <span id="echo">…</span>.</h2>
-        <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick — und dein Feed oben wird live fertig gebaut.</p>
+        <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted);margin-bottom:.2rem">Ein Bestätigungs-Link ist unterwegs. Ein Klick darauf, und dein Feed wird fertig gebaut.</p>
         <div class="foot"><a class="next" id="openmail" target="_blank" rel="noopener"><span class="lab">Postfach öffnen</span><span class="ic" aria-hidden="true">→</span></a><button class="back" id="resend">Mail nicht angekommen? Nochmal schicken</button><button class="back" data-go="10">E-Mail ändern</button></div>
+${filmMarkup('a')}
         <p class="quer">Lieber direkt mit jemandem reden? <button type="button" class="quer-b" data-quer="b">Erstgespräch anfragen</button></p>
       </div>
 
@@ -518,6 +520,7 @@ function pageMarkup(turnstileSiteKey) {
       <div class="q" data-step="15">
         <span class="eyebrow">Anfrage ist da</span>
         <h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>
+${filmMarkup('b')}
         <p class="hint" style="text-align:left;font-size:.92rem;color:var(--muted)">Mit deinen Antworten kennt er dein Thema schon vor dem Gespräch. Lieber gleich einen festen Termin? Such ihn dir selbst aus.</p>
         <div class="foot"><a class="next" id="termin-b" href="${ERSTGESPRAECH_URL}" target="_blank" rel="noopener"><span class="lab">Termin direkt buchen</span><span class="ic" aria-hidden="true">→</span></a><p class="hint">Oder Phil ruft dich an. Direkt erreichst du ihn unter <a href="tel:${PHIL.telHref}" style="color:var(--ink);font-weight:600;white-space:nowrap">${PHIL.tel}</a>.</p></div>
         <p class="quer">Bis dahin: <button type="button" class="quer-b" data-quer="a">deine Gratis-Vorschau bauen</button> (Stimmung, Foto, Farbe).</p>
@@ -617,6 +620,8 @@ const PAGE_SCRIPT = `
   const PFAD_VOR=document.documentElement.lang==='en'?'/en':'';
   function pfad(n){
     if(n==='termin')return '/vorschau/b/termin/';
+    // Setting-Film: film-a → /vorschau/film/a/, film-a-ende → /vorschau/film/a/ende/ (Portal VORSCHAU_FILM)
+    if(typeof n==='string'&&n.startsWith('film-'))return '/vorschau/'+n.split('-').join('/')+'/';
     if(typeof n==='string')return '/vorschau/weg/'+n+'/';
     if(n===0)return '/vorschau/';if(n<=10)return '/vorschau/frage/'+n+'/';if(n===11)return '/vorschau/gesendet/';
     if(n<=14)return '/vorschau/b/frage/'+(n-11)+'/';if(n===15)return '/vorschau/b/gesendet/';
@@ -639,6 +644,7 @@ const PAGE_SCRIPT = `
     if(vonErgebnis)scrollTo(0,0);
     beispiel(n===0);document.querySelector('.app').dataset.schritt=n;
     document.querySelector('.app').dataset.ansicht=(n>=7&&n<=11)?'feed':'brief';briefFuellen();
+    filmZeigen(n);
     if(n<=6||n===16||n===18){$('#brief').classList.remove('passt');$('#br-status').textContent='wird angelegt';}
     phaseZeigen(n);
     if(n===17)passt();
@@ -993,8 +999,8 @@ export function formPage(env) {
     '<link rel="alternate" hreflang="en" href="https://start.social2scale.com/en/">' +
     '<link rel="alternate" hreflang="x-default" href="https://start.social2scale.com/">' +
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' +
-    `<style>${PAGE_STYLE}</style>`;
-  const body = `${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}</script>`;
+    `<style>${PAGE_STYLE}${FILM_STYLE}</style>`;
+  const body = `${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}${FILM_SCRIPT}</script>`;
 
   return htmlDoc({ title: 'Deine Gratis-Vorschau · social2scale', head, body });
 }
