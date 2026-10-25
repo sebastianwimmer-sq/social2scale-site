@@ -86,28 +86,44 @@ MARKEN = MARKEN_DE if SPRACHE == 'de' else MARKEN_EN
 PEGEL = 'acompressor=threshold=0.125:ratio=3:attack=10:release=150:knee=4,volume=6.5dB'
 # Toene (Runde 3, Sebi 17.10.: „evtl. noch so paar sound effekte“): selbst erzeugt (quelle/sfx/HERKUNFT.md),
 # an denselben Stellen, an denen die Szene sich bewegt. Pegel: Spitzen ~-20 dBFS unter der Stimme (-18 LUFS).
-SFX = {'swish': -11, 'tick': 8, 'pop': 5, 'riser': -8}
+SFX = {'swish': -11, 'tick': 8, 'pop': 5, 'riser': -8,
+       # eigene Töne (toene-bauen.py, Spitze -12 dBFS): Lautstärke je Rolle, alle deutlich unter der Stimme
+       'ping-1': -10, 'ping-2': -10, 'ping-3': -10, 'ping-4': -10, 'ping-5': -9, 'glide': -17, 'chime': -9,
+       'stroke': -13, 'whoosh-auf': -11, 'whoosh-zu': -11}
 # Kacheln des Feeds fuellen sich gestaffelt (film.js: .1s + i * .14s), je Kachel ein Pop.
 FEED_KACHELN = 3
 
 
-# Ton je Wortmarke: (Ton, Versatz, Abstand, Anzahl). Swish kommt an jeden Szenenwechsel (Irisblende).
+# Töne erzählen mit (Sebi 25.10.: „mehr Kreativität bzw. angepasst an die Situationen“), eine Tonart:
+# „Heute“ tief (ping-1), „Dein Ziel“ hoch (ping-5); der Weg steigt Note für Note; die drei Balken = Dreiklang.
+WEG_KNOTEN = [0.25, 0.46, 0.69]  # Anteil am Linienzug (film.js WEG → --d), Zeichnen dauert 1,9 s
 TOENE = {
-    'feed': ('pop', 0.55, 0.14, FEED_KACHELN), 'mail': ('tick', 0, 0, 1), 'auftritt': ('swish', 0, 0, 1),
-    'thema': ('tick', 0, 0, 1), 'ziel': ('tick', 0, 0, 1), 'stand': ('tick', 0, 0, 1),
-    'weg': ('pop', 0.35, 0.4, 4), 'plan': ('swish', 0.1, 0, 1),
+    'mail': [('stroke', 0.35)],
+    'feed': [(f'ping-{i + 1}', 0.45 + i * 0.14) for i in range(5)],
+    'auftritt': [('swish', 0.0)],
+    'nicht': [('ping-1', 0.2)],
+    'thema': [('ping-3', 0.0)],
+    'stand': [('ping-1', 0.0)],
+    'ziel': [('ping-5', 0.0)],
+    'weg': [('glide', 0.0)] + [(f'ping-{k + 2}', d * 1.9) for k, d in enumerate(WEG_KNOTEN)] + [('ping-5', 1.9)],
+    'plan': [('chime', 0.1)],
 }
 IRIS = 0.6  # Sekunden, in denen die Szene vor/nach dem Avatar als Kreis auf- bzw. zugeht (film.js)
 
 
 def sfx_ereignisse(abschnitte, dauer_gesamt):
-    """(Zeit, Ton) je Bewegung: Irisblende an jedem Szenenwechsel, dann je Wortmarke, Riser zum Schluss."""
-    ev = [(a['von'] - IRIS + 0.05, 'swish') for a in abschnitte[1:]]
+    """(Zeit, Ton) je Bewegung: Kreisblende auf/zu am Avatar, weicher Wechsel zwischen Szenen, je Wortmarke ihr Ton."""
+    ev = []
+    for vor, a in zip(abschnitte, abschnitte[1:]):
+        if vor['art'] == 'avatar':
+            ev.append((a['von'] - IRIS + 0.05, 'whoosh-auf'))
+        elif a['art'] == 'avatar':
+            ev.append((a['von'] - 0.05, 'whoosh-zu'))
+        else:
+            ev.append((a['von'] - 0.18, 'swish'))
     for a in abschnitte:
         for m, z in a['marken'].items():
-            if m in TOENE:
-                ton_, vers, abst, n = TOENE[m]
-                ev += [(z + vers + i * abst, ton_) for i in range(n)]
+            ev += [(z + vers, n) for n, vers in TOENE.get(m, [])]
     ev.append((dauer_gesamt - 0.75, 'riser'))
     return sorted((round(max(0.0, z), 3), n) for z, n in ev)
 
@@ -161,6 +177,7 @@ def ton(b):
 
 
 DEHNEN_MAX = 0.12   # je Satzteil hoechstens 12 % schneller/langsamer: darueber klingt atempo kratzig
+PAUSE_MIN = 0.06   # Schnitt nur, wo die Stimme mindestens so lange schweigt
 LIPPEN_MAX = 0.09   # Rest-Versatz je Wort, ab dem ein Satzteil an seinem schlechtesten Wort geteilt wird
 
 
@@ -176,15 +193,20 @@ def lippen_plan(q, c):
         a, z = g[0], g[-1]
         qs, qe, cs, ce = q[a]['start'], q[z]['end'], c[a]['start'], c[z]['end']
         f = min(1 + DEHNEN_MAX, max(1 - DEHNEN_MAX, (ce - cs) / (qe - qs) if qe > qs else 1.0))
-        s = max(cs, ab)
+        roh = [cs + (q[i]['start'] - qs) * f - c[i]['start'] for i in g]
+        # Satzteil auf die Mitte seiner Abweichungen legen statt aufs erste Wort (halbiert den groessten Versatz)
+        s = max(cs - (max(roh) + min(roh)) / 2, ab)
         return s, f, [s + (q[i]['start'] - qs) * f - c[i]['start'] for i in g], s + (qe - qs) * f
 
     plan, ab, offen = [], 0.0, list(gruppen)
     while offen:
         g = offen.pop(0)
         s, f, fehl, ende = lage(g, ab)
-        k = max(range(len(g)), key=lambda j: abs(fehl[j]))
-        if abs(fehl[k]) > LIPPEN_MAX and len(g) >= 2 and 0 < k:
+        # Teilen nur an einer echten Sprechpause (Sebi 25.10.: „und erkläre dir kurz“ klang zerschnitten —
+        # dort lagen drei Schnitte ohne Pause). Ohne Pause bleibt der Satzteil ganz, auch mit etwas mehr Versatz.
+        pause = [j for j in range(1, len(g)) if q[g[j]]['start'] - q[g[j] - 1]['end'] >= PAUSE_MIN]
+        k = max(pause, key=lambda j: abs(fehl[j]), default=0)
+        if abs(max(fehl, key=abs)) > LIPPEN_MAX and k:
             offen[:0] = [g[:k], g[k:]]
             continue
         plan.append({'von': g[0], 'bis': g[-1], 'start': s, 'faktor': f, 'fehler': max(map(abs, fehl))})
