@@ -552,6 +552,8 @@ ${hasCountdown ? `
   (function () {
     try {
       if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      // Team und Prüfläufe zählen nicht (26.10.2026): einmal ?zaehlen=aus aufrufen, ?zaehlen=an hebt es auf.
+      try { var zq = new URLSearchParams(location.search).get("zaehlen"); if (zq === "aus") localStorage.setItem("s2s-zaehlen", "aus"); if (zq === "an") localStorage.removeItem("s2s-zaehlen"); if (localStorage.getItem("s2s-zaehlen") === "aus") return; } catch (e) {}
       var daten = JSON.stringify({
         p: location.pathname,
         r: document.referrer || "",

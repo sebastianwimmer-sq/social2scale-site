@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hjkGzfOwi9S/L+0Lv3ChVxomeKnCDl5oBzIL9FBTz8Q=' 'sha256-PBFDI+e/WvaSTKkvh5ZK3Tp9Gz5jIbC5sgDJrs9jIco=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-VM+vhiZSB8xL4/8ED3vYVS4kbWCcqKXthrWG8vG9uAQ=' 'sha256-PBFDI+e/WvaSTKkvh5ZK3Tp9Gz5jIbC5sgDJrs9jIco=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -163,6 +163,8 @@
   (function () {
     try {
       if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      // Team und Prüfläufe zählen nicht (26.10.2026): einmal ?zaehlen=aus aufrufen, ?zaehlen=an hebt es auf.
+      try { var zq = new URLSearchParams(location.search).get("zaehlen"); if (zq === "aus") localStorage.setItem("s2s-zaehlen", "aus"); if (zq === "an") localStorage.removeItem("s2s-zaehlen"); if (localStorage.getItem("s2s-zaehlen") === "aus") return; } catch (e) {}
       var daten = JSON.stringify({
         p: location.pathname,
         r: document.referrer || "",

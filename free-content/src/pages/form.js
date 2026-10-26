@@ -631,6 +631,8 @@ const PAGE_SCRIPT = `
     if(GEZAEHLT.has(n))return;GEZAEHLT.add(n);
     try{
       if(navigator.doNotTrack==='1'||window.doNotTrack==='1')return;
+      // Team und Pruefläufe zaehlen nicht (26.10.2026): ?zaehlen=aus einmal aufrufen, ?zaehlen=an hebt es auf.
+      try{const zq=new URLSearchParams(location.search).get('zaehlen');if(zq==='aus')localStorage.setItem('s2s-zaehlen','aus');if(zq==='an')localStorage.removeItem('s2s-zaehlen');if(localStorage.getItem('s2s-zaehlen')==='aus')return;}catch(e){}
       const p=pfad(n);if(!p)return;
       const d=JSON.stringify({p:PFAD_VOR+p,r:document.referrer||'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'});
       navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([d],{type:'text/plain;charset=UTF-8'}));
