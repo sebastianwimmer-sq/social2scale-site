@@ -102,3 +102,24 @@ test('EN-Funnel meldet seine Schritte unter /en/, der deutsche ohne — eigener 
   assert.deepEqual(gemeldet(de, 'de'), ['/vorschau/', '/vorschau/check/zeit/', '/vorschau/passt/', '/vorschau/weg/b/', '/vorschau/b/gesendet/', '/vorschau/b/termin/']);
   assert.deepEqual(gemeldet(en, 'en'), ['/en/vorschau/', '/en/vorschau/check/zeit/', '/en/vorschau/passt/', '/en/vorschau/weg/b/', '/en/vorschau/b/gesendet/', '/en/vorschau/b/termin/']);
 });
+
+// Team und Prueflaeufe zaehlen nicht (26.10.2026): ?zaehlen=aus merkt sich das Geraet.
+function gemeldetMit(html, search, speicher) {
+  const code = html.slice(html.indexOf('const GEZAEHLT'), html.indexOf('function show(n){'));
+  const raus = [];
+  const ctx = {
+    document: { documentElement: { lang: 'de' }, referrer: '' }, window: {}, location: { search },
+    localStorage: { getItem: (k) => speicher[k] ?? null, setItem: (k, v) => { speicher[k] = v; }, removeItem: (k) => { delete speicher[k]; } },
+    URLSearchParams, navigator: { doNotTrack: '0', sendBeacon: (_u, b) => raus.push(b) },
+    matchMedia: () => ({ matches: true }), Blob: class { constructor([s]) { this.s = s; } }, JSON, Set,
+  };
+  vm.runInNewContext(code + ';zaehlen(0);', ctx);
+  return raus.length;
+}
+test('Funnel: ?zaehlen=aus zaehlt nicht und bleibt aus, ?zaehlen=an zaehlt wieder', () => {
+  const speicher = {};
+  assert.equal(gemeldetMit(de, '', speicher), 1, 'normal zaehlt');
+  assert.equal(gemeldetMit(de, '?zaehlen=aus', speicher), 0);
+  assert.equal(gemeldetMit(de, '', speicher), 0, 'bleibt aus');
+  assert.equal(gemeldetMit(de, '?zaehlen=an', speicher), 1);
+});

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-0GQbgQzvCWlR10agLRGCeQvXevUI9DyRssapWBWbfVs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-hV3Lvgg1vSKUCz6OaQ0LW4if1J4Q1MEeAJ+vsw58yD8=' 'sha256-t5JihHKR/i5vm79vidtqC6lYSL/jDhnCoGqx8oz4IAk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-C4v3C1IzVDmVl3Q36cyKrQ46F5eUvVH4cYDx7G4sA8A=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-0GQbgQzvCWlR10agLRGCeQvXevUI9DyRssapWBWbfVs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-hV3Lvgg1vSKUCz6OaQ0LW4if1J4Q1MEeAJ+vsw58yD8=' 'sha256-t5JihHKR/i5vm79vidtqC6lYSL/jDhnCoGqx8oz4IAk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -1714,6 +1714,8 @@
   (function () {
     try {
       if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      // Team und Prüfläufe zählen nicht (26.10.2026): einmal ?zaehlen=aus aufrufen, ?zaehlen=an hebt es auf.
+      try { var zq = new URLSearchParams(location.search).get("zaehlen"); if (zq === "aus") localStorage.setItem("s2s-zaehlen", "aus"); if (zq === "an") localStorage.removeItem("s2s-zaehlen"); if (localStorage.getItem("s2s-zaehlen") === "aus") return; } catch (e) {}
       var daten = JSON.stringify({
         p: location.pathname,
         r: document.referrer || "",
