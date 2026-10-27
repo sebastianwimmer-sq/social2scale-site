@@ -35,8 +35,9 @@ VOR, NACH = 0.25, 0.45  # Luft um eine Szene, damit die Ueberblendung nicht ins 
 CUES_DE = {
     's1': [('Hallo, schön, dass du da bist.', 0), ('Ich bin die KI-Assistenz von social2scale', 6),
            ('und erkläre dir kurz, was jetzt passiert.', 15)],
-    's2a': [('Deine Gratis-Vorschau ist unterwegs.', 0), ('Bestätige kurz die Mail in deinem Postfach,', 5),
-            ('dann baut sich dein Feed fertig.', 12)],
+    # Satz 2 neu (Sebi 27.10., Abnahme Fassung 3: „Mail“ klang falsch betont)
+    's2a': [('Deine Gratis-Vorschau ist unterwegs.', 0), ('Ein Klick auf den Link in deinem Postfach,', 5),
+            ('dann baut sich dein Feed fertig.', 13)],
     's2b': [('Phil hat deine Antworten schon gelesen:', 0), ('dein Thema, dein Ziel', 6),
             ('und wo du heute stehst.', 10)],
     's3a': [('Die Vorschau zeigt dir,', 0), ('wie dein Auftritt aussehen kann.', 4),
@@ -51,7 +52,7 @@ MARKEN_DE = {
     # Runde 5 (Sebi/Phil 23.10.: Framing über ihr Ergebnis statt unseren Ablauf; „Kunde braucht
     # Klarheit, ein Ziel und Nachvollziehbarkeit seiner Situation“). Jede Marke bewegt etwas.
     's1': {'name': 0},
-    's2a': {'titel': 0, 'unterwegs': 4, 'mail': 5, 'post': 11, 'feed': 13},
+    's2a': {'titel': 0, 'unterwegs': 4, 'mail': 5, 'post': 12, 'feed': 14},
     's2b': {'phil': 0, 'antworten': 2, 'thema': 6, 'ziel': 8, 'stand': 10},
     's3a': {'vorschau': 0, 'auftritt': 6, 'nicht': 9, 'ziel': 16},
     's4': {'phil': 3, 'stand': 8, 'ziel': 12, 'weg': 16, 'plan': 22},
@@ -179,6 +180,10 @@ def ton(b):
 DEHNEN_MAX = 0.12   # je Satzteil hoechstens 12 % schneller/langsamer: darueber klingt atempo kratzig
 PAUSE_MIN = 0.06   # Schnitt nur, wo die Stimme mindestens so lange schweigt
 LIPPEN_MAX = 0.09   # Rest-Versatz je Wort, ab dem ein Satzteil an seinem schlechtesten Wort geteilt wird
+# Sebi 27.10. (Abnahme Runde 2): DE-Begrüßung „hängt“ bei „social2scale“ und „kurz“; genau dort liegt ein
+# Satzteil (13 Wörter), den atempo um 12 % langsamer zieht. Rubber Band (R3, --fine) dehnt ohne Leiern.
+# EN ist mit atempo abgenommen (27.10.) und bleibt byte-gleich, bis dort jemand etwas hört.
+WEICH_DEHNEN = {'de'}
 
 
 def lippen_plan(q, c):
@@ -214,6 +219,15 @@ def lippen_plan(q, c):
     return plan
 
 
+def weich_dehnen(quelle, von, bis, faktor, ziel):
+    """Ausschnitt von..bis auf faktor-fache Länge, Tonhöhe bleibt (rubberband R3; brew install rubberband)."""
+    roh = ziel.with_suffix('.roh.wav')
+    lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(quelle), '-af', f'atrim={von:.3f}:{bis:.3f},asetpts=PTS-STARTPTS',
+         '-ar', '48000', '-ac', '1', str(roh))
+    lauf('rubberband', '--fine', '-q', '-t', f'{faktor:.4f}', str(roh), str(ziel))
+    return ziel
+
+
 def angleichen(b, ziel):
     """Stimme auf die Lippen des Avatar-Clips legen (Sebi 23.10.: „mundbewegungen sind teils asynchron“,
     gemessen bis 0,38 s). Der Clip-Ton selbst verschluckt Woerter („kostenlos“), darum die saubere
@@ -222,17 +236,22 @@ def angleichen(b, ziel):
     if len(q) != len(c):
         sys.exit(f'{b}: {len(q)} Woerter in der Stimme, {len(c)} im Clip')
     plan = lippen_plan(q, c)
-    graph, n = [], len(plan)
+    graph, n, eingaenge = [], len(plan), ['-i', str(ton(b))]
     for k, s in enumerate(plan):
         # Schnitt in der Pause (Mitte zum Nachbarwort), bei einer Teilung am Wortanfang
         qa = q[s['von']]['start'] - (min(0.12, (q[s['von']]['start'] - q[s['von'] - 1]['end']) / 2) if s['von'] else 0.12)
         qz = q[s['bis']]['end'] + (min(0.12, (q[s['bis'] + 1]['start'] - q[s['bis']]['end']) / 2) if s['bis'] + 1 < len(q) else 0.4)
         qa, vorlauf = max(0.0, qa), q[s['von']]['start'] - max(0.0, qa)
         beginn = max(0.0, s['start'] - vorlauf * s['faktor'])
-        graph.append(f'[0:a]atrim={qa:.3f}:{qz:.3f},asetpts=PTS-STARTPTS,aresample=48000,atempo={1 / s["faktor"]:.4f},'
-                     f'afade=t=in:d=0.008,areverse,afade=t=in:d=0.008,areverse,adelay={int(beginn * 1000)}:all=1[s{k}]')
+        if SPRACHE in WEICH_DEHNEN:
+            teil = weich_dehnen(ton(b), qa, qz, s['faktor'], ziel.with_name(f'{ziel.stem}-teil{k}.wav'))
+            eingaenge += ['-i', str(teil)]
+            kette = f'[{len(eingaenge) // 2 - 1}:a]aresample=48000,'
+        else:
+            kette = f'[0:a]atrim={qa:.3f}:{qz:.3f},asetpts=PTS-STARTPTS,aresample=48000,atempo={1 / s["faktor"]:.4f},'
+        graph.append(kette + f'afade=t=in:d=0.008,areverse,afade=t=in:d=0.008,areverse,adelay={int(beginn * 1000)}:all=1[s{k}]')
     graph.append(''.join(f'[s{k}]' for k in range(n)) + f'amix=inputs={n}:normalize=0:duration=longest[o]')
-    lauf('ffmpeg', '-loglevel', 'error', '-y', '-i', str(ton(b)), '-filter_complex', ';'.join(graph),
+    lauf('ffmpeg', '-loglevel', 'error', '-y', *eingaenge, '-filter_complex', ';'.join(graph),
          '-map', '[o]', '-ar', '48000', str(ziel))
     print(f'  {b}: {n} Satzteile, Dehnung {min(s["faktor"] for s in plan):.2f}-{max(s["faktor"] for s in plan):.2f}, '
           f'Rest-Versatz <= {max(s["fehler"] for s in plan):.2f} s')
