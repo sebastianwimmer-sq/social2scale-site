@@ -17,7 +17,12 @@
   --mx:0;--my:0;--sp:0;--kegel-x:50%;--kegel-hell:.42;
   /* läuft unten in den Grund aus — nie eine harte Kante zum nächsten Abschnitt (16.10.: „blockartig“) */
   -webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
-.raum ~ .wrap{position:relative;z-index:1}
+/* Der Abschnitt, der einen Raum trägt, wird zur Bühne; sein Inhalt liegt davor */
+:has(> .raum){position:relative;overflow:clip}
+.raum ~ :is(.wrap,.dk-wrap){position:relative;z-index:1}
+/* Kamerafahrt: das Studio bleibt beim Seitenwechsel stehen und fährt an den neuen Ort (abschluss.css regelt Dauer) */
+.raum{view-transition-name:studio}
+::view-transition-group(studio){animation-duration:var(--dur-4, .8s);animation-timing-function:cubic-bezier(.16,1,.3,1)}
 .raum-ebene{position:absolute;inset:-24px -40px;
   transform:translate3d(calc(var(--mx) * var(--z, 0) * 1px),calc(var(--my) * var(--z, 0) * .6px + var(--sp) * var(--z, 0) * -1.6px),0)}
 .raum.lebt .raum-ebene{will-change:transform}
@@ -45,7 +50,7 @@
   box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 2px 2px rgba(0,0,0,.5),0 18px 30px -10px rgba(0,0,0,.85);
   filter:brightness(.35) saturate(.5);transition:filter 1.4s .3s}
 .raum.an .raum-abzug{filter:brightness(var(--hell, 1)) saturate(var(--satt, 1))}
-.raum-abzug img{display:block;width:100%;height:100%;object-fit:cover}
+.raum-abzug img,.raum-abzug canvas{display:block;width:100%;height:100%;object-fit:cover}
 .raum-abzug::after{content:"";position:absolute;left:4%;right:4%;top:100%;height:38%;
   background:linear-gradient(180deg,rgba(31,201,152,.10),transparent 70%);transform:skewX(calc(var(--mx) * -16deg));transform-origin:0 0;opacity:.8}
 .raum-fern .raum-abzug{--hell:.7;--satt:.7}
@@ -65,11 +70,39 @@
 .raum-halt:hover,.raum-halt:focus-visible{color:var(--paper,#F2F3F1)}
 .raum-halt:focus-visible{outline:2px solid var(--emerald-soft,#1FC998);outline-offset:2px}
 
+/* Podest unter einem Abzug (Preise): Oberseite fängt Licht, Front dunkel */
+.raum-podest{position:absolute;left:var(--x);bottom:calc(var(--y) - var(--h));width:var(--b);height:var(--h);
+  background:linear-gradient(180deg,#14201C 0 6%,#0A100E 6% 100%);box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 20px 30px -14px rgba(0,0,0,.9)}
+
+/* ── Seitenlicht: ein ruhiger Kegel über der ganzen Seite, der dem gelesenen Abschnitt folgt ──
+   Liegt ÜBER dem Inhalt als Licht (screen hellt nur auf), aber unter Leiste (120), Menü (115),
+   Nach-oben-Knopf (90) und Handy-Knopf (130). --licht-x ist registriert, damit es weich wandert. */
+@property --licht-x{syntax:'<percentage>';inherits:true;initial-value:50%}
+.raum-licht{position:fixed;inset:0;z-index:5;pointer-events:none;mix-blend-mode:screen;opacity:0;
+  transition:opacity 1.2s cubic-bezier(.2,.7,.2,1),--licht-x 1.6s cubic-bezier(.2,.7,.2,1);
+  --ls:1;
+  background:conic-gradient(from 0deg at var(--licht-x) -18%,transparent 0 158deg,rgba(31,201,152,calc(.05 * var(--ls))) 167deg,rgba(31,201,152,calc(.14 * var(--ls))) 175deg,
+    rgba(31,166,224,calc(.12 * var(--ls))) 184deg,rgba(47,190,234,calc(.05 * var(--ls))) 193deg,transparent 202deg);
+  -webkit-mask-image:linear-gradient(180deg,#000 20%,transparent 95%);mask-image:linear-gradient(180deg,#000 20%,transparent 95%)}
+.raum-licht.an{opacity:1}
+/* 404: ein einzelner Kegel auf leerem Boden — hier ist das Licht die ganze Aussage */
+[data-raum-licht="leer"]{--ls:2.4}
+/* Rechtliches: ruhig, das Licht stört beim Lesen nicht */
+[data-raum-licht="recht"]{--ls:.7}
+body:not(:has(.raum)) .raum-licht{view-transition-name:studio}
+
 /* ── Orte ─────────────────────────────────────────────────────────────── */
 /* Start: der Kegel fällt auf den Namen in der Mitte, die Arbeiten stehen links und rechts im Raum */
 .raum--start{--kegel-x:50%;--kegel-hell:.36}
 /* Ablauf: Licht rechts auf dem Kopf-Beitrag, der Weg führt durch die Phasen in die Tiefe */
 .raum--ablauf{--kegel-x:76%;--kegel-hell:.42}
+/* Unterseiten mit Kopf-Beitrag rechts: das Licht steht auf dem Beitrag */
+.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns{--kegel-x:78%;--kegel-hell:.42}
+/* Für wen: erst im Dunkeln („Online merkt's nur keiner“), das Licht kommt später (raum.js › data-spaet) */
+.raum--fuer-wen .raum-kegel{transition-duration:2.4s}
+/* Danke: das Licht geht für die neue Kundin an — zentral über der Begrüßung */
+.raum--danke,.raum--studio-danke{--kegel-x:30%;--kegel-hell:.46}
+.raum--studio-danke{--kegel-x:50%}
 
 @media (max-width:760px){
   .raum-fern{display:none}
@@ -77,11 +110,12 @@
   .raum--start .raum-mitte .raum-abzug{--b:24%!important;--y:9%!important}
   .raum--start .raum-mitte .raum-abzug:first-child{--x:-11%!important}
   .raum--start .raum-mitte .raum-abzug:last-child{--x:92%!important}
-  .raum--ablauf{--kegel-x:30%}
+  .raum--ablauf,.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns,.raum--danke{--kegel-x:30%}
 }
 @media (prefers-reduced-motion:reduce){
   .raum-ebene{transform:none!important}
   .raum-kegel,.raum-boden::before,.raum-abzug,.raum-weg{transition:none}
   .raum-staub{display:none}
+  .raum-licht{transition:none}
 }
-@media print{.raum,.raum-halt{display:none!important}}
+@media print{.raum,.raum-halt,.raum-licht{display:none!important}}

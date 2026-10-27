@@ -338,3 +338,18 @@ Gegenprobe nach der Umstellung: 23 öffentliche Ziele weiterhin 200,
 - **Neue Karte mit Licht:** Attribut `data-licht` an das Element, das schon `position:relative` hat.
 - **Vor jedem Commit:** `bash scripts/pruefen.sh` — Selbsttests zuerst, dann CSP (Datei + Browser),
   Seitenwechsel, Bewegung. Exit 1 bei jedem Befund.
+
+## Lichtstudio (seit 27.10.2026)
+
+Jede Seite ist ein Ort im Studio (Richtung E, Plan `docs/superpowers/specs/2026-10-27-immersiv-design.md`).
+Die Raum-Blöcke kommen aus **einer** Quelle: `scripts/raum-bauen.mjs` (Liste `KOPF` + `SEITEN`).
+
+- Neue Seite → in `SEITEN` eintragen (Kopf-Ort oder nur Seitenlicht), dann `node scripts/raum-bauen.mjs`.
+- `build-wissen.mjs` und `build-danke-studio.mjs` rufen `raum-bauen.mjs` am Ende selbst auf.
+  Danach wie immer `build-pages.mjs` und `csp-haerten.mjs`.
+- `pruefen.sh` hält an, wenn eine Seite vom Soll abweicht (`raum-bauen.mjs --pruefen`), und misst mit
+  `raum-check.mjs`: Licht an, Raum antwortet (Maus/Scroll), ruhig = Standbild, Halte-Knopf, kein Ruckeln
+  bei CPU x4, LCP nie im Raum, eigener Ort je Seite, Seitenlicht ruht unter dem Kopf-Raum.
+- Abzüge im Raum werden nach dem `load`-Ereignis auf eine Leinwand gezeichnet (nie `<img>`): sonst wird
+  ein später Abzug zum größten Element und verschiebt LCP.
+- Der Funnel (`free-content/src/pages/shell.js`) trägt dieselbe Wand, denselben Kegel und denselben Boden.

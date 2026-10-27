@@ -29,6 +29,7 @@ lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
 lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
 lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
 lauf "Bewegung"                  node scripts/bewegung-check.mjs
+lauf "Raum je Seite (Quelle)"   node scripts/raum-bauen.mjs --pruefen
 lauf "Raum (Lichtstudio)"        node scripts/raum-check.mjs
 lauf "Bedienung (Knöpfe)"        node scripts/bedienung-check.mjs
 lauf "Bildschärfe"              node scripts/bild-schaerfe-check.mjs

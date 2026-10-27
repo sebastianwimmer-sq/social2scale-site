@@ -95,14 +95,28 @@ const SHARED_STYLE = `
     -webkit-mask-image:radial-gradient(90% 80% at 70% 70%,#000 40%,transparent 100%);mask-image:radial-gradient(90% 80% at 70% 70%,#000 40%,transparent 100%)}
   @media (min-width:701px){.photo{background-image:url("${ASSET_BASE}/hero-linie-2880.webp");background-position:center 80%;opacity:.6}}
   .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,13,.35),rgba(3,8,13,.55) 58%,rgba(3,8,13,.8))}
+  /* ── Lichtstudio-Bruecke (27.10.2026, Richtung E): die Website ist jetzt ein Studio mit Verlaufslicht.
+     Der Funnel nimmt dieses Licht auf — dieselbe Wand, derselbe Kegel, derselbe Boden — statt der
+     Lichtlinie, die es auf der Website nicht mehr gibt. Das Licht geht beim Ankommen EINMAL an. ── */
+  .scene.studio{background:radial-gradient(60% 70% at 50% 24%,#0E2A24 0%,#071512 42%,#03080D 78%)}
+  .studio .kegel{position:absolute;inset:0;mix-blend-mode:screen;animation:kegelAn 1.6s .3s cubic-bezier(.2,.7,.2,1) both;
+    background:conic-gradient(from 0deg at 50% -14%,transparent 0 150deg,rgba(31,201,152,.09) 160deg,rgba(31,201,152,.36) 170deg,
+      rgba(31,166,224,.33) 183deg,rgba(47,190,234,.16) 194deg,transparent 206deg);
+    -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 92%);mask-image:linear-gradient(180deg,#000 30%,transparent 92%)}
+  .studio .boden{position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(180deg,#081310,#020507 70%,#03080D)}
+  .studio .boden::before{content:"";position:absolute;inset:0;mix-blend-mode:screen;animation:kegelAn 1.8s .5s both;
+    background:radial-gradient(34% 54% at 50% 0%,rgba(31,201,152,.24),rgba(31,166,224,.08) 55%,transparent 75%)}
+  @keyframes kegelAn{from{opacity:0}}
+  @media print{.studio .kegel,.studio .boden{display:none}}
   /* Film-Grain (fixed, ueberlagert alles, keine Events) */
   .grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
   @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
 `;
 
 const SCENE_MARKUP = `
-<div class="scene">
-  <div class="photo"></div>
+<div class="scene studio" aria-hidden="true">
+  <div class="boden"></div>
+  <div class="kegel"></div>
 </div>
 <div class="grain"></div>`;
 

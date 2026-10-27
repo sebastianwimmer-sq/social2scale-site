@@ -1,6 +1,8 @@
 /* raum.js — der Raum antwortet (27.10.2026, Richtung E „Lichtstudio mit Verlaufslicht“).
  *
  * 0. Abzüge laden nach dem load-Ereignis (data-src), nie im Wettlauf mit dem ersten Bild.
+ * S. Seitenlicht: der ruhige Kegel über der Seite steht über dem Abschnitt, den man gerade liest,
+ *    und ruht, solange der Kopf-Raum zu sehen ist (nie zwei Kegel zugleich).
  * 1. Licht an: sobald der Raum zur Hälfte im Bild ist, EINMAL (.an). Bei „weniger Bewegung“
  *    sofort und ohne Übergang — das Standbild zeigt die Arbeiten im Licht.
  * 2. Der Raum folgt: Maus (nur feiner Zeiger), Neigen am Handy, Scrollen. Werte laufen weich
@@ -13,14 +15,29 @@
 (function () {
   'use strict';
   var raeume = [].slice.call(document.querySelectorAll('[data-raum]'));
-  if (!raeume.length) return;
   var ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  seitenlicht();
+  if (!raeume.length) return;
 
   // 0. Die Abzüge laden erst nach dem ersten Bild: auf langsamem Netz nahmen sie Schrift und Logo
   //    die Leitung weg (Besucher-Sim „langsam“: LCP 2,2 s → 2,5–2,9 s, 27.10.2026).
+  //    Gezeichnet wird auf eine Leinwand statt als <img>: sonst wird am Desktop ein später Abzug zum
+  //    „größten Element“ und verschiebt LCP hinter das Logo (raum-check, 27.10.2026). Zuschnitt 4:5 wie object-fit:cover.
   var ladeAbzuege = function () {
     raeume.forEach(function (r) {
-      [].forEach.call(r.querySelectorAll('img[data-src]'), function (i) { i.src = i.getAttribute('data-src'); i.removeAttribute('data-src'); });
+      [].forEach.call(r.querySelectorAll('img[data-src]'), function (i) {
+        var bild = new Image();
+        bild.decoding = 'async';
+        bild.onload = function () {
+          var c = document.createElement('canvas');
+          c.width = 360; c.height = 450;
+          var q = bild.naturalWidth / bild.naturalHeight, sw = bild.naturalWidth, sh = bild.naturalHeight, sx = 0, sy = 0;
+          if (q > 0.8) { sw = sh * 0.8; sx = (bild.naturalWidth - sw) / 2; } else { sh = sw / 0.8; sy = (bild.naturalHeight - sh) / 2; }
+          c.getContext('2d').drawImage(bild, sx, sy, sw, sh, 0, 0, 360, 450);
+          i.replaceWith(c);
+        };
+        bild.src = i.getAttribute('data-src');
+      });
     });
   };
   if (document.readyState === 'complete') ladeAbzuege(); else addEventListener('load', ladeAbzuege);
@@ -35,7 +52,7 @@
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
       lichtIo.unobserve(e.target);
-      setTimeout(function () { e.target.classList.add('an'); }, 350);
+      setTimeout(function () { e.target.classList.add('an'); }, e.target.hasAttribute('data-spaet') ? 1600 : 350);
     });
   }, { threshold: 0.4 });
   raeume.forEach(function (r) { lichtIo.observe(r); });
@@ -165,5 +182,28 @@
       x.fillStyle = g;
       x.beginPath(); x.arc(px, py, rad, 0, 6.283); x.fill();
     }
+  }
+
+  // S. Seitenlicht
+  function seitenlicht() {
+    var licht = document.querySelector('[data-raum-licht]');
+    if (!licht || !('IntersectionObserver' in window)) return;
+    var kopfZuSehen = false;
+    var setze = function () { licht.classList.toggle('an', !kopfZuSehen); };
+    raeume.forEach(function (r) {
+      new IntersectionObserver(function (es) { kopfZuSehen = es[0].intersectionRatio > 0.2; setze(); }, { threshold: [0, 0.2, 0.5] }).observe(r);
+    });
+    setze();
+    if (ruhig) return;
+    var folge = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var ziel = e.target.querySelector('h1, h2, h3') || e.target;
+        var box = ziel.getBoundingClientRect();
+        var x = Math.max(15, Math.min(85, (box.left + Math.min(box.width, 520) / 2) / innerWidth * 100));
+        licht.style.setProperty('--licht-x', x.toFixed(1) + '%');
+      });
+    }, { rootMargin: '-35% 0px -45% 0px' });
+    [].forEach.call(document.querySelectorAll('main section, main > article, main > .wrap, main.card, main.blatt'), function (s) { folge.observe(s); });
   }
 })();

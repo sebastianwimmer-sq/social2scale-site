@@ -13,9 +13,11 @@
  *  3. Halten: wo Endloses laeuft, gibt es den Knopf, und danach steht die Schleife (rAF zaehlen)
  *  4. Ruhig (reduce): Licht sofort an, kein Versatz, kein Staub, keine Schleife
  *  5. Bewegte Ebenen ohne filter:blur. (Das Liquid Glass der Leiste bleibt: gemessen wird das Ruckeln in 7, nicht die Bauart.)
- *  6. Das erste grosse Bild (LCP) ist nie Leinwand oder Video und nie ein spaet ladendes Bild (loading=lazy)
+ *  6. Das erste grosse Bild (LCP) liegt nie im Raum und ist nie ein spaet ladendes Bild (loading=lazy).
+ *     (Ein Feier-Video wie auf /danke/studio/ ist Bestand der Seite, nicht des Raums.)
  *  7. Ruckeln beim Scrollen: CPU x4, 14-px-Schritte, Anteil Bilder > 50 ms unter 5 %
- *  8. Eigener Ort: jede Seite traegt einen anderen raum--Modifikator
+ *  8. Eigener Ort: jede Seite traegt einen anderen raum--Modifikator bzw. data-raum-licht
+ *  9. Seitenlicht: auf jeder Seite an; auf Seiten mit Kopf-Raum ruht es oben und geht nach dem Kopf an
  */
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -24,7 +26,9 @@ import { extname, join, resolve, sep } from 'node:path';
 const { chromium, webkit } = await import('/opt/homebrew/lib/node_modules/playwright/index.mjs');
 const WURZEL = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
-const SEITEN = ['/', '/ablauf/'];
+// Kopf-Orte (je ein eigener Ort) und Seiten, die nur das Seitenlicht tragen — Quelle: scripts/raum-bauen.mjs
+const SEITEN = ['/', '/ablauf/', '/preise/', '/for-you/', '/about/', '/results/', '/danke/', '/danke/studio/'];
+const LICHT_SEITEN = ['/wissen/', '/wissen/was-kostet-social-media-betreuung/', '/links/', '/onboarding/', '/impressum/', '/404.html'];
 const RUCKEL_GRENZE = 5;
 const MIN_VERSATZ_PX = 4;
 const TYPEN = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg',
@@ -100,20 +104,20 @@ async function lauf() {
         await p.mouse.move(1360, 300, { steps: 4 }); await p.waitForTimeout(1500); const rechts = await p.evaluate(versatz);
         const dx = Math.abs(rechts.x - links.x);
         if (dx < MIN_VERSATZ_PX) probleme.push(`Maus bewegt den Raum nicht (${dx.toFixed(1)} px)`);
-        await p.evaluate(() => scrollTo(0, 260)); await p.waitForTimeout(900); const unten = await p.evaluate(versatz);
+        await p.evaluate(() => scrollTo(0, document.querySelector('[data-raum]').getBoundingClientRect().height * 0.4)); await p.waitForTimeout(900); const unten = await p.evaluate(versatz);
         const dy = Math.abs(unten.y - rechts.y);
         if (dy < MIN_VERSATZ_PX) probleme.push(`Scrollen bewegt den Raum nicht (${dy.toFixed(1)} px)`);
         await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(300);
         const r = await p.evaluate(() => ({
           blur: [...document.querySelectorAll('.raum-ebene, .raum-ebene *')].filter((e) => /blur/.test(getComputedStyle(e).filter)).map((e) => e.className),
-          lcpSchlecht: !!(window.__lcp && (/^(CANVAS|VIDEO)$/.test(window.__lcp.tagName) || window.__lcp.loading === 'lazy')),
+          lcpSchlecht: !!(window.__lcp && (window.__lcp.closest('[data-raum]') || window.__lcp.loading === 'lazy')),
           lcp: window.__lcp ? window.__lcp.tagName + '.' + window.__lcp.className : 'keins',
           ort: [...document.querySelector('[data-raum]').classList].find((k) => k.startsWith('raum--')) || '',
           staub: !!document.querySelector('[data-raum] .raum-staub'),
           knopf: !!document.querySelector('.raum-halt'),
         }));
         if (r.blur.length) probleme.push(`filter:blur auf bewegter Ebene: ${r.blur.join(', ')}`);
-        if (r.lcpSchlecht) probleme.push(`erstes grosses Bild ist Leinwand/Video oder laedt spaet (${r.lcp})`);
+        if (r.lcpSchlecht) probleme.push(`erstes grosses Bild liegt im Raum oder laedt spaet (${r.lcp})`);
         if (!r.ort) probleme.push('kein raum--Ort gesetzt');
         else if (orte.has(r.ort)) probleme.push(`Ort ${r.ort} schon auf ${orte.get(r.ort)}`);
         else orte.set(r.ort, pfad);
@@ -129,6 +133,33 @@ async function lauf() {
       melde(!probleme.length, `${name.padEnd(9)} ${pfad.padEnd(9)} ${probleme.join(' · ') || 'Licht an, Raum antwortet'}`);
       await c.close();
     }
+    await b.close();
+  }
+
+  // Seitenlicht: an, eigener Ort; auf der Startseite ruht es, solange der Kopf zu sehen ist
+  {
+    const b = await chromium.launch();
+    const lichtOrte = new Map();
+    const istAn = (p) => p.waitForFunction(() => { const l = document.querySelector('[data-raum-licht]'); return l && l.classList.contains('an') && parseFloat(getComputedStyle(l).opacity) > 0.9; }, null, { timeout: 5000 }).then(() => true, () => false);
+    for (const pfad of LICHT_SEITEN) {
+      const { c, p, fehler } = await oeffne(b, pfad, 'no-preference');
+      const probleme = [];
+      if (!(await istAn(p))) probleme.push('Seitenlicht nicht an');
+      const ort = await p.evaluate(() => document.querySelector('[data-raum-licht]')?.dataset.raumLicht || '');
+      if (!ort) probleme.push('kein Ort am Seitenlicht');
+      else if (lichtOrte.has(ort) && !(pfad.startsWith('/wissen/') && lichtOrte.get(ort).startsWith('/wissen/'))) probleme.push(`Ort ${ort} schon auf ${lichtOrte.get(ort)}`);
+      else lichtOrte.set(ort, pfad);
+      if (fehler.length) probleme.push(`Skriptfehler: ${fehler[0]}`);
+      melde(!probleme.length, `Licht     ${pfad.padEnd(9)} ${probleme.join(' · ') || `an (Ort ${ort})`}`);
+      await c.close();
+    }
+    const { c, p } = await oeffne(b, '/', 'no-preference');
+    await p.waitForTimeout(1500);
+    const obenAn = await p.evaluate(() => document.querySelector('[data-raum-licht]').classList.contains('an'));
+    await p.evaluate(() => scrollTo(0, innerHeight * 2.2));
+    const untenAn = await istAn(p);
+    melde(!obenAn && untenAn, `Licht     /         ${!obenAn ? 'ruht unter dem Kopf-Raum' : 'brennt doppelt neben dem Kopf-Raum'} · ${untenAn ? 'geht danach an' : 'geht danach NICHT an'}`);
+    await c.close();
     await b.close();
   }
 

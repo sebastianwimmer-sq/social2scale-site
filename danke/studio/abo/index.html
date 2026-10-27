@@ -344,12 +344,14 @@ img,video{max-width:100%}
 </style>
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 </head>
 <body>
   <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>
 
   <main>
-    <section class="hero">
+    <section class="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--studio-danke" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
       <video class="herovid" autoplay muted loop playsinline poster="/danke/studio/assets/danke-poster.jpg" aria-hidden="true"><source src="/danke/studio/assets/danke-bg.mp4" type="video/mp4"></video>
       <div class="celebrate" aria-hidden="true"></div>
       <div class="wrap">
@@ -449,5 +451,6 @@ img,video{max-width:100%}
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="studio-danke" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

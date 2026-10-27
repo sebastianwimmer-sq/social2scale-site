@@ -702,6 +702,8 @@
 <link rel="stylesheet" href="/seite.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/results/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/results/">
@@ -749,7 +751,7 @@
   <main id="main" tabindex="-1" id="ergebnisse">
 
     <!-- 1) Editorial hero, oversized Fraunces display vs tiny mono running head -->
-    <section class="rs-hero" aria-labelledby="rs-hero-h"><div class="wrap reveal">
+    <section class="rs-hero" aria-labelledby="rs-hero-h"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--pruef-uns" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:3.6%;--x:68%;--y:64%;--hell:.45"><img data-src="/assets/feed/beitrag-2-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:3.6%;--x:73.4%;--y:64%;--hell:.45"><img data-src="/assets/feed/beitrag-3-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:3.6%;--x:78.8%;--y:64%;--hell:.45"><img data-src="/assets/feed/beitrag-4-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:3.6%;--x:84.2%;--y:64%;--hell:.45"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:3.6%;--x:89.6%;--y:64%;--hell:.45"><img data-src="/assets/feed/beitrag-11-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM --><div class="wrap reveal">
       <p class="rs-rh">Verifiable</p>
       <h1 id="rs-hero-h" class="steigt"><span class="z"><span>What you can <em>measure</em> us by.</span></span></h1>
       <p class="lead">You won’t find success numbers here. We don’t have any that clients have cleared for publication. Instead: the metrics we work by, an honest picture of the first six months, and the six questions you can use to check any agency. Us included.</p>
@@ -1020,5 +1022,6 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="pruef-uns" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

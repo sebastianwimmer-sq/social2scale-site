@@ -582,3 +582,5 @@ for (const p of [...PRODUCTS, ...BONUS_PRODUCTS, FALLBACK]) {
   console.log("✓", p.slug ? "/danke/studio/" + p.slug + "/" : "/danke/studio/ (Fallback)");
 }
 console.log("\n" + built + " Seiten generiert. Countdown: " + COUNTDOWN_MINUTES + " Min · Studio: " + STUDIO_URL);
+// Lichtstudio (27.10.2026): die frisch erzeugten Seiten bekommen ihren Raum aus der einen Quelle zurück
+import("node:child_process").then(({ execFileSync }) => execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "raum-bauen.mjs")], { stdio: "inherit" }));

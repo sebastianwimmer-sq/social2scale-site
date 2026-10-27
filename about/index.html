@@ -610,6 +610,8 @@
 <link rel="stylesheet" href="/seite.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/about/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/about/">
@@ -656,7 +658,7 @@
 
   <main id="main" tabindex="-1">
     <!-- 1. Editorial hero, oversized Fraunces display vs tiny mono running head -->
-    <section class="ab-hero" id="ueber-uns" aria-labelledby="ab-heading" style="position:relative;overflow:hidden"><div class="wrap reveal" style="position:relative;z-index:1">
+    <section class="ab-hero" id="ueber-uns" aria-labelledby="ab-heading" style="position:relative;overflow:hidden"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--ueber-uns" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:7%;--x:50%;--y:40%"><img data-src="/assets/founder-philipp-560.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:7%;--x:59%;--y:40%"><img data-src="/assets/founder-sebastian-560.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM --><div class="wrap reveal" style="position:relative;z-index:1">
       <p class="ab-rh">Über uns</p>
       <h1 id="ab-heading" class="steigt"><span class="z"><span>Wir bauen Systeme,</span></span><span class="z"><span class="l2">keine <em>Zufälle</em>.</span></span></h1>
       <p class="lead">Keine Agentur-Maschine. <b>Zwei Gründer, die selbst Hand anlegen</b>. Von der Strategie bis zum letzten Post. Done-for-you, persönlich betreut, jeder Fortschritt messbar in deinem Bereich.</p>
@@ -964,5 +966,6 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="ueber-uns" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>
