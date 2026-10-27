@@ -1,0 +1,87 @@
+/* raum.css — jede Seite ein Ort: das Lichtstudio (27.10.2026, Sebi wählt Richtung E).
+ *
+ * Dunkles Studio, eure Beiträge stehen als Abzüge im Raum, ein Lichtkegel im Verlauf
+ * (Emerald → Teal) fällt auf die Arbeit. Beim ersten Hinsehen geht das Licht EINMAL an
+ * (.an), danach antwortet der Raum: Maus am Desktop, Neigen am Handy, Scrollen überall.
+ * Plan: docs/superpowers/specs/2026-10-27-immersiv-design.md · Evidenz: kit-build/web-immersiv-evidenz.json
+ *
+ * Regeln, die hier stecken (regeln/web.md › Tiefe und Immersion):
+ *  - nichts Bedienbares und kein Text bewegt sich; der Raum liegt HINTER dem Inhalt
+ *  - bewegte Ebenen tragen kein filter:blur (ruckelt beim Scrollen) — weiche Kanten nur aus Verlaufs-Halten
+ *  - reduce = Standbild mit Licht an, ohne Versatz; Druck = kein Raum
+ *  - Ebenen sind größer als die Bühne (inset -24px -40px), damit beim Versatz keine Kante aufgeht
+ *
+ * Je Seite stellt ein Modifikator den Ort ein (--kegel-x, Abzüge, Lichtweg); die Bauteile bleiben gleich.
+ */
+.raum{position:absolute;inset:0;z-index:0;overflow:clip;pointer-events:none;contain:paint;
+  --mx:0;--my:0;--sp:0;--kegel-x:50%;--kegel-hell:.42;
+  /* läuft unten in den Grund aus — nie eine harte Kante zum nächsten Abschnitt (16.10.: „blockartig“) */
+  -webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+.raum ~ .wrap{position:relative;z-index:1}
+.raum-ebene{position:absolute;inset:-24px -40px;
+  transform:translate3d(calc(var(--mx) * var(--z, 0) * 1px),calc(var(--my) * var(--z, 0) * .6px + var(--sp) * var(--z, 0) * -1.6px),0)}
+.raum.lebt .raum-ebene{will-change:transform}
+
+/* Wand: Grund mit Lichthof, der dem Kegel folgt */
+.raum-wand{background:radial-gradient(60% 70% at calc(var(--kegel-x) + var(--mx) * 12%) 26%,#0E2A24 0%,#071512 42%,#03080D 78%)}
+
+/* Kegel: der Verlauf als Licht. Ohne blur — die Kanten laufen über viele Halte aus. */
+.raum-kegel{opacity:0;transition:opacity 1.6s cubic-bezier(.2,.7,.2,1);mix-blend-mode:screen;
+  background:conic-gradient(from calc(var(--mx) * -10deg) at calc(var(--kegel-x) + var(--mx) * 8%) -14%,
+    transparent 0 150deg,rgba(31,201,152,calc(var(--kegel-hell) * .25)) 160deg,rgba(31,201,152,var(--kegel-hell)) 170deg,
+    rgba(31,166,224,calc(var(--kegel-hell) * .92)) 183deg,rgba(47,190,234,calc(var(--kegel-hell) * .45)) 194deg,transparent 206deg);
+  -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 92%);mask-image:linear-gradient(180deg,#000 30%,transparent 92%)}
+.raum.an .raum-kegel{opacity:1}
+
+/* Boden: matt, mit Lichtpfütze unter dem Kegel */
+.raum-boden{top:auto;height:44%;background:linear-gradient(180deg,#081310,#020507 70%,#03080D)}
+.raum-boden::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity 1.8s .2s;mix-blend-mode:screen;
+  background:radial-gradient(34% 54% at calc(var(--kegel-x) + var(--mx) * 10%) 0%,rgba(31,201,152,.26),rgba(31,166,224,.08) 55%,transparent 75%)}
+.raum.an .raum-boden::before{opacity:1}
+.raum-boden::after{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+
+/* Abzüge: Papier mit Rand, Kontaktschatten, Spiegelung im Boden. Im Dunkeln matt, im Licht voll. */
+.raum-abzug{position:absolute;width:var(--b);left:var(--x);bottom:var(--y);aspect-ratio:4/5;margin:0;padding:5px;background:#0B0F0E;
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 2px 2px rgba(0,0,0,.5),0 18px 30px -10px rgba(0,0,0,.85);
+  filter:brightness(.35) saturate(.5);transition:filter 1.4s .3s}
+.raum.an .raum-abzug{filter:brightness(var(--hell, 1)) saturate(var(--satt, 1))}
+.raum-abzug img{display:block;width:100%;height:100%;object-fit:cover}
+.raum-abzug::after{content:"";position:absolute;left:4%;right:4%;top:100%;height:38%;
+  background:linear-gradient(180deg,rgba(31,201,152,.10),transparent 70%);transform:skewX(calc(var(--mx) * -16deg));transform-origin:0 0;opacity:.8}
+.raum-fern .raum-abzug{--hell:.7;--satt:.7}
+
+/* Lichtweg auf dem Boden (Ablauf: der Weg durch die Phasen) */
+.raum-weg{position:absolute;left:var(--von, 40%);right:var(--bis, 4%);bottom:var(--hoehe, 20%);height:2px;opacity:0;transition:opacity 1.4s .6s;
+  background:linear-gradient(90deg,transparent,rgba(31,201,152,.55) 20%,rgba(47,190,234,.5) 80%,transparent);
+  box-shadow:0 0 22px 5px rgba(31,201,152,.14)}
+.raum.an .raum-weg{opacity:1}
+
+/* Staub im Licht (raum.js zeichnet nur, solange der Raum sichtbar ist) */
+.raum-staub{width:calc(100% + 80px);height:calc(100% + 48px)}
+
+/* Halten (WCAG 2.2.2): der Staub ist das einzig Endlose */
+.raum-halt{position:absolute;z-index:3;right:max(16px,env(safe-area-inset-right,0px));bottom:12px;min-height:44px;padding:0 12px;border:0;background:transparent;
+  color:var(--faint,#7C7E78);font:600 12px/1 "Hanken Grotesk",system-ui,sans-serif;letter-spacing:.02em;cursor:pointer;transition:color var(--dur-1,.15s) ease-out}
+.raum-halt:hover,.raum-halt:focus-visible{color:var(--paper,#F2F3F1)}
+.raum-halt:focus-visible{outline:2px solid var(--emerald-soft,#1FC998);outline-offset:2px}
+
+/* ── Orte ─────────────────────────────────────────────────────────────── */
+/* Start: der Kegel fällt auf den Namen in der Mitte, die Arbeiten stehen links und rechts im Raum */
+.raum--start{--kegel-x:50%;--kegel-hell:.36}
+/* Ablauf: Licht rechts auf dem Kopf-Beitrag, der Weg führt durch die Phasen in die Tiefe */
+.raum--ablauf{--kegel-x:76%;--kegel-hell:.42}
+
+@media (max-width:760px){
+  .raum-fern{display:none}
+  /* Handy: die Abzüge schauen nur vom Rand herein, nie hinter dem Text */
+  .raum--start .raum-mitte .raum-abzug{--b:24%!important;--y:9%!important}
+  .raum--start .raum-mitte .raum-abzug:first-child{--x:-11%!important}
+  .raum--start .raum-mitte .raum-abzug:last-child{--x:92%!important}
+  .raum--ablauf{--kegel-x:30%}
+}
+@media (prefers-reduced-motion:reduce){
+  .raum-ebene{transform:none!important}
+  .raum-kegel,.raum-boden::before,.raum-abzug,.raum-weg{transition:none}
+  .raum-staub{display:none}
+}
+@media print{.raum,.raum-halt{display:none!important}}
