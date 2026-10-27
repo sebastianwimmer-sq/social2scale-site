@@ -696,6 +696,8 @@
 <link rel="stylesheet" href="/seite.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/for-you/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/for-you/">
@@ -746,7 +748,7 @@
 
   <main id="main" tabindex="-1">
     <!-- 1. Editorial hero, oversized Fraunces display vs tiny mono running head -->
-    <section class="fw-hero" aria-labelledby="fw-hero-h"><div class="wrap reveal">
+    <section class="fw-hero" aria-labelledby="fw-hero-h"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--fuer-wen" data-raum data-spaet aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:5.5%;--x:54%;--y:42%;--hell:.55"><img data-src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:5%;--x:62%;--y:43%;--hell:.55"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM --><div class="wrap reveal">
       <p class="fw-rh">Für wen</p>
       <h1 id="fw-hero-h" class="steigt"><span class="z"><span>Gebaut für die, die <em>sichtbar</em> werden wollen.</span></span><span class="z"><span class="l2">Du bist gut. Online merkt’s nur keiner.</span></span></h1>
       <p class="lead">social2scale ist nicht für jeden. Und genau das ist der Punkt. Wir bauen Auftritte für <b>Coaches, Experten &amp; B2B</b>, die wachsen wollen. Done-for-you, persönlich betreut, messbar in deinem Bereich.</p>
@@ -1062,5 +1064,6 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="fuer-wen" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

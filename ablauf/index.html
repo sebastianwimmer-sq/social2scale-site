@@ -125,6 +125,7 @@
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/seite.css">
 <link rel="stylesheet" href="/bewegung.css">
+<link rel="stylesheet" href="/raum.css">
 <link rel="stylesheet" href="/bedienung.css">
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/ablauf/">
@@ -173,7 +174,7 @@
     <!-- Kopf. Das Versprechen steht in der Ueberschrift, nicht im Fliesstext:
          ab Monat zwei liegt der Aufwand bei null. Das ist die Zahl, die die
          Entscheidung traegt. -->
-    <section class="fl-hero">
+    <section class="fl-hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--ablauf" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"><div class="raum-weg" style="--von:44%;--bis:6%;--hoehe:62%"></div></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:4.5%;--x:47%;--y:44%"><img data-src="/assets/feed/beitrag-2-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:5.5%;--x:55%;--y:42%"><img data-src="/assets/feed/beitrag-3-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:6.5%;--x:64%;--y:40%"><img data-src="/assets/feed/beitrag-4-360.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
       <div class="wrap reveal">
         <p class="ix">Ablauf</p>
         <h1 class="steigt"><span class="z"><span>Vier Phasen. Ab Monat zwei <em>machst du nichts mehr</em>.</span></span></h1>
@@ -461,5 +462,7 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
+<script src="/raum.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="ablauf" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

@@ -1019,6 +1019,8 @@
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/">
@@ -1071,7 +1073,7 @@
   </nav>
 
   <main id="main" tabindex="-1">
-    <section class="hero" id="hero">
+    <section class="hero" id="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--start" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:6%;--x:21%;--y:41%"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:6.5%;--x:73%;--y:40%"><img data-src="/assets/feed/beitrag-10-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><div class="raum-ebene raum-mitte" style="--z:16"><figure class="raum-abzug" style="--b:12%;--x:5%;--y:27%"><img data-src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:11%;--x:83%;--y:29%"><img data-src="/assets/feed/beitrag-11-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
       <div class="hero-bg" aria-hidden="true"></div>
       <div class="wrap">
         <div class="hero-center">
@@ -1731,5 +1733,6 @@
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
 <script src="/hero-bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="start" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

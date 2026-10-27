@@ -12,8 +12,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-1600.avif" media="(max-width:700px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-2880.avif" media="(min-width:701px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
@@ -1017,6 +1015,7 @@
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
+<link rel="stylesheet" href="/raum.css">
 <link rel="stylesheet" href="/bedienung.css">
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/">
@@ -1070,8 +1069,7 @@
   </nav>
 
   <main id="main" tabindex="-1">
-    <section class="hero" id="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
+    <section class="hero" id="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--start" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:6%;--x:21%;--y:41%"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:6.5%;--x:73%;--y:40%"><img data-src="/assets/feed/beitrag-10-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><div class="raum-ebene raum-mitte" style="--z:16"><figure class="raum-abzug" style="--b:12%;--x:5%;--y:27%"><img data-src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:11%;--x:83%;--y:29%"><img data-src="/assets/feed/beitrag-11-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
       <div class="wrap">
         <div class="hero-center">
           <h1 class="r" style="animation-delay:.1s">
@@ -1728,6 +1726,7 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
-<script src="/hero-bewegung.js" defer></script>
+<script src="/raum.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="start" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

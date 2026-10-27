@@ -312,6 +312,8 @@
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
@@ -329,7 +331,7 @@
   </header>
 
   <main class="dk">
-    <section class="dk-start" aria-labelledby="hero-greet">
+    <section class="dk-start" aria-labelledby="hero-greet"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--danke" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
       <div class="dk-wrap">
         <div class="dk-text">
           <p class="dk-status"><span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span>Zahlung bestätigt</p>
@@ -539,5 +541,6 @@
   })();
   </script>
 <script src="/uebergang.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="danke" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

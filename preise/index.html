@@ -709,6 +709,8 @@
 <link rel="stylesheet" href="/seite.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/preise/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/pricing/">
@@ -753,7 +755,7 @@
 
   <main id="main" tabindex="-1">
 
-    <section class="pr-hero" id="preise" aria-labelledby="pr-h" style="position:relative;overflow:hidden"><div class="wrap reveal" style="position:relative;z-index:1">
+    <section class="pr-hero" id="preise" aria-labelledby="pr-h" style="position:relative;overflow:hidden"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--preise" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><span class="raum-podest" style="--b:5.4%;--x:62%;--y:38%;--h:4%"></span><span class="raum-podest" style="--b:5.4%;--x:69.5%;--y:38%;--h:8%"></span><figure class="raum-abzug" style="--b:4.8%;--x:62.3%;--y:42.5%"><img data-src="/assets/feed/beitrag-12-400.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:4.8%;--x:69.8%;--y:46.5%"><img data-src="/assets/feed/beitrag-10-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM --><div class="wrap reveal" style="position:relative;z-index:1">
       <p class="pr-rh">Preise</p>
       <h1 id="pr-h" class="steigt"><span class="z"><span>Drei Wege. <em>Einer</em> passt zu dir.</span></span></h1>
       <p class="lead">Wie viel du abgibst, entscheidest du. Alles andere machen wir. Sebi und Phil, persönlich, ohne Team dazwischen.</p>
@@ -1176,5 +1178,6 @@
 </script>
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="preise" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>
