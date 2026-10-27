@@ -1,7 +1,7 @@
 // ERZEUGT von free-content/film/bauen.py, nicht von Hand aendern.
 export const FILM = {
  "a": {
-  "dauer": 39.47,
+  "dauer": 39.23,
   "abschnitte": [
    {
     "von": 0.0,
@@ -14,50 +14,50 @@ export const FILM = {
    },
    {
     "von": 8.06,
-    "bis": 15.61,
+    "bis": 15.37,
     "art": "szene",
     "szene": "post",
     "marken": {
      "titel": 8.31,
-     "unterwegs": 9.59,
-     "mail": 10.59,
-     "post": 12.39,
-     "feed": 13.43
+     "unterwegs": 9.71,
+     "mail": 10.55,
+     "post": 12.17,
+     "feed": 13.21
     }
    },
    {
-    "von": 15.61,
-    "bis": 23.23,
+    "von": 15.37,
+    "bis": 23.0,
     "art": "szene",
     "szene": "luecke",
     "marken": {
-     "vorschau": 15.86,
-     "auftritt": 17.62,
-     "nicht": 19.08,
-     "ziel": 21.34
+     "vorschau": 15.62,
+     "auftritt": 17.38,
+     "nicht": 18.84,
+     "ziel": 21.1
     }
    },
    {
-    "von": 23.23,
-    "bis": 34.38,
+    "von": 23.0,
+    "bis": 34.14,
     "art": "szene",
     "szene": "plan",
     "marken": {
-     "phil": 24.68,
-     "stand": 26.48,
-     "ziel": 27.94,
-     "weg": 28.8,
-     "plan": 31.38
+     "phil": 24.45,
+     "stand": 26.25,
+     "ziel": 27.71,
+     "weg": 28.57,
+     "plan": 31.15
     }
    },
    {
-    "von": 34.38,
-    "bis": 39.44,
+    "von": 34.14,
+    "bis": 39.2,
     "art": "avatar",
     "szene": "termin",
     "marken": {
-     "kostenlos": 35.24,
-     "termin": 37.24
+     "kostenlos": 35.0,
+     "termin": 37.0
     }
    }
   ],
@@ -104,179 +104,180 @@ export const FILM = {
    },
    {
     "von": 8.31,
-    "bis": 10.54,
+    "bis": 10.5,
     "text": "Deine Gratis-Vorschau ist unterwegs.",
     "worte": [
      8.31,
-     8.75,
-     9.19,
-     9.63
+     8.78,
+     9.25,
+     9.72
     ]
    },
    {
-    "von": 10.59,
-    "bis": 13.26,
-    "text": "Bestätige kurz die Mail in deinem Postfach,",
+    "von": 10.55,
+    "bis": 12.88,
+    "text": "Ein Klick auf den Link in deinem Postfach,",
     "worte": [
-     10.59,
-     11.15,
+     10.55,
+     10.89,
+     11.17,
+     11.33,
      11.49,
-     11.69,
-     11.95,
-     12.11,
-     12.39
+     11.73,
+     11.89,
+     12.17
     ]
    },
    {
-    "von": 13.31,
-    "bis": 15.56,
+    "von": 12.93,
+    "bis": 15.32,
     "text": "dann baut sich dein Feed fertig.",
     "worte": [
-     13.31,
-     13.43,
-     13.71,
-     13.89,
-     14.07,
-     14.33
+     12.93,
+     13.21,
+     13.51,
+     13.69,
+     13.85,
+     14.13
     ]
    },
    {
-    "von": 15.86,
-    "bis": 17.31,
+    "von": 15.62,
+    "bis": 17.07,
     "text": "Die Vorschau zeigt dir,",
     "worte": [
-     15.86,
-     16.06,
-     16.54,
-     16.9
+     15.62,
+     15.82,
+     16.3,
+     16.66
     ]
    },
    {
-    "von": 17.36,
-    "bis": 19.03,
+    "von": 17.12,
+    "bis": 18.79,
     "text": "wie dein Auftritt aussehen kann.",
     "worte": [
-     17.36,
-     17.46,
-     17.62,
-     18.12,
-     18.56
+     17.12,
+     17.22,
+     17.38,
+     17.88,
+     18.32
     ]
    },
    {
-    "von": 19.08,
-    "bis": 20.51,
+    "von": 18.84,
+    "bis": 20.27,
     "text": "Was sie nicht zeigt:",
     "worte": [
-     19.08,
-     19.54,
-     19.68,
-     19.9
+     18.84,
+     19.3,
+     19.44,
+     19.66
     ]
    },
    {
-    "von": 20.56,
-    "bis": 23.18,
+    "von": 20.32,
+    "bis": 22.95,
     "text": "wie du damit dein Ziel erreichst.",
     "worte": [
-     20.56,
-     20.94,
-     21.06,
+     20.32,
+     20.7,
+     20.82,
+     21.1,
      21.34,
-     21.58,
-     21.92
+     21.68
     ]
    },
    {
-    "von": 23.48,
-    "bis": 26.43,
+    "von": 23.25,
+    "bis": 26.2,
     "text": "Genau das klärt Phil mit dir im Erstgespräch:",
     "worte": [
-     23.48,
-     23.86,
-     24.32,
-     24.68,
-     24.94,
-     25.1,
-     25.26,
-     25.42
+     23.25,
+     23.63,
+     24.09,
+     24.45,
+     24.71,
+     24.87,
+     25.03,
+     25.19
     ]
    },
    {
-    "von": 26.48,
-    "bis": 28.75,
+    "von": 26.25,
+    "bis": 28.52,
     "text": "wo du heute stehst, wo du hinwillst",
     "worte": [
-     26.48,
-     26.81,
-     27.14,
-     27.47,
-     27.81,
-     28.14,
-     28.47
+     26.25,
+     26.58,
+     26.91,
+     27.24,
+     27.57,
+     27.9,
+     28.23
     ]
    },
    {
-    "von": 28.8,
-    "bis": 31.33,
+    "von": 28.57,
+    "bis": 31.1,
     "text": "und welcher Weg dich dorthin bringt.",
     "worte": [
-     28.8,
-     29.32,
-     29.72,
-     29.98,
-     30.18,
-     30.56
+     28.57,
+     29.09,
+     29.49,
+     29.75,
+     29.95,
+     30.33
     ]
    },
    {
-    "von": 31.38,
-    "bis": 34.33,
+    "von": 31.15,
+    "bis": 34.09,
     "text": "Danach weißt du, was du als Nächstes tust.",
     "worte": [
-     31.38,
-     31.9,
-     32.22,
-     32.48,
-     32.58,
-     32.7,
-     32.9,
-     33.3
+     31.15,
+     31.67,
+     31.99,
+     32.25,
+     32.35,
+     32.47,
+     32.67,
+     33.07
     ]
    },
    {
-    "von": 34.38,
-    "bis": 35.99,
+    "von": 34.14,
+    "bis": 35.75,
     "text": "Das Gespräch ist kostenlos.",
     "worte": [
+     34.14,
      34.38,
-     34.62,
-     35.06,
-     35.24
+     34.82,
+     35.0
     ]
    },
    {
-    "von": 36.04,
-    "bis": 38.29,
+    "von": 35.8,
+    "bis": 38.05,
     "text": "Such dir am besten gleich einen Termin aus.",
     "worte": [
-     36.04,
-     36.5,
-     36.6,
-     36.76,
-     36.98,
-     37.24,
-     37.44,
-     37.82
+     35.8,
+     36.26,
+     36.36,
+     36.52,
+     36.74,
+     37.0,
+     37.2,
+     37.58
     ]
    },
    {
-    "von": 38.34,
-    "bis": 39.39,
+    "von": 38.1,
+    "bis": 39.15,
     "text": "Bis bald.",
     "worte": [
-     38.34,
-     38.7
+     38.1,
+     38.46
     ]
    }
   ]
