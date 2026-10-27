@@ -17,6 +17,7 @@
   var raeume = [].slice.call(document.querySelectorAll('[data-raum]'));
   var ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
   seitenlicht();
+  dinge();
   if (!raeume.length) return;
 
   // 0. Die Abzüge laden erst nach dem ersten Bild: auf langsamem Netz nahmen sie Schrift und Logo
@@ -156,7 +157,7 @@
 
   // 3. Staub
   function baueStaub(r) {
-    var anzahl = innerWidth < 760 ? 26 : 54;
+    var anzahl = innerWidth < 760 ? 34 : 80;
     r._teile = [];
     for (var i = 0; i < anzahl; i++) r._teile.push({ x: Math.random(), y: Math.random(), z: Math.random(), v: 0.0002 + Math.random() * 0.0005 });
     r._ctx = r._staub.getContext('2d');
@@ -175,7 +176,7 @@
       p.y -= p.v * (0.5 + p.z);
       if (p.y < 0) { p.y = 1; p.x = Math.random(); }
       var px = kx + (p.x - 0.5) * w * (0.08 + p.y * 0.42), py = p.y * h * 0.82;
-      var rad = (0.6 + p.z * 2.2) * 2.2, a = 0.07 + p.z * 0.3;
+      var rad = (0.7 + p.z * 2.6) * 2.2, a = 0.12 + p.z * 0.45;
       var g = x.createRadialGradient(px, py, 0, px, py, rad);
       g.addColorStop(0, 'rgba(190,255,230,' + a.toFixed(3) + ')');
       g.addColorStop(1, 'rgba(190,255,230,0)');
@@ -195,6 +196,15 @@
     });
     setze();
     if (ruhig) return;
+    if (matchMedia('(pointer: fine)').matches) {
+      var weit = 0;
+      addEventListener('pointermove', function (e) {
+        if (e.pointerType !== 'mouse' || Math.abs(e.clientX - weit) < 24) return;
+        weit = e.clientX;
+        licht.style.setProperty('--licht-x', Math.max(10, Math.min(90, e.clientX / innerWidth * 100)).toFixed(1) + '%');
+      }, { passive: true });
+      return;
+    }
     var folge = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
@@ -205,5 +215,56 @@
       });
     }, { rootMargin: '-35% 0px -45% 0px' });
     [].forEach.call(document.querySelectorAll('main section, main > article, main > .wrap, main.card, main.blatt'), function (s) { folge.observe(s); });
+  }
+
+  // D. Dinge: Bilder im Inhalt kippen zur Maus bzw. zur Neigung, ein Glanz wandert mit (Stufe 2, 27.10.2026)
+  function dinge() {
+    if (ruhig) return;
+    var fein = matchMedia('(pointer: fine)').matches;
+    var ziele = [];
+    [].forEach.call(document.querySelectorAll('main img'), function (i) {
+      if (i.closest('[data-raum], a, button, .hero-logo, picture.hero-logo, h1')) return;
+      var ziel = i.closest('figure, li, .ab-pic') || i.parentElement;
+      if (!ziel || ziel === document.body || ziele.indexOf(ziel) >= 0) return;
+      var box = ziel.getBoundingClientRect();
+      if (box.width < 120 || box.width > innerWidth * 0.7) return;
+      var s = getComputedStyle(ziel);
+      if (s.transform !== 'none' || s.animationName !== 'none' || s.position === 'fixed' || s.position === 'sticky') return;
+      if (s.position === 'static') ziel.style.position = 'relative';
+      ziel.classList.add('raum-ding');
+      var g = document.createElement('span');
+      g.className = 'raum-glanz';
+      g.setAttribute('aria-hidden', 'true');
+      ziel.appendChild(g);
+      ziele.push(ziel);
+    });
+    if (!ziele.length) return;
+    if (fein) {
+      ziele.forEach(function (z) {
+        z.addEventListener('pointermove', function (e) {
+          if (e.pointerType !== 'mouse') return;
+          var b = z.getBoundingClientRect();
+          z.style.setProperty('--dx', (((e.clientX - b.left) / b.width - 0.5) * 2).toFixed(3));
+          z.style.setProperty('--dy', (((e.clientY - b.top) / b.height - 0.5) * 2).toFixed(3));
+          z.classList.add('nah');
+        });
+        z.addEventListener('pointerleave', function () { z.style.removeProperty('--dx'); z.style.removeProperty('--dy'); z.classList.remove('nah'); });
+      });
+    } else {
+      // Handy: alle Dinge folgen der Neigung (gleiche Freigabe wie der Raum, iOS erst nach Tippen)
+      var setze = function (e) {
+        if (e.gamma == null) return;
+        document.documentElement.style.setProperty('--nx', Math.max(-1, Math.min(1, e.gamma / 30)).toFixed(3));
+        document.documentElement.style.setProperty('--ny', Math.max(-1, Math.min(1, (e.beta - 45) / 30)).toFixed(3));
+        document.documentElement.classList.add('raum-neigt');
+      };
+      var DOE = window.DeviceOrientationEvent;
+      if (DOE && typeof DOE.requestPermission === 'function') {
+        document.addEventListener('click', function frage() {
+          document.removeEventListener('click', frage);
+          DOE.requestPermission().then(function (st) { if (st === 'granted') addEventListener('deviceorientation', setze, { passive: true }); }).catch(function () {});
+        });
+      } else if (DOE) addEventListener('deviceorientation', setze, { passive: true });
+    }
   }
 })();
