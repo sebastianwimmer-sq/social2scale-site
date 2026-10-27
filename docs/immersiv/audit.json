@@ -1,0 +1,208 @@
+{
+ "/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": true,
+  "property": 0,
+  "canvas": 1,
+  "video": 1,
+  "webgl": false,
+  "animationen": 12,
+  "endlos": 0,
+  "pointerHandler": true,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 12.4,
+  "abschnitte": 10,
+  "jank": {
+   "frames": 1501,
+   "ueber50": 1.9
+  }
+ },
+ "/ablauf/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 2,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 5,
+  "abschnitte": 5,
+  "jank": {
+   "frames": 1066,
+   "ueber50": 0
+  }
+ },
+ "/about/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 3,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 6.5,
+  "abschnitte": 6,
+  "jank": {
+   "frames": 1468,
+   "ueber50": 0
+  }
+ },
+ "/preise/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 3,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": true,
+  "backdrop": true,
+  "hoeheBildschirme": 5.7,
+  "abschnitte": 6,
+  "jank": {
+   "frames": 1264,
+   "ueber50": 0
+  }
+ },
+ "/results/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 2,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 6.2,
+  "abschnitte": 6,
+  "jank": {
+   "frames": 1404,
+   "ueber50": 0
+  }
+ },
+ "/for-you/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 3,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 6.2,
+  "abschnitte": 6,
+  "jank": {
+   "frames": 1416,
+   "ueber50": 0
+  }
+ },
+ "/gratis/": {
+  "fehler": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://social2scale.com/gratis/\", waiting until \"networkidle\"\u001b[22m\n"
+ },
+ "/anfrage/": {
+  "fehler": "TimeoutError: page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://social2scale.com/anfrage/\", waiting until \"networkidle\"\u001b[22m\n"
+ },
+ "/wissen/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": true,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 6,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": true,
+  "backdrop": true,
+  "hoeheBildschirme": 2.5,
+  "abschnitte": 2,
+  "jank": {
+   "frames": 414,
+   "ueber50": 0
+  }
+ },
+ "/wissen/was-kostet-social-media-betreuung/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": true,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 1,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": true,
+  "backdrop": true,
+  "hoeheBildschirme": 3.4,
+  "abschnitte": 5,
+  "jank": {
+   "frames": 652,
+   "ueber50": 0
+  }
+ },
+ "/links/": {
+  "viewTransition": false,
+  "vtNamen": 0,
+  "scrollTimeline": true,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 6,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 1,
+  "abschnitte": 4,
+  "jank": {
+   "frames": 1,
+   "ueber50": 0
+  }
+ },
+ "/danke/": {
+  "viewTransition": true,
+  "vtNamen": 4,
+  "scrollTimeline": false,
+  "property": 0,
+  "canvas": 0,
+  "video": 0,
+  "webgl": false,
+  "animationen": 1,
+  "endlos": 0,
+  "pointerHandler": false,
+  "blendScreen": false,
+  "backdrop": true,
+  "hoeheBildschirme": 2.1,
+  "abschnitte": 2,
+  "jank": {
+   "frames": 288,
+   "ueber50": 0
+  }
+ }
+}

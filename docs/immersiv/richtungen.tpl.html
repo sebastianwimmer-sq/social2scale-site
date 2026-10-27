@@ -1,0 +1,410 @@
+<title>Vier Orte für s2s</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: eine Spalte, jede Richtung eine Bühne in voller Breite + drei Erklärspalten darunter.
+   Einheitlicher dunkler Look (die Marke ist dunkel), deshalb bewusst ein Theme. */
+:root{
+  color-scheme:dark;
+  --grund:#03080D; --band:#0A1117; --papier:#F2F3F1; --leise:#A9ABA6; --blass:#7C7E78;
+  --emerald:#00B888; --emerald-soft:#1FC998; --teal:#1FA6E0; --cyan:#2FBEEA; --kante:rgba(0,184,136,.16);
+  --verlauf:linear-gradient(100deg,var(--emerald-soft),var(--teal) 70%,var(--cyan));
+  --f-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --korn:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box}
+html{background:var(--grund)}
+body{background:var(--grund);color:var(--papier);font:400 17px/1.6 var(--f-text);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1240px;margin-inline:auto}
+h1,h2,h3{font-family:var(--f-display);font-weight:350;text-wrap:balance;letter-spacing:-.02em;margin:0}
+.vw{font-style:italic;background:var(--verlauf);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.06em}
+p{margin:0}
+a{color:var(--emerald-soft)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:3px}
+
+/* Kopf */
+.kopf{padding-block:72px 40px;display:grid;gap:22px;max-width:780px}
+.kopf h1{font-size:clamp(2.4rem,1.6rem + 3.4vw,4.4rem);line-height:1.02}
+.kopf p{color:var(--leise);max-width:62ch}
+.kopf .zeile{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:6px}
+.knopf{appearance:none;border:1px solid var(--kante);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0));border-radius:10px;padding:11px 16px;min-height:44px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 24px -16px #000;transition:border-color .2s,background-color .2s}
+.knopf:hover{border-color:rgba(31,201,152,.5)}
+.knopf[aria-pressed="true"]{background:rgba(0,184,136,.14);border-color:rgba(31,201,152,.6)}
+.hinweis{color:var(--blass);font-size:.9rem}
+
+/* Richtung */
+.richtung{padding-block:56px 24px;border-top:1px solid rgba(255,255,255,.05);display:grid;gap:22px}
+.richtung header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 24px}
+.richtung header h2{font-size:clamp(1.8rem,1.3rem + 2vw,2.8rem);line-height:1.08}
+.buchstabe{font-family:var(--f-display);font-style:italic;color:var(--emerald-soft);margin-right:.35em}
+.umschalter{display:flex;gap:8px;flex-wrap:wrap}
+.leitsatz{color:var(--leise);max-width:68ch}
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;padding-top:6px}
+.info h3{font-size:1.15rem;margin-bottom:8px}
+.info p,.info li{color:var(--leise);font-size:.96rem}
+.info ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+@media (max-width:820px){.info{grid-template-columns:1fr;gap:20px}}
+
+/* Bühne: gemeinsame Mechanik */
+.buehne{position:relative;aspect-ratio:16/9;max-width:100%;overflow:clip;border-radius:6px;isolation:isolate;background:var(--grund);--mx:0;--my:0;--sp:0;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 40px 80px -50px #000}
+@media (max-width:700px){.buehne{aspect-ratio:4/5}}
+.buehne::after{content:"";position:absolute;inset:0;background-image:var(--korn);opacity:.07;mix-blend-mode:overlay;pointer-events:none;z-index:50}
+.ebene{position:absolute;inset:-24px -40px;transform:translate3d(calc(var(--mx) * var(--z,0) * 1px),calc(var(--my) * var(--z,0) * .6px + var(--sp) * var(--z,0) * -1.2px),0);will-change:transform}
+.text{position:absolute;z-index:40;left:6%;bottom:9%;right:6%;max-width:34rem;pointer-events:none}
+.text h3{font-size:clamp(1.5rem,1rem + 2.4vw,3.1rem);line-height:1.04}
+.text p{margin-top:12px;color:var(--leise);font-size:clamp(.88rem,.8rem + .3vw,1rem);max-width:40ch}
+.text .cta{display:inline-block;margin-top:16px;padding:10px 16px;border-radius:9px;background:linear-gradient(100deg,var(--emerald),var(--teal));color:#03140F;font-weight:600;font-size:.92rem;pointer-events:auto;text-decoration:none;box-shadow:0 12px 30px -12px rgba(0,184,136,.7)}
+.ansicht{position:absolute;inset:0}
+.ansicht[hidden]{display:none!important}
+
+/* ===== A Lichtstudio ===== */
+.a .wand{background:radial-gradient(60% 70% at calc(50% + var(--mx) * 18%) 30%,#0E2A24 0%,#071512 40%,var(--grund) 75%)}
+.a .kegel{background:conic-gradient(from calc(180deg + var(--mx) * 12deg) at calc(52% + var(--mx) * 10%) -12%,transparent 0 158deg,rgba(31,201,152,.22) 172deg,rgba(47,190,234,.16) 186deg,transparent 200deg);mix-blend-mode:screen;filter:blur(18px)}
+.a .boden{inset:auto -40px -24px -40px;height:46%;background:linear-gradient(180deg,#081310,#020507);transform-origin:50% 0}
+.a .boden::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 60% at calc(52% + var(--mx) * 14%) 0%,rgba(31,201,152,.28),transparent 70%);mix-blend-mode:screen}
+.a .abzug{position:absolute;width:var(--b);aspect-ratio:4/5;left:var(--x);bottom:var(--y);background:#0b0f0e;padding:5px;box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 2px 2px rgba(0,0,0,.5),0 18px 30px -10px rgba(0,0,0,.85)}
+.a .abzug img{width:100%;height:100%;object-fit:cover;display:block}
+.a .abzug::after{content:"";position:absolute;left:4%;right:4%;top:100%;height:42%;background:inherit;background:linear-gradient(180deg,rgba(31,201,152,.12),transparent 70%);transform:skewX(calc(var(--mx) * -18deg));transform-origin:0 0;filter:blur(6px);opacity:.8}
+.a .fern .abzug{filter:saturate(.7) brightness(.7)}
+.a .nah .abzug{filter:blur(2px)}
+.a .staub{width:calc(100% + 80px);height:calc(100% + 48px);pointer-events:none}
+.a .pfad{position:absolute;left:8%;right:8%;bottom:22%;height:3px;background:linear-gradient(90deg,transparent,rgba(31,201,152,.5),rgba(47,190,234,.5),transparent);filter:blur(1px);box-shadow:0 0 24px 6px rgba(31,201,152,.18)}
+.a .phase{position:absolute;bottom:26%;width:15%;aspect-ratio:4/5;background:#0b0f0e;padding:4px;box-shadow:0 18px 30px -10px rgba(0,0,0,.85),0 1px 0 rgba(255,255,255,.16) inset}
+.a .phase img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85}
+.a .phase span{position:absolute;left:0;right:0;top:calc(100% + 10px);font-family:var(--f-display);font-size:clamp(.7rem,.6rem + .4vw,1rem);color:var(--papier);text-align:center}
+
+/* ===== B Feed-Raum ===== */
+.b{perspective:900px;background:radial-gradient(90% 80% at 50% 45%,#08201C,var(--grund) 70%)}
+.b .tunnel{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(var(--sp) * 220px)) rotateY(calc(var(--mx) * 5deg)) rotateX(calc(var(--my) * -4deg))}
+.b .kachel{position:absolute;width:15%;aspect-ratio:4/5;left:var(--x);top:var(--y);transform:translate3d(-50%,-50%,var(--tz));background:#0b0f0e;box-shadow:0 30px 50px -20px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.12) inset;filter:brightness(var(--hell,1)) saturate(var(--satt,1))}
+.b .kachel img{width:100%;height:100%;object-fit:cover;display:block}
+.b .dunst{inset:0;background:linear-gradient(90deg,rgba(3,8,13,.88),rgba(3,8,13,.5) 38%,transparent 60%),radial-gradient(50% 50% at 50% 50%,transparent 30%,rgba(3,8,13,.85) 100%);pointer-events:none;z-index:30}
+.b .licht{inset:0;background:radial-gradient(30% 40% at calc(50% + var(--mx) * 20%) calc(45% + var(--my) * 15%),rgba(31,201,152,.18),transparent 70%);mix-blend-mode:screen;z-index:31;pointer-events:none}
+.b .gross{position:absolute;left:50%;top:44%;width:min(40%,340px);aspect-ratio:4/5;transform:translate(-50%,-50%);box-shadow:0 60px 90px -30px #000,0 0 0 1px rgba(31,201,152,.25);z-index:35}
+.b .gross img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ===== C Lichtglas ===== */
+.c{background:radial-gradient(80% 90% at 70% 20%,#0B1E26,var(--grund) 65%)}
+.c .strahl{inset:-30%;background:linear-gradient(calc(118deg + var(--mx) * 10deg),transparent 38%,rgba(31,201,152,.0) 42%,rgba(31,201,152,.35) 48%,rgba(47,190,234,.32) 53%,transparent 60%);mix-blend-mode:screen;filter:blur(22px)}
+.c .scheibe{position:absolute;width:var(--b);aspect-ratio:3/4;left:var(--x);top:var(--y);border-radius:14px;transform:rotate(var(--r,0deg));background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.02) 40%,rgba(31,201,152,.06) 70%,rgba(47,190,234,.10));box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 1px 0 0 rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.4),0 30px 60px -30px rgba(0,0,0,.9);overflow:clip}
+.c .scheibe img{position:absolute;inset:10%;width:80%;height:80%;object-fit:cover;opacity:.55;filter:saturate(.8);mix-blend-mode:luminosity;border-radius:6px}
+.c .scheibe::before{content:"";position:absolute;inset:0;background:linear-gradient(calc(118deg + var(--mx) * 10deg),transparent 35%,rgba(255,255,255,.22) 48%,transparent 56%);mix-blend-mode:screen}
+.c .scheibe::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.c .faecher .scheibe{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+
+/* ===== D Werkbank ===== */
+.d .tisch{background:radial-gradient(38% 52% at calc(50% + var(--mx) * 22%) calc(42% + var(--my) * 18%),rgba(255,236,200,.13),rgba(31,201,152,.06) 45%,transparent 75%),linear-gradient(180deg,#0B0F0E,#060908);}
+.d .tisch::before{content:"";position:absolute;inset:0;background-image:var(--korn);opacity:.16;mix-blend-mode:soft-light}
+.d .ding{position:absolute;left:var(--x);top:var(--y);width:var(--b);transform:rotate(var(--r,0deg)) translateY(0);transition:transform .35s cubic-bezier(.2,.8,.2,1),filter .35s;
+  filter:drop-shadow(calc((var(--sx,0) - var(--mx)) * 14px) calc(12px - var(--my) * 8px) 10px rgba(0,0,0,.75)) drop-shadow(0 1px 1px rgba(0,0,0,.6));pointer-events:auto;cursor:grab}
+.d .ding:hover{transform:rotate(var(--r,0deg)) translateY(-8px) scale(1.02);filter:drop-shadow(calc((var(--sx,0) - var(--mx)) * 22px) calc(26px - var(--my) * 10px) 18px rgba(0,0,0,.7)) drop-shadow(0 1px 1px rgba(0,0,0,.6))}
+.d .abzug{background:#F4F3EF;padding:calc(var(--b) * .06) calc(var(--b) * .06) calc(var(--b) * .16)}
+.d .abzug img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.d .handy{aspect-ratio:9/19;border-radius:22px;background:#0c0d0f;padding:7px;box-shadow:inset 0 0 0 1.5px #2a2c30,inset 0 1px 0 rgba(255,255,255,.2)}
+.d .handy .schirm{width:100%;height:100%;border-radius:16px;background:#050607;display:grid;grid-template-columns:repeat(3,1fr);align-content:start;gap:2px;padding-top:30%;overflow:clip}
+.d .handy .schirm img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.d .blatt{background:#E9E7E1;color:#1B1D21;padding:calc(var(--b) * .09) calc(var(--b) * .09) calc(var(--b) * .12);font-family:var(--f-display);font-size:clamp(.5rem,.35rem + .55vw,.95rem);line-height:1.35}
+.d .blatt b{display:block;font-weight:500;font-size:1.35em;margin-bottom:.5em}
+.d .blatt i{color:#0B7A5E}
+.d .polaroid{background:#F4F3EF;padding:calc(var(--b) * .07) calc(var(--b) * .07) calc(var(--b) * .2)}
+.d .polaroid img{display:block;width:100%;aspect-ratio:1;object-fit:cover;filter:grayscale(.15) contrast(1.05)}
+.d .polaroid span{display:block;margin-top:.5em;font-family:var(--f-display);font-style:italic;color:#1B1D21;font-size:clamp(.55rem,.4rem + .5vw,1rem);text-align:center}
+.d .text{left:auto;right:6%;text-align:right;max-width:26rem}
+.d .text p{margin-left:auto}
+
+/* Halten + Ruhe */
+.still *,.still *::before,.still *::after{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){
+  .ebene,.b .tunnel{transform:none!important}
+  .d .ding,.c .faecher .scheibe{transition:none}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation-duration:.01ms!important}
+}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.5s}
+.buehne{view-transition-name:none}
+.wahl{margin-top:48px;padding:28px;border-radius:8px;background:radial-gradient(70% 120% at 0% 0%,rgba(0,184,136,.12),transparent 60%),var(--band);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.wahl h2{font-size:clamp(1.6rem,1.2rem + 1.6vw,2.4rem);margin-bottom:10px}
+.wahl p{color:var(--leise);max-width:64ch}
+</style>
+
+<div class="wrap">
+  <section class="kopf">
+    <h1>Vier Orte für <span class="vw">social2scale</span></h1>
+    <p>Jede Richtung macht aus der Website einen Raum statt einer Fläche. Bewege die Maus über die Bühnen, scrolle an ihnen vorbei und schalte auf die Unterseite: Der Wechsel läuft als Kamerafahrt. Text, Farben und Bilder sind echt, aus eurem Feed und von der Startseite.</p>
+    <div class="zeile">
+      <button class="knopf" id="halten" type="button" aria-pressed="false">Bewegung anhalten</button>
+      <span class="hinweis">Am Handy neigt sich die echte Seite später mit dem Gerät; hier im Vorschaufenster sperrt der Browser den Sensor.</span>
+    </div>
+  </section>
+
+  <!-- A -->
+  <section class="richtung" data-r="a">
+    <header>
+      <h2><span class="buchstabe">A</span>Lichtstudio</h2>
+      <div class="umschalter" role="group" aria-label="Ansicht Lichtstudio">
+        <button class="knopf" type="button" data-zu="start" aria-pressed="true">Startseite</button>
+        <button class="knopf" type="button" data-zu="unter" aria-pressed="false">Unterseite /ablauf/</button>
+      </div>
+    </header>
+    <p class="leitsatz">Ein dunkles Fotostudio. Eure Beiträge stehen als Abzüge im Raum, ein Lichtkegel in Emerald und Teal folgt dem Blick und wirft echte Schatten auf den Boden. Das Material ist Papier, matter Boden und Licht.</p>
+    <div class="buehne a" data-buehne>
+      <div class="ansicht" data-ansicht="start">
+        <div class="ebene wand" style="--z:6"></div>
+        <div class="ebene kegel" style="--z:14"></div>
+        <div class="ebene boden" style="--z:10"></div>
+        <div class="ebene fern" style="--z:8">
+          <div class="abzug" style="--b:9%;--x:62%;--y:44%"><img alt="" src="{{F2}}"></div>
+          <div class="abzug" style="--b:8%;--x:74%;--y:46%"><img alt="" src="{{F5}}"></div>
+        </div>
+        <div class="ebene" style="--z:18">
+          <div class="abzug" style="--b:15%;--x:55%;--y:33%"><img alt="" src="{{F3}}"></div>
+          <div class="abzug" style="--b:13%;--x:77%;--y:30%"><img alt="" src="{{F4}}"></div>
+        </div>
+        <canvas class="ebene staub" data-staub style="--z:22"></canvas>
+        <div class="ebene nah" style="--z:40">
+          <div class="abzug" style="--b:22%;--x:86%;--y:6%"><img alt="" src="{{F12}}"></div>
+        </div>
+        <div class="text"><h3>Wir bauen das <span class="vw">System</span>, das dich planbar skaliert.</h3><p>Für Coaches und Experten. Du musst nichts können außer reden.</p><a class="cta" href="#a" tabindex="-1">Kostenlos starten</a></div>
+      </div>
+      <div class="ansicht" data-ansicht="unter" hidden>
+        <div class="ebene wand" style="--z:6"></div>
+        <div class="ebene kegel" style="--z:14"></div>
+        <div class="ebene boden" style="--z:10"></div>
+        <div class="ebene" style="--z:16">
+          <div class="pfad"></div>
+          <div class="phase" style="left:12%"><img alt="" src="{{F10}}"><span>Erstgespräch</span></div>
+          <div class="phase" style="left:33%"><img alt="" src="{{F11}}"><span>Setup</span></div>
+          <div class="phase" style="left:54%"><img alt="" src="{{F13}}"><span>Content</span></div>
+          <div class="phase" style="left:75%"><img alt="" src="{{F3}}"><span>Skalierung</span></div>
+        </div>
+        <div class="text" style="bottom:auto;top:8%"><h3>Vier Phasen. Ab Monat zwei <span class="vw">machst du nichts mehr</span>.</h3></div>
+      </div>
+    </div>
+    <div class="info">
+      <div><h3>Jede Seite ein Ort</h3><ul><li>Start: Abzüge im Lichtkegel</li><li>Ablauf: vier Abzüge auf einem Lichtweg</li><li>Preise: drei Podeste im Licht</li><li>Über uns: Gründerporträts im Studiolicht</li><li>Wissen: Kontaktbogen auf dem Leuchttisch</li></ul></div>
+      <div><h3>Technik</h3><p>CSS-Ebenen, Licht über registrierte Variablen, eine kleine Leinwand für Staub im Licht. Kein WebGPU nötig. Leicht, läuft auch auf älteren iPhones.</p></div>
+      <div><h3>Wofür es steht</h3><p>Bühne für eure Arbeit: Ihr setzt Menschen ins Licht. Liegt am nächsten an der heutigen Seite und verlangt am wenigsten Umbau. Risiko: kann zu still wirken, wenn das Licht nicht stark genug spielt.</p></div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="richtung" data-r="b">
+    <header>
+      <h2><span class="buchstabe">B</span>Feed-Raum</h2>
+      <div class="umschalter" role="group" aria-label="Ansicht Feed-Raum">
+        <button class="knopf" type="button" data-zu="start" aria-pressed="true">Startseite</button>
+        <button class="knopf" type="button" data-zu="unter" aria-pressed="false">Unterseite /results/</button>
+      </div>
+    </header>
+    <p class="leitsatz">Euer eigener Feed wird ein Raum in die Tiefe. Beim Scrollen fährt die Kamera hinein, die Maus dreht leicht den Blick. Ferne Kacheln liegen im Dunst, nahe sind scharf und hell.</p>
+    <div class="buehne b" data-buehne>
+      <div class="ansicht" data-ansicht="start">
+        <div class="tunnel" data-tunnel></div>
+        <div class="ebene dunst" style="--z:0"></div>
+        <div class="ebene licht" style="--z:0"></div>
+        <div class="text"><h3>Wir behaupten nicht. Wir <span class="vw">zeigen</span>.</h3><p>Jede Kachel ist ein echter Beitrag aus unserem Feed.</p><a class="cta" href="#b" tabindex="-1">Kostenlos starten</a></div>
+      </div>
+      <div class="ansicht" data-ansicht="unter" hidden>
+        <div class="tunnel" data-tunnel data-weit></div>
+        <div class="ebene dunst" style="--z:0"></div>
+        <div class="gross" style="view-transition-name:b-gross"><img alt="" src="{{F12}}"></div>
+        <div class="text" style="bottom:6%"><h3>Woran du uns <span class="vw">messen</span> kannst.</h3></div>
+      </div>
+    </div>
+    <div class="info">
+      <div><h3>Jede Seite ein Ort</h3><ul><li>Start: Flug durch den Feed</li><li>Results: eine Kachel kommt nach vorn, der Rest tritt zurück</li><li>Ablauf: vier Kacheln in einer Reihe, die Kamera fährt entlang</li><li>Preise: drei Tiefen für drei Pakete</li><li>Wissen: Archiv-Wand der Antworten</li></ul></div>
+      <div><h3>Technik</h3><p>3D-Transformationen und scroll-gebundene Animation, ab heute in allen drei Browsern. Viele Bilder, darum feste Grenze: höchstens 18 Kacheln, nur sichtbare laden.</p></div>
+      <div><h3>Wofür es steht</h3><p>Beweis statt Behauptung: Man steht in eurer Arbeit. Am stärksten „digital“. Risiko: Kacheln in 3D können verzerren (WebKit-Falle), und es ist nah an dem, was Agenturen oft zeigen.</p></div>
+    </div>
+  </section>
+
+  <!-- C -->
+  <section class="richtung" data-r="c">
+    <header>
+      <h2><span class="buchstabe">C</span>Lichtglas</h2>
+      <div class="umschalter" role="group" aria-label="Ansicht Lichtglas">
+        <button class="knopf" type="button" data-zu="start" aria-pressed="true">Startseite</button>
+        <button class="knopf" type="button" data-zu="unter" aria-pressed="false">Unterseite /preise/</button>
+      </div>
+    </header>
+    <p class="leitsatz">Euer Verlauf wird ein Lichtstrahl, der durch Scheiben aus Glas fällt. Auf jeder Scheibe liegt ein Beitrag, das Licht färbt sich beim Durchgang von Emerald nach Teal. Der Gradient-Flow ist hier kein Effekt auf Schrift, sondern die Lichtquelle des Raums.</p>
+    <div class="buehne c" data-buehne>
+      <div class="ansicht" data-ansicht="start">
+        <div class="ebene strahl" style="--z:10"></div>
+        <div class="ebene" style="--z:8"><div class="scheibe" style="--b:16%;--x:70%;--y:10%;--r:-4deg"><img alt="" src="{{F5}}"></div></div>
+        <div class="ebene" style="--z:18"><div class="scheibe" style="--b:19%;--x:58%;--y:22%;--r:3deg"><img alt="" src="{{F4}}"></div></div>
+        <div class="ebene" style="--z:30"><div class="scheibe" style="--b:23%;--x:76%;--y:30%;--r:-2deg"><img alt="" src="{{F11}}"></div></div>
+        <div class="text"><h3>Wir bauen das <span class="vw">System</span>, das dich planbar skaliert.</h3><p>Für Coaches und Experten. Du musst nichts können außer reden.</p><a class="cta" href="#c" tabindex="-1">Kostenlos starten</a></div>
+      </div>
+      <div class="ansicht faecher" data-ansicht="unter" hidden>
+        <div class="ebene strahl" style="--z:10"></div>
+        <div class="ebene" style="--z:12">
+          <div class="scheibe" style="--b:20%;--x:12%;--y:26%;--r:-3deg"><img alt="" src="{{F2}}"></div>
+          <div class="scheibe" style="--b:23%;--x:39%;--y:18%;--r:0deg;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 1px rgba(31,201,152,.4),0 40px 70px -30px #000"><img alt="" src="{{F13}}"></div>
+          <div class="scheibe" style="--b:20%;--x:68%;--y:26%;--r:3deg"><img alt="" src="{{F10}}"></div>
+        </div>
+        <div class="text" style="bottom:auto;top:7%"><h3>Drei Wege. <span class="vw">Einer</span> passt zu dir.</h3></div>
+      </div>
+    </div>
+    <div class="info">
+      <div><h3>Jede Seite ein Ort</h3><ul><li>Start: Strahl durch drei Scheiben</li><li>Preise: drei Scheiben im Fächer, die mittlere fängt das meiste Licht</li><li>Ablauf: vier Scheiben hintereinander, das Licht wandert beim Scrollen durch</li><li>Über uns: zwei Scheiben, zwei Gesichter</li><li>Wissen: eine klare Scheibe je Antwort</li></ul></div>
+      <div><h3>Technik</h3><p>CSS-Ebenen mit Glanzkante, Strahl über Mischmodus. Später auf Wunsch ein echter Brechungs-Shader per WebGPU, mit diesem Bild als Rückfall.</p></div>
+      <div><h3>Wofür es steht</h3><p>Klarheit und System: Licht wird durch Arbeit sichtbar. Am meisten „Marke“, weil der Verlauf zur Lichtquelle wird. Risiko: Glas kann schnell nach Technik-Startup aussehen, wenn es zu glatt wird.</p></div>
+    </div>
+  </section>
+
+  <!-- D -->
+  <section class="richtung" data-r="d">
+    <header>
+      <h2><span class="buchstabe">D</span>Werkbank</h2>
+      <div class="umschalter" role="group" aria-label="Ansicht Werkbank">
+        <button class="knopf" type="button" data-zu="start" aria-pressed="true">Startseite</button>
+        <button class="knopf" type="button" data-zu="unter" aria-pressed="false">Unterseite /about/</button>
+      </div>
+    </header>
+    <p class="leitsatz">Der Blick von oben auf euren Arbeitstisch unter einer Lampe. Handy mit dem Feed, Probeabzüge, der Plan auf Papier. Die Lampe folgt der Maus, Schatten wandern mit, Dinge heben sich, wenn man sie berührt. Zwei Gründer, die selbst Hand anlegen.</p>
+    <div class="buehne d" data-buehne>
+      <div class="ansicht" data-ansicht="start">
+        <div class="ebene tisch" style="--z:4"></div>
+        <div class="ebene" style="--z:8;pointer-events:none">
+          <div class="ding handy" style="--x:12%;--y:14%;--b:12%;--r:-8deg;--sx:-.6"><div class="schirm"><img alt="" src="{{F2}}"><img alt="" src="{{F3}}"><img alt="" src="{{F4}}"><img alt="" src="{{F5}}"><img alt="" src="{{F10}}"><img alt="" src="{{F11}}"><img alt="" src="{{F12}}"><img alt="" src="{{F13}}"><img alt="" src="{{F2}}"></div></div>
+          <div class="ding abzug" style="--x:31%;--y:9%;--b:14%;--r:5deg;--sx:-.2"><img alt="" src="{{F11}}"></div>
+          <div class="ding abzug" style="--x:44%;--y:30%;--b:12%;--r:-3deg;--sx:0"><img alt="" src="{{F13}}"></div>
+          <div class="ding blatt" style="--x:27%;--y:50%;--b:17%;--r:2deg;--sx:-.3"><b>Plan November</b>Hook an das Thema binden, <i>nie Hausformel</i>.<br>Drei Beiträge, ein Reel.<br>Schluss: Weiterleitung.</div>
+        </div>
+        <div class="text"><h3>Wir bauen das <span class="vw">System</span>, das dich planbar skaliert.</h3><p>Für Coaches und Experten. Du musst nichts können außer reden.</p><a class="cta" href="#d" tabindex="-1">Kostenlos starten</a></div>
+      </div>
+      <div class="ansicht" data-ansicht="unter" hidden>
+        <div class="ebene tisch" style="--z:4"></div>
+        <div class="ebene" style="--z:8;pointer-events:none">
+          <div class="ding polaroid" style="--x:14%;--y:16%;--b:17%;--r:-5deg;--sx:-.5"><img alt="" src="{{PH}}"><span>Philipp</span></div>
+          <div class="ding polaroid" style="--x:35%;--y:22%;--b:17%;--r:4deg;--sx:-.1"><img alt="" src="{{SE}}"><span>Sebastian</span></div>
+          <div class="ding abzug" style="--x:22%;--y:58%;--b:11%;--r:9deg;--sx:-.3"><img alt="" src="{{F4}}"></div>
+        </div>
+        <div class="text"><h3>Sebi &amp; Phil. <span class="vw">Kein Team</span> dazwischen.</h3><p>Wir bauen Systeme, keine Zufälle.</p></div>
+      </div>
+    </div>
+    <div class="info">
+      <div><h3>Jede Seite ein Ort</h3><ul><li>Start: der Tisch mit dem Handy</li><li>Über uns: Polaroids der Gründer</li><li>Ablauf: vier Mappen von links nach rechts</li><li>Preise: drei Umschläge, unterschiedlich dick</li><li>Wissen: Karteikasten mit Antworten</li></ul></div>
+      <div><h3>Technik</h3><p>CSS-Gegenstände mit Schatten aus der Lampenposition, Heben beim Berühren, Neigen am Handy. Fotos der Gegenstände später echt gebaut oder gerendert, nie Stock.</p></div>
+      <div><h3>Wofür es steht</h3><p>Handwerk und Nähe: „Done-for-you“ wird anfassbar. Am wärmsten und am weitesten von typischen Agenturseiten weg. Risiko: braucht die meisten eigenen Gegenstände, damit es nicht nach Bastelei aussieht.</p></div>
+    </div>
+  </section>
+
+  <section class="wahl">
+    <h2>Welche Richtung <span class="vw">trägt</span> s2s?</h2>
+    <p>Antworte mit A, B, C oder D. Mischen geht auch, zum Beispiel „C, aber mit den Gegenständen aus D“. Danach baue ich zuerst die Tore und dann die Probe: Startseiten-Kopf und eine Unterseite im Worktree, zum Abnehmen, bevor irgendetwas live geht.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gehalten = false;
+  var buehnen = [].slice.call(document.querySelectorAll('[data-buehne]'));
+  var sichtbar = new Set();
+
+  // Feed-Raum: Kacheln in fünf Tiefen
+  var FEED = ['{{F2}}','{{F3}}','{{F4}}','{{F5}}','{{F10}}','{{F11}}','{{F12}}','{{F13}}'];
+  document.querySelectorAll('[data-tunnel]').forEach(function(t){
+    var weit = t.hasAttribute('data-weit'), n = 0;
+    var plaetze = [[22,30],[78,26],[30,70],[70,72],[50,18],[14,55],[86,58],[50,82],[36,40],[64,42],[24,18],[76,84]];
+    plaetze.forEach(function(p,i){
+      var tiefe = -((i % 5) * 260 + (weit ? 500 : 80));
+      var k = document.createElement('div');
+      k.className = 'kachel';
+      var hell = Math.max(.25, 1 + tiefe / 1500);
+      k.style.cssText = '--x:'+p[0]+'%;--y:'+p[1]+'%;--tz:'+tiefe+'px;--hell:'+hell.toFixed(2)+';--satt:'+(hell*.9+.1).toFixed(2);
+      k.innerHTML = '<img alt="" src="'+FEED[n++ % FEED.length]+'">';
+      t.appendChild(k);
+    });
+  });
+
+  // Maus: weich nachziehen, nur sichtbare Bühnen, ein rAF je Frame
+  buehnen.forEach(function(b){
+    b._ziel = {x:0,y:0}; b._ist = {x:0,y:0};
+    b.addEventListener('pointermove', function(e){
+      if (e.pointerType !== 'mouse') return;
+      var r = b.getBoundingClientRect();
+      b._ziel.x = ((e.clientX - r.left) / r.width - .5) * 2;
+      b._ziel.y = ((e.clientY - r.top) / r.height - .5) * 2;
+    });
+    b.addEventListener('pointerleave', function(){ b._ziel.x = 0; b._ziel.y = 0; });
+  });
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? sichtbar.add(e.target) : sichtbar.delete(e.target); }); }, {rootMargin:'100px'});
+  buehnen.forEach(function(b){ io.observe(b); });
+
+  // Staub im Lichtkegel (A): Teilchen mit Tiefe, fern klein und blass
+  var staub = [].slice.call(document.querySelectorAll('[data-staub]')).map(function(c){
+    var t = []; for (var i=0;i<70;i++) t.push({x:Math.random(),y:Math.random(),z:Math.random(),v:.0002+Math.random()*.0006});
+    return {c:c,ctx:c.getContext('2d'),t:t};
+  });
+  function staubZeichnen(s, mx){
+    var c = s.c, w = c.clientWidth, h = c.clientHeight, d = Math.min(2, devicePixelRatio || 1);
+    if (c.width !== Math.round(w*d)) { c.width = Math.round(w*d); c.height = Math.round(h*d); }
+    var x = s.ctx; x.setTransform(d,0,0,d,0,0); x.clearRect(0,0,w,h);
+    var kx = (.52 + mx * .1) * w;
+    s.t.forEach(function(p){
+      if (!gehalten && !ruhig) { p.y -= p.v * (0.5 + p.z); if (p.y < 0) { p.y = 1; p.x = Math.random(); } }
+      var px = kx + (p.x - .5) * w * (.15 + p.y * .5), py = p.y * h * .8;
+      var r = .6 + p.z * 2.4, a = .08 + p.z * .35;
+      var g = x.createRadialGradient(px,py,0,px,py,r*2.2);
+      g.addColorStop(0,'rgba(190,255,230,'+a+')'); g.addColorStop(1,'rgba(190,255,230,0)');
+      x.fillStyle = g; x.beginPath(); x.arc(px,py,r*2.2,0,6.283); x.fill();
+    });
+  }
+
+  function bild(){
+    sichtbar.forEach(function(b){
+      if (!ruhig && !gehalten) {
+        b._ist.x += (b._ziel.x - b._ist.x) * .08;
+        b._ist.y += (b._ziel.y - b._ist.y) * .08;
+        var r = b.getBoundingClientRect();
+        var sp = 1 - (r.top + r.height/2) / (innerHeight/2 + r.height/2);
+        b.style.setProperty('--mx', b._ist.x.toFixed(3));
+        b.style.setProperty('--my', b._ist.y.toFixed(3));
+        b.style.setProperty('--sp', Math.max(-1, Math.min(1, sp)).toFixed(3));
+      }
+      if (b.classList.contains('a')) {
+        var s = staub.find(function(s){ return b.contains(s.c) && s.c.offsetParent; });
+        if (s) staubZeichnen(s, b._ist.x);
+      }
+    });
+    requestAnimationFrame(bild);
+  }
+  requestAnimationFrame(bild);
+
+  // Ansicht wechseln: Kamerafahrt per View Transition, wo vorhanden
+  document.querySelectorAll('.richtung').forEach(function(r){
+    var knoepfe = r.querySelectorAll('[data-zu]');
+    knoepfe.forEach(function(k){
+      k.addEventListener('click', function(){
+        var zu = k.getAttribute('data-zu');
+        var tauschen = function(){
+          r.querySelectorAll('[data-ansicht]').forEach(function(a){ a.hidden = a.getAttribute('data-ansicht') !== zu; });
+          knoepfe.forEach(function(x){ x.setAttribute('aria-pressed', String(x === k)); });
+        };
+        var b = r.querySelector('[data-buehne]');
+        if (document.startViewTransition && !ruhig) {
+          b.style.viewTransitionName = 'buehne-' + r.getAttribute('data-r');
+          var vt = document.startViewTransition(tauschen);
+          vt.finished.finally(function(){ b.style.viewTransitionName = ''; });
+        } else tauschen();
+      });
+    });
+  });
+
+  // Halten (WCAG 2.2.2)
+  var h = document.getElementById('halten');
+  h.addEventListener('click', function(){
+    gehalten = !gehalten;
+    h.setAttribute('aria-pressed', String(gehalten));
+    h.textContent = gehalten ? 'Bewegung fortsetzen' : 'Bewegung anhalten';
+    document.body.classList.toggle('still', gehalten);
+  });
+})();
+</script>
