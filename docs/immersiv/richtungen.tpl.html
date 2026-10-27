@@ -63,7 +63,7 @@ button{font:inherit;color:inherit}
 
 /* ===== A Lichtstudio ===== */
 .a .wand{background:radial-gradient(60% 70% at calc(50% + var(--mx) * 18%) 30%,#0E2A24 0%,#071512 40%,var(--grund) 75%)}
-.a .kegel{background:conic-gradient(from calc(180deg + var(--mx) * 12deg) at calc(52% + var(--mx) * 10%) -12%,transparent 0 158deg,rgba(31,201,152,.22) 172deg,rgba(47,190,234,.16) 186deg,transparent 200deg);mix-blend-mode:screen;filter:blur(18px)}
+.a .kegel{background:conic-gradient(from calc(var(--mx) * -12deg) at calc(52% + var(--mx) * 10%) -12%,transparent 0 158deg,rgba(31,201,152,.22) 172deg,rgba(47,190,234,.16) 186deg,transparent 200deg);mix-blend-mode:screen;filter:blur(18px)}
 .a .boden{inset:auto -40px -24px -40px;height:46%;background:linear-gradient(180deg,#081310,#020507);transform-origin:50% 0}
 .a .boden::before{content:"";position:absolute;inset:0;background:radial-gradient(40% 60% at calc(52% + var(--mx) * 14%) 0%,rgba(31,201,152,.28),transparent 70%);mix-blend-mode:screen}
 .a .abzug{position:absolute;width:var(--b);aspect-ratio:4/5;left:var(--x);bottom:var(--y);background:#0b0f0e;padding:5px;box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 2px 2px rgba(0,0,0,.5),0 18px 30px -10px rgba(0,0,0,.85)}
@@ -115,6 +115,19 @@ button{font:inherit;color:inherit}
 .d .polaroid span{display:block;margin-top:.5em;font-family:var(--f-display);font-style:italic;color:#1B1D21;font-size:clamp(.55rem,.4rem + .5vw,1rem);text-align:center}
 .d .text{left:auto;right:6%;text-align:right;max-width:26rem}
 .d .text p{margin-left:auto}
+
+/* ===== E Empfehlung: Lichtstudio mit Verlaufslicht ===== */
+.e .kegel{background:conic-gradient(from calc(var(--mx) * -12deg) at calc(52% + var(--mx) * 10%) -12%,transparent 0 156deg,rgba(31,201,152,.55) 170deg,rgba(31,166,224,.5) 184deg,rgba(47,190,234,.28) 192deg,transparent 204deg);filter:blur(12px);opacity:0;transition:opacity 1.6s cubic-bezier(.2,.7,.2,1)}
+.e.an .kegel{opacity:1}
+.e .boden::before{opacity:0;transition:opacity 1.8s .2s}
+.e.an .boden::before{opacity:1}
+.e .abzug{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,filter 1.4s;cursor:pointer;filter:brightness(.35) saturate(.5)}
+.e.an .abzug{filter:none}
+.e.an .fern .abzug{filter:saturate(.7) brightness(.7)}
+.e.an .nah .abzug{filter:blur(2px)}
+.e .abzug:hover{transform:translateY(-10px);box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 2px 2px rgba(0,0,0,.5),0 34px 44px -12px rgba(0,0,0,.9),0 0 40px -6px rgba(31,201,152,.35)}
+@media (prefers-reduced-motion:reduce){.e .kegel,.e .abzug,.e .boden::before{transition:none}}
+.empf{display:inline-block;font-size:.85rem;color:var(--emerald-soft);border:1px solid var(--kante);border-radius:8px;padding:3px 9px;margin-left:.6em;vertical-align:middle;font-family:var(--f-text);font-style:normal}
 
 /* Halten + Ruhe */
 .still *,.still *::before,.still *::after{animation-play-state:paused!important}
@@ -294,9 +307,52 @@ button{font:inherit;color:inherit}
     </div>
   </section>
 
+  <!-- E -->
+  <section class="richtung" data-r="e">
+    <header>
+      <h2><span class="buchstabe">E</span>Lichtstudio mit Verlaufslicht <span class="empf">Meine Empfehlung</span></h2>
+      <div class="umschalter" role="group" aria-label="Ansicht Empfehlung">
+        <button class="knopf" type="button" data-zu="start" aria-pressed="true">Startseite</button>
+        <button class="knopf" type="button" data-zu="unter" aria-pressed="false">Unterseite /for-you/</button>
+      </div>
+    </header>
+    <p class="leitsatz">A als Welt, das Licht aus C, die Berührung aus D. Der Lichtkegel IST euer Verlauf, von Emerald nach Teal. Beim ersten Hinsehen geht das Licht einmal an und holt die Arbeiten aus dem Dunkel. Fährt man über einen Abzug, hebt er sich ins Licht. Auf /for-you/ wird daraus die Geschichte eurer Kundin: erst im Dunkeln, dann im Licht.</p>
+    <div class="buehne a e" data-buehne data-licht>
+      <div class="ansicht" data-ansicht="start">
+        <div class="ebene wand" style="--z:6"></div>
+        <div class="ebene kegel" style="--z:14"></div>
+        <div class="ebene boden" style="--z:10"></div>
+        <div class="ebene fern" style="--z:8">
+          <div class="abzug" style="--b:9%;--x:62%;--y:44%"><img alt="" src="{{F10}}"></div>
+          <div class="abzug" style="--b:8%;--x:74%;--y:46%"><img alt="" src="{{F5}}"></div>
+        </div>
+        <div class="ebene" style="--z:18">
+          <div class="abzug" style="--b:15%;--x:55%;--y:33%"><img alt="" src="{{F13}}"></div>
+          <div class="abzug" style="--b:13%;--x:77%;--y:30%"><img alt="" src="{{F11}}"></div>
+        </div>
+        <canvas class="ebene staub" data-staub style="--z:22"></canvas>
+        <div class="text"><h3>Wir bauen das <span class="vw">System</span>, das dich planbar skaliert.</h3><p>Für Coaches und Experten. Du musst nichts können außer reden.</p><a class="cta" href="#e" tabindex="-1">Kostenlos starten</a></div>
+      </div>
+      <div class="ansicht" data-ansicht="unter" hidden>
+        <div class="ebene wand" style="--z:6"></div>
+        <div class="ebene kegel" style="--z:14"></div>
+        <div class="ebene boden" style="--z:10"></div>
+        <div class="ebene" style="--z:18">
+          <div class="abzug" style="--b:17%;--x:60%;--y:28%"><img alt="" src="{{F3}}"></div>
+        </div>
+        <div class="text"><h3>Du bist gut. Online <span class="vw">merkt&rsquo;s nur keiner</span>.</h3><p>Gebaut für die, die sichtbar werden wollen.</p></div>
+      </div>
+    </div>
+    <div class="info">
+      <div><h3>Warum diese</h3><p>Euer Versprechen ist Sichtbarkeit („Online merkt&rsquo;s nur keiner“). Ein Studio, das Menschen ins Licht setzt, erzählt genau das, ohne ein Wort zu erklären. Und der Verlauf wird zur Lichtquelle statt zur Schrift-Deko.</p></div>
+      <div><h3>Warum nicht die anderen allein</h3><p>B sieht aus wie viele Agenturseiten und hat die 3D-Falle in Safari. C allein kippt schnell ins Technik-Startup. D ist stark, braucht aber viele eigene Gegenstände; die Berührung nehmen wir trotzdem mit.</p></div>
+      <div><h3>Für eure Zielgruppe</h3><p>Coaches und B2B ab 45 wollen eine Seite, die vertraut bedienbar bleibt. Hier bewegt sich nur das Licht und der Raum, nie Knöpfe oder Text. Am nächsten an der heutigen Seite, also am wenigsten Umbau-Risiko.</p></div>
+    </div>
+  </section>
+
   <section class="wahl">
     <h2>Welche Richtung <span class="vw">trägt</span> s2s?</h2>
-    <p>Antworte mit A, B, C oder D. Mischen geht auch, zum Beispiel „C, aber mit den Gegenständen aus D“. Danach baue ich zuerst die Tore und dann die Probe: Startseiten-Kopf und eine Unterseite im Worktree, zum Abnehmen, bevor irgendetwas live geht.</p>
+    <p>Meine Empfehlung ist E. Antworte mit E, oder mit A, B, C oder D. Mischen geht auch, zum Beispiel „C, aber mit den Gegenständen aus D“. Danach baue ich zuerst die Tore und dann die Probe: Startseiten-Kopf und eine Unterseite im Worktree, zum Abnehmen, bevor irgendetwas live geht.</p>
   </section>
 </div>
 
@@ -337,6 +393,8 @@ button{font:inherit;color:inherit}
   });
   var io = new IntersectionObserver(function(es){ es.forEach(function(e){ e.isIntersecting ? sichtbar.add(e.target) : sichtbar.delete(e.target); }); }, {rootMargin:'100px'});
   buehnen.forEach(function(b){ io.observe(b); });
+  var lichtIo = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) { var b = e.target; setTimeout(function(){ b.classList.add('an'); }, ruhig ? 0 : 500); lichtIo.unobserve(b); } }); }, {threshold:.5});
+  document.querySelectorAll('[data-licht]').forEach(function(b){ lichtIo.observe(b); });
 
   // Staub im Lichtkegel (A): Teilchen mit Tiefe, fern klein und blass
   var staub = [].slice.call(document.querySelectorAll('[data-staub]')).map(function(c){
@@ -394,6 +452,7 @@ button{font:inherit;color:inherit}
           var vt = document.startViewTransition(tauschen);
           vt.finished.finally(function(){ b.style.viewTransitionName = ''; });
         } else tauschen();
+        if (b.hasAttribute('data-licht')) { b.classList.remove('an'); setTimeout(function(){ b.classList.add('an'); }, ruhig ? 0 : 1100); }
       });
     });
   });
