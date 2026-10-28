@@ -1,0 +1,64 @@
+/* Über uns — Projektor, Lichtplan, Porträtsitzung, Klappen (28.10.2026). Quelle: scripts/szenen-quelle.mjs */
+
+/* ── 1 Projektor: der Leitsatz an der Wand, Staub im Strahl ─────────────────────────────────────── */
+[data-sz="projektor"] .pj-geraet{left:clamp(-30px,-1vw,0px);top:50%;width:64px;height:46px;margin-top:-23px;border-radius:8px;z-index:2;
+  background:linear-gradient(180deg,#2D3136,#16181B);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 20px -6px #000}
+[data-sz="projektor"] .pj-geraet i{position:absolute;right:-10px;top:50%;width:20px;height:20px;margin-top:-10px;border-radius:50%;
+  background:radial-gradient(circle,#FFFFFF,#CFFBEA 40%,#2D3136 70%);box-shadow:0 0 18px 4px rgba(var(--sz-kalt),.5)}
+[data-sz="projektor"] .pj-strahl{left:40px;right:0;top:0;bottom:0;opacity:0;transition:opacity .9s steps(3,end)}
+[data-sz="projektor"].sz-an .pj-strahl{opacity:1}
+[data-sz="projektor"] .pj-strahl{
+  background:
+    radial-gradient(1.5px 1.5px at 22% 44%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 38% 58%,rgba(255,255,255,.45),transparent),
+    radial-gradient(1.5px 1.5px at 51% 36%,rgba(255,255,255,.35),transparent),
+    radial-gradient(1px 1px at 64% 61%,rgba(255,255,255,.4),transparent),
+    radial-gradient(1px 1px at 77% 41%,rgba(255,255,255,.3),transparent),
+    conic-gradient(from 90deg at 0% 50%,transparent 62deg,rgba(var(--sz-kalt),.10) 72deg,rgba(var(--sz-kalt),.18) 90deg,rgba(var(--sz-kalt),.10) 108deg,transparent 118deg)}
+[data-sz="projektor"] blockquote{text-shadow:0 0 28px rgba(var(--sz-kalt),.18)}
+
+/* ── 2 Lichtplan: der Grundriss des Studios zeichnet sich hinter dem Text ───────────────────────── */
+[data-sz="lichtplan"]{overflow:hidden}
+[data-sz="lichtplan"] .lp-plan{inset:0;width:100%;height:100%;opacity:.9}
+[data-sz="lichtplan"] .lp-wand{fill:none;stroke:rgba(143,240,207,.26);stroke-width:2}
+[data-sz="lichtplan"] .lp-linie{fill:none;stroke:rgba(143,240,207,.22);stroke-width:1.2;stroke-dasharray:6 8}
+[data-sz="lichtplan"] .lp-lampe{fill:rgba(143,240,207,.08);stroke:rgba(143,240,207,.45);stroke-width:1.5}
+[data-sz="lichtplan"] .lp-motiv{fill:rgba(31,201,152,.12);stroke:rgba(143,240,207,.35)}
+[data-sz="lichtplan"] .lp-wand{stroke-dasharray:4000;stroke-dashoffset:4000;transition:stroke-dashoffset 2.6s ease}
+[data-sz="lichtplan"].sz-an .lp-wand{stroke-dashoffset:0}
+[data-sz="lichtplan"] :is(.lp-linie,.lp-lampe,.lp-motiv){opacity:0;transition:opacity 1.2s ease 1.4s}
+[data-sz="lichtplan"].sz-an :is(.lp-linie,.lp-lampe,.lp-motiv){opacity:1}
+
+/* ── 3 Porträtsitzung: je eine Softbox, die angeht, wenn die Karte dran ist ─────────────────────── */
+[data-sz="portraitsitzung"] .ab-fcard{overflow:visible}
+[data-sz="portraitsitzung"] .ab-pic{overflow:hidden}
+[data-sz="portraitsitzung"] .sb-box{top:clamp(30px,6vw,80px);width:clamp(60px,7vw,96px);aspect-ratio:3/4;z-index:3;border-radius:4px;
+  background:linear-gradient(180deg,#1E2125,#121417);box-shadow:inset 0 0 0 3px #2B2F34,0 20px 30px -12px #000;transition:background .8s ease,box-shadow .8s ease}
+[data-sz="portraitsitzung"] .ab-fcard:first-of-type .sb-box{left:clamp(-70px,-5vw,-40px);rotate:14deg}
+[data-sz="portraitsitzung"] .ab-fcard:last-of-type .sb-box{right:clamp(-70px,-5vw,-40px);rotate:-14deg}
+[data-sz="portraitsitzung"] .sb-box i{position:absolute;inset:7px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,transparent 0 30%,rgba(0,0,0,.2) 30% 31%),repeating-linear-gradient(180deg,transparent 0 30%,rgba(0,0,0,.2) 30% 31%),#2A2E33}
+[data-sz="portraitsitzung"] .ab-fcard.sz-lit .sb-box i{background:repeating-linear-gradient(90deg,transparent 0 30%,rgba(0,0,0,.08) 30% 31%),repeating-linear-gradient(180deg,transparent 0 30%,rgba(0,0,0,.08) 30% 31%),#F3FFFA}
+[data-sz="portraitsitzung"] .ab-fcard.sz-lit .sb-box{box-shadow:inset 0 0 0 3px #2B2F34,0 0 50px 12px rgba(var(--sz-kalt),.35)}
+[data-sz="portraitsitzung"] .ab-pic img{filter:brightness(.6) saturate(.8);transition:filter 1.2s ease}
+[data-sz="portraitsitzung"] .ab-fcard.sz-lit .ab-pic img{filter:none}
+[data-sz="portraitsitzung"] .ab-pic.is-hell img{filter:brightness(.55) saturate(.8)}
+[data-sz="portraitsitzung"] .ab-fcard.sz-lit .ab-pic.is-hell img{filter:brightness(.86)}
+@media (max-width:900px){ [data-sz="portraitsitzung"] .sb-box{display:none} [data-sz="portraitsitzung"] .ab-pic img{filter:none} }
+
+/* ── 4 Klappe: jedes Prinzip ist eine Szene, die angeschlagen wird ──────────────────────────────── */
+[data-sz="klappe"] .ab-num{position:relative;display:grid;place-items:center;width:clamp(76px,8vw,104px);height:clamp(54px,5.6vw,72px);margin-top:16px;
+  font-size:clamp(1.5rem,1.1rem + 1vw,2.2rem);line-height:1;color:#F2F3F1;-webkit-text-stroke:0;border-radius:4px;
+  background:linear-gradient(180deg,#1A1D20,#0E1012);box-shadow:inset 0 0 0 2px rgba(242,243,241,.75),0 14px 24px -12px #000}
+[data-sz="klappe"] .ab-row:hover .ab-num{color:#F2F3F1}
+[data-sz="klappe"] .ab-num::before{ /* der Klappbalken */
+  content:"";position:absolute;left:0;right:0;bottom:calc(100% + 2px);height:14px;border-radius:3px;
+  background:repeating-linear-gradient(120deg,#F2F3F1 0 9px,#121417 9px 18px);box-shadow:0 4px 8px -2px #000;
+  transform-origin:2px 100%;rotate:-24deg;transition:rotate .22s cubic-bezier(.6,0,.9,.4)}
+[data-sz="klappe"] .ab-row.sz-lit .ab-num::before{rotate:0deg}
+[data-sz="klappe"] .ab-row.sz-lit .ab-num{box-shadow:inset 0 0 0 2px #F2F3F1,0 0 0 1px rgba(143,240,207,.4),0 14px 24px -12px #000}
+
+/* ── 5 Bühnenmarke (Über uns): zwei Plätze nebeneinander ────────────────────────────────────────── */
+.mk-ueber-uns i{top:6px;width:54px;height:12px}
+.mk-ueber-uns i:nth-child(1){left:-66px;rotate:-6deg}
+.mk-ueber-uns i:nth-child(2){left:12px;rotate:5deg}

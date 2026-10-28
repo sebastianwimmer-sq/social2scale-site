@@ -1,0 +1,213 @@
+/* Startseite — neun Abschnitte, neun Orte im Studio (28.10.2026). Quelle: scripts/szenen-quelle.mjs */
+
+/* ── 1 Leuchttisch: „Eines davon bist du.“ — drei Abzüge, der Tisch schaltet sich ein ───────────── */
+[data-sz="leuchttisch"] .st-grid{
+  position:relative;gap:clamp(14px,2vw,26px);border:0;padding:clamp(18px,2.6vw,34px);
+  border-radius:12px;background:#1F2624;
+  box-shadow:0 0 0 10px #16181B,0 0 0 11px rgba(255,255,255,.07),inset 0 0 0 1px rgba(0,0,0,.6),0 40px 90px -40px #000;
+  transition:box-shadow 1.2s ease .2s;
+}
+[data-sz="leuchttisch"] .st-grid::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 18%,rgba(255,255,255,.35) 22%,rgba(255,255,255,0) 26%),
+    radial-gradient(120% 140% at 50% 50%,#F4FBF7,#D9EBE2 70%,#C7DDD3);
+}
+[data-sz="leuchttisch"].sz-an .st-grid::before{animation:ltAn .9s steps(1,end) forwards}
+[data-sz="leuchttisch"].sz-an .st-grid{box-shadow:0 0 0 10px #16181B,0 0 0 11px rgba(255,255,255,.07),inset 0 0 0 1px rgba(0,0,0,.3),0 30px 140px -30px rgba(var(--sz-kalt),.42)}
+@keyframes ltAn{0%{opacity:0}10%{opacity:.75}16%{opacity:.1}24%{opacity:.9}30%{opacity:.35}42%,100%{opacity:1}}
+[data-sz="leuchttisch"] .st-card,[data-sz="leuchttisch"] .st-card:first-child,[data-sz="leuchttisch"] .st-card:last-child{
+  position:relative;z-index:1;padding:clamp(20px,2.2vw,28px) clamp(18px,2vw,26px) clamp(22px,2.4vw,30px);border:0;border-radius:3px;
+  background:linear-gradient(180deg,#FFFEFA,#F1EDE2);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 2px 3px rgba(0,0,0,.18),0 18px 30px -18px rgba(0,0,0,.45);
+  transform:rotate(var(--dreh,0deg)) translateY(10px);opacity:.35;filter:brightness(.55);
+  transition:transform .9s var(--ease,ease),opacity .7s ease,filter .9s ease;
+}
+[data-sz="leuchttisch"] .st-card:nth-child(1){--dreh:-1.4deg}
+[data-sz="leuchttisch"] .st-card:nth-child(2){--dreh:.9deg;transition-delay:.12s}
+[data-sz="leuchttisch"] .st-card:nth-child(3){--dreh:-.5deg;transition-delay:.24s}
+[data-sz="leuchttisch"].sz-an .st-card{transform:rotate(var(--dreh));opacity:1;filter:none}
+[data-sz="leuchttisch"] .st-card + .st-card{border-left:0}
+[data-sz="leuchttisch"] .st-let{color:#0B6B52;font-weight:700}
+[data-sz="leuchttisch"] .st-ist{color:var(--sz-tinte)}
+[data-sz="leuchttisch"] .st-kost{color:var(--sz-tinte-2)}
+[data-sz="leuchttisch"] .lt-schein{left:0;right:0;top:18%;height:70%;opacity:0;transition:opacity 1.4s ease .4s;
+  background:radial-gradient(46% 50% at 50% 55%,rgba(var(--sz-kalt),.10),transparent 70%)}
+[data-sz="leuchttisch"].sz-an .lt-schein{opacity:1}
+@media (max-width:760px){
+  [data-sz="leuchttisch"] .st-grid{box-shadow:0 0 0 7px #16181B,0 0 0 8px rgba(255,255,255,.07),0 30px 60px -30px #000}
+  [data-sz="leuchttisch"].sz-an .st-grid{box-shadow:0 0 0 7px #16181B,0 0 0 8px rgba(255,255,255,.07),0 24px 90px -24px rgba(var(--sz-kalt),.4)}
+  [data-sz="leuchttisch"] .st-card:nth-child(n){--dreh:0deg}
+  [data-sz="leuchttisch"] .st-card:nth-child(2){--dreh:.6deg}
+}
+
+/* ── 2 Probestreifen: „Du hast es ja schon versucht.“ — drei Fehlbelichtungen, der letzte Streifen sitzt ─ */
+[data-sz="probestreifen"] .wa-list{
+  position:relative;padding:clamp(12px,1.6vw,18px);border-radius:16px;margin-top:var(--s-6);
+  background:linear-gradient(180deg,#0F1416,#0A0E10);
+  box-shadow:0 0 0 9px #1A1D21,0 0 0 10px rgba(255,255,255,.06),inset 0 -30px 50px -20px rgba(0,0,0,.7),0 40px 80px -40px #000;
+}
+[data-sz="probestreifen"] .wa-list::after{ /* Flüssigkeit über dem Streifen: ein ruhiger Glanz */
+  content:"";position:absolute;inset:clamp(12px,1.6vw,18px);border-radius:6px;pointer-events:none;z-index:2;
+  background:linear-gradient(112deg,transparent 30%,rgba(255,255,255,.07) 42%,transparent 52%);mix-blend-mode:screen}
+[data-sz="probestreifen"] .wa-row,[data-sz="probestreifen"] .wa-row.is-us{
+  position:relative;margin:0;border:0;border-radius:0;padding:clamp(18px,2vw,24px) clamp(18px,2.4vw,28px);
+  background:#F4F1E9;transition:background-color 1.4s ease,color 1.4s ease}
+[data-sz="probestreifen"] .wa-row:first-child{border-radius:6px 6px 0 0}
+[data-sz="probestreifen"] .wa-row:last-child{border-radius:0 0 6px 6px}
+[data-sz="probestreifen"] .wa-head{margin:0}
+[data-sz="probestreifen"] .wa-row .wa-name{color:var(--sz-tinte);transition:color 1.4s ease}
+[data-sz="probestreifen"] .wa-row .wa-note{color:var(--sz-tinte-2);transition:color 1.4s ease}
+/* entwickelt: zu blass, flau, abgesoffen — und der eine, der sitzt */
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(1){background:#E3DCCC}
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(2){background:#B5AD9C}
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(2) .wa-note{color:#25282D}
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(3){background:#3B3833}
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(3) .wa-name{color:#EDE9DF}
+[data-sz="probestreifen"] .wa-row.sz-lit:nth-child(3) .wa-note{color:#C9C3B6}
+[data-sz="probestreifen"] .wa-row.is-us.sz-lit{background:linear-gradient(120deg,#0B4F40,#0A3A4E 70%,#0B3346)}
+[data-sz="probestreifen"] .wa-row.is-us.sz-lit .wa-name{color:#8FF0CF}
+[data-sz="probestreifen"] .wa-row.is-us.sz-lit .wa-note{color:#F2F3F1}
+[data-sz="probestreifen"] .wa-row.is-us::before{ /* scharfe Kante: hier sitzt die Belichtung */
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 1.2s ease .6s;
+  box-shadow:inset 0 0 0 1px rgba(143,240,207,.45),0 0 40px -6px rgba(31,201,152,.45)}
+[data-sz="probestreifen"] .wa-row.is-us.sz-lit::before{opacity:1}
+[data-sz="probestreifen"] .ps-lampe{right:clamp(16px,6vw,90px);top:clamp(28px,4vw,56px);width:min(46vw,520px);height:min(70%,560px)}
+[data-sz="probestreifen"] .ps-lampe::before{ /* Dunkelkammerlampe: Gehäuse mit Bernsteinglas */
+  content:"";position:absolute;right:0;top:0;width:46px;height:30px;border-radius:6px 6px 3px 3px;
+  background:linear-gradient(180deg,#2A2D31,#16181B);box-shadow:inset 0 -9px 0 #D98A3A,inset 0 -10px 0 rgba(0,0,0,.4),0 6px 14px -4px #000}
+[data-sz="probestreifen"] .ps-lampe span{position:absolute;inset:20px 0 0 0;opacity:.25;transition:opacity 1.6s ease;
+  background:radial-gradient(60% 50% at 96% 0%,rgba(255,166,82,.22),transparent 70%)}
+[data-sz="probestreifen"].sz-an .ps-lampe span{opacity:1}
+@media (max-width:760px){ [data-sz="probestreifen"] .ps-lampe{top:18px;right:16px} }
+
+/* ── 3 Ringlicht: „Ein Account. Vier Phasen.“ — jede Phase schaltet ein Viertel des Rings ein ───────── */
+[data-sz="ringlicht"] .rl{left:50%;top:50%;width:min(60vh,540px);aspect-ratio:1;translate:-50% -50%;z-index:-1}
+[data-sz="ringlicht"] .rl-ring{position:absolute;inset:0;border-radius:50%;
+  background:
+    repeating-conic-gradient(from -91deg,#03080D 0 2deg,transparent 2deg 90deg),
+    conic-gradient(from -90deg,rgba(236,255,247,.95) 0 calc(var(--p,0) * 360deg),rgba(255,255,255,.06) 0);
+  -webkit-mask:radial-gradient(closest-side,transparent 84%,#000 85.5% 96%,transparent 97.5%);
+          mask:radial-gradient(closest-side,transparent 84%,#000 85.5% 96%,transparent 97.5%)}
+[data-sz="ringlicht"] .rl::before{ /* Schein des Rings auf Wand und Handy */
+  content:"";position:absolute;inset:-6%;border-radius:50%;opacity:calc(.15 + var(--p,0) * .85);
+  background:radial-gradient(closest-side,transparent 62%,rgba(var(--sz-kalt),.14) 78%,transparent 94%)}
+[data-sz="ringlicht"] .s2-beispiel{z-index:4;color:#A9ABA6} /* Hinweis „Beispielwerte“ war mit --faint 3,8:1 */
+[data-sz="ringlicht"] .rl-stativ{position:absolute;left:50%;top:calc(100% + 40px);width:0;height:min(34vh,240px)}
+[data-sz="ringlicht"] .rl-stativ i{position:absolute;left:-2px;top:0;width:4px;height:100%;border-radius:2px;transform-origin:top center;
+  background:linear-gradient(180deg,#3A3E44,#1B1D21)}
+[data-sz="ringlicht"] .rl-stativ i:nth-child(1){rotate:24deg}
+[data-sz="ringlicht"] .rl-stativ i:nth-child(2){rotate:-24deg}
+[data-sz="ringlicht"] .rl-stativ i:nth-child(3){height:82%;background:linear-gradient(180deg,#4A4F56,#202327)}
+@media (max-width:1023px){ [data-sz="ringlicht"] .rl{width:min(92vw,520px)} [data-sz="ringlicht"] .rl-stativ{display:none} }
+
+/* ── 4 Leine: „Wir behaupten nicht. Wir zeigen.“ — Abzüge an der Leine, sie schwingen mit ──────────── */
+[data-sz="leine"] .feed-reihe{position:relative;padding-top:56px}
+[data-sz="leine"] .feed-reihe::before{content:"";position:absolute;left:0;right:0;top:4px;height:60px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q500 58 1000 6' fill='none' stroke='%23C9CCC6' stroke-opacity='.55' stroke-width='1.6' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0/100% 100% no-repeat}
+[data-sz="leine"] .feed-reihe li{position:relative}
+[data-sz="leine"] .feed-reihe li::before{ /* Klammer */
+  content:"";position:absolute;left:50%;top:calc(var(--hang) - 14px);z-index:2;width:12px;height:26px;margin-left:-6px;border-radius:2px;
+  background:linear-gradient(90deg,#C7A97A,#E6D0A6 45%,#B8986A);box-shadow:inset 0 0 0 1px rgba(0,0,0,.18),0 3px 5px rgba(0,0,0,.45);
+  rotate:calc(var(--r) * .6deg + var(--sv,0) * 10deg);transform-origin:50% 0}
+[data-sz="leine"] .feed-reihe img{translate:0 var(--hang);transform-origin:50% 0;
+  rotate:calc(var(--r) * 1deg + var(--sv,0) * var(--k,1) * 9deg)}
+[data-sz="leine"] .feed-reihe li:nth-child(1){--hang:8px;--r:-2;--k:1.2}
+[data-sz="leine"] .feed-reihe li:nth-child(2){--hang:19px;--r:1.5;--k:.8}
+[data-sz="leine"] .feed-reihe li:nth-child(3){--hang:25px;--r:-1;--k:1.1}
+[data-sz="leine"] .feed-reihe li:nth-child(4){--hang:25px;--r:2;--k:.9}
+[data-sz="leine"] .feed-reihe li:nth-child(5){--hang:19px;--r:-1.5;--k:1.15}
+[data-sz="leine"] .feed-reihe li:nth-child(6){--hang:8px;--r:1;--k:.85}
+@media (max-width:760px){ /* zwei Leinen à drei Abzüge */
+  [data-sz="leine"] .feed-reihe{padding-top:40px;row-gap:46px}
+  [data-sz="leine"] .feed-reihe::before{height:44px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 60' preserveAspectRatio='none'%3E%3Cpath d='M0 6 Q500 40 1000 6' fill='none' stroke='%23C9CCC6' stroke-opacity='.55' stroke-width='1.4' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+  [data-sz="leine"] .feed-reihe li:nth-child(1),[data-sz="leine"] .feed-reihe li:nth-child(3){--hang:9px}
+  [data-sz="leine"] .feed-reihe li:nth-child(2){--hang:16px}
+  [data-sz="leine"] .feed-reihe li:nth-child(n+4){--hang:0px}
+  [data-sz="leine"] .feed-reihe li:nth-child(n+4)::before{top:-30px;height:22px}
+  [data-sz="leine"] .feed-reihe li:nth-child(n+4) img{translate:0 0}
+}
+
+/* ── 5 Kontrollmonitor: „So sieht dein Wachstum aus.“ — der Bereich als Monitor am Set ───────────────── */
+[data-sz="monitor"] .proof-visual{padding-bottom:clamp(70px,9vw,120px)}
+[data-sz="monitor"] .kette{
+  border:0;border-radius:10px;
+  box-shadow:0 0 0 12px #141619,0 0 0 13px rgba(255,255,255,.08),0 0 0 14px #050607,inset 0 0 60px rgba(0,184,136,.06),0 50px 90px -40px #000}
+[data-sz="monitor"] .kette::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;
+  background:linear-gradient(115deg,transparent calc(32% + var(--sx,0) * 14%),rgba(255,255,255,.07) calc(44% + var(--sx,0) * 14%),transparent calc(56% + var(--sx,0) * 14%))}
+[data-sz="monitor"] .km-stativ{left:50%;bottom:0;width:0;height:clamp(70px,9vw,120px)}
+[data-sz="monitor"] .km-arm{position:absolute;left:-5px;top:0;width:10px;height:72%;border-radius:2px;background:linear-gradient(90deg,#2D3136,#4A4F56 45%,#202327)}
+[data-sz="monitor"] .km-gelenk{position:absolute;left:-11px;top:8px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#5A6067,#202327 70%);box-shadow:0 3px 6px rgba(0,0,0,.5)}
+[data-sz="monitor"] .km-fuss{position:absolute;left:-90px;bottom:6px;width:180px;height:12px;border-radius:50%;
+  background:radial-gradient(closest-side,#2A2E33,#15171A 70%,transparent);box-shadow:0 12px 24px -6px rgba(0,0,0,.8)}
+
+/* ── 6 Dreipunktlicht: „Alles aus einer Hand.“ — Setup = Führungslicht, Betreuung = Aufhellung, Skalierung = Spitzlicht ─ */
+[data-sz="dreipunkt"] .bento{position:relative}
+[data-sz="dreipunkt"] .dp-plan{right:0;top:clamp(20px,3vw,40px);width:clamp(170px,19vw,250px);z-index:2}
+[data-sz="dreipunkt"] .dp-plan svg{display:block;width:100%;height:auto;overflow:visible}
+[data-sz="dreipunkt"] .dp-kopf{fill:#2B2F34;stroke:rgba(255,255,255,.18);stroke-width:1;transition:fill .6s ease}
+[data-sz="dreipunkt"] .dp-kegel{fill:url(#dpStrahl);opacity:0;transition:opacity .9s ease}
+[data-sz="dreipunkt"] .dp-motiv{fill:#1B1E22;stroke:rgba(255,255,255,.35);stroke-width:1.2;transition:fill 1s ease}
+[data-sz="dreipunkt"] .dp-kamera{fill:#2B2F34;stroke:rgba(255,255,255,.2)}
+[data-sz="dreipunkt"]:has(.cell-hero.sz-lit) .dp-l1 .dp-kegel{opacity:.85}
+[data-sz="dreipunkt"]:has(.cell-hero.sz-lit) .dp-l1 .dp-kopf{fill:#EAFFF6}
+[data-sz="dreipunkt"]:has(.cell-hero + .cell.sz-lit) .dp-l2 .dp-kegel{opacity:.45}
+[data-sz="dreipunkt"]:has(.cell-hero + .cell.sz-lit) .dp-l2 .dp-kopf{fill:#BFEFDF}
+[data-sz="dreipunkt"]:has(.cell + .cell + .cell.sz-lit) .dp-l3 .dp-kegel{opacity:.7}
+[data-sz="dreipunkt"]:has(.cell + .cell + .cell.sz-lit) .dp-l3 .dp-kopf{fill:#EAFFF6}
+[data-sz="dreipunkt"]:has(.cell + .cell + .cell.sz-lit) .dp-motiv{fill:#0B6B52}
+/* jede Zeile bekommt das Licht aus ihrer Richtung */
+#leistungen[data-sz="dreipunkt"] .cell::before{content:"";position:absolute;inset:-1px -24px;pointer-events:none;opacity:0;transition:opacity 1.1s ease;z-index:-1}
+#leistungen[data-sz="dreipunkt"] .cell{isolation:isolate}
+#leistungen[data-sz="dreipunkt"] .cell-hero::before{background:radial-gradient(60% 120% at 0% 100%,rgba(var(--sz-kalt),.16),transparent 70%)}
+#leistungen[data-sz="dreipunkt"] .cell-hero + .cell::before{background:radial-gradient(55% 120% at 100% 60%,rgba(var(--sz-kalt),.08),transparent 70%)}
+#leistungen[data-sz="dreipunkt"] .cell + .cell + .cell::before{background:linear-gradient(180deg,rgba(var(--sz-kalt),.22),transparent 2px),radial-gradient(70% 90% at 50% 0%,rgba(var(--sz-kalt),.10),transparent 70%)}
+#leistungen[data-sz="dreipunkt"] .cell.sz-lit::before{opacity:1}
+@media (min-width:1101px){ #leistungen[data-sz="dreipunkt"] .cell{padding-right:clamp(190px,21vw,280px)} }
+@media (max-width:1100px){
+  [data-sz="dreipunkt"] .dp-plan{position:relative;right:auto;top:auto;margin:var(--s-5) auto var(--s-3);width:min(220px,60vw)}
+}
+
+/* ── 7 Karteikasten: „Gut zu wissen.“ — Fragen auf Karteikarten, hell und lesbar ───────────────────── */
+[data-sz="kartei"] .faq{position:relative;gap:14px;padding:clamp(14px,1.8vw,20px) clamp(14px,1.8vw,20px) clamp(26px,3vw,36px);border-radius:14px;
+  background:linear-gradient(180deg,#1E2125,#121417);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.05),inset 0 -50px 60px -40px #000,0 0 0 1px rgba(255,255,255,.06),0 40px 80px -40px #000}
+[data-sz="kartei"] .faq details{position:relative;border:0;border-radius:4px;
+  background:
+    repeating-linear-gradient(180deg,transparent 0 25px,rgba(70,128,190,.20) 25px 26px) 0 64px/100% calc(100% - 64px) no-repeat,
+    linear-gradient(180deg,#FFFEFA,#F3EFE4);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 2px 3px rgba(0,0,0,.2),0 14px 24px -14px rgba(0,0,0,.6);
+  transform:rotate(var(--dreh,0deg));transition:transform .35s var(--ease,ease),box-shadow .35s ease}
+[data-sz="kartei"] .faq details:nth-child(odd){--dreh:-.35deg}
+[data-sz="kartei"] .faq details:nth-child(even){--dreh:.3deg}
+[data-sz="kartei"] .faq details:hover{transform:rotate(var(--dreh)) translateY(-2px)}
+[data-sz="kartei"] .faq details[open]{--dreh:0deg;background:
+    repeating-linear-gradient(180deg,transparent 0 25px,rgba(70,128,190,.20) 25px 26px) 0 64px/100% calc(100% - 64px) no-repeat,
+    linear-gradient(180deg,#FFFFFD,#F6F2E8);
+  transform:translateY(-4px);box-shadow:0 1px 0 #fff inset,0 3px 4px rgba(0,0,0,.2),0 24px 40px -18px rgba(0,0,0,.7)}
+[data-sz="kartei"] .faq details[open] summary{box-shadow:inset 0 -1.5px 0 rgba(206,74,74,.55)}
+[data-sz="kartei"] .faq summary{color:var(--sz-tinte)}
+[data-sz="kartei"] .faq summary::after{color:#0B6B52}
+[data-sz="kartei"] .faq p{color:var(--sz-tinte-2);padding-top:var(--s-4)}
+[data-sz="kartei"] .faq p a{color:#0B6B52;text-decoration:underline;text-underline-offset:3px}
+[data-sz="kartei"] .faq summary:focus-visible{outline:2px solid #0B6B52;outline-offset:2px}
+
+/* ── 8 Gegenlicht: „Sebi & Phil.“ — eine Leuchtröhre zwischen beiden, sie zeichnet beide Gesichter ───── */
+[data-sz="gegenlicht"] .gr-reihe{position:relative}
+[data-sz="gegenlicht"] .gl-roehre{left:50%;top:4%;height:min(70vh,600px);width:10px;translate:-50% 0;z-index:3}
+[data-sz="gegenlicht"] .gl-roehre span{position:absolute;inset:0;border-radius:6px;
+  background:linear-gradient(180deg,#FFFFFF,#E3FFF3 50%,#FFFFFF);
+  box-shadow:0 0 18px 4px rgba(var(--sz-kalt),.55),0 0 90px 30px rgba(31,201,152,.22);
+  opacity:calc(.2 + var(--sp,0) * 1.2);transition:opacity .2s linear}
+[data-sz="gegenlicht"] .gl-roehre::after{ /* Stativfuß */
+  content:"";position:absolute;left:50%;top:100%;width:2px;height:40px;margin-left:-1px;background:#2A2D31}
+[data-sz="gegenlicht"] .gr-person:first-child .gr-bild,[data-sz="gegenlicht"] .gr-person:last-child .gr-bild{isolation:isolate}
+[data-sz="gegenlicht"] .gr-person .gr-bild::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;mix-blend-mode:screen;
+  opacity:calc(var(--sp,0) * 1.4)}
+[data-sz="gegenlicht"] .gr-person:first-child .gr-bild::before{background:linear-gradient(270deg,rgba(var(--sz-kalt),.30),transparent 34%)}
+[data-sz="gegenlicht"] .gr-person:last-child .gr-bild::before{background:linear-gradient(90deg,rgba(var(--sz-kalt),.26),transparent 34%)}
+@media (max-width:760px){ [data-sz="gegenlicht"] .gl-roehre{width:6px;height:52vw} }
+
+/* ── 9 Bühnenmarke (Start): ein T auf dem Boden, wo du gleich stehst — Grundform in basis.css ── */
+.mk-start i:nth-child(1){left:-60px;top:0;width:120px;height:13px}
+.mk-start i:nth-child(2){left:-6.5px;top:9px;width:13px;height:34px}

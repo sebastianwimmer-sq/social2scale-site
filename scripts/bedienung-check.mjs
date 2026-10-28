@@ -77,8 +77,11 @@ async function maus(browser, seiten, fixtures, befunde) {
       if (/matrix\([^)]*,\s*-?[1-9][\d.]*\)$/.test(dabei.transform)) befunde.push(`${name}: Hover verschiebt den Knopf (${dabei.transform})`);
       if (['schatten', 'verlauf', 'rand', 'grund'].every((x) => vorher[x] === dabei[x])) befunde.push(`${name}: Hover zeigt keine Änderung (Verlauf ${vorher.verlauf}, Licht ${vorher.schatten.slice(0, 32)}…, Element ${await k.evaluate((el) => el.id || el.closest('[id]')?.id || el.className)}, :hover ${await k.evaluate((el) => el.matches(':hover'))}, danach ${dabei.verlauf} ${await k.evaluate((el) => getComputedStyle(el).backgroundPosition)})`);
       const box = await k.boundingBox();
-      await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await p.mouse.down(); await p.waitForTimeout(120);
-      const druck = await k.evaluate((el) => { const m = getComputedStyle(el).transform; return m === 'none' ? 1 : Number(m.slice(7).split(',')[0]); });
+      await p.mouse.move(box.x + box.width / 2, box.y + box.height / 2); await p.mouse.down();
+      // deterministisch warten statt festem Fenster (28.10.: bei 120 ms fest war der Druck je nach Last mal noch nicht sichtbar)
+      const skal = (el) => { const m = getComputedStyle(el).transform; return m === 'none' ? 1 : Number(m.slice(7).split(',')[0]); };
+      await k.evaluate((el, f) => new Promise((ok) => { const t0 = performance.now(); const sk = new Function('el', `return (${f})(el)`); (function warte() { if (sk(el) < 0.995 || performance.now() - t0 > 400) ok(); else requestAnimationFrame(warte); })(); }), skal.toString()).catch(() => {});
+      const druck = await k.evaluate(skal);
       await p.mouse.up(); await p.mouse.move(0, 0);
       if (!(druck < 0.995)) befunde.push(`${name}: Drücken zeigt keine Rückmeldung (Skalierung ${druck})`);
       await p.keyboard.press('Shift'); await k.focus();

@@ -10,6 +10,7 @@ lauf() { echo; echo "── $1"; shift; "$@" || rot=$((rot+1)); }
 lauf "Selbsttest Seitenwechsel"  node scripts/uebergang-check.mjs --selbsttest
 lauf "Selbsttest Bewegung"       node scripts/bewegung-check.mjs --selbsttest
 lauf "Selbsttest Raum"          node scripts/raum-check.mjs --selbsttest
+lauf "Selbsttest Szenen"        node scripts/szenen-check.mjs --selbsttest
 lauf "Selbsttest Bedienung"      node scripts/bedienung-check.mjs --selbsttest
 lauf "Selbsttest Bildschärfe"    node scripts/bild-schaerfe-check.mjs --selbsttest
 lauf "Selbsttest Sprachen"      node scripts/sprachen-check.mjs --selbsttest
@@ -31,6 +32,8 @@ lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
 lauf "Bewegung"                  node scripts/bewegung-check.mjs
 lauf "Raum je Seite (Quelle)"   node scripts/raum-bauen.mjs --pruefen
 lauf "Raum (Lichtstudio)"        node scripts/raum-check.mjs
+lauf "Szenen je Abschnitt (Quelle)" node scripts/szenen-bauen.mjs --pruefen
+lauf "Szenen je Abschnitt"      node scripts/szenen-check.mjs
 lauf "Bedienung (Knöpfe)"        node scripts/bedienung-check.mjs
 lauf "Bildschärfe"              node scripts/bild-schaerfe-check.mjs
 lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s

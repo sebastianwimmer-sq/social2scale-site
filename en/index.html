@@ -1027,6 +1027,7 @@
 <link rel="alternate" hreflang="x-default" href="https://social2scale.com/">
 <meta property="og:locale:alternate" content="de_DE">
 <!-- /SPRACHE:KOPF -->
+<script src="/szenen/szenen.js" data-css="basis,start" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -1100,7 +1101,7 @@
     <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
          Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
          Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
-    <section class="kap" id="stand" aria-labelledby="stand-h">
+    <section class="kap" id="stand" aria-labelledby="stand-h" data-sz="leuchttisch"><!-- SZENE leuchttisch --><div class="sz-deko lt-schein" aria-hidden="true"></div><!-- /SZENE -->
       <div class="wrap reveal">
         <h2 id="stand-h">One of these <em>is you</em>.</h2>
         <div class="st-grid">
@@ -1125,20 +1126,20 @@
       </div>
     </section>
 
-    <section class="kap" id="warum" aria-labelledby="warum-h">
+    <section class="kap" id="warum" aria-labelledby="warum-h" data-sz="probestreifen"><!-- SZENE probestreifen --><div class="sz-deko ps-lampe" aria-hidden="true"><span></span></div><!-- /SZENE -->
       <div class="wrap reveal">
         <h2 id="warum-h">You’ve <em>tried this before</em>.</h2>
         <ol class="wa-list">
-          <li class="wa-row"><div class="wa-head"><span class="wa-name">Posting yourself</span><span class="wa-note">Squeezed in between two client calls. Lasts three weeks.</span></div></li>
-          <li class="wa-row"><div class="wa-head"><span class="wa-name">A student intern</span><span class="wa-note">Posts what you tell them to. The strategy is still on you.</span></div></li>
-          <li class="wa-row"><div class="wa-head"><span class="wa-name">An off-the-shelf agency</span><span class="wa-note">You’re client number 47. Your content looks like it, too.</span></div></li>
-          <li class="wa-row is-us"><div class="wa-head"><span class="wa-name">With us</span><span class="wa-note">We take care of strategy, production and management. You set the direction.</span></div></li>
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">Posting yourself</span><span class="wa-note">Squeezed in between two client calls. Lasts three weeks.</span></div></li>
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">A student intern</span><span class="wa-note">Posts what you tell them to. The strategy is still on you.</span></div></li>
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">An off-the-shelf agency</span><span class="wa-note">You’re client number 47. Your content looks like it, too.</span></div></li>
+          <li data-sz-teil class="wa-row is-us"><div class="wa-head"><span class="wa-name">With us</span><span class="wa-note">We take care of strategy, production and management. You set the direction.</span></div></li>
         </ol>
         <p class="wa-close">The difference isn’t effort. <b>It’s whether someone owns the whole thing.</b></p>
       </div>
     </section>
 
-    <section class="s2hero" id="ablauf" aria-label="Your path to predictable growth">
+    <section class="s2hero" id="ablauf" aria-label="Your path to predictable growth" data-sz="ringlicht">
   <div class="s2hero-track">
     <div class="s2hero-pin">
       <div class="aura" aria-hidden="true"></div>
@@ -1149,7 +1150,7 @@
         <h2 class="s2title">One account. Four phases. <em class="s2em">From zero to growth.</em></h2>
       </div>
 
-      <div class="stage" aria-hidden="true">
+      <div class="stage" aria-hidden="true"><!-- SZENE ringlicht --><div class="sz-deko rl" aria-hidden="true"><span class="rl-ring"></span><span class="rl-stativ"><i></i><i></i><i></i></span></div><!-- /SZENE -->
         <div class="phone" id="phone">
           <div class="bloom" aria-hidden="true"></div>
           <div class="reflect" aria-hidden="true"></div>
@@ -1223,7 +1224,7 @@
 
     <!-- Echte Arbeit statt Deko (02.10.2026): eigene, veroeffentlichte Beitraege
          aus kit-build/out-s2s. Loest die leeren Kacheln der Handy-Szene auf. -->
-    <section class="feed-band" aria-labelledby="feed-h"><div class="wrap reveal">
+    <section class="feed-band" aria-labelledby="feed-h" data-sz="leine" data-schwung><div class="wrap reveal">
       <div class="feed-kopf">
         <p class="ix">Our own feed</p>
         <h2 id="feed-h">We don’t claim. We <em>show</em>.</h2>
@@ -1239,7 +1240,7 @@
       <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">View on Instagram</a>
     </div></section>
 
-    <section class="proof photo-sec" id="proof" aria-labelledby="proof-h">
+    <section class="proof photo-sec" id="proof" aria-labelledby="proof-h" data-sz="monitor" data-zeiger>
       <div class="sec-bg growth" aria-hidden="true"></div>
       <div class="wrap">
         <div class="proof-grid reveal">
@@ -1254,7 +1255,7 @@
             </ul>
             <a class="textlink kap-tuer" href="/en/results/">What you can hold us to</a>
           </div>
-          <div class="proof-visual">
+          <div class="proof-visual"><!-- SZENE monitor --><div class="sz-deko km-stativ" aria-hidden="true"><span class="km-arm"></span><span class="km-gelenk"></span><span class="km-fuss"></span></div><!-- /SZENE -->
             <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen, Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
             <div class="kette" id="kette" data-licht>
               <div class="kette-kopf">
@@ -1280,13 +1281,17 @@
       </div>
     </section>
 
-    <section class="blk photo-sec" id="leistungen"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
+    <section class="blk photo-sec" id="leistungen" data-sz="dreipunkt"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
       <div class="blk-head head">
         <h2>Everything from <em>one team</em>.</h2>
         <p class="lead">No patchwork, no maze of tools. One team that builds, runs and scales your presence.</p>
       </div>
-      <div class="bento">
-        <div class="cell cell-hero">
+      <div class="bento"><!-- SZENE dreipunkt --><div class="sz-deko dp-plan" aria-hidden="true"><svg viewBox="0 0 240 200"><defs><radialGradient id="dpStrahl"><stop offset="0" stop-color="#EAFFF6" stop-opacity=".9"/><stop offset="1" stop-color="#EAFFF6" stop-opacity="0"/></radialGradient></defs>
+<g class="dp-l dp-l1"><path class="dp-kegel" d="M44 160 L112 92 L132 112 Z"/><rect class="dp-kopf" x="28" y="150" width="30" height="20" rx="4" transform="rotate(-45 43 160)"/></g>
+<g class="dp-l dp-l2"><path class="dp-kegel" d="M196 160 L128 92 L108 112 Z"/><rect class="dp-kopf" x="182" y="150" width="30" height="20" rx="4" transform="rotate(45 197 160)"/></g>
+<g class="dp-l dp-l3"><path class="dp-kegel" d="M120 26 L104 96 L136 96 Z"/><rect class="dp-kopf" x="105" y="14" width="30" height="18" rx="4"/></g>
+<circle class="dp-motiv" cx="120" cy="102" r="15"/><path class="dp-kamera" d="M108 186h24v-12l-6-5h-12l-6 5z"/></svg></div><!-- /SZENE -->
+        <div data-sz-teil class="cell cell-hero">
           <div class="n">Foundation</div>
           <h3>Setup</h3>
           <p>We set up your entire social presence, professionally. Profiles, branding, strategy.</p>
@@ -1295,12 +1300,12 @@
             <span class="tag">Profiles</span><span class="tag">Branding</span><span class="tag">Strategy</span><span class="tag">Positioning</span>
           </div>
         </div>
-        <div class="cell">
+        <div data-sz-teil class="cell">
           <div class="n">Your team</div>
           <h3>Management</h3>
           <p>A personal team, ongoing content production and strategy. No bots. Real people.</p>
         </div>
-        <div class="cell">
+        <div data-sz-teil class="cell">
           <div class="n">Growth</div>
           <h3>Scaling</h3>
           <p>Reach turns into inquiries. Whatever works gets more push. Measurable in your client area.</p>
@@ -1313,7 +1318,7 @@
     </div></section>
 
 
-    <section class="blk" id="faq"><div class="wrap faq-split reveal">
+    <section class="blk" id="faq" data-sz="kartei"><div class="wrap faq-split reveal">
       <div class="blk-head head">
         <h2>Good to <em>know</em>.</h2>
       </div>
@@ -1329,11 +1334,11 @@
 
     <!-- Tiefe R1 (16.10.2026): Menschen dort, wo entschieden wird. Sebi: Foto aus /about/.
          Aufnahmen und Zitate wie auf /about/ (dort schon auf einen Look gerechnet). -->
-    <section class="gruender" aria-labelledby="gruender-h">
+    <section class="gruender" aria-labelledby="gruender-h" data-sz="gegenlicht">
       <div class="wrap gr-kopf">
         <h2 id="gruender-h">Sebi &amp; Phil. Nobody in between.</h2>
       </div>
-      <div class="gr-reihe">
+      <div class="gr-reihe"><!-- SZENE gegenlicht --><div class="sz-deko gl-roehre" aria-hidden="true"><span></span></div><!-- /SZENE -->
         <figure class="gr-person">
           <div class="gr-bild"><picture>
             <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:760px) 50vw, 50vw">
@@ -1354,11 +1359,11 @@
       <div class="gr-fuss"><a class="textlink" href="/en/about/">More about us</a></div>
     </section>
 
-    <section class="blk abschluss"><div class="wrap reveal">
+    <section class="blk abschluss" data-sz="markierung"><div class="wrap reveal">
       <div class="band">
         <h2>Let’s talk about your <em>growth</em>.</h2>
         <p class="lead">First we take a quick look at whether we’re a good fit. Then a preview or a call.</p>
-        <div class="cta-row">
+        <div class="cta-row"><!-- SZENE markierung --><span class="sz-deko mk-spot" aria-hidden="true"></span><span class="sz-deko mk-band mk-start" aria-hidden="true"><i></i><i></i></span><!-- /SZENE -->
           <a class="btn btn-primary" id="cta-bottom" href="/en/free/">Get started free →</a>
         </div>
       </div>

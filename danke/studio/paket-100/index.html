@@ -346,6 +346,7 @@ img,video{max-width:100%}
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
 <script src="/raum.js" defer></script>
+<script src="/szenen/szenen.js" data-css="basis,danke" defer></script>
 </head>
 <body>
   <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>
@@ -391,13 +392,13 @@ img,video{max-width:100%}
     </div></div>
   </section>
 
-    <section class="blk steps-blk" aria-labelledby="steps-h">
+    <section class="blk steps-blk" aria-labelledby="steps-h" data-sz="drehplan">
       <div class="wrap">
         <span class="eyebrow" id="steps-h">In 3 Minuten zum ersten Beitrag</span>
         <ol class="steps reveal">
-          <li><span><b>Studio öffnen</b> — dein Guthaben steht oben rechts.</span></li>
-          <li><span><b>Thema eingeben</b> — ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt.</span></li>
-          <li><span><b>Favorit wählen &amp; feinschleifen</b> — bestätigen, fertig. Caption und Hashtags sind schon dabei.</span></li>
+          <li data-sz-teil><span><b>Studio öffnen</b> — dein Guthaben steht oben rechts.</span></li>
+          <li data-sz-teil><span><b>Thema eingeben</b> — ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt.</span></li>
+          <li data-sz-teil><span><b>Favorit wählen &amp; feinschleifen</b> — bestätigen, fertig. Caption und Hashtags sind schon dabei.</span></li>
         </ol>
       </div>
     </section>

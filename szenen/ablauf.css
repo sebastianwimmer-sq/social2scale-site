@@ -1,0 +1,88 @@
+/* Ablauf — Kamerafahrt, Filmmeter, Requisiten, Prellbock (28.10.2026). Quelle: scripts/szenen-quelle.mjs */
+
+/* ── 1 Dolly: die vier Phasen als Stationen einer Kamerafahrt ───────────────────────────────────── */
+[data-sz="dolly"]{--schiene:max(10px,calc(50% - 650px))}
+[data-sz="dolly"] .dl-schiene{left:var(--schiene);top:0;bottom:0;width:30px;
+  background:
+    linear-gradient(90deg,transparent 7px,#5C6269 7px 10px,transparent 10px 20px,#5C6269 20px 23px,transparent 23px),
+    repeating-linear-gradient(180deg,transparent 0 22px,rgba(255,255,255,.13) 22px 26px);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent);mask:linear-gradient(180deg,transparent,#000 6%,#000 94%,transparent)}
+/* Fahrt per transform (CLS 0); die Schiene ist der Container, 100cqh = ihre Höhe */
+[data-sz="dolly"] .dl-schiene{container-type:size}
+[data-sz="dolly"] .dl-wagen{position:absolute;left:50%;top:0;width:56px;margin-left:-28px;
+  translate:0 clamp(0px,calc(var(--sp,0) * (100cqh + 100vh) - 50vh - 26px),calc(100cqh - 52px))}
+.sz-ruhig [data-sz="dolly"] .dl-wagen{translate:0 calc(100cqh - 52px)}
+[data-sz="dolly"] .dl-wagen svg{display:block;width:100%;height:auto;rotate:90deg;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6))}
+[data-sz="dolly"] .dl-wagen::after{ /* das Licht vom Wagen auf die Station */
+  content:"";position:absolute;left:30px;top:-60px;width:min(46vw,560px);height:180px;pointer-events:none;
+  background:radial-gradient(60% 50% at 0% 50%,rgba(var(--sz-kalt),.16),transparent 70%)}
+[data-sz="dolly"] .dl-kamera{fill:#2F3338;stroke:rgba(255,255,255,.25)}
+[data-sz="dolly"] .dl-saeule{stroke:#5A6067;stroke-width:4}
+[data-sz="dolly"] .dl-platte{fill:#4A4F56}
+[data-sz="dolly"] .dl-rad{fill:#16181B;stroke:#7A8088;stroke-width:2}
+[data-sz="dolly"] .fl-phase .fl-num{transition:color .8s ease,text-shadow .8s ease}
+[data-sz="dolly"] .fl-phase.sz-lit .fl-num{color:#8FF0CF;text-shadow:0 0 18px rgba(31,201,152,.55)}
+[data-sz="dolly"] .fl-phase::before{ /* Station: eine Marke auf der Schiene */
+  content:"";position:absolute;top:clamp(36px,4vw,60px);left:calc(var(--schiene) - (100vw - min(100vw,1240px)) / 2 - 2px);
+  width:34px;height:3px;border-radius:2px;background:rgba(255,255,255,.18);transition:background .8s ease,box-shadow .8s ease}
+[data-sz="dolly"] .fl-phase.sz-lit::before{background:#8FF0CF;box-shadow:0 0 12px rgba(31,201,152,.7)}
+@media (max-width:1339px){
+  [data-sz="dolly"]{--schiene:max(4px,calc(50% - 620px + var(--px) - 6px))}
+  [data-sz="dolly"] .fl-phase{padding-left:54px}
+  [data-sz="dolly"] .fl-phase::before{left:0}
+  [data-sz="dolly"] .dl-wagen{width:46px;margin-left:-23px}
+}
+
+/* ── 2 Filmmeter: deine Zeit als belichteter Film, unsere als ein paar Bilder ───────────────────── */
+[data-sz="filmmeter"] .fl-track,[data-sz="filmmeter"] .fl-bar-row.ist-uns .fl-track{height:30px;border-radius:3px;
+  background:
+    repeating-linear-gradient(90deg,rgba(236,230,214,.55) 0 6px,transparent 6px 13px) 0 4px/100% 4px no-repeat,
+    repeating-linear-gradient(90deg,rgba(236,230,214,.55) 0 6px,transparent 6px 13px) 0 calc(100% - 4px)/100% 4px no-repeat,
+    linear-gradient(180deg,#2A2218,#1C1610);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 10px 18px -10px #000}
+[data-sz="filmmeter"] .fl-track .fillbar{position:absolute;left:0;top:10px;bottom:10px;height:auto;border-radius:0;width:100%;
+  background:repeating-linear-gradient(90deg,#7FB9A8 0 30px,#0E1311 30px 34px);opacity:.85;
+  transform-origin:left;transform:scaleX(0) !important;transition:transform 2.4s cubic-bezier(.2,.7,.1,1) !important}
+[data-sz="filmmeter"].sz-an .fl-track .fillbar{transform:scaleX(var(--fill,1)) !important}
+[data-sz="filmmeter"] .fl-bar-row.ist-uns .fl-track .fillbar{background:repeating-linear-gradient(90deg,#1FC998 0 30px,#06251C 30px 34px);opacity:1}
+[data-sz="filmmeter"] .fl-track.ist-leer{background:linear-gradient(180deg,#2A2218,#1C1610)}
+[data-sz="filmmeter"] .fm-uhr{right:max(var(--px),calc(50% - 600px));top:clamp(70px,9vw,120px);width:clamp(96px,11vw,150px);aspect-ratio:1;border-radius:50%;
+  background:
+    repeating-conic-gradient(from 0deg,rgba(255,255,255,.55) 0 1deg,transparent 1deg 30deg),
+    radial-gradient(circle,#101315 62%,#1E2226 63% 66%,#101315 67%);
+  box-shadow:0 0 0 8px #24282D,0 0 0 9px rgba(255,255,255,.08),0 20px 40px -12px #000}
+[data-sz="filmmeter"] .fm-uhr::after{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle,#0C0F11 60%,transparent 61%)}
+[data-sz="filmmeter"] .fm-zeiger{position:absolute;left:50%;top:14%;bottom:50%;width:3px;margin-left:-1.5px;z-index:1;border-radius:2px;
+  background:#E8B04A;box-shadow:0 0 8px rgba(232,176,74,.6);transform-origin:50% 100%;rotate:calc(var(--sp,0) * 540deg)}
+@media (max-width:760px){ [data-sz="filmmeter"] .fm-uhr{width:78px;top:clamp(56px,14vw,80px)} }
+
+/* ── 3 Requisiten: was wir brauchen, als Dinge mit Anhänger ─────────────────────────────────────── */
+[data-sz="requisiten"] .fl-b-grid{position:relative;padding:clamp(26px,3vw,40px) 0 clamp(36px,4vw,56px)}
+[data-sz="requisiten"] .fl-b-grid::before{ /* Tischplatte */
+  content:"";position:absolute;left:-3%;right:-3%;top:clamp(60px,6vw,80px);bottom:0;border-radius:10px;z-index:-1;
+  background:linear-gradient(180deg,#1C2023,#121417 70%);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 60px -40px #000}
+[data-sz="requisiten"] .fl-b-item{position:relative;padding:0 6px}
+[data-sz="requisiten"] .rq-ding{position:relative;display:block;width:min(150px,70%);height:auto;margin:0 0 -10px 10px;z-index:2;overflow:visible;
+  filter:drop-shadow(0 10px 10px rgba(0,0,0,.55));translate:0 14px;opacity:0;transition:translate .8s var(--ease,ease),opacity .6s ease}
+[data-sz="requisiten"].sz-an .rq-ding{translate:0 0;opacity:1}
+[data-sz="requisiten"] .fl-b-item:nth-child(2) .rq-ding{transition-delay:.12s}
+[data-sz="requisiten"] .fl-b-item:nth-child(3) .rq-ding{transition-delay:.24s}
+[data-sz="requisiten"] .rq-metall{fill:#B9BDC2;stroke:#6E737A;stroke-width:1.5}
+[data-sz="requisiten"] .rq-loch{fill:#121417}
+[data-sz="requisiten"] .rq-abzug{fill:#F6F3EA}
+[data-sz="requisiten"] .rq-bild1{fill:#0E5B49}
+[data-sz="requisiten"] .rq-bild2{fill:#164A63}
+[data-sz="requisiten"] .rq-blatt{fill:#F6F3EA}
+[data-sz="requisiten"] .rq-zeiger{stroke:#15171B;stroke-width:2.5;stroke-linecap:round}
+[data-sz="requisiten"] .rq-halb{fill:rgba(19,165,126,.55)}
+[data-sz="requisiten"] .fl-b-item > :not(svg){position:relative;z-index:1}
+[data-sz="requisiten"] .fl-b-item h3,[data-sz="requisiten"] .fl-b-item p{background:linear-gradient(180deg,#FFFEFA,#F1EDE2);color:var(--sz-tinte);margin:0;padding:0 18px}
+[data-sz="requisiten"] .fl-b-item h3{padding-top:22px;border-radius:4px 4px 0 0;position:relative}
+[data-sz="requisiten"] .fl-b-item p{color:var(--sz-tinte-2);padding-bottom:20px;padding-top:8px;border-radius:0 0 4px 4px;box-shadow:0 18px 26px -18px rgba(0,0,0,.7)}
+[data-sz="requisiten"] .fl-b-item h3::before{ /* Öse des Anhängers */
+  content:"";position:absolute;right:16px;top:12px;width:10px;height:10px;border-radius:50%;background:#121417;box-shadow:inset 0 0 0 2px #CFC8B6}
+
+/* ── 4 Bühnenmarke (Ablauf): Ende der Schiene, Prellbock ─────────────────────────────────────────── */
+.mk-ablauf i:nth-child(1){left:-46px;top:0;width:92px;height:12px}
+.mk-ablauf i:nth-child(2){left:-38px;top:12px;width:10px;height:36px;box-shadow:58px 0 0 var(--sz-band)}
+@media (prefers-reduced-motion: reduce){ [data-sz="filmmeter"] .fl-track .fillbar{transition:none !important} }
