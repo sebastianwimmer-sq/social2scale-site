@@ -1,0 +1,56 @@
+/* Wissen — Lesetisch, Notizkarte, Hängeregister (28.10.2026). Quelle: scripts/szenen-quelle.mjs
+ * Lange Lesestrecken liegen hell (kunden-wirkung-evidenz › lesen-hell): dunkle Schrift auf Papier ist in jedem Alter
+ * besser lesbar. Die Farben kommen über die Seiten-Tokens — wissen.css bleibt unverändert, nur der Grund wird Papier. */
+
+/* ── Papier-Tokens für alles auf dem Tisch ──────────────────────────────────────────────────────── */
+:is([data-sz="lesetisch"],[data-sz="haengeregister"]){
+  --paper:#15171B; --muted:#3E434B; --faint:#565C66; --emerald:#0B6B52; --emerald-soft:#0B6B52;
+  --line:rgba(21,23,27,.12); --line-2:rgba(21,23,27,.18);
+  --accent-flow:linear-gradient(135deg,#0B6B52,#0D5C7E);
+  isolation:isolate;border-radius:6px;margin-top:clamp(18px,3vw,36px);margin-bottom:clamp(30px,5vw,60px);
+  padding-inline:clamp(22px,5vw,64px) !important;
+  background:linear-gradient(180deg,#FCFBF7,#F2EEE3);color:var(--paper);
+  box-shadow:0 2px 3px rgba(0,0,0,.3),0 40px 90px -40px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.4) inset}
+
+/* ── 1 Lesetisch: die Lampe liest mit ───────────────────────────────────────────────────────────── */
+/* Der Schein wandert per transform (verschiebt kein Layout, CLS bleibt 0); 100cqh = Höhe des Blatts */
+[data-sz="lesetisch"] .lt-pool{inset:0;z-index:-1;border-radius:inherit;pointer-events:none;overflow:hidden;container-type:size}
+[data-sz="lesetisch"] .lt-pool::before{content:"";position:absolute;left:0;right:0;top:0;height:560px;
+  translate:0 clamp(0px,calc(var(--sp,0) * 100cqh - 280px),calc(100cqh - 560px));
+  background:radial-gradient(60% 50% at 70% 50%,rgba(var(--sz-glut),.38),rgba(var(--sz-glut),.12) 55%,transparent 75%)}
+.sz-ruhig [data-sz="lesetisch"] .lt-pool::before{translate:0 0}
+[data-sz="lesetisch"] .lt-lampe{right:clamp(-30px,-2vw,-10px);top:-34px;width:150px;height:120px;z-index:2}
+[data-sz="lesetisch"] .lt-arm{position:absolute;right:20px;top:0;width:6px;height:96px;border-radius:3px;background:linear-gradient(90deg,#2D3136,#565C63);rotate:28deg;transform-origin:top}
+[data-sz="lesetisch"] .lt-kopf{position:absolute;right:52px;top:70px;width:70px;height:36px;border-radius:36px 36px 6px 6px;rotate:-24deg;
+  background:linear-gradient(180deg,#1D3A33,#0E1F1B);box-shadow:inset 0 -5px 0 rgba(var(--sz-glut),1),0 14px 24px -8px rgba(0,0,0,.7),0 30px 60px 10px rgba(var(--sz-glut),.28)}
+[data-sz="lesetisch"] h1 em{-webkit-text-fill-color:#0B6B52}
+[data-sz="lesetisch"] a:not(.w-btn){color:#0B6B52}
+@media (max-width:760px){ [data-sz="lesetisch"] .lt-lampe{width:110px;right:-6px;top:-30px;scale:.8;transform-origin:top right} }
+
+/* ── 2 Notizkarte: die Frage am Ende als dunkle Karte, mit Büroklammer am Blatt ─────────────────── */
+[data-sz="notizkarte"]{position:relative;
+  --paper:#F2F3F1; --muted:#C9CBC6; --faint:#A4A6A1; --emerald:#1FC998; --emerald-soft:#1FC998;
+  --accent-flow:linear-gradient(135deg,#1FC998,#46BEEA);
+  border-radius:6px;rotate:-.6deg;
+  background:linear-gradient(160deg,#16211F,#0D1413) !important;color:#F2F3F1;
+  box-shadow:0 2px 4px rgba(0,0,0,.4),0 26px 40px -22px rgba(0,0,0,.8) !important}
+[data-sz="notizkarte"] .nk-klammer{left:34px;top:-18px;width:18px;height:46px;border-radius:9px;
+  border:3px solid #A7ADB4;border-bottom-color:transparent;box-shadow:0 2px 3px rgba(0,0,0,.3)}
+[data-sz="notizkarte"] .nk-klammer::after{content:"";position:absolute;left:3px;top:6px;width:6px;height:30px;border-radius:4px;border:3px solid #A7ADB4;border-top-color:transparent}
+
+/* ── 3 Hängeregister: jede Antwort eine Mappe mit Reiter ────────────────────────────────────────── */
+[data-sz="haengeregister"] .w-index{gap:18px;padding-top:12px}
+[data-sz="haengeregister"] .w-index li{position:relative;border:0 !important;border-radius:4px;
+  background:linear-gradient(180deg,#E9E2CF,#DCD3BC);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 2px 3px rgba(0,0,0,.18),0 12px 20px -14px rgba(0,0,0,.5)}
+[data-sz="haengeregister"] .w-index li::after{ /* Reiter */
+  content:"";position:absolute;top:-12px;left:calc(18px + var(--reiter,0) * 17%);width:72px;height:14px;border-radius:5px 5px 0 0;
+  background:linear-gradient(180deg,#E9E2CF,#E2DAC5);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+[data-sz="haengeregister"] .w-index li:nth-child(2){--reiter:1}
+[data-sz="haengeregister"] .w-index li:nth-child(3){--reiter:2}
+[data-sz="haengeregister"] .w-index li:nth-child(4){--reiter:3}
+[data-sz="haengeregister"] .w-index li:nth-child(5){--reiter:4}
+[data-sz="haengeregister"] .w-index a{padding-inline:18px}
+[data-sz="haengeregister"] .w-index li:hover{translate:0 -4px;transition:translate .3s var(--ease,ease)}
+[data-sz="haengeregister"] .w-index .nr{color:#0B6B52}
+/* Die Lampe steht über der Blattkante — die Seite (.w-page, overflow:clip) hält sie im Bild */
+[data-sz="lesetisch"]{overflow-x:visible}

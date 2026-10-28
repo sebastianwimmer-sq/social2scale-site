@@ -487,4 +487,4 @@ for (const L of [SPRACHEN.en, SPRACHEN.de]) {
 }
 console.log(`\n${n} Seiten gebaut. Danach: node scripts/build-pages.mjs (hreflang) und csp-haerten.mjs.`);
 // Lichtstudio (27.10.2026): die frisch erzeugten Seiten bekommen ihren Raum aus der einen Quelle zurück
-import("node:child_process").then(({ execFileSync }) => execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "raum-bauen.mjs")], { stdio: "inherit" }));
+import("node:child_process").then(({ execFileSync }) => { execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "raum-bauen.mjs")], { stdio: "inherit" }); execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "szenen-bauen.mjs")], { stdio: "inherit" }); });

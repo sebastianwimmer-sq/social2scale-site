@@ -30,6 +30,7 @@
  */
 
 import { htmlDoc } from './shell.js';
+import { DUNKEL_STYLE, DUNKEL_MARKUP, DUNKEL_SCRIPT } from './probeaufnahme.js';
 import { STEPS, TILE_LABELS, FRAME_IDS, ERROR_COPY, REVEAL } from './copy.js';
 import { REVEAL_STYLE, REVEAL_SCRIPT, revealMarkup } from './reveal.js';
 import { nextAction, BUILDING_TIMEOUT_MS } from './poller.js';
@@ -478,7 +479,7 @@ export function resultPage(token) {
   const statusUrl = `/api/status/${token}`;
   const imgBase = `/img/${token}/`;
 
-  const head = `<style>${PAGE_STYLE}${REVEAL_STYLE}</style>`;
+  const head = `<style>${PAGE_STYLE}${REVEAL_STYLE}${DUNKEL_STYLE}</style>`;
   const bootstrap =
     `const TOKEN=${JSON.stringify(token)};` +
     `const STATUS_URL=${JSON.stringify(statusUrl)};` +
@@ -487,7 +488,7 @@ export function resultPage(token) {
     `const TOTAL_DEFAULT=${JSON.stringify(FRAME_IDS.length)};` +
     `const ERROR_COPY=${JSON.stringify(ERROR_COPY)};` +
     `const BUILDING_TIMEOUT_MS=${JSON.stringify(BUILDING_TIMEOUT_MS)};`;
-  const body = `${pageMarkup()}<script>${bootstrap}${PAGE_SCRIPT}${REVEAL_SCRIPT}</script>`;
+  const body = `${DUNKEL_MARKUP}${pageMarkup()}<script>${bootstrap}${PAGE_SCRIPT}${REVEAL_SCRIPT}${DUNKEL_SCRIPT}</script>`;
 
   return htmlDoc({ title: 'Dein Feed entsteht · social2scale', head, body });
 }

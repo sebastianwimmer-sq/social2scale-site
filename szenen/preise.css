@@ -1,0 +1,83 @@
+/* Preise — Podest, Kassenbon, Maßband, Mappe (28.10.2026). Quelle: scripts/szenen-quelle.mjs
+ * Regel (kunden-wirkung-evidenz › preis-offen-belege-konkret): jeder Preis steht ohne Bedienung lesbar da;
+ * das Licht fällt auf die Empfehlung mit Grund (› mitte-wirkt), nie auf einen künstlichen Lockvogel. */
+
+/* ── 1 Podest: der empfohlene Weg im Führungslicht, die Auswege tiefer ──────────────────────────── */
+[data-sz="podest"] .pr-emp{position:relative;overflow:visible;margin-bottom:clamp(40px,5vw,64px)}
+[data-sz="podest"] .pd-kegel{left:50%;bottom:calc(100% - 30px);width:min(900px,120%);height:clamp(220px,24vw,320px);translate:-50% 0;z-index:-1;
+  background:conic-gradient(from 180deg at 50% 0%,transparent 152deg,rgba(var(--sz-kalt),.16) 168deg,rgba(var(--sz-kalt),.26) 180deg,rgba(var(--sz-kalt),.16) 192deg,transparent 208deg);
+  -webkit-mask:linear-gradient(180deg,transparent,#000 40%);mask:linear-gradient(180deg,transparent,#000 40%);
+  opacity:0;transition:opacity 1.2s ease}
+[data-sz="podest"].sz-an .pd-kegel{opacity:1}
+[data-sz="podest"] .pd-sockel{left:-1.5%;right:-1.5%;top:calc(100% + 6px);height:clamp(30px,4vw,48px);border-radius:0 0 8px 8px;z-index:-1;
+  background:linear-gradient(180deg,#2A2E33,#16181B);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 30px 50px -20px #000}
+[data-sz="podest"] .pd-sockel::before{ /* Oberkante im Licht */
+  content:"";position:absolute;left:0;right:0;top:-6px;height:6px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#4A5057,#2A2E33)}
+[data-sz="podest"] .pr-emp{box-shadow:0 0 0 1px rgba(143,240,207,.25),0 -20px 80px -30px rgba(var(--sz-kalt),.35),0 40px 80px -40px #000}
+[data-sz="podest"] .pr-alt-grid{position:relative;padding-bottom:28px}
+[data-sz="podest"] .pr-alt{position:relative;padding:var(--s-5) clamp(16px,2vw,24px) var(--s-5);border-top:0;border-radius:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01));box-shadow:inset 0 1px 0 rgba(255,255,255,.08);transition:background .5s ease,box-shadow .5s ease}
+[data-sz="podest"] .pr-alt::after{ /* niedriger Sockel */
+  content:"";position:absolute;left:-1%;right:-1%;top:100%;height:16px;border-radius:0 0 6px 6px;background:linear-gradient(180deg,#22262A,#141619);box-shadow:0 20px 30px -16px #000}
+[data-sz="podest"] .pr-alt:is(:hover,:focus-within){background:radial-gradient(80% 60% at 50% 0%,rgba(var(--sz-kalt),.10),rgba(255,255,255,.02));box-shadow:inset 0 1px 0 rgba(143,240,207,.3)}
+
+/* ── 2 Kassenbon: die Rechnung wird gedruckt, unsere Zeile ist die Summe ─────────────────────────── */
+[data-sz="kassenbon"] .pr-calc{position:relative;max-width:520px;padding-top:26px}
+[data-sz="kassenbon"] .kb-schlitz{left:-16px;right:-16px;top:0;height:20px;border-radius:10px;z-index:2;
+  background:linear-gradient(180deg,#2D3136,#121417);box-shadow:inset 0 -3px 0 #050607,0 10px 20px -8px #000}
+[data-sz="kassenbon"] .pr-calc > :not(.kb-schlitz){position:relative;background:#FBFAF5;color:var(--sz-tinte);margin:0;padding-left:clamp(18px,3vw,30px);padding-right:clamp(18px,3vw,30px)}
+[data-sz="kassenbon"] .pr-time-label{padding-top:22px;padding-bottom:6px;font-family:"JetBrains Mono",monospace;color:var(--sz-tinte-2) !important}
+[data-sz="kassenbon"] .pr-calc-grid{margin-top:0 !important;padding-bottom:34px;
+  -webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/16px 100%;
+          mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) bottom/16px 100%;
+  filter:drop-shadow(0 18px 18px rgba(0,0,0,.4))}
+[data-sz="kassenbon"] .pr-calc-grid > div{border-bottom:1px dashed rgba(21,23,27,.28) !important}
+[data-sz="kassenbon"] .pr-calc-grid .l{color:var(--sz-tinte-2)}
+[data-sz="kassenbon"] .pr-calc-grid .v{color:var(--sz-tinte)}
+[data-sz="kassenbon"] .pr-calc-grid .is-us{border-bottom:3px double rgba(21,23,27,.6) !important;padding-top:20px !important}
+[data-sz="kassenbon"] .pr-calc-grid .is-us .l{color:var(--sz-tinte)}
+[data-sz="kassenbon"] .pr-calc-grid .is-us .l small{color:var(--sz-tinte-2)}
+[data-sz="kassenbon"] .pr-calc-grid .is-us .v{color:#0B6B52;font-weight:700}
+/* gedruckt: der Bon schiebt sich einmal aus dem Schlitz */
+[data-sz="kassenbon"] .pr-calc > :not(.kb-schlitz){clip-path:inset(0 0 100% 0);transition:clip-path 1.6s steps(14,end)}
+[data-sz="kassenbon"].sz-an .pr-calc > :not(.kb-schlitz){clip-path:inset(0 0 0 0)}
+[data-sz="kassenbon"] .pr-calc-grid{transition-delay:.25s}
+
+/* ── 3 Maßband: alle Spannen auf einer Skala ─────────────────────────────────────────────────────── */
+[data-sz="massband"] .pr-why-scale{position:relative;padding-top:30px}
+[data-sz="massband"] .mb-band{left:0;right:0;top:0;height:20px;border-radius:2px;
+  background:
+    repeating-linear-gradient(90deg,#15171B 0 1px,transparent 1px 2.5%) 0 100%/100% 6px no-repeat,
+    repeating-linear-gradient(90deg,#15171B 0 1.5px,transparent 1.5px 12.5%) 0 100%/100% 11px no-repeat,
+    linear-gradient(180deg,#F0CB55,#D9AE2E);
+  box-shadow:inset 0 -1px 0 rgba(0,0,0,.25),0 6px 12px -6px #000;clip-path:inset(0 100% 0 0);transition:clip-path 1.4s cubic-bezier(.3,.7,.2,1)}
+[data-sz="massband"].sz-an .mb-band{clip-path:inset(0 0 0 0)}
+[data-sz="massband"] .pr-why-scale > div{position:relative;padding-bottom:calc(var(--s-4) + 12px)}
+[data-sz="massband"] .pr-why-scale > div::after{ /* die Strecke dieser Spanne */
+  content:"";position:absolute;left:calc(var(--von,0) * 100%);width:calc((var(--bis,0) - var(--von,0)) * 100%);bottom:10px;height:6px;border-radius:3px;
+  background:rgba(242,243,241,.28);transform-origin:left;scale:0 1;transition:scale 1.1s cubic-bezier(.3,.7,.2,1) .5s}
+[data-sz="massband"] .pr-why-scale > .is-us::after{background:linear-gradient(90deg,#1FC998,#46BEEA);box-shadow:0 0 14px rgba(31,201,152,.5)}
+[data-sz="massband"].sz-an .pr-why-scale > div::after{scale:1 1}
+
+/* ── 4 Mappe: zu ein Deckel, offen helle Blätter ────────────────────────────────────────────────── */
+[data-sz="mappe"] .pr-details{position:relative;border-radius:10px;padding:clamp(18px,2.4vw,26px);
+  background:linear-gradient(160deg,#1E2A27,#121A18 60%,#0E1413);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.04),0 30px 60px -30px #000}
+[data-sz="mappe"] .pr-details::before{ /* Reiter */
+  content:"";position:absolute;left:28px;top:-12px;width:110px;height:14px;border-radius:6px 6px 0 0;background:#1E2A27;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+[data-sz="mappe"] .pr-details[open]{background:linear-gradient(160deg,#1E2A27,#121A18)}
+[data-sz="mappe"] .pr-details[open] > .pr-group{background:#FBFAF5;color:var(--sz-tinte);border-radius:3px;padding:clamp(18px,2.4vw,28px);
+  box-shadow:0 2px 3px rgba(0,0,0,.25),0 18px 30px -18px rgba(0,0,0,.7)}
+[data-sz="mappe"] .pr-details[open] > .pr-group + .pr-group{margin-top:18px}
+[data-sz="mappe"] .pr-details[open] .pr-group-title{color:#0B6B52}
+[data-sz="mappe"] .pr-details[open] .pr-row{border-color:rgba(21,23,27,.14) !important}
+[data-sz="mappe"] .pr-details[open] :is(.pr-name,.pr-price .p){color:var(--sz-tinte)}
+[data-sz="mappe"] .pr-details[open] :is(.pr-what,.pr-price .netto,.pr-price .sub,.pr-num){color:var(--sz-tinte-2)}
+[data-sz="mappe"] .pr-details[open] .pr-row.is-best{background:linear-gradient(90deg,rgba(11,107,82,.10),transparent 88%)}
+[data-sz="mappe"] .pr-details[open] .pr-row.is-best .pr-num{color:#0B6B52}
+[data-sz="mappe"] .pr-details[open] :is(a){color:#0B6B52}
+
+/* ── 5 Bühnenmarke (Preise): Kante eines Podests ─────────────────────────────────────────────────── */
+.mk-preise i:nth-child(1){left:-56px;top:0;width:112px;height:11px}
+.mk-preise i:nth-child(2){left:-56px;top:30px;width:112px;height:11px}

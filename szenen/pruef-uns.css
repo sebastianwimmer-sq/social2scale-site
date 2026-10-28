@@ -1,0 +1,63 @@
+/* Prüf uns — Farbfilter, Entwicklung, Prüfstempel, Verhörlampe (28.10.2026). Quelle: scripts/szenen-quelle.mjs */
+
+/* ── 1 Farbfilter: Profilaufrufe → Anfragen → Gespräche; was durch alle drei kommt, zählt ─────────── */
+[data-sz="gelfilter"] .gf-bank{position:relative;display:block;height:clamp(110px,12vw,150px);margin-top:clamp(24px,3vw,40px);max-width:460px}
+[data-sz="gelfilter"] .gf-strahl{position:absolute;left:0;top:0;bottom:30px;width:100%;
+  clip-path:polygon(0 10%,var(--bis,0%) calc(10% + var(--bis-y,0%)),var(--bis,0%) calc(90% - var(--bis-y,0%)),0 90%);
+  background:linear-gradient(90deg,rgba(var(--sz-kalt),.32),rgba(31,201,152,.45));transition:clip-path 1s ease}
+[data-sz="gelfilter"]:has(li:nth-child(1).sz-lit){--bis:32%;--bis-y:12%}
+[data-sz="gelfilter"]:has(li:nth-child(2).sz-lit){--bis:58%;--bis-y:22%}
+[data-sz="gelfilter"]:has(li:nth-child(3).sz-lit){--bis:100%;--bis-y:34%}
+[data-sz="gelfilter"] .gf-gel{position:absolute;top:0;bottom:30px;width:12px;border-radius:2px;
+  box-shadow:inset 0 0 0 2px #2B2F34,0 6px 10px -4px #000;background:#1A1D20;transition:background .8s ease}
+[data-sz="gelfilter"] .gf-gel:nth-of-type(1){left:30%}
+[data-sz="gelfilter"] .gf-gel:nth-of-type(2){left:56%;top:10%;bottom:calc(30px + 10%)}
+[data-sz="gelfilter"] .gf-gel:nth-of-type(3){left:82%;top:22%;bottom:calc(30px + 22%)}
+[data-sz="gelfilter"]:has(li:nth-child(1).sz-lit) .gf-gel:nth-of-type(1){background:rgba(70,190,234,.75)}
+[data-sz="gelfilter"]:has(li:nth-child(2).sz-lit) .gf-gel:nth-of-type(2){background:rgba(31,201,152,.8)}
+[data-sz="gelfilter"]:has(li:nth-child(3).sz-lit) .gf-gel:nth-of-type(3){background:rgba(143,240,207,.9)}
+[data-sz="gelfilter"] .gf-ablage{position:absolute;left:62%;bottom:0;width:70px;height:10px;border-radius:2px;rotate:-4deg;
+  background:#2A2E33;box-shadow:inset 0 0 0 2px #3A3F45;opacity:.5;transition:opacity .8s ease}
+[data-sz="gelfilter"]:has(li:nth-child(4).sz-lit) .gf-ablage{opacity:1}
+[data-sz="gelfilter"] .rs-mlist li{position:relative;padding-left:16px;transition:box-shadow .8s ease}
+[data-sz="gelfilter"] .rs-mlist li::before{content:"";position:absolute;left:0;top:.3em;bottom:.3em;width:3px;border-radius:2px;background:rgba(255,255,255,.12);transition:background .8s ease}
+[data-sz="gelfilter"] .rs-mlist li:nth-child(1).sz-lit::before{background:rgb(70,190,234)}
+[data-sz="gelfilter"] .rs-mlist li:nth-child(2).sz-lit::before{background:rgb(31,201,152)}
+[data-sz="gelfilter"] .rs-mlist li:nth-child(3).sz-lit::before{background:rgb(143,240,207)}
+
+/* ── 2 Entwicklung: derselbe Abzug, Stufe für Stufe deutlicher ───────────────────────────────────── */
+[data-sz="entwicklung"] .rs-mlist li{position:relative;padding-left:clamp(76px,7vw,92px);min-height:clamp(84px,8vw,104px)}
+[data-sz="entwicklung"] .rs-mlist li::before,[data-sz="entwicklung"] .rs-mlist li::after{content:"";position:absolute;left:0;top:2px;width:clamp(60px,5.6vw,74px);aspect-ratio:4/5;border-radius:2px}
+[data-sz="entwicklung"] .rs-mlist li::before{background:#F6F3EA;box-shadow:0 2px 3px rgba(0,0,0,.3),0 12px 20px -10px #000}
+[data-sz="entwicklung"] .rs-mlist li::after{inset:auto;left:5px;top:7px;width:calc(clamp(60px,5.6vw,74px) - 10px);
+  background:url(/assets/feed/beitrag-11-400.webp) center/cover;opacity:0;filter:contrast(.6) brightness(1.4);transition:opacity 2.2s ease,filter 2.2s ease}
+[data-sz="entwicklung"] .rs-mlist li:nth-child(1).sz-lit::after{opacity:.18}
+[data-sz="entwicklung"] .rs-mlist li:nth-child(2).sz-lit::after{opacity:.42;filter:contrast(.75) brightness(1.25)}
+[data-sz="entwicklung"] .rs-mlist li:nth-child(3).sz-lit::after{opacity:.72;filter:contrast(.9) brightness(1.1)}
+[data-sz="entwicklung"] .rs-mlist li:nth-child(4).sz-lit::after{opacity:1;filter:none}
+
+/* ── 3 Prüfstempel: der Grundsatz wird abgestempelt ──────────────────────────────────────────────── */
+[data-sz="stempel"] figure{position:relative}
+[data-sz="stempel"] .st-stempel{right:clamp(-10px,2vw,40px);top:clamp(-40px,-3vw,-20px);width:clamp(90px,10vw,140px);rotate:-14deg;z-index:2;
+  opacity:0;scale:1.7;transition:opacity .18s ease .4s,scale .28s cubic-bezier(.5,0,.7,.2) .4s}
+[data-sz="stempel"].sz-an .st-stempel{opacity:.88;scale:1}
+[data-sz="stempel"] .st-stempel svg{display:block;width:100%;height:auto;
+  -webkit-mask:radial-gradient(circle at 30% 40%,#000 0 40%,rgba(0,0,0,.7) 60%,#000 75%);mask:radial-gradient(circle at 30% 40%,#000 0 40%,rgba(0,0,0,.7) 60%,#000 75%)}
+[data-sz="stempel"] .st-ring{fill:none;stroke:#1FC998;stroke-width:4}
+[data-sz="stempel"] .st-ring2{stroke-width:1.5}
+[data-sz="stempel"] .st-balken{fill:#1FC998}
+@media (max-width:760px){ [data-sz="stempel"] .st-stempel{top:-56px;right:0;width:84px} }
+
+/* ── 4 Verhörlampe: das Licht liegt auf der Frage, die du gerade liest ──────────────────────────── */
+[data-sz="verhoer"] .rs-mcol{position:relative}
+[data-sz="verhoer"] .vh-lampe{right:0;top:-6px;width:70px;height:46px}
+[data-sz="verhoer"] .vh-lampe::before{content:"";position:absolute;right:6px;top:0;width:4px;height:26px;background:#3A3E44;rotate:30deg;transform-origin:top}
+[data-sz="verhoer"] .vh-lampe i{position:absolute;right:16px;top:18px;width:50px;height:26px;border-radius:26px 26px 4px 4px;rotate:-18deg;
+  background:linear-gradient(180deg,#3B4046,#1C1F23);box-shadow:inset 0 -4px 0 rgba(var(--sz-glut),.9),0 8px 16px -6px #000}
+[data-sz="verhoer"] .rs-mlist li{position:relative;padding:10px 14px;margin:0 -14px;border-radius:10px;transition:background .6s ease}
+[data-sz="verhoer"] .rs-mlist li.sz-lit{background:radial-gradient(90% 140% at 85% 0%,rgba(var(--sz-glut),.10),rgba(var(--sz-glut),.03) 60%,transparent)}
+[data-sz="verhoer"] .rs-mlist li.sz-lit .mt{color:#FFF8EC}
+
+/* ── 5 Bühnenmarke (Prüf uns): ein Messkreuz ─────────────────────────────────────────────────────── */
+.mk-pruef-uns i:nth-child(1){left:-36px;top:18px;width:72px;height:11px}
+.mk-pruef-uns i:nth-child(2){left:-5.5px;top:-12px;width:11px;height:72px}

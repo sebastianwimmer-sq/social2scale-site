@@ -18,6 +18,7 @@
  *  7. Ruckeln beim Scrollen: CPU x4, 14-px-Schritte, Anteil Bilder > 50 ms unter 5 %
  *  8. Eigener Ort: jede Seite traegt einen anderen raum--Modifikator bzw. data-raum-licht
  *  9. Seitenlicht: auf jeder Seite an; auf Seiten mit Kopf-Raum ruht es oben und geht nach dem Kopf an
+ *     (wo eine Szene je Abschnitt im Bild ist, ruht es sichtbar — die Szene bringt ihr Licht mit, szenen-check.mjs)
  */
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -140,7 +141,8 @@ async function lauf() {
   {
     const b = await chromium.launch();
     const lichtOrte = new Map();
-    const istAn = (p) => p.waitForFunction(() => { const l = document.querySelector('[data-raum-licht]'); return l && l.classList.contains('an') && parseFloat(getComputedStyle(l).opacity) > 0.9; }, null, { timeout: 5000 }).then(() => true, () => false);
+    // an = geschaltet UND sichtbar — oder eine Szene je Abschnitt ist im Bild und bringt ihr Licht mit (szenen/basis.css)
+    const istAn = (p) => p.waitForFunction(() => { const l = document.querySelector('[data-raum-licht]'); return l && l.classList.contains('an') && (parseFloat(getComputedStyle(l).opacity) > 0.9 || document.documentElement.hasAttribute('data-sz-sicht')); }, null, { timeout: 5000 }).then(() => true, () => false);
     for (const pfad of LICHT_SEITEN) {
       const { c, p, fehler } = await oeffne(b, pfad, 'no-preference');
       const probleme = [];
@@ -157,7 +159,9 @@ async function lauf() {
     await p.waitForTimeout(1500);
     const obenAn = await p.evaluate(() => document.querySelector('[data-raum-licht]').classList.contains('an'));
     await p.evaluate(() => scrollTo(0, innerHeight * 2.2));
-    const untenAn = await istAn(p);
+    // Seit 28.10. bringt jede Szene ihr eigenes Licht mit (szenen/basis.css): ist eine im Bild, ruht das Seitenlicht
+    // sichtbar, bleibt aber geschaltet (.an). Gemessen wird beides: geschaltet UND (sichtbar ODER eine Szene im Bild).
+    const untenAn = await p.waitForFunction(() => { const l = document.querySelector('[data-raum-licht]'); return l && l.classList.contains('an') && (parseFloat(getComputedStyle(l).opacity) > 0.9 || document.documentElement.hasAttribute('data-sz-sicht')); }, null, { timeout: 5000 }).then(() => true, () => false);
     melde(!obenAn && untenAn, `Licht     /         ${!obenAn ? 'ruht unter dem Kopf-Raum' : 'brennt doppelt neben dem Kopf-Raum'} · ${untenAn ? 'geht danach an' : 'geht danach NICHT an'}`);
     await c.close();
     await b.close();

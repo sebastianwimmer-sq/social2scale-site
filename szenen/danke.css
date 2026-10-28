@@ -1,0 +1,26 @@
+/* Danke — Briefkarte, Drehplan (28.10.2026). Quelle: scripts/szenen-quelle.mjs */
+
+/* ── Briefkarte: der Gruß von Sebi & Phil auf Papier ────────────────────────────────────────────── */
+[data-sz="briefkarte"] .dk-gruender{position:relative;padding:clamp(22px,4vw,40px);border-radius:4px;rotate:-.8deg;
+  --paper:#15171B; --muted:#3E434B;
+  background:linear-gradient(180deg,#FFFEFA,#F1EDE2);color:var(--sz-tinte);
+  box-shadow:0 2px 3px rgba(0,0,0,.25),0 30px 60px -30px rgba(0,0,0,.85);
+  translate:0 18px;opacity:0;transition:translate 1s var(--ease,ease),opacity .8s ease}
+[data-sz="briefkarte"].sz-an .dk-gruender{translate:0 0;opacity:1}
+[data-sz="briefkarte"] .dk-gruender :is(h2,p){color:var(--sz-tinte)}
+[data-sz="briefkarte"] .dk-gruender p:not(.dk-sig){color:var(--sz-tinte-2)}
+[data-sz="briefkarte"] .dk-sig{font-family:"Fraunces",serif;font-style:italic;font-size:1.4rem;color:#0B6B52 !important}
+[data-sz="briefkarte"] .dk-gruender::after{ /* Briefmarke */
+  content:"";position:absolute;right:16px;top:16px;width:46px;height:56px;rotate:4deg;
+  background:radial-gradient(circle at 50% 42%,#1FC998 0 9px,transparent 10px),linear-gradient(180deg,#0E3F35,#0B2E2A);
+  outline:2px dashed #F6F3EA;outline-offset:-3px;box-shadow:0 1px 2px rgba(0,0,0,.3)}
+
+/* ── Drehplan: drei Schritte an der Tafel, mit Kreide abgehakt, sobald du sie liest ─────────────── */
+[data-sz="drehplan"] .steps{position:relative;padding:clamp(20px,3vw,34px);border-radius:8px;
+  background:radial-gradient(120% 90% at 20% 0%,rgba(255,255,255,.05),transparent 60%),linear-gradient(180deg,#1E2A27,#16201E);
+  box-shadow:0 0 0 10px #3A2E22,0 0 0 11px rgba(255,255,255,.06),0 30px 60px -30px #000}
+[data-sz="drehplan"] .steps li{position:relative;padding-left:40px}
+[data-sz="drehplan"] .steps li::after{ /* Kreidehaken */
+  content:"";position:absolute;left:4px;top:.2em;width:20px;height:20px;border-radius:3px;box-shadow:inset 0 0 0 2px rgba(242,243,241,.5)}
+[data-sz="drehplan"] .steps li.sz-lit::after{
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M3 11l4 4 10-12' fill='none' stroke='%23F2F3F1' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round' opacity='.9'/%3E%3C/svg%3E") center/16px no-repeat}

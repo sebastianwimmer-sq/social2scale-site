@@ -353,3 +353,11 @@ Die Raum-Blöcke kommen aus **einer** Quelle: `scripts/raum-bauen.mjs` (Liste `K
 - Abzüge im Raum werden nach dem `load`-Ereignis auf eine Leinwand gezeichnet (nie `<img>`): sonst wird
   ein später Abzug zum größten Element und verschiebt LCP.
 - Der Funnel (`free-content/src/pages/shell.js`) trägt dieselbe Wand, denselben Kegel und denselben Boden.
+
+## Szenen je Abschnitt (seit 28.10.2026)
+- Jeder Inhaltsabschnitt hat ein eigenes Motiv (Plan: `docs/superpowers/specs/2026-10-28-szenen-je-abschnitt.md`).
+  Neuer Abschnitt → Eintrag in `scripts/szenen-quelle.mjs` + Gestaltung in `szenen/<seite>.css`, dann
+  `node scripts/szenen-bauen.mjs`. Ein Motiv kommt auf der Website nur einmal vor (Ausnahme: Bühnenmarke, Notizkarte).
+- `build-wissen.mjs` und `build-danke-studio.mjs` rufen `szenen-bauen.mjs` nach `raum-bauen.mjs` selbst auf.
+- Lesestrecken liegen auf Papier (Tokens im Motiv umdefinieren, nicht die Seiten-CSS ändern).
+- Tor: `node scripts/szenen-check.mjs` (Kontrast am Pixel, iPhone ohne Querscrollen, Ruckeln, Endzustand bei reduce).

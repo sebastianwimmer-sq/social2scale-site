@@ -12,6 +12,7 @@
 
 import { htmlDoc } from './shell.js';
 import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL, buchungsLink, buchungsNotiz } from '../constants.js';
+import { PROBE_STYLE, PROBE_MARKUP, PROBE_SCRIPT } from './probeaufnahme.js';
 import { filmMarkup, FILM_STYLE, FILM_SCRIPT } from './film.js';
 
 const ASSET_BASE = 'https://social2scale.com/assets';
@@ -1001,8 +1002,8 @@ export function formPage(env) {
     '<link rel="alternate" hreflang="en" href="https://start.social2scale.com/en/">' +
     '<link rel="alternate" hreflang="x-default" href="https://start.social2scale.com/">' +
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' +
-    `<style>${PAGE_STYLE}${FILM_STYLE}</style>`;
-  const body = `${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}${FILM_SCRIPT}</script>`;
+    `<style>${PAGE_STYLE}${FILM_STYLE}${PROBE_STYLE}</style>`;
+  const body = `${PROBE_MARKUP}${pageMarkup(turnstileSiteKey)}<script>${PAGE_SCRIPT}${FILM_SCRIPT}${PROBE_SCRIPT}</script>`;
 
   return htmlDoc({ title: 'Deine Gratis-Vorschau · social2scale', head, body });
 }
