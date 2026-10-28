@@ -67,6 +67,10 @@
 [data-sz="probestreifen"] .wa-row.is-us.sz-lit{background:linear-gradient(120deg,#0B4F40,#0A3A4E 70%,#0B3346)}
 [data-sz="probestreifen"] .wa-row.is-us.sz-lit .wa-name{color:#8FF0CF}
 [data-sz="probestreifen"] .wa-row.is-us.sz-lit .wa-note{color:#F2F3F1}
+/* Lesbar in jedem Moment: der Verlauf von „Mit uns“ springt sofort, also auch die Schrift; bei den Tonstufen
+   wechselt die Schrift zur Hälfte des Übergangs, wenn der Grund die Mitte passiert (sonst grau auf grau) */
+[data-sz="probestreifen"] .wa-row.is-us :is(.wa-name,.wa-note){transition:none}
+[data-sz="probestreifen"] .wa-row:nth-child(-n+3) :is(.wa-name,.wa-note){transition:color 0s linear .7s}
 [data-sz="probestreifen"] .wa-row.is-us::before{ /* scharfe Kante: hier sitzt die Belichtung */
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity 1.2s ease .6s;
   box-shadow:inset 0 0 0 1px rgba(143,240,207,.45),0 0 40px -6px rgba(31,201,152,.45)}
