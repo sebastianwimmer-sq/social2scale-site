@@ -12,7 +12,38 @@ const abschluss = (seite, reihe = '<div class="cta-row">') => ({
 });
 
 export const SEITEN = [
-  // Startseite: eigenes Studio in start-studio.css (30.10.2026), Tor scripts/start-check.mjs
+  {
+    dateien: ['index.html', 'en/index.html'],
+    css: 'start',
+    abschnitte: [
+      // A/B/C als drei Abzüge auf dem Leuchttisch: man sucht sich selbst darunter
+      { sz: 'leuchttisch', anker: /<section class="kap" id="stand"[^>]*>/, deko: '<div class="sz-deko lt-schein" aria-hidden="true"></div>' },
+      // Was du schon versucht hast = Probestreifen in der Entwicklerschale; nur der letzte Streifen sitzt
+      { sz: 'probestreifen', anker: /<section class="kap" id="warum"[^>]*>/, teile: [/<li class="wa-row[^"]*">/g],
+        deko: '<div class="sz-deko ps-lampe" aria-hidden="true"><span></span></div>' },
+      // Vier Phasen am Handy = Ringlicht: jede Phase schaltet ein Viertel des Rings ein
+      { sz: 'ringlicht', anker: /<section class="s2hero"[^>]*>/,
+        innen: [['<div class="stage" aria-hidden="true">', '<div class="sz-deko rl" aria-hidden="true"><span class="rl-ring"></span><span class="rl-stativ"><i></i><i></i><i></i></span></div>']] },
+      // Unser Feed = Abzüge an der Leine, schwingen beim Scrollen
+      { sz: 'leine', schwung: true, anker: /<section class="feed-band"[^>]*>/ },
+      // Dein Bereich = Kontrollmonitor am Set
+      { sz: 'monitor', zeiger: true, anker: /<section class="proof photo-sec"[^>]*>/,
+        innen: [['<div class="proof-visual">', '<div class="sz-deko km-stativ" aria-hidden="true"><span class="km-arm"></span><span class="km-gelenk"></span><span class="km-fuss"></span></div>']] },
+      // Setup, Betreuung, Skalierung = Dreipunktlicht: Führungs-, Aufhell-, Spitzlicht
+      { sz: 'dreipunkt', anker: /<section class="blk photo-sec" id="leistungen"[^>]*>/, teile: [/<div class="cell[^"]*">/g],
+        innen: [['<div class="bento">', `<div class="sz-deko dp-plan" aria-hidden="true"><svg viewBox="0 0 240 200"><defs><radialGradient id="dpStrahl"><stop offset="0" stop-color="#EAFFF6" stop-opacity=".9"/><stop offset="1" stop-color="#EAFFF6" stop-opacity="0"/></radialGradient></defs>
+<g class="dp-l dp-l1"><path class="dp-kegel" d="M44 160 L112 92 L132 112 Z"/><rect class="dp-kopf" x="28" y="150" width="30" height="20" rx="4" transform="rotate(-45 43 160)"/></g>
+<g class="dp-l dp-l2"><path class="dp-kegel" d="M196 160 L128 92 L108 112 Z"/><rect class="dp-kopf" x="182" y="150" width="30" height="20" rx="4" transform="rotate(45 197 160)"/></g>
+<g class="dp-l dp-l3"><path class="dp-kegel" d="M120 26 L104 96 L136 96 Z"/><rect class="dp-kopf" x="105" y="14" width="30" height="18" rx="4"/></g>
+<circle class="dp-motiv" cx="120" cy="102" r="15"/><path class="dp-kamera" d="M108 186h24v-12l-6-5h-12l-6 5z"/></svg></div>`]] },
+      // Fragen = Karteikasten: helle Karten, lesbar wie Papier
+      { sz: 'kartei', anker: /<section class="blk" id="faq"[^>]*>/ },
+      // Sebi & Phil = ein Licht zwischen beiden, das beide Gesichter von innen zeichnet
+      { sz: 'gegenlicht', anker: /<section class="gruender"[^>]*>/,
+        innen: [['<div class="gr-reihe">', '<div class="sz-deko gl-roehre" aria-hidden="true"><span></span></div>']] },
+      abschluss('start'),
+    ],
+  },
   {
     dateien: ['ablauf/index.html', 'en/process/index.html'],
     css: 'ablauf',

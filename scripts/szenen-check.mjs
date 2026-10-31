@@ -43,10 +43,10 @@ const server = await new Promise((fertig) => {
     try {
       let inhalt = await readFile(pfad);
       if (verbiegen === 'js' && pfad.endsWith('/szenen/szenen.js')) inhalt = Buffer.from('/* leer */');
-      if (verbiegen === 'kontrast' && pfad.endsWith('/szenen/preise.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="mappe"] .pr-details summary,[data-sz="mappe"] .pr-details summary *{color:#26302D !important}');
+      if (verbiegen === 'kontrast' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="kartei"] .faq summary{color:#B9B4A8 !important}');
       // genau der Fehler vom 28.10.: der Lampenschein wandert per top statt per transform
       if (verbiegen === 'sprung' && pfad.endsWith('/szenen/wissen.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="lesetisch"] .lt-pool{inset:auto 0 auto 0;height:560px;top:clamp(0px,calc(var(--sp,0) * 100% - 280px),calc(100% - 560px))}');
-      if (verbiegen === 'breite' && pfad.endsWith('/szenen/preise.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz]{overflow-x:visible !important}[data-sz="massband"] .mb-band{left:-40px;right:-400px}');
+      if (verbiegen === 'breite' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz]{overflow-x:visible !important}[data-sz="leuchttisch"] .lt-schein{left:-40px;right:-400px}');
       if (pfad.endsWith('.html')) inhalt = Buffer.from(inhalt.toString().replace(/;?\s*upgrade-insecure-requests/, ''));
       ant.writeHead(200, { 'Content-Type': TYPEN[extname(pfad)] || 'application/octet-stream' });
       ant.end(inhalt);
@@ -272,19 +272,19 @@ async function ruckeln(browser, pfad) {
 async function lauf({ voll }) {
   await quelle();
   const seiten = [...new Set(SEITEN.flatMap((s) => [s.dateien[0]]))].map(url);
-  const zusatz = voll ? ['/en/pricing/', '/en/knowledge/how-long-until-results/'] : [];
+  const zusatz = voll ? ['/en/', '/en/pricing/', '/en/knowledge/how-long-until-results/'] : [];
   const cr = await chromium.launch();
   console.log('\nChromium — Hinsehen');
-  for (const s of voll ? [...seiten, ...zusatz] : ['/preise/']) await verhalten(cr, s);
+  for (const s of voll ? [...seiten, ...zusatz] : ['/']) await verhalten(cr, s);
   console.log('\nChromium reduce — Endzustand und Kontrast');
-  for (const s of voll ? [...seiten, ...zusatz] : ['/preise/']) await kontrast(cr, s);
+  for (const s of voll ? [...seiten, ...zusatz] : ['/']) await kontrast(cr, s);
   console.log('\nRuckeln und Layout-Sprünge');
-  for (const s of voll ? seiten : ['/preise/']) await ruckeln(cr, s);
+  for (const s of voll ? seiten : ['/']) await ruckeln(cr, s);
   for (const s of voll ? seiten : ['/wissen/was-kostet-social-media-betreuung/']) await spruenge(cr, s);
   await cr.close();
   const wk = await webkit.launch();
   console.log('\nWebKit iPhone');
-  for (const s of voll ? [...seiten, ...zusatz] : ['/preise/']) await handy(wk, s);
+  for (const s of voll ? [...seiten, ...zusatz] : ['/']) await handy(wk, s);
   await wk.close();
 }
 

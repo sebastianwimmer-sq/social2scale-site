@@ -14,7 +14,7 @@ const MAX_FAKTOR = 1.5; // 16.10.2026: Sebi sah den Hero bei ×2,0 noch „versc
 const befunde = [];
 // Fixture: 400-px-Bild als cover auf voller Breite (zu klein) und dasselbe Bild auf 200 px (scharf)
 const FIX = { '/fix-rot/': '<!doctype html><body style="margin:0"><div style="height:900px;background:url(/assets/workspace.webp) center/cover"></div></body>', '/fix-gruen/': '<!doctype html><body style="margin:0"><div style="width:300px;height:170px;background:url(/assets/growth.webp) center/cover"></div></body>' };
-const SEITEN = SELBSTTEST ? Object.keys(FIX) : [/* Startseite seit 30.10. ohne Hintergrundbild (start-studio.css) */ '/preise/', '/onboarding/', '/about/', '/results/', '/for-you/'] /* /gratis/ und /anfrage/ leiten sofort weiter */;
+const SEITEN = SELBSTTEST ? Object.keys(FIX) : ['/', '/preise/', '/onboarding/', '/about/', '/results/', '/for-you/'] /* /gratis/ und /anfrage/ leiten sofort weiter */;
 const TYP = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.avif': 'image/avif', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2' };
 for (const [name, eng, opt] of [['Desktop 1440 @2x', chromium, { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }], ['iPhone 15 Pro @3x', webkit, devices['iPhone 15 Pro']]]) {
   const b = await eng.launch(); const c = await b.newContext(opt);
@@ -45,7 +45,7 @@ for (const [name, eng, opt] of [['Desktop 1440 @2x', chromium, { viewport: { wid
       return out;
     });
     for (const x of r) { console.log('  ' + name.padEnd(18), s.padEnd(12), x.bild.padEnd(22), x.box.padEnd(10), '×' + x.faktor); if (x.faktor > MAX_FAKTOR) befunde.push(`${name} ${s} ${x.bild}: ${x.faktor}-fach vergrößert (Grenze ${MAX_FAKTOR}) — größeres Bild oder kleinere Fläche`); }
-    if (!r.length && !SELBSTTEST && s === '/onboarding/') befunde.push(`${name} ${s}: kein Hintergrundbild gemessen — nicht gemessen ist nicht grün`);
+    if (!r.length && !SELBSTTEST && s === '/') befunde.push(`${name} ${s}: kein Hintergrundbild gemessen — nicht gemessen ist nicht grün`);
   }
   await b.close();
 }
