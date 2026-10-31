@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-hV3Lvgg1vSKUCz6OaQ0LW4if1J4Q1MEeAJ+vsw58yD8=' 'sha256-GMSi3nCLVjKBvou95d+5ZgDPwFmXOpq5R+jeFyqxzK8=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-so+3hsnL5jCz+o4IyBJCWQViPgGAv66GhPt/09RZmbw=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -12,7 +12,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
 <meta name="theme-color" content="#03080D">
@@ -1023,7 +1022,7 @@
 <link rel="alternate" hreflang="x-default" href="https://social2scale.com/">
 <meta property="og:locale:alternate" content="en_US">
 <!-- /SPRACHE:KOPF -->
-<script src="/szenen/szenen.js" data-css="basis,start" defer></script>
+<link rel="stylesheet" href="/start-studio.css">
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -1069,299 +1068,119 @@
     
   </nav>
 
-  <main id="main" tabindex="-1">
-    <section class="hero" id="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--start" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:6%;--x:21%;--y:41%"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:6.5%;--x:73%;--y:40%"><img data-src="/assets/feed/beitrag-10-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><div class="raum-ebene raum-mitte" style="--z:16"><figure class="raum-abzug" style="--b:12%;--x:5%;--y:27%"><img data-src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:11%;--x:83%;--y:29%"><img data-src="/assets/feed/beitrag-11-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
-      <div class="wrap">
-        <div class="hero-center">
-          <h1 class="r" style="animation-delay:.1s">
-            <span class="gruss">Willkommen bei</span>
-            <picture>
-              <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 660px">
-              <img class="hero-logo" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
-            </picture>
-            <span class="claim">Wir bauen das <em>System</em>,<br>das dich planbar skaliert.</span>
-          </h1>
-          <p class="sub r" style="animation-delay:.24s">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn. <b>Du musst nichts können außer reden.</b></p>
-          <div class="cta-row r" style="animation-delay:.38s">
-            <a class="btn btn-primary" id="cta" href="/gratis/">Kostenlos starten →</a>
-          </div>
-          <div class="duo hero-duo r" style="animation-delay:.46s">
-            <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
-            <p class="duo-txt">Zwei Gründer, die selbst Hand anlegen: <b>Sebi &amp; Phil</b>.</p>
-          </div>
+  <main id="main" tabindex="-1" class="st">
+    <section class="st-set st-1" id="hero" data-st-set aria-labelledby="hero-h">
+      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div><div class="st-boden" aria-hidden="true"></div>
+      <div class="st-innen st-zwei">
+        <div>
+          <h1 id="hero-h"><span class="st-marke">social2scale</span>Wir bauen das <em>System</em>, das dich planbar skaliert.</h1>
+          <p class="st-unter">Für Coaches und Experten: Wir bauen deinen Auftritt, produzieren den Content und betreuen ihn. Du musst nichts können außer reden.</p>
+          <a class="st-knopf" id="cta" href="/gratis/">Kostenlos starten →</a>
+          <p class="st-gruender">Zwei Gründer, die selbst Hand anlegen: <b>Sebi &amp; Phil</b>.</p>
+        </div>
+        <div class="st-abzug-platz" aria-hidden="true">
+          <div class="st-fleck"></div><div class="st-schatten"></div>
+          <figure class="st-abzug"><img src="/assets/feed/beitrag-10-400.webp" srcset="/assets/feed/beitrag-10-400.webp 400w, /assets/feed/beitrag-10-800.webp 800w" sizes="(min-width:960px) 272px, 160px" alt="" width="360" height="450" fetchpriority="high" decoding="async"></figure>
         </div>
       </div>
     </section>
 
-    <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
-         Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
-         Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
-    <section class="kap" id="stand" aria-labelledby="stand-h" data-sz="leuchttisch"><!-- SZENE leuchttisch --><div class="sz-deko lt-schein" aria-hidden="true"></div><!-- /SZENE -->
-      <div class="wrap reveal">
-        <h2 id="stand-h">Eines davon <em>bist du</em>.</h2>
-        <div class="st-grid">
-          <article class="st-card">
-            <span class="st-let" aria-hidden="true">A</span>
-            <p class="st-ist">Du bist gut in dem, was du tust. Online gibt es dich nicht.</p>
-            <p class="st-kost">Wer dich weiterempfiehlt, schickt Leute auf ein leeres Profil.</p>
-          </article>
-          <article class="st-card">
-            <span class="st-let" aria-hidden="true">B</span>
-            <p class="st-ist">Ein Profil ist da. Der letzte Beitrag ist von letztem Jahr.</p>
-            <p class="st-kost">Ein eingeschlafener Auftritt wirkt schlechter als gar keiner.</p>
-          </article>
-          <article class="st-card">
-            <span class="st-let" aria-hidden="true">C</span>
-            <p class="st-ist">Du postest regelmäßig. Likes kommen, Anfragen nicht.</p>
-            <p class="st-kost">Du arbeitest für Reichweite, die nichts einbringt.</p>
-          </article>
+    <section class="st-set st-2" id="stand" data-st-set aria-labelledby="stand-h">
+      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div>
+      <div class="st-innen st-zwei">
+        <div>
+          <p class="st-eyebrow">Dein Stand</p>
+          <h2 id="stand-h">Eines davon <em>bist du</em>.</h2>
+          <p class="st-fazit">Alle drei kosten dasselbe: <em>Aufträge, die jemand anders bekommt.</em></p>
+          <a class="st-link" href="/for-you/">Für wen wir bauen</a>
         </div>
-        <p class="st-bridge">Alle drei kosten dasselbe: <b>Aufträge, die jemand anders bekommt.</b></p>
-        <a class="textlink kap-tuer" href="/for-you/">Für wen wir bauen</a>
-      </div>
-    </section>
-
-    <section class="kap" id="warum" aria-labelledby="warum-h" data-sz="probestreifen"><!-- SZENE probestreifen --><div class="sz-deko ps-lampe" aria-hidden="true"><span></span></div><!-- /SZENE -->
-      <div class="wrap reveal">
-        <h2 id="warum-h">Du hast es ja <em>schon versucht</em>.</h2>
-        <ol class="wa-list">
-          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">Selbst posten</span><span class="wa-note">Zwischen zwei Kundenterminen. Hält drei Wochen.</span></div></li>
-          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">Werkstudent</span><span class="wa-note">Postet, was du vorgibst. Die Strategie bleibt deine Aufgabe.</span></div></li>
-          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">Agentur von der Stange</span><span class="wa-note">Du bist Kunde 47. Dein Content sieht auch danach aus.</span></div></li>
-          <li data-sz-teil class="wa-row is-us"><div class="wa-head"><span class="wa-name">Mit uns</span><span class="wa-note">Strategie, Produktion und Betreuung übernehmen wir. Du gibst die Richtung vor.</span></div></li>
-        </ol>
-        <p class="wa-close">Der Unterschied ist nicht Fleiß. <b>Es ist, ob jemand das Ganze verantwortet.</b></p>
-      </div>
-    </section>
-
-    <section class="s2hero" id="ablauf" aria-label="Dein Weg zu planbarem Wachstum" data-sz="ringlicht">
-  <div class="s2hero-track">
-    <div class="s2hero-pin">
-      <div class="aura" aria-hidden="true"></div>
-      <div class="vignette" aria-hidden="true"></div>
-
-      <div class="s2head">
-        <span class="s2eyebrow">So läuft’s ab</span>
-        <h2 class="s2title">Ein Account. Vier Phasen. <em class="s2em">Von null bis Wachstum.</em></h2>
-      </div>
-
-      <div class="stage" aria-hidden="true"><!-- SZENE ringlicht --><div class="sz-deko rl" aria-hidden="true"><span class="rl-ring"></span><span class="rl-stativ"><i></i><i></i><i></i></span></div><!-- /SZENE -->
-        <div class="phone" id="phone">
-          <div class="bloom" aria-hidden="true"></div>
-          <div class="reflect" aria-hidden="true"></div>
-          <div class="enter">
-            <div class="floatw">
-              <div class="frame" aria-hidden="true"></div>
-              <div class="screen">
-                <div class="island" aria-hidden="true"></div>
-                <div class="sb"><span id="clock">9:41</span><span class="rt">
-                  <svg viewBox="0 0 20 12" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4" width="3" height="8" rx="1" fill="currentColor"/><rect x="10" y="1.5" width="3" height="10.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".4"/></svg>
-                  <svg viewBox="0 0 26 12" aria-hidden="true"><rect x="0" y="1" width="21" height="10" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="3" width="15" height="6" rx="1" fill="currentColor"/><rect x="22.5" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
-                </span></div>
-
-                <div class="app" id="app">
-                  <div class="hdr">
-                    <a tabindex="-1" class="u" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">social2scale <span class="live" aria-hidden="true"></span><span class="vf"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span></a>
-                    <div class="dots-i">•••</div>
-                  </div>
-                  <div class="prof">
-                    <div class="ava"><img src="/assets/s2s.webp" alt="social2scale"></div>
-                    <div class="stats">
-                      <div class="st"><span class="num" data-k="posts">0</span><span class="lb">Beiträge</span></div>
-                      <div class="st"><span class="num" data-k="foll">–</span><span class="lb">Follower</span></div>
-                      <div class="st"><span class="num" data-k="follo">–</span><span class="lb">Gefolgt</span></div>
-                    </div>
-                  </div>
-                  <div class="bio">
-                    <div class="nm">social2scale</div>
-                    <div class="tx"><b>Strategie statt Zufall.</b><br>Done-for-you Social Growth für Coaches &amp; B2B.</div>
-                    <div class="lk">🔗 social2scale.com/anfrage</div>
-                  </div>
-                  <div class="pills">
-                    <a tabindex="-1" class="pill pri" id="followBtn" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Folgen</a><a tabindex="-1" class="pill" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Nachricht</a><div class="pill sq">＋</div>
-                  </div>
-                  <div class="grid">
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div>
-                    <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-                    <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-                  </div>
-                </div>
-
-                <div class="noti" id="noti">
-                  <div class="ic"><img src="/assets/s2s.webp" alt=""></div>
-                  <div class="tx"><div class="tt"><b>social2scale</b><span class="tm">jetzt</span></div><div class="mm" id="notiMsg"></div></div>
-                </div>
-
-                <div class="heart" id="heart" aria-hidden="true">
-                  <svg class="big" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                </div>
-              </div>
-            </div>
+        <div class="st-tisch">
+          <div class="st-blaetter" data-st-blaetter tabindex="0" role="group" aria-label="Drei Lagen und unser Weg, zum Wischen">
+            <article class="st-blatt"><span class="st-buchst">A</span><h3>Du bist gut in dem, was du tust. Online gibt es dich nicht.</h3><p>Wer dich weiterempfiehlt, schickt Leute auf ein leeres Profil.</p></article>
+            <article class="st-blatt"><span class="st-buchst">B</span><h3>Ein Profil ist da. Der letzte Beitrag ist von letztem Jahr.</h3><p>Ein eingeschlafener Auftritt wirkt schlechter als gar keiner.</p></article>
+            <article class="st-blatt"><span class="st-buchst">C</span><h3>Du postest regelmäßig. Likes kommen, Anfragen nicht.</h3><p>Du arbeitest für Reichweite, die nichts einbringt.</p></article>
+            <article class="st-blatt st-mit"><span class="st-buchst">Mit uns</span><h3>Strategie, Produktion und Betreuung übernehmen wir.</h3><p>Du gibst die Richtung vor. Der Unterschied ist nicht Fleiß. Es ist, ob jemand das Ganze verantwortet.</p></article>
           </div>
-        </div>
-      </div>
-
-      <div class="orbit" aria-hidden="false">
-        <div class="pcap" data-i="0"><span class="s2n">Phase 1: Erstgespräch &amp; Strategie</span><h3>Wir zeichnen dein System.</h3><p>Ziel, Zielgruppe & Status quo. Der Plan steht.</p></div>
-        <div class="pcap" data-i="1"><span class="s2n">Phase 2: Setup &amp; Onboarding</span><h3>Der Auftritt bekommt ein Gesicht.</h3><p>Profil, Branding & Content-Strategie stehen.</p></div>
-        <div class="pcap" data-i="2"><span class="s2n">Phase 3: Content &amp; Betreuung</span><h3>Reichweite &amp; Follower wachsen.</h3><p>Laufende Produktion. Woche für Woche sichtbar.</p></div>
-        <div class="pcap" data-i="3"><span class="s2n">Phase 4: Skalierung</span><h3>Alles messbar in deinem Bereich.</h3><p>Anfragen und Gespräche, sichtbar in deinem Bereich.</p></div>
-      </div>
-
-      <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <p class="s2-beispiel">Beispielwerte. Keine Kundenergebnisse.</p>
-      <div class="hint" aria-hidden="true"><span>scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-    </div>
-  </div>
-</section>
-
-    <!-- Echte Arbeit statt Deko (02.10.2026): eigene, veroeffentlichte Beitraege
-         aus kit-build/out-s2s. Loest die leeren Kacheln der Handy-Szene auf. -->
-    <section class="feed-band" aria-labelledby="feed-h" data-sz="leine" data-schwung><div class="wrap reveal">
-      <div class="feed-kopf">
-        <p class="ix">Unser eigener Feed</p>
-        <h2 id="feed-h">Wir behaupten nicht. Wir <em>zeigen</em>.</h2>
-      </div>
-      <ul class="feed-reihe">
-        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Vier Wochen, kaum neue Follower." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Keine Kennzahl." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Ein Wort, eine Abmahnung." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." loading="lazy" decoding="async"></li>
-      </ul>
-      <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Auf Instagram ansehen</a>
-    </div></section>
-
-    <section class="proof photo-sec" id="proof" aria-labelledby="proof-h" data-sz="monitor" data-zeiger>
-      <div class="sec-bg growth" aria-hidden="true"></div>
-      <div class="wrap">
-        <div class="proof-grid reveal">
-          <div class="proof-copy">
-            <p class="ix">Dein Bereich</p>
-            <h2 id="proof-h" class="proof-h">So sieht dein <em>Wachstum</em> aus.</h2>
-            <p class="lead">Reichweite, Leads und Fortschritt an einem Ort. Statt Zahlen aus zehn Tools.</p>
-            <ul class="proof-points">
-              <li>Reichweite, die zählt</li>
-              <li>Leads statt Likes</li>
-              <li>Gespräche statt Bauchgefühl</li>
-            </ul>
-            <a class="textlink kap-tuer" href="/results/">Woran du uns messen kannst</a>
-          </div>
-          <div class="proof-visual"><!-- SZENE monitor --><div class="sz-deko km-stativ" aria-hidden="true"><span class="km-arm"></span><span class="km-gelenk"></span><span class="km-fuss"></span></div><!-- /SZENE -->
-            <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen, Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
-            <div class="kette" id="kette" data-licht>
-              <div class="kette-kopf">
-                <span class="kette-ttl"><span class="dot" aria-hidden="true"></span>Dein Bereich</span>
-                <span class="kette-meta">drei Zahlen, von Tag eins</span>
-              </div>
-              <div class="kette-bahn" aria-hidden="true"><span class="kette-fluss"></span></div>
-              <ol class="kette-glieder">
-                <li data-ab="0"><span class="kg-punkt" aria-hidden="true"></span><b>Profilaufrufe</b><span>Wie viele nach dem Beitrag genauer hinsehen.</span></li>
-                <li data-ab="1"><span class="kg-punkt" aria-hidden="true"></span><b>Anfragen</b><span>Wie viele sich tatsächlich melden.</span></li>
-                <li data-ab="3"><span class="kg-punkt" aria-hidden="true"></span><b>Gespräche</b><span>Die einzige Zahl, die am Ende zählt.</span></li>
-              </ol>
-              <div class="kette-phasen" role="group" aria-label="Verlauf der ersten sechs Monate">
-                <button type="button" data-p="0" aria-pressed="false">Woche 1–4</button>
-                <button type="button" data-p="1" aria-pressed="false">Monat 2</button>
-                <button type="button" data-p="2" aria-pressed="false">Monat 3–4</button>
-                <button type="button" data-p="3" aria-pressed="true">Ab Monat 6</button>
-              </div>
-              <p class="kette-text" id="kette-text" aria-live="polite">Der Account trägt sich: Ältere Beiträge werden weiter gefunden, das Publikum wächst ohne jedes Mal neuen Anschub.</p>
-            </div>
-          </div>
+          <div class="st-punkte" data-st-punkte aria-hidden="true"><i class="jetzt"></i><i></i><i></i><i></i></div>
         </div>
       </div>
     </section>
 
-    <section class="blk photo-sec" id="leistungen" data-sz="dreipunkt"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
-      <div class="blk-head head">
-        <h2>Alles aus <em>einer Hand</em>.</h2>
-        <p class="lead">Kein Stückwerk, keine Tools-Wüste. Ein Team, das deinen Auftritt baut, betreut und skaliert.</p>
-      </div>
-      <div class="bento"><!-- SZENE dreipunkt --><div class="sz-deko dp-plan" aria-hidden="true"><svg viewBox="0 0 240 200"><defs><radialGradient id="dpStrahl"><stop offset="0" stop-color="#EAFFF6" stop-opacity=".9"/><stop offset="1" stop-color="#EAFFF6" stop-opacity="0"/></radialGradient></defs>
-<g class="dp-l dp-l1"><path class="dp-kegel" d="M44 160 L112 92 L132 112 Z"/><rect class="dp-kopf" x="28" y="150" width="30" height="20" rx="4" transform="rotate(-45 43 160)"/></g>
-<g class="dp-l dp-l2"><path class="dp-kegel" d="M196 160 L128 92 L108 112 Z"/><rect class="dp-kopf" x="182" y="150" width="30" height="20" rx="4" transform="rotate(45 197 160)"/></g>
-<g class="dp-l dp-l3"><path class="dp-kegel" d="M120 26 L104 96 L136 96 Z"/><rect class="dp-kopf" x="105" y="14" width="30" height="18" rx="4"/></g>
-<circle class="dp-motiv" cx="120" cy="102" r="15"/><path class="dp-kamera" d="M108 186h24v-12l-6-5h-12l-6 5z"/></svg></div><!-- /SZENE -->
-        <div data-sz-teil class="cell cell-hero">
-          <div class="n">Fundament</div>
-          <h3>Setup</h3>
-          <p>Wir bauen deinen kompletten Social-Auftritt professionell auf. Profile, Branding, Strategie.</p>
-          <span class="spacer"></span>
-          <div class="tags">
-            <span class="tag">Profile</span><span class="tag">Branding</span><span class="tag">Strategie</span><span class="tag">Positionierung</span>
+    <section class="st-set st-3" id="leistungen" data-st-set aria-labelledby="ablauf-h">
+      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div>
+      <div class="st-innen st-zwei">
+        <div class="st-ring" aria-hidden="true">
+          <svg viewBox="0 0 300 300" focusable="false"><path class="st-seg an" d="M150 14 A136 136 0 0 1 286 150"/><path class="st-seg" d="M286 150 A136 136 0 0 1 150 286"/><path class="st-seg" d="M150 286 A136 136 0 0 1 14 150"/><path class="st-seg" d="M14 150 A136 136 0 0 1 150 14"/></svg>
+          <div class="st-telefon"><i class="z"></i><i class="z"></i><div class="st-gitter"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+        <div>
+          <p class="st-eyebrow">So läuft's ab</p>
+          <h2 id="ablauf-h">Vier Phasen. <em>Von null bis Wachstum.</em></h2>
+          <div class="st-phasen" data-st-phasen role="tablist" aria-label="Phasen" hidden>
+            <button class="st-phase" type="button" role="tab" id="st-ph-1" aria-controls="st-k-1" aria-selected="true" data-st-phase>1</button>
+            <button class="st-phase" type="button" role="tab" id="st-ph-2" aria-controls="st-k-2" aria-selected="false" data-st-phase>2</button>
+            <button class="st-phase" type="button" role="tab" id="st-ph-3" aria-controls="st-k-3" aria-selected="false" data-st-phase>3</button>
+            <button class="st-phase" type="button" role="tab" id="st-ph-4" aria-controls="st-k-4" aria-selected="false" data-st-phase>4</button>
           </div>
-        </div>
-        <div data-sz-teil class="cell">
-          <div class="n">Dein Team</div>
-          <h3>Betreuung</h3>
-          <p>Persönliches Team, laufende Content-Produktion und Strategie. Kein Bot. Echte Menschen.</p>
-        </div>
-        <div data-sz-teil class="cell">
-          <div class="n">Wachstum</div>
-          <h3>Skalierung</h3>
-          <p>Aus Reichweite werden Anfragen. Was trägt, bekommt mehr Schub. Messbar in deinem Bereich.</p>
+          <div class="st-karte" id="st-k-1" role="tabpanel" aria-labelledby="st-ph-1" data-st-karte><b>Phase 1</b><h3>Erstgespräch &amp; Strategie</h3><p>Wir zeichnen dein System. Ziel, Zielgruppe &amp; Status quo. Der Plan steht.</p></div>
+          <div class="st-karte" id="st-k-2" role="tabpanel" aria-labelledby="st-ph-2" data-st-karte><b>Phase 2</b><h3>Setup &amp; Onboarding</h3><p>Der Auftritt bekommt ein Gesicht. Profil, Branding &amp; Content-Strategie stehen.</p></div>
+          <div class="st-karte" id="st-k-3" role="tabpanel" aria-labelledby="st-ph-3" data-st-karte><b>Phase 3</b><h3>Content &amp; Betreuung</h3><p>Persönliches Team, laufende Produktion. Woche für Woche sichtbar. Kein Bot, echte Menschen.</p></div>
+          <div class="st-karte" id="st-k-4" role="tabpanel" aria-labelledby="st-ph-4" data-st-karte><b>Phase 4</b><h3>Skalierung</h3><p>Aus Reichweite werden Anfragen. Was trägt, bekommt mehr Schub. Messbar in deinem Bereich.</p></div>
+          <a class="st-link" href="/ablauf/">Der ganze Ablauf</a>
         </div>
       </div>
-      <div class="preiszeile">
-        <p><span class="pz-lbl">Preise</span>Neun gestaltete Beiträge ab <b>446,25 €</b> einmalig, laufende Betreuung ab <b>523,60 €</b> im Monat, zzgl. 523,60 € einmalig zum Start.</p>
-        <a class="textlink" href="/preise/">Alle sieben Pakete mit Endpreisen</a>
-      </div>
-    </div></section>
-
-
-    <section class="blk" id="faq" data-sz="kartei"><div class="wrap faq-split reveal">
-      <div class="blk-head head">
-        <h2>Gut zu <em>wissen</em>.</h2>
-      </div>
-      <div class="faq">
-        <details><summary>Was, wenn ich noch gar keinen Social-Auftritt habe?</summary><p>Dann fangen wir bei null an. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content.</p></details>
-        <details><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. In den ersten Wochen steigen die Profilaufrufe, ab Monat drei bis vier erreichen Beiträge Menschen außerhalb deiner Kontakte. Was sich wann bewegt, steht auf <a href="/results/">Prüf uns</a>.</p></details>
-        <details><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung. Du gibst die Richtung vor, wir setzen um.</p></details>
-        <details><summary>Wie lange bin ich gebunden?</summary><p>Die Einmal-Pakete bezahlst du einmal, fertig. Die laufende Betreuung hat drei Monate Mindestlaufzeit, alle Bedingungen stehen auf der <a href="/preise/">Preisseite</a>.</p></details>
-        <details><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a>. Mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start. Welcher Weg zu dir passt, klären wir im Erstgespräch.</p></details>
-      </div>
-    </div></section>
-
-    <!-- Tiefe R1 (16.10.2026): Menschen dort, wo entschieden wird. Sebi: Foto aus /about/.
-         Aufnahmen und Zitate wie auf /about/ (dort schon auf einen Look gerechnet). -->
-    <section class="gruender" aria-labelledby="gruender-h" data-sz="gegenlicht">
-      <div class="wrap gr-kopf">
-        <h2 id="gruender-h">Sebi &amp; Phil. Kein Team dazwischen.</h2>
-      </div>
-      <div class="gr-reihe"><!-- SZENE gegenlicht --><div class="sz-deko gl-roehre" aria-hidden="true"><span></span></div><!-- /SZENE -->
-        <figure class="gr-person">
-          <div class="gr-bild"><picture>
-            <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:760px) 50vw, 50vw">
-            <img src="/assets/founder-philipp-560.jpg" alt="Philipp, Gründer von social2scale" width="560" height="700" loading="lazy" decoding="async">
-          </picture></div>
-          <figcaption><span class="gr-name">Philipp</span><span class="gr-rolle">Technik &amp; Vertrieb</span>
-            <q class="gr-satz">Ich verkaufe niemandem etwas, das ich hinterher nicht nachrechnen kann.</q></figcaption>
-        </figure>
-        <figure class="gr-person">
-          <div class="gr-bild is-hell"><picture>
-            <source type="image/webp" srcset="/assets/founder-sebastian-560.webp 560w, /assets/founder-sebastian-768.webp 768w" sizes="(max-width:760px) 50vw, 50vw">
-            <img src="/assets/founder-sebastian-560.jpg" alt="Sebastian, Gründer von social2scale" width="560" height="700" loading="lazy" decoding="async">
-          </picture></div>
-          <figcaption><span class="gr-name">Sebastian</span><span class="gr-rolle">Content &amp; Reichweite</span>
-            <q class="gr-satz">Ich poste für dich nichts, was ich auf meinem eigenen Account nicht posten würde.</q></figcaption>
-        </figure>
-      </div>
-      <div class="gr-fuss"><a class="textlink" href="/about/">Mehr über uns</a></div>
     </section>
 
-    <section class="blk abschluss" data-sz="markierung"><div class="wrap reveal">
-      <div class="band">
-        <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
-        <p class="lead">Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.</p>
-        <div class="cta-row"><!-- SZENE markierung --><span class="sz-deko mk-spot" aria-hidden="true"></span><span class="sz-deko mk-band mk-start" aria-hidden="true"><i></i><i></i></span><!-- /SZENE -->
-          <a class="btn btn-primary" id="cta-bottom" href="/gratis/">Kostenlos starten →</a>
+    <section class="st-set st-4" id="proof" data-st-set aria-labelledby="feed-h">
+      <div class="st-wand" aria-hidden="true"></div>
+      <div class="st-innen">
+        <div class="st-kopfzeile">
+          <p class="st-eyebrow">Unser eigener Feed</p>
+          <h2 id="feed-h">Wir behaupten nicht. Wir <em>zeigen</em>.</h2>
+        </div>
+        <div class="st-leine">
+          <div class="st-klemmlampe" aria-hidden="true"></div>
+          <svg viewBox="0 0 390 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 10 Q195 62 390 10" fill="none" stroke="#C9CCC6" stroke-opacity=".55" stroke-width="1.5"/></svg>
+          <figure class="st-print st-p1"><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Beitrag von @social2scale: Zweimal im Monat ist wirkungslos." width="360" height="450" loading="lazy" decoding="async"></figure>
+          <figure class="st-print st-p2"><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Beitrag von @social2scale: Sechs Fragen. Uns eingeschlossen." width="360" height="450" loading="lazy" decoding="async"></figure>
+          <figure class="st-print st-p3"><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Beitrag von @social2scale: Keine Kennzahl." width="360" height="450" loading="lazy" decoding="async"></figure>
+        </div>
+        <div class="st-zahlen">
+          <p class="st-eyebrow">Woran du uns messen kannst</p>
+          <div class="st-zahl"><span>1</span><b>Profilaufrufe</b><p>Wie viele nach dem Beitrag genauer hinsehen.</p></div>
+          <div class="st-zahl"><span>2</span><b>Anfragen</b><p>Wie viele sich tatsächlich melden.</p></div>
+          <div class="st-zahl"><span>3</span><b>Gespräche</b><p>Die einzige Zahl, die am Ende zählt.</p></div>
+        </div>
+        <a class="st-link" href="/results/">Prüf uns: was sich wann bewegt</a>
+      </div>
+    </section>
+
+    <section class="st-set st-5" id="gruender" data-st-set aria-labelledby="gruender-h">
+      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div><div class="st-boden" aria-hidden="true"></div>
+      <div class="st-innen">
+        <h2 id="gruender-h">Sebi &amp; Phil. <em>Kein Team dazwischen.</em></h2>
+        <div class="st-zwei" style="margin-top:30px">
+          <div class="st-paar">
+            <figure class="st-person"><div class="st-gegenlicht" aria-hidden="true"></div><div class="st-rahmen"><picture><source type="image/webp" srcset="/assets/founder-philipp-560.webp"><img src="/assets/founder-philipp-560.jpg" alt="Philipp" width="560" height="700" loading="lazy" decoding="async"></picture></div><figcaption><h3>Philipp</h3><small>Technik &amp; Vertrieb</small><p>Ich verkaufe niemandem etwas, das ich hinterher nicht nachrechnen kann.</p></figcaption></figure>
+            <figure class="st-person"><div class="st-gegenlicht" aria-hidden="true"></div><div class="st-rahmen"><picture><source type="image/webp" srcset="/assets/founder-sebastian-560.webp"><img src="/assets/founder-sebastian-560.jpg" alt="Sebastian" width="560" height="700" loading="lazy" decoding="async"></picture></div><figcaption><h3>Sebastian</h3><small>Content &amp; Reichweite</small><p>Ich poste für dich nichts, was ich auf meinem eigenen Account nicht posten würde.</p></figcaption></figure>
+          </div>
+          <div class="st-kartei" id="faq">
+            <h3>Gut zu wissen.</h3>
+            <details class="st-frage"><summary>Was, wenn ich noch gar keinen Social-Auftritt habe?</summary><p>Dann fangen wir bei null an. Wir bauen alles von Grund auf: Profile, Branding, Strategie und Content.</p></details>
+            <details class="st-frage"><summary>Wie schnell sehe ich Ergebnisse?</summary><p>Den Auftritt sofort. In den ersten Wochen steigen die Profilaufrufe, ab Monat drei bis vier erreichen Beiträge Menschen außerhalb deiner Kontakte. Was sich wann bewegt, steht auf <a href="/results/">Prüf uns</a>.</p></details>
+            <details class="st-frage"><summary>Muss ich selbst Content erstellen?</summary><p>Nein. Wir übernehmen Produktion und Betreuung. Du gibst die Richtung vor, wir setzen um.</p></details>
+            <details class="st-frage"><summary>Was kostet das?</summary><p>Alle sieben Pakete stehen offen auf der <a href="/preise/">Preisseite</a>, mit Endpreisen, nicht auf Anfrage. Neun gestaltete Beiträge ab 446,25 € einmalig, laufende Betreuung ab 523,60 € im Monat, zzgl. 523,60 € einmalig zum Start.</p></details>
+            <a class="st-link" href="/about/">Mehr über uns</a>
+          </div>
+        </div>
+        <div class="st-marke-platz" aria-hidden="true"><div class="st-fl"></div><i class="q"></i><i class="l"></i></div>
+        <div class="st-schluss abschluss">
+          <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
+          <p class="st-unter">Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.</p>
+          <a class="st-knopf" id="cta-bottom" href="/gratis/">Kostenlos starten →</a>
         </div>
       </div>
-    </div></section>
+    </section>
   </main>
 
   <footer class="site-footer"><div class="wrap">
@@ -1495,19 +1314,6 @@
     upd();
   })();
   </script>
-  <script>
-  /* Foto-Reveal beim Scrollen (fade + minimaler Zoom). Progressive Enhancement. */
-  (function(){
-    var els = document.querySelectorAll('.hero-bg, .sec-bg');
-    if (!els.length || !('IntersectionObserver' in window)) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.documentElement.classList.add('anim-ready');
-    var io = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    els.forEach(function(e){ io.observe(e); });
-  })();
-  </script>
   <style>
   /* ── Bild-/Scroll-Effekte: 3D-Schrift + scroll-getriebene Helligkeit ── */
   .hero h1 em{
@@ -1524,189 +1330,6 @@
   }
   @media (hover:none){.hero .hero-center{transform:none!important}}
   </style>
-  <script>
-  /* Scroll-getriebene Helligkeit der Foto-Layer + 3D-Pointer-Tilt im Hero.
-     Progressive Enhancement; respektiert prefers-reduced-motion. */
-  (function(){
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var photos = [].slice.call(document.querySelectorAll('.hero-bg,.sec-bg,.band.has-photo'));
-    var vh = window.innerHeight || document.documentElement.clientHeight;
-    var ticking = false;
-    function frame(){
-      ticking = false;
-      var center = vh/2;
-      for (var i=0;i<photos.length;i++){
-        var el = photos[i], r = el.getBoundingClientRect();
-        if (r.bottom < -240 || r.top > vh+240) continue;            /* außer Sicht → skip */
-        var mid = r.top + r.height/2;
-        var d = Math.min(1, Math.abs(mid-center)/(vh*0.78));         /* 0 = zentriert, 1 = Rand */
-        el.style.setProperty('--photb', (1.10 - d*0.34).toFixed(3)); /* 1.10 Fokus → 0.76 Rand */
-        el.style.setProperty('--phots', (1.12 - d*0.22).toFixed(3)); /* satter im Fokus */
-      }
-    }
-    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
-    window.addEventListener('scroll', onScroll, {passive:true});
-    window.addEventListener('resize', function(){ vh = window.innerHeight||document.documentElement.clientHeight; onScroll(); }, {passive:true});
-    frame();
-
-    /* Kein 3D-Kippen des Hero mehr (16.10.2026): der Block drehte sich weg, waehrend man auf den
-       Knopf zielte — Hover kam verzoegert, bedienung-check sah den Knopf „unter“ seinem Container. */
-  })();
-  </script>
-  <script>
-
-(function(){
-  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var flach = matchMedia('(max-width:959px)');  /* Handy: nicht angepinnt, Endzustand */
-  var hero  = document.getElementById('ablauf');
-  var track = hero.querySelector('.s2hero-track');
-  var phone = document.getElementById('phone');
-  var app   = document.getElementById('app');
-  var noti  = document.getElementById('noti');
-  var notiMsg = document.getElementById('notiMsg');
-  var heart = document.getElementById('heart');
-  var caps  = [].slice.call(document.querySelectorAll('.pcap'));
-  var dots  = [].slice.call(document.querySelectorAll('.dots i'));
-  var tiles = [].slice.call(document.querySelectorAll('.grid .tile'));
-  var nums  = {};
-  [].forEach.call(document.querySelectorAll('[data-k]'), function(el){ nums[el.dataset.k]=el; });
-
-  // weighted phase boundaries — empty start is short, growth kicks in fast
-  var B = [0, 0.12, 0.42, 0.72, 1];
-  var MSG = [
-    'Strategiegespräch ✓ Ziel, Zielgruppe &amp; Plan stehen.',
-    'Setup live — Profil, Branding &amp; Content stehen.',
-    'Du gibst frei, wir posten — jede Woche.',
-    'Monatsbericht: was lief, was wir als Nächstes ändern.'
-  ];
-
-  function easeInOut(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
-  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
-  function phaseOf(pp){ for(var i=0;i<4;i++){ if(pp < B[i+1]) return i; } return 3; }
-  function seg(arr){ var ph=phaseOf(p), f=easeInOut(clamp((p-B[ph])/(B[ph+1]-B[ph]),0,1)); return arr[ph]+(arr[ph+1]-arr[ph])*f; }
-
-  var p = 0, lastPhase = -1, notiTimer;
-  function popNoti(phase){
-    clearTimeout(notiTimer);
-    notiMsg.innerHTML = MSG[phase];
-    noti.classList.remove('out'); noti.classList.remove('pop'); void noti.offsetWidth; noti.classList.add('pop');
-    notiTimer = setTimeout(function(){ noti.classList.remove('pop'); void noti.offsetWidth; noti.classList.add('out'); }, 2600);
-  }
-  function burstHeart(){ heart.classList.remove('burst'); void heart.offsetWidth; heart.classList.add('burst'); }
-
-  function render(){
-    hero.style.setProperty('--p', (reduce?1:easeInOut(clamp(p,0,1))).toFixed(3));
-    var phase = phaseOf(p);
-
-    if(!reduce){
-      phone.style.setProperty('--ry', (-6 + p*8).toFixed(2)+'deg');
-      phone.style.setProperty('--rx', (3 - p*3).toFixed(2)+'deg');
-    }
-
-    nums.posts.textContent = Math.round(seg([0,0,7,16,24]));
-    /* Follower zaehlen nicht mehr hoch (16.10.2026): 2 → 12.400 war ein Wachstumsversprechen
-       ohne Beleg. Was waechst, ist der Feed, den wir bauen — die Beitraege. */
-
-    app.classList.toggle('lit', phase>=1);
-    app.classList.toggle('v2', phase>=2);
-
-    var show = Math.round(seg([0,0,4,8,9]));
-    tiles.forEach(function(t,i){ t.classList.toggle('s2show', i<show); });
-
-    caps.forEach(function(c,i){ c.classList.toggle('s2on', i===phase); });
-    dots.forEach(function(d,i){ d.classList.toggle('s2on', i===phase); d.classList.toggle('s2done', i<phase); });
-
-    if(phase!==lastPhase){
-      if(!reduce) popNoti(phase);
-      if(phase===3 && lastPhase<3 && !reduce) setTimeout(burstHeart, 480);
-      lastPhase = phase;
-    }
-  }
-
-  function onScroll(){
-    if(reduce || flach.matches){ p=1; render(); return; }
-    var r = track.getBoundingClientRect();
-    var total = r.height - window.innerHeight;
-    p = clamp((-r.top)/(total||1), 0, 1);
-    render();
-  }
-  var ticking=false;
-  window.addEventListener('scroll', function(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){ onScroll(); ticking=false; }); }, {passive:true});
-  window.addEventListener('resize', onScroll);
-  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('s2in'); io.unobserve(e.target); } }); }, {threshold:.05});
-  io.observe(hero);
-
-  if(!reduce && matchMedia('(pointer:fine)').matches){
-    var stage=document.querySelector('.stage');
-    stage.addEventListener('pointermove', function(e){
-      var b=stage.getBoundingClientRect();
-      var dx=(e.clientX-b.left)/b.width-0.5, dy=(e.clientY-b.top)/b.height-0.5;
-      phone.style.setProperty('--py', (dx*7).toFixed(2)+'deg');
-      phone.style.setProperty('--px', (-dy*5).toFixed(2)+'deg');
-    });
-    stage.addEventListener('pointerleave', function(){ phone.style.setProperty('--py','0deg'); phone.style.setProperty('--px','0deg'); });
-  }
-
-  // live current time in the status bar
-  var clock = document.getElementById('clock');
-  function tick(){ var d=new Date(); var h=d.getHours(), m=d.getMinutes(); clock.textContent = h + ':' + (m<10?'0':'') + m; }
-  tick(); setInterval(tick, 15000);
-
-  // real Instagram-style double-tap on the screen → heart
-  var screenEl = document.querySelector('.screen'), lastTap = 0;
-  screenEl.addEventListener('dblclick', function(e){ if(!isLink(e.target)) burstHeart(); });
-  screenEl.addEventListener('touchend', function(e){
-    if(isLink(e.target)) return;
-    var now = Date.now();
-    if(now - lastTap < 320){ e.preventDefault(); burstHeart(); lastTap = 0; } else { lastTap = now; }
-  }, {passive:false});
-  function isLink(el){ return !!(el && el.closest && el.closest('a')); }
-
-  onScroll();
-})();
-
-  </script>
-<div class="sticky-cta" id="stickyCta" aria-hidden="true">
-  <div class="inner">
-    <span class="txt"><b>Passt du zu uns?</b>Kurz checken, dann Vorschau oder Gespräch.</span>
-    <a class="btn btn-primary" href="/gratis/">Kostenlos&nbsp;starten&nbsp;→</a>
-  </div>
-</div>
-<script>
-  // Sticky-CTA einblenden, sobald der Hero durch ist — und am Seitenende wieder
-  // ausblenden, damit er den dortigen großen CTA nicht doppelt (und nicht den
-  // Footer verdeckt).
-  (function () {
-    var bar = document.getElementById("stickyCta");
-    var hero = document.getElementById("hero");
-    var ende = document.getElementById("cta-bottom");
-    if (!bar || !hero) return;
-    var heroWeg = false, endeDa = false;
-    function stellen() {
-      var zeigen = heroWeg && !endeDa;
-      bar.classList.toggle("on", zeigen);
-      bar.setAttribute("aria-hidden", zeigen ? "false" : "true");
-      bar.inert = !zeigen;   /* ausgeblendet = nicht per Tastatur erreichbar */
-    }
-    new IntersectionObserver(function (es) {
-      heroWeg = !es[0].isIntersecting; stellen();
-    }, { threshold: 0 }).observe(hero);
-    if (ende) {
-      /* Die Lage des Abschluss-Knopfs wird beim Scrollen direkt gelesen: ein
-         Beobachter meldet sich nicht, wenn man in EINEM Sprung (Ende-Taste,
-         Anker, schneller Wisch) ueber ihn hinweg springt — dann kam die Leiste
-         am Seitenende zurueck und lag ueber Impressum/Datenschutz. */
-      var t = false;
-      var pruefen = function () {
-        t = false;
-        endeDa = ende.getBoundingClientRect().top < window.innerHeight + 120;
-        stellen();
-      };
-      window.addEventListener("scroll", function () { if (!t) { t = true; requestAnimationFrame(pruefen); } }, { passive: true });
-      pruefen();
-    }
-  })();
-</script>
 <script>
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
@@ -1730,8 +1353,7 @@
   })();
 </script>
 <script src="/uebergang.js" defer></script>
+<script src="/start-studio.js" defer></script>
 <script src="/bewegung.js" defer></script>
-<script src="/raum.js" defer></script>
-<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="start" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>
