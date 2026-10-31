@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-0GQbgQzvCWlR10agLRGCeQvXevUI9DyRssapWBWbfVs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-uNmMGVRy7vT6Eh9ttql6i6KzjhZyKcGTZw/A/3LGA6E=' 'sha256-0GQbgQzvCWlR10agLRGCeQvXevUI9DyRssapWBWbfVs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-xf5BevvTu2LZpKl2GuC1yzt6WK2sYHnofBUM8i7hF1g=' 'sha256-hV3Lvgg1vSKUCz6OaQ0LW4if1J4Q1MEeAJ+vsw58yD8=' 'sha256-t5JihHKR/i5vm79vidtqC6lYSL/jDhnCoGqx8oz4IAk=' 'sha256-hruJLqOJWx/pNAx+mWU/hZLfk5yuKTpQDf863cU6EME=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/@59b085f7746b34da">
+<meta name="s2s-quelle" content="/@e7a6d7a7a328d47f">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -15,6 +15,7 @@
 <link rel="manifest" href="/site.webmanifest">
 <link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-1600.avif" media="(max-width:700px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/avif" href="/assets/hero-linie-2880.avif" media="(min-width:701px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="/assets/wordmark-t.webp" imagesrcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" imagesizes="(max-width:760px) 340px, 680px" fetchpriority="high">
 <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-normal-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/fonts/hanken-latin.woff2" crossorigin>
 <meta name="theme-color" content="#03080D">
@@ -1019,13 +1020,14 @@
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/">
 <link rel="alternate" hreflang="en" href="https://social2scale.com/en/">
 <link rel="alternate" hreflang="x-default" href="https://social2scale.com/">
 <meta property="og:locale:alternate" content="de_DE">
 <!-- /SPRACHE:KOPF -->
-<link rel="stylesheet" href="/start-studio.css">
+<script src="/szenen/szenen.js" data-css="basis,start" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -1071,120 +1073,301 @@
     
   </nav>
 
-  <main id="main" tabindex="-1" class="st">
-    <section class="st-set st-1" id="hero" data-st-set aria-labelledby="hero-h">
-      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div><div class="st-boden" aria-hidden="true"></div>
-      <div class="st-innen st-zwei">
-        <div>
-          <h1 id="hero-h"><span class="st-marke">social2scale</span>We build the <em>system</em> that grows you predictably.</h1>
-          <p class="st-unter">For coaches and experts: we build your presence, create the content and run it for you. All you have to do is talk.</p>
-          <a class="st-knopf" id="cta" href="/en/free/">Get started free →</a>
-          <p class="st-gruender">Two founders who do the work themselves: <b>Sebi &amp; Phil</b>.</p>
-        </div>
-        <div class="st-abzug-platz" aria-hidden="true">
-          <div class="st-fleck"></div><div class="st-schatten"></div>
-          <figure class="st-abzug"><img src="/assets/feed/beitrag-10-400.webp" srcset="/assets/feed/beitrag-10-400.webp 400w, /assets/feed/beitrag-10-800.webp 800w" sizes="(min-width:960px) 272px, 160px" alt="" width="360" height="450" fetchpriority="high" decoding="async"></figure>
+  <main id="main" tabindex="-1">
+    <section class="hero" id="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--start" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><div class="raum-ebene raum-fern" style="--z:7"><figure class="raum-abzug" style="--b:6%;--x:21%;--y:41%"><img data-src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:6.5%;--x:73%;--y:40%"><img data-src="/assets/feed/beitrag-10-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><div class="raum-ebene raum-mitte" style="--z:16"><figure class="raum-abzug" style="--b:12%;--x:5%;--y:27%"><img data-src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></figure><figure class="raum-abzug" style="--b:11%;--x:83%;--y:29%"><img data-src="/assets/feed/beitrag-11-400.webp" alt="" width="360" height="450" decoding="async"></figure></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="hero-center">
+          <h1 class="r" style="animation-delay:.1s">
+            <span class="gruss">Welcome to</span>
+            <picture>
+              <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 660px">
+              <img class="hero-logo" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
+            </picture>
+            <span class="claim">We build the <em>system</em><br>that grows you predictably.</span>
+          </h1>
+          <p class="sub r" style="animation-delay:.24s">For coaches and experts: we build your presence, create the content and run it for you. <b>All you have to do is talk.</b></p>
+          <div class="cta-row r" style="animation-delay:.38s">
+            <a class="btn btn-primary" id="cta" href="/en/free/">Get started free →</a>
+          </div>
+          <div class="duo hero-duo r" style="animation-delay:.46s">
+            <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
+            <p class="duo-txt">Two founders who do the work themselves: <b>Sebi &amp; Phil</b>.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="st-set st-2" id="stand" data-st-set aria-labelledby="stand-h">
-      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div>
-      <div class="st-innen st-zwei">
-        <div>
-          <p class="st-eyebrow">Where you stand</p>
-          <h2 id="stand-h">One of these <em>is you</em>.</h2>
-          <p class="st-fazit">All three cost you the same thing: <em>clients who end up hiring someone else.</em></p>
-          <a class="st-link" href="/en/for-you/">Who we build for</a>
+    <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
+         Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
+         Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
+    <section class="kap" id="stand" aria-labelledby="stand-h" data-sz="leuchttisch"><!-- SZENE leuchttisch --><div class="sz-deko lt-schein" aria-hidden="true"></div><!-- /SZENE -->
+      <div class="wrap reveal">
+        <h2 id="stand-h">One of these <em>is you</em>.</h2>
+        <div class="st-grid">
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">A</span>
+            <p class="st-ist">You’re great at what you do. Online, you don’t exist.</p>
+            <p class="st-kost">Everyone who recommends you sends people to an empty profile.</p>
+          </article>
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">B</span>
+            <p class="st-ist">There is a profile. The last post is from last year.</p>
+            <p class="st-kost">A dormant account looks worse than none at all.</p>
+          </article>
+          <article class="st-card">
+            <span class="st-let" aria-hidden="true">C</span>
+            <p class="st-ist">You post regularly. The likes come in, the inquiries don’t.</p>
+            <p class="st-kost">You’re working for reach that doesn’t pay.</p>
+          </article>
         </div>
-        <div class="st-tisch">
-          <div class="st-blaetter" data-st-blaetter tabindex="0" role="group" aria-label="Three situations and our way, swipe through">
-            <article class="st-blatt"><span class="st-buchst">A</span><h3>You’re great at what you do. Online, you don’t exist.</h3><p>Everyone who recommends you sends people to an empty profile.</p></article>
-            <article class="st-blatt"><span class="st-buchst">B</span><h3>There is a profile. The last post is from last year.</h3><p>A dormant account looks worse than none at all.</p></article>
-            <article class="st-blatt"><span class="st-buchst">C</span><h3>You post regularly. The likes come in, the inquiries don’t.</h3><p>You’re working for reach that doesn’t pay.</p></article>
-            <article class="st-blatt st-mit"><span class="st-buchst">With us</span><h3>We take care of strategy, production and management.</h3><p>You set the direction. The difference isn’t effort. It’s whether someone owns the whole thing.</p></article>
+        <p class="st-bridge">All three cost you the same thing: <b>clients who end up hiring someone else.</b></p>
+        <a class="textlink kap-tuer" href="/en/for-you/">Who we build for</a>
+      </div>
+    </section>
+
+    <section class="kap" id="warum" aria-labelledby="warum-h" data-sz="probestreifen"><!-- SZENE probestreifen --><div class="sz-deko ps-lampe" aria-hidden="true"><span></span></div><!-- /SZENE -->
+      <div class="wrap reveal">
+        <h2 id="warum-h">You’ve <em>tried this before</em>.</h2>
+        <ol class="wa-list">
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">Posting yourself</span><span class="wa-note">Squeezed in between two client calls. Lasts three weeks.</span></div></li>
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">A student intern</span><span class="wa-note">Posts what you tell them to. The strategy is still on you.</span></div></li>
+          <li data-sz-teil class="wa-row"><div class="wa-head"><span class="wa-name">An off-the-shelf agency</span><span class="wa-note">You’re client number 47. Your content looks like it, too.</span></div></li>
+          <li data-sz-teil class="wa-row is-us"><div class="wa-head"><span class="wa-name">With us</span><span class="wa-note">We take care of strategy, production and management. You set the direction.</span></div></li>
+        </ol>
+        <p class="wa-close">The difference isn’t effort. <b>It’s whether someone owns the whole thing.</b></p>
+      </div>
+    </section>
+
+    <section class="s2hero" id="ablauf" aria-label="Your path to predictable growth" data-sz="ringlicht">
+  <div class="s2hero-track">
+    <div class="s2hero-pin">
+      <div class="aura" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <div class="s2head">
+        <span class="s2eyebrow">How it works</span>
+        <h2 class="s2title">One account. Four phases. <em class="s2em">From zero to growth.</em></h2>
+      </div>
+
+      <div class="stage" aria-hidden="true"><!-- SZENE ringlicht --><div class="sz-deko rl" aria-hidden="true"><span class="rl-ring"></span><span class="rl-stativ"><i></i><i></i><i></i></span></div><!-- /SZENE -->
+        <div class="phone" id="phone">
+          <div class="bloom" aria-hidden="true"></div>
+          <div class="reflect" aria-hidden="true"></div>
+          <div class="enter">
+            <div class="floatw">
+              <div class="frame" aria-hidden="true"></div>
+              <div class="screen">
+                <div class="island" aria-hidden="true"></div>
+                <div class="sb"><span id="clock">9:41</span><span class="rt">
+                  <svg viewBox="0 0 20 12" aria-hidden="true"><rect x="0" y="7" width="3" height="5" rx="1" fill="currentColor"/><rect x="5" y="4" width="3" height="8" rx="1" fill="currentColor"/><rect x="10" y="1.5" width="3" height="10.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".4"/></svg>
+                  <svg viewBox="0 0 26 12" aria-hidden="true"><rect x="0" y="1" width="21" height="10" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="3" width="15" height="6" rx="1" fill="currentColor"/><rect x="22.5" y="4" width="2" height="4" rx="1" fill="currentColor"/></svg>
+                </span></div>
+
+                <div class="app" id="app">
+                  <div class="hdr">
+                    <a tabindex="-1" class="u" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">social2scale <span class="live" aria-hidden="true"></span><span class="vf"><svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg></span></a>
+                    <div class="dots-i">•••</div>
+                  </div>
+                  <div class="prof">
+                    <div class="ava"><img src="/assets/s2s.webp" alt="social2scale"></div>
+                    <div class="stats">
+                      <div class="st"><span class="num" data-k="posts">0</span><span class="lb">Posts</span></div>
+                      <div class="st"><span class="num" data-k="foll">–</span><span class="lb">Follower</span></div>
+                      <div class="st"><span class="num" data-k="follo">–</span><span class="lb">Following</span></div>
+                    </div>
+                  </div>
+                  <div class="bio">
+                    <div class="nm">social2scale</div>
+                    <div class="tx"><b>Strategy, not luck.</b><br>Done-for-you social growth for coaches &amp; B2B.</div>
+                    <div class="lk">🔗 social2scale.com/en/contact</div>
+                  </div>
+                  <div class="pills">
+                    <a tabindex="-1" class="pill pri" id="followBtn" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Follow</a><a tabindex="-1" class="pill" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">Message</a><div class="pill sq">＋</div>
+                  </div>
+                  <div class="grid">
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div>
+                    <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+                    <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+                  </div>
+                </div>
+
+                <div class="noti" id="noti">
+                  <div class="ic"><img src="/assets/s2s.webp" alt=""></div>
+                  <div class="tx"><div class="tt"><b>social2scale</b><span class="tm">now</span></div><div class="mm" id="notiMsg"></div></div>
+                </div>
+
+                <div class="heart" id="heart" aria-hidden="true">
+                  <svg class="big" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="st-punkte" data-st-punkte aria-hidden="true"><i class="jetzt"></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="orbit" aria-hidden="false">
+        <div class="pcap" data-i="0"><span class="s2n">Phase 1: Intro call &amp; strategy</span><h3>We map out your system.</h3><p>Goal, audience &amp; where you stand today. The plan is set.</p></div>
+        <div class="pcap" data-i="1"><span class="s2n">Phase 2: Setup &amp; onboarding</span><h3>Your account gets a face.</h3><p>Profile, branding &amp; content strategy are in place.</p></div>
+        <div class="pcap" data-i="2"><span class="s2n">Phase 3: Content &amp; management</span><h3>Reach &amp; followers grow.</h3><p>Ongoing production. Visible week after week.</p></div>
+        <div class="pcap" data-i="3"><span class="s2n">Phase 4: Scaling</span><h3>Everything measurable in your client area.</h3><p>Inquiries and calls, visible in your client area.</p></div>
+      </div>
+
+      <div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <p class="s2-beispiel">Sample figures. Not client results.</p>
+      <div class="hint" aria-hidden="true"><span>scroll</span><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+  </div>
+</section>
+
+    <!-- Echte Arbeit statt Deko (02.10.2026): eigene, veroeffentlichte Beitraege
+         aus kit-build/out-s2s. Loest die leeren Kacheln der Handy-Szene auf. -->
+    <section class="feed-band" aria-labelledby="feed-h" data-sz="leine" data-schwung><div class="wrap reveal">
+      <div class="feed-kopf">
+        <p class="ix">Our own feed</p>
+        <h2 id="feed-h">We don’t claim. We <em>show</em>.</h2>
+      </div>
+      <ul class="feed-reihe">
+        <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: Twice a month does nothing." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: Six questions. Us included." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: Four weeks, hardly any new followers." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: No metric." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: One word, one cease-and-desist letter." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:760px) 34vw, 17vw" width="360" height="450" alt="Post by @social2scale, in German: See it before you decide." loading="lazy" decoding="async"></li>
+      </ul>
+      <a class="textlink feed-link" href="https://www.instagram.com/social2scale/" target="_blank" rel="noopener">View on Instagram</a>
+    </div></section>
+
+    <section class="proof photo-sec" id="proof" aria-labelledby="proof-h" data-sz="monitor" data-zeiger>
+      <div class="sec-bg growth" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="proof-grid reveal">
+          <div class="proof-copy">
+            <p class="ix">Your client area</p>
+            <h2 id="proof-h" class="proof-h">This is what your <em>growth</em> looks like.</h2>
+            <p class="lead">Reach, leads and progress in one place. Instead of numbers scattered across ten tools.</p>
+            <ul class="proof-points">
+              <li>Reach that counts</li>
+              <li>Leads, not likes</li>
+              <li>Conversations, not gut feeling</li>
+            </ul>
+            <a class="textlink kap-tuer" href="/en/results/">What you can hold us to</a>
+          </div>
+          <div class="proof-visual"><!-- SZENE monitor --><div class="sz-deko km-stativ" aria-hidden="true"><span class="km-arm"></span><span class="km-gelenk"></span><span class="km-fuss"></span></div><!-- /SZENE -->
+            <!-- Die Kette aus /results/: was sich wann bewegt. Keine Zahlen, Texte woertlich von der Pruef-uns-Seite (29.09.2026). -->
+            <div class="kette" id="kette" data-licht>
+              <div class="kette-kopf">
+                <span class="kette-ttl"><span class="dot" aria-hidden="true"></span>Your client area</span>
+                <span class="kette-meta">three numbers, from day one</span>
+              </div>
+              <div class="kette-bahn" aria-hidden="true"><span class="kette-fluss"></span></div>
+              <ol class="kette-glieder">
+                <li data-ab="0"><span class="kg-punkt" aria-hidden="true"></span><b>Profile visits</b><span>How many take a closer look after a post.</span></li>
+                <li data-ab="1"><span class="kg-punkt" aria-hidden="true"></span><b>Inquiries</b><span>How many actually reach out.</span></li>
+                <li data-ab="3"><span class="kg-punkt" aria-hidden="true"></span><b>Calls</b><span>The only number that counts in the end.</span></li>
+              </ol>
+              <div class="kette-phasen" role="group" aria-label="How the first six months unfold">
+                <button type="button" data-p="0" aria-pressed="false">Weeks 1–4</button>
+                <button type="button" data-p="1" aria-pressed="false">Month 2</button>
+                <button type="button" data-p="2" aria-pressed="false">Months 3–4</button>
+                <button type="button" data-p="3" aria-pressed="true">Month 6 on</button>
+              </div>
+              <p class="kette-text" id="kette-text" aria-live="polite">The account carries itself: older posts keep getting found, and your audience grows without a fresh push every time.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="st-set st-3" id="leistungen" data-st-set aria-labelledby="ablauf-h">
-      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div>
-      <div class="st-innen st-zwei">
-        <div class="st-ring" aria-hidden="true">
-          <svg viewBox="0 0 300 300" focusable="false"><path class="st-seg an" d="M150 14 A136 136 0 0 1 286 150"/><path class="st-seg" d="M286 150 A136 136 0 0 1 150 286"/><path class="st-seg" d="M150 286 A136 136 0 0 1 14 150"/><path class="st-seg" d="M14 150 A136 136 0 0 1 150 14"/></svg>
-          <div class="st-telefon"><i class="z"></i><i class="z"></i><div class="st-gitter"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-        </div>
-        <div>
-          <p class="st-eyebrow">How it works</p>
-          <h2 id="ablauf-h">Four phases. <em>From zero to growth.</em></h2>
-          <div class="st-phasen" data-st-phasen role="tablist" aria-label="Phases" hidden>
-            <button class="st-phase" type="button" role="tab" id="st-ph-1" aria-controls="st-k-1" aria-selected="true" data-st-phase>1</button>
-            <button class="st-phase" type="button" role="tab" id="st-ph-2" aria-controls="st-k-2" aria-selected="false" data-st-phase>2</button>
-            <button class="st-phase" type="button" role="tab" id="st-ph-3" aria-controls="st-k-3" aria-selected="false" data-st-phase>3</button>
-            <button class="st-phase" type="button" role="tab" id="st-ph-4" aria-controls="st-k-4" aria-selected="false" data-st-phase>4</button>
+    <section class="blk photo-sec" id="leistungen" data-sz="dreipunkt"><div class="sec-bg flat" aria-hidden="true"></div><div class="wrap reveal">
+      <div class="blk-head head">
+        <h2>Everything from <em>one team</em>.</h2>
+        <p class="lead">No patchwork, no maze of tools. One team that builds, runs and scales your presence.</p>
+      </div>
+      <div class="bento"><!-- SZENE dreipunkt --><div class="sz-deko dp-plan" aria-hidden="true"><svg viewBox="0 0 240 200"><defs><radialGradient id="dpStrahl"><stop offset="0" stop-color="#EAFFF6" stop-opacity=".9"/><stop offset="1" stop-color="#EAFFF6" stop-opacity="0"/></radialGradient></defs>
+<g class="dp-l dp-l1"><path class="dp-kegel" d="M44 160 L112 92 L132 112 Z"/><rect class="dp-kopf" x="28" y="150" width="30" height="20" rx="4" transform="rotate(-45 43 160)"/></g>
+<g class="dp-l dp-l2"><path class="dp-kegel" d="M196 160 L128 92 L108 112 Z"/><rect class="dp-kopf" x="182" y="150" width="30" height="20" rx="4" transform="rotate(45 197 160)"/></g>
+<g class="dp-l dp-l3"><path class="dp-kegel" d="M120 26 L104 96 L136 96 Z"/><rect class="dp-kopf" x="105" y="14" width="30" height="18" rx="4"/></g>
+<circle class="dp-motiv" cx="120" cy="102" r="15"/><path class="dp-kamera" d="M108 186h24v-12l-6-5h-12l-6 5z"/></svg></div><!-- /SZENE -->
+        <div data-sz-teil class="cell cell-hero">
+          <div class="n">Foundation</div>
+          <h3>Setup</h3>
+          <p>We set up your entire social presence, professionally. Profiles, branding, strategy.</p>
+          <span class="spacer"></span>
+          <div class="tags">
+            <span class="tag">Profiles</span><span class="tag">Branding</span><span class="tag">Strategy</span><span class="tag">Positioning</span>
           </div>
-          <div class="st-karte" id="st-k-1" role="tabpanel" aria-labelledby="st-ph-1" data-st-karte><b>Phase 1</b><h3>Intro call &amp; strategy</h3><p>We map out your system. Goal, audience &amp; where you stand today. The plan is set.</p></div>
-          <div class="st-karte" id="st-k-2" role="tabpanel" aria-labelledby="st-ph-2" data-st-karte><b>Phase 2</b><h3>Setup &amp; onboarding</h3><p>Your account gets a face. Profile, branding &amp; content strategy are in place.</p></div>
-          <div class="st-karte" id="st-k-3" role="tabpanel" aria-labelledby="st-ph-3" data-st-karte><b>Phase 3</b><h3>Content &amp; management</h3><p>A personal team, ongoing production. Visible week after week. No bots. Real people.</p></div>
-          <div class="st-karte" id="st-k-4" role="tabpanel" aria-labelledby="st-ph-4" data-st-karte><b>Phase 4</b><h3>Scaling</h3><p>Reach turns into inquiries. Whatever works gets more push. Measurable in your client area.</p></div>
-          <a class="st-link" href="/en/process/">The full process</a>
+        </div>
+        <div data-sz-teil class="cell">
+          <div class="n">Your team</div>
+          <h3>Management</h3>
+          <p>A personal team, ongoing content production and strategy. No bots. Real people.</p>
+        </div>
+        <div data-sz-teil class="cell">
+          <div class="n">Growth</div>
+          <h3>Scaling</h3>
+          <p>Reach turns into inquiries. Whatever works gets more push. Measurable in your client area.</p>
         </div>
       </div>
+      <div class="preiszeile">
+        <p><span class="pz-lbl">Pricing</span>Nine designed posts from <b>€446.25</b> one-time, ongoing management from <b>€523.60</b> per month, plus a one-time €523.60 to get started.</p>
+        <a class="textlink" href="/en/pricing/">All seven packages with final prices</a>
+      </div>
+    </div></section>
+
+
+    <section class="blk" id="faq" data-sz="kartei"><div class="wrap faq-split reveal">
+      <div class="blk-head head">
+        <h2>Good to <em>know</em>.</h2>
+      </div>
+      <div class="faq">
+        <details><summary>What if I don’t have any social media presence yet?</summary><p>Then we start from zero. We build everything from the ground up: profiles, branding, strategy and content.</p></details>
+        <details><summary>How soon will I see results?</summary><p>Your presence, right away. In the first weeks your profile visits go up; from month three or four, your posts reach people outside your own network. What moves when is laid out on <a href="/en/results/">Proof</a>.</p></details>
+        <details><summary>Do I have to create content myself?</summary><p>No. We handle production and management. You set the direction, we make it happen.</p></details>
+        <details><summary>Do you work in English?</summary><p>Yes. Calls, content and ongoing support are all in English if that’s the language your audience speaks.</p></details>
+        <details><summary>How long am I committed?</summary><p>One-time packages are paid once, and that’s it. Ongoing management has a three-month minimum term. All terms are on the <a href="/en/pricing/">pricing page</a>.</p></details>
+        <details><summary>What does it cost?</summary><p>All seven packages are listed openly on the <a href="/en/pricing/">pricing page</a>, with final prices instead of “price on request”. Nine designed posts from €446.25 one-time, ongoing management from €523.60 per month plus a one-time €523.60 to get started. Prices are in euros and include German VAT. Which option fits you, we figure out together on the intro call.</p></details>
+      </div>
+    </div></section>
+
+    <!-- Tiefe R1 (16.10.2026): Menschen dort, wo entschieden wird. Sebi: Foto aus /about/.
+         Aufnahmen und Zitate wie auf /about/ (dort schon auf einen Look gerechnet). -->
+    <section class="gruender" aria-labelledby="gruender-h" data-sz="gegenlicht">
+      <div class="wrap gr-kopf">
+        <h2 id="gruender-h">Sebi &amp; Phil. Nobody in between.</h2>
+      </div>
+      <div class="gr-reihe"><!-- SZENE gegenlicht --><div class="sz-deko gl-roehre" aria-hidden="true"><span></span></div><!-- /SZENE -->
+        <figure class="gr-person">
+          <div class="gr-bild"><picture>
+            <source type="image/webp" srcset="/assets/founder-philipp-560.webp 560w, /assets/founder-philipp-880.webp 880w" sizes="(max-width:760px) 50vw, 50vw">
+            <img src="/assets/founder-philipp-560.jpg" alt="Philipp, co-founder of social2scale" width="560" height="700" loading="lazy" decoding="async">
+          </picture></div>
+          <figcaption><span class="gr-name">Philipp</span><span class="gr-rolle">Tech &amp; sales</span>
+            <q class="gr-satz">I don’t sell anyone anything I can’t back up with numbers afterwards.</q></figcaption>
+        </figure>
+        <figure class="gr-person">
+          <div class="gr-bild is-hell"><picture>
+            <source type="image/webp" srcset="/assets/founder-sebastian-560.webp 560w, /assets/founder-sebastian-768.webp 768w" sizes="(max-width:760px) 50vw, 50vw">
+            <img src="/assets/founder-sebastian-560.jpg" alt="Sebastian, co-founder of social2scale" width="560" height="700" loading="lazy" decoding="async">
+          </picture></div>
+          <figcaption><span class="gr-name">Sebastian</span><span class="gr-rolle">Content &amp; reach</span>
+            <q class="gr-satz">I won’t post anything for you that I wouldn’t post on my own account.</q></figcaption>
+        </figure>
+      </div>
+      <div class="gr-fuss"><a class="textlink" href="/en/about/">More about us</a></div>
     </section>
 
-    <section class="st-set st-4" id="proof" data-st-set aria-labelledby="feed-h">
-      <div class="st-wand" aria-hidden="true"></div>
-      <div class="st-innen">
-        <div class="st-kopfzeile">
-          <p class="st-eyebrow">Our own feed</p>
-          <h2 id="feed-h">We don’t claim. We <em>show</em>.</h2>
-        </div>
-        <div class="st-leine">
-          <div class="st-klemmlampe" aria-hidden="true"></div>
-          <svg viewBox="0 0 390 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 10 Q195 62 390 10" fill="none" stroke="#C9CCC6" stroke-opacity=".55" stroke-width="1.5"/></svg>
-          <figure class="st-print st-p1"><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Post by @social2scale, in German: Twice a month does nothing." width="360" height="450" loading="lazy" decoding="async"></figure>
-          <figure class="st-print st-p2"><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Post by @social2scale, in German: Six questions. Us included." width="360" height="450" loading="lazy" decoding="async"></figure>
-          <figure class="st-print st-p3"><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(min-width:960px) 156px, 100px" alt="Post by @social2scale, in German: No metric." width="360" height="450" loading="lazy" decoding="async"></figure>
-        </div>
-        <div class="st-zahlen">
-          <p class="st-eyebrow">What you can hold us to</p>
-          <div class="st-zahl"><span>1</span><b>Profile visits</b><p>How many take a closer look after a post.</p></div>
-          <div class="st-zahl"><span>2</span><b>Inquiries</b><p>How many actually reach out.</p></div>
-          <div class="st-zahl"><span>3</span><b>Calls</b><p>The only number that counts in the end.</p></div>
-        </div>
-        <a class="st-link" href="/en/results/">Proof: what moves when</a>
-      </div>
-    </section>
-
-    <section class="st-set st-5" id="gruender" data-st-set aria-labelledby="gruender-h">
-      <div class="st-wand" aria-hidden="true"></div><div class="st-kegel" aria-hidden="true"></div><div class="st-boden" aria-hidden="true"></div>
-      <div class="st-innen">
-        <h2 id="gruender-h">Sebi &amp; Phil. <em>Nobody in between.</em></h2>
-        <div class="st-zwei" style="margin-top:30px">
-          <div class="st-paar">
-            <figure class="st-person"><div class="st-gegenlicht" aria-hidden="true"></div><div class="st-rahmen"><picture><source type="image/webp" srcset="/assets/founder-philipp-560.webp"><img src="/assets/founder-philipp-560.jpg" alt="Philipp, co-founder of social2scale" width="560" height="700" loading="lazy" decoding="async"></picture></div><figcaption><h3>Philipp</h3><small>Tech &amp; sales</small><p>I don’t sell anyone anything I can’t back up with numbers afterwards.</p></figcaption></figure>
-            <figure class="st-person"><div class="st-gegenlicht" aria-hidden="true"></div><div class="st-rahmen"><picture><source type="image/webp" srcset="/assets/founder-sebastian-560.webp"><img src="/assets/founder-sebastian-560.jpg" alt="Sebastian, co-founder of social2scale" width="560" height="700" loading="lazy" decoding="async"></picture></div><figcaption><h3>Sebastian</h3><small>Content &amp; reach</small><p>I won’t post anything for you that I wouldn’t post on my own account.</p></figcaption></figure>
-          </div>
-          <div class="st-kartei" id="faq">
-            <h3>Good to know.</h3>
-            <details class="st-frage"><summary>What if I don’t have any social media presence yet?</summary><p>Then we start from zero. We build everything from the ground up: profiles, branding, strategy and content.</p></details>
-            <details class="st-frage"><summary>How soon will I see results?</summary><p>Your presence, right away. In the first weeks your profile visits go up; from month three or four, your posts reach people outside your own network. What moves when is laid out on <a href="/en/results/">Proof</a>.</p></details>
-            <details class="st-frage"><summary>Do I have to create content myself?</summary><p>No. We handle production and management. You set the direction, we make it happen.</p></details>
-            <details class="st-frage"><summary>Do you work in English?</summary><p>Yes. Calls, content and ongoing support are all in English if that’s the language your audience speaks.</p></details>
-            <details class="st-frage"><summary>What does it cost?</summary><p>All seven packages are listed openly on the <a href="/en/pricing/">pricing page</a>, with final prices instead of “price on request”. Nine designed posts from €446.25 one-time, ongoing management from €523.60 per month plus a one-time €523.60 to get started. Prices are in euros and include German VAT.</p></details>
-            <a class="st-link" href="/en/about/">More about us</a>
-          </div>
-        </div>
-        <div class="st-marke-platz" aria-hidden="true"><div class="st-fl"></div><i class="q"></i><i class="l"></i></div>
-        <div class="st-schluss abschluss">
-          <h2>Let’s talk about your <em>growth</em>.</h2>
-          <p class="st-unter">First we take a quick look at whether we’re a good fit. Then a preview or a call.</p>
-          <a class="st-knopf" id="cta-bottom" href="/en/free/">Get started free →</a>
+    <section class="blk abschluss" data-sz="markierung"><div class="wrap reveal">
+      <div class="band">
+        <h2>Let’s talk about your <em>growth</em>.</h2>
+        <p class="lead">First we take a quick look at whether we’re a good fit. Then a preview or a call.</p>
+        <div class="cta-row"><!-- SZENE markierung --><span class="sz-deko mk-spot" aria-hidden="true"></span><span class="sz-deko mk-band mk-start" aria-hidden="true"><i></i><i></i></span><!-- /SZENE -->
+          <a class="btn btn-primary" id="cta-bottom" href="/en/free/">Get started free →</a>
         </div>
       </div>
-    </section>
+    </div></section>
   </main>
 
   <footer class="site-footer"><div class="wrap">
@@ -1318,6 +1501,19 @@
     upd();
   })();
   </script>
+  <script>
+  /* Foto-Reveal beim Scrollen (fade + minimaler Zoom). Progressive Enhancement. */
+  (function(){
+    var els = document.querySelectorAll('.hero-bg, .sec-bg');
+    if (!els.length || !('IntersectionObserver' in window)) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('anim-ready');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(function(e){ io.observe(e); });
+  })();
+  </script>
   <style>
   /* ── Bild-/Scroll-Effekte: 3D-Schrift + scroll-getriebene Helligkeit ── */
   .hero h1 em{
@@ -1334,6 +1530,189 @@
   }
   @media (hover:none){.hero .hero-center{transform:none!important}}
   </style>
+  <script>
+  /* Scroll-getriebene Helligkeit der Foto-Layer + 3D-Pointer-Tilt im Hero.
+     Progressive Enhancement; respektiert prefers-reduced-motion. */
+  (function(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var photos = [].slice.call(document.querySelectorAll('.hero-bg,.sec-bg,.band.has-photo'));
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var ticking = false;
+    function frame(){
+      ticking = false;
+      var center = vh/2;
+      for (var i=0;i<photos.length;i++){
+        var el = photos[i], r = el.getBoundingClientRect();
+        if (r.bottom < -240 || r.top > vh+240) continue;            /* außer Sicht → skip */
+        var mid = r.top + r.height/2;
+        var d = Math.min(1, Math.abs(mid-center)/(vh*0.78));         /* 0 = zentriert, 1 = Rand */
+        el.style.setProperty('--photb', (1.10 - d*0.34).toFixed(3)); /* 1.10 Fokus → 0.76 Rand */
+        el.style.setProperty('--phots', (1.12 - d*0.22).toFixed(3)); /* satter im Fokus */
+      }
+    }
+    function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', function(){ vh = window.innerHeight||document.documentElement.clientHeight; onScroll(); }, {passive:true});
+    frame();
+
+    /* Kein 3D-Kippen des Hero mehr (16.10.2026): der Block drehte sich weg, waehrend man auf den
+       Knopf zielte — Hover kam verzoegert, bedienung-check sah den Knopf „unter“ seinem Container. */
+  })();
+  </script>
+  <script>
+
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var flach = matchMedia('(max-width:959px)');  /* Handy: nicht angepinnt, Endzustand */
+  var hero  = document.getElementById('ablauf');
+  var track = hero.querySelector('.s2hero-track');
+  var phone = document.getElementById('phone');
+  var app   = document.getElementById('app');
+  var noti  = document.getElementById('noti');
+  var notiMsg = document.getElementById('notiMsg');
+  var heart = document.getElementById('heart');
+  var caps  = [].slice.call(document.querySelectorAll('.pcap'));
+  var dots  = [].slice.call(document.querySelectorAll('.dots i'));
+  var tiles = [].slice.call(document.querySelectorAll('.grid .tile'));
+  var nums  = {};
+  [].forEach.call(document.querySelectorAll('[data-k]'), function(el){ nums[el.dataset.k]=el; });
+
+  // weighted phase boundaries — empty start is short, growth kicks in fast
+  var B = [0, 0.12, 0.42, 0.72, 1];
+  var MSG = [
+    'Strategy call ✓ Goal, audience &amp; plan are set.',
+    'Setup live — profile, branding &amp; content are ready.',
+    'You approve, we post — every week.',
+    'Monthly report: what worked, what we change next.'
+  ];
+
+  function easeInOut(t){ return t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2; }
+  function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+  function phaseOf(pp){ for(var i=0;i<4;i++){ if(pp < B[i+1]) return i; } return 3; }
+  function seg(arr){ var ph=phaseOf(p), f=easeInOut(clamp((p-B[ph])/(B[ph+1]-B[ph]),0,1)); return arr[ph]+(arr[ph+1]-arr[ph])*f; }
+
+  var p = 0, lastPhase = -1, notiTimer;
+  function popNoti(phase){
+    clearTimeout(notiTimer);
+    notiMsg.innerHTML = MSG[phase];
+    noti.classList.remove('out'); noti.classList.remove('pop'); void noti.offsetWidth; noti.classList.add('pop');
+    notiTimer = setTimeout(function(){ noti.classList.remove('pop'); void noti.offsetWidth; noti.classList.add('out'); }, 2600);
+  }
+  function burstHeart(){ heart.classList.remove('burst'); void heart.offsetWidth; heart.classList.add('burst'); }
+
+  function render(){
+    hero.style.setProperty('--p', (reduce?1:easeInOut(clamp(p,0,1))).toFixed(3));
+    var phase = phaseOf(p);
+
+    if(!reduce){
+      phone.style.setProperty('--ry', (-6 + p*8).toFixed(2)+'deg');
+      phone.style.setProperty('--rx', (3 - p*3).toFixed(2)+'deg');
+    }
+
+    nums.posts.textContent = Math.round(seg([0,0,7,16,24]));
+    /* Follower zaehlen nicht mehr hoch (16.10.2026): 2 → 12.400 war ein Wachstumsversprechen
+       ohne Beleg. Was waechst, ist der Feed, den wir bauen — die Beitraege. */
+
+    app.classList.toggle('lit', phase>=1);
+    app.classList.toggle('v2', phase>=2);
+
+    var show = Math.round(seg([0,0,4,8,9]));
+    tiles.forEach(function(t,i){ t.classList.toggle('s2show', i<show); });
+
+    caps.forEach(function(c,i){ c.classList.toggle('s2on', i===phase); });
+    dots.forEach(function(d,i){ d.classList.toggle('s2on', i===phase); d.classList.toggle('s2done', i<phase); });
+
+    if(phase!==lastPhase){
+      if(!reduce) popNoti(phase);
+      if(phase===3 && lastPhase<3 && !reduce) setTimeout(burstHeart, 480);
+      lastPhase = phase;
+    }
+  }
+
+  function onScroll(){
+    if(reduce || flach.matches){ p=1; render(); return; }
+    var r = track.getBoundingClientRect();
+    var total = r.height - window.innerHeight;
+    p = clamp((-r.top)/(total||1), 0, 1);
+    render();
+  }
+  var ticking=false;
+  window.addEventListener('scroll', function(){ if(ticking)return; ticking=true; requestAnimationFrame(function(){ onScroll(); ticking=false; }); }, {passive:true});
+  window.addEventListener('resize', onScroll);
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('s2in'); io.unobserve(e.target); } }); }, {threshold:.05});
+  io.observe(hero);
+
+  if(!reduce && matchMedia('(pointer:fine)').matches){
+    var stage=document.querySelector('.stage');
+    stage.addEventListener('pointermove', function(e){
+      var b=stage.getBoundingClientRect();
+      var dx=(e.clientX-b.left)/b.width-0.5, dy=(e.clientY-b.top)/b.height-0.5;
+      phone.style.setProperty('--py', (dx*7).toFixed(2)+'deg');
+      phone.style.setProperty('--px', (-dy*5).toFixed(2)+'deg');
+    });
+    stage.addEventListener('pointerleave', function(){ phone.style.setProperty('--py','0deg'); phone.style.setProperty('--px','0deg'); });
+  }
+
+  // live current time in the status bar
+  var clock = document.getElementById('clock');
+  function tick(){ var d=new Date(); var h=d.getHours(), m=d.getMinutes(); clock.textContent = h + ':' + (m<10?'0':'') + m; }
+  tick(); setInterval(tick, 15000);
+
+  // real Instagram-style double-tap on the screen → heart
+  var screenEl = document.querySelector('.screen'), lastTap = 0;
+  screenEl.addEventListener('dblclick', function(e){ if(!isLink(e.target)) burstHeart(); });
+  screenEl.addEventListener('touchend', function(e){
+    if(isLink(e.target)) return;
+    var now = Date.now();
+    if(now - lastTap < 320){ e.preventDefault(); burstHeart(); lastTap = 0; } else { lastTap = now; }
+  }, {passive:false});
+  function isLink(el){ return !!(el && el.closest && el.closest('a')); }
+
+  onScroll();
+})();
+
+  </script>
+<div class="sticky-cta" id="stickyCta" aria-hidden="true">
+  <div class="inner">
+    <span class="txt"><b>Are we a good fit?</b>Quick check, then a preview or a call.</span>
+    <a class="btn btn-primary" href="/en/free/">Get&nbsp;started&nbsp;free&nbsp;→</a>
+  </div>
+</div>
+<script>
+  // Sticky-CTA einblenden, sobald der Hero durch ist — und am Seitenende wieder
+  // ausblenden, damit er den dortigen großen CTA nicht doppelt (und nicht den
+  // Footer verdeckt).
+  (function () {
+    var bar = document.getElementById("stickyCta");
+    var hero = document.getElementById("hero");
+    var ende = document.getElementById("cta-bottom");
+    if (!bar || !hero) return;
+    var heroWeg = false, endeDa = false;
+    function stellen() {
+      var zeigen = heroWeg && !endeDa;
+      bar.classList.toggle("on", zeigen);
+      bar.setAttribute("aria-hidden", zeigen ? "false" : "true");
+      bar.inert = !zeigen;   /* ausgeblendet = nicht per Tastatur erreichbar */
+    }
+    new IntersectionObserver(function (es) {
+      heroWeg = !es[0].isIntersecting; stellen();
+    }, { threshold: 0 }).observe(hero);
+    if (ende) {
+      /* Die Lage des Abschluss-Knopfs wird beim Scrollen direkt gelesen: ein
+         Beobachter meldet sich nicht, wenn man in EINEM Sprung (Ende-Taste,
+         Anker, schneller Wisch) ueber ihn hinweg springt — dann kam die Leiste
+         am Seitenende zurueck und lag ueber Impressum/Datenschutz. */
+      var t = false;
+      var pruefen = function () {
+        t = false;
+        endeDa = ende.getBoundingClientRect().top < window.innerHeight + 120;
+        stellen();
+      };
+      window.addEventListener("scroll", function () { if (!t) { t = true; requestAnimationFrame(pruefen); } }, { passive: true });
+      pruefen();
+    }
+  })();
+</script>
 <script>
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
@@ -1357,8 +1736,8 @@
   })();
 </script>
 <script src="/uebergang.js" defer></script>
-<script src="/start-studio.js" defer></script>
 <script src="/bewegung.js" defer></script>
 <script src="/hero-bewegung.js" defer></script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="start" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

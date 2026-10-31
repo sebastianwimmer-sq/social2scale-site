@@ -24,6 +24,10 @@ const podest = ({ b, x, y, h }) => `<span class="raum-podest" style="--b:${b};--
 
 // Kopf-Orte: was im Raum steht. Positionen in Ebenen-Koordinaten (Boden ab ~44 % von unten).
 const KOPF = {
+  start: {
+    fern: [{ b: '6%', x: '21%', y: '41%', bild: 'beitrag-5-360.webp' }, { b: '6.5%', x: '73%', y: '40%', bild: 'beitrag-10-400.webp' }],
+    mitte: [{ b: '12%', x: '5%', y: '27%', bild: 'beitrag-13-360.webp' }, { b: '11%', x: '83%', y: '29%', bild: 'beitrag-11-400.webp' }],
+  },
   ablauf: {
     weg: { von: '44%', bis: '6%', hoehe: '62%' },
     fern: [{ b: '4.5%', x: '47%', y: '44%', bild: 'beitrag-2-360.webp' }, { b: '5.5%', x: '55%', y: '42%', bild: 'beitrag-3-360.webp' }, { b: '6.5%', x: '64%', y: '40%', bild: 'beitrag-4-360.webp' }],
@@ -63,6 +67,7 @@ const lichtBlock = (ort) => `<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div cl
 
 // Seiten: DE und EN teilen sich den Ort. anker = öffnendes Tag, hinter das der Kopf-Ort kommt.
 const SEITEN = [
+  { dateien: ['index.html', 'en/index.html'], kopf: 'start', anker: /<section class="hero" id="hero">/ },
   { dateien: ['ablauf/index.html', 'en/process/index.html'], kopf: 'ablauf', anker: /<section class="fl-hero">/ },
   { dateien: ['preise/index.html', 'en/pricing/index.html'], kopf: 'preise', anker: /<section class="pr-hero"[^>]*>/ },
   { dateien: ['for-you/index.html', 'en/for-you/index.html'], kopf: 'fuer-wen', anker: /<section class="fw-hero"[^>]*>/ },

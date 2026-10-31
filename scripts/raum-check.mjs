@@ -28,7 +28,7 @@ const { chromium, webkit } = await import('/opt/homebrew/lib/node_modules/playwr
 const WURZEL = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
 // Kopf-Orte (je ein eigener Ort) und Seiten, die nur das Seitenlicht tragen — Quelle: scripts/raum-bauen.mjs
-const SEITEN = ['/ablauf/', '/preise/', '/for-you/', '/about/', '/results/', '/danke/', '/danke/studio/'];
+const SEITEN = ['/', '/ablauf/', '/preise/', '/for-you/', '/about/', '/results/', '/danke/', '/danke/studio/'];
 const LICHT_SEITEN = ['/wissen/', '/wissen/was-kostet-social-media-betreuung/', '/links/', '/onboarding/', '/impressum/', '/404.html'];
 const RUCKEL_GRENZE = 5;
 const MIN_VERSATZ_PX = 4;
@@ -137,7 +137,7 @@ async function lauf() {
     await b.close();
   }
 
-  // Seitenlicht: an, eigener Ort; auf einer Seite mit Kopf-Raum ruht es, solange der Kopf zu sehen ist (Startseite hat seit 30.10. ihr eigenes Studio)
+  // Seitenlicht: an, eigener Ort; auf der Startseite ruht es, solange der Kopf zu sehen ist
   {
     const b = await chromium.launch();
     const lichtOrte = new Map();
@@ -155,14 +155,14 @@ async function lauf() {
       melde(!probleme.length, `Licht     ${pfad.padEnd(9)} ${probleme.join(' · ') || `an (Ort ${ort})`}`);
       await c.close();
     }
-    const { c, p } = await oeffne(b, '/ablauf/', 'no-preference');
+    const { c, p } = await oeffne(b, '/', 'no-preference');
     await p.waitForTimeout(1500);
     const obenAn = await p.evaluate(() => document.querySelector('[data-raum-licht]').classList.contains('an'));
     await p.evaluate(() => scrollTo(0, innerHeight * 2.2));
     // Seit 28.10. bringt jede Szene ihr eigenes Licht mit (szenen/basis.css): ist eine im Bild, ruht das Seitenlicht
     // sichtbar, bleibt aber geschaltet (.an). Gemessen wird beides: geschaltet UND (sichtbar ODER eine Szene im Bild).
     const untenAn = await p.waitForFunction(() => { const l = document.querySelector('[data-raum-licht]'); return l && l.classList.contains('an') && (parseFloat(getComputedStyle(l).opacity) > 0.9 || document.documentElement.hasAttribute('data-sz-sicht')); }, null, { timeout: 5000 }).then(() => true, () => false);
-    melde(!obenAn && untenAn, `Licht     /ablauf/  ${!obenAn ? 'ruht unter dem Kopf-Raum' : 'brennt doppelt neben dem Kopf-Raum'} · ${untenAn ? 'geht danach an' : 'geht danach NICHT an'}`);
+    melde(!obenAn && untenAn, `Licht     /         ${!obenAn ? 'ruht unter dem Kopf-Raum' : 'brennt doppelt neben dem Kopf-Raum'} · ${untenAn ? 'geht danach an' : 'geht danach NICHT an'}`);
     await c.close();
     await b.close();
   }
