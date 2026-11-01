@@ -98,7 +98,8 @@ body:not(:has(.raum)) .raum-licht{view-transition-name:studio}
    nur wo der Browser es kann, nie bei „weniger Bewegung“. Der Kopf mit Raum und die Fußzeile bleiben aus. */
 @keyframes raumFokus{0%{opacity:.5}26%,74%{opacity:1}100%{opacity:.5}}
 @supports (animation-timeline:view()){
-  @media (prefers-reduced-motion:no-preference){
+  /* nur ab 960 px: am Handy sind Abschnitte höher als der Schirm, dort flackerte der Text halbhell mit jedem Wisch (Sebi 31.10.: "reagiert so komisch") */
+  @media (prefers-reduced-motion:no-preference) and (min-width:960px){
     main > :where(section,article,div,aside):not(:has(.raum)){animation:raumFokus linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
   }
 }
