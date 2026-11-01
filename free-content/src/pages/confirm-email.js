@@ -83,7 +83,7 @@ function mailCta(url, label) {
 const VORSCHAU_GRUND = 'Diese Mail ging an dich, weil deine Adresse bei social2scale für die Content-Vorschau eingetragen wurde. Erst mit Bestätigung werden Daten verarbeitet.';
 const VORSCHAU_GRUND_EN = 'You’re receiving this email because your address was entered at social2scale for the content preview. Your data is only processed once you confirm.';
 // Rechtsfuss je Sprache: Impressum und Datenschutz gibt es nur auf Deutsch, die Beschriftung folgt der Mail.
-const RECHT = { de: ['Impressum', 'Datenschutz'], en: ['Legal notice', 'Privacy (German)'] };
+const RECHT = { de: ['Impressum', 'Datenschutz', 'https://social2scale.com/datenschutz/'], en: ['Legal notice', 'Privacy', 'https://social2scale.com/en/privacy/'] };
 const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND, lang = 'de') => `
           <div style="height:1px;line-height:1px;font-size:1px;background:rgba(255,255,255,0.09);margin:30px 0 22px;">&nbsp;</div>
           <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
@@ -100,7 +100,7 @@ const sigFooter = (name = 'Das social2scale-Team', grund = VORSCHAU_GRUND, lang 
 
           <p style="margin:24px 0 0;font-size:11.5px;line-height:1.7;color:${FAINT};">
             ${grund}<br>
-            social2scale &mdash; Philipp Libowicz · Johannes-Hess-Straße 1, 84489 Burghausen &middot; <a href="https://social2scale.com/impressum/" style="color:${FAINT};">${RECHT[lang][0]}</a> &middot; <a href="https://social2scale.com/datenschutz/" style="color:${FAINT};">${RECHT[lang][1]}</a>
+            social2scale &mdash; Philipp Libowicz · Johannes-Hess-Straße 1, 84489 Burghausen &middot; <a href="https://social2scale.com/impressum/" style="color:${FAINT};">${RECHT[lang][0]}</a> &middot; <a href="${RECHT[lang][2]}" style="color:${FAINT};">${RECHT[lang][1]}</a>
           </p>
         </td></tr>
       </table>

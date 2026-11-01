@@ -325,7 +325,7 @@ const FUSS_EN = [
   ["Premium Social-Growth für Coaches &amp; Experten.", "Done-for-you social media growth for coaches &amp; experts."],
   ['aria-label="Rechtliche Seiten"', 'aria-label="Legal pages"'],
   ['<a href="/impressum/">Impressum</a>', '<a href="/impressum/" hreflang="de">Legal notice (German)</a>'],
-  ['<a href="/datenschutz/">Datenschutz</a>', '<a href="/datenschutz/" hreflang="de">Privacy policy (German)</a>'],
+  ['<a href="/datenschutz/">Datenschutz</a>', '<a href="/en/privacy/">Privacy policy</a>'],
 ];
 function fuss(L) {
   let f = FUSS_ROH.replace('href="../impressum/"', 'href="/impressum/"').replace('href="../datenschutz/"', 'href="/datenschutz/"');

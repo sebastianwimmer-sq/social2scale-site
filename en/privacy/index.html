@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- SICHERHEIT:AUTO -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-E6tkR+LSwzCVA2yHT7D3RHY5JJhYWHGuoAmaICxYL/4=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
+<!-- /SICHERHEIT:AUTO -->
+<meta name="s2s-quelle" content="/datenschutz/@b069792200ef5f66">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#03080D">
+<title>Privacy policy — social2scale</title>
+<meta name="description" content="Privacy policy of social2scale under the GDPR — information on the processing of personal data.">
+<meta property="og:site_name" content="social2scale">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="Privacy policy — social2scale">
+<meta property="og:description" content="How we handle your data: transparent, GDPR-compliant and without tracking cookies.">
+<meta property="og:url" content="https://social2scale.com/en/privacy/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://social2scale.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="social2scale — privacy">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://social2scale.com/en/privacy/">
+<!-- Schriften werden selbst gehostet (DSGVO-konform, keine Übertragung an Google). Siehe /fonts.css -->
+<link rel="stylesheet" href="/fonts.css">
+<noscript><style>#loader{display:none!important}.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}
+  </style></noscript>
+<style>
+  :root{
+    --ink:#000000; --surface:#101012; --surface-2:#16161A; --paper:#F2F3F1; --muted:#A4A6A1; --faint:#7C7E78;
+    --emerald:#00B888; --emerald-soft:#1FC998; --emerald-ink:#04201A;
+    --line:rgba(242,243,241,.10); --line-2:rgba(242,243,241,.16); --ease:cubic-bezier(.16,1,.3,1);--dur-1:.15s;--dur-2:.24s;--dur-3:.45s;--dur-4:.8s;
+    --px:clamp(20px,5vw,40px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  /* ===== Fix-Dark Hardening — dunkel in JEDEM OS-Modus (Dark-Audit) ===== */
+  :root{color-scheme:dark}
+  input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus,textarea:-webkit-autofill,select:-webkit-autofill{-webkit-text-fill-color:#F2F3F1;caret-color:#F2F3F1;-webkit-box-shadow:0 0 0 1000px #16161A inset;box-shadow:0 0 0 1000px #16161A inset;transition:background-color 9999s ease-out 0s}
+  *{scrollbar-color:#7C7E78 transparent;scrollbar-width:thin}
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:#000}
+  ::-webkit-scrollbar-thumb{background:#2a2a2e;border-radius:7px;border:2px solid #000}
+  ::-webkit-scrollbar-thumb:hover{background:#37373c}
+  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--paper);font-family:"Hanken Grotesk",system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.65;overflow-x:hidden;
+    background-image:
+      radial-gradient(120% 70% at 50% -8%, rgba(0,184,136,.10), transparent 52%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 1px, transparent 1px 44px);}
+  .skip{position:absolute;left:-9999px}
+  .skip:focus-visible{left:16px;top:16px;z-index:100;background:var(--emerald);color:var(--emerald-ink);padding:10px 16px;border-radius:4px}
+  .wrap{width:100%;max-width:720px;margin:0 auto;padding:0 var(--px)}
+  a{color:var(--emerald-soft)}
+  a:focus-visible{outline:2px solid var(--emerald);outline-offset:2px;border-radius:3px}
+
+  @keyframes upIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity var(--dur-4, .7s) var(--ease),transform var(--dur-4, .7s) var(--ease)}
+  .reveal.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1!important;transform:none!important}}
+
+
+  /* HEADER */
+  .site-head{padding:34px 0 8px}
+  .site-head .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+  .logo{height:clamp(40px,6vw,54px);width:auto;aspect-ratio:auto;display:block;mix-blend-mode:screen;animation:upIn var(--dur-3, .6s) var(--ease) both}
+  .logo-s2s{display:none!important}
+  @media (max-width:600px){.logo-full{display:none!important}.logo-s2s{display:inline-block!important}}
+  .home-link{font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);text-decoration:none;margin-top:4px}
+  .home-link:hover{color:var(--paper)}
+
+  /* HERO TITLE */
+  .lead-block{padding:clamp(28px,5vw,52px) 0 8px}
+  .klabel{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--emerald)}
+  h1{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(2.4rem,1.6rem + 3.4vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:14px}
+  h1 em{font-style:italic;color:var(--emerald)}
+  .lead{color:var(--muted);font-size:1.05rem;margin-top:18px;max-width:54ch}
+  .meta{font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);margin-top:20px}
+  .sprachhinweis{font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch;margin-top:10px}
+
+  /* TOC */
+  .toc{margin-top:26px;background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,22px)}
+  .toc p{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emerald)}
+  .toc ol{margin:12px 0 0;padding-left:0;list-style:none;counter-reset:t;display:grid;gap:6px}
+  .toc li{counter-increment:t;color:var(--muted)}
+  .toc li a{color:var(--muted);text-decoration:none}
+  .toc li a:hover{color:var(--paper)}
+  .toc li a::before{content:counter(t,decimal-leading-zero)" · ";font-family:"JetBrains Mono",monospace;color:var(--emerald);font-size:.85em}
+
+  /* SECTIONS */
+  article{padding:clamp(20px,4vw,32px) 0 60px}
+  section.blk{padding:clamp(26px,5vw,40px) 0;border-top:1px solid var(--line);scroll-margin-top:80px}
+  h2{font-family:"Fraunces",serif;font-weight:300;font-size:clamp(1.5rem,1.1rem + 1.6vw,2.1rem);line-height:1.14;letter-spacing:-.01em}
+  h2 em{font-style:italic;color:var(--emerald)}
+  h2 .n{font-family:"JetBrains Mono",monospace;font-size:.6em;color:var(--emerald);margin-right:10px;vertical-align:.12em}
+  h3{font-family:"Archivo",sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--emerald);margin-top:24px}
+  p{margin-top:14px;color:var(--paper)}
+  p.muted{color:var(--muted)}
+  ul{margin:14px 0 0;padding-left:0;list-style:none;display:grid;gap:8px}
+  ul li{position:relative;padding-left:20px;color:var(--paper)}
+  ul li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:rgba(0,184,136,.6);border:1px solid var(--emerald)}
+  .legal{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.06em;color:var(--faint);background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:6px;padding:4px 10px}
+
+  .data{margin-top:18px;background:linear-gradient(180deg,rgba(22,22,26,.8),rgba(12,12,14,.8));border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,24px)}
+  .data dl{display:grid;grid-template-columns:auto 1fr;gap:6px 22px}
+  .data dt{font-family:"Archivo",sans-serif;font-size:0.6875rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+  .data dd{color:var(--paper)}
+  @media (max-width:520px){.data dl{grid-template-columns:1fr;gap:2px 0}.data dt{padding-top:12px}.data dt:first-child{padding-top:0}}
+  .ph{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.88em;color:var(--emerald-soft);background:rgba(0,184,136,.10);border:1px dashed rgba(0,184,136,.40);border-radius:5px;padding:1px 7px;max-width:100%;overflow-wrap:anywhere}
+
+  /* ===== Footer (lean · Liquid-Glass) ===== */
+  .site-footer{position:relative;border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--ink,#000);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);margin-top:56px}
+  .site-footer::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.5),transparent);opacity:.6}
+  .foot-inner{max-width:720px;margin:0 auto;padding:36px var(--px) 44px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+  .foot-id{display:flex;align-items:center;gap:12px}
+  .foot-id img{height:30px;width:auto;display:block}
+  .foot-id .foot-tag{font-family:"Archivo",sans-serif;font-size:0.75rem;font-weight:500;color:var(--muted);max-width:24ch;line-height:1.45}
+  .foot-links{display:flex;flex-wrap:wrap;align-items:center;gap:18px;font-family:"Archivo",sans-serif;font-size:0.8125rem;font-weight:500}
+  .foot-links a{color:var(--muted);text-decoration:none;transition:color var(--dur-2, .2s) var(--ease)}
+  .foot-links a:hover{color:var(--paper)}
+  .foot-meta{max-width:720px;margin:0 auto;padding:0 var(--px) 36px;font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.04em;color:var(--faint);line-height:1.9}
+  .foot-meta .pk{color:var(--emerald-soft)}
+  @media (max-width:560px){.foot-inner{flex-direction:column;align-items:flex-start;gap:18px}}
+
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+  
+    /* ===== Liquid Glass (iOS-26-Anlehnung) · Nav · Menue · Buttons · Cards · LG-INJECT ===== */
+  @supports ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+    .bar, header.top{
+      -webkit-backdrop-filter:blur(22px) saturate(185%);
+      backdrop-filter:blur(22px) saturate(185%);
+      background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.68),rgba(7,11,14,.55));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 1px 0 rgba(0,0,0,.22),0 16px 36px -26px rgba(0,0,0,.85);
+    }
+    .mobile-menu{
+      -webkit-backdrop-filter:blur(26px) saturate(180%);
+      backdrop-filter:blur(26px) saturate(180%);
+      background:radial-gradient(120% 80% at 18% 0%,rgba(255,255,255,.08),transparent 48%),linear-gradient(180deg,rgba(12,20,17,.78),rgba(7,11,14,.72));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
+    }
+    .nav-cta,.m-cta{-webkit-backdrop-filter:blur(16px) saturate(170%);backdrop-filter:blur(16px) saturate(170%)}
+  }
+  .nav-cta{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.035));border-color:rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 8px 22px -16px rgba(0,0,0,.7)}
+  .nav-cta:hover{background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.06));border-color:rgba(0,184,136,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -14px rgba(0,184,136,.4);transform:translateY(-1px)}
+  .nav-cta:active{transform:scale(.97)}
+  .cell,.panel,.band,.wd,.faq details,.card{box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 18px 44px -28px rgba(0,0,0,.72)}
+  .btn-primary{box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.45)}
+  
+  /* Druck (motion-loop 06.10.2026): wer druckt, scrollt nicht — Einblendungen
+     stehen fertig da, Bewegung ist aus, feste Bedienelemente drucken nicht mit. */
+  @media print{
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.reveal .stagger>*,.reveal .grow>*,.r,.wipe,.from-left,.from-right,.enter,.tx,.lk,.fl-fakt,.fl-b-item,.w-re,.feed-reihe li,.fillbar,.ab-pic img{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}
+    .bar,.sticky-cta,.to-top,.mobile-menu,.nav-scrim,.burger{display:none!important}
+  }
+</style>
+<style>
+/* ════ Premium-Anhebung · Legal-Seiten (Header-Glas · Hero-Atmosphäre · Tiefe) ════ */
+.site-head{position:sticky;top:0;z-index:60;padding:13px 0;
+  background:linear-gradient(180deg,rgba(8,16,13,.84),rgba(7,11,14,.62));
+  -webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid rgba(0,184,136,.16);
+  box-shadow:0 1px 0 rgba(255,255,255,.04),0 14px 34px -26px rgba(0,0,0,.85)}
+.site-head .wrap{flex-direction:row;align-items:center;justify-content:space-between;gap:18px}
+.site-head .logo{height:28px;margin:0;animation:none}
+.home-link{margin-top:0}
+.site-head .home-link:hover{color:var(--emerald-soft)}
+/* Hero-Atmosphäre statt flacher schwarzer Fläche */
+.lead-block{position:relative;overflow:hidden;
+  padding-top:clamp(46px,8vw,92px);padding-bottom:clamp(22px,4vw,40px)}
+.lead-block::before{content:"";position:absolute;inset:-30% -15% auto -15%;height:150%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(58% 72% at 16% -4%, rgba(0,184,136,.20), transparent 60%),
+    radial-gradient(48% 60% at 102% 6%, rgba(31,166,224,.10), transparent 56%)}
+.lead-block .wrap{position:relative;z-index:1}
+.lead-block h1{text-shadow:0 1px 0 rgba(255,255,255,.05),0 20px 46px rgba(0,0,0,.55)}
+.lead-block .klabel{display:inline-flex;align-items:center;gap:11px}
+.lead-block .klabel::before{content:"";width:28px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--emerald),rgba(0,184,136,0))}
+/* Karten mehr Tiefe + lebendige Interaktion */
+.toc,.data{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 22px 54px -34px rgba(0,0,0,.85)}
+.toc li a{display:inline-block;transition:color var(--dur-2, .2s) var(--ease),transform var(--dur-2, .2s) var(--ease)}
+.toc li a:hover{transform:translateX(3px)}
+.legal{transition:border-color var(--dur-2, .25s) var(--ease),color var(--dur-2, .25s) var(--ease)}
+section.blk:hover .legal{border-color:rgba(0,184,136,.30);color:var(--muted)}
+section.blk{scroll-margin-top:90px}
+/* Zweispaltiges Dokument-Layout — füllt die Breite (kein „mittig gequetscht") */
+.doc-grid{max-width:1120px;margin:0 auto;padding:0 var(--px)}
+.doc-grid .wrap{max-width:74ch;margin:0;padding:0}
+.lead-block .wrap{max-width:1120px}
+@media (min-width:1000px){
+  .lead-block h1{max-width:20ch}
+  .lead-block .lead{max-width:58ch}
+  .doc-grid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:clamp(34px,4.5vw,76px);align-items:start}
+  .toc-rail{position:sticky;top:88px}
+  .toc-rail .toc{margin-top:0}
+  .doc-grid > article{padding-top:0}
+  .doc-grid section.blk{padding-block:clamp(22px,3vw,34px)}
+}
+@media (max-width:999px){ .toc-rail .toc{margin-top:26px} }
+@media (prefers-reduced-motion:reduce){.toc li a:hover{transform:none}}
+</style>
+<link rel="stylesheet" href="/abschluss.css">
+<link rel="stylesheet" href="/bedienung.css">
+<link rel="stylesheet" href="/raum.css">
+<script src="/raum.js" defer></script>
+<!-- SPRACHE:KOPF -->
+<link rel="alternate" hreflang="de" href="https://social2scale.com/datenschutz/">
+<link rel="alternate" hreflang="en" href="https://social2scale.com/en/privacy/">
+<link rel="alternate" hreflang="x-default" href="https://social2scale.com/datenschutz/">
+<meta property="og:locale:alternate" content="de_DE">
+<!-- /SPRACHE:KOPF -->
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+
+  <!-- HEADER -->
+  <header class="site-head">
+    <div class="wrap">
+      <img class="logo" src="/assets/wordmark.png" alt="social2scale">
+      <a class="home-link" href="/en/">← back to home</a>
+      <a class="home-link sprache" href="/datenschutz/" hreflang="de" lang="de">Deutsch</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="lead-block">
+      <div class="wrap">
+        <p class="klabel">Legal</p>
+        <h1>Privacy policy</h1>
+        <p class="lead">This policy explains the type, scope and purpose of the processing of personal data on social2scale.com under the <em>General Data Protection Regulation (GDPR)</em> and the German Federal Data Protection Act (BDSG).</p>
+        <p class="meta">Last updated: <span>November 2026</span></p>
+        <p class="sprachhinweis">This privacy policy is available in German and English. Both versions say the same thing. Should they ever differ, the German version prevails.</p>
+      </div>
+    </div>
+    <div class="doc-grid">
+      <aside class="toc-rail">
+        <nav class="toc" aria-label="Table of contents">
+          <p>Contents</p>
+          <ol>
+            <li><a href="#verantwortlicher">Controller</a></li>
+            <li><a href="#grundsaetze">Principles of processing</a></li>
+            <li><a href="#hosting">Hosting &amp; server log files (GitHub Pages)</a></li>
+            <li><a href="#fonts">Fonts (self-hosted)</a></li>
+            <li><a href="#reichweite">Audience measurement (without cookies)</a></li>
+            <li><a href="#formular">Onboarding form</a></li>
+            <li><a href="#anfrage-form">Discovery call request (form)</a></li>
+            <li><a href="#vorschau">Free preview (start.social2scale.com)</a></li>
+            <li><a href="#terminbuchung">Appointment booking (Calendly)</a></li>
+            <li><a href="#turnstile">Bot protection (Cloudflare Turnstile)</a></li>
+            <li><a href="#worker-brevo">Transmission &amp; contact management (Cloudflare Worker &amp; Brevo)</a></li>
+            <li><a href="#zahlung">Payment processing (Digistore24)</a></li>
+            <li><a href="#crm-portal">Client portal &amp; internal CRM (Cloudflare D1/R2, AI)</a></li>
+            <li><a href="#community">Community (Skool)</a></li>
+            <li><a href="#speicherdauer">Storage period</a></li>
+            <li><a href="#rechte">Your rights as a data subject</a></li>
+            <li><a href="#beschwerde">Right to lodge a complaint with the supervisory authority</a></li>
+            <li><a href="#sonstiges">Automated decision-making &amp; updates</a></li>
+          </ol>
+        </nav>
+      </aside>
+    <article>
+      <section class="blk" id="verantwortlicher"><div class="wrap reveal">
+        <h2><span class="n">01</span>Controller</h2>
+        <p class="muted">The controller within the meaning of Art. 4(7) GDPR is:</p>
+        <div class="data">
+          <dl>
+            <dt>Provider</dt>   <dd>Philipp Libowicz (sole proprietorship / small business)</dd>
+            <dt>Address</dt>  <dd>Johannes-Hess-Strasse 1, 84489 Burghausen, Germany</dd>
+            <dt>Email</dt>     <dd><a href="mailto:info@social2scale.com">info@social2scale.com</a></dd>
+            <dt>Phone</dt>    <dd><a href="tel:+491515914278">+49 1515 914278</a></dd>
+          </dl>
+        </div>
+        <p class="muted">A data protection officer is not required by law and has not been appointed. For questions about data protection, please use the contact details above.</p>
+      </div></section>
+
+      <section class="blk" id="grundsaetze"><div class="wrap reveal">
+        <h2><span class="n">02</span>Principles of <em>processing</em></h2>
+        <p>As a rule, we process our users' personal data only to the extent necessary to provide a functioning website and our content and services. We process personal data only where there is a legal basis under Art. 6 GDPR. Which one applies is stated in each section.</p>
+        <p>Personal data is any information relating to an identified or identifiable natural person (e.g. name, address, email address, IP address).</p>
+        <p class="muted">Possible legal bases are in particular: consent (Art. 6(1)(a) GDPR), performance of a contract or pre-contractual measures (point b), legal obligation (point c) and legitimate interest (point f).</p>
+      </div></section>
+
+      <section class="blk" id="hosting"><div class="wrap reveal">
+        <h2><span class="n">03</span>Hosting &amp; server log files</h2>
+        <p>This website is provided as a static site via <b>GitHub Pages</b>, a service of GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA (part of Microsoft).</p>
+        <p>When you visit the website, GitHub as the host automatically collects information that your browser transmits and stores it in so-called server log files. This may include in particular:</p>
+        <ul>
+          <li>IP address of the requesting device</li>
+          <li>date and time of access</li>
+          <li>page or file requested and amount of data transferred</li>
+          <li>referrer URL (previously visited page)</li>
+          <li>browser type, language and operating system</li>
+        </ul>
+        <p>This data serves the technical provision, security and stability of the website and is not combined with other data sources.</p>
+        <p class="muted">As GitHub may process data in the USA, data is transferred to a third country. GitHub bases this on appropriate safeguards (e.g. EU standard contractual clauses / EU-US Data Privacy Framework). For more information, see GitHub's privacy statement: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener noreferrer">GitHub Privacy Statement</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(f) GDPR (legitimate interest in secure, efficient provision)</span>
+      </div></section>
+
+      <section class="blk" id="fonts"><div class="wrap reveal">
+        <h2><span class="n">04</span>Fonts (self-hosted)</h2>
+        <p>To display fonts consistently, this website uses fonts (including Archivo, Fraunces, Hanken Grotesk, JetBrains Mono) that are delivered <b>locally from our own server</b> (self-hosting).</p>
+        <p><b>No connection to Google servers</b> is made for this. The font files are loaded exclusively from our server; your IP address or other personal data is therefore not transmitted to Google or to the USA.</p>
+        <span class="legal">Legal basis: Art. 6(1)(f) GDPR (legitimate interest in consistent, data-minimising display)</span>
+      </div></section>
+
+      <section class="blk" id="reichweite"><div class="wrap reveal">
+        <h2><span class="n">05</span>Audience measurement (own count, without cookies)</h2>
+        <p>To understand which content is in demand, we count page views with our <b>own, very data-minimising measurement</b>. <b>No cookies are set</b>, no identifiers are assigned and <b>no IP addresses are stored</b>. Recognising individual people is therefore technically impossible.</p>
+        <p>Only three items are stored per view: the <b>page visited</b> (e.g. "/preise/"), the <b>name of the referring website</b> (e.g. "instagram.com" &ndash; never the full address or search terms) and the <b>rough device class</b> ("mobile" or "desktop"). All other information is discarded on receipt.</p>
+        <p>In the request form we count in the same way which of the five steps was shown and whether the request was sent &ndash; without your entries and without an identifier. This shows us where the form is too complicated.</p>
+        <p>The evaluation takes place on our own infrastructure (Cloudflare D1, location EU); there is <b>no disclosure to third parties</b> and no combination with other data sets. If your browser signals "Do Not Track", nothing is counted at all.</p>
+        <p>As no personal data is processed and there is no access to your device within the meaning of §&nbsp;25 TDDDG, neither consent nor a cookie banner is required.</p>
+        <span class="legal">Legal basis: Art. 6(1)(f) GDPR (legitimate interest in designing the website according to demand)</span>
+      </div></section>
+
+      <section class="blk" id="formular"><div class="wrap reveal">
+        <h2><span class="n">06</span>Onboarding form</h2>
+        <p>If you contact us or submit your details via our onboarding form after a purchase, we process the data you enter to handle our collaboration and answer your request. Depending on the form fields, this may include:</p>
+        <ul>
+          <li>name or contact person</li>
+          <li>email address</li>
+          <li>phone number</li>
+          <li>company / brand / business</li>
+          <li>information on your goals, social media channels, reach and plans</li>
+        </ul>
+        <p><b>Purpose:</b> carrying out pre-contractual measures and performing the contract or the commissioned services, contacting you and individual support as part of our social growth offer.</p>
+        <p>The information is transmitted directly to our internal CRM (see "Client portal &amp; internal CRM"); no external form service is involved.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (contract / pre-contractual measures); additionally point a (consent) for voluntary additional information</span>
+      </div></section>
+
+      <section class="blk" id="anfrage-form"><div class="wrap reveal">
+        <h2><span class="n">07</span>Discovery call request (<em>form</em>)</h2>
+        <p>Via the free preview on start.social2scale.com (choice "Someone who does it for me"), prospects can request a discovery call without obligation; the former "request a discovery call" page redirects there. We process the data provided solely to handle your request, call you back personally and check whether working together is a good fit. We collect:</p>
+        <ul>
+          <li>name</li>
+          <li>email address</li>
+          <li>phone number (for the call-back)</li>
+          <li>business / role, topic and &ndash; if provided &ndash; Instagram name</li>
+          <li>information on your status quo, goals, budget range and desired start (where filled in)</li>
+          <li>optionally: how you heard about us</li>
+          <li>where you came to the form from: an identifier in our own links (e.g. "bio" for the link in our Instagram profile) and the domain name of the previously visited page, without the full path. Nothing is stored in your browser for this.</li>
+        </ul>
+        <p><b>Purpose:</b> handling the contact request and carrying out pre-contractual measures (discovery call). Technical transmission and storage take place via Cloudflare and Brevo (see the following sections).</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (pre-contractual measures) and point f (legitimate interest in handling contact requests); voluntary additional information point a (consent)</span>
+      </div></section>
+
+      <section class="blk" id="vorschau"><div class="wrap reveal">
+        <h2><span class="n">08</span>Free <em>preview</em></h2>
+        <p>On start.social2scale.com you can have a free preview of your Instagram presence built. For this we process your email address, your name or Instagram name, your details on your work and topic and, if you upload one, your profile photo. We first send you a confirmation email; the preview is only created after you confirm. We delete unconfirmed requests after 30 days.</p>
+        <p>The post texts are written from your details by an AI language model from Anthropic (Claude). An uploaded profile photo is first checked by an AI model from Anthropic for obviously inadmissible content; if it is rejected, we show the preview without the photo. We store your details, photo and preview with Cloudflare (D1, R2, see No. 13) for as long as you use the preview and we are in contact with you about working together. You can request deletion at any time (No. 16). If you voluntarily allow it, we show your preview without your name as an example; you can withdraw this consent at any time by messaging <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (creating the requested preview); Art. 6(1)(a) GDPR (permission to show as an example); Art. 6(1)(f) GDPR (abuse prevention by checking the photo)</span>
+      </div></section>
+
+      <section class="blk" id="terminbuchung"><div class="wrap reveal">
+        <h2><span class="n">09</span>Appointment booking (<em>Calendly</em>)</h2>
+        <p>After you have sent a discovery call request, you can book an appointment directly via a link; the same link is in the confirmation email. It leads to the booking calendar of <b>Calendly, Inc.</b>, 115 E Main St., Ste A1B, Buford, GA 30518, USA. Calendly is not embedded in our pages: a connection to Calendly is only made when you click the link. So that you do not have to type anything twice, the link passes your name and email address from the request to the booking form.</p>
+        <p>We process the information you provide when booking (name, email address, chosen appointment, note if any) and technical connection data such as the IP address. Calendly processes this data on our behalf (data processing terms: calendly.com/dpa). Processing in the USA is possible; Calendly is certified under the EU-US Data Privacy Framework. Calendly's cookie settings also apply on the booking page.</p>
+        <p class="muted">More information: <a href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer">Calendly privacy</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (pre-contractual measures &mdash; arranging the discovery call)</span>
+      </div></section>
+
+      <section class="blk" id="turnstile"><div class="wrap reveal">
+        <h2><span class="n">10</span>Bot protection (Cloudflare <em>Turnstile</em>)</h2>
+        <p>To protect our request form against automated abuse (spam, bots), we use <b>Cloudflare Turnstile</b>, a service of Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA. Turnstile checks in the background whether the input comes from a human.</p>
+        <p>Information such as IP address, browser and device data and interaction signals may be processed; Turnstile may use a technically necessary token or cookie for this. A transfer to the USA is possible; Cloudflare bases this on appropriate safeguards (EU standard contractual clauses / EU-US Data Privacy Framework).</p>
+        <p class="muted">More information: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare privacy</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(f) GDPR (legitimate interest in security and protection against abuse)</span>
+      </div></section>
+
+      <section class="blk" id="worker-brevo"><div class="wrap reveal">
+        <h2><span class="n">11</span>Transmission &amp; contact management (Cloudflare Worker &amp; <em>Brevo</em>)</h2>
+        <p>When the request form is submitted, the data is transmitted to a processing function (<b>Cloudflare Worker</b>, Cloudflare, Inc., USA) that checks and forwards the entries. For abuse prevention (rate limit), your IP address is also processed.</p>
+        <p>To notify us of and manage the request, we use <b>Brevo</b> (Sendinblue GmbH, Koepenicker Strasse 126, 10179 Berlin, or Brevo SAS, 106 boulevard Haussmann, 75008 Paris, France). Brevo creates a contact from your information and sends us the request by email.</p>
+        <p class="muted">Data processing agreements under Art. 28 GDPR are in place with Cloudflare and Brevo. Privacy notices: <a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank" rel="noopener noreferrer">Brevo</a> · <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (pre-contractual measures) and point f (secure, efficient handling of requests)</span>
+      </div></section>
+
+      <section class="blk" id="zahlung"><div class="wrap reveal">
+        <h2><span class="n">12</span>Payment processing (Digistore24)</h2>
+        <p>Our services are purchased before reaching this website via the payment and sales service provider <b>Digistore24</b> (Digistore24 GmbH, St.-Godehard-Strasse 32, 31139 Hildesheim, Germany). Digistore24 acts as reseller / payment processor.</p>
+        <p>The data required for payment (e.g. name, email address, billing and payment data) is collected directly by Digistore24 and processed there under its own responsibility. We receive from Digistore24 the information necessary for order and client management.</p>
+        <p class="muted">Details on data processing by Digistore24 can be found in its privacy policy: <a href="https://www.digistore24.com/page/privacy" target="_blank" rel="noopener noreferrer">Digistore24 privacy</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (contract processing); point c (statutory retention obligations)</span>
+      </div></section>
+
+      <section class="blk" id="crm-portal"><div class="wrap reveal">
+        <h2><span class="n">13</span>Client portal &amp; internal <em>CRM</em></h2>
+        <p>To handle our collaboration, we operate a password-protected client portal (Social Hub) at <b>mein.social2scale.com</b> and an internal client management system (CRM) at <b>closing.social2scale.com</b>. Both run on the infrastructure of <b>Cloudflare</b> (Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA); the data is stored in a database (Cloudflare D1) and &ndash; where you upload files &ndash; in an object store (Cloudflare R2).</p>
+        <p>We process there the information you submit via our forms (onboarding, briefing, discovery call request, feedback) as well as the status and history of our collaboration. Depending on the process, this may include:</p>
+        <ul>
+          <li>name, email address and phone number</li>
+          <li>company / brand, industry and information on goals, channels and plans</li>
+          <li>files you upload (e.g. logo) in the object store</li>
+          <li>status, notes and history of support and your feedback</li>
+          <li>technical data for abuse prevention (e.g. IP address for rate limits)</li>
+        </ul>
+        <p><b>Purpose:</b> organisation, performance and documentation of the commissioned services, internal client management and provision of your personal area (e.g. presentations / decks).</p>
+        <h3>AI assistance</h3>
+        <p>We use AI language models from Anthropic (<b>Claude</b>, Anthropic PBC, USA) for two purposes: (1) to prepare conversations, we summarise the information stored about a client in the CRM; (2) in the free preview, the model writes the post texts and checks an uploaded profile photo (see No. 08). No AI makes a decision about you with legal effect within the meaning of Art. 22 GDPR.</p>
+        <p class="muted">Data processing agreements under Art. 28 GDPR are in place with Cloudflare and Anthropic; for transfers to the USA, appropriate safeguards (EU standard contractual clauses / EU-US Data Privacy Framework) are used. Privacy notices: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a> · <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Anthropic</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(b) GDPR (contract / pre-contractual measures) and point f (legitimate interest in efficient client management)</span>
+      </div></section>
+
+      <section class="blk" id="community"><div class="wrap reveal">
+        <h2><span class="n">14</span>Community (<em>Skool</em>)</h2>
+        <p>For exchange with us and among members, we run a community on the <b>Skool</b> platform of Skool.com, Inc., USA. Members are clients of social2scale and prospects who are just getting to know us. Taking part is voluntary. Your contractual services do not depend on it.</p>
+        <h3>Who is responsible?</h3>
+        <p>We are responsible for the group: for its settings, admitting and removing members, the joining questions and recordings. According to its own statements, Skool processes the group's content on our behalf. Skool does not publicly offer a data processing agreement under Art. 28 GDPR; we have requested one. For your Skool account itself (sign-up, profile, use of other groups), Skool is responsible under its own terms.</p>
+        <h3>Which data?</h3>
+        <p>Name, profile picture and profile information, posts, comments and reactions, your activity in the group, participation in live calls and your answers to the joining questions (consent, Instagram name). If you consent via your Social Hub, we also store your decision there: time, your answers and the version of the text you saw.</p>
+        <h3>Who sees what?</h3>
+        <p>All members see your name, profile picture, posts and activity. This may reveal that you are in contact with us. As operator, we also see your answers to the joining questions. We use the Instagram name to match members to our client directory (No. 13).</p>
+        <h3>Transfer to the USA</h3>
+        <p>Skool processes the data in the USA. Skool is not certified under the EU-US Data Privacy Framework (official list checked on 1 November 2026), and no EU standard contractual clauses have been agreed between us and Skool. We therefore base the transfer on your explicit consent (Art. 49(1)(a) GDPR). The risk: in the USA your data is not protected to an equivalent level. US authorities can access it without you having the same legal remedies as in the EU.</p>
+        <h3>Live calls</h3>
+        <p>We only record a live call if we announce it in advance, and only people who have given separate consent. Anyone who has not consented takes part without camera and microphone during the recording, or we pause the recording. We make recordings available to all members in the group on Skool. We keep a copy ourselves (Cloudflare R2, No. 13, and a backup on our own computers), where we also create the subtitles. We delete all copies, including the one on Skool, no later than 12 months after the call. After a withdrawal, we cut you out of existing recordings; where that is not fully possible, we delete the recording.</p>
+        <h3>How long?</h3>
+        <p>We keep your decisions about the community (consent, change, exit) as evidence until the end of the 3rd year after you leave. We delete your answers to the joining questions and the match to our client directory when you leave. When you leave, we also delete your posts and comments in the group; if you want them to stay, tell us when you leave. Your membership lasts until you leave or we close the group. You delete your Skool account yourself at Skool.</p>
+        <h3>Withdrawal and leaving</h3>
+        <p>You can leave at any time and withdraw any consent with effect for the future: in the Social Hub using the leave or change button, or with an informal message to <a href="mailto:info@social2scale.com">info@social2scale.com</a>. We remove you from the group without undue delay. Prospects without a Social Hub send a message to Phil in Skool or to <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <p class="muted">More information: <a href="https://www.skool.com/legal?t=privacy" target="_blank" rel="noopener noreferrer">Skool privacy</a>.</p>
+        <span class="legal">Legal basis: Art. 6(1)(a) GDPR (membership); Art. 49(1)(a) GDPR (transfer to the USA); separate consent under Art. 6(1)(a) GDPR and § 22 KUG (recordings); Art. 6(1)(f) GDPR (evidence of consent, Art. 7(1) GDPR)</span>
+      </div></section>
+
+      <section class="blk" id="speicherdauer"><div class="wrap reveal">
+        <h2><span class="n">15</span>Storage period</h2>
+        <p>We process and store personal data only for as long as necessary to achieve the respective purpose or as required by statutory retention periods (e.g. commercial and tax retention periods of up to 10 years).</p>
+        <p>Server log files are regularly deleted or anonymised by the host after a short time. We delete request data from the form as soon as it is no longer needed to handle your request or perform the contract and no statutory retention obligations apply.</p>
+      </div></section>
+
+      <section class="blk" id="rechte"><div class="wrap reveal">
+        <h2><span class="n">16</span>Your <em>rights</em></h2>
+        <p>As a data subject, you have in particular the following rights under the GDPR:</p>
+        <ul>
+          <li>right of access (Art. 15 GDPR)</li>
+          <li>right to rectification (Art. 16 GDPR)</li>
+          <li>right to erasure / "right to be forgotten" (Art. 17 GDPR)</li>
+          <li>right to restriction of processing (Art. 18 GDPR)</li>
+          <li>right to data portability (Art. 20 GDPR)</li>
+          <li>right to object to processing (Art. 21 GDPR)</li>
+          <li>right to withdraw consent with effect for the future (Art. 7(3) GDPR)</li>
+        </ul>
+        <p>To exercise your rights and for any questions about data protection, an informal message to <a href="mailto:info@social2scale.com">info@social2scale.com</a> is sufficient.</p>
+        <div class="data">
+          <p><b>Right to object (Art. 21 GDPR).</b> Where we process data on the basis of legitimate interests (Art. 6(1)(f) GDPR), you can object at any time on grounds relating to your particular situation. We will then no longer process the data unless we demonstrate compelling legitimate grounds that override your interests, or the processing serves the establishment, exercise or defence of legal claims. An informal message to <a href="mailto:info@social2scale.com">info@social2scale.com</a> is sufficient.</p>
+        </div>
+      </div></section>
+
+      <section class="blk" id="beschwerde"><div class="wrap reveal">
+        <h2><span class="n">17</span>Right to lodge a complaint</h2>
+        <p>Without prejudice to any other remedy, under Art. 77 GDPR you have the right to lodge a complaint with a data protection supervisory authority if you consider that the processing of your personal data infringes the GDPR.</p>
+        <p class="muted">The competent authority is usually the supervisory authority of your habitual residence or that of the controller. For the controller this is the Bavarian State Office for Data Protection Supervision (BayLDA), Promenade 18, 91522 Ansbach (<a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer">www.lda.bayern.de</a>).</p>
+      </div></section>
+
+      <section class="blk" id="sonstiges"><div class="wrap reveal">
+        <h2><span class="n">18</span>Automated decision-making &amp; updates</h2>
+        <p>No automated decision-making, including profiling, within the meaning of Art. 22 GDPR takes place.</p>
+        <p>We reserve the right to amend this privacy policy so that it always meets current legal requirements or to reflect changes to our services. The version current at the time of your visit applies.</p>
+      </div></section>
+    </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="foot-inner">
+      <div class="foot-id">
+        <a class="brand" href="/en/" aria-label="social2scale — back to home"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
+        <span class="foot-tag">Premium social growth for coaches &amp; experts.</span>
+      </div>
+      <nav class="foot-links" aria-label="Legal pages">
+        <a href="/impressum/" hreflang="de">Legal notice (German)</a>
+        <a href="/en/privacy/">Privacy policy</a>
+        <a href="mailto:info@social2scale.com">info@social2scale.com</a>
+      </nav>
+    </div>
+    <p class="foot-meta">© <span id="yr"></span> social2scale</p>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent=new Date().getFullYear();
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
+    else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
+  </script>
+  <!-- back-to-top (global) -->
+  <button id="toTop" class="to-top" type="button" aria-label="Scroll to top" hidden><span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <style>
+  .to-top{position:fixed;right:clamp(16px,3vw,28px);bottom:clamp(16px,3vw,28px);z-index:90;width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line-2,rgba(255,255,255,.12));border-radius:50%;background:linear-gradient(180deg,rgba(20,21,24,.92),rgba(10,11,13,.86));-webkit-backdrop-filter:blur(10px) saturate(140%);backdrop-filter:blur(10px) saturate(140%);color:var(--paper,#F2F3F1);cursor:pointer;opacity:0;transform:translateY(12px) scale(.92);transition:opacity var(--dur-2, .3s) var(--ease,cubic-bezier(.16,1,.3,1)),transform var(--dur-2, .3s) var(--ease,cubic-bezier(.16,1,.3,1)),border-color var(--dur-2, .25s),box-shadow var(--dur-2, .25s);box-shadow:0 10px 30px -12px rgba(0,0,0,.7);pointer-events:none}
+  .to-top.show{opacity:1;transform:none;pointer-events:auto}
+  .to-top:hover{border-color:rgba(0,184,136,.55);box-shadow:0 14px 36px -10px rgba(0,184,136,.45),0 10px 30px -12px rgba(0,0,0,.7);transform:translateY(-2px)}
+  .to-top:focus-visible{outline:2px solid var(--emerald,#00B888);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){.to-top{transition:opacity var(--dur-2, .2s)}.to-top.show{transform:none}.to-top:hover{transform:none}}
+  </style>
+  <script>
+  (function(){var b=document.getElementById('toTop');if(!b)return;b.hidden=false;var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;var t=false;
+    function upd(){if(window.pageYOffset>480)b.classList.add('show');else b.classList.remove('show');}
+    window.addEventListener('scroll',function(){if(!t){requestAnimationFrame(function(){upd();t=false;});t=true;}},{passive:true});
+    b.addEventListener('click',function(){window.scrollTo({top:0,behavior:rm?'auto':'smooth'});});
+    upd();
+  })();
+  </script>
+<script>
+  // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
+  // Gesendet werden NUR: Pfad, Host der verweisenden Seite, Geräteklasse.
+  // Keine Cookies, keine Kennung, keine IP-Speicherung — deshalb braucht die
+  // Seite weiterhin keinen Cookie-Banner. Fehler bleiben stumm.
+  (function () {
+    try {
+      if (navigator.doNotTrack === "1" || window.doNotTrack === "1") return;
+      // Team und Prüfläufe zählen nicht (26.10.2026): einmal ?zaehlen=aus aufrufen, ?zaehlen=an hebt es auf.
+      try { var zq = new URLSearchParams(location.search).get("zaehlen"); if (zq === "aus") localStorage.setItem("s2s-zaehlen", "aus"); if (zq === "an") localStorage.removeItem("s2s-zaehlen"); if (localStorage.getItem("s2s-zaehlen") === "aus") return; } catch (e) {}
+      var daten = JSON.stringify({
+        p: location.pathname,
+        r: document.referrer || "",
+        d: matchMedia("(max-width:759px)").matches ? "mobil" : "desktop"
+      });
+      var url = "https://closing.social2scale.com/api/pv";
+      // sendBeacon überlebt auch schnelles Weiterklicken und blockiert nichts.
+      if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([daten], { type: "text/plain;charset=UTF-8" }));
+      else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
+    } catch (e) { /* Statistik darf die Seite nie stören */ }
+  })();
+</script>
+<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="recht" aria-hidden="true"></div><!-- /RAUM-LICHT -->
+</body>
+</html>

@@ -123,3 +123,10 @@ test('Funnel: ?zaehlen=aus zaehlt nicht und bleibt aus, ?zaehlen=an zaehlt wiede
   assert.equal(gemeldetMit(de, '', speicher), 0, 'bleibt aus');
   assert.equal(gemeldetMit(de, '?zaehlen=an', speicher), 1);
 });
+
+// Richter-Loop 01.11.2026: wer englisch einwilligt, bekommt die englische Erklärung (Art. 12 DSGVO).
+test('EN-Funnel verlinkt die englische Datenschutzerklärung, die deutsche Seite die deutsche', () => {
+  assert.equal((en.match(/social2scale\.com\/datenschutz\//g) ?? []).length, 0);
+  assert.equal((en.match(/social2scale\.com\/en\/privacy\//g) ?? []).length, (de.match(/social2scale\.com\/datenschutz\//g) ?? []).length);
+  assert.ok((de.match(/social2scale\.com\/datenschutz\//g) ?? []).length >= 3);
+});

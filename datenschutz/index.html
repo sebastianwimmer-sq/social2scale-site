@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SdUU/niTnG5LufxFd/eybxcwHllqryN4juu557mWBcA=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-E6tkR+LSwzCVA2yHT7D3RHY5JJhYWHGuoAmaICxYL/4=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -83,6 +83,7 @@
   h1 em{font-style:italic;color:var(--emerald)}
   .lead{color:var(--muted);font-size:1.05rem;margin-top:18px;max-width:54ch}
   .meta{font-family:"JetBrains Mono",monospace;font-size:0.6875rem;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);margin-top:20px}
+  .sprachhinweis{font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch;margin-top:10px}
 
   /* TOC */
   .toc{margin-top:26px;background:linear-gradient(180deg,rgba(22,22,26,.7),rgba(12,12,14,.7));border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,22px)}
@@ -210,6 +211,12 @@ section.blk{scroll-margin-top:90px}
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
 <script src="/raum.js" defer></script>
+<!-- SPRACHE:KOPF -->
+<link rel="alternate" hreflang="de" href="https://social2scale.com/datenschutz/">
+<link rel="alternate" hreflang="en" href="https://social2scale.com/en/privacy/">
+<link rel="alternate" hreflang="x-default" href="https://social2scale.com/datenschutz/">
+<meta property="og:locale:alternate" content="en_US">
+<!-- /SPRACHE:KOPF -->
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -220,6 +227,7 @@ section.blk{scroll-margin-top:90px}
     <div class="wrap">
       <img class="logo" src="/assets/wordmark.png" alt="social2scale">
       <a class="home-link" href="../">← zur Startseite</a>
+      <a class="home-link sprache" href="/en/privacy/" hreflang="en" lang="en">English</a>
     </div>
   </header>
 
@@ -229,7 +237,8 @@ section.blk{scroll-margin-top:90px}
         <p class="klabel">Rechtliches</p>
         <h1>Datenschutz&shy;erklärung</h1>
         <p class="lead">Diese Erklärung informiert über Art, Umfang und Zweck der Verarbeitung personenbezogener Daten auf social2scale.com gemäß <em>Datenschutz-Grundverordnung (DSGVO)</em> und Bundesdatenschutzgesetz (BDSG).</p>
-        <p class="meta">Stand: <span>Oktober 2026</span></p>
+        <p class="meta">Stand: <span>November 2026</span></p>
+        <p class="sprachhinweis">Diese Datenschutzerklärung gibt es auf Deutsch und auf Englisch. Beide Fassungen sagen dasselbe. Sollten sie doch einmal voneinander abweichen, gilt die deutsche Fassung.</p>
       </div>
     </div>
 
@@ -245,11 +254,13 @@ section.blk{scroll-margin-top:90px}
             <li><a href="#reichweite">Reichweitenmessung (ohne Cookies)</a></li>
             <li><a href="#formular">Onboarding-Formular</a></li>
             <li><a href="#anfrage-form">Erstgespräch-Anfrage (Formular)</a></li>
+            <li><a href="#vorschau">Gratis-Vorschau (start.social2scale.com)</a></li>
             <li><a href="#terminbuchung">Terminbuchung (Calendly)</a></li>
             <li><a href="#turnstile">Bot-Schutz (Cloudflare Turnstile)</a></li>
             <li><a href="#worker-brevo">Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; Brevo)</a></li>
             <li><a href="#zahlung">Zahlungsabwicklung (Digistore24)</a></li>
             <li><a href="#crm-portal">Kundenportal &amp; internes CRM (Cloudflare D1/R2, KI)</a></li>
+            <li><a href="#community">Community (Skool)</a></li>
             <li><a href="#speicherdauer">Speicherdauer</a></li>
             <li><a href="#rechte">Ihre Rechte als betroffene Person</a></li>
             <li><a href="#beschwerde">Beschwerderecht bei der Aufsichtsbehörde</a></li>
@@ -274,7 +285,7 @@ section.blk{scroll-margin-top:90px}
 
       <section class="blk" id="grundsaetze"><div class="wrap reveal">
         <h2><span class="n">02</span>Grundsätze der <em>Verarbeitung</em></h2>
-        <p>Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Verarbeitung erfolgt regelmäßig nur nach Einwilligung der betroffenen Person oder wenn die Verarbeitung durch gesetzliche Vorschriften gestattet ist.</p>
+        <p>Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Wir verarbeiten personenbezogene Daten nur, wenn eine Rechtsgrundlage nach Art. 6 DSGVO besteht. Welche das jeweils ist, steht bei jedem Abschnitt.</p>
         <p>Personenbezogene Daten sind alle Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen (z. B. Name, Anschrift, E-Mail-Adresse, IP-Adresse).</p>
         <p class="muted">Als Rechtsgrundlagen kommen insbesondere in Betracht: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), Vertragserfüllung bzw. vorvertragliche Maßnahmen (lit. b), rechtliche Verpflichtung (lit. c) sowie berechtigtes Interesse (lit. f).</p>
       </div></section>
@@ -308,7 +319,7 @@ section.blk{scroll-margin-top:90px}
         <p>Gespeichert werden ausschließlich drei Angaben je Aufruf: die <b>aufgerufene Seite</b> (z.&nbsp;B. „/preise/"), der <b>Name der verweisenden Website</b> (z.&nbsp;B. „instagram.com" &ndash; niemals die vollständige Adresse oder Suchbegriffe) sowie die <b>grobe Geräteklasse</b> („mobil" oder „desktop"). Alle übrigen Angaben werden bereits bei der Entgegennahme verworfen.</p>
         <p>Im Anfrage-Formular zählen wir auf dieselbe Weise, welcher der fünf Schritte angezeigt und ob die Anfrage abgeschickt wurde &ndash; ohne Ihre Eingaben und ohne Kennung. So erkennen wir, an welcher Stelle das Formular zu kompliziert ist.</p>
         <p>Die Auswertung erfolgt auf unserer eigenen Infrastruktur (Cloudflare D1, Standort EU); es findet <b>keine Weitergabe an Dritte</b> und keine Zusammenführung mit anderen Datenbeständen statt. Signalisiert Ihr Browser „Do Not Track", wird gar nicht erst gezählt.</p>
-        <p>Da hierbei keine personenbezogenen Daten verarbeitet werden und kein Zugriff auf Ihr Endgerät im Sinne des §&nbsp;25 TTDSG erfolgt, ist weder eine Einwilligung noch ein Cookie-Banner erforderlich.</p>
+        <p>Da hierbei keine personenbezogenen Daten verarbeitet werden und kein Zugriff auf Ihr Endgerät im Sinne des §&nbsp;25 TDDDG erfolgt, ist weder eine Einwilligung noch ein Cookie-Banner erforderlich.</p>
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer bedarfsgerechten Gestaltung der Website)</span>
       </div></section>
 
@@ -343,8 +354,15 @@ section.blk{scroll-margin-top:90px}
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie lit. f (berechtigtes Interesse an der Bearbeitung von Kontaktanfragen); freiwillige Zusatzangaben lit. a (Einwilligung)</span>
       </div></section>
 
+      <section class="blk" id="vorschau"><div class="wrap reveal">
+        <h2><span class="n">08</span>Gratis-<em>Vorschau</em></h2>
+        <p>Auf start.social2scale.com können Sie sich kostenlos eine Vorschau Ihres Instagram-Auftritts bauen lassen. Dafür verarbeiten wir Ihre E-Mail-Adresse, Ihren Namen bzw. Instagram-Namen, Ihre Angaben zu Tätigkeit und Thema und, wenn Sie eines hochladen, Ihr Profilfoto. Zuerst schicken wir Ihnen eine E-Mail zur Bestätigung; erst danach entsteht die Vorschau. Unbestätigte Anfragen löschen wir nach 30 Tagen.</p>
+        <p>Die Beitragstexte schreibt ein KI-Sprachmodell von Anthropic (Claude) aus Ihren Angaben. Ein hochgeladenes Profilfoto prüft vorher ein KI-Modell von Anthropic auf offensichtlich unzulässige Inhalte; wird es abgelehnt, zeigen wir die Vorschau ohne Foto. Angaben, Foto und Vorschau speichern wir bei Cloudflare (D1, R2, siehe Nr. 13), solange Sie die Vorschau nutzen und wir mit Ihnen über eine Zusammenarbeit in Kontakt stehen. Sie können die Löschung jederzeit verlangen (Nr. 16). Erlauben Sie es freiwillig, zeigen wir Ihre Vorschau ohne Namen als Beispiel; diese Einwilligung können Sie jederzeit per Nachricht an <a href="mailto:info@social2scale.com">info@social2scale.com</a> widerrufen.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Erstellung der angefragten Vorschau); Art. 6 Abs. 1 lit. a DSGVO (Beispiel-Freigabe); Art. 6 Abs. 1 lit. f DSGVO (Schutz vor Missbrauch durch die Fotoprüfung)</span>
+      </div></section>
+
       <section class="blk" id="terminbuchung"><div class="wrap reveal">
-        <h2><span class="n">08</span>Terminbuchung (<em>Calendly</em>)</h2>
+        <h2><span class="n">09</span>Terminbuchung (<em>Calendly</em>)</h2>
         <p>Nachdem Sie eine Erstgespräch-Anfrage abgeschickt haben, können Sie über einen Link direkt einen Termin buchen; derselbe Link steht in der Bestätigungsmail. Er führt zum Buchungskalender von <b>Calendly, Inc.</b>, 115 E Main St., Ste A1B, Buford, GA 30518, USA. Calendly ist nicht in unsere Seiten eingebunden: Eine Verbindung zu Calendly entsteht erst, wenn Sie den Link anklicken. Damit Sie nichts doppelt eintippen müssen, übergibt der Link Ihren Namen und Ihre E-Mail-Adresse aus der Anfrage an das Buchungsformular.</p>
         <p>Verarbeitet werden die Angaben, die Sie bei der Buchung machen (Name, E-Mail-Adresse, gewählter Termin, ggf. Notiz), sowie technische Verbindungsdaten wie die IP-Adresse. Calendly verarbeitet diese Daten in unserem Auftrag (Auftragsverarbeitungsbedingungen: calendly.com/dpa). Eine Verarbeitung in den USA ist möglich; Calendly ist nach dem EU-US Data Privacy Framework zertifiziert. Auf der Buchungsseite gelten zusätzlich die Cookie-Einstellungen von Calendly.</p>
         <p class="muted">Weitere Informationen: <a href="https://calendly.com/privacy" target="_blank" rel="noopener noreferrer">Calendly Datenschutz</a>.</p>
@@ -352,7 +370,7 @@ section.blk{scroll-margin-top:90px}
       </div></section>
 
       <section class="blk" id="turnstile"><div class="wrap reveal">
-        <h2><span class="n">09</span>Bot-Schutz (Cloudflare <em>Turnstile</em>)</h2>
+        <h2><span class="n">10</span>Bot-Schutz (Cloudflare <em>Turnstile</em>)</h2>
         <p>Zum Schutz unseres Anfrage-Formulars vor automatisiertem Missbrauch (Spam, Bots) setzen wir <b>Cloudflare Turnstile</b> ein, einen Dienst der Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA. Turnstile prüft im Hintergrund, ob die Eingabe von einem Menschen stammt.</p>
         <p>Dabei können Informationen wie IP-Adresse, Browser- und Geräteangaben sowie Interaktionssignale verarbeitet werden; Turnstile kann hierfür ein technisch notwendiges Token bzw. einen Cookie verwenden. Eine Übermittlung in die USA ist möglich; Cloudflare stützt diese auf geeignete Garantien (EU-Standardvertragsklauseln / EU-US Data Privacy Framework).</p>
         <p class="muted">Weitere Informationen: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare Datenschutz</a>.</p>
@@ -360,15 +378,15 @@ section.blk{scroll-margin-top:90px}
       </div></section>
 
       <section class="blk" id="worker-brevo"><div class="wrap reveal">
-        <h2><span class="n">10</span>Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; <em>Brevo</em>)</h2>
+        <h2><span class="n">11</span>Übermittlung &amp; Kontaktverwaltung (Cloudflare Worker &amp; <em>Brevo</em>)</h2>
         <p>Beim Absenden des Anfrage-Formulars werden die Daten an eine Verarbeitungsfunktion (<b>Cloudflare Worker</b>, Cloudflare, Inc., USA) übermittelt, die die Eingaben prüft und weiterleitet. Zur Missbrauchsabwehr (Rate-Limit) wird dabei auch Ihre IP-Adresse verarbeitet.</p>
         <p>Zur Benachrichtigung und Verwaltung der Anfrage nutzen wir <b>Brevo</b> (Sendinblue GmbH, Köpenicker Straße 126, 10179 Berlin, bzw. Brevo SAS, 106 boulevard Haussmann, 75008 Paris, Frankreich). Brevo legt aus Ihren Angaben einen Kontakt an und stellt uns die Anfrage per E-Mail zu.</p>
-        <p class="muted">Mit Cloudflare und Brevo werden Verträge zur Auftragsverarbeitung nach Art. 28 DSGVO zugrunde gelegt. Datenschutzhinweise: <a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank" rel="noopener noreferrer">Brevo</a> · <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a>.</p>
+        <p class="muted">Mit Cloudflare und Brevo bestehen Verträge zur Auftragsverarbeitung nach Art. 28 DSGVO. Datenschutzhinweise: <a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank" rel="noopener noreferrer">Brevo</a> · <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a>.</p>
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie lit. f (sichere, effiziente Bearbeitung von Anfragen)</span>
       </div></section>
 
       <section class="blk" id="zahlung"><div class="wrap reveal">
-        <h2><span class="n">11</span>Zahlungsabwicklung (Digistore24)</h2>
+        <h2><span class="n">12</span>Zahlungsabwicklung (Digistore24)</h2>
         <p>Der Kauf unserer Leistungen erfolgt vor dem Erreichen dieser Website über den Zahlungs- und Vertriebsdienstleister <b>Digistore24</b> (Digistore24 GmbH, St.-Godehard-Straße 32, 31139 Hildesheim, Deutschland). Digistore24 tritt dabei als Reseller/Zahlungsabwickler auf.</p>
         <p>Die zur Zahlung erforderlichen Daten (z. B. Name, E-Mail-Adresse, Rechnungs- und Zahlungsdaten) werden direkt bei Digistore24 erhoben und dort in eigener Verantwortung verarbeitet. Wir erhalten von Digistore24 die zur Auftrags- und Kundenverwaltung notwendigen Informationen.</p>
         <p class="muted">Einzelheiten zur Datenverarbeitung durch Digistore24 finden Sie in deren Datenschutzerklärung: <a href="https://www.digistore24.com/page/privacy" target="_blank" rel="noopener noreferrer">Digistore24 Datenschutz</a>.</p>
@@ -376,8 +394,8 @@ section.blk{scroll-margin-top:90px}
       </div></section>
 
       <section class="blk" id="crm-portal"><div class="wrap reveal">
-        <h2><span class="n">12</span>Kundenportal &amp; internes <em>CRM</em></h2>
-        <p>Zur Abwicklung der Zusammenarbeit betreiben wir unter <b>closing.social2scale.com</b> ein passwortgeschütztes Kundenportal samt internem Kundenverwaltungssystem (CRM). Es läuft auf der Infrastruktur von <b>Cloudflare</b> (Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA); die Daten werden in einer Datenbank (Cloudflare D1) und – soweit Sie Dateien hochladen – in einem Objektspeicher (Cloudflare R2) abgelegt.</p>
+        <h2><span class="n">13</span>Kundenportal &amp; internes <em>CRM</em></h2>
+        <p>Zur Abwicklung der Zusammenarbeit betreiben wir unter <b>mein.social2scale.com</b> ein passwortgeschütztes Kundenportal (Social Hub) und unter <b>closing.social2scale.com</b> ein internes Kundenverwaltungssystem (CRM). Beides läuft auf der Infrastruktur von <b>Cloudflare</b> (Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, USA); die Daten werden in einer Datenbank (Cloudflare D1) und – soweit Sie Dateien hochladen – in einem Objektspeicher (Cloudflare R2) abgelegt.</p>
         <p>Verarbeitet werden dort die Angaben, die Sie über unsere Formulare (Onboarding, Briefing, Erstgespräch-Anfrage, Feedback) übermitteln, sowie Stand und Verlauf der Zusammenarbeit. Je nach Vorgang können dies sein:</p>
         <ul>
           <li>Name, E-Mail-Adresse und Telefonnummer</li>
@@ -387,20 +405,41 @@ section.blk{scroll-margin-top:90px}
           <li>technische Daten zur Missbrauchsabwehr (z. B. IP-Adresse für Rate-Limits)</li>
         </ul>
         <p><b>Zweck:</b> Organisation, Durchführung und Dokumentation der beauftragten Leistungen, interne Kundenverwaltung sowie Bereitstellung Ihres persönlichen Bereichs (z. B. Präsentationen / Decks).</p>
-        <h3>KI-gestützte Einschätzung</h3>
-        <p>Zur Vorbereitung von Gesprächen können wir die zu einer Kundin / einem Kunden im CRM hinterlegten Angaben durch ein KI-Sprachmodell (<b>Anthropic Claude</b>, Anthropic PBC, USA) zusammenfassen und einschätzen lassen. Dies dient ausschließlich unserer internen Gesprächsvorbereitung; eine automatisierte Entscheidung mit rechtlicher Wirkung Ihnen gegenüber im Sinne des Art. 22 DSGVO ist damit nicht verbunden. Die Übergabe erfolgt nur anlassbezogen und auf unsere Veranlassung.</p>
-        <p class="muted">Mit Cloudflare und Anthropic werden Verträge zur Auftragsverarbeitung nach Art. 28 DSGVO zugrunde gelegt; bei Übermittlungen in die USA werden geeignete Garantien (EU-Standardvertragsklauseln / EU-US Data Privacy Framework) herangezogen. Datenschutzhinweise: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a> · <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Anthropic</a>.</p>
+        <h3>KI-Unterstützung</h3>
+        <p>Wir setzen KI-Sprachmodelle von Anthropic (<b>Claude</b>, Anthropic PBC, USA) für zwei Zwecke ein: (1) Zur Vorbereitung von Gesprächen fassen wir die Angaben zusammen, die zu einer Kundin oder einem Kunden im CRM hinterlegt sind. (2) In der Gratis-Vorschau schreibt das Modell die Beitragstexte und prüft ein hochgeladenes Profilfoto (siehe Nr. 08). Dabei entscheidet keine KI über Sie mit rechtlicher Wirkung im Sinne des Art. 22 DSGVO.</p>
+        <p class="muted">Mit Cloudflare und Anthropic bestehen Verträge zur Auftragsverarbeitung nach Art. 28 DSGVO; bei Übermittlungen in die USA werden geeignete Garantien (EU-Standardvertragsklauseln / EU-US Data Privacy Framework) herangezogen. Datenschutzhinweise: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a> · <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer">Anthropic</a>.</p>
         <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertrag / vorvertragliche Maßnahmen) sowie lit. f (berechtigtes Interesse an effizienter Kundenverwaltung)</span>
       </div></section>
 
+      <section class="blk" id="community"><div class="wrap reveal">
+        <h2><span class="n">14</span>Community (<em>Skool</em>)</h2>
+        <p>Für den Austausch mit uns und untereinander betreiben wir eine Community auf der Plattform <b>Skool</b> der Skool.com, Inc., USA. Mitglieder sind Kundinnen und Kunden von social2scale sowie Interessentinnen und Interessenten, die uns erst kennenlernen. Die Teilnahme ist freiwillig. Ihre vertraglichen Leistungen hängen nicht davon ab.</p>
+        <h3>Wer ist verantwortlich?</h3>
+        <p>Für die Gruppe sind wir verantwortlich: für ihre Einstellungen, die Aufnahme und Entfernung von Mitgliedern, die Beitrittsfragen und Aufzeichnungen. Skool verarbeitet die Inhalte der Gruppe nach eigenen Angaben in unserem Auftrag. Einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO bietet Skool nicht öffentlich an; wir haben ihn angefragt. Für Ihr Skool-Konto selbst (Anmeldung, Profil, Nutzung anderer Gruppen) ist Skool nach eigenen Bedingungen verantwortlich.</p>
+        <h3>Welche Daten?</h3>
+        <p>Name, Profilbild und Profilangaben, Beiträge, Kommentare und Reaktionen, Ihre Aktivität in der Gruppe, die Teilnahme an Live-Calls sowie Ihre Antworten auf die Beitrittsfragen (Einwilligung, Instagram-Name). Wenn Sie über Ihren Social Hub zustimmen, speichern wir dort zusätzlich Ihre Entscheidung: Zeitpunkt, Ihre Antworten und die Textfassung, die Sie gesehen haben.</p>
+        <h3>Wer sieht was?</h3>
+        <p>Alle Mitglieder sehen Ihren Namen, Ihr Profilbild, Ihre Beiträge und Ihre Aktivität. Daran kann erkennbar sein, dass Sie mit uns in Kontakt stehen. Wir sehen als Betreiber zusätzlich Ihre Antworten auf die Beitrittsfragen. Den Instagram-Namen nutzen wir, um Mitglieder unserem Kundenverzeichnis (Nr. 13) zuzuordnen.</p>
+        <h3>Übermittlung in die USA</h3>
+        <p>Skool verarbeitet die Daten in den USA. Skool ist nicht nach dem EU-US Data Privacy Framework zertifiziert (Abfrage der offiziellen Liste am 1. November 2026), und zwischen uns und Skool sind keine EU-Standardvertragsklauseln vereinbart. Die Übermittlung stützen wir deshalb auf Ihre ausdrückliche Einwilligung (Art. 49 Abs. 1 lit. a DSGVO). Das Risiko: In den USA sind Ihre Daten nicht gleichwertig geschützt. US-Behörden können darauf zugreifen, ohne dass Ihnen dieselben Rechtsbehelfe zustehen wie in der EU.</p>
+        <h3>Live-Calls</h3>
+        <p>Wir zeichnen einen Live-Call nur auf, wenn wir es vorher ankündigen, und nur Personen, die gesondert eingewilligt haben. Wer nicht eingewilligt hat, nimmt während der Aufnahme ohne Kamera und Mikrofon teil, oder wir halten die Aufnahme an. Aufzeichnungen stellen wir allen Mitgliedern in der Gruppe bei Skool bereit. Eine Kopie speichern wir bei uns (Cloudflare R2, Nr. 13, und eine Sicherung auf unseren eigenen Rechnern); dort erstellen wir auch die Untertitel. Alle Kopien, auch die bei Skool, löschen wir spätestens 12 Monate nach dem Call. Nach einem Widerruf schneiden wir Sie aus vorhandenen Aufnahmen heraus; geht das nicht vollständig, löschen wir die Aufnahme.</p>
+        <h3>Wie lange?</h3>
+        <p>Ihre Entscheidungen zur Community (Zustimmung, Änderung, Austritt) bewahren wir als Nachweis bis zum Ende des 3. Jahres nach Ihrem Austritt auf. Ihre Antworten auf die Beitrittsfragen und die Zuordnung zu unserem Kundenverzeichnis löschen wir, wenn Sie austreten. Treten Sie aus, löschen wir auch Ihre Beiträge und Kommentare in der Gruppe; möchten Sie, dass sie stehen bleiben, sagen Sie es uns beim Austritt. Ihre Mitgliedschaft dauert, bis Sie austreten oder wir die Gruppe schließen. Ihr Skool-Konto löschen Sie bei Skool selbst.</p>
+        <h3>Widerruf und Austritt</h3>
+        <p>Sie können jederzeit austreten und jede Einwilligung mit Wirkung für die Zukunft widerrufen: im Social Hub über „Austreten“ oder „Ändern“, oder mit einer formlosen Nachricht an <a href="mailto:info@social2scale.com">info@social2scale.com</a>. Wir entfernen Sie unverzüglich aus der Gruppe. Interessentinnen und Interessenten ohne Social Hub schreiben eine Nachricht an Phil in Skool oder an <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <p class="muted">Weitere Informationen: <a href="https://www.skool.com/legal?t=privacy" target="_blank" rel="noopener noreferrer">Skool Datenschutz</a>.</p>
+        <span class="legal">Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO (Mitgliedschaft); Art. 49 Abs. 1 lit. a DSGVO (Übermittlung in die USA); gesonderte Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 22 KUG (Aufzeichnungen); Art. 6 Abs. 1 lit. f DSGVO (Nachweis der Einwilligung, Art. 7 Abs. 1 DSGVO)</span>
+      </div></section>
+
       <section class="blk" id="speicherdauer"><div class="wrap reveal">
-        <h2><span class="n">13</span>Speicherdauer</h2>
+        <h2><span class="n">15</span>Speicherdauer</h2>
         <p>Wir verarbeiten und speichern personenbezogene Daten nur so lange, wie es für die Erreichung des jeweiligen Zwecks erforderlich ist oder wie es gesetzliche Aufbewahrungsfristen vorsehen (z. B. handels- und steuerrechtliche Fristen von bis zu 10 Jahren).</p>
         <p>Server-Logfiles werden durch den Hoster regelmäßig nach kurzer Zeit gelöscht oder anonymisiert. Anfragedaten aus dem Formular löschen wir, sobald sie für die Bearbeitung Ihrer Anfrage bzw. die Vertragsabwicklung nicht mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
       </div></section>
 
       <section class="blk" id="rechte"><div class="wrap reveal">
-        <h2><span class="n">14</span>Ihre <em>Rechte</em></h2>
+        <h2><span class="n">16</span>Ihre <em>Rechte</em></h2>
         <p>Als betroffene Person stehen Ihnen nach der DSGVO insbesondere folgende Rechte zu:</p>
         <ul>
           <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
@@ -412,16 +451,19 @@ section.blk{scroll-margin-top:90px}
           <li>Recht auf Widerruf einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
         </ul>
         <p>Zur Ausübung Ihrer Rechte sowie für alle Fragen zum Datenschutz genügt eine formlose Nachricht an: <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+        <div class="data">
+          <p><b>Widerspruchsrecht (Art. 21 DSGVO).</b> Soweit wir Daten auf Grundlage berechtigter Interessen (Art. 6 Abs. 1 lit. f DSGVO) verarbeiten, können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen. Wir verarbeiten die Daten dann nicht mehr, es sei denn, wir weisen zwingende schutzwürdige Gründe nach, die Ihre Interessen überwiegen, oder die Verarbeitung dient der Geltendmachung, Ausübung oder Verteidigung von Rechtsansprüchen. Eine formlose Nachricht an <a href="mailto:info@social2scale.com">info@social2scale.com</a> genügt.</p>
+        </div>
       </div></section>
 
       <section class="blk" id="beschwerde"><div class="wrap reveal">
-        <h2><span class="n">15</span>Beschwerde&shy;recht</h2>
+        <h2><span class="n">17</span>Beschwerde&shy;recht</h2>
         <p>Unbeschadet anderweitiger Rechtsbehelfe steht Ihnen gemäß Art. 77 DSGVO ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu, wenn Sie der Ansicht sind, dass die Verarbeitung Ihrer personenbezogenen Daten gegen die DSGVO verstößt.</p>
         <p class="muted">Zuständig ist in der Regel die Aufsichtsbehörde Ihres gewöhnlichen Aufenthaltsorts oder die des Verantwortlichen. Für den Verantwortlichen ist dies das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach (<a href="https://www.lda.bayern.de" target="_blank" rel="noopener noreferrer">www.lda.bayern.de</a>).</p>
       </div></section>
 
       <section class="blk" id="sonstiges"><div class="wrap reveal">
-        <h2><span class="n">16</span>Automatisierte Entscheidung &amp; Aktualität</h2>
+        <h2><span class="n">18</span>Automatisierte Entscheidung &amp; Aktualität</h2>
         <p>Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne des Art. 22 DSGVO findet nicht statt.</p>
         <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die jeweils aktuelle Fassung.</p>
       </div></section>
@@ -448,7 +490,7 @@ section.blk{scroll-margin-top:90px}
     document.getElementById('yr').textContent=new Date().getFullYear();
     var els=document.querySelectorAll('.reveal');
     if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){els.forEach(function(e){e.classList.add('on')});}
-    else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.16,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
+    else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:0,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
   </script>
   <!-- back-to-top (global) -->
   <button id="toTop" class="to-top" type="button" aria-label="Nach oben scrollen" hidden><span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></button>

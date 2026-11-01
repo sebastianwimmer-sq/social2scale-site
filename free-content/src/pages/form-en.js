@@ -113,7 +113,7 @@ export const TABELLE = [
   ['<h2>Fast fertig — <em>wohin damit</em>?</h2>', '<h2>Almost done — <em>where should it go</em>?</h2>'],
   ['placeholder="dein@email.de"', 'placeholder="you@email.com"'],
   ['Ja, baut mir meine Gratis-Vorschau — und meldet euch dazu bei mir. Es gilt die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> — abmelden jederzeit mit einem Klick.',
-    'Yes, build my free preview — and get in touch with me about it. The <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">privacy policy (German)</a> applies — unsubscribe anytime with one click.'],
+    'Yes, build my free preview — and get in touch with me about it. The <a href="https://social2scale.com/en/privacy/" target="_blank" rel="noopener">privacy policy</a> applies — unsubscribe anytime with one click.'],
   ['Optional: Ihr dürft meine fertige Vorschau anonym als Beispiel zeigen. Freiwillig — ändert nichts an der Vorschau.', 'Optional: you may show my finished preview anonymously as an example. Voluntary — it doesn’t change the preview.'],
   ['<span class="lab">Meinen Feed bauen</span>', '<span class="lab">Build my feed</span>'],
   ['<span class="eyebrow">Fast geschafft</span>', '<span class="eyebrow">Almost there</span>'],
@@ -138,7 +138,7 @@ export const TABELLE = [
   ['<span>Erst mal informieren</span>', '<span>Just looking for now</span>'],
   ['<h2>Wie erreicht Phil <em>dich</em>?</h2>', '<h2>How can Phil <em>reach you</em>?</h2>'],
   ['placeholder="Telefon für den Rückruf"', 'placeholder="Phone for a callback"'],
-  ['Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.', 'I’ve read the <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">privacy policy (German)</a> and agree.'],
+  ['Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.', 'I’ve read the <a href="https://social2scale.com/en/privacy/" target="_blank" rel="noopener">privacy policy</a> and agree.'],
   ['<span class="lab">Erstgespräch anfragen</span>', '<span class="lab">Request an intro call</span>'],
   ['<span class="eyebrow">Anfrage ist da</span>', '<span class="eyebrow">Request received</span>'],
   ['<h2>Danke, <span id="echo-b">…</span>. Phil meldet sich <em>persönlich</em>.</h2>', '<h2>Thanks, <span id="echo-b">…</span>. Phil will get back to you <em>personally</em>.</h2>'],
@@ -169,7 +169,7 @@ export const TABELLE = [
   ['<span class="mb-s">passt</span>', '<span class="mb-s">works</span>'],
   ['<span class="lab">Ergebnis zeigen</span>', '<span class="lab">Show result</span>'],
   ['<a href="https://social2scale.com/">Startseite</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutz</a>',
-    '<a href="https://social2scale.com/en/">Home</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Legal notice</a> · <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Privacy</a>'],
+    '<a href="https://social2scale.com/en/">Home</a> · <a href="https://social2scale.com/impressum/" target="_blank" rel="noopener">Legal notice</a> · <a href="https://social2scale.com/en/privacy/" target="_blank" rel="noopener">Privacy</a>'],
 
   // ── Skript: Sprache der Anfragen ──
   ["const NOTIZ_MAX=600,NOTIZ_LABEL={de:{goal:'Ziel',business:'Business',status:'Stand',budget:'Rahmen',start:'Start',phone:'Rückruf'}},WAHL_EN={};",
