@@ -9,7 +9,9 @@
  *    → DE wurde geaendert, EN nicht nachgezogen,
  *  - lang-Attribut, hreflang-Kopf oder Umschalter nicht stimmen,
  *  - auf der EN-Seite noch deutscher Text steht,
- *  - eine der beiden Adressen in sitemap.xml fehlt.
+ *  - eine der beiden Adressen in sitemap.xml fehlt,
+ *  - bei Rechtstexten (RECHTSTEXTE) Zahlen, E-Mail-Adressen oder Abschnitte
+ *    der beiden Fassungen nicht gleich sind (rechtstexteGleich).
  *
  * Nachziehen: EN-Seite anpassen, dann `node scripts/sprachen-stempel.mjs <en-pfad>`
  * und `node scripts/build-pages.mjs`.
@@ -27,6 +29,33 @@ import {
 // nicht fertig uebersetzt. 0 waere zu streng: Eigennamen wie „Sebi & Phil“.
 const MAX_DEUTSCH = 2;
 const DEUTSCH = /\b(und|der|die|das|nicht|mit|für|dein|deine|wir|du|ist|zum|zur|bei|eine?)\b|[äöüÄÖÜß]/g;
+
+// Rechtstexte gibt es in zwei Sprachen, aber sie muessen DASSELBE sagen
+// (Richter-Loop 01.11.2026): der Stempel merkt nur, dass DE sich geaendert hat.
+// Eine falsch uebertragene Frist („12 Monate“ → „24 months“) oder ein
+// vergessener Abschnitt fiele ihm nicht auf. Verglichen werden harte Angaben:
+// jede Zahl im sichtbaren Text (Fristen, Artikel, Paragrafen, Anschriften,
+// Daten), jede E-Mail-Adresse und die Abschnitts-ids, je als Menge mit Anzahl.
+// Nur ZIFFERN zaehlen: Fristen stehen deshalb in beiden Fassungen als Ziffer
+// („3. Jahr“ / „3rd year“), nie als Wort.
+export const RECHTSTEXTE = ['/datenschutz/'];
+
+const harteAngaben = (html) => [
+  ...(sichtbarerText(html).match(/\d+/g) ?? []).map((z) => `Zahl ${z}`),
+  ...(html.match(/[\w.+-]+@[\w-]+\.[\w.]+/g) ?? []).map((m) => `Mail ${m}`),
+  ...[...html.matchAll(/<section class="blk" id="([^"]+)"/g)].map((m) => `Abschnitt #${m[1]}`),
+];
+
+export function rechtstexteGleich(de, en, deHtml, enHtml) {
+  const soll = zaehle(harteAngaben(deHtml));
+  const ist = zaehle(harteAngaben(enHtml));
+  const befunde = [];
+  for (const a of new Set([...soll.keys(), ...ist.keys()])) {
+    const s = soll.get(a) || 0, i = ist.get(a) || 0;
+    if (s !== i) befunde.push(`${en}: ${a} ${i}× statt ${s}× wie auf ${de} (Rechtstext nicht gleich)`);
+  }
+  return befunde;
+}
 
 const lies = (wurzel, pfad) => readFileSync(join(wurzel, datei(pfad)), 'utf8');
 
@@ -67,6 +96,7 @@ function pruefePaar(wurzel, { de, en }, sitemap) {
 
   // 1:1-Regel: dieselben Wege hinter denselben Knoepfen (Sebi 23.10.2026).
   befunde.push(...wegeVergleich(de, en, deHtml, enHtml));
+  if (RECHTSTEXTE.includes(de)) befunde.push(...rechtstexteGleich(de, en, deHtml, enHtml));
 
   for (const pfad of [de, en]) {
     if (sitemap !== null && !sitemap.includes(`<loc>${DOMAIN}${pfad}</loc>`)) befunde.push(`${pfad}: fehlt in sitemap.xml`);
@@ -200,6 +230,26 @@ function selbsttest() {
     } finally {
       rmSync(w, { recursive: true, force: true });
     }
+  }
+  return rot + selbsttestRecht();
+}
+
+function selbsttestRecht() {
+  const de = '<section class="blk" id="community"><p>Löschung nach 12 Monaten, <a href="mailto:info@social2scale.com">info@social2scale.com</a>, Art. 49 Abs. 1</p></section>';
+  const en = '<section class="blk" id="community"><p>Deletion after 12 months, <a href="mailto:info@social2scale.com">info@social2scale.com</a>, Art. 49(1)</p></section>';
+  const faelle = [
+    { name: 'Rechtstext gleich', en, erwartet: null },
+    { name: 'Frist falsch übertragen', en: en.replace('12 months', '24 months'), erwartet: /Zahl 12 0× statt 1×/ },
+    { name: 'Werktage falsch übertragen', de: de.replace('nach 12 Monaten', 'nach 12 Monaten, binnen 2 Werktagen'), en: en.replace('after 12 months', 'after 12 months, within 3 working days'), erwartet: /Zahl 3 1× statt 0×/ },
+    { name: 'Abschnitt fehlt', en: '<p>Deletion after 12 months, info@social2scale.com, Art. 49(1)</p>', erwartet: /Abschnitt #community 0× statt 1×/ },
+    { name: 'andere Mail', en: en.replaceAll('info@social2scale.com', 'hi@social2scale.com'), erwartet: /Mail info@social2scale\.com 0× statt/ },
+  ];
+  let rot = 0;
+  for (const f of faelle) {
+    const befunde = rechtstexteGleich('/datenschutz/', '/en/privacy/', f.de ?? de, f.en);
+    const ok = f.erwartet === null ? befunde.length === 0 : befunde.some((b) => f.erwartet.test(b));
+    console.log(`${ok ? '✓' : '✗'} ${f.name}: ${befunde.length ? befunde.join(' | ') : 'keine Befunde'}`);
+    if (!ok) rot++;
   }
   return rot;
 }

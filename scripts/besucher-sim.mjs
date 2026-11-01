@@ -65,7 +65,7 @@ const VORSCHAU = /start\.social2scale\.com|\/(gratis|en\/free)\/?(\?|#|$)/i;
 // Seiten, die bewusst nicht zur Vorschau führen müssen: Recht, nach dem Kauf, Kundinnen —
 // und /anfrage/, das Erstgespräch-Formular ist selbst schon der Abschluss (ein Vorschau-Knopf
 // dort würde aus dem Formular herausführen).
-const OHNE_VORSCHAU = /^\/(impressum|datenschutz|danke|onboarding|anfrage|en\/contact)(\/|$)/;
+const OHNE_VORSCHAU = /^\/(impressum|datenschutz|danke|onboarding|anfrage|en\/contact|en\/privacy)(\/|$)/;
 // Englische Seiten (lib/sprachen.mjs): seit 23.10.2026 1:1 wie Deutsch — derselbe Funnel auf
 // Englisch (/en/free/ → start.social2scale.com/en/), also dieselbe Regel; geprueft wird die Sprache.
 const ENGLISCH = /^\/en(\/|$)/;
