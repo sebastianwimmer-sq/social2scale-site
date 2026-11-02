@@ -279,7 +279,9 @@ async function lauf({ voll }) {
   console.log('\nChromium reduce — Endzustand und Kontrast');
   for (const s of voll ? [...seiten, ...zusatz] : ['/']) await kontrast(cr, s);
   console.log('\nRuckeln und Layout-Sprünge');
-  for (const s of voll ? seiten : ['/']) await ruckeln(cr, s);
+  // S2S_RUCKELN=nachts: Ruckeln nur im Nachtlauf (siehe raum-check.mjs); Layout-Spruenge laufen immer
+  if (process.env.S2S_RUCKELN === 'nachts') console.log('  ⏭  Ruckeln: nicht gemessen, laeuft im Nachtlauf (pruefen.sh --schnell)');
+  else for (const s of voll ? seiten : ['/']) await ruckeln(cr, s);
   for (const s of voll ? seiten : ['/wissen/was-kostet-social-media-betreuung/']) await spruenge(cr, s);
   await cr.close();
   const wk = await webkit.launch();
