@@ -173,7 +173,9 @@ header.bar .brand, .af-logo { view-transition-name: marke; }
 
 /* Trefferflaechen ab 44 px (PRODUCT.md), ohne das Schriftbild zu aendern */
 .textlink,.duo-txt a,.foot-brand .foot-mail{display:inline-flex;align-items:center;min-height:44px}
-.foot-col a,.foot-legal a,.foot-bottom a{display:inline-flex;align-items:center;min-height:44px}
+.foot-col a,.foot-legal a,.foot-bottom a,.foot-links a{display:inline-flex;align-items:center;min-height:44px}
+/* Rechts- und Wissensseiten: Rueckweg, Kontakt und Profil-Links waren am Handy 18-22 px hoch (02.11.) */
+.home-link,.w-zurueck,.ab-fsocial,dd > a{display:inline-flex;align-items:center;min-height:44px}
 .foot-col ul{gap:0!important}
 .foot-ig{width:44px!important;height:44px!important}
 .kette-phasen button{min-height:44px}
