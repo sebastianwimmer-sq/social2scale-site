@@ -713,7 +713,8 @@
   .kette-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:clamp(26px,3vw,36px)}
   .kette-ttl{display:inline-flex;align-items:center;gap:8px;font-family:"Hanken Grotesk",sans-serif;font-size:0.6875rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--paper)}
   .kette-ttl .dot{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px rgba(0,184,136,.7)}
-  .kette-meta{font-family:"Hanken Grotesk",sans-serif;font-size:0.6562rem;letter-spacing:.06em;color:var(--faint)}
+  /* lesbar statt 10 px in blassem Grau (03.11.) */
+  .kette-meta{font-family:"Hanken Grotesk",sans-serif;font-size:0.9375rem;letter-spacing:.01em;color:var(--muted)}
   .kette-bahn{position:relative;height:2px;margin:0 10px;background:var(--line-2);border-radius:2px}
   .kette-fluss{position:absolute;left:0;top:0;bottom:0;width:100%;border-radius:2px;background:var(--accent-flow);
     transform-origin:left;transform:scaleX(var(--fluss,1));transition:transform var(--dur-4, .9s) var(--ease);box-shadow:0 0 14px rgba(31,201,152,.45)}
@@ -845,7 +846,8 @@
   @media (prefers-reduced-motion:reduce){.feed-reihe li,.feed-reihe img{transition:none}.reveal:not(.on) .feed-reihe li{opacity:1;transform:none}}
   section.abschluss{padding-top:clamp(64px,8vw,120px)}
   /* Pflichthinweis zu den illustrativen Zahlen (s2s-aussagen.json: nur als Beispielwert) */
-  .s2-beispiel{position:absolute;left:0;right:0;bottom:clamp(10px,2vh,18px);z-index:4;margin:0;text-align:center;font-size:0.75rem;letter-spacing:.02em;color:var(--faint)}
+  /* Pflichthinweis lesbar: stand in 12 px (03.11.) */
+  .s2-beispiel{position:absolute;left:0;right:0;bottom:clamp(10px,2vh,18px);z-index:4;margin:0;text-align:center;font-size:0.9375rem;letter-spacing:.01em;color:var(--faint)}
   @media (max-width:959px){.s2-beispiel{position:static;margin-top:12px;padding:0 16px}}
   /* 03 liegt auf der Lichtflaeche der Szene: faint kam dort auf 3,9:1 */
   .s2hero .s2eyebrow{color:var(--muted)}
