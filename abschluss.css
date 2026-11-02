@@ -139,8 +139,8 @@ header.bar .brand, .af-logo { view-transition-name: marke; }
    reservieren und den Nach-oben-Knopf darueber heben (vorher lag er komplett
    darunter und Impressum/Datenschutz waren nicht antippbar). */
 @media (max-width:759px){
-  body:has(.sticky-cta){padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
-  body:has(.sticky-cta.on) .to-top{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  body:has(.sticky-cta){padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+  body:has(.sticky-cta.on) .to-top{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 }
 
 /* Trefferflaechen ab 44 px (PRODUCT.md), ohne das Schriftbild zu aendern */

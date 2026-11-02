@@ -630,15 +630,18 @@
      hoch — wer unten ankommt, hatte keinen Knopf mehr in Daumennähe. Erscheint
      erst, wenn der Hero aus dem Blick ist, damit er oben nichts verdeckt. */
   .sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:130;display:none;
-    padding:.6rem max(.9rem,env(safe-area-inset-left)) calc(.6rem + env(safe-area-inset-bottom));
-    background:linear-gradient(180deg,rgba(10,11,13,.55),rgba(10,11,13,.94) 42%);
-    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    padding:.55rem max(.9rem,env(safe-area-inset-left)) calc(.55rem + env(safe-area-inset-bottom));
+    /* deckend statt halbdurchsichtig: am Handy schien der Seitentext quer durch Zeile und Knopf (01.11.) */
+    background:#0a0b0d;box-shadow:0 -14px 30px rgba(0,0,0,.5);
     border-top:1px solid rgba(255,255,255,.09);
     transform:translateY(110%);transition:transform var(--dur-2, .32s) cubic-bezier(.16,1,.3,1)}
   .sticky-cta.on{transform:none}
   .sticky-cta .inner{display:flex;align-items:center;gap:.7rem;max-width:34rem;margin:0 auto}
-  .sticky-cta .txt{flex:1;min-width:0;font-size:.78rem;line-height:1.35;color:rgba(255,255,255,.72)}
-  .sticky-cta .txt b{display:block;color:#fff;font-size:.86rem}
+  .sticky-cta::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(45,212,191,.45),transparent)}
+  /* nur die Frage, eine Zeile: die Unterzeile brach am iPhone SE auf vier Zeilen (89 px Leiste) */
+  .sticky-cta .txt{flex:1;min-width:0;font-size:0;line-height:1.3;color:#fff}
+  .sticky-cta .txt b{display:block;font-size:.92rem}
   .sticky-cta .btn{flex:none;padding:.7rem 1.05rem;font-size:.86rem;border-radius:12px;white-space:nowrap}
   @media (min-width:760px){.sticky-cta{display:none !important}}
   @media (max-width:759px){.sticky-cta{display:block}}
