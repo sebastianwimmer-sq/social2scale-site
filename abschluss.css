@@ -345,3 +345,7 @@ a.rail-cta{display:inline-flex;align-items:center;min-height:44px}
 .fw-marrow .s2-mark{color:var(--emerald-soft,#1FC998)}
 .fw-mrow:hover .fw-marrow .s2-mark{transform:translateY(-2px);transition:transform var(--dur-2,.24s) ease-out}
 @media (prefers-reduced-motion:reduce){.fw-mrow:hover .fw-marrow .s2-mark{transform:none}}
+
+/* Fuss-Unterzeile auf Wissen, Impressum, Datenschutz lesbar: stand in 12 px (02.11.).
+   "body" vorn, weil die Wissensseiten ihren Stil NACH dieser Datei laden. */
+body .foot-id .foot-tag{font-size:0.9375rem}
