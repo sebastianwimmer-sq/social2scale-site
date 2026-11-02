@@ -315,6 +315,58 @@
 <link rel="stylesheet" href="/raum.css">
 <script src="/raum.js" defer></script>
 <script src="/szenen/szenen.js" data-css="basis,danke" defer></script>
+<!-- Seiten-Layout im Kopf statt am Ende: am Ende zeichnete der Browser erst ohne und baute dann um (CLS 0,55, 02.11.) -->
+  <style>
+  /* Danke-Seite neu (16.10.2026): EIN nächster Schritt, „Der Weg“ als einziger Moment (Linie zeichnet bis zur jetzigen Station) */
+  .dk{--dk-weg:linear-gradient(180deg,var(--emerald-soft),var(--teal))}
+  .dk-wrap{width:min(1120px,100% - 32px);margin:0 auto}
+  .dk-start{position:relative;padding:clamp(96px,14vh,150px) 0 clamp(64px,10vh,110px);overflow:clip;
+    background:radial-gradient(60% 70% at 18% 0%,color-mix(in srgb,var(--emerald) 20%,transparent),transparent 70%),
+               radial-gradient(50% 60% at 100% 30%,color-mix(in srgb,var(--teal) 14%,transparent),transparent 70%)}
+  .dk-start .dk-wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,7vw,110px);align-items:center}
+  .dk-status{display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;font-size:1rem;font-weight:600;color:var(--emerald-soft)}
+  .dk h1{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(2.7rem,1.6rem + 4.4vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:0;text-wrap:balance}
+  .dk-lead{max-width:34em;margin:26px 0 34px;font-size:clamp(17px,1rem + .3vw,19px);line-height:1.6;color:var(--muted)}
+  .dk-cta{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 34px;border-radius:12px;font-weight:700;font-size:1.0625rem;
+    color:var(--emerald-ink);text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft),var(--emerald) 55%,var(--teal));
+    box-shadow:0 18px 40px -14px color-mix(in srgb,var(--emerald) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.3);
+    transition:transform var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease)}
+  .dk-cta:hover{transform:translateY(-2px);box-shadow:0 24px 48px -14px color-mix(in srgb,var(--emerald) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
+  .dk-cta:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
+  .dk-hinweis{margin:16px 0 0;font-size:0.9375rem;color:var(--faint)}
+  /* Der Weg: graue Spur über alle Stationen, darauf die Markenlinie bis zur jetzigen Station */
+  .dk-weg{position:relative;list-style:none;margin:0;padding:6px 0 6px 0;display:grid;gap:30px;--dk-bis:0}
+  .dk-weg::before,.dk-weg::after{content:"";position:absolute;left:11px;top:16px;width:2px;border-radius:2px}
+  .dk-weg::before{bottom:16px;background:var(--line-2)}
+  .dk-weg::after{height:calc(var(--dk-hoehe,0px) * var(--dk-bis));background:var(--dk-weg);box-shadow:0 0 18px color-mix(in srgb,var(--emerald) 55%,transparent)}
+  .dk-schritt{position:relative;display:grid;gap:4px;padding-left:44px}
+  .dk-schritt b{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.25rem,1.05rem + .6vw,1.55rem);line-height:1.15;color:var(--paper)}
+  .dk-schritt span:last-child{font-size:1rem;line-height:1.5;color:var(--muted)}
+  .dk-schritt:not(.fertig):not(.jetzt) b{color:color-mix(in srgb,var(--paper) 62%,transparent)}
+  .dk-punkt{position:absolute;left:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--line-3)}
+  .dk-schritt.fertig .dk-punkt{background:var(--dk-weg);box-shadow:none}
+  .dk-schritt.fertig .dk-punkt::after{content:"";position:absolute;left:8px;top:5px;width:6px;height:10px;border:solid var(--emerald-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .dk-schritt.jetzt .dk-punkt{background:var(--ink);box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
+  .dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:dk-licht 1.4s var(--ease) .9s 1 both}
+  @keyframes dk-licht{0%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
+    100%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 14px color-mix(in srgb,var(--emerald) 0%,transparent)}}
+  .dk-weg.an::after{transition:height .9s var(--ease)}
+  .dk-wir{position:relative;padding:clamp(64px,10vh,110px) 0 clamp(72px,11vh,120px);border-top:1px solid var(--line);background:var(--ink)}   /* deckt den alten Seiten-Schein ab (endete hart mitten im Abschnitt) */
+  .dk-schmal{max-width:760px}
+  .dk-gruender{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+  .dk-fotos{display:flex}.dk-fotos img{width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px var(--ink)}
+  .dk-fotos picture+picture img{margin-left:-18px}
+  .dk h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.7rem,1.3rem + 1.4vw,2.4rem);line-height:1.1;letter-spacing:-.02em;margin:4px 0 14px}
+  .dk-gruender p{margin:0;font-size:1.0625rem;line-height:1.65;color:var(--muted)}
+  .dk-sig{margin-top:14px!important;font-family:"Fraunces",serif;font-style:italic;font-size:1.1875rem!important;color:var(--paper)!important}
+  .dk-support{margin:40px 0 0;font-size:1rem;color:var(--muted)}.dk-support a{color:var(--paper)}
+  .dk-pflicht{margin:12px 0 0;font-size:0.875rem;line-height:1.55;color:var(--faint)}
+  @media (max-width:860px){
+    .dk-start .dk-wrap{grid-template-columns:1fr;gap:56px}
+    .dk-gruender{grid-template-columns:1fr;gap:18px}
+  }
+  @media (prefers-reduced-motion:reduce){.dk-weg.an::after{transition:none}.dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:none}.dk-cta{transition:none}}
+  </style>
 </head>
 <body>
   <a class="skip" href="#hero">Zum Inhalt</a>
@@ -480,57 +532,6 @@
   })();
 </script>
 
-  <style>
-  /* Danke-Seite neu (16.10.2026): EIN nächster Schritt, „Der Weg“ als einziger Moment (Linie zeichnet bis zur jetzigen Station) */
-  .dk{--dk-weg:linear-gradient(180deg,var(--emerald-soft),var(--teal))}
-  .dk-wrap{width:min(1120px,100% - 32px);margin:0 auto}
-  .dk-start{position:relative;padding:clamp(96px,14vh,150px) 0 clamp(64px,10vh,110px);overflow:clip;
-    background:radial-gradient(60% 70% at 18% 0%,color-mix(in srgb,var(--emerald) 20%,transparent),transparent 70%),
-               radial-gradient(50% 60% at 100% 30%,color-mix(in srgb,var(--teal) 14%,transparent),transparent 70%)}
-  .dk-start .dk-wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,7vw,110px);align-items:center}
-  .dk-status{display:inline-flex;align-items:center;gap:10px;margin:0 0 22px;font-size:1rem;font-weight:600;color:var(--emerald-soft)}
-  .dk h1{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(2.7rem,1.6rem + 4.4vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin:0;text-wrap:balance}
-  .dk-lead{max-width:34em;margin:26px 0 34px;font-size:clamp(17px,1rem + .3vw,19px);line-height:1.6;color:var(--muted)}
-  .dk-cta{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 34px;border-radius:12px;font-weight:700;font-size:1.0625rem;
-    color:var(--emerald-ink);text-decoration:none;background:linear-gradient(135deg,var(--emerald-soft),var(--emerald) 55%,var(--teal));
-    box-shadow:0 18px 40px -14px color-mix(in srgb,var(--emerald) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.3);
-    transition:transform var(--dur-2) var(--ease),box-shadow var(--dur-2) var(--ease)}
-  .dk-cta:hover{transform:translateY(-2px);box-shadow:0 24px 48px -14px color-mix(in srgb,var(--emerald) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.3)}
-  .dk-cta:focus-visible{outline:2px solid var(--paper);outline-offset:4px}
-  .dk-hinweis{margin:16px 0 0;font-size:0.9375rem;color:var(--faint)}
-  /* Der Weg: graue Spur über alle Stationen, darauf die Markenlinie bis zur jetzigen Station */
-  .dk-weg{position:relative;list-style:none;margin:0;padding:6px 0 6px 0;display:grid;gap:30px;--dk-bis:0}
-  .dk-weg::before,.dk-weg::after{content:"";position:absolute;left:11px;top:16px;width:2px;border-radius:2px}
-  .dk-weg::before{bottom:16px;background:var(--line-2)}
-  .dk-weg::after{height:calc(var(--dk-hoehe,0px) * var(--dk-bis));background:var(--dk-weg);box-shadow:0 0 18px color-mix(in srgb,var(--emerald) 55%,transparent)}
-  .dk-schritt{position:relative;display:grid;gap:4px;padding-left:44px}
-  .dk-schritt b{font-family:"Fraunces",serif;font-weight:450;font-size:clamp(1.25rem,1.05rem + .6vw,1.55rem);line-height:1.15;color:var(--paper)}
-  .dk-schritt span:last-child{font-size:1rem;line-height:1.5;color:var(--muted)}
-  .dk-schritt:not(.fertig):not(.jetzt) b{color:color-mix(in srgb,var(--paper) 62%,transparent)}
-  .dk-punkt{position:absolute;left:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--surface-2);box-shadow:inset 0 0 0 2px var(--line-3)}
-  .dk-schritt.fertig .dk-punkt{background:var(--dk-weg);box-shadow:none}
-  .dk-schritt.fertig .dk-punkt::after{content:"";position:absolute;left:8px;top:5px;width:6px;height:10px;border:solid var(--emerald-ink);border-width:0 2px 2px 0;transform:rotate(45deg)}
-  .dk-schritt.jetzt .dk-punkt{background:var(--ink);box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
-  .dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:dk-licht 1.4s var(--ease) .9s 1 both}
-  @keyframes dk-licht{0%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 0 color-mix(in srgb,var(--emerald) 60%,transparent)}
-    100%{box-shadow:inset 0 0 0 2px var(--emerald-soft),0 0 0 14px color-mix(in srgb,var(--emerald) 0%,transparent)}}
-  .dk-weg.an::after{transition:height .9s var(--ease)}
-  .dk-wir{position:relative;padding:clamp(64px,10vh,110px) 0 clamp(72px,11vh,120px);border-top:1px solid var(--line);background:var(--ink)}   /* deckt den alten Seiten-Schein ab (endete hart mitten im Abschnitt) */
-  .dk-schmal{max-width:760px}
-  .dk-gruender{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
-  .dk-fotos{display:flex}.dk-fotos img{width:72px;height:72px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px var(--ink)}
-  .dk-fotos picture+picture img{margin-left:-18px}
-  .dk h2{font-family:"Fraunces",serif;font-weight:400;font-size:clamp(1.7rem,1.3rem + 1.4vw,2.4rem);line-height:1.1;letter-spacing:-.02em;margin:4px 0 14px}
-  .dk-gruender p{margin:0;font-size:1.0625rem;line-height:1.65;color:var(--muted)}
-  .dk-sig{margin-top:14px!important;font-family:"Fraunces",serif;font-style:italic;font-size:1.1875rem!important;color:var(--paper)!important}
-  .dk-support{margin:40px 0 0;font-size:1rem;color:var(--muted)}.dk-support a{color:var(--paper)}
-  .dk-pflicht{margin:12px 0 0;font-size:0.875rem;line-height:1.55;color:var(--faint)}
-  @media (max-width:860px){
-    .dk-start .dk-wrap{grid-template-columns:1fr;gap:56px}
-    .dk-gruender{grid-template-columns:1fr;gap:18px}
-  }
-  @media (prefers-reduced-motion:reduce){.dk-weg.an::after{transition:none}.dk-weg.an .dk-schritt.jetzt .dk-punkt{animation:none}.dk-cta{transition:none}}
-  </style>
   <script>
   // Der Weg: Markenlinie zeichnet einmal bis zur jetzigen Station (Höhe gemessen, nicht geraten); ohne JS/Bewegung steht sie fertig da
   (function(){var w=document.querySelector('.dk-weg');if(!w)return;var j=w.querySelector('.jetzt .dk-punkt');
