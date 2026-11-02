@@ -135,6 +135,13 @@ header.bar .brand, .af-logo { view-transition-name: marke; }
   .nav-scrim.open{opacity:0}
 }
 
+/* Glas-Kopf am Handy dichter: bei 55-68 % Deckkraft stand die naechste
+   Ueberschrift als Geisterschrift hinter Logo und Sprachwahl (02.11.). Gilt nach
+   dem Liquid-Glass-Block jeder Seite, weil diese Datei danach geladen wird. */
+@media (max-width:759px){
+  .bar,header.top{background:radial-gradient(130% 180% at 12% -50%,rgba(255,255,255,.10),transparent 46%),linear-gradient(180deg,rgba(11,19,16,.9),rgba(7,11,14,.84))}
+}
+
 /* Feste Anfrage-Leiste am Handy: sie darf nichts verdecken. Platz am Seitenende
    reservieren und den Nach-oben-Knopf darueber heben (vorher lag er komplett
    darunter und Impressum/Datenschutz waren nicht antippbar). */
