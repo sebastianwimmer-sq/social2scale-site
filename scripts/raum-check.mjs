@@ -193,7 +193,10 @@ async function lauf() {
   }
 
   // Ruckeln beim Scrollen, nie im Stand (27.10.: Wichteln ruckelte nur beim Scrollen)
-  {
+  // S2S_RUCKELN=nachts (pruefen.sh --schnell): unter Tageslast meldete die Messung Phantom-Ruckeln
+  // auf unberuehrten Seiten (02.11.: /ablauf/ 7 %, /danke/ 12 %, main allein 5,7-7,8 %). Der Nachtlauf misst.
+  if (process.env.S2S_RUCKELN === 'nachts') console.log('  ⏭  Ruckeln: nicht gemessen, laeuft im Nachtlauf (pruefen.sh --schnell)');
+  else {
     const b = await chromium.launch();
     for (const pfad of SEITEN) {
       const { c, p } = await oeffne(b, pfad, 'no-preference');
@@ -229,5 +232,5 @@ if (SELBSTTEST) {
 }
 await lauf();
 server.close();
-console.log(rot ? `\n✗ raum-check: ${rot} Befund(e)` : '\n✓ raum-check: Licht an, Raum antwortet, ruhig steht still, kein Ruckeln.');
+console.log(rot ? `\n✗ raum-check: ${rot} Befund(e)` : (process.env.S2S_RUCKELN === 'nachts' ? '\n✓ raum-check: Licht an, Raum antwortet, ruhig steht still (Ruckeln misst der Nachtlauf).' : '\n✓ raum-check: Licht an, Raum antwortet, ruhig steht still, kein Ruckeln.'));
 process.exit(rot ? 1 : 0);
