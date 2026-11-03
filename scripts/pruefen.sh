@@ -46,6 +46,7 @@ selbst "Selbsttest Raum" scripts/raum-check.mjs node scripts/raum-check.mjs --se
 selbst "Selbsttest Szenen" scripts/szenen-check.mjs node scripts/szenen-check.mjs --selbsttest
 selbst "Selbsttest Bedienung" scripts/bedienung-check.mjs node scripts/bedienung-check.mjs --selbsttest
 selbst "Selbsttest Bildschärfe" scripts/bild-schaerfe-check.mjs node scripts/bild-schaerfe-check.mjs --selbsttest
+selbst "Selbsttest Kollision" scripts/kollision-check.mjs node scripts/kollision-check.mjs --selbsttest
 selbst "Selbsttest Sprachen" scripts/sprachen-check.mjs node scripts/sprachen-check.mjs --selbsttest
 selbst "Selbsttest Zähler" scripts/zaehler-check.mjs node scripts/zaehler-check.mjs --selbsttest
 selbst "Selbsttest Sitemap" scripts/sitemap-check.mjs node scripts/sitemap-check.mjs --selbsttest
@@ -69,6 +70,7 @@ lauf "Szenen je Abschnitt (Quelle)" node scripts/szenen-bauen.mjs --pruefen
 lauf "Szenen je Abschnitt"      env S2S_RUCKELN="$RUCKELN" node scripts/szenen-check.mjs
 lauf "Bedienung (Knöpfe)"        node scripts/bedienung-check.mjs
 lauf "Bildschärfe"              node scripts/bild-schaerfe-check.mjs
+lauf "Nichts liegt übereinander" env KOLLISION="$([ "$SCHNELL" = 1 ] && echo schnell || echo voll)" node scripts/kollision-check.mjs
 lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s
 lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$HOME/kit-build/motion-loop/mess.mjs" funnel
 selbst "Selbsttest Besucher" scripts/besucher-sim.mjs node scripts/besucher-sim.mjs --selbsttest
