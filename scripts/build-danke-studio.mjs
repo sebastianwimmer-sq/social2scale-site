@@ -414,7 +414,7 @@ ${TOKENS}
   /* Die Karte liegt auf dem hellen Teil des Verlaufs. Ein durchsichtiger
      Grund reicht dort nicht: der Sekundaerton kam auf 4,25:1. Eine eigene,
      deckende Flaeche gibt dem Text wieder einen definierten Grund. */
-  .notecard{background:var(--s2-surface);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5);color:var(--s2-muted);font-size:.93rem;line-height:1.65;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .notecard{background:var(--s2-surface);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5);color:var(--s2-muted);font-size:0.9375rem;line-height:1.65;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
   .notecard b{color:var(--s2-ink)}
   .notecard a{color:var(--s2-accent-soft);text-decoration:none}
   .notecard a:hover{text-decoration:underline}
