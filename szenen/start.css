@@ -95,7 +95,9 @@
 [data-sz="ringlicht"] .rl::before{ /* Schein des Rings auf Wand und Handy */
   content:"";position:absolute;inset:-6%;border-radius:50%;opacity:calc(.15 + var(--p,0) * .85);
   background:radial-gradient(closest-side,transparent 62%,rgba(var(--sz-kalt),.14) 78%,transparent 94%)}
-[data-sz="ringlicht"] .s2-beispiel{z-index:4;color:#A9ABA6} /* Hinweis „Beispielwerte“ war mit --faint 3,8:1 */
+[data-sz="ringlicht"] .s2-beispiel{z-index:4;color:#A9ABA6; /* Hinweis „Beispielwerte“ war mit --faint 3,8:1 */
+  background:radial-gradient(ellipse 58% 120% at 50% 50%,#05121A 55%,rgba(5,18,26,0) 100%) center/min(100%,420px) 100% no-repeat; /* schwebt vor dem Stativ: */
+  text-shadow:0 0 8px #05121A} /* die Beine laufen hinter dem Hinweis weich aus, ohne Kasten */
 [data-sz="ringlicht"] .rl-stativ{position:absolute;left:50%;top:calc(100% + 40px);width:0;height:min(34vh,240px)}
 [data-sz="ringlicht"] .rl-stativ i{position:absolute;left:-2px;top:0;width:4px;height:100%;border-radius:2px;transform-origin:top center;
   background:linear-gradient(180deg,#3A3E44,#1B1D21)}
