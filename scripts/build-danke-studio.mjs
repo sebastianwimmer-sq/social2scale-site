@@ -349,6 +349,7 @@ ${TOKENS}
   .lead{color:var(--s2-muted);max-width:58ch;margin-top:var(--s2-sp-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
 
   .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
+  .bar .brand{display:inline-flex;align-items:center;min-height:44px}
   .bar .brand img{height:30px;width:auto;display:block}
 
   .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:0.9375rem;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
@@ -423,7 +424,7 @@ ${TOKENS}
   .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:0.6875rem;letter-spacing:.04em;color:var(--s2-faint)}
   .site-footer img{height:34px;width:auto;display:block}
   .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s2-sp-4)}
-  .site-footer a{display:inline-flex;align-items:center;min-height:24px;color:var(--s2-muted);text-decoration:none}
+  .site-footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--s2-muted);text-decoration:none}
   .site-footer a:hover{color:var(--s2-ink)}
 </style>
 <noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
