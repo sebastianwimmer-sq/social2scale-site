@@ -259,10 +259,19 @@ async function oeffne(engine, geraet) {
 }
 
 // Bis zur Ruhe warten: Schriften geladen, zwei Frames ohne Arbeit.
+// Navigiert die Seite mitten im Warten weiter (Weiterleitung /links/klick/…), neu ansetzen
+// statt abbrechen (03.11.: „Execution context was destroyed“ machte die Sim zufaellig rot).
 async function ruhe(page) {
-  await page.waitForLoadState('load').catch(() => {});
-  await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
-  await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+  for (let versuch = 0; ; versuch++) {
+    try {
+      await page.waitForLoadState('load').catch(() => {});
+      await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
+      await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+      return;
+    } catch (e) {
+      if (versuch >= 2 || !/Execution context was destroyed|navigat/i.test(e.message)) throw e;
+    }
+  }
 }
 
 // Einmal durchscrollen (Einblendungen, Lazy-Bilder), endliche Animationen beenden, nach oben.
