@@ -33,6 +33,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import os from 'node:os';
 
 const ARGS = process.argv.slice(2);
@@ -654,6 +655,9 @@ async function selbsttest() {
 // Eigener Server für den lokalen Stand: nur 127.0.0.1, freier Port, endet mit dem Lauf.
 // upgrade-insecure-requests fliegt in der Test-Route raus — WebKit hebt http sonst auf https
 // und lädt kein CSS (kern.md); unbekannte Pfade bekommen die echte 404.html mit Status 404.
+// Text geht gezippt raus wie bei GitHub Pages: ungezippt maß die gedrosselte Besucherin
+// 22 KB statt 8 KB abschluss.css, und 150 Byte Kommentar kippten LCP 2,3 → 3,0 s (03.11.).
+const GEZIPPT = /^(text\/|application\/(json|xml)|image\/svg)/;
 const TYPEN = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript',
   '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.avif': 'image/avif',
   '.json': 'application/json', '.woff2': 'font/woff2', '.mp4': 'video/mp4', '.xml': 'application/xml', '.txt': 'text/plain', '.ico': 'image/x-icon' };
@@ -668,7 +672,10 @@ async function lokalerServer(wurzel) {
       try { inhalt = await readFile(join(pfad, 'index.html')); pfad = join(pfad, 'index.html'); } catch { status = 404; pfad = join(basis, '404.html'); inhalt = await readFile(pfad).catch(() => Buffer.from('weg')); }
     }
     if (pfad.endsWith('.html')) inhalt = Buffer.from(inhalt.toString().replace(/;?\s*upgrade-insecure-requests/g, ''));
-    ant.writeHead(status, { 'Content-Type': TYPEN[extname(pfad)] || 'application/octet-stream' });
+    const typ = TYPEN[extname(pfad)] || 'application/octet-stream';
+    const kopf = { 'Content-Type': typ };
+    if (GEZIPPT.test(typ) && /\bgzip\b/.test(anf.headers['accept-encoding'] || '')) { inhalt = gzipSync(inhalt); kopf['Content-Encoding'] = 'gzip'; }
+    ant.writeHead(status, kopf);
     ant.end(inhalt);
   });
   await new Promise((r) => s.listen(0, '127.0.0.1', r));
