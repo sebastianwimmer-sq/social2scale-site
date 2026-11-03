@@ -349,3 +349,6 @@ a.rail-cta{display:inline-flex;align-items:center;min-height:44px}
 /* Fuss-Unterzeile auf Wissen, Impressum, Datenschutz lesbar: stand in 12 px (02.11.).
    "body" vorn, weil die Wissensseiten ihren Stil NACH dieser Datei laden. */
 body .foot-id .foot-tag{font-size:0.9375rem}
+
+/* Knopf oben in der Leiste: 42-43 px hoch, knapp unter der 44-px-Trefferflaeche (03.11.) */
+body .nav-cta{padding-top:11px;padding-bottom:11px;min-height:44px;box-sizing:border-box}
