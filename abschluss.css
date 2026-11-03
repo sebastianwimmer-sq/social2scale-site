@@ -352,3 +352,6 @@ body .foot-id .foot-tag{font-size:0.9375rem}
 
 /* Knopf oben in der Leiste: 42-43 px hoch, knapp unter der 44-px-Trefferflaeche (03.11.) */
 body .nav-cta{padding-top:11px;padding-bottom:11px;min-height:44px;box-sizing:border-box}
+
+/* Textlinks („Woran du uns messen kannst“, „Alle sieben Pakete …“): 14 px unter der Lesegrenze (03.11.) */
+body .textlink{font-size:0.9375rem}
