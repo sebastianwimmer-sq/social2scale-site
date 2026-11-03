@@ -110,14 +110,17 @@
   addEventListener('scroll', starte, { passive: true });
   document.addEventListener('visibilitychange', starte);
 
-  // Halten
+  // Halten (Wortlaut nach Seitensprache, EN-Seiten tragen lang="en")
+  var TEXT = /^en/i.test(document.documentElement.lang)
+    ? { halten: 'Pause motion', weiter: 'Resume motion' }
+    : { halten: 'Bewegung anhalten', weiter: 'Bewegung fortsetzen' };
   raeume.forEach(function (r) {
     if (!r._staub) return;
     var k = document.createElement('button');
     k.type = 'button';
     k.className = 'raum-halt';
     var schreibe = function () {
-      k.textContent = gehalten ? 'Bewegung fortsetzen' : 'Bewegung anhalten';
+      k.textContent = gehalten ? TEXT.weiter : TEXT.halten;
       k.setAttribute('aria-pressed', String(gehalten));
     };
     schreibe();
