@@ -712,7 +712,11 @@ async function main() {
       try { await w.lauf(page, w); } catch (e) { fehler = e; }
       await browser.close();
       if (fehler && versuch === 1 && /Execution context was destroyed/.test(fehler.message)) { BEFUNDE.length = vorher; WEGE.length = wege; continue; }
-      if (fehler) befund(w.id, '—', 'rot', 'Lauf abgebrochen', fehler.message.split('\n')[0]);
+      if (fehler) {
+        // Ohne die eigene Zeile bleibt ein seltener Abbruch ungeklärt (Nachtlauf 04.11.: nicht nachstellbar).
+        const stelle = (fehler.stack || '').split('\n').find((z) => z.includes('besucher-sim.mjs'))?.trim() || 'Stelle unbekannt';
+        befund(w.id, '—', 'rot', 'Lauf abgebrochen', fehler.message.split('\n')[0] + ' · ' + stelle);
+      }
       break;
     }
     const meine = BEFUNDE.filter((b) => b.persona === w.id);
