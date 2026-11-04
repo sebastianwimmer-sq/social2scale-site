@@ -266,34 +266,62 @@ export async function cleanupExpired(db, now = new Date(), images = null) {
   return res.meta?.changes ?? 0;
 }
 
+// Automatische Karte aus generate.js, an der niemand gearbeitet hat: gehört zum Lead
+// und geht mit ihm. Jede andere Karte heißt Zusammenarbeit, der Lead bleibt.
+const LEERE_AUTO_KARTE = `coalesce(c.status, '') = 'briefing'
+   AND coalesce(c.notes, '') LIKE 'Automatisch aus Free-Content-Funnel%'
+   AND NOT EXISTS (SELECT 1 FROM tickets x WHERE x.client_id = c.id)
+   AND NOT EXISTS (SELECT 1 FROM nachrichten x WHERE x.client_id = c.id)
+   AND NOT EXISTS (SELECT 1 FROM payments x WHERE x.client_id = c.id)
+   AND NOT EXISTS (SELECT 1 FROM beitraege x WHERE x.client_id = c.id)
+   AND NOT EXISTS (SELECT 1 FROM reel_auftrag x WHERE x.client_id = c.id)`;
+
 // Letzter Kontakt = jüngster Zeitpunkt aus Anlage, Bestätigung, Bau, letzter Mail
 // und ihrem letzten Klick (funnel_events). max() mit NULL ergibt NULL — daher coalesce.
+// Abgleich über f.email: email_norm schneidet +Tags ab, Karte und Spiegel tragen die rohe Adresse.
 const INAKTIV_WHERE = `f.confirmed_at IS NOT NULL
    AND max(f.created_at, coalesce(f.confirmed_at, ''), coalesce(f.generated_at, ''), coalesce(f.last_sent_at, ''),
            coalesce((SELECT max(e.created_at) FROM funnel_events e WHERE e.token = f.token), '')) < ?
-   AND NOT EXISTS (SELECT 1 FROM clients c WHERE lower(trim(c.email)) = f.email_norm)`;
+   AND NOT EXISTS (SELECT 1 FROM clients c
+                    WHERE (c.contact = f.email OR lower(trim(c.email)) IN (f.email_norm, lower(trim(f.email))))
+                      AND NOT (${LEERE_AUTO_KARTE}))
+   AND NOT EXISTS (SELECT 1 FROM submissions s JOIN clients c ON c.id = s.client_id
+                    WHERE s.type = 'free_content' AND s.email = f.email AND NOT (${LEERE_AUTO_KARTE}))`;
 
 /**
  * DSGVO (DSE Nr. 08, #400): bestätigte Vorschauen ohne Zusammenarbeit
- * INACTIVE_TTL_DAYS nach dem letzten Kontakt löschen, samt R2-Ablage.
- * Wer Kundin geworden ist (E-Mail in clients), bleibt — ihre Daten folgen dann
- * den Fristen der Betreuung. Zeilen in funnel_events behalten nur den Token
- * (ohne Lead dahinter kein Personenbezug mehr), die Zählung bleibt.
+ * INACTIVE_TTL_DAYS nach dem letzten Kontakt löschen, und zwar überall, wo der
+ * Funnel sie abgelegt hat: R2, CRM-Spiegel in submissions, leere Auto-Karte samt
+ * Verlauf und Wiedervorlage. Zeilen in funnel_events behalten nur den Token
+ * (ohne Lead kein Personenbezug), die Zählung bleibt.
  */
 export async function cleanupInactive(db, now = new Date(), images = null) {
   const cutoff = iso(new Date(now.getTime() - INACTIVE_TTL_DAYS * 24 * HOUR_MS));
   const alte = await db
-    .prepare(`SELECT f.id, f.token FROM free_leads f WHERE ${INAKTIV_WHERE}`)
+    .prepare(`SELECT f.id, f.token, f.email FROM free_leads f WHERE ${INAKTIV_WHERE}`)
     .bind(cutoff)
     .all();
-  const zeilen = alte.results ?? [];
-  if (!zeilen.length) return 0;
-  // Erst R2, dann die Zeile: bricht R2 ab, findet der nächste Lauf den Token noch.
   let geloescht = 0;
-  for (const z of zeilen) {
+  for (const z of alte.results ?? []) {
+    // Erst R2, dann die Zeilen: bricht R2 ab, findet der nächste Lauf den Token noch.
     if (images && z.token && !(await loescheLeadAblage(images, z.token))) continue;
-    const res = await db.prepare('DELETE FROM free_leads WHERE id = ?').bind(z.id).run();
-    geloescht += res.meta?.changes ?? 0;
+    const karten = await db
+      .prepare(`SELECT c.id FROM clients c WHERE c.contact = ? AND ${LEERE_AUTO_KARTE}`)
+      .bind(z.email)
+      .all();
+    const kartenZeilen = (karten.results ?? []).flatMap((k) => [
+      db.prepare('DELETE FROM activity WHERE client_id = ?').bind(k.id),
+      db.prepare('DELETE FROM events WHERE client_id = ?').bind(k.id),
+      db.prepare('DELETE FROM submissions WHERE client_id = ?').bind(k.id),
+      db.prepare('DELETE FROM clients WHERE id = ?').bind(k.id),
+    ]);
+    // batch: alles oder nichts, sonst bliebe bei einem Abbruch eine halbe Löschung ohne Lead.
+    await db.batch([
+      ...kartenZeilen,
+      db.prepare("DELETE FROM submissions WHERE type = 'free_content' AND email = ?").bind(z.email),
+      db.prepare('DELETE FROM free_leads WHERE id = ?').bind(z.id),
+    ]);
+    geloescht++;
   }
   return geloescht;
 }
