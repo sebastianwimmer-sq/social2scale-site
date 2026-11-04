@@ -2,6 +2,8 @@
 
 export const TOKEN_TTL_HOURS = 24;
 export const PENDING_TTL_DAYS = 30;
+// Bestätigte Vorschau ohne Zusammenarbeit: 12 Monate nach dem letzten Kontakt löschen (DSE Nr. 08, #400).
+export const INACTIVE_TTL_DAYS = 365;
 export const RESEND_MAX_PER_HOUR = 3;
 export const MIN_ELAPSED_MS = 1500;
 export const RATE_LIMIT_PER_IP_PER_HOUR = 5;
