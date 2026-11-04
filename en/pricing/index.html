@@ -51,209 +51,48 @@
   .hero .wrap{position:relative;z-index:1}
   
   /* the ONE prominent brand mark — large centered wordmark */
-  
-  
-  
-  
+
   .hero .sub{color:var(--muted);font-size:clamp(1.1rem,1rem + .55vw,1.32rem);margin-top:var(--s-6);max-width:54ch;line-height:1.6}
   .hero .sub b{color:var(--paper);font-weight:600}
   /* hero trust row — 3 value pills, semantic emerald checks */
-  
-  
+
   .cta-row{display:flex;gap:var(--s-6);align-items:center;flex-wrap:wrap;margin-top:var(--s-7)}
   .hero-center .cta-row{justify-content:center}
 
   /* ===== proof section — relocated growth dashboard, full-bleed under hero ===== */
-  .proof{position:relative;padding:clamp(var(--s-7),5vw,var(--s-9)) 0;border-top:1px solid var(--line);background:radial-gradient(110% 120% at 82% 0%,rgba(0,184,136,.08),transparent 50%),radial-gradient(110% 120% at 8% 100%,rgba(31,166,224,.07),transparent 52%),linear-gradient(180deg,rgba(21,23,27,.72) 0%,rgba(10,11,13,.55) 80%)}
-  
-  
-  
-  
-  
+
   .btn{position:relative;display:inline-block;font-family:"Archivo",sans-serif;font-size:0.9062rem;font-weight:700;letter-spacing:.02em;padding:17px 32px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform var(--dur-2, .25s) var(--ease),box-shadow var(--dur-2, .25s)}
   .btn:hover{transform:translateY(-3px)}
   /* the ONE emerald-glow element on the page */
   .btn-primary{background:linear-gradient(135deg,var(--emerald-soft) 0%,var(--emerald) 52%,var(--teal) 100%);color:var(--emerald-ink);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
   .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
   .btn-primary:hover::after{animation:glint var(--dur-4, .85s) var(--ease) forwards}
-  
-  
-  
-  
 
-  /* ===== hero growth panel — stylised analytics dashboard (Analytics-Look) ===== */
-  
-  
-  /* corner index markers */
-  
-  
-  
-  
-  
-  
-  
-  
-  
   /* chart */
-  .chart{position:relative;padding:var(--s-5) var(--s-5) var(--s-4)}
-  .chart .ylab{position:absolute;left:var(--s-3);top:var(--s-5);bottom:var(--s-6);width:var(--s-2);display:flex;flex-direction:column;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.04em}
-  .chart svg{display:block;width:100%;height:auto}
-  .chart .grid-line{stroke:var(--line);stroke-width:1}
-  .chart .area{fill:url(#areaFill)}
-  .chart .curve{fill:none;stroke:url(#curveGrad);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-  .chart .bar{fill:var(--surface-3)}
-  .chart .bar.up{fill:rgba(0,184,136,.32)}
-  .chart .node-dot{fill:var(--cyan)}
-  .chart .node-ring{fill:none;stroke:var(--cyan);stroke-width:1.4;opacity:.5}
-  .chart .xlab{display:flex;justify-content:space-between;margin-top:var(--s-3);padding-left:var(--s-5);font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--faint);letter-spacing:.06em}
-  /* panel tabs — kleine echte Interaktion (Reach / Leads / Umsatz) */
-  
-  
-  
-  
-  /* stat tiles — interaktiv (hover-lift, emerald-akzent, fokus, aktiv) */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /* chart draw-in (stroke-dashoffset), einmalig beim reveal */
-  .chart .curve{stroke-dasharray:var(--curve-len,640);stroke-dashoffset:var(--curve-len,640);transition:stroke-dashoffset 1.5s var(--ease)}
-  .panel.drawn .chart .curve{stroke-dashoffset:0}
-  .chart .node-dot,.chart .node-ring{opacity:0;transition:opacity var(--dur-3, .4s) var(--ease) 1.2s}
-  .panel.drawn .chart .node-dot,.panel.drawn .chart .node-ring{opacity:1}
-  .chart .node-ring{opacity:0}.panel.drawn .chart .node-ring{opacity:.5}
-  @media (prefers-reduced-motion:reduce){
-    .chart .curve{stroke-dashoffset:0;transition:none}
-    .chart .node-dot,.chart .node-ring{opacity:1;transition:none}
-    .chart .node-ring{opacity:.5}
-    
-  }
-  /* climb-bar motif row */
-  .panel-climb{display:flex;align-items:flex-end;gap:5px;height:34px;padding:0 var(--s-5) var(--s-5);border-top:1px solid var(--line);padding-top:var(--s-4)}
-  .panel-climb .cb{flex:1;background:var(--surface-3);border-radius:3px 3px 0 0;min-height:5px}
-  /* ===== Vorher/Nachher-Regler im Growth-Panel ===== */
-  /* growth-scale: Balken/Kurve werden per JS-Geometrie gesetzt (kein SVG-transform → Safari-fest) */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  .panel-climb .cb.on{background:linear-gradient(180deg,var(--emerald-soft),rgba(0,184,136,.35))}
-  .panel-climb .cb.on:last-child{background:linear-gradient(180deg,var(--cyan),rgba(31,166,224,.35))}
-  
-  
 
   /* mobile: ONE logo only — keep the centered hero wordmark, scaled down */
-  
 
   /* ===== trust strip — compact, editorial ===== */
-  
-  
-  
-  
-  
 
   /* ===== blocks ===== */
-  
-  
-  
+
   /* section index marker — small technical mono coordinate above the label */
-  
-  
-  
 
   /* ===== leistungen — bento (1 hero + 2 narrow) ===== */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+
   /* leistungen-Karten im Aurora-Gradient-Look (Emerald TL → Teal BR), passend zum Seiten-Wash */
 
   /* ===== ablauf — large overlapping mono numbers, left editorial ===== */
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   /* ===== für wen — asymmetric label/text rows ===== */
-  
-  
-  
-  
-  
-  
-  
+
   /* Für-wen hervorgehoben: aus Hairline-Liste → prominente Aurora-Karten */
-  
-  
-  
-  
 
   /* ===== ergebnisse — left stat row + pull-quote ===== */
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   /* ===== über uns — founders, flat surfaces ===== */
-  
-  
-  
-  
-  
-  
-  
-  
 
   /* ===== faq ===== */
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   /* ===== cta band — flat surface, hairline, no glow ===== */
   .band{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--line-2);border-radius:24px;padding:clamp(40px,7vw,80px);box-shadow:var(--depth-lg)}
@@ -341,7 +180,6 @@
   .pr-drivers h3{font-family:"Archivo",sans-serif;font-size:0.875rem;font-weight:700;letter-spacing:.01em;color:var(--paper)}
   .pr-drivers p{margin-top:var(--s-3);color:var(--muted);font-size:.95rem;line-height:1.6}
 
-
   /* ===== Drei Wege — die eigentliche Entscheidung, gross und scanbar =====
      Bewusst KEINE drei gleich lauten Karten: der erste Weg ist breiter, traegt
      eine Flaeche mit Tiefe und steht zuerst (Preisanker). Die beiden anderen
@@ -406,7 +244,6 @@
     .pr-calc-grid div,.pr-why-scale div{flex-direction:column;gap:var(--s-2);align-items:flex-start}
   }
 
-
   /* ===== Du / Wir — der No-Brainer wird sichtbar, nicht behauptet =====
      Die Asymmetrie IST das Argument: links ein Punkt, rechts sechs. Wer scannt,
      sieht in einer Sekunde, wie viel liegen bleibt. */
@@ -424,7 +261,6 @@
     .pr-split{grid-template-columns:1fr;gap:var(--s-5)}
     .pr-split-rule{height:1px;width:100%;background:var(--line-2)}
   }
-
 
   /* ===== Uebersicht: die drei Wege nebeneinander =====
      Die Ueberschrift verspricht "Drei Wege", zu sehen bekam man sie aber nie
@@ -586,7 +422,6 @@
 
   /* ===== Zeitstrahl: die Linie zeichnet sich von links ===== */
 
-
   /* ===== Angepinnte Szene: die drei Wege =====
      Dieselbe Technik wie die Phasen-Buehne der Startseite: ein hoher Track gibt
      die Scrollstrecke, das sticky Fenster darin bleibt stehen. Der Treiber in
@@ -723,7 +558,6 @@
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
-  
 
   <header class="bar">
     <a class="brand" href="/en/" aria-label="social2scale, to the homepage"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a>
@@ -768,7 +602,6 @@
         </div>
       <figure class="kopf-beitrag" aria-label="Post by @social2scale"><img src="/assets/feed/beitrag-9-400.webp" srcset="/assets/feed/beitrag-9-400.webp 400w, /assets/feed/beitrag-9-800.webp 800w" sizes="(max-width:880px) 62vw, 340px" width="400" height="500" alt="Post by @social2scale, in German: Our prices. In the open." fetchpriority="high" decoding="async"></figure>
     </div></section>
-
 
     <!-- Uebersicht der drei Wege. Steht bewusst VOR der angepinnten Szene:
          erst der Ueberblick, dann das Detail. Wer sich hier schon
@@ -861,8 +694,6 @@
       </div>
       <p class="pr-ueb-fuss">All prices include VAT. Which path fits you, we’ll tell you on the intro call. Even if it’s none of the three.</p>
     </div></section>
-
-
 
     <section class="pr-blk" aria-labelledby="pr-rechnung" data-sz="kassenbon"><div class="wrap reveal">
       <div class="pr-blk-head">
@@ -999,8 +830,6 @@
     </div></section>
 
   </main>
-
-
 
   <footer class="site-footer"><div class="wrap">
     <div class="foot-top">
