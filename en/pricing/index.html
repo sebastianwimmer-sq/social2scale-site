@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-D7b5j6eqg9ibEywkRdgdeBPQFdGBgLegMqxlgIBWl30=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PjnwACm2v7zMGxUWBrXm2411TYv8B2+wmfs51B9zYIs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -1088,48 +1088,6 @@
     else{var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');ob.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -40px 0px'});els.forEach(function(e){ob.observe(e)});}
 
     // ===== growth panel: draw-in chart + Vorher/Nachher-Regler =====
-    (function(){
-      var panel=document.querySelector('.proof .panel');
-      if(!panel)return;
-      var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // set exact curve length so the draw-in lands flush
-      var curve=panel.querySelector('.chart .curve');
-      if(curve&&curve.getTotalLength){var len=Math.ceil(curve.getTotalLength());panel.style.setProperty('--curve-len',len);}
-
-      // trigger draw-in once when panel scrolls into view
-      function draw(){panel.classList.add('drawn');}
-      if(reduce||!('IntersectionObserver' in window)){draw();}
-      else{var dob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){draw();dob.unobserve(e.target);}});},{threshold:.4});dob.observe(panel);}
-
-      // Vorher/Nachher-Regler — treibt Chart-Höhe + KPI-Zahlen + Status
-      var range=panel.querySelector('#growth-range');
-      var kReach=panel.querySelector('#kpi-reach'),kLeads=panel.querySelector('#kpi-leads'),kRev=panel.querySelector('#kpi-rev');
-      var stateEl=panel.querySelector('#rgl-state'),meta=panel.querySelector('#panel-meta');
-      var climb=Array.prototype.slice.call(panel.querySelectorAll('.panel-climb .cb'));
-      var bars=Array.prototype.slice.call(panel.querySelectorAll('.growth-scale .bar'));
-      var area=panel.querySelector('.growth-scale .area'),cv=panel.querySelector('.growth-scale .curve');
-      var ring=panel.querySelector('.growth-scale .node-ring'),dot=panel.querySelector('.growth-scale .node-dot');
-      var BASE=114,FH=[18,26,40,54,70,84,96],X=[14,54,94,134,174,214,254,294],YF=[104,96,82,66,48,34,22,12];
-      function state(p){return p<.12?'unsichtbar':p<.5?'wird sichtbar':p<.88?'wächst':'skaliert';}
-      function geo(p){ // direkte Geometrie statt transform — überall identisch
-        var pp=0.05+p*0.95;
-        bars.forEach(function(b,i){var h=FH[i]*pp;b.setAttribute('height',h.toFixed(1));b.setAttribute('y',(BASE-h).toFixed(1));});
-        var d='M'+X.map(function(x,i){return x+' '+(BASE-(BASE-YF[i])*pp).toFixed(1);}).join(' L');
-        if(cv)cv.setAttribute('d',d);
-        if(area)area.setAttribute('d',d+' L294 '+BASE+' L14 '+BASE+' Z');
-        var ny=(BASE-(BASE-12)*pp).toFixed(1);if(ring)ring.setAttribute('cy',ny);if(dot)dot.setAttribute('cy',ny);
-      }
-      function apply(p){
-        geo(p);
-        if(kReach)kReach.textContent='+'+Math.round(218*p)+'%';
-        if(kLeads)kLeads.textContent=Math.round(47*p);
-        if(kRev)kRev.textContent='€'+(4.8*p).toFixed(1).replace('.',',')+'k';
-        var s=state(p);if(stateEl)stateEl.textContent=s;if(meta)meta.textContent='Q · '+s;
-        var on=Math.round(p*climb.length);climb.forEach(function(c,i){c.classList.toggle('on',i<on);});
-      }
-      if(range){range.addEventListener('input',function(){apply(range.value/100);});apply(range.value/100);}
-    })();
 
     // ===== scrollspy nav-state (handmade touch) =====
     (function(){
