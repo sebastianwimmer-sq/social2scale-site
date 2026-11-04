@@ -14,6 +14,7 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
+import { anfragenAufraeumen } from './anfrage-loeschen.js';
 import { upsertLead, confirmLead, cleanupExpired, cleanupInactive, sweepStaleBuilding, reportLead, loescheLeadAblage, findByToken } from './leads.js';
 import { speichereAvatar } from './avatar.js';
 import { BODY_MAX_BYTES } from './constants.js';
@@ -409,6 +410,12 @@ export default {
       if (weg) console.error('[cron]', weg, 'inaktive Vorschau-Leads gelöscht (12 Monate)');
     } catch (err) {
       console.error('[cron] cleanupInactive fehlgeschlagen:', err);
+    }
+    try {
+      const weg = await anfragenAufraeumen(env);
+      if (weg) console.error('[cron]', weg, 'inaktive Anfragen gelöscht (12 Monate)');
+    } catch (err) {
+      console.error('[cron] anfragenAufraeumen fehlgeschlagen:', err);
     }
     await heileRenderAusfaelle(env);
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
