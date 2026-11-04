@@ -14,7 +14,7 @@ import {
   hasMailServer,
   registerAttempt,
 } from './protect.js';
-import { upsertLead, confirmLead, cleanupExpired, sweepStaleBuilding, reportLead, loescheLeadAblage, findByToken } from './leads.js';
+import { upsertLead, confirmLead, cleanupExpired, cleanupInactive, sweepStaleBuilding, reportLead, loescheLeadAblage, findByToken } from './leads.js';
 import { speichereAvatar } from './avatar.js';
 import { BODY_MAX_BYTES } from './constants.js';
 import { sendConfirmMail, sendResultMail, notifyFounders } from './mail.js';
@@ -403,6 +403,12 @@ export default {
       if (befreit) console.error('[cron]', befreit, 'haengende Builds befreit');
     } catch (err) {
       console.error('[cron] sweepStaleBuilding fehlgeschlagen:', err);
+    }
+    try {
+      const weg = await cleanupInactive(env.DB, new Date(), env.IMAGES);
+      if (weg) console.error('[cron]', weg, 'inaktive Vorschau-Leads gelöscht (12 Monate)');
+    } catch (err) {
+      console.error('[cron] cleanupInactive fehlgeschlagen:', err);
     }
     await heileRenderAusfaelle(env);
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)

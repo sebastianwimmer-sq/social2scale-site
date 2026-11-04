@@ -11,7 +11,7 @@
  * seinen Bestaetigungslink anklickt, bekommt nie eine 500.
  */
 
-import { TOKEN_TTL_HOURS, RESEND_MAX_PER_HOUR, PENDING_TTL_DAYS, BUILDING_TIMEOUT_MINUTES } from './constants.js';
+import { TOKEN_TTL_HOURS, RESEND_MAX_PER_HOUR, PENDING_TTL_DAYS, INACTIVE_TTL_DAYS, BUILDING_TIMEOUT_MINUTES } from './constants.js';
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -264,6 +264,38 @@ export async function cleanupExpired(db, now = new Date(), images = null) {
     }
   }
   return res.meta?.changes ?? 0;
+}
+
+// Letzter Kontakt = jüngster Zeitpunkt aus Anlage, Bestätigung, Bau, letzter Mail
+// und ihrem letzten Klick (funnel_events). max() mit NULL ergibt NULL — daher coalesce.
+const INAKTIV_WHERE = `f.confirmed_at IS NOT NULL
+   AND max(f.created_at, coalesce(f.confirmed_at, ''), coalesce(f.generated_at, ''), coalesce(f.last_sent_at, ''),
+           coalesce((SELECT max(e.created_at) FROM funnel_events e WHERE e.token = f.token), '')) < ?
+   AND NOT EXISTS (SELECT 1 FROM clients c WHERE lower(trim(c.email)) = f.email_norm)`;
+
+/**
+ * DSGVO (DSE Nr. 08, #400): bestätigte Vorschauen ohne Zusammenarbeit
+ * INACTIVE_TTL_DAYS nach dem letzten Kontakt löschen, samt R2-Ablage.
+ * Wer Kundin geworden ist (E-Mail in clients), bleibt — ihre Daten folgen dann
+ * den Fristen der Betreuung. Zeilen in funnel_events behalten nur den Token
+ * (ohne Lead dahinter kein Personenbezug mehr), die Zählung bleibt.
+ */
+export async function cleanupInactive(db, now = new Date(), images = null) {
+  const cutoff = iso(new Date(now.getTime() - INACTIVE_TTL_DAYS * 24 * HOUR_MS));
+  const alte = await db
+    .prepare(`SELECT f.id, f.token FROM free_leads f WHERE ${INAKTIV_WHERE}`)
+    .bind(cutoff)
+    .all();
+  const zeilen = alte.results ?? [];
+  if (!zeilen.length) return 0;
+  // Erst R2, dann die Zeile: bricht R2 ab, findet der nächste Lauf den Token noch.
+  let geloescht = 0;
+  for (const z of zeilen) {
+    if (images && z.token && !(await loescheLeadAblage(images, z.token))) continue;
+    const res = await db.prepare('DELETE FROM free_leads WHERE id = ?').bind(z.id).run();
+    geloescht += res.meta?.changes ?? 0;
+  }
+  return geloescht;
 }
 
 /** Loescht alle R2-Objekte eines Leads (Foto + Frames + Captions). WIRFT NIE. */
