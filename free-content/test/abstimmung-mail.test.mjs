@@ -154,3 +154,13 @@ test('Absender werden richtig zugeordnet, Fremde sehen alle Fragen ohne Namen im
   assert.equal(fuerPerson([{ wer: 'phil' }, { wer: 'sebi' }], null).fragen.length, 2);
   assert.match(mailBauen([{ titel: 'x', wer: 'phil' }], '').htmlContent, /Guten Morgen</);
 });
+
+test('Akquise: Phil sieht nur Zahlen, Sebi nichts, leere Liste keinen Abschnitt', () => {
+  const extra = { akquise: { antwort: 2, dran: 1, neu: 24 } };
+  const phil = mailBauen([{ titel: 'x', wer: 'phil' }], '', 'phil', extra).htmlContent;
+  assert.match(phil, /Akquise/);
+  assert.match(phil, /2 Antworten warten/);
+  assert.match(phil, /24 Vorschläge/);
+  assert.doesNotMatch(mailBauen([{ titel: 'x', wer: 'sebi' }], '', 'sebi', extra).htmlContent, /Akquise/);
+  assert.doesNotMatch(mailBauen([{ titel: 'x', wer: 'phil' }], '', 'phil', { akquise: { antwort: 0, dran: 0, neu: 0 } }).htmlContent, /Akquise/);
+});

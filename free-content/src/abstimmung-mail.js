@@ -90,6 +90,14 @@ function frageZeile(p, ich) {
   return zeile(esc(frage), unter.filter(Boolean).join(' · '), p.empfehlung && !/^(gesendet|geschickt|erledigt)$/i.test(p.empfehlung) ? `<span style="color:${FARBE.gruen}">Empfehlung: ${esc(p.empfehlung)}</span>` : '');
 }
 
+function akquiseZeilen(a) {
+  return [
+    a.antwort ? zeile(`${a.antwort} ${a.antwort === 1 ? 'Antwort wartet' : 'Antworten warten'}`, '') : '',
+    a.dran ? zeile(`${a.dran} heute wieder dran`, '') : '',
+    a.neu ? zeile(`${a.neu} Vorschläge zum Anschreiben`, '') : '',
+  ].join('');
+}
+
 export function mailBauen(punkte, satz, ich = null, extra = {}) {
   const { fragen, abnicken } = fuerPerson(punkte, ich);
   const entwuerfe = ich === 'phil' ? (extra.entwuerfe || []) : [];
@@ -109,6 +117,8 @@ export function mailBauen(punkte, satz, ich = null, extra = {}) {
     fragen.length ? abschnitt('Zu entscheiden', fragen.length,
       fragen.slice(0, MAX_ZEILEN.fragen).map((p) => frageZeile(p, ich)).join('') + nochMehr(fragen.length - MAX_ZEILEN.fragen)) : '',
     abnicken.length ? abschnitt('Schon erledigt, kurz abnicken', abnicken.length, '') : '',
+    // Nur Zahlen, keine Namen: Die Mail liegt in fremden Postfächern. Akquise allein löst keine Mail aus.
+    ich === 'phil' && (extra.akquise?.antwort || extra.akquise?.dran || extra.akquise?.neu) ? abschnitt('Akquise', null, akquiseZeilen(extra.akquise)) : '',
     faellig.length ? abschnitt('Fällig', faellig.length,
       faelligZeilen.map((t) => zeile(esc(t.title), '', `<span style="color:${FARBE.rot}">${esc(t.due.slice(8, 10))}.${esc(t.due.slice(5, 7))}.</span>`)).join('') + nochMehr(faellig.length - faelligZeilen.length)) : '',
   ].join('');
@@ -132,12 +142,22 @@ export function mailBauen(punkte, satz, ich = null, extra = {}) {
   return { subject: betreff, htmlContent: html };
 }
 
+// Eigener Versuch: Eine fehlende Akquise-Tabelle darf Entwürfe und Fristen nicht mitreißen.
+async function akquiseLesen(env, tag) {
+  try {
+    return await env.DB.prepare(`SELECT SUM(stufe = 'antwort') AS antwort, SUM(stufe = 'gefunden') AS neu, SUM(stufe IN ('angeschrieben', 'termin') AND naechster_kontakt IS NOT NULL AND naechster_kontakt != '' AND naechster_kontakt <= ?) AS dran FROM leads`).bind(tag).first() || {};
+  } catch (err) {
+    console.error('[abstimmung-mail] Akquise fehlt', err);
+    return {};
+  }
+}
+
 // Entwürfe und Fristen sind Beiwerk: Fehlt eins davon, geht die Mail trotzdem raus.
 async function beiwerkLesen(env, tag) {
   try {
     const entwuerfe = await env.DB.prepare(`SELECT titel FROM nachrichten WHERE status = 'entwurf' ORDER BY created_at DESC, id DESC`).all();
     const faellig = await env.DB.prepare(`SELECT title, owner, due FROM tickets WHERE status != 'erledigt' AND due IS NOT NULL AND due != '' AND due <= ? ORDER BY due, id`).bind(tag).all();
-    return { entwuerfe: entwuerfe.results || [], faellig: faellig.results || [] };
+    return { entwuerfe: entwuerfe.results || [], faellig: faellig.results || [], akquise: await akquiseLesen(env, tag) };
   } catch (err) {
     console.error('[abstimmung-mail] Beiwerk fehlt', err);
     return {};
