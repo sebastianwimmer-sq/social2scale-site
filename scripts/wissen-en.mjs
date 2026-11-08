@@ -174,4 +174,125 @@ export const SEITEN_EN = [
       },
     ],
   },
+  {
+    de: "ki-fuer-social-media-nutzen",
+    slug: "using-ai-for-social-media",
+    geprueft: "2026-11-09",
+    stand: "Last reviewed: November 9, 2026",
+    titel: "How do I use AI well for social media?",
+    emWort: "AI",
+    kurz: "Using AI well",
+    beschreibung:
+      "Where AI really helps with social media, where it hurts and how to get started: ideas, drafts, subtitles and analysis, without everything sounding the same.",
+    antwort:
+      "AI helps most with the parts of social media that repeat: collecting ideas, writing first drafts, reshaping copy and subtitling videos. What it can’t replace is your experience, your point of view and your judgement of what fits you. The best split: AI writes the draft, you give it your voice.",
+    abschnitte: [
+      {
+        h: "What AI is good at today",
+        liste: [
+          ["Ideas", "Collect the questions your clients ask you and let AI suggest topics from them. The best posts answer a real question."],
+          ["First drafts", "A caption, an outline for a carousel, three options for the opening line. You pick and rewrite instead of staring at an empty field."],
+          ["Repurposing", "Turn a text into a reel script, a reel into a story, a post into a newsletter. One idea, several formats."],
+          ["Video", "Generate subtitles automatically and get editing suggestions. That’s where video saves the most time."],
+          ["Analysis", "Have comments and messages summarised: which questions keep coming up? Those become your next topics."],
+        ],
+      },
+      {
+        h: "Where AI hurts you",
+        p: [
+          "Without guidance, AI writes copy that sounds like everyone else. Post like that and you become interchangeable, which is the opposite of what your own presence is for.",
+          "AI sometimes makes up facts, figures and sources. Check anything that sounds like a fact yourself before it goes live. With health, legal and money topics that counts twice: promises you aren’t allowed to make remain your responsibility, no matter who wrote the text.",
+          "With images, made-up people and places quickly look fake. Your own photos of you and your work build more trust than any generated picture.",
+        ],
+      },
+      {
+        h: "How to get started",
+        liste: [
+          ["1. Give context", "Tell the AI who you are, who you work for and how you talk. Add two or three of your own texts as examples."],
+          ["2. Ask for options", "Don’t ask for the finished post, ask for three approaches. You decide which one fits you."],
+          ["3. Read it out loud", "Read the draft out loud. Anything you’d never say goes, or gets rewritten in your words."],
+        ],
+      },
+      {
+        h: "How we do it at social2scale",
+        p: [
+          "We use our own AI tools for the legwork, such as drafts, subtitles and editing. Every post still goes through a person and only builds on statements you have confirmed yourself. That way your presence stays yours, even with AI helping.",
+        ],
+      },
+    ],
+  },
+  {
+    de: "was-posten-damit-kunden-kommen",
+    slug: "what-to-post-to-win-clients",
+    geprueft: "2026-11-09",
+    stand: "Last reviewed: November 9, 2026",
+    titel: "What and when should I post to win clients?",
+    emWort: "post",
+    kurz: "What and when to post",
+    beschreibung:
+      "Which posts turn followers into inquiries, how to find the right time in your own insights and how a post leads to an inquiry without being pushy.",
+    antwort:
+      "Post what answers your ideal clients’ questions and shows how you work. Consistency matters more than the perfect time, and your own Instagram insights show when your followers are online. For a post to turn into an inquiry, it needs a clear, simple next step at the end.",
+    abschnitte: [
+      {
+        h: "Three kinds of posts that sell together",
+        liste: [
+          ["Know-how", "You answer a question your audience really has. It shows you know your stuff, and it gets saved and shared."],
+          ["Behind the scenes", "How you work, who you are, what drives you. People buy from people they trust."],
+          ["Offer", "What exactly you offer, for whom and how to get started. Without these posts, nobody knows they can buy from you."],
+        ],
+      },
+      {
+        h: "When to post",
+        p: [
+          "There is no time that works for everyone. With a professional account, Instagram shows you in your insights on which days and at which hours your followers are most active. Start there and check after a few weeks which posts did better.",
+          "Rhythm matters more than the hour: two or three posts a week that you can keep up beat a week of daily posts followed by a month of silence. In our management it’s ten posts a month.",
+        ],
+      },
+      {
+        h: "From post to inquiry",
+        p: [
+          "Every post needs an ending that fits its topic: a question for your readers, a reason to save it or an invitation to message you. The smaller the step, the more likely people take it. Sending a direct message with a keyword is easier for many than filling in a form.",
+          "It only gets pushy when every post tries to sell. Once you have helped, you have earned the right to say what you offer.",
+        ],
+      },
+    ],
+  },
+  {
+    de: "reichweite-und-community-aufbauen",
+    slug: "building-reach-and-community",
+    geprueft: "2026-11-09",
+    stand: "Last reviewed: November 9, 2026",
+    titel: "How do I build reach and a real community on social media?",
+    emWort: "community",
+    kurz: "Reach and community",
+    beschreibung:
+      "Where reach comes from, why replies matter more than follower counts and why bought followers do more harm than good.",
+    antwort:
+      "Reach comes from posts that get saved, shared and watched to the end. A community comes from you replying, asking questions and having conversations. Both need a clear topic: people who know what you stand for come back and bring others with them.",
+    abschnitte: [
+      {
+        h: "Where reach comes from",
+        liste: [
+          ["Reels", "They are also shown to people who don’t follow you yet. The first sentence decides whether someone stays."],
+          ["Carousels", "Great for saving, because they explain something people will need again later."],
+          ["A clear topic", "If you talk about something different every month, each post has to fight for attention from scratch. A topic people connect with you carries every post."],
+        ],
+      },
+      {
+        h: "How followers become a community",
+        p: [
+          "Reply to comments and messages, and ask questions people enjoy answering. In stories, polls and question stickers help, because one tap is enough to answer.",
+          "A community isn’t an audience, it’s a conversation. Someone who sees their question turned into a post stays and tells others.",
+        ],
+      },
+      {
+        h: "Real followers instead of big numbers",
+        p: [
+          "Bought followers don’t see your posts, don’t react and don’t buy. Instagram’s terms of use prohibit inauthentic activity. And the more followers never react, the weaker your posts perform.",
+          "A thousand people who care about your topic are worth more than ten thousand who happen to be there.",
+        ],
+      },
+    ],
+  },
 ];
