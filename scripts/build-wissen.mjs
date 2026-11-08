@@ -208,6 +208,124 @@ const SEITEN = [
       },
     ],
   },
+  {
+    slug: "ki-fuer-social-media-nutzen",
+    geprueft: "2026-11-09",
+    stand: "Zuletzt geprüft: 9. November 2026",
+    titel: "Wie nutze ich KI sinnvoll für Social Media?",
+    emWort: "KI",
+    kurz: "KI sinnvoll nutzen",
+    beschreibung:
+      "Wofür KI bei Social Media wirklich hilft, wo sie schadet und wie du anfängst: Ideen, Entwürfe, Untertitel und Auswertung, ohne dass alles gleich klingt.",
+    antwort:
+      "KI hilft bei Social Media dort am meisten, wo sich Arbeit wiederholt: Ideen sammeln, erste Entwürfe schreiben, Texte umformen, Videos untertiteln. Was sie nicht ersetzt, sind deine Erfahrung, deine Haltung und dein Urteil, was zu dir passt. Die beste Arbeitsteilung: Die KI liefert den Entwurf, du gibst ihm deine Stimme.",
+    abschnitte: [
+      {
+        h: "Wofür KI heute gut taugt",
+        liste: [
+          ["Ideen", "Sammle die Fragen, die dir Kundinnen und Kunden stellen, und lass dir daraus Themen vorschlagen. Die besten Beiträge beantworten eine echte Frage."],
+          ["Erste Entwürfe", "Caption, Gliederung für ein Karussell, drei Varianten für den ersten Satz. Du wählst aus und schreibst um, statt vor einem leeren Feld zu sitzen."],
+          ["Umformen", "Aus einem Text ein Reel-Skript machen, aus einem Reel eine Story, aus einem Beitrag einen Newsletter. Ein Gedanke, mehrere Formate."],
+          ["Video", "Untertitel automatisch erstellen und Schnittvorschläge bekommen. Das spart beim Video die meiste Zeit."],
+          ["Auswerten", "Kommentare und Nachrichten zusammenfassen lassen: Welche Fragen kommen immer wieder? Daraus entstehen die nächsten Themen."],
+        ],
+      },
+      {
+        h: "Wo KI dir schadet",
+        p: [
+          "Ohne Vorgaben schreibt KI Texte, die nach allen anderen klingen. Wer so postet, wird austauschbar, und genau das Gegenteil willst du mit einem eigenen Auftritt erreichen.",
+          "KI erfindet manchmal Fakten, Zahlen und Quellen. Alles, was nach einer Tatsache klingt, prüfst du selbst, bevor es online geht. Bei Gesundheit, Recht und Geld gilt das doppelt: Versprechen, die du nicht halten darfst, bleiben deine Verantwortung, egal wer den Text geschrieben hat.",
+          "Bei Bildern gilt: Erfundene Menschen und Orte wirken schnell unecht. Eigene Fotos von dir und deiner Arbeit bauen mehr Vertrauen auf als jedes generierte Bild.",
+        ],
+      },
+      {
+        h: "So fängst du an",
+        liste: [
+          ["1. Kontext geben", "Schreib der KI, wer du bist, für wen du arbeitest und wie du sprichst. Füge zwei, drei eigene Texte als Beispiel an."],
+          ["2. Varianten verlangen", "Lass dir nicht den fertigen Beitrag geben, sondern drei Ansätze. Du entscheidest, welcher zu dir passt."],
+          ["3. Laut lesen", "Lies den Entwurf laut. Alles, was du so nie sagen würdest, fliegt raus oder wird in deinen Worten neu geschrieben."],
+        ],
+      },
+      {
+        h: "Wie wir das bei social2scale machen",
+        p: [
+          "Wir nutzen eigene Werkzeuge mit KI für die Fleißarbeit, etwa für Entwürfe, Untertitel und Schnitt. Jeder Beitrag geht aber über einen Menschen und stützt sich nur auf Aussagen, die du selbst bestätigt hast. So bleibt dein Auftritt deiner, auch wenn die KI mitarbeitet.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "was-posten-damit-kunden-kommen",
+    geprueft: "2026-11-09",
+    stand: "Zuletzt geprüft: 9. November 2026",
+    titel: "Was und wann soll ich posten, damit Kunden kommen?",
+    emWort: "posten",
+    kurz: "Was und wann posten?",
+    beschreibung:
+      "Welche Beiträge aus Followern Anfragen machen, wie du den richtigen Zeitpunkt in deiner eigenen Statistik findest und wie ein Beitrag zur Anfrage führt, ohne aufdringlich zu sein.",
+    antwort:
+      "Poste, was die Fragen deiner Wunschkundschaft beantwortet und zeigt, wie du arbeitest. Regelmäßigkeit bringt mehr als der perfekte Zeitpunkt, und wann deine Follower online sind, zeigt dir deine eigene Instagram-Statistik. Damit aus einem Beitrag eine Anfrage wird, braucht er am Ende einen klaren, einfachen nächsten Schritt.",
+    abschnitte: [
+      {
+        h: "Drei Sorten Beiträge, die zusammen verkaufen",
+        liste: [
+          ["Wissen", "Du beantwortest eine Frage, die deine Kundschaft wirklich hat. Das zeigt, dass du dich auskennst, und wird gespeichert und geteilt."],
+          ["Einblick", "Wie du arbeitest, wer du bist, was dich antreibt. Menschen kaufen bei Menschen, denen sie vertrauen."],
+          ["Angebot", "Was genau du anbietest, für wen und wie man startet. Ohne diese Beiträge weiß niemand, dass man bei dir kaufen kann."],
+        ],
+      },
+      {
+        h: "Wann du postest",
+        p: [
+          "Eine Uhrzeit, die für alle gilt, gibt es nicht. Mit einem professionellen Konto zeigt dir Instagram unter Statistiken, zu welchen Tagen und Stunden deine Follower am aktivsten sind. Dort fängst du an und schaust nach ein paar Wochen, welche Beiträge besser liefen.",
+          "Wichtiger als die Uhrzeit ist der Rhythmus: lieber zwei, drei Beiträge pro Woche, die du durchhältst, als eine Woche täglich und dann einen Monat nichts. In unserer Betreuung sind es zehn Beiträge im Monat.",
+        ],
+      },
+      {
+        h: "Vom Beitrag zur Anfrage",
+        p: [
+          "Jeder Beitrag braucht ein Ende, das zum Thema passt: eine Frage an die Lesenden, ein Hinweis zum Speichern oder eine Einladung, dir zu schreiben. Je kleiner der Schritt, desto eher wird er gemacht. Eine Direktnachricht mit einem Stichwort ist für viele leichter als ein Formular.",
+          "Aufdringlich wird es erst, wenn jeder Beitrag verkaufen will. Wer vorher geholfen hat, darf auch sagen, was er anbietet.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "reichweite-und-community-aufbauen",
+    geprueft: "2026-11-09",
+    stand: "Zuletzt geprüft: 9. November 2026",
+    titel: "Wie baue ich auf Social Media Reichweite und eine echte Community auf?",
+    emWort: "Community",
+    kurz: "Reichweite und Community",
+    beschreibung:
+      "Woher Reichweite kommt, warum Antworten wichtiger sind als Follower-Zahlen und weshalb gekaufte Follower mehr schaden als nutzen.",
+    antwort:
+      "Reichweite entsteht durch Beiträge, die gespeichert, geteilt und zu Ende geschaut werden. Eine Community entsteht dadurch, dass du antwortest, nachfragst und Gespräche führst. Beides braucht ein klares Thema: Wer weiß, wofür du stehst, kommt wieder und bringt andere mit.",
+    abschnitte: [
+      {
+        h: "Woher Reichweite kommt",
+        liste: [
+          ["Reels", "Sie werden auch Menschen gezeigt, die dir noch nicht folgen. Der erste Satz entscheidet, ob jemand dranbleibt."],
+          ["Karussells", "Gut zum Speichern, weil sie etwas erklären, das man später noch einmal braucht."],
+          ["Ein klares Thema", "Wer jeden Monat etwas anderes erzählt, muss bei jedem Beitrag neu um Aufmerksamkeit kämpfen. Ein Thema, das man mit dir verbindet, trägt jeden Beitrag."],
+        ],
+      },
+      {
+        h: "Wie aus Followern eine Community wird",
+        p: [
+          "Antworte auf Kommentare und Nachrichten, und stell Fragen, auf die man gern antwortet. In Storys helfen Umfragen und Fragesticker, weil sie mit einem Tipp beantwortet sind.",
+          "Eine Community ist kein Publikum, sondern ein Gespräch. Wer merkt, dass seine Frage zu einem Beitrag geworden ist, bleibt und erzählt es weiter.",
+        ],
+      },
+      {
+        h: "Echte Follower statt großer Zahlen",
+        p: [
+          "Gekaufte Follower sehen deine Beiträge nicht, reagieren nicht und kaufen nicht. Instagram untersagt in seinen Nutzungsbedingungen unechte Interaktionen. Und je mehr Follower nie reagieren, desto schwächer wirken deine Beiträge.",
+          "Tausend Menschen, die sich für dein Thema interessieren, sind mehr wert als zehntausend, die zufällig da sind.",
+        ],
+      },
+    ],
+  },
 ];
 
 // Zweisprachig (17.10.2026, lib/sprachen.mjs): dieselben Bausteine je Sprache,
@@ -288,7 +406,7 @@ function schema(seite, L) {
       "@type": "Organization", "@id": BASIS + "/#org", name: "social2scale", url: BASIS + "/",
       logo: BASIS + "/assets/avatar-s2s.png",
     },
-    dateModified: "2026-08-20",
+    dateModified: seite.geprueft || "2026-08-20",
     inLanguage: L.inLanguage,
   };
   return '<script type="application/ld+json">' + JSON.stringify(daten) + "</script>";
@@ -377,7 +495,7 @@ ${kopf(pfad)}
       <a class="w-zurueck" href="${L.pfad}">${L.zurueck}</a>
       <h1 class="w-re">${headline(seite)}</h1>
       <p class="w-lead w-re">${esc(seite.antwort)}</p>
-      <p class="w-stand w-re">${L.stand}</p>
+      <p class="w-stand w-re">${seite.stand || L.stand}</p>
       ${seite.abschnitte.map(abschnittHtml).join("")}
       ${abschluss(L.abschlussH2, L.abschlussP, L)}
       <nav class="w-weiter" aria-label="${L.weiter}">
