@@ -88,3 +88,13 @@
 :root .sprache-flagge { display: block; border-radius: 2px; box-shadow: 0 0 0 1px var(--line-2, rgba(242,243,241,.14)); }
 @media (hover: hover) { :root .sprache:hover { color: var(--paper, #F2F3F1); } }
 :root .sprache:focus-visible { outline: 2px solid var(--emerald, #00B888); outline-offset: 2px; border-radius: 6px; color: var(--paper, #F2F3F1); }
+
+/* Kopfleiste am Handy voll deckend (09.11.2026, Ticket #450): Am iPhone schien der Seitentext
+ * beim Scrollen durch Logo und Sprachumschalter, die Unschaerfe kam im Bild nicht an. Klebende
+ * Leisten bekommen ausserdem kein backdrop-filter, das ruckelt beim Scrollen (regeln/web.md). */
+@media (max-width: 959px) {
+  :root .bar, :root header.top {
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+    background: radial-gradient(130% 180% at 12% -50%, rgba(255,255,255,.06), transparent 46%), linear-gradient(180deg, #0B1310, #080C0F);
+  }
+}
