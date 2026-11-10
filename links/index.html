@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SCivzR7wZ4KgPWYZvfBvTNMIwxR46HX0U2Z5FKV8z9I=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-SCivzR7wZ4KgPWYZvfBvTNMIwxR46HX0U2Z5FKV8z9I=' 'sha256-bV99kUHKjHP7qeUidgQ8OTXaEuRz95dPtEqjAFW3VvI=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -23,99 +23,86 @@
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/s2s.css">
 <style>
-  /* Link-Seite (Instagram-Bio): Profil, EIN Hauptweg, eine Menütafel.
-     Die zwei Handys sind ECHTE Ausgabe des Vorschau-Werkzeugs (free-content,
-     buildPage + buildFallback, Farbwelt "warm") für eine erfundene Person —
-     so sieht der Besucher, was er in 60 Sekunden bekommt, statt eines
-     Symbolbilds. Rechts in der Tafel stehen belegte Fakten der Zielseite
-     (7 Pakete auf /preise/, 3 Kennzahlen auf /results/, 5 Artikel in /wissen/). */
-  :root{
-    --col:26rem;
-    --kante:rgba(242,243,241,.10);
-    --focus:0 0 0 2px #03080D,0 0 0 4px var(--emerald-soft);
-  }
-  body{font-size:1rem;min-height:100svh}
-  .blatt{position:relative;z-index:2;width:min(100%,var(--col));margin-inline:auto;
-    padding:calc(env(safe-area-inset-top,0px) + 40px) 18px calc(env(safe-area-inset-bottom,0px) + 26px)}
+  /* Link-Seite (Instagram-Bio), Richtung A+C (Sebi 10.11.2026): die Studiowand der
+     Startseite als Ort. Im Licht steht der eine Hauptweg (echte Ausgabe des
+     Vorschau-Werkzeugs, Farbwelt "warm", erfundene Person). Auf der Leiste lehnen
+     Phil und Sebi als Abzüge, darunter ihr Satz von der Startseite (O-Ton).
+     Die weiteren Wege sind Schrift, keine Kästen. Belegt: 7 Pakete (/preise/),
+     3 Kennzahlen (/results/), 8 Artikel (/wissen/), "Phil ruft dich zurück" (/anfrage/).
+     --u ist 1 % der Spalte (höchstens 4.16 px); --kx/--ky hängen am Blatt, nie an :root. */
+  :root{--col:26rem;--focus:0 0 0 2px #03080D,0 0 0 4px var(--emerald-soft)}
+  body{font-size:1.0625rem;min-height:100svh}
+  .blatt{--u:min(1vw,4.16px);position:relative;z-index:2;width:min(100%,var(--col));margin-inline:auto;
+    padding:calc(env(safe-area-inset-top,0px) + 32px) 20px calc(env(safe-area-inset-bottom,0px) + 26px)}
+  .blatt a{color:inherit;text-decoration:none}
 
   /* ===== Profil ===== */
-  .profil{display:flex;align-items:center;gap:14px}
-  .profil img{width:62px;height:62px;border-radius:50%;flex:0 0 auto;display:block;
-    box-shadow:0 0 0 2px #03080D,0 0 0 3.5px rgba(31,201,152,.75),0 10px 24px -8px rgba(0,184,136,.45)}
-  .profil b{display:block;font-size:1.0625rem;font-weight:700;letter-spacing:.005em}
-  .profil span{display:block;font-size:0.9375rem;color:var(--muted);line-height:1.35}
+  .profil{display:flex;align-items:center;gap:12px}
+  .profil img{width:46px;height:46px;border-radius:50%;flex:0 0 auto;display:block}
+  .profil b{display:block;font-size:1.0625rem;font-weight:600;line-height:1.2}
+  .profil span span{display:block;font-size:0.9375rem;color:var(--muted);line-height:1.35}
 
-  /* ===== Hauptweg ===== */
-  .haupt{position:relative;display:block;border-radius:26px;text-decoration:none;color:inherit;isolation:isolate;
-    padding:0 22px 22px;margin-top:64px;overflow:visible;
-    background:
-      radial-gradient(90% 70% at 100% 0%,rgba(31,166,224,.22),transparent 60%),
-      radial-gradient(90% 80% at 0% 100%,rgba(0,184,136,.26),transparent 62%),
-      linear-gradient(165deg,#12201F,#081013 70%);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px rgba(31,201,152,.28),0 40px 80px -40px rgba(0,184,136,.6),0 20px 40px -24px rgba(0,0,0,.8);
-    transition:transform var(--dur-3, .6s) var(--ease),box-shadow var(--dur-3, .6s) var(--ease)}
-  .haupt__text{position:relative;z-index:2;display:block}
-  .marke{display:inline-flex;align-items:center;gap:8px;font-family:"Archivo",sans-serif;font-size:0.6562rem;font-weight:700;
-    letter-spacing:.18em;text-transform:uppercase;color:var(--emerald-soft)}
-  .marke::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--emerald-soft);box-shadow:0 0 0 4px rgba(31,201,152,.18)}
-  .haupt h1{margin:12px 0 8px;font-family:"Fraunces",Georgia,serif;font-weight:500;font-size:clamp(30px,8.6vw,36px);line-height:.98;letter-spacing:-.02em}
+  /* ===== Hauptweg: die Vorschau steht im Licht ===== */
+  .haupt{position:relative;display:block;margin-top:14px;isolation:isolate}
+  .haupt::before{content:"";position:absolute;z-index:-1;inset:-6% -20px 34%;pointer-events:none;
+    background:radial-gradient(58% 62% at 50% 38%,rgba(31,201,152,.20),rgba(31,166,224,.10) 46%,transparent 72%)}
+  .geraete{position:relative;display:block;height:calc(var(--u) * 64);margin-inline:-20px;pointer-events:none;
+    -webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,transparent 100%)}
+  .geraete img{position:absolute;top:0;left:50%;height:calc(var(--u) * 72);width:auto;border-radius:calc(var(--u) * 5);
+    filter:drop-shadow(0 22px 24px rgba(0,0,0,.6)) drop-shadow(0 2px 4px rgba(0,0,0,.4));
+    transition:transform var(--dur-4, .8s) var(--ease)}
+  .geraete .hinten{margin-left:calc(var(--u) * -36);
+    transform:rotate(calc(-8deg + var(--kx,0) * -1.5deg)) translate(calc(var(--kx,0) * -5px),calc(var(--u) * 3 + var(--ky,0) * -3px))}
+  .geraete .vorn{margin-left:calc(var(--u) * -6);
+    transform:rotate(calc(5deg + var(--kx,0) * 2deg)) translate(calc(var(--kx,0) * 9px),calc(var(--ky,0) * -6px))}
+  .haupt h1{margin:-2px 0 0;font-family:"Fraunces",Georgia,serif;font-weight:400;font-size:calc(var(--u) * 10.4);line-height:.98;letter-spacing:-.022em}
   .haupt h1 em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-/* Lichtstreif (motion-loop 06.10.2026): dieselbe Signatur wie auf der
-   Startseite — faehrt einmal ueber "vorab.", dann steht er (WCAG 2.2.2). */
-@keyframes lkStreif{from{background-position:0 0}to{background-position:200% 0}}
-@media (prefers-reduced-motion:no-preference){
-  h1 em{background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%);background-size:200% 100%;
-    animation:lkStreif 2.4s cubic-bezier(.45,0,.2,1) var(--dur-3, .4s) 1 both}
-}
-  .haupt p{font-size:0.9375rem;color:var(--muted);line-height:1.4}
-  /* zwei echte Vorschauen, aufgefächert — sie ragen über den Kartenrand */
-  /* Handys oben, über den Kartenrand hinaus — Text und Knopf darunter,
-     nichts überdeckt sich */
-  .geraete{position:relative;display:block;height:clamp(150px,44vw,178px);margin:-44px -22px 16px;z-index:1;pointer-events:none;
-    /* die Handys steigen aus der Karte auf: unten ausgeblendet statt abgeschnitten */
-    -webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 100%);mask-image:linear-gradient(180deg,#000 62%,transparent 100%)}
-  .geraete img{position:absolute;top:0;left:50%;height:clamp(180px,54vw,216px);width:auto;border-radius:18px;
-    filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.4));
-    transition:transform var(--dur-4, .7s) var(--ease)}
-  .geraete .hinten{margin-left:clamp(-128px,-31vw,-100px);transform:rotate(-8deg) translateY(10px)}
-  .geraete .vorn{margin-left:-14px;transform:rotate(5deg)}
-  .los{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;margin-top:20px;min-height:54px;padding:0 8px 0 22px;
-    border-radius:999px;font-weight:700;font-size:1rem;color:var(--emerald-ink);
+  /* Lichtstreif (motion-loop 06.10.2026): fährt einmal über "vorab.", dann steht er (WCAG 2.2.2). */
+  @keyframes lkStreif{from{background-position:0 0}to{background-position:200% 0}}
+  @media (prefers-reduced-motion:no-preference){
+    .haupt h1 em{background-image:linear-gradient(100deg,#1FC998 0%,#46BEEA 50%,#1FC998 100%);background-size:200% 100%;
+      animation:lkStreif 2.4s cubic-bezier(.45,0,.2,1) var(--dur-3, .4s) 1 both}
+  }
+  .unter{display:block;margin-top:8px;font-size:1rem;color:var(--muted);line-height:1.4;text-wrap:balance}
+  .blatt .los{display:flex;align-items:center;justify-content:space-between;margin-top:18px;min-height:54px;padding:0 8px 0 22px;
+    border-radius:999px;font-weight:700;font-size:1.0625rem;color:var(--emerald-ink);
     background:linear-gradient(135deg,#1FC998,#46BEEA);box-shadow:0 14px 30px -12px rgba(0,184,136,.75),inset 0 1px 0 rgba(255,255,255,.45)}
+  .los::after{content:"";position:absolute;inset:0;z-index:1}
   .los i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#04201A;color:#7FF0CB;font-style:normal;
     transition:transform var(--dur-3, .45s) var(--ease)}
-  .haupt:hover{transform:translateY(-3px)}
-  .haupt:hover .hinten{transform:rotate(-11deg) translate(-8px,6px)}
+  .haupt:hover .hinten{transform:rotate(-11deg) translate(-8px,calc(var(--u) * 3 - 4px))}
   .haupt:hover .vorn{transform:rotate(7deg) translate(6px,-6px)}
   .haupt:hover .los i{transform:translateX(3px)}
-  .haupt:active{transform:scale(.99)}
-  .haupt:focus-visible{outline:none;box-shadow:var(--focus)}
+  .los:active{transform:scale(.99)}
+  .blatt .los:focus-visible{outline:none;box-shadow:var(--focus)}
 
-  /* ===== Menütafel ===== */
-  .tafel{list-style:none;margin-top:16px;border-radius:22px;overflow:hidden;
-    background:linear-gradient(170deg,rgba(20,34,35,.96),rgba(9,16,19,.96));box-shadow:var(--depth-lg);border:1px solid var(--kante)}
-  .tafel li+li{border-top:1px solid var(--kante)}
-  .zeile{display:grid;grid-template-columns:minmax(0,1fr) auto 22px;align-items:center;gap:12px;min-height:64px;padding:10px 16px 10px 20px;
-    text-decoration:none;color:var(--paper);transition:background var(--dur-2, .35s) var(--ease)}
-  .zeile b{font-size:1.0312rem;font-weight:650;display:flex;align-items:center;gap:12px}
-  .fakt{font-family:"Archivo",sans-serif;font-size:0.6562rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
-  /* Eigenes Zeichen statt Linien-Pfeil (16.10.2026), wie abschluss.css .s2-mark */
-  .s2-mark{display:inline-flex;align-items:flex-end;gap:3px;height:16px;color:currentColor}
-  .s2-mark i{display:block;width:4px;border-radius:2px;background:currentColor;transform:skewX(-5deg)}
-  .s2-mark i:nth-child(1){height:6px;opacity:.5}.s2-mark i:nth-child(2){height:10px;opacity:.78}.s2-mark i:nth-child(3){height:15px}
-  .zeile .s2-mark{color:var(--faint);transition:transform var(--dur-2, .35s) var(--ease),color var(--dur-2, .35s) var(--ease)}
-  .gesichter{display:flex}
-  .gesichter img{width:30px;height:30px;border-radius:50%;border:2px solid #111c1d;object-fit:cover;display:block}
-  .gesichter img+img{margin-left:-9px}
-  .zeile:hover{background:linear-gradient(90deg,rgba(0,184,136,.10),rgba(0,184,136,0))}
-  .zeile:hover .s2-mark{transform:translateY(-2px);color:var(--emerald-soft)}
-  .zeile:hover .fakt{color:var(--muted)}
-  .zeile:active{background:rgba(0,184,136,.14)}
-  .zeile:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--emerald-soft)}
+  /* ===== Leiste: Phil und Sebi als Abzüge ===== */
+  .leute{margin-top:50px}
+  .leiste{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u) * 6);align-items:end;padding:0 calc(var(--u) * 3)}
+  .leiste::after{content:"";position:absolute;left:-20px;right:-20px;bottom:-9px;height:9px;
+    background:linear-gradient(180deg,#24322F,#0C1416);box-shadow:0 16px 22px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.16)}
+  .abzug{margin:0;padding:5px;background:var(--paper);transform-origin:50% 100%;aspect-ratio:4/5;
+    box-shadow:0 1px 2px rgba(0,0,0,.5),0 10px 18px -8px rgba(0,0,0,.85);transition:transform var(--dur-4, .8s) var(--ease)}
+  .abzug img{display:block;width:100%;height:100%;object-fit:cover}
+  .abzug.p{transform:rotate(calc(-3deg + var(--kx,0) * -.6deg))}
+  .abzug.s{transform:rotate(calc(2.5deg + var(--kx,0) * .6deg))}
+  .saetze{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--u) * 6);margin:28px 0 0;padding:0 calc(var(--u) * 3)}
+  .saetze p{font-size:0.9375rem;line-height:1.42;color:var(--paper)}
+  .saetze cite{display:block;margin-top:6px;font-style:normal;color:var(--muted)}
+  .leute h2{margin:0 0 30px;font-family:"Fraunces",Georgia,serif;font-weight:400;font-size:calc(var(--u) * 7.4);line-height:1.04;letter-spacing:-.02em;text-wrap:balance}
 
-  @media (max-width:360px){.fakt{display:none}}
-  .fuss{margin-top:30px;display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:0.8125rem}
-  .fuss a{color:var(--faint);text-decoration:none;padding:12px 2px;min-height:44px;display:inline-flex;align-items:center}
+  /* ===== Weitere Wege: Schrift statt Kästen ===== */
+  .wege{list-style:none;margin:30px 0 0;padding:0}
+  .wege a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:14px;min-height:56px;padding:12px 0}
+  .wege b{font-family:"Fraunces",Georgia,serif;font-weight:400;font-size:calc(var(--u) * 6.6);letter-spacing:-.015em;line-height:1.1;
+    transition:transform var(--dur-3, .45s) var(--ease),color var(--dur-2, .24s) var(--ease)}
+  .wege span{font-size:0.9375rem;color:var(--muted);text-align:right;white-space:nowrap}
+  .wege a:hover b{transform:translateX(6px);color:var(--emerald-soft)}
+  .wege a:active b{color:var(--emerald-soft)}
+  .wege a:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:2px;border-radius:4px}
+
+  .fuss{margin-top:26px;display:flex;flex-wrap:wrap;justify-content:center;gap:0 18px;font-size:0.9375rem}
+  .fuss a{color:var(--faint);padding:12px 2px;min-height:44px;display:inline-flex;align-items:center}
   .fuss a:hover{color:var(--paper)}
   .fuss a:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:2px;border-radius:4px}
 
@@ -136,32 +123,36 @@
 <main class="blatt">
   <header class="profil auf">
     <img src="/links/img/profil.webp" alt="social2scale" width="256" height="256">
-    <span><b>@social2scale</b><span>Instagram für Coaches, Experten &amp; B2B</span></span>
+    <span><b>@social2scale</b><span>Instagram für Coaches, Experten und B2B</span></span>
   </header>
 
-  <a class="haupt auf" style="--i:1" href="/gratis/" data-ziel="gratis">
+  <div class="haupt auf" style="--i:1">
     <span class="geraete" aria-hidden="true">
       <img class="hinten" src="/links/img/vorschau-1.webp" alt="" width="320" height="640">
       <img class="vorn" src="/links/img/vorschau-0.webp" alt="" width="322" height="640">
     </span>
-    <span class="haupt__text">
-      <span class="marke">Gratis · 60 Sek.</span>
-      <h1>Dein Feed, <em>vorab.</em></h1>
-      <p>Mit deinem Foto und deiner Farbe.</p>
-    </span>
-    <span class="los">Kostenlos starten <i aria-hidden="true">→</i></span>
-  </a>
+    <h1>Dein Feed, <em>vorab.</em></h1>
+    <p class="unter">Mit deinem Foto und deiner Farbe, in 60 Sekunden.</p>
+    <a class="los" href="/gratis/" data-ziel="gratis">Kostenlos starten <i aria-hidden="true">→</i></a>
+  </div>
 
-  <ul class="tafel auf" style="--i:2">
-    <li><a class="zeile" href="/preise/" data-ziel="preise">
-      <b>Preise</b><span class="fakt">7 Pakete</span>
-      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
-    <li><a class="zeile" href="/results/" data-ziel="results">
-      <b>Prüf uns</b><span class="fakt">3 Kennzahlen</span>
-      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
-    <li><a class="zeile" href="/wissen/" data-ziel="wissen">
-      <b>Ehrliche Antworten</b><span class="fakt">5 Fragen</span>
-      <span class="s2-mark" aria-hidden="true"><i></i><i></i><i></i></span></a></li>
+  <section class="leute auf" style="--i:2" aria-labelledby="leute-h">
+    <h2 id="leute-h">Sebi &amp; Phil. Kein Team dazwischen.</h2>
+    <div class="leiste">
+      <figure class="abzug p"><img src="/assets/founder-philipp-560.webp" alt="Philipp" width="560" height="700" loading="lazy"></figure>
+      <figure class="abzug s"><img src="/assets/founder-sebastian-560.webp" alt="Sebastian" width="560" height="700" loading="lazy"></figure>
+    </div>
+    <div class="saetze">
+      <p>„Ich verkaufe niemandem etwas, das ich hinterher nicht nachrechnen kann.“<cite>Philipp</cite></p>
+      <p>„Ich poste für dich nichts, was ich auf meinem eigenen Account nicht posten würde.“<cite>Sebastian</cite></p>
+    </div>
+  </section>
+
+  <ul class="wege auf" style="--i:3">
+    <li><a href="/anfrage/" data-ziel="anfrage"><b>Erstgespräch</b><span>Phil ruft dich zurück</span></a></li>
+    <li><a href="/preise/" data-ziel="preise"><b>Preise</b><span>7 Pakete</span></a></li>
+    <li><a href="/results/" data-ziel="results"><b>Prüf uns</b><span>3 Kennzahlen</span></a></li>
+    <li><a href="/wissen/" data-ziel="wissen"><b>Ehrliche Antworten</b><span>8 Fragen</span></a></li>
   </ul>
 
   <footer class="fuss">
@@ -193,6 +184,29 @@
       var a = e.target.closest && e.target.closest("a[data-ziel]");
       if (a) senden("/links/klick/" + a.getAttribute("data-ziel") + "/", quelle);
     });
+  })();
+</script>
+<script>
+  // Der Raum antwortet: Handys und Abzüge folgen der Maus (feiner Zeiger) oder der
+  // Neigung des Geräts. Nicht bei "Bewegung reduzieren". iOS gibt Neigung nur nach
+  // Erlaubnis frei, dort bleibt es beim Stand, ohne Abfrage.
+  (function () {
+    var blatt = document.querySelector(".blatt");
+    if (!blatt || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var kx = 0, ky = 0, wartet = false;
+    function setzen() { wartet = false; blatt.style.setProperty("--kx", kx.toFixed(3)); blatt.style.setProperty("--ky", ky.toFixed(3)); }
+    function melden(x, y) {
+      kx = Math.max(-1, Math.min(1, x)); ky = Math.max(-1, Math.min(1, y));
+      if (!wartet) { wartet = true; requestAnimationFrame(setzen); }
+    }
+    if (matchMedia("(pointer: fine)").matches) {
+      addEventListener("pointermove", function (e) { melden(e.clientX / innerWidth * 2 - 1, e.clientY / innerHeight * 2 - 1); }, { passive: true });
+    } else if ("DeviceOrientationEvent" in window && typeof DeviceOrientationEvent.requestPermission !== "function") {
+      addEventListener("deviceorientation", function (e) {
+        if (e.gamma == null || e.beta == null) return;
+        melden(e.gamma / 25, (e.beta - 45) / 25);
+      }, { passive: true });
+    }
   })();
 </script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="links" aria-hidden="true"></div><!-- /RAUM-LICHT -->
