@@ -53,7 +53,7 @@ selbst "Selbsttest Sitemap" scripts/sitemap-check.mjs node scripts/sitemap-check
 selbst "Platzhalter (Fixtures)" kit-build/platzhalter-check.py   python3 "$HOME/kit-build/platzhalter-check.py" --selbsttest
 selbst "Selbsttest Motion-Loop" kit-build/motion-loop/mess.mjs   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
-lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs tests/bewertungen.test.mjs
+lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs tests/bewertungen.test.mjs
 lauf "Server nur lokal"          node "$HOME/kit-build/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
 # Zweisprachig (17.10.2026): jede DE-Seite hat eine aktuelle EN-Schwester
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs

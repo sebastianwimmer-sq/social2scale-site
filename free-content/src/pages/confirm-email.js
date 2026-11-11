@@ -243,4 +243,13 @@ export function reelMailHtml(titel, innen, url) {
     sigFooter(undefined, 'Du bekommst diese Mail, weil in deinem Social Hub ein Reel fertig geworden ist. Willst du keine mehr, antworte kurz auf diese Mail.');
 }
 
+// „Dein Workbook ist fertig“ (workbook-bescheid.js): derselbe Aufbau wie die Reel-Mail, eigener Grund im Fuß
+export function workbookMailHtml(titel, innen, url) {
+  return mailHead(`${titel} — social2scale`, titel) + `
+          <h1 class="h1" style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:29px;line-height:1.15;color:${PAPER};">${titel}</h1>
+          <div style="margin:0 0 28px;font-size:16px;line-height:1.6;color:${MUTED};">${innen}</div>
+          ${mailCta(url, 'Zu deinem Workbook')}` +
+    sigFooter(undefined, 'Du bekommst diese Mail, weil du in deinem Social Hub ein Workbook bestellt hast. Willst du keine mehr, antworte kurz auf diese Mail.');
+}
+
 export const MAIL_FARBEN = { PAPER, MUTED };

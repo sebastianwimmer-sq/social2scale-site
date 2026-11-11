@@ -6,6 +6,7 @@
 import { validateSubmission } from './validate.js';
 import { reelWaechter } from './reel-waechter.js';
 import { reelBescheid } from './reel-bescheid.js';
+import { workbookBescheid } from './workbook-bescheid.js';
 import { abstimmungMail } from './abstimmung-mail.js';
 import { alteAdresse } from './alte-adresse.js';
 import {
@@ -421,6 +422,7 @@ export default {
     await heileRenderAusfaelle(env);
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
     await reelBescheid(env);   // „Dein Reel ist fertig“ an die Kundin, einmal je Reel (Phase 6, v56)
+    await workbookBescheid(env);   // „Dein Workbook ist fertig“, einmal je Heft (Portal v74)
     await abstimmungMail(env); // Morgenmail der täglichen Abstimmung, auch wenn der Mac offline ist
   },
 
