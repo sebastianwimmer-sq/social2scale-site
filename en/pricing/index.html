@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/preise/@7d1bffadbbbcb1c7">
+<meta name="s2s-quelle" content="/preise/@9b08c778baa456ae">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -225,6 +225,9 @@
   .pr-why-scale .is-us{border-bottom-color:rgba(0,184,136,.45)}
   .pr-why-scale .is-us .l{color:var(--emerald)}
   .pr-why-scale .is-us .v{color:var(--paper)}
+  .pr-emp-karte{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1px solid var(--line);font-size:.98rem;line-height:1.55;color:var(--muted)}
+  .pr-emp-karte b{color:var(--paper);font-weight:600}
+  .pr-emp-karte a{color:var(--emerald);text-underline-offset:3px;white-space:nowrap}
 
   /* ===== Details-Aufklapper: die sieben Pakete eine Ebene tiefer ===== */
   .pr-details{margin-top:clamp(var(--s-5),3vw,var(--s-6))}
@@ -653,6 +656,7 @@
           <p class="pr-emp-preis">from €1,547.00<small>one-time, then €464.10 per month</small></p>
           <a class="btn btn-primary" href="/en/free/" data-cta-url="/en/free/">Get started free →</a>
         </div>
+        <template id="karte-zeile" data-spende="https://mein.social2scale.com/api/spenden-zaehler"><p class="pr-emp-karte">10 euros of every order go to <b data-sp="empfaenger"></b>, and you get a card with your number. <a href="/en/about/#karte">How it works</a></p></template>
       </div>
 
       <p class="pr-alt-vor">Not quite right? Then it’s one of these two.</p>
@@ -694,25 +698,6 @@
       </div>
       <p class="pr-ueb-fuss">All prices include VAT. Which path fits you, we’ll tell you on the intro call. Even if it’s none of the three.</p>
     </div></section>
-
-    <!-- Karte je Bestellung: liegt als Vorlage in der Seite und wird von /spende.js erst eingesetzt, wenn der Zähler im
-         Portal freigegeben ist. Bis dahin gibt es den Abschnitt für Besucherinnen, Suchmaschinen und Tore nicht. -->
-    <template id="karte-vorlage" data-spende="https://mein.social2scale.com/api/spenden-zaehler">
-    <section class="pr-blk pr-why pr-spende" id="karte" aria-labelledby="pr-karte-h" data-sz="sammelkarte"><div class="wrap">
-      <div class="pr-blk-head">
-        <p class="pr-rh">After you buy</p>
-        <h2 id="pr-karte-h">Your order gets a <em>number</em>.</h2>
-      </div>
-      <div class="pr-why-grid">
-        <p class="pr-why-lead">Afterwards a card with your name and your number sits in your Social Hub, as a thank-you from us. Behind every card are 10 euros for <b data-sp="empfaenger"></b>, taken out of Sebi’s share. <b>Your price stays the same.</b></p>
-        <div class="sk-platz"><button type="button" class="sk" aria-pressed="false" aria-label="Sample card, tap to turn it over"><i>
-          <span class="sk-seite"><span class="sk-oben"><span class="sk-zeichen" aria-hidden="true">Y</span><span>social2scale</span></span><span class="sk-name">Your name</span><span class="sk-unten"><b>No. <span data-sp="naechste"></span></b><span>your card</span></span></span>
-          <span class="sk-seite hinten"><span class="sk-oben"><span>Thank you. Sebi &amp; Phil</span><span>social2scale</span></span><span class="sk-satz">With this order, 10 euros go to <span data-sp="empfaengersatz"></span></span><span class="sk-unten"><b>No. <span data-sp="naechste"></span></b><span></span></span></span>
-        </i></button></div>
-      </div>
-      <p class="pr-note">The next card carries no. <span data-sp="naechste"></span>. As of <span data-sp="stand"></span>. Each order counts once.</p>
-    </div></section>
-    </template>
 
     <section class="pr-blk" aria-labelledby="pr-rechnung" data-sz="kassenbon"><div class="wrap reveal">
       <div class="pr-blk-head">

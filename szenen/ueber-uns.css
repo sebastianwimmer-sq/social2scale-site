@@ -62,3 +62,37 @@
 .mk-ueber-uns i{top:6px;width:54px;height:12px}
 .mk-ueber-uns i:nth-child(1){left:-66px;rotate:-6deg}
 .mk-ueber-uns i:nth-child(2){left:12px;rotate:5deg}
+
+/* ── Karte je Bestellung: die Karte aus dem Social Hub, hier in unseren Farben. Motiv „sammelkarte“ (szenen-quelle.mjs).
+   Der Abschnitt liegt als <template> in der Seite und wird erst nach der Freigabe eingesetzt; szenen.js sieht ihn
+   deshalb nicht. Neigung zum Zeiger setzt spende.js (--sx/--sy), nur mit Maus und ohne „Bewegung reduzieren“. */
+.ab-spende .sk-platz{perspective:1200px;display:flex;justify-content:center}
+.ab-spende .sk{appearance:none;-webkit-appearance:none;border:0;padding:0;background:none;cursor:pointer;font:inherit;width:min(100%,460px);aspect-ratio:1.586;display:block;border-radius:18px;-webkit-tap-highlight-color:transparent;
+  transform:rotateY(calc(var(--sx,0) * 9deg)) rotateX(calc(var(--sy,0) * -6deg));transition:transform .6s cubic-bezier(.16,1,.3,1);
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.4)) drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+.ab-spende .sk i{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.16,1,.3,1);font-style:normal}
+.ab-spende .sk[aria-pressed="true"] i{transform:rotateY(180deg)}
+.ab-spende .sk-seite{position:absolute;inset:0;border-radius:18px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;color:#F3EFE6;text-align:left;
+  padding:clamp(16px,4.6%,24px) clamp(18px,5.2%,28px) clamp(20px,5.6%,28px);display:flex;flex-direction:column;justify-content:space-between;
+  background:radial-gradient(120% 100% at 0% 0%,rgba(0,184,136,.62),transparent 62%),linear-gradient(155deg,#0A2A22,#080809 72%);background-color:#0B0B0C;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.18)}
+.ab-spende .sk-seite::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,#46BEEA,#F0D48A,#46BEEA)}
+.ab-spende .sk-seite.hinten{transform:rotateY(180deg)}
+/* Die abgewandte Seite ist auch für Vorlesen und Tore weg, nicht nur unsichtbar gedreht (kollision-check: Vorder- und
+   Rückseite lagen übereinander). Umschalten in der Mitte der Drehung. */
+.ab-spende .sk[aria-pressed="false"] .sk-seite.hinten,.ab-spende .sk[aria-pressed="true"] .sk-seite:not(.hinten){visibility:hidden;transition:visibility 0s .4s}
+.ab-spende .sk-oben{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;color:rgba(243,239,230,.78)}
+.ab-spende .sk-zeichen{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);font-family:"Fraunces",serif;font-size:1.15rem;color:#F3EFE6}
+.ab-spende .sk-name{font-family:"Fraunces",serif;font-weight:460;font-size:clamp(1.6rem,3.2vw,2.3rem);line-height:1.05;letter-spacing:-.01em}
+.ab-spende .sk-satz{font-family:"Fraunces",serif;font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.25;max-width:24ch}
+.ab-spende .sk-unten{display:flex;align-items:flex-end;justify-content:space-between;font-size:.84rem;color:rgba(243,239,230,.78);font-variant-numeric:tabular-nums}
+.ab-spende .sk-unten b{font-family:"JetBrains Mono",monospace;font-weight:500;font-size:1rem;color:#F3EFE6;letter-spacing:.04em}
+.ab-spende .sk:focus-visible{outline:2px solid #8FF0CF;outline-offset:6px}
+@media (prefers-reduced-motion:reduce){.ab-spende .sk,.ab-spende .sk i{transition:none} .ab-spende .sk{transform:none}}
+
+.ab-spende .sk-raster{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+.ab-spende .sk-text{display:flex;flex-direction:column;gap:var(--s-5,20px);max-width:46ch}
+.ab-spende .sk-text b{color:var(--paper);font-weight:600}
+.ab-spende .sk-notiz{font-size:.88rem;color:var(--faint);line-height:1.6;margin:0}
+@media (max-width:860px){.ab-spende .sk-raster{grid-template-columns:minmax(0,1fr)}}
+

@@ -1,8 +1,9 @@
-/* Karte je Bestellung (Preise-Seite, DE + EN). Der Abschnitt liegt als <template id="karte-vorlage"> in der Seite und
-   wird erst eingesetzt, wenn der Zähler im Portal freigegeben ist und die Antwort zum Text passt. Gezeigt wird die
+/* Karte je Bestellung (DE + EN). Auf /about/ liegt der Abschnitt als <template id="karte-vorlage">, auf /preise/ eine
+   Zeile am empfohlenen Paket als <template id="karte-zeile"> (Link auf /about/#karte). Beide werden erst eingesetzt,
+   wenn der Zähler im Portal freigegeben ist und die Antwort zum Text passt. Gezeigt wird die
    Nummer der nächsten Karte, keine Summe. Bei jedem Zweifel bleibt die Seite, wie sie ohne den Abschnitt ist. */
 (function () {
-  var vorlage = document.getElementById("karte-vorlage");
+  var vorlage = document.getElementById("karte-vorlage") || document.getElementById("karte-zeile");
   if (!vorlage || !vorlage.content || !window.fetch) return;
   // Abruf nur von der echten Website (oder vom selben Ursprung, für die lokale Vorschau): von jedem anderen Ursprung
   // würde der Browser ihn wegen CORS abweisen und einen Fehler in die Konsole schreiben.
@@ -17,7 +18,7 @@
   }
   function einsetzen(wert) {
     var stueck = vorlage.content.cloneNode(true);
-    var sec = stueck.querySelector("section");
+    var sec = stueck.querySelector("section") || stueck.firstElementChild;
     if (!sec) return;
     var felder = stueck.querySelectorAll("[data-sp]");
     for (var i = 0; i < felder.length; i++) {
