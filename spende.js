@@ -11,6 +11,16 @@
   var echt = /^(www\.)?social2scale\.com$/.test(location.hostname);
   if (!ziel || (!echt && /^https?:/.test(ziel))) return;
   var en = document.documentElement.lang === "en";
+  // Der Empfänger kommt als Wortlaut aus dem CRM (Deutsch). Auf /en/ steht eine Umschreibung englisch; ein Eigenname
+  // („Nummer gegen Kummer e.V.“) bleibt gleich. Eine unbekannte deutsche Umschreibung zeigt EN gar nicht, statt Deutsch
+  // mitten im englischen Satz (11.11.2026: „10 euros of every order go to ein Sorgentelefon für Kinder und Jugendliche“).
+  var EMPFAENGER_EN = { "ein sorgentelefon für kinder und jugendliche": "a helpline for children and teenagers" };
+  function empfaenger(name) {
+    if (!en) return name;
+    var schluessel = name.replace(/\.$/, "").trim().toLowerCase();
+    if (EMPFAENGER_EN[schluessel]) return EMPFAENGER_EN[schluessel];
+    return /^(ein|eine|einen|einem|einer|der|die|das|den|dem)\s/i.test(name) ? "" : name;
+  }
   function tag(iso) {
     var d = new Date(String(iso).slice(0, 10) + "T12:00:00Z");
     if (isNaN(d.getTime())) return "";
@@ -43,7 +53,8 @@
     .then(function (j) {
       var d = j && j.success === true && j.data;
       if (!d || d.betrag_eur !== 10 || !d.empfaenger || typeof d.karten !== "number" || !isFinite(d.karten) || d.karten < 0 || d.karten % 1) return;
-      var name = String(d.empfaenger);
+      var name = empfaenger(String(d.empfaenger));
+      if (!name) return;
       var wert = { empfaenger: name, empfaengersatz: name.replace(/\.$/, "") + ".", naechste: ("00" + (d.karten + 1)).slice(-3), stand: tag(d.stand) };
       if (wert.stand) einsetzen(wert);
     })
