@@ -58,6 +58,7 @@ lauf "Server nur lokal"          node "$HOME/kit-build/server-lokal-check.mjs" "
 # Zweisprachig (17.10.2026): jede DE-Seite hat eine aktuelle EN-Schwester
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs
 lauf "Zähler kennt jede Seite"  node scripts/zaehler-check.mjs
+lauf "Karte je Bestellung DE/EN" node scripts/spende-check.mjs
 lauf "Sitemap nur echte Seiten"  node scripts/sitemap-check.mjs
 lauf "Keine Platzhalter-Werte"  python3 "$HOME/kit-build/platzhalter-check.py" .
 lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
