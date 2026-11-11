@@ -57,8 +57,11 @@ export function mailBauen(kundin, hefte) {
     ...rot.map((r) => `<p style="margin:0 0 10px;">${fett(String(r.thema ?? '').slice(0, 140))}: ${esc(rotSatz(r))}</p>`),
   ];
   const satz = fertig.length ? '<p style="margin:16px 0 0;">Schau es dir an. Was du am Aufbau geändert hast, merken wir uns für dein nächstes Workbook.</p>' : '';
-  const html = workbookMailHtml(`Hallo ${esc(vorname(kundin.name)) || 'du'},`, zeilen.join('') + satz, esc(link));
-  return { subject: betreff, htmlContent: html };
+  // Vorschautext im Postfach: der erste Satz ohne Anrede (die steht schon als Überschrift)
+  const vorschau = fertig.length ? `„${esc(heftTitel(fertig[0]))}“ liegt fertig in deinem Social Hub, als Blätter und als PDF.`
+    : `„${esc(String(rot[0]?.thema ?? '').slice(0, 80))}“: ${esc(rotSatz(rot[0]))}`;
+  const html = workbookMailHtml(`Hallo ${esc(vorname(kundin.name)) || 'du'},`, zeilen.join('') + satz, esc(link), vorschau);
+  return { subject: betreff, htmlContent: html, tags: ['workbook-bescheid'] };
 }
 
 export async function workbookBescheid(env, versand = send) {
