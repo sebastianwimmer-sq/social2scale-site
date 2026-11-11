@@ -86,3 +86,17 @@ test('Titel: aus dem geprüften Aufbau, sonst ihr Thema; HTML in ihrem Thema wir
   assert.match(html, /&lt;b&gt;x&lt;\/b&gt;/);
   assert.doesNotMatch(html, /<b>x<\/b>/);
 });
+
+test('Vorschautext im Postfach wiederholt nicht die Anrede (Gmail zeigte 11.11. „Hallo Sebastian, Hallo Sebastian,“)', () => {
+  const vorschauVon = (html) => html.match(/<div style="display:none;[^"]*">([^<]*)<\/div>/)[1];
+  const fertig = mailBauen({ name: 'Sebastian', slug: 'sebastian' }, [{ status: 'fertig', thema: 'Pausen', gliederung: JSON.stringify({ titel: 'Pausen ohne Reue' }) }]);
+  assert.match(vorschauVon(fertig.htmlContent), /^„Pausen ohne Reue“ liegt fertig/);
+  assert.doesNotMatch(vorschauVon(fertig.htmlContent), /Hallo/);
+  const rot = mailBauen({ name: 'Sebastian', slug: 'sebastian' }, [{ status: 'fehler', thema: 'Streit', fehler: 'x' }]);
+  assert.doesNotMatch(vorschauVon(rot.htmlContent), /Hallo/);
+});
+
+test('Mail trägt ihren Tag, damit das CRM sie im Website-Reiter zählen kann', () => {
+  const m = mailBauen({ name: 'Sebastian', slug: 'sebastian' }, [{ status: 'fertig', thema: 'Pausen' }]);
+  assert.deepEqual(m.tags, ['workbook-bescheid']);
+});

@@ -84,6 +84,8 @@ export async function send(env, to, name, mail, absender = 'social2scale') {
         subject: mail.subject,
         htmlContent: mail.htmlContent,
         ...(mail.replyTo ? { replyTo: mail.replyTo } : {}),
+        // Tag je Mailart: das CRM zählt damit Zustellung und Klicks im Website-Reiter (Sebi 11.11.2026)
+        ...(Array.isArray(mail.tags) && mail.tags.length ? { tags: mail.tags } : {}),
       }),
     });
     if (!res.ok) {

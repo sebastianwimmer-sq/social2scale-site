@@ -235,8 +235,9 @@ export function anfrageMailHtmlEn(vorname, vorschauUrl, buchungUrl, tel, telHref
  * @param {string} innen - fertiges, escaptes HTML (Liste der Reels + Satz).
  * @param {string} url - bereits escaped.
  */
-export function reelMailHtml(titel, innen, url) {
-  return mailHead(`${titel} — social2scale`, titel) + `
+// vorschau: der versteckte Vorschautext im Postfach. Ohne ihn zeigte Gmail die Anrede doppelt („Hallo Sebastian, Hallo Sebastian,“, 11.11.2026).
+export function reelMailHtml(titel, innen, url, vorschau = '') {
+  return mailHead(`${titel} — social2scale`, vorschau || titel) + `
           <h1 class="h1" style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:29px;line-height:1.15;color:${PAPER};">${titel}</h1>
           <div style="margin:0 0 28px;font-size:16px;line-height:1.6;color:${MUTED};">${innen}</div>
           ${mailCta(url, 'In deinen Social Hub')}` +
@@ -244,8 +245,8 @@ export function reelMailHtml(titel, innen, url) {
 }
 
 // „Dein Workbook ist fertig“ (workbook-bescheid.js): derselbe Aufbau wie die Reel-Mail, eigener Grund im Fuß
-export function workbookMailHtml(titel, innen, url) {
-  return mailHead(`${titel} — social2scale`, titel) + `
+export function workbookMailHtml(titel, innen, url, vorschau = '') {
+  return mailHead(`${titel} — social2scale`, vorschau || titel) + `
           <h1 class="h1" style="margin:0 0 16px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:29px;line-height:1.15;color:${PAPER};">${titel}</h1>
           <div style="margin:0 0 28px;font-size:16px;line-height:1.6;color:${MUTED};">${innen}</div>
           ${mailCta(url, 'Zu deinem Workbook')}` +

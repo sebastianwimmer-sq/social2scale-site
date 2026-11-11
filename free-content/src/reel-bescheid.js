@@ -49,8 +49,10 @@ export function mailBauen(kundin, reels) {
     ...rot.map((r) => `<p style="margin:0 0 10px;">${fett(r.titel)}: ${esc(r.fehler || 'Wir sehen es uns an und melden uns.')}</p>`),
   ];
   const satz = fertig.length ? '<p style="margin:16px 0 0;">Schau es dir an und sag mit einem Tipp, ob es passt. Was du änderst, gilt auch für jedes nächste Reel.</p>' : '';
-  const html = reelMailHtml(`Hallo ${esc(vorname(kundin.name)) || 'du'},`, zeilen.join('') + satz, esc(link));
-  return { subject: betreff, htmlContent: html };
+  const vorschau = fertig.length ? `„${esc(fertig[0].titel)}“ liegt fertig in deinem Social Hub.`
+    : `„${esc(rot[0]?.titel)}“: ${esc(rot[0]?.fehler || 'Wir sehen es uns an und melden uns.')}`;
+  const html = reelMailHtml(`Hallo ${esc(vorname(kundin.name)) || 'du'},`, zeilen.join('') + satz, esc(link), vorschau);
+  return { subject: betreff, htmlContent: html, tags: ['reel-bescheid'] };
 }
 
 export async function reelBescheid(env, versand = send) {
