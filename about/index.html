@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WVWU11CxMgHi8Bp+Hv91M1j0jld7R2Leu8aZ/uPlxjc=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WVWU11CxMgHi8Bp+Hv91M1j0jld7R2Leu8aZ/uPlxjc=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://mein.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -691,6 +691,24 @@
     </div></section>
 
     <!-- 6. Closing CTA, reuses existing .band -->
+    <!-- Karte je Bestellung: liegt als Vorlage in der Seite und wird von /spende.js erst eingesetzt, wenn der Zähler im
+         Portal freigegeben ist. Bis dahin gibt es den Abschnitt für Besucherinnen, Suchmaschinen und Tore nicht. -->
+    <template id="karte-vorlage" data-spende="https://mein.social2scale.com/api/spenden-zaehler">
+    <section class="ab-blk ab-spende" id="karte" aria-labelledby="ab-karte-h" data-sz="sammelkarte"><div class="wrap">
+      <div class="ab-blk-head">
+        <p class="ab-rh">Was wir zusätzlich machen</p>
+        <h2 id="ab-karte-h">Jede Bestellung bekommt eine <em>Nummer</em>.</h2>
+      </div>
+      <div class="sk-raster">
+        <div class="sk-text"><p class="ab-rbody">Wer bei uns bestellt, findet danach im Social Hub eine Karte mit Namen und Nummer, als Dank von uns. Hinter jeder Karte stehen 10 Euro, die wir an <b data-sp="empfaenger"></b> geben. Sie kommen aus Sebis Anteil, am Preis ändert das nichts.</p><p class="sk-notiz">Die nächste Karte trägt die Nr. <span data-sp="naechste"></span>. Stand <span data-sp="stand"></span>. Jede Bestellung zählt einmal.</p></div>
+        <div class="sk-platz"><button type="button" class="sk" aria-pressed="false" aria-label="Beispielkarte, antippen zum Umdrehen"><i>
+          <span class="sk-seite"><span class="sk-oben"><span class="sk-zeichen" aria-hidden="true">D</span><span>social2scale</span></span><span class="sk-name">Dein Name</span><span class="sk-unten"><b>Nr. <span data-sp="naechste"></span></b><span>deine Karte</span></span></span>
+          <span class="sk-seite hinten"><span class="sk-oben"><span>Danke. Sebi &amp; Phil</span><span>social2scale</span></span><span class="sk-satz">Mit dieser Bestellung gehen 10 Euro an <span data-sp="empfaengersatz"></span></span><span class="sk-unten"><b>Nr. <span data-sp="naechste"></span></b><span></span></span></span>
+        </i></button></div>
+      </div>
+    </div></section>
+    </template>
+
     <section class="ab-blk abschluss" data-sz="markierung"><div class="wrap reveal">
       <div class="band">
         <h2>Lass uns über dein <em>Wachstum</em> reden.</h2>
@@ -845,6 +863,7 @@
   </div>
 </div>
 <script src="/leiste.js" defer></script>
+<script src="/spende.js" defer></script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="ueber-uns" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

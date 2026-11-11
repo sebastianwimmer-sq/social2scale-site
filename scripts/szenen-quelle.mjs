@@ -71,9 +71,6 @@ export const SEITEN = [
       // Der empfohlene Weg steht auf dem hohen Podest im Führungslicht, die zwei Auswege daneben tiefer
       { sz: 'podest', zeiger: true, anker: /<section class="pr-blk pr-ueb-sec"[^>]*>/,
         innen: [['<div class="pr-emp" data-licht>', '<span class="sz-deko pd-kegel" aria-hidden="true"></span><span class="sz-deko pd-sockel" aria-hidden="true"></span>']] },
-      // Nach dem Kauf = die Karte aus dem Social Hub, in unseren Farben. Der Abschnitt liegt als <template> in der Seite
-      // und wird erst nach der Freigabe eingesetzt (spende.js); Neigung und Drehen steuert spende.js, nicht szenen.js.
-      { sz: 'sammelkarte', anker: /<section class="pr-blk pr-why pr-spende"[^>]*>/ },
       // Was es kostet = Kassenbon: die Rechnung kommt aus dem Drucker, unsere Zeile ist die Summe
       { sz: 'kassenbon', anker: /<section class="pr-blk" aria-labelledby="pr-rechnung"[^>]*>/,
         innen: [['<div class="pr-calc">', '<span class="sz-deko kb-schlitz" aria-hidden="true"></span>']] },
@@ -120,6 +117,9 @@ export const SEITEN = [
         innen: [['<article class="ab-fcard" data-licht>', '<span class="sz-deko sb-box" aria-hidden="true"><i></i></span>', 0], ['<article class="ab-fcard" data-licht>', '<span class="sz-deko sb-box" aria-hidden="true"><i></i></span>', 1]] },
       // Vier Prinzipien = vier Klappen: jede Szene wird angeschlagen, wenn sie dran ist
       { sz: 'klappe', anker: /<section class="ab-blk" id="wie-wir-arbeiten"[^>]*>/, teile: [/<div class="ab-row">/g] },
+      // Was wir zusätzlich machen = die Karte aus dem Social Hub, in unseren Farben. Liegt als <template> in der Seite und
+      // wird erst nach der Freigabe eingesetzt (spende.js); Neigung und Drehen steuert spende.js, nicht szenen.js.
+      { sz: 'sammelkarte', anker: /<section class="ab-blk ab-spende"[^>]*>/ },
       abschluss('ueber-uns'),
     ],
   },

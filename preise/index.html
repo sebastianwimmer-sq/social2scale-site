@@ -224,6 +224,9 @@
   .pr-why-scale .is-us{border-bottom-color:rgba(0,184,136,.45)}
   .pr-why-scale .is-us .l{color:var(--emerald)}
   .pr-why-scale .is-us .v{color:var(--paper)}
+  .pr-emp-karte{margin-top:var(--s-5);padding-top:var(--s-4);border-top:1px solid var(--line);font-size:.98rem;line-height:1.55;color:var(--muted)}
+  .pr-emp-karte b{color:var(--paper);font-weight:600}
+  .pr-emp-karte a{color:var(--emerald);text-underline-offset:3px;white-space:nowrap}
 
   /* ===== Details-Aufklapper: die sieben Pakete eine Ebene tiefer ===== */
   .pr-details{margin-top:clamp(var(--s-5),3vw,var(--s-6))}
@@ -652,6 +655,7 @@
           <p class="pr-emp-preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
           <a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a>
         </div>
+        <template id="karte-zeile" data-spende="https://mein.social2scale.com/api/spenden-zaehler"><p class="pr-emp-karte">Von jeder Bestellung gehen 10 Euro an <b data-sp="empfaenger"></b>, und du bekommst eine Karte mit deiner Nummer. <a href="/about/#karte">Wie das läuft</a></p></template>
       </div>
 
       <p class="pr-alt-vor">Passt nicht ganz? Dann ist es einer von diesen zwei.</p>
@@ -693,25 +697,6 @@
       </div>
       <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Welcher Weg zu dir passt, sagen wir dir im Erstgespräch. Auch dann, wenn es keiner der drei ist.</p>
     </div></section>
-
-    <!-- Karte je Bestellung: liegt als Vorlage in der Seite und wird von /spende.js erst eingesetzt, wenn der Zähler im
-         Portal freigegeben ist. Bis dahin gibt es den Abschnitt für Besucherinnen, Suchmaschinen und Tore nicht. -->
-    <template id="karte-vorlage" data-spende="https://mein.social2scale.com/api/spenden-zaehler">
-    <section class="pr-blk pr-why pr-spende" id="karte" aria-labelledby="pr-karte-h" data-sz="sammelkarte"><div class="wrap">
-      <div class="pr-blk-head">
-        <p class="pr-rh">Nach dem Kauf</p>
-        <h2 id="pr-karte-h">Deine Bestellung bekommt eine <em>Nummer</em>.</h2>
-      </div>
-      <div class="pr-why-grid">
-        <p class="pr-why-lead">In deinem Social Hub liegt danach eine Karte mit deinem Namen und deiner Nummer, als Dank von uns. Hinter jeder Karte stehen 10 Euro, die an <b data-sp="empfaenger"></b> gehen. Sie kommen aus Sebis Anteil, <b>dein Preis bleibt derselbe.</b></p>
-        <div class="sk-platz"><button type="button" class="sk" aria-pressed="false" aria-label="Beispielkarte, antippen zum Umdrehen"><i>
-          <span class="sk-seite"><span class="sk-oben"><span class="sk-zeichen" aria-hidden="true">D</span><span>social2scale</span></span><span class="sk-name">Dein Name</span><span class="sk-unten"><b>Nr. <span data-sp="naechste"></span></b><span>deine Karte</span></span></span>
-          <span class="sk-seite hinten"><span class="sk-oben"><span>Danke. Sebi &amp; Phil</span><span>social2scale</span></span><span class="sk-satz">Mit dieser Bestellung gehen 10 Euro an <span data-sp="empfaengersatz"></span></span><span class="sk-unten"><b>Nr. <span data-sp="naechste"></span></b><span></span></span></span>
-        </i></button></div>
-      </div>
-      <p class="pr-note">Die nächste Karte trägt die Nr. <span data-sp="naechste"></span>. Stand <span data-sp="stand"></span>. Jede Bestellung zählt einmal.</p>
-    </div></section>
-    </template>
 
     <section class="pr-blk" aria-labelledby="pr-rechnung" data-sz="kassenbon"><div class="wrap reveal">
       <div class="pr-blk-head">

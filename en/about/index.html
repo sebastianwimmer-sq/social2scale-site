@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PjnwACm2v7zMGxUWBrXm2411TYv8B2+wmfs51B9zYIs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PjnwACm2v7zMGxUWBrXm2411TYv8B2+wmfs51B9zYIs=' 'sha256-vpfTlo2qPDMsd1GS9XJKRjrzqYQcDox2yalAljDEFyE=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com https://mein.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/about/@f77040bdbd039864">
+<meta name="s2s-quelle" content="/about/@e816af1be7d1618f">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -692,6 +692,24 @@
     </div></section>
 
     <!-- 6. Closing CTA, reuses existing .band -->
+    <!-- Karte je Bestellung: liegt als Vorlage in der Seite und wird von /spende.js erst eingesetzt, wenn der Zähler im
+         Portal freigegeben ist. Bis dahin gibt es den Abschnitt für Besucherinnen, Suchmaschinen und Tore nicht. -->
+    <template id="karte-vorlage" data-spende="https://mein.social2scale.com/api/spenden-zaehler">
+    <section class="ab-blk ab-spende" id="karte" aria-labelledby="ab-karte-h" data-sz="sammelkarte"><div class="wrap">
+      <div class="ab-blk-head">
+        <p class="ab-rh">What we do on top</p>
+        <h2 id="ab-karte-h">Every order gets a <em>number</em>.</h2>
+      </div>
+      <div class="sk-raster">
+        <div class="sk-text"><p class="ab-rbody">Whoever orders from us finds a card with their name and number in their Social Hub afterwards, as a thank-you from us. Behind every card are 10 euros that we give to <b data-sp="empfaenger"></b>, taken out of Sebi’s share. The price stays the same.</p><p class="sk-notiz">The next card carries no. <span data-sp="naechste"></span>. As of <span data-sp="stand"></span>. Each order counts once.</p></div>
+        <div class="sk-platz"><button type="button" class="sk" aria-pressed="false" aria-label="Sample card, tap to turn it over"><i>
+          <span class="sk-seite"><span class="sk-oben"><span class="sk-zeichen" aria-hidden="true">Y</span><span>social2scale</span></span><span class="sk-name">Your name</span><span class="sk-unten"><b>No. <span data-sp="naechste"></span></b><span>your card</span></span></span>
+          <span class="sk-seite hinten"><span class="sk-oben"><span>Thank you. Sebi &amp; Phil</span><span>social2scale</span></span><span class="sk-satz">With this order, 10 euros go to <span data-sp="empfaengersatz"></span></span><span class="sk-unten"><b>No. <span data-sp="naechste"></span></b><span></span></span></span>
+        </i></button></div>
+      </div>
+    </div></section>
+    </template>
+
     <section class="ab-blk abschluss" data-sz="markierung"><div class="wrap reveal">
       <div class="band">
         <h2>Let’s talk about your <em>growth</em>.</h2>
@@ -846,6 +864,7 @@
   </div>
 </div>
 <script src="/leiste.js" defer></script>
+<script src="/spende.js" defer></script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="ueber-uns" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>
