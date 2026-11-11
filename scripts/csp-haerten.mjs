@@ -73,6 +73,8 @@ const TURNSTILE = "https://challenges.cloudflare.com";
 const TURNSTILE_SUB = "https://*.challenges.cloudflare.com";
 const FORMULAR_ZIEL = "https://api.web3forms.com";
 const ZAEHLUNG = "https://closing.social2scale.com";
+// Karte je Bestellung (Preise-Seite): liest den freigegebenen Zähler aus dem Portal. Nur Seiten, die ihn einbinden.
+const KARTEN_ZIEL = "https://mein.social2scale.com";
 // Terminkalender nach der Anfrage (cal.eu). embed.js kommt von www.cal.eu,
 // der Kalender selbst rendert in einem Rahmen von app.cal.eu. Fehlte bis
 // 27.09.2026 — der Kalender auf /anfrage/ blieb dadurch still leer.
@@ -120,6 +122,7 @@ function inlineSkripte(html) {
 function cspFuer(html) {
   const brauchtTurnstile = html.includes(TURNSTILE);
   const brauchtFormular = html.includes(FORMULAR_ZIEL);
+  const brauchtKarten = html.includes('data-spende="' + KARTEN_ZIEL + "/");
   const brauchtKalender = html.includes("cal.eu/embed/");
 
   const hashes = inlineSkripte(html).map(hash);
@@ -137,6 +140,7 @@ function cspFuer(html) {
   // connect-src, nicht form-action. Fehlte vom 20.08. bis 01.10.2026: jede Kundin
   // sah nach dem Absenden „fehlgeschlagen", die Mail über Web3Forms kam nie an.
   if (brauchtFormular) verbinden.push(FORMULAR_ZIEL);
+  if (brauchtKarten) verbinden.push(KARTEN_ZIEL);
 
   const rahmen = [];
   if (brauchtTurnstile) rahmen.push(TURNSTILE, TURNSTILE_SUB);
