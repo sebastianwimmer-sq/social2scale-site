@@ -6,7 +6,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/bin/bash</string><string>-c</string>
-    <string>R="$HOME/social2scale-site"; git -C "$R" fetch -q origin &amp;&amp; S="$(mktemp -t s2s-nachtlauf)" &amp;&amp; git -C "$R" show origin/main:scripts/nachtlauf.sh &gt; "$S" &amp;&amp; S2S_REPO="$R" /bin/bash "$S"; rc=$?; rm -f "$S"; exit $rc</string>
+    <string>R="$HOME/social2scale-site"; git -C "$R" fetch -q origin; S="$(mktemp -t s2s-nachtlauf)" &amp;&amp; git -C "$R" show origin/main:scripts/nachtlauf.sh &gt; "$S" &amp;&amp; S2S_REPO="$R" /bin/bash "$S"; rc=$?; rm -f "$S"; exit $rc</string>
   </array>
   <key>StartCalendarInterval</key><dict><key>Hour</key><integer>3</integer><key>Minute</key><integer>0</integer></dict>
   <key>StandardOutPath</key><string>/tmp/s2s-nachtlauf.out</string>
