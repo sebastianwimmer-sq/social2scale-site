@@ -52,6 +52,16 @@ until awk -v l="$(last)" -v g="$LAST_GRENZE" 'BEGIN{exit !(l<g)}'; do
 done
 echo "Last beim Start: $(last) (gewartet ${gewartet}s)"
 
+# Wach bleiben, solange der Lauf geht, und auf Netz warten: im DarkWake fehlt es oft
+# (13.11.: 06:07 „Could not resolve host: github.com“ → Lauf tot, Mail ging raus)
+caffeinate -i -w $$ &
+netz=0
+for _ in $(seq 1 60); do
+  /usr/bin/dscacheutil -q host -a name github.com 2>/dev/null | grep -q ip_address && { netz=1; break; }
+  sleep 30
+done
+[ "$netz" = 1 ] || { echo "⚠️  30 min kein Netz — Nachtlauf fällt heute aus, morgen 03:00 neu (keine Mail: ohne Netz geht keine raus)"; exit 0; }
+
 # Frischer Stand von origin/main, nie der Arbeitsbaum
 git -C "$REPO" fetch -q origin || { melden "s2s Nachtlauf: git fetch ging nicht" "$(tail -5 "$LOG")"; exit 1; }
 BAUM="$(mktemp -d "${TMPDIR:-/tmp}/s2s-nachtlauf-XXXXXX")"
