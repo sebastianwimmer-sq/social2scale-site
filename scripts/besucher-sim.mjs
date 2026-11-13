@@ -359,7 +359,10 @@ async function klickeVorschau(page) {
     const h = (await a.getAttribute('href')) || '';
     if (VORSCHAU.test(h) && (await a.isVisible())) {
       await a.scrollIntoViewIfNeeded();
-      await Promise.all([page.waitForLoadState('domcontentloaded').catch(() => {}), a.click({ timeout: 8000 })]);
+      // Auf den Adresswechsel warten: waitForLoadState löst auf der schon geladenen Seite sofort aus, die
+      // Navigation kam nachts unter Last erst danach (07.–12.11.: „Execution context was destroyed“, 6× rot).
+      const vorher = page.url();
+      await Promise.all([page.waitForURL((u) => u.href !== vorher, { timeout: 15000 }).catch(() => {}), a.click({ timeout: 8000 })]);
       await ruhe(page);
       return page.url();
     }
@@ -368,11 +371,20 @@ async function klickeVorschau(page) {
 }
 
 // Endliche Übergänge abwarten (höchstens 2 s), endlose ignorieren.
+// Navigiert die Seite währenddessen weiter, auf die neue warten und dort neu messen (wie ruhe()).
 async function uebergaengeFertig(page) {
-  await page.evaluate(() => Promise.race([
-    Promise.all(document.getAnimations().filter((a) => (a.effect?.getComputedTiming?.().iterations ?? 1) !== Infinity).map((a) => a.finished.catch(() => {}))),
-    new Promise((r) => setTimeout(r, 2000)),
-  ]));
+  for (let versuch = 0; ; versuch++) {
+    try {
+      await page.evaluate(() => Promise.race([
+        Promise.all(document.getAnimations().filter((a) => (a.effect?.getComputedTiming?.().iterations ?? 1) !== Infinity).map((a) => a.finished.catch(() => {}))),
+        new Promise((r) => setTimeout(r, 2000)),
+      ]));
+      return;
+    } catch (e) {
+      if (versuch >= 2 || !/Execution context was destroyed|navigat/i.test(e.message)) throw e;
+      await page.waitForLoadState('load').catch(() => {});
+    }
+  }
 }
 
 // Zählt der Weg zur Vorschau? Ohne Zähler ist das Ziel der Website unsichtbar (bis 12.10.2026
@@ -573,6 +585,13 @@ const PERSONAS = [
     async lauf(p, w) {
       for (const s of ['/', '/preise/', '/gratis/']) {
         await p.goto(BASIS + s, { waitUntil: 'load' }); await ruhe(p);
+        // /gratis/ ist eine Brücke: die Karte bleibt absichtlich 1,5 s unsichtbar und erscheint nur, wenn die
+        // Weiterleitung hängt (Notausgang). Gemessen wird das Ziel oder der Notausgang, nie die 1,5 s dazwischen
+        // (10./12.11. nachts rot: Weiterleitung langsam, Messung in der Wartezeit).
+        if (s === '/gratis/') {
+          await p.waitForFunction(() => location.pathname !== '/gratis/' || getComputedStyle(document.querySelector('main.card')).visibility === 'visible', null, { timeout: 6000 }).catch(() => {});
+          await ruhe(p);
+        }
         // Ohne Scrollen: bei reduzierter Bewegung muss sofort alles da sein.
         const leer = await p.evaluate(() => [...document.querySelectorAll('h1, h2, p, a.btn')].filter((el) => {
           const r = el.getBoundingClientRect();
