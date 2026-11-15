@@ -55,7 +55,8 @@ test('jede Szene der Zeitleiste hat Markup, jede Wortmarke liegt in ihrem Abschn
 
 test('Film-Dateien kommen nur von social2scale.com, die CSP erlaubt genau das', () => {
   const shell = readFileSync(new URL('../src/pages/shell.js', import.meta.url), 'utf8');
-  assert.match(shell, /"media-src https:\/\/social2scale\.com"/);
+  // blob: kam am 15.11.2026 dazu (lokale Vorschau des eigenen Reels auf /reel-check/); fremde Hosts bleiben draußen
+  assert.match(shell, /"media-src blob: https:\/\/social2scale\.com"/);
   for (const w of ['a', 'b']) assert.match(filmMarkup(w), new RegExp(`src="https://social2scale\\.com/assets/film-${w}\\.mp4"`));
 });
 

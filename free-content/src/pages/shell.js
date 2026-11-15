@@ -35,7 +35,8 @@ const CSP = [
   "img-src 'self' data: blob: https://social2scale.com",
   "font-src 'self' https://social2scale.com",
   // Setting-Film nach dem Eintragen (film.js) liegt neben den Bildern auf social2scale.com/assets.
-  "media-src https://social2scale.com",
+  // blob: fuer die lokale Vorschau des eigenen Reels auf /reel-check/ (URL.createObjectURL -> <video>).
+  "media-src blob: https://social2scale.com",
   // closing. = Zaehler /api/pv (Trichter ohne Kennung, siehe form.js zaehlen()).
   "connect-src 'self' https://challenges.cloudflare.com https://closing.social2scale.com",
   "frame-src https://challenges.cloudflare.com",
@@ -125,9 +126,9 @@ const SCENE_MARKUP = `
  * @param {{title:string, head?:string, body:string}} params
  * @returns {Response}
  */
-export function htmlDoc({ title, head = '', body }) {
+export function htmlDoc({ title, head = '', body, lang = 'de' }) {
   const html =
-    '<!doctype html><html lang="de"><head>' +
+    `<!doctype html><html lang="${lang === 'en' ? 'en' : 'de'}"><head>` +
     '<meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<meta name="color-scheme" content="dark light">' +
