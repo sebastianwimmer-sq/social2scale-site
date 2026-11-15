@@ -9,6 +9,8 @@ import { reelBescheid } from './reel-bescheid.js';
 import { workbookBescheid } from './workbook-bescheid.js';
 import { abstimmungMail } from './abstimmung-mail.js';
 import { alteAdresse } from './alte-adresse.js';
+import { reelCheckApi, bestaetigen as reelCheckBestaetigen, stand as reelCheckStand, reelCheckAufraeumen } from './reel-check.js';
+import { reelCheckSeite, reelCheckStandSeite } from './pages/reel-check.js';
 import {
   verifyTurnstile,
   isHoneypotTripped,
@@ -56,7 +58,7 @@ const NEUTRAL = {
 function corsHeaders(allow) {
   return {
     'Access-Control-Allow-Origin': allow,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, PUT, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Max-Age': '86400',
     Vary: 'Origin',
@@ -423,6 +425,7 @@ export default {
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
     await reelBescheid(env);   // „Dein Reel ist fertig“ an die Kundin, einmal je Reel (Phase 6, v56)
     await workbookBescheid(env);   // „Dein Workbook ist fertig“, einmal je Heft (Portal v74)
+    await reelCheckAufraeumen(env); // Löschfristen des Reel-Checks (Upload abgebrochen, nie bestätigt, 30 Tage)
     await abstimmungMail(env); // Morgenmail der täglichen Abstimmung, auch wenn der Mac offline ist
   },
 
@@ -451,6 +454,37 @@ export default {
     // Weg B des einen Funnels: Erstgespräch-Anfrage, weitergereicht ans Portal (anfrage-weiter.js).
     if (url.pathname === '/api/anfrage') {
       return handleAnfrage(request, env, cors);
+    }
+
+    // Reel-Check (15.11.2026): Annahme-Seite, Upload in Teilen, Bestätigung, Stand.
+    const rcApi = await reelCheckApi(request, env, ctx, cors, url);
+    if (rcApi) return rcApi;
+    if ((url.pathname === '/reel-check' || url.pathname === '/en/reel-check') && (request.method === 'GET' || request.method === 'HEAD')) {
+      return Response.redirect(url.origin + url.pathname + '/' + url.search, 301);
+    }
+    if ((url.pathname === '/reel-check/' || url.pathname === '/en/reel-check/') && (request.method === 'GET' || request.method === 'HEAD')) {
+      const seite = reelCheckSeite(env, url.pathname.startsWith('/en/') ? 'en' : 'de');
+      return request.method === 'HEAD' ? new Response(null, { status: 200, headers: seite.headers }) : seite;
+    }
+    const rcKlick = url.pathname.match(/^\/rc\/c\/([a-f0-9]{48})$/);
+    if (rcKlick && request.method === 'GET') {
+      try {
+        const r = await reelCheckBestaetigen(env, rcKlick[1]);
+        if (r.ok) return new Response(null, { status: 302, headers: { Location: `/rc/${rcKlick[1]}` } });
+        return reelCheckStandSeite({ status: 'not_found', sprache: r.sprache });
+      } catch (err) {
+        console.error('[reel-check] Bestätigung fehlgeschlagen:', err);
+        return reelCheckStandSeite({ status: 'not_found', sprache: 'de' });
+      }
+    }
+    const rcStand = url.pathname.match(/^\/rc\/([a-f0-9]{48})$/);
+    if (rcStand && request.method === 'GET') {
+      try {
+        return reelCheckStandSeite({ ...(await reelCheckStand(env, rcStand[1])), token: rcStand[1] });
+      } catch (err) {
+        console.error('[reel-check] Stand nicht lesbar:', err);
+        return reelCheckStandSeite({ status: 'not_found', sprache: 'de' });
+      }
     }
 
     if (url.pathname === '/api/free-content') {

@@ -1,0 +1,291 @@
+/**
+ * Reel-Check: die Annahme (Sebi 15.11.2026). Ein Lead lädt ein Reel hoch, beantwortet drei Fragen und bekommt
+ * einen Befund per Mail. Dieser Teil nimmt nur an: prüfen, in Teilen nach R2 legen, Adresse bestätigen lassen.
+ * Gemessen wird auf dem Mac (kit-build/reel-check), der Zeilen mit status='da' abholt.
+ *
+ * Ablauf einer Zeile in reel_check:
+ *   laedt  → Upload läuft (Teile kommen einzeln, je höchstens TEIL_BYTES)
+ *   wartet → Video liegt vollständig, Bestätigungsmail ist raus
+ *   da     → Adresse bestätigt, der Mac darf prüfen (erst ab hier kostet es Rechenzeit und KI)
+ *   in_arbeit · fertig · fehler → setzt der Mac
+ *   geloescht → Frist abgelaufen, Video und Befund sind weg, Adresse ist geleert
+ *
+ * Der Upload läuft in Teilen, weil ein Worker höchstens 100 MB je Anfrage annimmt und eine Handyverbindung
+ * bei einem langen Einzel-Upload gern abreißt: ein gescheiterter Teil wird wiederholt, nicht das ganze Video.
+ */
+
+import { verifyTurnstile, hasMailServer, registerAttempt } from './protect.js';
+import { normalizeEmail, isDisposable, stripControlChars } from './validate.js';
+import { send } from './mail.js';
+import { reelCheckMailHtml } from './pages/confirm-email.js';
+
+export const MAX_BYTES = 250 * 1024 * 1024;      // ein Reel aus dem Handy liegt weit darunter; darüber ist es kein Reel-Export
+export const MIN_BYTES = 200 * 1024;             // darunter ist es kein Video, das sich prüfen lässt
+export const TEIL_BYTES = 8 * 1024 * 1024;       // R2 verlangt ≥ 5 MB je Teil (außer dem letzten)
+export const JE_ADRESSE_AM_TAG = 3;              // Bremse: jede Prüfung kostet KI-Aufrufe
+export const UPLOAD_FRIST_STUNDEN = 24;          // angefangener Upload ohne Abschluss
+export const BESTAETIGEN_FRIST_TAGE = 7;         // hochgeladen, aber Adresse nie bestätigt
+export const LOESCH_FRIST_TAGE = 30;             // nach der Bestätigung: Video, Befund und Adresse weg
+// Wortlaut-Fassung der Einwilligung. Ändert sich der Satz auf der Seite, zählt diese Zahl hoch: so steht an
+// jeder Zeile, welchem Wortlaut zugestimmt wurde.
+export const EINWILLIGUNG_FASSUNG = 'reel-check-1';
+export const MIME = { 'video/mp4': 'mp4', 'video/quicktime': 'mov' };
+export const LAGEN = ['besser', 'anfang', 'keine_zeit'];
+const ZIELGRUPPE_MAX = 200;
+const TOKEN_RE = /^[a-f0-9]{48}$/;
+
+const json = (body, status, cors) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors } });
+const schluessel = (token, ext) => `reelcheck/${token}/reel.${ext}`;
+const befundSchluessel = (token) => `reelcheck/${token}/befund.html`;
+
+function neuerToken() {
+  const b = new Uint8Array(24);
+  crypto.getRandomValues(b);
+  return [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+}
+
+/** Wie viele Teile ein Video dieser Größe hat und wie groß Teil nr sein muss. */
+export function teile(bytes) {
+  return Math.ceil(bytes / TEIL_BYTES);
+}
+export function teilGroesse(bytes, nr) {
+  const n = teile(bytes);
+  if (nr < 1 || nr > n) return 0;
+  return nr < n ? TEIL_BYTES : bytes - TEIL_BYTES * (n - 1);
+}
+
+/** Reine Prüfung der Anmeldung. → { ok, value } oder { ok:false, error } (error ist ein Schlüssel, die Seite übersetzt). */
+export function pruefeStart(input) {
+  const d = input && typeof input === 'object' ? input : {};
+  const emailNorm = normalizeEmail(d.email);
+  if (!emailNorm) return { ok: false, error: 'email' };
+  if (isDisposable(emailNorm)) return { ok: false, error: 'disposable' };
+  const zielgruppe = stripControlChars(d.zielgruppe).slice(0, ZIELGRUPPE_MAX);
+  if (zielgruppe.length < 3) return { ok: false, error: 'zielgruppe' };
+  if (d.spricht !== 'ja' && d.spricht !== 'nein') return { ok: false, error: 'spricht' };
+  if (!LAGEN.includes(d.lage)) return { ok: false, error: 'lage' };
+  // Die Einwilligung wird nie vorbelegt und nie abgeleitet: nur ein ausdrückliches true zählt.
+  if (d.einwilligung !== true) return { ok: false, error: 'einwilligung' };
+  const bytes = Number(d.bytes);
+  if (!Number.isInteger(bytes) || bytes < MIN_BYTES) return { ok: false, error: 'video_klein' };
+  if (bytes > MAX_BYTES) return { ok: false, error: 'video_gross' };
+  const ext = MIME[String(d.mime || '').toLowerCase()];
+  if (!ext) return { ok: false, error: 'video_art' };
+  return {
+    ok: true,
+    value: {
+      email: stripControlChars(d.email).toLowerCase().slice(0, 160), emailNorm, zielgruppe, spricht: d.spricht, lage: d.lage,
+      bytes, mime: String(d.mime).toLowerCase(), ext, sprache: d.sprache === 'en' ? 'en' : 'de', spam: d.website ? 1 : 0,
+    },
+  };
+}
+
+/** MP4 und MOV tragen an Stelle 4 die Kennung „ftyp“. Alles andere ist kein Video, egal was die Endung sagt. */
+export function istVideoKopf(bytes) {
+  const b = new Uint8Array(bytes);
+  return b.length >= 8 && b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70;
+}
+
+async function zeile(db, token) {
+  if (!TOKEN_RE.test(token)) return null;
+  return db.prepare('SELECT * FROM reel_check WHERE token = ?').bind(token).first();
+}
+
+async function start(request, env, cors) {
+  let body;
+  try { body = await request.json(); } catch { return json({ ok: false, error: 'bad_json' }, 400, cors); }
+  const ip = request.headers.get('CF-Connecting-IP') || 'anon';
+  if (env.TURNSTILE_SECRET) {
+    if (!(await verifyTurnstile(body.turnstile, ip, env.TURNSTILE_SECRET))) return json({ ok: false, error: 'captcha' }, 403, cors);
+  } else {
+    console.error('[reel-check] TURNSTILE_SECRET fehlt — Bot-Gate ist AUS');
+  }
+  const c = pruefeStart(body);
+  if (!c.ok) return json({ ok: false, error: c.error }, 422, cors);
+  const v = c.value;
+  // Der Honigtopf verwirft nie, er markiert (Autofill füllt ihn bei echten Menschen): die Bestätigung per Mail entscheidet.
+  if (v.spam) console.error('[reel-check] Honigtopf gefüllt, Zeile wird markiert');
+  let limit;
+  try { limit = await registerAttempt(env.DB, ip); } catch (err) {
+    console.error('[reel-check] Rate-Limit-Zählung fehlgeschlagen:', err);
+    return json({ ok: false, error: 'backend' }, 503, cors);
+  }
+  if (!limit.ok) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+  if (!(await hasMailServer(v.emailNorm))) return json({ ok: false, error: 'email_domain' }, 422, cors);
+  try {
+    const heute = await env.DB.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE email_norm = ? AND created_at > datetime('now', '-1 day')").bind(v.emailNorm).first();
+    if ((heute?.c ?? 0) >= JE_ADRESSE_AM_TAG) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+    const token = neuerToken();
+    const mp = await env.IMAGES.createMultipartUpload(schluessel(token, v.ext), { httpMetadata: { contentType: v.mime } });
+    await env.DB.prepare(
+      'INSERT INTO reel_check (token, email, email_norm, zielgruppe, spricht, lage, sprache, einwilligung_fassung, einwilligung_at, bytes, mime, upload_id, spam, status, created_at, updated_at) ' +
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, 'laedt', datetime('now'), datetime('now'))",
+    ).bind(token, v.email, v.emailNorm, v.zielgruppe, v.spricht, v.lage, v.sprache, EINWILLIGUNG_FASSUNG, v.bytes, v.mime, mp.uploadId, v.spam).run();
+    return json({ ok: true, token, teil: TEIL_BYTES, teile: teile(v.bytes) }, 200, cors);
+  } catch (err) {
+    console.error('[reel-check] Anmeldung nicht gespeichert:', err);
+    return json({ ok: false, error: 'backend' }, 503, cors);
+  }
+}
+
+async function teil(request, env, cors, token, nr) {
+  const z = await zeile(env.DB, token);
+  if (!z || z.status !== 'laedt') return json({ ok: false, error: 'not_found' }, 404, cors);
+  const soll = teilGroesse(z.bytes, nr);
+  // Größe VOR dem Lesen prüfen: wer mehr schickt als angemeldet, wird nicht erst eingelesen.
+  if (!soll || Number(request.headers.get('content-length') || 0) !== soll) return json({ ok: false, error: 'teil' }, 400, cors);
+  try {
+    const daten = await request.arrayBuffer();
+    if (daten.byteLength !== soll) return json({ ok: false, error: 'teil' }, 400, cors);
+    if (nr === 1 && !istVideoKopf(daten.slice(0, 16))) return json({ ok: false, error: 'video_art' }, 422, cors);
+    const mp = env.IMAGES.resumeMultipartUpload(schluessel(token, MIME[z.mime]), z.upload_id);
+    const t = await mp.uploadPart(nr, daten);
+    return json({ ok: true, nr, etag: t.etag }, 200, cors);
+  } catch (err) {
+    console.error('[reel-check] Teil', nr, 'nicht abgelegt:', err);
+    return json({ ok: false, error: 'backend' }, 503, cors);
+  }
+}
+
+export function bestaetigungsMail(z, origin) {
+  const link = `${origin}/rc/c/${z.token}`;
+  if (z.sprache === 'en') {
+    return {
+      subject: 'One click, then we check your reel',
+      htmlContent: reelCheckMailHtml('Your reel has arrived', 'One click confirms your address. After that we check your reel and send you the report by email.', link, 'Confirm and start the check',
+        'One click, then we check your reel.', 'You are getting this email because a reel was uploaded for the social2scale Reel Check with this address. Not you? Just ignore it, nothing will be checked.', 'en'),
+      tags: ['reel-check-bestaetigung'],
+    };
+  }
+  return {
+    subject: 'Ein Klick, dann prüfen wir dein Reel',
+    htmlContent: reelCheckMailHtml('Dein Reel ist angekommen', 'Ein Klick bestätigt deine Adresse. Danach prüfen wir dein Reel und schicken dir den Befund per Mail.', link, 'Bestätigen und prüfen lassen',
+      'Ein Klick, dann prüfen wir dein Reel.', 'Du bekommst diese Mail, weil mit dieser Adresse ein Reel für den Reel-Check von social2scale hochgeladen wurde. Warst du das nicht, ignorier sie einfach, dann wird nichts geprüft.'),
+    tags: ['reel-check-bestaetigung'],
+  };
+}
+
+async function fertig(request, env, ctx, cors, token) {
+  const z = await zeile(env.DB, token);
+  if (!z || z.status !== 'laedt') return json({ ok: false, error: 'not_found' }, 404, cors);
+  let body;
+  try { body = await request.json(); } catch { return json({ ok: false, error: 'bad_json' }, 400, cors); }
+  const n = teile(z.bytes);
+  const liste = Array.isArray(body?.teile) ? body.teile : [];
+  const ok = liste.length === n && liste.every((t, i) => t && t.nr === i + 1 && typeof t.etag === 'string' && t.etag.length <= 200);
+  if (!ok) return json({ ok: false, error: 'teil' }, 400, cors);
+  const key = schluessel(token, MIME[z.mime]);
+  try {
+    const mp = env.IMAGES.resumeMultipartUpload(key, z.upload_id);
+    const obj = await mp.complete(liste.map((t) => ({ partNumber: t.nr, etag: t.etag })));
+    if (obj.size !== z.bytes) {
+      await env.IMAGES.delete(key);
+      await env.DB.prepare("UPDATE reel_check SET status='fehler', fehler='groesse', updated_at=datetime('now') WHERE token=?").bind(token).run();
+      return json({ ok: false, error: 'teil' }, 400, cors);
+    }
+    // Riegel: nur wer die Zeile von laedt auf wartet setzt, verschickt die Mail (zwei gleichzeitige Abschlüsse → eine Mail).
+    const r = await env.DB.prepare("UPDATE reel_check SET status='wartet', upload_id=NULL, updated_at=datetime('now') WHERE token=? AND status='laedt'").bind(token).run();
+    if ((r.meta?.changes ?? 0) === 1) {
+      const gesendet = await send(env, z.email, '', bestaetigungsMail(z, env.PUBLIC_ORIGIN || 'https://start.social2scale.com'));
+      if (!gesendet) {
+        console.error('[reel-check] Bestätigungsmail nicht zugestellt, Zeile', z.id);
+        return json({ ok: false, error: 'mail' }, 502, cors);
+      }
+    }
+    return json({ ok: true }, 200, cors);
+  } catch (err) {
+    console.error('[reel-check] Abschluss fehlgeschlagen:', err);
+    return json({ ok: false, error: 'backend' }, 503, cors);
+  }
+}
+
+/** Mail nochmal schicken (die Seite bietet es an, wenn nichts ankommt). Höchstens einmal je 2 Minuten. */
+async function nochmal(env, cors, token) {
+  const z = await zeile(env.DB, token);
+  if (!z || z.status !== 'wartet') return json({ ok: true }, 200, cors);
+  const r = await env.DB.prepare("UPDATE reel_check SET updated_at=datetime('now') WHERE token=? AND status='wartet' AND updated_at < datetime('now', '-2 minutes')").bind(token).run();
+  if ((r.meta?.changes ?? 0) !== 1) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+  const gesendet = await send(env, z.email, '', bestaetigungsMail(z, env.PUBLIC_ORIGIN || 'https://start.social2scale.com'));
+  return gesendet ? json({ ok: true }, 200, cors) : json({ ok: false, error: 'mail' }, 502, cors);
+}
+
+/** API-Weiche. → Response oder null, wenn der Pfad nicht hierher gehört. */
+export async function reelCheckApi(request, env, ctx, cors, url) {
+  const p = url.pathname;
+  if (!p.startsWith('/api/reel-check/')) return null;
+  if (p === '/api/reel-check/start') return request.method === 'POST' ? start(request, env, cors) : json({ ok: false, error: 'method' }, 405, cors);
+  let m = p.match(/^\/api\/reel-check\/teil\/([a-f0-9]{48})\/(\d{1,3})$/);
+  if (m) return request.method === 'PUT' ? teil(request, env, cors, m[1], Number(m[2])) : json({ ok: false, error: 'method' }, 405, cors);
+  m = p.match(/^\/api\/reel-check\/fertig\/([a-f0-9]{48})$/);
+  if (m) return request.method === 'POST' ? fertig(request, env, ctx, cors, m[1]) : json({ ok: false, error: 'method' }, 405, cors);
+  m = p.match(/^\/api\/reel-check\/nochmal\/([a-f0-9]{48})$/);
+  if (m) return request.method === 'POST' ? nochmal(env, cors, m[1]) : json({ ok: false, error: 'method' }, 405, cors);
+  m = p.match(/^\/api\/reel-check\/status\/([a-f0-9]{48})$/);
+  if (m) {
+    const z = await zeile(env.DB, m[1]);
+    return json({ ok: true, status: z ? z.status : 'not_found' }, 200, cors);
+  }
+  return json({ ok: false, error: 'not_found' }, 404, cors);
+}
+
+/** Klick in der Mail: wartet → da. Mehrfaches Klicken ist harmlos. → { ok, status, sprache } */
+export async function bestaetigen(env, token) {
+  const z = await zeile(env.DB, token);
+  if (!z || z.status === 'laedt' || z.status === 'geloescht') return { ok: false, sprache: z?.sprache || 'de' };
+  if (z.status === 'wartet') {
+    await env.DB.prepare("UPDATE reel_check SET status='da', confirmed_at=datetime('now'), updated_at=datetime('now') WHERE token=? AND status='wartet'").bind(token).run();
+    return { ok: true, status: 'da', sprache: z.sprache };
+  }
+  return { ok: true, status: z.status, sprache: z.sprache };
+}
+
+/** Stand für die Seite /rc/<token>. Den fertigen Befund legt der Mac als HTML nach R2. */
+export async function stand(env, token) {
+  const z = await zeile(env.DB, token);
+  if (!z) return { status: 'not_found', sprache: 'de' };
+  if (z.status === 'fertig') {
+    const obj = await env.IMAGES.get(befundSchluessel(token));
+    if (obj) return { status: 'fertig', sprache: z.sprache, befund: await obj.text() };
+    return { status: 'in_arbeit', sprache: z.sprache };
+  }
+  return { status: z.status, sprache: z.sprache };
+}
+
+async function wegraeumen(env, z, grund) {
+  const key = schluessel(z.token, MIME[z.mime] || 'mp4');
+  if (z.upload_id) {
+    try { await env.IMAGES.resumeMultipartUpload(key, z.upload_id).abort(); } catch (err) { console.error('[reel-check] Upload-Abbruch:', err); }
+  }
+  await env.IMAGES.delete([key, befundSchluessel(z.token)]);
+  // Die Zeile bleibt als Zähler ohne Person: Adresse und Zielgruppe werden geleert, der Token ist danach tot.
+  await env.DB.prepare(
+    "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
+  ).bind(grund, z.id).run();
+}
+
+/**
+ * Löschfristen (Cron). Drei Fälle: Upload nie abgeschlossen (24 h), Adresse nie bestätigt (7 Tage),
+ * bestätigt (30 Tage nach der Bestätigung: Video, Befund und Adresse weg). WIRFT NIE.
+ * @returns {Promise<number>} gelöschte Zeilen
+ */
+export async function reelCheckAufraeumen(env) {
+  try {
+    const { results } = await env.DB.prepare(
+      "SELECT * FROM reel_check WHERE status != 'geloescht' AND (" +
+      `(status = 'laedt' AND created_at < datetime('now', '-${UPLOAD_FRIST_STUNDEN} hours')) OR ` +
+      `(status = 'wartet' AND created_at < datetime('now', '-${BESTAETIGEN_FRIST_TAGE} days')) OR ` +
+      `(confirmed_at IS NOT NULL AND confirmed_at < datetime('now', '-${LOESCH_FRIST_TAGE} days'))) LIMIT 50`,
+    ).all();
+    let n = 0;
+    for (const z of results ?? []) {
+      try {
+        await wegraeumen(env, z, z.status === 'laedt' ? 'upload_abgebrochen' : z.status === 'wartet' ? 'nie_bestaetigt' : 'frist');
+        n++;
+      } catch (err) { console.error('[reel-check] Löschen fehlgeschlagen, Zeile', z.id, err); }
+    }
+    return n;
+  } catch (err) {
+    console.error('[reel-check] Aufräumen fehlgeschlagen:', err);
+    return 0;
+  }
+}

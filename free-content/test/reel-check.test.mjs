@@ -1,0 +1,190 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { DatabaseSync } from 'node:sqlite';
+import {
+  pruefeStart, teile, teilGroesse, istVideoKopf, reelCheckApi, bestaetigen, stand, reelCheckAufraeumen,
+  TEIL_BYTES, MAX_BYTES, MIN_BYTES, JE_ADRESSE_AM_TAG, LOESCH_FRIST_TAGE, EINWILLIGUNG_FASSUNG,
+} from '../src/reel-check.js';
+import { reelCheckSeite, reelCheckStandSeite, TEXTE } from '../src/pages/reel-check.js';
+
+// D1-Hülle um echtes SQLite mit dem echten Schema aus der Migration; R2 als Speicher mit echter Teile-Logik.
+function welt() {
+  const s = new DatabaseSync(':memory:');
+  s.exec(readFileSync(new URL('../migrationen/2026-11-15-reel-check.sql', import.meta.url), 'utf8'));
+  s.exec('CREATE TABLE free_intake_log (ip TEXT, created_at TEXT)');
+  const prep = (sql, args = []) => ({
+    bind: (...a) => prep(sql, a),
+    all: async () => ({ results: s.prepare(sql).all(...args) }),
+    first: async () => s.prepare(sql).get(...args) ?? null,
+    run: async () => { const r = s.prepare(sql).run(...args); return { meta: { changes: r.changes } }; },
+  });
+  const ablage = new Map(); const offen = new Map(); let nr = 0;
+  const mp = (key, id) => ({
+    uploadId: id,
+    uploadPart: async (n, daten) => { offen.get(id).set(n, new Uint8Array(daten)); return { partNumber: n, etag: `e${n}` }; },
+    complete: async (liste) => {
+      const t = offen.get(id); const stuecke = liste.map((x) => { assert.equal(x.etag, `e${x.partNumber}`); return t.get(x.partNumber); });
+      const ganz = new Uint8Array(stuecke.reduce((a, b) => a + b.length, 0)); let o = 0;
+      for (const b of stuecke) { ganz.set(b, o); o += b.length; }
+      ablage.set(key, ganz); offen.delete(id); return { size: ganz.length };
+    },
+    abort: async () => { offen.delete(id); },
+  });
+  const IMAGES = {
+    createMultipartUpload: async (key) => { const id = `u${++nr}`; offen.set(id, new Map()); return mp(key, id); },
+    resumeMultipartUpload: (key, id) => mp(key, id),
+    get: async (key) => (ablage.has(key) ? { text: async () => new TextDecoder().decode(ablage.get(key)) } : null),
+    put: async (key, v) => ablage.set(key, new TextEncoder().encode(v)),
+    delete: async (k) => { for (const x of [].concat(k)) ablage.delete(x); },
+  };
+  const mails = [];
+  const echt = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.includes('api.brevo.com')) { mails.push(JSON.parse(init.body)); return new Response('{}', { status: 201 }); }
+    if (u.includes('cloudflare-dns.com')) return new Response(JSON.stringify({ Answer: [{}] }));
+    throw new Error('unerwarteter Abruf ' + u);
+  };
+  const env = { DB: { prepare: (sql) => prep(sql) }, IMAGES, BREVO_API_KEY: 'x', NOTIFY_FROM: 'info@example.org', PUBLIC_ORIGIN: 'https://start.example.org' };
+  return { s, env, ablage, offen, mails, ende: () => { globalThis.fetch = echt; } };
+}
+
+const GUT = { email: 'Lead@Example.org', zielgruppe: 'Frauen ab 40, die wieder Sport machen', spricht: 'nein', lage: 'besser', einwilligung: true, mime: 'video/mp4', bytes: TEIL_BYTES + 300_000 };
+const ruf = (env, pfad, method, body, kopf = {}) => {
+  const url = new URL('https://start.example.org' + pfad);
+  const init = { method, headers: { 'CF-Connecting-IP': '203.0.113.9', ...kopf } };
+  if (body !== undefined) init.body = body instanceof Uint8Array ? body : JSON.stringify(body);
+  if (body instanceof Uint8Array) init.headers['content-length'] = String(body.length);
+  return reelCheckApi(new Request(url, init), env, { waitUntil() {} }, {}, url);
+};
+function video(bytes) {
+  const b = new Uint8Array(bytes); b.set([0, 0, 0, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6f, 0x6d]); return b;
+}
+async function hochladen(w, daten = GUT) {
+  const r = await (await ruf(w.env, '/api/reel-check/start', 'POST', daten)).json();
+  assert.equal(r.ok, true); const v = video(daten.bytes); const etags = [];
+  for (let n = 1; n <= r.teile; n++) {
+    const t = await (await ruf(w.env, `/api/reel-check/teil/${r.token}/${n}`, 'PUT', v.slice((n - 1) * r.teil, n * r.teil))).json();
+    assert.equal(t.ok, true, JSON.stringify(t)); etags.push({ nr: n, etag: t.etag });
+  }
+  return { token: r.token, etags, antwort: r };
+}
+
+test('Anmeldung: jede Lücke hat ihren eigenen Schlüssel, Einwilligung zählt nur als ausdrückliches true', () => {
+  assert.equal(pruefeStart(GUT).ok, true);
+  for (const [feld, wert, fehler] of [['email', 'keine', 'email'], ['zielgruppe', 'ab', 'zielgruppe'], ['spricht', 'vielleicht', 'spricht'], ['lage', 'x', 'lage'],
+    ['einwilligung', 'true', 'einwilligung'], ['einwilligung', 1, 'einwilligung'], ['bytes', MAX_BYTES + 1, 'video_gross'], ['bytes', MIN_BYTES - 1, 'video_klein'],
+    ['mime', 'video/webm', 'video_art'], ['mime', 'image/png', 'video_art'], ['email', 'a@mailinator.com', 'disposable']]) {
+    assert.equal(pruefeStart({ ...GUT, [feld]: wert }).error, fehler, feld + '=' + wert);
+  }
+  assert.equal(pruefeStart({ ...GUT, bytes: MAX_BYTES }).ok, true, 'genau die Grenze geht noch');
+  assert.equal(pruefeStart({ ...GUT, bytes: MIN_BYTES }).ok, true);
+  const v = pruefeStart({ ...GUT, zielgruppe: 'Mütter\u0000 <b>in</b>\nElternzeit', website: 'x', sprache: 'fr' }).value;
+  assert.equal(v.zielgruppe, 'Mütter <b>in</b> Elternzeit'); assert.equal(v.spam, 1); assert.equal(v.sprache, 'de');
+});
+
+test('Teile: Größen ergeben zusammen genau das Video', () => {
+  for (const bytes of [MIN_BYTES, TEIL_BYTES, TEIL_BYTES + 1, 3 * TEIL_BYTES - 5, MAX_BYTES]) {
+    let summe = 0; for (let n = 1; n <= teile(bytes); n++) summe += teilGroesse(bytes, n);
+    assert.equal(summe, bytes); assert.equal(teilGroesse(bytes, 0), 0); assert.equal(teilGroesse(bytes, teile(bytes) + 1), 0);
+  }
+  assert.equal(istVideoKopf(video(64)), true); assert.equal(istVideoKopf(new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3, 4])), false);
+});
+
+test('ganzer Weg: hochladen → Mail → bestätigen → der Mac darf prüfen → Befund', async () => {
+  const w = welt();
+  try {
+    const { token, etags } = await hochladen(w);
+    assert.equal(w.mails.length, 0, 'vor dem Abschluss geht keine Mail raus');
+    const f = await (await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags })).json();
+    assert.equal(f.ok, true);
+    const z = w.s.prepare('SELECT * FROM reel_check').get();
+    assert.equal(z.status, 'wartet'); assert.equal(z.einwilligung_fassung, EINWILLIGUNG_FASSUNG); assert.equal(z.email, 'lead@example.org'); assert.equal(z.upload_id, null);
+    assert.equal(w.ablage.get(`reelcheck/${token}/reel.mp4`).length, GUT.bytes);
+    assert.equal(w.mails.length, 1); assert.equal(w.mails[0].to[0].email, 'lead@example.org');
+    assert.match(w.mails[0].htmlContent, new RegExp(`https://start\\.example\\.org/rc/c/${token}`));
+    // zweiter Abschluss (doppelter Klick, Wiederholung): keine zweite Mail
+    assert.equal((await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags })).status, 404);
+    assert.equal(w.mails.length, 1);
+    assert.deepEqual(await bestaetigen(w.env, token), { ok: true, status: 'da', sprache: 'de' });
+    assert.equal((await bestaetigen(w.env, token)).status, 'da', 'zweiter Klick ist harmlos');
+    assert.equal((await stand(w.env, token)).status, 'da');
+    w.s.exec("UPDATE reel_check SET status='fertig'");
+    assert.equal((await stand(w.env, token)).status, 'in_arbeit', 'fertig ohne Befund-Datei zeigt nie eine leere Seite');
+    await w.env.IMAGES.put(`reelcheck/${token}/befund.html`, '<!doctype html><title>Befund</title>');
+    const st = await stand(w.env, token); assert.equal(st.status, 'fertig'); assert.match(st.befund, /Befund/);
+  } finally { w.ende(); }
+});
+
+test('Upload-Schutz: falsche Teilgröße, kein Video, fremder Token, unbestätigt bleibt unbestätigt', async () => {
+  const w = welt();
+  try {
+    const r = await (await ruf(w.env, '/api/reel-check/start', 'POST', GUT)).json();
+    assert.equal((await ruf(w.env, `/api/reel-check/teil/${r.token}/1`, 'PUT', video(TEIL_BYTES + 1))).status, 400, 'ein Byte zu viel');
+    assert.equal((await ruf(w.env, `/api/reel-check/teil/${r.token}/1`, 'PUT', video(TEIL_BYTES - 1))).status, 400, 'ein Byte zu wenig');
+    assert.equal((await ruf(w.env, `/api/reel-check/teil/${r.token}/3`, 'PUT', video(16))).status, 400, 'Teil, den es nicht gibt');
+    const png = new Uint8Array(TEIL_BYTES); png.set([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    assert.equal((await (await ruf(w.env, `/api/reel-check/teil/${r.token}/1`, 'PUT', png)).json()).error, 'video_art', 'Bild mit Video-Endung');
+    assert.equal((await ruf(w.env, `/api/reel-check/teil/${'a'.repeat(48)}/1`, 'PUT', video(TEIL_BYTES))).status, 404);
+    assert.equal((await ruf(w.env, `/api/reel-check/fertig/${r.token}`, 'POST', { teile: [{ nr: 1, etag: 'e1' }] })).status, 400, 'Abschluss mit fehlendem Teil');
+    assert.equal((await bestaetigen(w.env, r.token)).ok, false, 'ohne vollständiges Video gibt es nichts zu bestätigen');
+    assert.equal(w.mails.length, 0);
+    assert.equal((await (await ruf(w.env, `/api/reel-check/status/${'b'.repeat(48)}`, 'GET')).json()).status, 'not_found');
+  } finally { w.ende(); }
+});
+
+test(`Bremse: ${JE_ADRESSE_AM_TAG} Prüfungen je Adresse am Tag, die nächste wird abgewiesen`, async () => {
+  const w = welt();
+  try {
+    for (let i = 0; i < JE_ADRESSE_AM_TAG; i++) {
+      w.s.exec('DELETE FROM free_intake_log');
+      assert.equal((await ruf(w.env, '/api/reel-check/start', 'POST', { ...GUT, email: 'l.e.a.d+x@gmail.com' })).status, 200);
+    }
+    w.s.exec('DELETE FROM free_intake_log');
+    assert.equal((await ruf(w.env, '/api/reel-check/start', 'POST', { ...GUT, email: 'lead@googlemail.com' })).status, 429, 'andere Schreibweise derselben Adresse');
+    assert.equal((await ruf(w.env, '/api/reel-check/start', 'POST', { ...GUT, email: 'andere@example.org' })).status, 200);
+  } finally { w.ende(); }
+});
+
+test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach Bestätigung, die Grenze selbst bleibt', async () => {
+  const w = welt();
+  try {
+    const a = await hochladen(w, { ...GUT, email: 'a@example.org' });                       // bleibt bei laedt
+    const b = await hochladen(w, { ...GUT, email: 'b@example.org' });
+    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });      // wartet
+    const c = await hochladen(w, { ...GUT, email: 'c@example.org' });
+    await ruf(w.env, `/api/reel-check/fertig/${c.token}`, 'POST', { teile: c.etags }); await bestaetigen(w.env, c.token);
+    await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x');
+    assert.equal(await reelCheckAufraeumen(w.env), 0, 'frisch: nichts wird gelöscht');
+    const alt = (tok, spalte, wie) => w.s.prepare(`UPDATE reel_check SET ${spalte} = datetime('now', ?) WHERE token = ?`).run(wie, tok);
+    alt(a.token, 'created_at', '-23 hours'); alt(b.token, 'created_at', '-6 days'); alt(c.token, 'confirmed_at', `-${LOESCH_FRIST_TAGE - 1} days`);
+    assert.equal(await reelCheckAufraeumen(w.env), 0, 'kurz vor der Frist: nichts wird gelöscht');
+    alt(a.token, 'created_at', '-25 hours'); alt(b.token, 'created_at', '-8 days'); alt(c.token, 'confirmed_at', `-${LOESCH_FRIST_TAGE + 1} days`);
+    assert.equal(await reelCheckAufraeumen(w.env), 3);
+    assert.equal(w.ablage.size, 0, 'Videos und Befund sind weg'); assert.equal(w.offen.size, 0, 'der offene Upload ist abgebrochen');
+    const rest = w.s.prepare('SELECT status, email, email_norm, zielgruppe, fehler FROM reel_check ORDER BY id').all();
+    assert.deepEqual(rest.map((r) => [r.status, r.email, r.email_norm, r.zielgruppe]), Array(3).fill(['geloescht', '', '', '']));
+    assert.deepEqual(rest.map((r) => r.fehler), ['upload_abgebrochen', 'nie_bestaetigt', 'frist']);
+    assert.equal((await bestaetigen(w.env, b.token)).ok, false, 'ein gelöschter Link bestätigt nichts mehr');
+    assert.equal(await reelCheckAufraeumen(w.env), 0, 'zweiter Lauf fasst Gelöschtes nicht nochmal an');
+  } finally { w.ende(); }
+});
+
+test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt, die Frist steht im Wortlaut', async () => {
+  const de = await reelCheckSeite({}, 'de').text(); const en = await reelCheckSeite({}, 'en').text();
+  for (const [html, lang] of [[de, 'de'], [en, 'en']]) {
+    assert.match(html, new RegExp(`<html lang="${lang}">`));
+    assert.equal((html.match(/type="radio"/g) || []).length, 5); assert.equal((html.match(/ checked/g) || []).length, 0);
+    assert.match(html, /<input type="checkbox" id="einwilligung">/);
+    assert.match(html, new RegExp(`${LOESCH_FRIST_TAGE} (Tagen|days)`)); assert.match(html, /Claude/);
+    assert.match(html, /hreflang="de" href="https:\/\/start\.social2scale\.com\/reel-check\/"/);
+  }
+  const schluessel = (o) => Object.keys(o).sort().join();
+  assert.equal(schluessel(TEXTE.de), schluessel(TEXTE.en)); assert.equal(schluessel(TEXTE.de.js), schluessel(TEXTE.en.js));
+  assert.equal(schluessel(TEXTE.de.js.fehler), schluessel(TEXTE.en.js.fehler)); assert.equal(schluessel(TEXTE.de.stand), schluessel(TEXTE.en.stand));
+  const r = reelCheckStandSeite({ status: 'fertig', befund: '<!doctype html><p>Befund</p>' });
+  assert.match(r.headers.get('Content-Security-Policy'), /frame-ancestors 'none'/); assert.equal(await r.text(), '<!doctype html><p>Befund</p>');
+  assert.match(await reelCheckStandSeite({ status: 'geloescht', sprache: 'en' }).text(), /This report is/);
+  assert.doesNotMatch(await reelCheckStandSeite({ status: 'da', token: '"><script>' }).text(), /"><script>/);
+});
