@@ -29,7 +29,7 @@ export const TEXTE = {
     f3: 'Wo stehst du gerade?', f3a: 'Ich poste schon und will besser werden', f3b: 'Ich fange gerade an', f3c: 'Mir fehlt die Zeit dafür',
     mail: 'Wohin soll der Befund?', mailh: 'Deine E-Mail-Adresse',
     haken: `Ich bin einverstanden, dass social2scale mein Reel prüft, dabei die gesprochenen Worte und den Text im Bild von einer KI (Claude von Anthropic) auswerten lässt und mir den Befund per E-Mail schickt. Das Reel ist mein eigenes. Video und Befund werden nach ${LOESCH_FRIST_TAGE} Tagen gelöscht. Was wir daraus über Reels lernen, behalten wir ohne meinen Namen.`,
-    mehr: 'Mehr dazu in der', ds: 'Datenschutzerklärung', dsFuss: 'Datenschutz', dsUrl: 'https://social2scale.com/datenschutz/',
+    mehr: 'Mehr dazu in der', ds: 'Datenschutzerklärung', dsFuss: 'Datenschutz', dsUrl: 'https://social2scale.com/datenschutz/#reel-check',
     senden: 'Reel prüfen lassen',
     impressum: 'Impressum', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
@@ -76,7 +76,7 @@ export const TEXTE = {
     f3: 'Where are you right now?', f3a: 'I post already and want to get better', f3b: 'I’m just starting out', f3c: 'I don’t have the time for it',
     mail: 'Where should the report go?', mailh: 'Your email address',
     haken: `I agree that social2scale checks my reel, has an AI (Claude by Anthropic) evaluate the spoken words and on-screen text, and emails me the report. The reel is my own. Video and report are deleted after ${LOESCH_FRIST_TAGE} days. What we learn about reels from it, we keep without my name.`,
-    mehr: 'More in our', ds: 'privacy policy', dsFuss: 'Privacy', dsUrl: 'https://social2scale.com/en/privacy/',
+    mehr: 'More in our', ds: 'privacy policy', dsFuss: 'Privacy', dsUrl: 'https://social2scale.com/en/privacy/#reel-check',
     senden: 'Check my reel',
     impressum: 'Legal notice', impressumUrl: 'https://social2scale.com/impressum/',
     js: {

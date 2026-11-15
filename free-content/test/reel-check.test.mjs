@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import {
   pruefeStart, teile, teilGroesse, istVideoKopf, reelCheckApi, bestaetigen, stand, reelCheckAufraeumen,
+  reelCheckPost, reelCheckWaechter, WAECHTER_TITEL, MARKIERT_TITEL, WAECHTER_MIN,
   TEIL_BYTES, MAX_BYTES, MIN_BYTES, JE_ADRESSE_AM_TAG, LOESCH_FRIST_TAGE, EINWILLIGUNG_FASSUNG,
 } from '../src/reel-check.js';
 import { reelCheckSeite, reelCheckStandSeite, TEXTE } from '../src/pages/reel-check.js';
@@ -13,6 +14,7 @@ function welt() {
   const s = new DatabaseSync(':memory:');
   s.exec(readFileSync(new URL('../migrationen/2026-11-15-reel-check.sql', import.meta.url), 'utf8'));
   s.exec('CREATE TABLE free_intake_log (ip TEXT, created_at TEXT)');
+  s.exec('CREATE TABLE tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER, type TEXT, title TEXT, body TEXT, status TEXT, priority TEXT, source TEXT, owner TEXT, updated_at TEXT, done_at TEXT, done_note TEXT)');
   const prep = (sql, args = []) => ({
     bind: (...a) => prep(sql, a),
     all: async () => ({ results: s.prepare(sql).all(...args) }),
@@ -114,6 +116,59 @@ test('ganzer Weg: hochladen → Mail → bestätigen → der Mac darf prüfen �
     assert.equal((await stand(w.env, token)).status, 'in_arbeit', 'fertig ohne Befund-Datei zeigt nie eine leere Seite');
     await w.env.IMAGES.put(`reelcheck/${token}/befund.html`, '<!doctype html><title>Befund</title>');
     const st = await stand(w.env, token); assert.equal(st.status, 'fertig'); assert.match(st.befund, /Befund/);
+  } finally { w.ende(); }
+});
+
+test('nach der Prüfung: genau eine Mail an die Person, der Hinweis an uns nennt keine Adresse, Fehler bekommt eine eigene Mail', async () => {
+  const w = welt();
+  try {
+    const { token, etags } = await hochladen(w);
+    await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags });
+    await bestaetigen(w.env, token);
+    w.mails.length = 0;
+    assert.equal(await reelCheckPost(w.env), 0, 'solange geprüft wird, geht nichts raus');
+    w.s.exec("UPDATE reel_check SET status='fertig', zahl=62");
+    assert.equal(await reelCheckPost(w.env), 0, 'fertig ohne Befund-Datei: keine Mail auf eine leere Seite');
+    await w.env.IMAGES.put(`reelcheck/${token}/befund.html`, '<!doctype html><title>Befund</title>');
+    assert.equal(await reelCheckPost(w.env), 1);
+    assert.equal(w.mails.length, 2);
+    assert.equal(w.mails[0].to[0].email, 'lead@example.org'); assert.match(w.mails[0].htmlContent, new RegExp(`/rc/${token}`)); assert.match(w.mails[0].htmlContent, /30 Tage/);
+    assert.equal(w.mails[1].to[0].email, 'info@example.org'); assert.match(w.mails[1].subject, /62 von 100/);
+    assert.doesNotMatch(JSON.stringify(w.mails[1]), /lead@example\.org/i, 'der Hinweis an uns trägt die Adresse nicht');
+    assert.equal(await reelCheckPost(w.env), 0, 'zweiter Lauf: keine zweite Mail'); assert.equal(w.mails.length, 2);
+    // Fehler nach der Bestätigung: eigene Mail mit dem Weg zurück zum Upload, kein Hinweis an uns (dafür gibt es das Ticket der Wache)
+    const zwei = await hochladen(w, { ...GUT, email: 'zwei@example.org', sprache: 'en' });
+    await ruf(w.env, `/api/reel-check/fertig/${zwei.token}`, 'POST', { teile: zwei.etags }); await bestaetigen(w.env, zwei.token);
+    w.mails.length = 0; w.s.prepare("UPDATE reel_check SET status='fehler', fehler='nicht_lesbar' WHERE token=?").run(zwei.token);
+    assert.equal(await reelCheckPost(w.env), 1); assert.equal(w.mails.length, 1);
+    assert.match(w.mails[0].subject, /could not check/); assert.match(w.mails[0].htmlContent, /\/en\/reel-check\//);
+    // markierte Zeile: keine Mail
+    const drei = await hochladen(w, { ...GUT, email: 'drei@example.org', website: 'x' });
+    await ruf(w.env, `/api/reel-check/fertig/${drei.token}`, 'POST', { teile: drei.etags }); await bestaetigen(w.env, drei.token);
+    w.mails.length = 0; w.s.prepare("UPDATE reel_check SET status='fertig' WHERE token=?").run(drei.token);
+    await w.env.IMAGES.put(`reelcheck/${drei.token}/befund.html`, 'x');
+    assert.equal(await reelCheckPost(w.env), 0);
+  } finally { w.ende(); }
+});
+
+test(`Wächter: bestätigte Reels, die länger als ${WAECHTER_MIN} Minuten warten, werden ein Ticket, das sich selbst schließt; Markierte bekommen ein eigenes`, async () => {
+  const w = welt();
+  try {
+    const { token, etags } = await hochladen(w);
+    await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags }); await bestaetigen(w.env, token);
+    assert.deepEqual(await reelCheckWaechter(w.env), { steht: 'ruhig', markiert: 'ruhig' }, 'frisch bestätigt ist kein Stau');
+    w.s.exec(`UPDATE reel_check SET updated_at = datetime('now', '-${WAECHTER_MIN - 1} minutes')`);
+    assert.equal((await reelCheckWaechter(w.env)).steht, 'ruhig', 'kurz vor der Schwelle: ruhig');
+    w.s.exec(`UPDATE reel_check SET updated_at = datetime('now', '-${WAECHTER_MIN + 1} minutes')`);
+    assert.equal((await reelCheckWaechter(w.env)).steht, 'gemeldet');
+    assert.equal((await reelCheckWaechter(w.env)).steht, 'schon gemeldet');
+    const t = w.s.prepare('SELECT * FROM tickets').all(); assert.equal(t.length, 1); assert.equal(t[0].title, WAECHTER_TITEL);
+    assert.doesNotMatch(t[0].body, /example\.org/, 'das Ticket nennt keine Adresse');
+    w.s.exec("UPDATE reel_check SET status='fertig'");
+    assert.equal((await reelCheckWaechter(w.env)).steht, 'geschlossen');
+    w.s.exec("UPDATE reel_check SET status='da', spam=1");
+    const r = await reelCheckWaechter(w.env); assert.equal(r.markiert, 'gemeldet'); assert.equal(r.steht, 'ruhig', 'Markierte zählen nicht als Stau der Wache');
+    assert.equal(w.s.prepare("SELECT title FROM tickets WHERE status='offen'").get().title, MARKIERT_TITEL);
   } finally { w.ende(); }
 });
 

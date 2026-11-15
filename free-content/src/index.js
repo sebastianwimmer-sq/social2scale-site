@@ -9,7 +9,7 @@ import { reelBescheid } from './reel-bescheid.js';
 import { workbookBescheid } from './workbook-bescheid.js';
 import { abstimmungMail } from './abstimmung-mail.js';
 import { alteAdresse } from './alte-adresse.js';
-import { reelCheckApi, bestaetigen as reelCheckBestaetigen, stand as reelCheckStand, reelCheckAufraeumen } from './reel-check.js';
+import { reelCheckApi, bestaetigen as reelCheckBestaetigen, stand as reelCheckStand, reelCheckAufraeumen, reelCheckPost, reelCheckWaechter } from './reel-check.js';
 import { reelCheckSeite, reelCheckStandSeite } from './pages/reel-check.js';
 import {
   verifyTurnstile,
@@ -425,6 +425,8 @@ export default {
     await reelWaechter(env);   // Reel-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft (#284)
     await reelBescheid(env);   // „Dein Reel ist fertig“ an die Kundin, einmal je Reel (Phase 6, v56)
     await workbookBescheid(env);   // „Dein Workbook ist fertig“, einmal je Heft (Portal v74)
+    await reelCheckPost(env);       // „Dein Befund ist da“ oder „hat nicht geklappt“, einmal je Reel, dazu der Hinweis an uns
+    await reelCheckWaechter(env);   // Reel-Check-Wache auf dem Mac steht? Ticket, auch wenn der Mac schläft
     await reelCheckAufraeumen(env); // Löschfristen des Reel-Checks (Upload abgebrochen, nie bestätigt, 30 Tage)
     await abstimmungMail(env); // Morgenmail der täglichen Abstimmung, auch wenn der Mac offline ist
   },

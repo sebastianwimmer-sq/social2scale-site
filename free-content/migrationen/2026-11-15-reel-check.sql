@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS reel_check (
   created_at TEXT NOT NULL,
   confirmed_at TEXT,
   fertig_at TEXT,
+  befund_mail_at TEXT,
   geloescht_at TEXT,
   updated_at TEXT NOT NULL
 );

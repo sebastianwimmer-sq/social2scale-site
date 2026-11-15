@@ -8,6 +8,7 @@
  *   wartet → Video liegt vollständig, Bestätigungsmail ist raus
  *   da     → Adresse bestätigt, der Mac darf prüfen (erst ab hier kostet es Rechenzeit und KI)
  *   in_arbeit · fertig · fehler → setzt der Mac
+ *                 danach verschickt reelCheckPost (Cron) genau eine Mail: Befund ist da, oder es hat nicht geklappt
  *   geloescht → Frist abgelaufen, Video und Befund sind weg, Adresse ist geleert
  *
  * Der Upload läuft in Teilen, weil ein Worker höchstens 100 MB je Anfrage annimmt und eine Handyverbindung
@@ -17,7 +18,7 @@
 import { verifyTurnstile, hasMailServer, registerAttempt } from './protect.js';
 import { normalizeEmail, isDisposable, stripControlChars } from './validate.js';
 import { send } from './mail.js';
-import { reelCheckMailHtml } from './pages/confirm-email.js';
+import { reelCheckMailHtml, founderMailHtml } from './pages/confirm-email.js';
 
 export const MAX_BYTES = 250 * 1024 * 1024;      // ein Reel aus dem Handy liegt weit darunter; darüber ist es kein Reel-Export
 export const MIN_BYTES = 200 * 1024;             // darunter ist es kein Video, das sich prüfen lässt
@@ -287,5 +288,119 @@ export async function reelCheckAufraeumen(env) {
   } catch (err) {
     console.error('[reel-check] Aufräumen fehlgeschlagen:', err);
     return 0;
+  }
+}
+
+/** Mail nach der Prüfung: der Befund ist da, oder das Reel ließ sich nicht prüfen. */
+export function befundMail(z, origin) {
+  const en = z.sprache === 'en';
+  const grund = en
+    ? 'You are getting this email because you confirmed this address for the social2scale Reel Check. Your reel, the report and your address are deleted 30 days after your confirmation.'
+    : 'Du bekommst diese Mail, weil du diese Adresse für den Reel-Check von social2scale bestätigt hast. Dein Reel, der Befund und deine Adresse werden 30 Tage nach deiner Bestätigung gelöscht.';
+  if (z.status === 'fehler') {
+    const link = `${origin}${en ? '/en' : ''}/reel-check/`;
+    return en
+      ? { subject: 'We could not check your reel', tags: ['reel-check-fehler'],
+        htmlContent: reelCheckMailHtml('That did not work', 'We could not read your video, so there is no report. Please upload the reel again, ideally the original file from your phone.', link, 'Upload again', 'We could not check your reel.', grund, 'en') }
+      : { subject: 'Dein Reel ließ sich nicht prüfen', tags: ['reel-check-fehler'],
+        htmlContent: reelCheckMailHtml('Das hat nicht geklappt', 'Wir konnten dein Video nicht lesen, deshalb gibt es keinen Befund. Lad das Reel bitte nochmal hoch, am besten die Originaldatei aus deinem Handy.', link, 'Nochmal hochladen', 'Dein Reel ließ sich nicht prüfen.', grund) };
+  }
+  const link = `${origin}/rc/${z.token}`;
+  return en
+    ? { subject: 'Your reel report is ready', tags: ['reel-check-befund'],
+      htmlContent: reelCheckMailHtml('Your report is ready', 'We checked your reel against 50 points. The report shows what already works and the three places to start.', link, 'Open the report', 'Your reel report is ready.', grund, 'en') }
+    : { subject: 'Dein Befund ist da', tags: ['reel-check-befund'],
+      htmlContent: reelCheckMailHtml('Dein Befund ist da', 'Wir haben dein Reel an 50 Punkten geprüft. Der Befund zeigt, was schon sitzt und an welchen drei Stellen du anfängst.', link, 'Befund ansehen', 'Dein Befund ist da.', grund) };
+}
+
+const LAGE_WORT = { besser: 'will besser werden', anfang: 'steht am Anfang', keine_zeit: 'hat keine Zeit dafür' };
+
+/**
+ * Nach der Prüfung (Cron): je Zeile genau EINE Mail an die Person und ein Hinweis an uns. Der Hinweis nennt keine
+ * Adresse (am Haken steht, dass wir sie nur für den Befund nutzen), nur Zahl, Lage und den Link zum Befund.
+ * Riegel über befund_mail_at; scheitert der Versand, geht der Riegel wieder auf. WIRFT NIE.
+ * @returns {Promise<number>} verschickte Mails
+ */
+export async function reelCheckPost(env) {
+  try {
+    const { results } = await env.DB.prepare(
+      "SELECT * FROM reel_check WHERE status IN ('fertig', 'fehler') AND confirmed_at IS NOT NULL AND befund_mail_at IS NULL AND spam = 0 AND email != '' LIMIT 20",
+    ).all();
+    const origin = env.PUBLIC_ORIGIN || 'https://start.social2scale.com';
+    let n = 0;
+    for (const z of results ?? []) {
+      try {
+        if (z.status === 'fertig' && !(await env.IMAGES.get(befundSchluessel(z.token)))) continue;   // nie eine Mail auf eine leere Seite
+        const r = await env.DB.prepare("UPDATE reel_check SET befund_mail_at=datetime('now') WHERE id=? AND befund_mail_at IS NULL").bind(z.id).run();
+        if ((r.meta?.changes ?? 0) !== 1) continue;
+        if (!(await send(env, z.email, '', befundMail(z, origin)))) {
+          await env.DB.prepare('UPDATE reel_check SET befund_mail_at=NULL WHERE id=?').bind(z.id).run();
+          console.error('[reel-check] Befund-Mail nicht zugestellt, Zeile', z.id);
+          continue;
+        }
+        n++;
+        if (z.status === 'fertig') {
+          const an = env.NOTIFY_TO || env.NOTIFY_FROM;
+          await send(env, an, 'social2scale', {
+            subject: `Reel-Check fertig: ${z.zahl ?? '–'} von 100${z.sprache === 'en' ? ' [EN]' : ''}`,
+            htmlContent: founderMailHtml('Reel-Check fertig', [
+              ['Zahl', `${z.zahl ?? '–'} von 100`], ['Lage', LAGE_WORT[z.lage] || ''], ['Sprache', z.sprache === 'en' ? 'Englisch' : 'Deutsch'],
+              ['Hinweis', 'Ohne Adresse: die Person meldet sich über den Termin-Knopf im Befund. Der Link gilt bis zur Löschung nach 30 Tagen.'],
+            ], `${origin}/rc/${z.token}`),
+          });
+        }
+      } catch (err) { console.error('[reel-check] Post fehlgeschlagen, Zeile', z.id, err); }
+    }
+    return n;
+  } catch (err) {
+    console.error('[reel-check] Post fehlgeschlagen:', err);
+    return 0;
+  }
+}
+
+export const WAECHTER_TITEL = 'Reel-Check steht — Reels warten';
+export const MARKIERT_TITEL = 'Reel-Check: markierte Uploads ansehen';
+export const WAECHTER_MIN = 90;
+
+/**
+ * Wächter von außen (wie reel-waechter.js): die Prüfung läuft auf Sebis Mac. Schläft er, wartet jedes Reel, und niemand
+ * erfährt es. Zwei Tickets, je höchstens eines offen, beide schließen sich selbst:
+ *   steht     bestätigte Reels warten oder hängen länger als WAECHTER_MIN
+ *   markiert  der Honigtopf war gefüllt (spam = 1): die Wache prüft solche Zeilen nicht, ein Mensch gibt frei oder lässt sie verfallen
+ * WIRFT NIE.
+ */
+export async function reelCheckWaechter(env) {
+  const eins = async (titel, zeilen, body, owner) => {
+    const offen = await env.DB.prepare("SELECT id FROM tickets WHERE title = ? AND status != 'erledigt' LIMIT 1").bind(titel).first();
+    if (zeilen.length && !offen) {
+      await env.DB.prepare(
+        "INSERT INTO tickets (client_id, type, title, body, status, priority, source, owner, updated_at) VALUES (NULL, 'bug', ?, ?, 'offen', 'hoch', 'reel-check-waechter', ?, datetime('now'))",
+      ).bind(titel, body.slice(0, 4000), owner).run();
+      return 'gemeldet';
+    }
+    if (!zeilen.length && offen) {
+      await env.DB.prepare(
+        "UPDATE tickets SET status='erledigt', done_at=datetime('now'), updated_at=datetime('now'), done_note='Reel-Check-Wächter: nichts wartet mehr (Cron-Messung)' WHERE id = ?",
+      ).bind(offen.id).run();
+      return 'geschlossen';
+    }
+    return zeilen.length ? 'schon gemeldet' : 'ruhig';
+  };
+  try {
+    const steht = (await env.DB.prepare(
+      `SELECT id, status, updated_at FROM reel_check WHERE spam = 0 AND status IN ('da', 'in_arbeit') AND updated_at < datetime('now', '-${WAECHTER_MIN} minutes')`,
+    ).all()).results ?? [];
+    const markiert = (await env.DB.prepare("SELECT id, updated_at FROM reel_check WHERE spam = 1 AND status = 'da'").all()).results ?? [];
+    return {
+      steht: await eins(WAECHTER_TITEL, steht, 'Gemeldet vom Cloudflare-Cron (Worker s2s-free-content), unabhängig vom Mac.\n' +
+        steht.map((r) => `- Zeile ${r.id}: ${r.status} seit ${r.updated_at} UTC`).join('\n') +
+        '\n\nPrüfen: läuft der Mac / launchd com.s2s.reel-check-wache? ~/s2s-reel-check/wache.log', 'sebi'),
+      markiert: await eins(MARKIERT_TITEL, markiert, 'Bei diesen Uploads war das unsichtbare Feld gefüllt (meist ein Bot, manchmal Autofill). Die Adresse ist bestätigt, geprüft wird nicht von selbst.\n' +
+        markiert.map((r) => `- Zeile ${r.id}, bestätigt ${r.updated_at} UTC`).join('\n') +
+        '\n\nFreigeben: UPDATE reel_check SET spam = 0 WHERE id = <Zeile>. Sonst verfällt die Zeile nach 30 Tagen.', 'wir'),
+    };
+  } catch (err) {
+    console.error('[reel-check] Wächter fehlgeschlagen:', err);
+    return { steht: 'fehler', markiert: 'fehler' };
   }
 }
