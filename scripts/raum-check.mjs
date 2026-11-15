@@ -28,7 +28,7 @@ const { chromium, webkit } = await import('/opt/homebrew/lib/node_modules/playwr
 const WURZEL = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
 // Kopf-Orte (je ein eigener Ort) und Seiten, die nur das Seitenlicht tragen — Quelle: scripts/raum-bauen.mjs
-const SEITEN = ['/', '/ablauf/', '/preise/', '/for-you/', '/about/', '/results/', '/danke/', '/danke/studio/'];
+const SEITEN = ['/', '/ablauf/', '/preise/', '/for-you/', '/about/', '/results/', '/danke/studio/'];
 const LICHT_SEITEN = ['/wissen/', '/wissen/was-kostet-social-media-betreuung/', '/links/', '/onboarding/', '/impressum/', '/404.html'];
 const RUCKEL_GRENZE = 5;
 const MIN_VERSATZ_PX = 4;

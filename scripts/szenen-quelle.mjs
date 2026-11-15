@@ -163,14 +163,7 @@ export const SEITEN = [
       { sz: 'notizkarte', anker: /<section class="w-cta w-re"[^>]*>/, deko: '<span class="sz-deko nk-klammer" aria-hidden="true"></span>' },
     ],
   },
-  {
-    dateien: ['danke/index.html'],
-    css: 'danke',
-    abschnitte: [
-      // Der Gruß der Gründer = eine handgeschriebene Briefkarte
-      { sz: 'briefkarte', anker: /<section class="dk-wir"[^>]*>/ },
-    ],
-  },
+  // /danke/ hat seit 15.11.2026 keine Szene mehr (Briefkarte entfernt; Sebi: high end clean).
   {
     dateien: ['danke/studio/index.html', 'danke/studio/abo/index.html', 'danke/studio/paket-100/index.html', 'danke/studio/paket-250/index.html', 'danke/studio/paket-500/index.html'],
     css: 'danke',
