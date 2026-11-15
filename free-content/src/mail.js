@@ -80,7 +80,7 @@ export async function send(env, to, name, mail, absender = 'social2scale') {
         // persoenlich gehen. Ging sie nur ans Sammelpostfach (von dem aus sie auch
         // verschickt wird), uebersieht man sie — bei der ersten echten Interessentin
         // am 27.07. genau so passiert.
-        to: String(to).split(',').map((e) => e.trim()).filter(Boolean).map((email) => ({ email, name })),
+        to: String(to).split(',').map((e) => e.trim()).filter(Boolean).map((email) => ({ email, ...(name ? { name } : {}) })),   // Brevo lehnt einen leeren Namen ab (400 „name is missing in to“, 15.11.2026 Reel-Check)
         subject: mail.subject,
         htmlContent: mail.htmlContent,
         ...(mail.replyTo ? { replyTo: mail.replyTo } : {}),

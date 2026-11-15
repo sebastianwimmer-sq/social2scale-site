@@ -44,7 +44,12 @@ function welt() {
   const echt = globalThis.fetch;
   globalThis.fetch = async (url, init) => {
     const u = String(url);
-    if (u.includes('api.brevo.com')) { mails.push(JSON.parse(init.body)); return new Response('{}', { status: 201 }); }
+    if (u.includes('api.brevo.com')) {
+      const m = JSON.parse(init.body);
+      // wie das echte Brevo: ein leerer Name im Empfänger ist ein 400 (15.11.2026 live so passiert, die Attrappe hatte es durchgelassen)
+      if (m.to.some((e) => 'name' in e && !e.name)) return new Response('{"code":"missing_parameter","message":"name is missing in to"}', { status: 400 });
+      mails.push(m); return new Response('{}', { status: 201 });
+    }
     if (u.includes('cloudflare-dns.com')) return new Response(JSON.stringify({ Answer: [{}] }));
     throw new Error('unerwarteter Abruf ' + u);
   };
