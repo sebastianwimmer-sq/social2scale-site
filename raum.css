@@ -178,7 +178,7 @@ html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) section.abschl
    je nach Seite. Jetzt trägt jeder Abschnitt oben und unten denselben Abstand; zwischen zwei Abschnitten liegt also immer das Doppelte.
    Ausgenommen: der Kopf (eigener Abstand zur Leiste), die angeheftete Handy-Szene, die Zitat-Zeilen (sie stehen zwischen zwei Abschnitten und bringen keinen eigenen Abstand mit) und die Unterkante der Gründer (Fotos laufen in den Abschluss). */
 html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])){--takt:clamp(52px,6.4vw,92px)}
-html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section:not(:first-child):not(.s2hero):not(#ablauf):not([class*="quote"]):not(.ab-mission){padding-top:var(--takt);padding-bottom:var(--takt)}
-html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender{padding-bottom:0}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section:not(:first-child):not(.s2hero):not(#ablauf):not([class*="quote"]):not(.ab-mission):not(.gruender):not(.gruender + section){padding-top:var(--takt);padding-bottom:var(--takt)}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender{padding-top:var(--takt);padding-bottom:calc(var(--takt) * .5)}
 html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section:first-child{padding-bottom:var(--takt)}
-html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender + section{padding-top:calc(var(--takt) * .4)}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender + section{padding-top:calc(var(--takt) * .5);padding-bottom:var(--takt)}
