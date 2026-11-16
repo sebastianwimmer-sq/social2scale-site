@@ -45,7 +45,7 @@ const server = await new Promise((fertig) => {
       if (verbiegen === 'js' && pfad.endsWith('/szenen/szenen.js')) inhalt = Buffer.from('/* leer */');
       if (verbiegen === 'kontrast' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="ringlicht"] :is(h2,h3,p,span,em){color:#0C2A2C !important;-webkit-text-fill-color:#0C2A2C !important}');
       // die Fehlerart vom 28.10. (etwas ändert beim Scrollen seine Größe statt per transform zu wandern), am heutigen Stand nachgestellt
-      if (verbiegen === 'sprung' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n@keyframes szSprung{to{height:1400px}}#stand{animation:szSprung linear both;animation-timeline:scroll(root)}');
+      if (verbiegen === 'sprung' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n@keyframes szSprung{to{height:2600px}}#stand,#warum,#proof,#faq{animation:szSprung linear both;animation-timeline:scroll(root)}');
       if (verbiegen === 'breite' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz]{overflow-x:visible !important}[data-sz="leuchttisch"] .lt-schein{left:-40px;right:-400px}');
       if (pfad.endsWith('.html')) inhalt = Buffer.from(inhalt.toString().replace(/;?\s*upgrade-insecure-requests/, ''));
       ant.writeHead(200, { 'Content-Type': TYPEN[extname(pfad)] || 'application/octet-stream' });

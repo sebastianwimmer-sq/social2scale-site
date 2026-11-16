@@ -223,7 +223,6 @@
 
 /* ── Ruhe (Sebi 16.11.2026: „wirkt halt viel lose“). Die Startseite trägt nur noch das Licht auf der Bühne und das Handy im Ring. ── */
 .proof::before,.proof-visual::before{content:none}            /* kein Diagramm-Schatten hinter den drei Zahlen */
-.kap h2 em,.feed-band h2 em,.proof h2 em,.proof-h em,#leistungen h2 em,#faq h2 em,.s2hero h2 em{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit!important}   /* kursiv bleibt, die Farbe steht nur noch auf der Bühne und im Abschluss */
 #proof .sec-bg,#leistungen .sec-bg{display:none}               /* keine Stockfotos unter dunklem Schleier */
 /* Eigener Feed als Profilraster 3 × 2, doppelt so groß: die Beiträge sind der Beweis und müssen lesbar sein */
 @media (min-width:761px){
@@ -260,7 +259,7 @@ html body .feed-band .feed-reihe li{animation:none}
 
 /* ── Bewegung als ein System (Sebi 16.11.2026): eine Kurve, eine Richtung (von unten), gestaffelt in Leserichtung. Nur transform und opacity.
    Nichts läuft endlos: der Fluss bewegt sich mit dem Scrollen, alles andere einmal beim Erscheinen. ── */
-@media (prefers-reduced-motion:no-preference){
+@media screen and (prefers-reduced-motion:no-preference){
   .reveal :is(h2,.st-card,.cell,.wa-row,.feed-reihe li,.proof-visual,.gr-person,.wa-close,.textlink){transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
   .reveal:not(.on) :is(h2,.st-card,.cell,.wa-row,.feed-reihe li,.proof-visual,.wa-close,.textlink){opacity:0;transform:translateY(30px)}
   .reveal :is(.st-card,.cell,.wa-row,.feed-reihe li):nth-child(1){transition-delay:.10s}
