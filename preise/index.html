@@ -13,13 +13,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#03080D">
-<title>Preise — was Instagram-Betreuung bei uns kostet | social2scale</title>
-<meta name="description" content="Drei Wege, je nachdem wie viel du abgeben willst — ab 446,25 € einmalig oder ab 523,60 € im Monat. Alle sieben Pakete mit Endpreis, plus die Rechnung, was Selbermachen kostet.">
+<title>Leistungen — was wir für deinen Instagram-Auftritt übernehmen | social2scale</title>
+<meta name="description" content="Drei Wege, je nachdem wie viel du abgeben willst. Der Einstieg kostet ab 446,25 € einmalig, den Preis für die laufende Betreuung legen wir im Erstgespräch mit dir fest. Dazu die Rechnung, was Selbermachen kostet.">
 <link rel="canonical" href="https://social2scale.com/preise/">
 <meta property="og:site_name" content="social2scale">
 <meta property="og:locale" content="de_DE">
-<meta property="og:title" content="Preise — was Instagram-Betreuung bei uns kostet — social2scale">
-<meta property="og:description" content="Drei Wege, je nachdem wie viel du abgeben willst — ab 446,25 € einmalig oder ab 523,60 € im Monat. Alle sieben Pakete mit Endpreis, plus die Rechnung, was Selbermachen kostet.">
+<meta property="og:title" content="Leistungen — was wir für deinen Instagram-Auftritt übernehmen — social2scale">
+<meta property="og:description" content="Drei Wege, je nachdem wie viel du abgeben willst. Der Einstieg kostet ab 446,25 € einmalig, den Preis für die laufende Betreuung legen wir im Erstgespräch mit dir fest. Dazu die Rechnung, was Selbermachen kostet.">
 <meta property="og:url" content="https://social2scale.com/preise/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://social2scale.com/assets/og-image.png">
@@ -27,8 +27,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="social2scale — Preise und Pakete">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Preise — was Instagram-Betreuung bei uns kostet">
-<meta name="twitter:description" content="Drei Wege, je nachdem wie viel du abgeben willst — ab 446,25 € einmalig oder ab 523,60 € im Monat. Alle sieben Pakete mit Endpreis, plus die Rechnung, was Selbermachen kostet.">
+<meta name="twitter:title" content="Leistungen — was wir für deinen Instagram-Auftritt übernehmen — social2scale">
+<meta name="twitter:description" content="Drei Wege, je nachdem wie viel du abgeben willst. Der Einstieg kostet ab 446,25 € einmalig, den Preis für die laufende Betreuung legen wir im Erstgespräch mit dir fest. Dazu die Rechnung, was Selbermachen kostet.">
 <meta name="twitter:image" content="https://social2scale.com/assets/og-image.png">
 <meta name="twitter:image:alt" content="social2scale — Preise und Pakete">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://social2scale.com/#org","name":"social2scale","alternateName":"Social2Scale","url":"https://social2scale.com/","logo":{"@type":"ImageObject","url":"https://social2scale.com/assets/avatar-s2s.png","width":160,"height":160},"sameAs":["https://www.instagram.com/social2scale/"]}</script>
@@ -39,6 +39,13 @@
 <!-- Geteiltes Verhalten: Leiste beim Scrollen, Parallax, Ueberschriften-Wisch. -->
 <script src="/s2s.js" defer></script>
 <noscript><style>.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
+
+  /* Seit 16.11.2026 (Besprechung #2, Punkt 5): laufende Pakete ohne Preis, zwei Wege nebeneinander */
+  .pr-emp-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-5)}
+  .pr-price-gespraech .p{font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
+  .pr-emp-preis{font-size:clamp(1.05rem,.95rem + .5vw,1.35rem)}
+  .pr-auf-anfrage{margin-top:var(--s-3);max-width:62ch}
+  .pr-alt-preis{font-size:clamp(1rem,.9rem + .4vw,1.2rem)}
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Erstgespräch/Kalender) -->
 <style>
@@ -566,7 +573,7 @@
     <nav class="nav" aria-label="Hauptnavigation">
       <!-- SHELL:NAV -->
       <ul class="nav-links">
-        <li><a href="/preise/" aria-current="page">Preise</a></li>
+        <li><a href="/preise/" aria-current="page">Leistungen</a></li>
         <li><a href="/ablauf/">Ablauf</a></li>
         <li><a href="/for-you/">Für wen</a></li>
         <li><a href="/results/">Prüf uns</a></li>
@@ -584,7 +591,7 @@
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation" hidden>
     <!-- SHELL:MOBIL -->
-    <a class="m-link" href="/preise/" aria-current="page">Preise</a>
+    <a class="m-link" href="/preise/" aria-current="page">Leistungen</a>
     <a class="m-link" href="/ablauf/">Ablauf</a>
     <a class="m-link" href="/for-you/">Für wen</a>
     <a class="m-link" href="/results/">Prüf uns</a>
@@ -595,14 +602,14 @@
   <main id="main" tabindex="-1">
 
     <section class="pr-hero" id="preise" aria-labelledby="pr-h" style="position:relative;overflow:hidden"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--preise" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div></div><!-- /RAUM --><div class="wrap reveal" style="position:relative;z-index:1">
-      <p class="pr-rh">Preise</p>
+      <p class="pr-rh">Leistungen</p>
       <h1 id="pr-h" class="steigt"><span class="z"><span>Drei Wege. <em>Einer</em> passt zu dir.</span></span></h1>
       <p class="lead">Wie viel du abgibst, entscheidest du. Alles andere machen wir. Sebi und Phil, persönlich, ohne Team dazwischen.</p>
         <div class="duo">
           <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" loading="lazy" decoding="async"></picture></span>
           <p class="duo-txt">Das sind wir: <b>Sebi &amp; Phil</b>. Wir setzen dein Paket selbst um. <a href="/about/">Über uns</a></p>
         </div>
-      <figure class="kopf-beitrag" aria-label="Beitrag von @social2scale"><img src="/assets/feed/beitrag-9-400.webp" srcset="/assets/feed/beitrag-9-400.webp 400w, /assets/feed/beitrag-9-800.webp 800w" sizes="(max-width:880px) 62vw, 340px" width="400" height="500" alt="Beitrag von @social2scale: Unsere Preise. Offen." fetchpriority="high" decoding="async"></figure>
+      <figure class="kopf-beitrag" aria-label="Beitrag von @social2scale"><img src="/assets/feed/beitrag-13-360.webp" srcset="/assets/feed/beitrag-13-360.webp 360w, /assets/feed/beitrag-13-720.webp 720w" sizes="(max-width:880px) 62vw, 340px" width="360" height="450" alt="Beitrag von @social2scale: Sieh es, bevor du dich entscheidest." fetchpriority="high" decoding="async"></figure>
     </div></section>
 
     <!-- Uebersicht der drei Wege. Steht bewusst VOR der angepinnten Szene:
@@ -652,8 +659,8 @@
           </div>
         </div>
         <div class="pr-emp-fuss">
-          <p class="pr-emp-preis">ab 1.547,00 €<small>einmalig, danach 464,10 € im Monat</small></p>
-          <a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a>
+          <p class="pr-emp-preis">Profil, Strategie und zehn Beiträge im Monat<small>Umfang und Preis legen wir im Erstgespräch gemeinsam fest, schriftlich, bevor du etwas buchst.</small></p>
+          <div class="pr-emp-wege"><a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a><a class="textlink" href="/anfrage/">Erstgespräch mit Phil</a></div>
         </div>
         <template id="karte-zeile" data-spende="https://mein.social2scale.com/api/spenden-zaehler"><p class="pr-emp-karte">Von jeder Bestellung gehen 10 Euro an <b data-sp="empfaenger"></b>, und du bekommst eine Karte mit deiner Nummer. <a href="/about/#karte">Wie das läuft</a></p></template>
       </div>
@@ -665,8 +672,8 @@
           <h3 class="pr-alt-name">Laufendes abgeben</h3>
           <p class="pr-alt-wann">Dein <b>Profil steht schon</b>. Es fehlt nur der Content.</p>
           <p class="pr-alt-du ist-null"><span class="pr-ueb-lbl">Du machst</span>Nichts.</p>
-          <p class="pr-alt-preis">ab 523,60 €<small>im Monat</small></p>
-          <p class="pr-alt-bed">zzgl. 523,60 € einmalig zum Start, 3 Monate Mindestlaufzeit</p>
+          <p class="pr-alt-preis">Zehn Beiträge im Monat<small>Preis im Erstgespräch, je nach Umfang</small></p>
+          <p class="pr-alt-bed">Mindestlaufzeit drei Monate. <a class="textlink" href="/anfrage/">Erstgespräch mit Phil</a></p>
           <details class="pr-alt-mehr">
             <summary>Was wir dabei machen</summary>
             <ol class="pr-ueb-liste pr-alt-liste">
@@ -710,36 +717,19 @@
           <div><span class="l">Selbst, bei 60 € Stundensatz</span><span class="v">450 – 900 €</span></div>
           <div><span class="l">Selbst, bei 80 € Stundensatz</span><span class="v">600 – 1.200 €</span></div>
           <div><span class="l">Selbst, bei 120 € Stundensatz</span><span class="v">900 – 1.800 €</span></div>
-          <div class="is-us"><span class="l">Mit uns, laufende Betreuung<small>zzgl. 523,60 € einmalig zum Start</small></span><span class="v">523,60 €</span></div>
         </div>
+        <p class="pr-note">Was es dich mit uns kostet, rechnen wir im Erstgespräch gegen deine Zahl.</p>
       </div>
-    </div></section>
-
-    <section class="pr-blk pr-why" aria-labelledby="pr-warum"><div class="wrap reveal">
-      <div class="pr-blk-head">
-        <p class="pr-rh">Warum nicht billiger</p>
-        <h2 id="pr-warum" class="wipe">Zwei Leute. <em>Keine</em> Zwischenebene.</h2>
-      </div>
-      <div class="pr-why-grid">
-        <p class="pr-why-lead">Wir liegen über dem, was ein Freelancer nimmt, und unter dem, was eine Agentur mit Projektleitung, Account-Management und Praktikanten kostet. Der Grund ist derselbe: <b>die Arbeit machen wir selbst.</b></p>
-        <div class="pr-why-scale stagger">
-          <div><span class="l">Freelancer</span><span class="v">400 – 900 €</span></div>
-          <div class="is-us"><span class="l">wir</span><span class="v">446 – 822 €</span></div>
-          <div><span class="l">Agentur, Schnitt</span><span class="v">800 – 2.500 €</span></div>
-          <div><span class="l">Full Service</span><span class="v">1.800 – 4.000 €</span></div>
-        </div>
-      </div>
-      <p class="pr-note">Marktspannen aus öffentlich einsehbaren Preisangaben deutschsprachiger Agenturen, Stand Juli 2026. Einordnung, keine Vergleichswerbung.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
       <div class="pr-blk-head">
         <p class="pr-rh">Für die, die vergleichen</p>
-        <h2 id="pr-detail" class="wipe">Alle sieben Pakete im <em>Detail</em>.</h2>
+        <h2 id="pr-detail" class="wipe">Alle Leistungen im <em>Detail</em>.</h2>
       </div>
 
       <details class="pr-details">
-        <summary><span>Leistungen und Preise vollständig anzeigen</span></summary>
+        <summary><span>Alle sieben Pakete anzeigen</span></summary>
 
         <div class="pr-group">
           <p class="pr-group-title">Einstieg: einmalig</p>
@@ -769,7 +759,7 @@
               <h3 class="pr-name">Betreuung BASIS</h3>
               <p class="pr-what">Zehn Beiträge im Monat nach festem Redaktionsplan, Hashtag-Strategie je Beitrag, ein bis zwei Beiträge zur Anfragen-Gewinnung, Weiterleitung der Interessenten, Kurz-Report.</p>
             </div>
-            <p class="pr-price"><span class="p">523,60 € / Monat</span><span class="netto">440 € netto</span><span class="sub">zzgl. 523,60 € zum Start<br>3 Monate Mindestlaufzeit</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">04</span>
@@ -777,7 +767,7 @@
               <h3 class="pr-name">Betreuung WACHSTUM</h3>
               <p class="pr-what">Alles aus BASIS, dazu aktives Interaktions-Management, zusätzliche Beiträge zur Anfragen-Gewinnung, zwei bis drei Stories pro Woche, monatliches Strategie-Update im Call.</p>
             </div>
-            <p class="pr-price"><span class="p">749,70 € / Monat</span><span class="netto">630 € netto</span><span class="sub">zzgl. 749,70 € zum Start<br>3 Monate Mindestlaufzeit</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
           </article>
         </div>
 
@@ -787,18 +777,17 @@
             <span class="pr-num" aria-hidden="true">05</span>
             <div>
               <h3 class="pr-name">Done-For-You BASIS</h3>
-              <p class="pr-what">Erster Monat vollständiger Profil-Aufbau wie Paket 02, danach die laufende BASIS-Betreuung. Günstiger als beide Pakete einzeln, und ein Ansprechpartner statt zweier Verträge.</p>
-              <span class="pr-tag">Günstiger als einzeln</span>
+              <p class="pr-what">Erster Monat vollständiger Profil-Aufbau wie Paket 02, danach die laufende BASIS-Betreuung. Ein Ansprechpartner statt zweier Verträge.</p>
             </div>
-            <p class="pr-price"><span class="p">1.547,00 €</span><span class="netto">1.300 € netto</span><span class="sub">einmalig, danach<br>464,10 € / Monat</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">06</span>
             <div>
               <h3 class="pr-name">Done-For-You WACHSTUM</h3>
-              <p class="pr-what">Profil-Aufbau plus WACHSTUM-Betreuung. Zusätzlich enthalten: Einrichtung und Betrieb einer ManyChat-Automation. Das ist der Unterschied zu Paket 04 und der Grund für den höheren Monatsbetrag.</p>
+              <p class="pr-what">Profil-Aufbau plus WACHSTUM-Betreuung. Zusätzlich enthalten: Einrichtung und Betrieb einer ManyChat-Automation. Das ist der Unterschied zu Paket 04.</p>
             </div>
-            <p class="pr-price"><span class="p">1.725,50 €</span><span class="netto">1.450 € netto</span><span class="sub">einmalig, danach<br>821,10 € / Monat</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
           </article>
         </div>
 
@@ -810,7 +799,7 @@
               <h3 class="pr-name">Landingpage, komplett betreut</h3>
               <p class="pr-what">Konzeption und Umsetzung von bis zu fünf Abschnitten, eigene Domain, Anfrageformular, mobile Optimierung, Tracking. Fertig in zehn Werktagen. Danach vier Änderungen im Monat, Reaktion binnen zwei Werktagen. Monatlich kündbar.</p>
             </div>
-            <p class="pr-price"><span class="p">546,21 €</span><span class="netto">459 € netto</span><span class="sub">einmalig, danach<br>105,91 € / Monat</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
           </article>
         </div>
       </details>
@@ -850,12 +839,11 @@
         <p class="foot-col-title">Agentur</p>
         <ul>
           <!-- SHELL:FOOTER -->
-          <li><a href="/preise/">Preise</a></li>
+          <li><a href="/preise/">Leistungen</a></li>
           <li><a href="/ablauf/">Ablauf</a></li>
           <li><a href="/for-you/">Für wen</a></li>
           <li><a href="/results/">Prüf uns</a></li>
           <li><a href="/about/">Über uns</a></li>
-          <li><a href="/#leistungen">Leistungen</a></li>
           <li><a href="/#faq">FAQ</a></li>
           <li><a href="/gratis/">Gratis-Vorschau</a></li>
 <!-- /SHELL:FOOTER -->

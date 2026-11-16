@@ -8,11 +8,9 @@
  * `de` verbindet jede Seite mit ihrem deutschen Slug.
  */
 export const PREISE_EN = {
-  komplett: { einmalig: "€1,547.00", monat: "€464.10" },
-  laufend: { monat: "€523.60" },
+  laufend: "set on the intro call, depending on scope",
   starthilfe: { einmalig: "€446.25" },
   profil: { einmalig: "€1,297.10" },
-  start: "plus a one-time €523.60 to get started",
   beitraege: 10,
 };
 const P = PREISE_EN;
@@ -25,11 +23,10 @@ export const SEITEN_EN = [
     emWort: "cost",
     kurz: "How much does social media management cost?",
     beschreibung:
-      "Concrete prices for professional Instagram management: full package from €1,547 one-time plus €464.10 a month, ongoing management from €523.60 a month plus a one-time €523.60 to get started.",
+      "What professional Instagram management costs, what the price is made of and what getting started with us costs: from €446.25 one-time, profile setup and branding €1,297.10.",
     antwort:
-      "In Germany, professional social media management for small and mid-sized businesses typically costs between €400 and €2,000 a month, depending on how much of the work you hand off. At social2scale, the complete setup costs " +
-      P.komplett.einmalig + " one-time and " + P.komplett.monat +
-      " a month after that; if you only hand off the ongoing content, you pay from " + P.laufend.monat + " a month (" + P.start + ").",
+      "In Germany, professional social media management for small and mid-sized businesses typically costs between €400 and €2,000 a month, depending on how much of the work you hand off. At social2scale, nine designed posts cost from " + P.starthilfe.einmalig + " one-time, profile setup and branding " + P.profil.einmalig +
+      ". We set the price for ongoing management on the intro call, because it depends on how much you hand off.",
     abschnitte: [
       {
         h: "What the price is made of",
@@ -42,8 +39,8 @@ export const SEITEN_EN = [
       {
         h: "The three usual models compared",
         liste: [
-          ["Hand off everything", "Setup plus ongoing management. " + P.komplett.einmalig + " one-time, then " + P.komplett.monat + " a month. For anyone starting from zero or who doesn’t want to deal with it at all."],
-          ["Hand off only the ongoing work", "Your profile is already in place; the content is missing. From " + P.laufend.monat + " a month, " + P.start + "."],
+          ["Hand off everything", "Setup plus ongoing management, price " + P.laufend + ". For anyone starting from zero or who doesn’t want to deal with it at all."],
+          ["Hand off only the ongoing work", "Your profile is already in place; the content is missing. Price " + P.laufend + ", with a three-month minimum term."],
           ["A one-time kickstart", "Nine designed posts including captions, after which you post yourself. From " + P.starthilfe.einmalig + " one-time; with profile, bio and branding " + P.profil.einmalig + "."],
         ],
       },
@@ -125,8 +122,7 @@ export const SEITEN_EN = [
     beschreibung:
       "The honest math: when an agency is worth it and when doing it yourself makes more sense — with time spent and a cost comparison.",
     antwort:
-      "Doing it yourself is worth it if you can reliably keep seven and a half to fifteen hours a month free and enjoy writing. Handing it off is worth it as soon as that time is missing or your working hour is worth more than the cost of management — at " +
-      P.laufend.monat + " a month (" + P.start + "), that’s the case for most self-employed people from an hourly rate of about €60.",
+      "Doing it yourself is worth it if you can reliably keep seven and a half to fifteen hours a month free and enjoy writing. Handing it off is worth it as soon as that time is missing or your working hour is worth more than the cost of management. Where that line sits for you, we work out on the intro call with your own hourly rate.",
     abschnitte: [
       {
         h: "The real time it takes to do it yourself",

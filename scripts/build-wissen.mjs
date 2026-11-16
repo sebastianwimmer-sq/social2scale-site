@@ -31,15 +31,14 @@ const BASIS = "https://social2scale.com";
 const STAND = "20. August 2026";
 
 // Alle Preise stammen 1:1 von /preise/ — niemals hier neu erfinden.
+// Seit 16.11.2026 (Besprechung #2, Punkt 5, Sebi: „eher die hochpreisigen rausnehmen … eher Einmalbuchungen auf website dann maximal nennen“)
+// stehen nur noch die Einmalbuchungen mit Preis auf der Website; die laufende Betreuung nennt Phil im Erstgespräch.
 const PREISE = {
-  komplett: { einmalig: "1.547,00 €", monat: "464,10 €" },
-  laufend: { monat: "523,60 €" },
+  laufend: "im Erstgespräch, je nach Umfang",
   starthilfe: { einmalig: "446,25 €" },
   // Profil + Branding ist Paket 02, nicht die Starthilfe fuer 446,25 € (= nur
   // neun Beitraege). Stand bis 02.10.2026 falsch auf /wissen/ und /preise/.
   profil: { einmalig: "1.297,10 €" },
-  // Laufende Pakete kosten zusaetzlich eine Monatsrate zum Start (/preise/).
-  start: "zzgl. 523,60 € einmalig zum Start",
   beitraege: 10,
 };
 
@@ -63,11 +62,10 @@ const SEITEN = [
     emWort: "kostet",
     kurz: "Was kostet Social-Media-Betreuung?",
     beschreibung:
-      "Konkrete Preise für professionelle Instagram-Betreuung: Komplettpaket ab 1.547 € einmalig plus 464,10 € monatlich, laufende Betreuung ab 523,60 € im Monat zzgl. 523,60 € einmalig zum Start.",
+      "Was professionelle Instagram-Betreuung kostet, woraus sich der Preis zusammensetzt und was der Einstieg bei uns kostet: ab 446,25 € einmalig, Profil-Setup und Branding 1.297,10 €.",
     antwort:
-      "Professionelle Social-Media-Betreuung kostet im deutschen Mittelstand typischerweise zwischen 400 und 2.000 Euro im Monat, je nachdem wie viel Arbeit abgegeben wird. Bei social2scale kostet der komplette Aufbau " +
-      PREISE.komplett.einmalig + " einmalig und danach " + PREISE.komplett.monat +
-      " im Monat; wer nur die laufende Erstellung abgibt, zahlt ab " + PREISE.laufend.monat + " monatlich (" + PREISE.start + ").",
+      "Professionelle Social-Media-Betreuung kostet im deutschen Mittelstand typischerweise zwischen 400 und 2.000 Euro im Monat, je nachdem wie viel Arbeit abgegeben wird. Bei social2scale kosten neun gestaltete Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig, Profil-Setup und Branding " + PREISE.profil.einmalig +
+      ". Den Preis für die laufende Betreuung legen wir im Erstgespräch fest, weil er davon abhängt, wie viel du abgibst.",
     abschnitte: [
       {
         h: "Woraus sich der Preis zusammensetzt",
@@ -80,8 +78,8 @@ const SEITEN = [
       {
         h: "Die drei üblichen Modelle im Vergleich",
         liste: [
-          ["Alles abgeben", "Aufbau plus laufende Betreuung. " + PREISE.komplett.einmalig + " einmalig, danach " + PREISE.komplett.monat + " im Monat. Für alle, die bei null starten oder sich gar nicht kümmern wollen."],
-          ["Nur das Laufende abgeben", "Das Profil steht bereits, es fehlt der Content. Ab " + PREISE.laufend.monat + " im Monat, " + PREISE.start + "."],
+          ["Alles abgeben", "Aufbau plus laufende Betreuung, Preis " + PREISE.laufend + ". Für alle, die bei null starten oder sich gar nicht kümmern wollen."],
+          ["Nur das Laufende abgeben", "Das Profil steht bereits, es fehlt der Content. Preis " + PREISE.laufend + ", bei drei Monaten Mindestlaufzeit."],
           ["Einmalige Starthilfe", "Neun gestaltete Beiträge samt Captions, danach postet man selbst. Ab " + PREISE.starthilfe.einmalig + " einmalig; mit Profil, Bio und Branding " + PREISE.profil.einmalig + "."],
         ],
       },
@@ -160,8 +158,7 @@ const SEITEN = [
     beschreibung:
       "Die ehrliche Rechnung: Wann sich eine Agentur lohnt, wann Selbermachen sinnvoller ist — mit Zeitaufwand und Kostenvergleich.",
     antwort:
-      "Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten — bei " +
-      PREISE.laufend.monat + " im Monat (" + PREISE.start + ") ist das für die meisten Selbstständigen ab etwa 60 Euro Stundensatz der Fall.",
+      "Selbermachen lohnt sich, wenn du die nötigen siebeneinhalb bis fünfzehn Stunden im Monat verlässlich freihalten kannst und Freude am Schreiben hast. Abgeben lohnt sich, sobald diese Zeit fehlt oder deine Arbeitsstunde mehr wert ist als die Betreuungskosten. Wo diese Grenze bei dir liegt, rechnen wir im Erstgespräch mit deinem Stundensatz aus.",
     abschnitte: [
       {
         h: "Der reale Zeitaufwand beim Selbermachen",
