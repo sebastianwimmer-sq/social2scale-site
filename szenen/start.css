@@ -222,27 +222,14 @@
 .mk-start i:nth-child(2){left:-6.5px;top:9px;width:13px;height:34px}
 
 /* ── Ruhe (Sebi 16.11.2026: „wirkt halt viel lose“). Die Startseite trägt nur noch das Licht auf der Bühne und das Handy im Ring. ── */
-[data-raum-licht="start"]{display:none}                      /* kein Lichtkegel, der beim Lesen über die Abschnitte wandert */
 .proof::before,.proof-visual::before{content:none}            /* kein Diagramm-Schatten hinter den drei Zahlen */
 .kap h2 em,.feed-band h2 em,.proof h2 em,.proof-h em,#leistungen h2 em,#faq h2 em,.s2hero h2 em{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit!important}   /* kursiv bleibt, die Farbe steht nur noch auf der Bühne und im Abschluss */
 #proof .sec-bg,#leistungen .sec-bg{display:none}               /* keine Stockfotos unter dunklem Schleier */
-/* Verlauf als Fluss über die ganze Seite (Sebi 16.11.2026: „kein gradient flow mehr wie vorgegeben“): Smaragd und Blau wechseln die Seite,
-   der Grund scrollt mit. So sieht jeder Bildschirm anders aus, statt überall denselben Schein zu zeigen, und nichts zerschneidet die Seite. */
-html body{background-color:#03080D;background-attachment:scroll;background-repeat:no-repeat;background-size:100% 100%;background-image:
-  radial-gradient(85vw 1000px at 12% 0%,rgba(0,184,136,.40),transparent 68%),
-  radial-gradient(75vw 1100px at 96% 13%,rgba(31,166,224,.26),transparent 70%),
-  radial-gradient(80vw 1200px at 2% 30%,rgba(0,184,136,.24),transparent 70%),
-  radial-gradient(80vw 1200px at 100% 47%,rgba(47,190,234,.22),transparent 70%),
-  radial-gradient(85vw 1200px at 4% 63%,rgba(0,184,136,.24),transparent 70%),
-  radial-gradient(80vw 1200px at 98% 79%,rgba(31,166,224,.24),transparent 70%),
-  radial-gradient(90vw 1000px at 50% 100%,rgba(0,184,136,.26),transparent 70%),
-  linear-gradient(180deg,#04130F 0%,#05121A 50%,#03080D 100%)}
 /* Eigener Feed als Profilraster 3 × 2, doppelt so groß: die Beiträge sind der Beweis und müssen lesbar sein */
 @media (min-width:761px){
   .feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);max-width:1140px;margin-left:0;margin-right:0;width:auto}
   .feed-reihe img{border-radius:10px}
 }
-html body section.abschluss::before{content:none}            /* kein Punktraster hinter dem Abschluss, das Licht von unten bleibt */
 
 /* ── Dritter Durchgang (Sebi 16.11.2026: „extrem dunkel, es fehlt Gestaltung“). Wie bei Apple gemessen: helle und dunkle Gründe im Wechsel,
    Inhalte in großen runden Kacheln (28 px), feine Strichsymbole, Pfeil-Links. Farben über die vorhandenen Variablen, je Abschnitt umgestellt. ── */
@@ -292,12 +279,7 @@ html body .feed-band .feed-reihe li{animation:none}
   /* Gründer treten aus dem Verlauf */
   .gruender .gr-person{transition:opacity 1.2s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1)}
   .gruender .gr-reihe:not(.da) .gr-person{}
-  /* Der Fluss lebt beim Scrollen: zwei Lichtfelder wandern gegeneinander (wo der Browser Scroll-Zeitachsen kann) */
   @supports (animation-timeline:scroll()){
-    body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
-      background:radial-gradient(34% 30% at 28% 30%,rgba(0,184,136,.20),transparent 70%),radial-gradient(32% 30% at 74% 66%,rgba(31,166,224,.17),transparent 70%);
-      animation:s2sFluss linear both;animation-timeline:scroll(root)}
-    @keyframes s2sFluss{from{transform:translate3d(-6%,-8%,0) rotate(-6deg)}to{transform:translate3d(6%,10%,0) rotate(14deg)}}
     .feed-band .feed-reihe li:nth-child(3n+2) img{animation:s2sVersatz linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
     @keyframes s2sVersatz{from{transform:translateY(22px)}to{transform:translateY(-22px)}}
   }

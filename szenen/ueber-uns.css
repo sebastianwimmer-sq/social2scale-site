@@ -96,3 +96,8 @@
 .ab-spende .sk-notiz{font-size:.88rem;color:var(--faint);line-height:1.6;margin:0}
 @media (max-width:860px){.ab-spende .sk-raster{grid-template-columns:minmax(0,1fr)}}
 
+
+/* Gründer wie auf der Startseite (16.11.2026): freigestellt, im Verlauf, ohne Schleier. Die Karte bleibt, das Foto steht darin. */
+.ab-pic{background:radial-gradient(70% 62% at 50% 42%,rgba(31,201,152,.20),rgba(31,166,224,.09) 55%,transparent 78%)}
+.ab-pic::after,.ab-pic.is-hell::after{content:none}
+.ab-pic img,.ab-pic.is-hell img{object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 24px 34px rgba(0,0,0,.45))}

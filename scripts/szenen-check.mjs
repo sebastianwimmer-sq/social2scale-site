@@ -43,9 +43,9 @@ const server = await new Promise((fertig) => {
     try {
       let inhalt = await readFile(pfad);
       if (verbiegen === 'js' && pfad.endsWith('/szenen/szenen.js')) inhalt = Buffer.from('/* leer */');
-      if (verbiegen === 'kontrast' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="kartei"] .faq summary{color:#B9B4A8 !important}');
-      // genau der Fehler vom 28.10.: der Lampenschein wandert per top statt per transform
-      if (verbiegen === 'sprung' && pfad.endsWith('/szenen/wissen.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="lesetisch"] .lt-pool{inset:auto 0 auto 0;height:560px;top:clamp(0px,calc(var(--sp,0) * 100% - 280px),calc(100% - 560px))}');
+      if (verbiegen === 'kontrast' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz="ringlicht"] :is(h2,h3,p,span,em){color:#0C2A2C !important;-webkit-text-fill-color:#0C2A2C !important}');
+      // die Fehlerart vom 28.10. (etwas ändert beim Scrollen seine Größe statt per transform zu wandern), am heutigen Stand nachgestellt
+      if (verbiegen === 'sprung' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n@keyframes szSprung{to{height:1400px}}#stand{animation:szSprung linear both;animation-timeline:scroll(root)}');
       if (verbiegen === 'breite' && pfad.endsWith('/szenen/start.css')) inhalt = Buffer.from(inhalt.toString() + '\n[data-sz]{overflow-x:visible !important}[data-sz="leuchttisch"] .lt-schein{left:-40px;right:-400px}');
       if (pfad.endsWith('.html')) inhalt = Buffer.from(inhalt.toString().replace(/;?\s*upgrade-insecure-requests/, ''));
       ant.writeHead(200, { 'Content-Type': TYPEN[extname(pfad)] || 'application/octet-stream' });
@@ -83,7 +83,15 @@ async function quelle() {
       if (text) textInDeko.push(`${d} › ${m[1]}: „${text.slice(0, 30)}“`);
     }
   }
-  melde(ohne.length === 0, `jeder Inhaltsabschnitt hat ein Motiv${ohne.length ? ': ' + ohne.slice(0, 5).join(' | ') : ''}`);
+  // Seit 16.11.2026 tragen nur noch zwei Abschnitte ein Motiv (szenen-quelle.mjs). Ein Abschnitt ohne Motiv ist der Normalfall;
+  // rot ist ein Motiv, das die Quelle nicht kennt (z. B. ein alter Rest in einer Seite).
+  const soll = new Set(SEITEN.flatMap((s) => s.abschnitte.map((x) => x.sz)));
+  const fremd = [];
+  for (const s of SEITEN) for (const d of s.dateien) {
+    const t = await readFile(resolve(WURZEL, d), 'utf8');
+    for (const m of t.matchAll(/data-sz="([a-z0-9-]+)"/g)) if (!soll.has(m[1]) || !s.abschnitte.some((x) => x.sz === m[1])) fremd.push(`${d}: ${m[1]}`);
+  }
+  melde(fremd.length === 0, `Motive nur dort, wo die Quelle sie setzt (${soll.size} Motive, ${ohne.length} Abschnitte ohne)${fremd.length ? ': ' + fremd.slice(0, 5).join(' | ') : ''}`);
   melde(textInDeko.length === 0, `Deko ohne Text${textInDeko.length ? ': ' + textInDeko.slice(0, 3).join(' | ') : ''}`);
 }
 
@@ -208,6 +216,9 @@ async function kontrast(browser, pfad) {
     }
   }
   const einzig = [...new Set(befunde)];
+  // Eine Seite ohne Motiv hat hier nichts zu messen: das ist kein „nicht gemessen“, sondern „nicht vorhanden“ (kern.md).
+  const motive = await p.evaluate(() => document.querySelectorAll('[data-sz]').length);
+  if (motive === 0) { melde(true, `${pfad}: kein Motiv auf der Seite, Kontrast am Motiv entfällt`); await c.close(); return; }
   melde(gemessen > 0 && einzig.length === 0, `${pfad}: Kontrast am Pixel (${gemessen} Zeilen gemessen)${einzig.length ? ' — zu schwach: ' + einzig.slice(0, 6).join(' | ') : ''}${gemessen === 0 ? ' — NICHTS gemessen' : ''}`);
   await c.close();
 }
@@ -282,7 +293,7 @@ async function lauf({ voll }) {
   // S2S_RUCKELN=nachts: Ruckeln nur im Nachtlauf (siehe raum-check.mjs); Layout-Spruenge laufen immer
   if (process.env.S2S_RUCKELN === 'nachts') console.log('  ⏭  Ruckeln: nicht gemessen, laeuft im Nachtlauf (pruefen.sh --schnell)');
   else for (const s of voll ? seiten : ['/']) await ruckeln(cr, s);
-  for (const s of voll ? seiten : ['/wissen/was-kostet-social-media-betreuung/']) await spruenge(cr, s);
+  for (const s of voll ? seiten : ['/']) await spruenge(cr, s);
   await cr.close();
   const wk = await webkit.launch();
   console.log('\nWebKit iPhone');

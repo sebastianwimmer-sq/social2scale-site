@@ -26,24 +26,8 @@ const podest = ({ b, x, y, h }) => `<span class="raum-podest" style="--b:${b};--
 const KOPF = {
   // Startseite ruhig (Sebi 16.11.2026): nur Wand, Licht und Boden. Keine schwebenden Abzüge, kein Staub.
   start: { ruhig: true },
-  ablauf: {
-    weg: { von: '44%', bis: '6%', hoehe: '62%' },
-    fern: [{ b: '4.5%', x: '47%', y: '44%', bild: 'beitrag-2-360.webp' }, { b: '5.5%', x: '55%', y: '42%', bild: 'beitrag-3-360.webp' }, { b: '6.5%', x: '64%', y: '40%', bild: 'beitrag-4-360.webp' }],
-  },
-  // Drei Wege: drei Abzüge auf Podesten verschiedener Höhe, der mittlere im Licht vorn (Kopf-Beitrag)
-  preise: {
-    podeste: [{ b: '5.4%', x: '62%', y: '38%', h: '4%' }, { b: '5.4%', x: '69.5%', y: '38%', h: '8%' }],
-    fern: [{ b: '4.8%', x: '62.3%', y: '42.5%', bild: 'beitrag-12-400.webp' }, { b: '4.8%', x: '69.8%', y: '46.5%', bild: 'beitrag-10-400.webp' }],
-  },
-  // Erst im Dunkeln, dann Licht: „Du bist gut. Online merkt's nur keiner.“
-  'fuer-wen': { spaet: true, fern: [{ b: '5.5%', x: '54%', y: '42%', bild: 'beitrag-13-360.webp', hell: '.55' }, { b: '5%', x: '62%', y: '43%', bild: 'beitrag-5-360.webp', hell: '.55' }] },
-  // Die Menschen hinter der Arbeit: Porträts im Studiolicht
-  'ueber-uns': { fern: [{ b: '7%', x: '50%', y: '40%', bild: '/assets/founder-philipp-560.webp' }, { b: '7%', x: '59%', y: '40%', bild: '/assets/founder-sebastian-560.webp' }] },
-  // Kontaktbogen an der Wand, ein Abzug wird vorn beleuchtet
-  'pruef-uns': {
-    fern: ['beitrag-2-360.webp', 'beitrag-3-360.webp', 'beitrag-4-360.webp', 'beitrag-5-360.webp', 'beitrag-11-400.webp']
-      .map((bild, i) => ({ b: '3.6%', x: `${68 + i * 5.4}%`, y: '64%', bild, hell: '.45' })),
-  },
+  // Alle Seiten ruhig (16.11.2026): der Kopf trägt Wand, Licht und Boden, sonst nichts. Der Verlauf macht den Raum (raum.css › Fluss).
+  ablauf: { ruhig: true }, preise: { ruhig: true }, 'fuer-wen': { ruhig: true }, 'ueber-uns': { ruhig: true }, 'pruef-uns': { ruhig: true },
   danke: { mitte: [] },
   'studio-danke': { mitte: [] },
 };
