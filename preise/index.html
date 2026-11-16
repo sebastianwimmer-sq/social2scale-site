@@ -560,12 +560,12 @@
   .lw-preis{margin:0;font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
   .lw-preis b{font-size:1.25rem;font-weight:600;color:var(--paper);margin-right:4px}
   .lw-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4,16px) var(--s-5,20px)}
-  .lw-link{color:var(--paper);font-weight:600;font-size:.95rem;text-decoration:none;border-bottom:1px solid rgba(31,201,152,.5);padding-block:10px 2px;white-space:nowrap}
-  .lw-link:hover{border-bottom-color:var(--emerald-soft,#1FC998)}
+  .lw-link{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);font-weight:600;font-size:1rem;text-decoration:none;text-decoration-line:underline;text-decoration-color:rgba(31,201,152,.5);text-underline-offset:6px;white-space:nowrap}
+  .lw-link:hover{text-decoration-color:var(--emerald-soft,#1FC998)}
   .lw-link:focus-visible{outline:2px solid var(--emerald-soft,#1FC998);outline-offset:4px}
-  .pr-alt-grid:has(.lw-alt){align-items:stretch}
+  .lw-alt-grid{align-items:stretch}
   .lw-alt{display:flex;flex-direction:column;gap:14px;height:100%}
-  .pr-tax-kurz{margin:clamp(20px,2.4vw,28px) 0 0;max-width:64ch;font-size:.9rem;line-height:1.55;color:var(--faint)}
+  .pr-tax-kurz{margin:clamp(20px,2.4vw,28px) 0 0;max-width:64ch;font-size:1rem;line-height:1.55;color:var(--faint)}
   .lw-alt .lw-preis{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
   .lw-emp .pr-emp-karte{margin:0;font-size:.9rem;color:var(--faint)}
   @media (max-width:760px){.lw-liste{grid-template-columns:1fr}.lw-fuss{flex-direction:column;align-items:flex-start}}
@@ -670,7 +670,7 @@
       </div>
 
       <p class="pr-alt-vor">Passt nicht ganz? Dann ist es einer von diesen zwei.</p>
-      <div class="pr-alt-grid">
+      <div class="pr-alt-grid lw-alt-grid">
         <article class="pr-alt lw-alt">
           <span class="pr-alt-nr" aria-hidden="true">02</span>
           <h3 class="pr-alt-name">Laufendes abgeben</h3>
