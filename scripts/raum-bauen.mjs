@@ -24,10 +24,8 @@ const podest = ({ b, x, y, h }) => `<span class="raum-podest" style="--b:${b};--
 
 // Kopf-Orte: was im Raum steht. Positionen in Ebenen-Koordinaten (Boden ab ~44 % von unten).
 const KOPF = {
-  start: {
-    fern: [{ b: '6%', x: '21%', y: '41%', bild: 'beitrag-5-360.webp' }, { b: '6.5%', x: '73%', y: '40%', bild: 'beitrag-10-400.webp' }],
-    mitte: [{ b: '12%', x: '5%', y: '27%', bild: 'beitrag-13-360.webp' }, { b: '11%', x: '83%', y: '29%', bild: 'beitrag-11-400.webp' }],
-  },
+  // Startseite ruhig (Sebi 16.11.2026): nur Wand, Licht und Boden. Keine schwebenden Abzüge, kein Staub.
+  start: { ruhig: true },
   ablauf: {
     weg: { von: '44%', bis: '6%', hoehe: '62%' },
     fern: [{ b: '4.5%', x: '47%', y: '44%', bild: 'beitrag-2-360.webp' }, { b: '5.5%', x: '55%', y: '42%', bild: 'beitrag-3-360.webp' }, { b: '6.5%', x: '64%', y: '40%', bild: 'beitrag-4-360.webp' }],
@@ -60,7 +58,7 @@ const kopfBlock = (ort) => {
   ];
   if (o.podeste || o.fern) teile.push(ebene(' raum-fern', 7, (o.podeste || []).map(podest).join('') + (o.fern || []).map(abzug).join('')));
   if (o.mitte && o.mitte.length) teile.push(ebene(' raum-mitte', 16, o.mitte.map(abzug).join('')));
-  teile.push('<canvas class="raum-ebene raum-staub" style="--z:20"></canvas>');
+  if (!o.ruhig) teile.push('<canvas class="raum-ebene raum-staub" style="--z:20"></canvas>');
   return `<!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--${ort}" data-raum${o.spaet ? ' data-spaet' : ''} aria-hidden="true">${teile.join('')}</div><!-- /RAUM -->`;
 };
 const lichtBlock = (ort) => `<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="${ort}" aria-hidden="true"></div><!-- /RAUM-LICHT -->`;

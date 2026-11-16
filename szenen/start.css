@@ -220,3 +220,9 @@
 /* ── 9 Bühnenmarke (Start): ein T auf dem Boden, wo du gleich stehst — Grundform in basis.css ── */
 .mk-start i:nth-child(1){left:-60px;top:0;width:120px;height:13px}
 .mk-start i:nth-child(2){left:-6.5px;top:9px;width:13px;height:34px}
+
+/* ── Ruhe (Sebi 16.11.2026: „wirkt halt viel lose“). Die Startseite trägt nur noch das Licht auf der Bühne und das Handy im Ring. ── */
+[data-raum-licht="start"]{display:none}                      /* kein Lichtkegel, der beim Lesen über die Abschnitte wandert */
+.proof::before,.proof-visual::before{content:none}            /* kein Diagramm-Schatten hinter den drei Zahlen */
+.kap h2 em,.feed-band h2 em,.proof h2 em,.proof-h em,#leistungen h2 em,#faq h2 em,.s2hero h2 em{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit!important}   /* kursiv bleibt, die Farbe steht nur noch auf der Bühne und im Abschluss */
+#proof .sec-bg,#leistungen .sec-bg{display:none}               /* keine Stockfotos unter dunklem Schleier */
