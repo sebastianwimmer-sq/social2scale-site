@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/@42f51d6586e6596a">
+<meta name="s2s-quelle" content="/@d1f29bd52d061ca6">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -1001,12 +1001,19 @@
   /* Abschluss als Buehne */
   section.abschluss{padding-bottom:var(--sec-buehne);
     background:radial-gradient(50% 38% at 50% 60%,rgba(0,184,136,.12),transparent 100%)}
+
+  /* Scale-Week-Band (22.-30.11.2026), endet per /scale-week.js und wird am 01.12. entfernt */
+  .sw-band{position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(0,184,136,.12),rgba(31,166,224,.10))}
+  .sw-band .wrap{display:flex;flex-wrap:wrap;gap:var(--s-3) var(--s-5);align-items:center;justify-content:center;padding-block:var(--s-4);text-align:center;font-size:1rem;color:var(--paper)}
+  .sw-band a{color:var(--emerald-soft,#1FC998);font-weight:700;min-height:44px;display:inline-flex;align-items:center}
+  .sw-vorbei .sw-band{display:none}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
 <script src="/raum.js" defer></script>
+<script src="/scale-week.js"></script>
 <script src="/szenen/szenen.js" data-css="basis,start" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/">
@@ -1086,6 +1093,8 @@
     <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
          Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
          Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
+    <aside class="sw-band" aria-label="Scale Week"><div class="wrap"><span><b>Scale Week</b> until 30 November: book a first call, get nine posts on top.</span><a href="/en/scale-week/">Learn more →</a></div></aside>
+
     <section class="kap" id="stand" aria-labelledby="stand-h">
       <div class="wrap reveal">
         <h2 id="stand-h">One of these <em>is you</em>.</h2>

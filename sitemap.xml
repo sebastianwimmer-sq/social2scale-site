@@ -19,6 +19,24 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/"/>
   </url>
   <url>
+    <loc>https://social2scale.com/scale-week/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/scale-week/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/scale-week/</loc>
+    <lastmod>2026-11-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/scale-week/"/>
+  </url>
+  <url>
     <loc>https://social2scale.com/for-you/</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>

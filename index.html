@@ -998,6 +998,12 @@
   /* Abschluss als Buehne */
   section.abschluss{padding-bottom:var(--sec-buehne);
     background:radial-gradient(50% 38% at 50% 60%,rgba(0,184,136,.12),transparent 100%)}
+
+  /* Scale-Week-Band (22.-30.11.2026), endet per /scale-week.js und wird am 01.12. entfernt */
+  .sw-band{position:relative;z-index:2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(0,184,136,.12),rgba(31,166,224,.10))}
+  .sw-band .wrap{display:flex;flex-wrap:wrap;gap:var(--s-3) var(--s-5);align-items:center;justify-content:center;padding-block:var(--s-4);text-align:center;font-size:1rem;color:var(--paper)}
+  .sw-band a{color:var(--emerald-soft,#1FC998);font-weight:700;min-height:44px;display:inline-flex;align-items:center}
+  .sw-vorbei .sw-band{display:none}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
@@ -1082,6 +1088,8 @@
     <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
          Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
          Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
+    <aside class="sw-band" aria-label="Scale Week"><div class="wrap"><span><b>Scale Week</b> bis 30. November: Erstgespräch buchen, neun Beiträge dazu.</span><a href="/scale-week/">Mehr erfahren →</a></div></aside>
+
     <section class="kap" id="stand" aria-labelledby="stand-h">
       <div class="wrap reveal">
         <h2 id="stand-h">Eines davon <em>bist du</em>.</h2>
@@ -1710,6 +1718,7 @@
 <script src="/uebergang.js" defer></script>
 <script src="/bewegung.js" defer></script>
 <script src="/raum.js" defer></script>
+<script src="/scale-week.js"></script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="start" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

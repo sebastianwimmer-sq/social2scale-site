@@ -27,7 +27,7 @@ const KOPF = {
   // Startseite ruhig (Sebi 16.11.2026): nur Wand, Licht und Boden. Keine schwebenden Abzüge, kein Staub.
   start: { ruhig: true },
   // Alle Seiten ruhig (16.11.2026): der Kopf trägt Wand, Licht und Boden, sonst nichts. Der Verlauf macht den Raum (raum.css › Fluss).
-  ablauf: { ruhig: true }, preise: { ruhig: true }, 'fuer-wen': { ruhig: true }, 'ueber-uns': { ruhig: true }, 'pruef-uns': { ruhig: true },
+  ablauf: { ruhig: true }, preise: { ruhig: true }, 'fuer-wen': { ruhig: true }, 'ueber-uns': { ruhig: true }, 'pruef-uns': { ruhig: true }, 'scale-week': { ruhig: true },
   danke: { mitte: [] },
   'studio-danke': { mitte: [] },
 };
@@ -55,6 +55,7 @@ const SEITEN = [
   { dateien: ['for-you/index.html', 'en/for-you/index.html'], kopf: 'fuer-wen', anker: /<section class="fw-hero"[^>]*>/ },
   { dateien: ['about/index.html', 'en/about/index.html'], kopf: 'ueber-uns', anker: /<section class="ab-hero"[^>]*>/ },
   { dateien: ['results/index.html', 'en/results/index.html'], kopf: 'pruef-uns', anker: /<section class="rs-hero"[^>]*>/ },
+  { dateien: ['scale-week/index.html', 'en/scale-week/index.html'], kopf: 'scale-week', anker: /<section class="sw-hero"[^>]*>/ },
   // /danke/ hat seit 15.11.2026 keinen Raum mehr: ruhige Seite ohne Lichtkegel (Sebi: high end clean).
   // /danke/studio/ seit 16.11.2026 ebenfalls ohne Raum: derselbe ruhige Aufbau wie /danke/ (build-danke-studio.mjs).
   { dateien: ['wissen/index.html', 'wissen/ablauf-zusammenarbeit/index.html', 'wissen/selbst-machen-oder-agentur/index.html', 'wissen/social-media-agentur-auswaehlen/index.html', 'wissen/was-kostet-social-media-betreuung/index.html', 'wissen/wie-lange-bis-ergebnisse/index.html',
