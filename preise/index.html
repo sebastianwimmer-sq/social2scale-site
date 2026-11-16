@@ -40,12 +40,7 @@
 <script src="/s2s.js" defer></script>
 <noscript><style>.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
 
-  /* Seit 16.11.2026 (Besprechung #2, Punkt 5): laufende Pakete ohne Preis, zwei Wege nebeneinander */
-  .pr-emp-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-5)}
-  .pr-price-gespraech .p{font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
-  .pr-emp-preis{font-size:clamp(1.05rem,.95rem + .5vw,1.35rem)}
-  .pr-auf-anfrage{margin-top:var(--s-3);max-width:62ch}
-  .pr-alt-preis{font-size:clamp(1rem,.9rem + .4vw,1.2rem)}
+
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Erstgespräch/Kalender) -->
 <style>
@@ -550,6 +545,31 @@
   .duo-txt b{color:var(--paper);font-weight:600}
   .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color var(--dur-2, .2s) ease,border-color var(--dur-2, .2s) ease}
   .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+
+  /* Seit 16.11.2026 (Besprechung #2, Punkt 5): laufende Pakete ohne Preis, zwei Wege nebeneinander */
+  .pr-price-gespraech .p{font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
+  /* ── Drei Wege, knapp (16.11.2026, Sebi: „viel Text, unübersichtlich und buggy“). Ein Satz, kurze Leistungen, eine Preiszeile. ── */
+  .lw-emp{display:grid;gap:clamp(20px,2.4vw,28px)}
+  .lw-kopf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s-4,16px);align-items:baseline}
+  .lw-wann{margin:var(--s-2,8px) 0 0;max-width:52ch;color:var(--muted);font-size:1.0625rem;line-height:1.55}
+  .lw-liste{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px clamp(16px,3vw,40px)}
+  .lw-liste li{position:relative;padding-left:22px;font-size:1rem;line-height:1.45;color:var(--paper)}
+  .lw-liste li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:1px;background:var(--emerald-soft,#1FC998)}
+  .lw-klein{grid-template-columns:1fr;gap:8px}
+  .lw-fuss{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4,16px) var(--s-6,24px);padding-top:clamp(18px,2vw,24px);border-top:1px solid var(--line)}
+  .lw-preis{margin:0;font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
+  .lw-preis b{font-size:1.25rem;font-weight:600;color:var(--paper);margin-right:4px}
+  .lw-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4,16px) var(--s-5,20px)}
+  .lw-link{display:inline-flex;align-items:center;min-height:44px;color:var(--paper);font-weight:600;font-size:1rem;text-decoration:none;text-decoration-line:underline;text-decoration-color:rgba(31,201,152,.5);text-underline-offset:6px;white-space:nowrap}
+  .lw-link:hover{text-decoration-color:var(--emerald-soft,#1FC998)}
+  .lw-link:focus-visible{outline:2px solid var(--emerald-soft,#1FC998);outline-offset:4px}
+  .lw-alt-grid{align-items:stretch}
+  .lw-alt{display:flex;flex-direction:column;gap:14px;height:100%}
+  .pr-tax-kurz{margin:clamp(20px,2.4vw,28px) 0 0;max-width:64ch;font-size:1rem;line-height:1.55;color:var(--faint)}
+  .lw-alt .lw-preis{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+  .lw-emp .pr-emp-karte{margin:0;font-size:.9rem;color:var(--faint)}
+  @media (max-width:760px){.lw-liste{grid-template-columns:1fr}.lw-fuss{flex-direction:column;align-items:flex-start}}
+
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/seite.css">
@@ -632,77 +652,41 @@
            Das Etikett heisst "Unsere Empfehlung" und nicht "Das nehmen die
            meisten": das erste ist wahr, das zweite waere eine Behauptung ueber
            Zahlen, die wir nicht belegen koennen. -->
-      <div class="pr-emp" data-licht>
+      <div class="pr-emp lw-emp" data-licht>
         <p class="pr-emp-lbl">Unsere Empfehlung</p>
-        <div class="pr-emp-kopf">
+        <div class="lw-kopf">
           <span class="pr-emp-nr" aria-hidden="true">01</span>
           <div>
             <h3 class="pr-emp-name">Alles abgeben</h3>
-            <p class="pr-emp-wann">Du hast <b>noch keinen oder einen schwachen</b> Auftritt. Und willst dich nicht darum kümmern müssen.</p>
+            <p class="lw-wann">Für alle ohne oder mit schwachem Auftritt. Du gibst einmal ein Briefing, den Rest machen wir.</p>
           </div>
         </div>
-        <div class="pr-emp-grid">
-          <div class="pr-emp-spalte">
-            <p class="pr-ueb-lbl">Du machst</p>
-            <p class="pr-emp-du">Ein Briefing. Einmal.</p>
-          </div>
-          <div class="pr-emp-spalte">
-            <p class="pr-ueb-lbl">Wir machen</p>
-            <ol class="pr-ueb-liste">
-                <li>Profil aufbauen</li>
-                <li>Branding und Positionierung</li>
-                <li>Zehn Beiträge im Monat</li>
-                <li>Veröffentlichen nach Plan</li>
-                <li>Hashtag-Strategie je Beitrag</li>
-                <li>Anfragen sammeln und weiterleiten</li>
-              </ol>
-          </div>
-        </div>
-        <div class="pr-emp-fuss">
-          <p class="pr-emp-preis">Profil, Strategie und zehn Beiträge im Monat<small>Umfang und Preis legen wir im Erstgespräch gemeinsam fest, schriftlich, bevor du etwas buchst.</small></p>
-          <div class="pr-emp-wege"><a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a><a class="textlink" href="/anfrage/">Erstgespräch mit Phil</a></div>
+        <ul class="lw-liste"><li>Profil aufbauen</li><li>Branding und Positionierung</li><li>Zehn Beiträge im Monat</li><li>Veröffentlichen nach Plan</li><li>Hashtag-Strategie je Beitrag</li><li>Anfragen sammeln und weiterleiten</li></ul>
+        <div class="lw-fuss">
+          <p class="lw-preis">Preis im Erstgespräch</p>
+          <div class="lw-wege"><a class="btn btn-primary" href="/gratis/" data-cta-url="/gratis/">Kostenlos starten →</a><a class="lw-link" href="/anfrage/">Erstgespräch mit Phil</a></div>
         </div>
         <template id="karte-zeile" data-spende="https://mein.social2scale.com/api/spenden-zaehler"><p class="pr-emp-karte">Von jeder Bestellung gehen 10 Euro an <b data-sp="empfaenger"></b>, und du bekommst eine Karte mit deiner Nummer. <a href="/about/#karte">Wie das läuft</a></p></template>
       </div>
 
       <p class="pr-alt-vor">Passt nicht ganz? Dann ist es einer von diesen zwei.</p>
-      <div class="pr-alt-grid">
-        <article class="pr-alt">
+      <div class="pr-alt-grid lw-alt-grid">
+        <article class="pr-alt lw-alt">
           <span class="pr-alt-nr" aria-hidden="true">02</span>
           <h3 class="pr-alt-name">Laufendes abgeben</h3>
-          <p class="pr-alt-wann">Dein <b>Profil steht schon</b>. Es fehlt nur der Content.</p>
-          <p class="pr-alt-du ist-null"><span class="pr-ueb-lbl">Du machst</span>Nichts.</p>
-          <p class="pr-alt-preis">Zehn Beiträge im Monat<small>Preis im Erstgespräch, je nach Umfang</small></p>
-          <p class="pr-alt-bed">Mindestlaufzeit drei Monate. <a class="textlink" href="/anfrage/">Erstgespräch mit Phil</a></p>
-          <details class="pr-alt-mehr">
-            <summary>Was wir dabei machen</summary>
-            <ol class="pr-ueb-liste pr-alt-liste">
-                <li>Zehn Beiträge im Monat</li>
-                <li>Veröffentlichen nach Plan</li>
-                <li>Hashtag-Strategie je Beitrag</li>
-                <li>Anfragen weiterleiten</li>
-                <li>Monatlicher Kurz-Report</li>
-              </ol>
-          </details>
+          <p class="lw-wann">Dein Profil steht schon, es fehlt der Content.</p>
+          <ul class="lw-liste lw-klein"><li>Zehn Beiträge im Monat</li><li>Veröffentlichen nach Plan</li><li>Monatlicher Kurz-Report</li></ul>
+          <p class="lw-preis">Preis im Erstgespräch</p>
         </article>
-        <article class="pr-alt">
+        <article class="pr-alt lw-alt">
           <span class="pr-alt-nr" aria-hidden="true">03</span>
           <h3 class="pr-alt-name">Einmal Starthilfe</h3>
-          <p class="pr-alt-wann">Du willst <b>danach selbst</b> weitermachen.</p>
-          <p class="pr-alt-du"><span class="pr-ueb-lbl">Du machst</span>Briefing geben, danach selbst posten.</p>
-          <p class="pr-alt-preis">ab 446,25 €<small>einmalig</small></p>
-          <details class="pr-alt-mehr">
-            <summary>Was wir dabei machen</summary>
-            <ol class="pr-ueb-liste pr-alt-liste">
-                <li>Neun Beiträge gestalten</li>
-                <li>Captions und Hashtag-Recherche</li>
-                <li>Bis zu zwei Korrekturschleifen je Beitrag</li>
-              </ol>
-            <p class="pr-alt-zusatz">Mit Profil, Bio und Branding: Paket 02, 1.297,10 € einmalig.</p>
-          </details>
+          <p class="lw-wann">Du willst danach selbst weitermachen.</p>
+          <ul class="lw-liste lw-klein"><li>Neun gestaltete Beiträge</li><li>Captions und Hashtag-Recherche</li><li>Bis zu zwei Korrekturschleifen</li></ul>
+          <p class="lw-preis"><b>446,25 €</b> einmalig</p>
         </article>
       </div>
-      <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Welcher Weg zu dir passt, sagen wir dir im Erstgespräch. Auch dann, wenn es keiner der drei ist.</p>
+      <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Laufende Betreuung mit drei Monaten Mindestlaufzeit. Welcher Weg passt, sagen wir dir im Erstgespräch, auch wenn es keiner der drei ist.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
@@ -759,7 +743,7 @@
               <h3 class="pr-name">Betreuung BASIS</h3>
               <p class="pr-what">Zehn Beiträge im Monat nach festem Redaktionsplan, Hashtag-Strategie je Beitrag, ein bis zwei Beiträge zur Anfragen-Gewinnung, Weiterleitung der Interessenten, Kurz-Report.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">04</span>
@@ -767,7 +751,7 @@
               <h3 class="pr-name">Betreuung WACHSTUM</h3>
               <p class="pr-what">Alles aus BASIS, dazu aktives Interaktions-Management, zusätzliche Beiträge zur Anfragen-Gewinnung, zwei bis drei Stories pro Woche, monatliches Strategie-Update im Call.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span></p>
           </article>
         </div>
 
@@ -779,7 +763,7 @@
               <h3 class="pr-name">Done-For-You BASIS</h3>
               <p class="pr-what">Erster Monat vollständiger Profil-Aufbau wie Paket 02, danach die laufende BASIS-Betreuung. Ein Ansprechpartner statt zweier Verträge.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">06</span>
@@ -787,7 +771,7 @@
               <h3 class="pr-name">Done-For-You WACHSTUM</h3>
               <p class="pr-what">Profil-Aufbau plus WACHSTUM-Betreuung. Zusätzlich enthalten: Einrichtung und Betrieb einer ManyChat-Automation. Das ist der Unterschied zu Paket 04.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span></p>
           </article>
         </div>
 
@@ -799,15 +783,12 @@
               <h3 class="pr-name">Landingpage, komplett betreut</h3>
               <p class="pr-what">Konzeption und Umsetzung von bis zu fünf Abschnitten, eigene Domain, Anfrageformular, mobile Optimierung, Tracking. Fertig in zehn Werktagen. Danach vier Änderungen im Monat, Reaktion binnen zwei Werktagen. Monatlich kündbar.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span><span class="sub">Umfang und Preis legen wir<br>gemeinsam fest</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">im Erstgespräch</span></p>
           </article>
         </div>
       </details>
 
-      <div class="pr-tax">
-        <p><b>Alle großen Beträge sind Endpreise inklusive 19 % Umsatzsteuer.</b> Der kleinere Betrag darunter ist der Nettopreis. Für alle, die Vorsteuer ziehen und damit kalkulieren.</p>
-        <p>Verkauf und Rechnungsstellung übernimmt <b>Digistore24 als Wiederverkäufer</b>. Was hier steht, ist genau das, was dort an der Kasse steht.</p>
-      </div>
+      <p class="pr-tax-kurz">Alle Preise inklusive 19 % Umsatzsteuer, darunter klein der Nettopreis. Verkauf und Rechnung über Digistore24.</p>
     </div></section>
 
     <section class="pr-blk abschluss" aria-labelledby="pr-cta"><div class="wrap reveal">
