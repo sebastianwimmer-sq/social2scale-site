@@ -24,28 +24,10 @@ const podest = ({ b, x, y, h }) => `<span class="raum-podest" style="--b:${b};--
 
 // Kopf-Orte: was im Raum steht. Positionen in Ebenen-Koordinaten (Boden ab ~44 % von unten).
 const KOPF = {
-  start: {
-    fern: [{ b: '6%', x: '21%', y: '41%', bild: 'beitrag-5-360.webp' }, { b: '6.5%', x: '73%', y: '40%', bild: 'beitrag-10-400.webp' }],
-    mitte: [{ b: '12%', x: '5%', y: '27%', bild: 'beitrag-13-360.webp' }, { b: '11%', x: '83%', y: '29%', bild: 'beitrag-11-400.webp' }],
-  },
-  ablauf: {
-    weg: { von: '44%', bis: '6%', hoehe: '62%' },
-    fern: [{ b: '4.5%', x: '47%', y: '44%', bild: 'beitrag-2-360.webp' }, { b: '5.5%', x: '55%', y: '42%', bild: 'beitrag-3-360.webp' }, { b: '6.5%', x: '64%', y: '40%', bild: 'beitrag-4-360.webp' }],
-  },
-  // Drei Wege: drei Abzüge auf Podesten verschiedener Höhe, der mittlere im Licht vorn (Kopf-Beitrag)
-  preise: {
-    podeste: [{ b: '5.4%', x: '62%', y: '38%', h: '4%' }, { b: '5.4%', x: '69.5%', y: '38%', h: '8%' }],
-    fern: [{ b: '4.8%', x: '62.3%', y: '42.5%', bild: 'beitrag-12-400.webp' }, { b: '4.8%', x: '69.8%', y: '46.5%', bild: 'beitrag-10-400.webp' }],
-  },
-  // Erst im Dunkeln, dann Licht: „Du bist gut. Online merkt's nur keiner.“
-  'fuer-wen': { spaet: true, fern: [{ b: '5.5%', x: '54%', y: '42%', bild: 'beitrag-13-360.webp', hell: '.55' }, { b: '5%', x: '62%', y: '43%', bild: 'beitrag-5-360.webp', hell: '.55' }] },
-  // Die Menschen hinter der Arbeit: Porträts im Studiolicht
-  'ueber-uns': { fern: [{ b: '7%', x: '50%', y: '40%', bild: '/assets/founder-philipp-560.webp' }, { b: '7%', x: '59%', y: '40%', bild: '/assets/founder-sebastian-560.webp' }] },
-  // Kontaktbogen an der Wand, ein Abzug wird vorn beleuchtet
-  'pruef-uns': {
-    fern: ['beitrag-2-360.webp', 'beitrag-3-360.webp', 'beitrag-4-360.webp', 'beitrag-5-360.webp', 'beitrag-11-400.webp']
-      .map((bild, i) => ({ b: '3.6%', x: `${68 + i * 5.4}%`, y: '64%', bild, hell: '.45' })),
-  },
+  // Startseite ruhig (Sebi 16.11.2026): nur Wand, Licht und Boden. Keine schwebenden Abzüge, kein Staub.
+  start: { ruhig: true },
+  // Alle Seiten ruhig (16.11.2026): der Kopf trägt Wand, Licht und Boden, sonst nichts. Der Verlauf macht den Raum (raum.css › Fluss).
+  ablauf: { ruhig: true }, preise: { ruhig: true }, 'fuer-wen': { ruhig: true }, 'ueber-uns': { ruhig: true }, 'pruef-uns': { ruhig: true },
   danke: { mitte: [] },
   'studio-danke': { mitte: [] },
 };
@@ -60,7 +42,7 @@ const kopfBlock = (ort) => {
   ];
   if (o.podeste || o.fern) teile.push(ebene(' raum-fern', 7, (o.podeste || []).map(podest).join('') + (o.fern || []).map(abzug).join('')));
   if (o.mitte && o.mitte.length) teile.push(ebene(' raum-mitte', 16, o.mitte.map(abzug).join('')));
-  teile.push('<canvas class="raum-ebene raum-staub" style="--z:20"></canvas>');
+  if (!o.ruhig) teile.push('<canvas class="raum-ebene raum-staub" style="--z:20"></canvas>');
   return `<!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--${ort}" data-raum${o.spaet ? ' data-spaet' : ''} aria-hidden="true">${teile.join('')}</div><!-- /RAUM -->`;
 };
 const lichtBlock = (ort) => `<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="${ort}" aria-hidden="true"></div><!-- /RAUM-LICHT -->`;

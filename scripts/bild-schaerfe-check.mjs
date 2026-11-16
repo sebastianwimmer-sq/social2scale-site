@@ -45,7 +45,8 @@ for (const [name, eng, opt] of [['Desktop 1440 @2x', chromium, { viewport: { wid
       return out;
     });
     for (const x of r) { console.log('  ' + name.padEnd(18), s.padEnd(12), x.bild.padEnd(22), x.box.padEnd(10), '×' + x.faktor); if (x.faktor > MAX_FAKTOR) befunde.push(`${name} ${s} ${x.bild}: ${x.faktor}-fach vergrößert (Grenze ${MAX_FAKTOR}) — größeres Bild oder kleinere Fläche`); }
-    if (!r.length && !SELBSTTEST && s === '/') befunde.push(`${name} ${s}: kein Hintergrundbild gemessen — nicht gemessen ist nicht grün`);
+    // Messprobe: eine Seite, die sicher ein Hintergrundbild trägt. Bis 16.11.2026 war das die Startseite; seit dem Fluss hat sie keins mehr.
+    if (!r.length && !SELBSTTEST && s === '/onboarding/') befunde.push(`${name} ${s}: kein Hintergrundbild gemessen — nicht gemessen ist nicht grün`);
   }
   await b.close();
 }
