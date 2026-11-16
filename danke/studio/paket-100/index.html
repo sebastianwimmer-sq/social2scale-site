@@ -3,457 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-FDB+nZBfnjfHXWTr15hfzLW8ytMY0yef+1ReQaNYnDw=' 'sha256-WHZPNUhsoppRE9BvnbAauu2Vxy/1dBfJbbnZr+lTcWY=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PR82mu9Ggj3yFxbjr1fmuG7EVMKEwnnQ3Jv1gRnctPg=' 'sha256-WHZPNUhsoppRE9BvnbAauu2Vxy/1dBfJbbnZr+lTcWY=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
+     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
-<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
-     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#03080D">
-<title>Danke — 100 Token · Smart Studio · social2scale</title>
-<meta name="description" content="Danke für deinen Kauf — dein Smart-Studio-Guthaben ist unterwegs.">
+<meta name="theme-color" content="#07130F">
+<title>Danke, 100 Token · social2scale</title>
+<meta name="description" content="Deine Zahlung ist bestätigt.">
 <link rel="stylesheet" href="/fonts.css">
 <style>
-  /* Die Werkstatt-Tokens kommen aus EINER Quelle:
-     social2scale-clients/_portal/lib/studio-design.js.
-     Hier stand vorher eine handgepflegte Kopie derselben Palette — und sie war
-     schon auseinandergelaufen (--faint auf #7C7E78 statt #8E918B). Erneuern:
-       node scripts/design-tokens-export.mjs --ziel=<site>/scripts/studio-tokens.css
-     Prüfen (Tor gegen Drift):
-       node scripts/design-tokens-export.mjs --pruefe=<site>/scripts/studio-tokens.css */
-/* ERZEUGT — nicht von Hand ändern.
- * Quelle: _portal/lib/studio-design.js (Repo social2scale-clients)
- * Neu erzeugen: node scripts/design-tokens-export.mjs --ziel=<diese Datei>
- * Prüfen:       node scripts/design-tokens-export.mjs --pruefe=<diese Datei>
- *
- * Wer hier etwas ändert, ändert es nur auf EINER Fläche. Das ist genau der
- * Zustand, den diese Datei abschafft. */
-:root{
-  color-scheme:dark;
-  --s2-bg:#0E1013;--s2-bg-2:#0A0B0D;
-  --s2-surface:#141518;--s2-surface-2:#1B1D21;--s2-surface-3:#23252A;
-  --s2-ink:#F2F3F1;--s2-muted:#A4A6A1;--s2-faint:#8E918B;
-  --s2-accent:#00B888;--s2-accent-soft:#1FC998;--s2-accent-2:#1FA6E0;
-  --s2-accent-text:#1FC998;
-  --s2-on-accent:#0A0B0D;--s2-on-accent-2:#0A0B0D;
-  --s2-flow:linear-gradient(135deg, #1FC998, #1fa6e0);
-  --s2-accent-wash:color-mix(in srgb, #1FA6E0 12%, transparent);
-  /* Das Herz. Instagram-Rot ist hier kein Dekor, sondern das Signal „gefällt
-     mir" — es gehört zum Produktvokabular und steht deshalb als Rolle da,
-     nicht als Literal an sechs Stellen. */
-  --s2-like:#FF2D55;--s2-like-soft:#FF5A7A;
-  --s2-danger:#E5484D;--s2-danger-ink:#FFB3B3;
-  --s2-line:color-mix(in srgb, #FFFFFF 8%, transparent);
-  --s2-line-2:color-mix(in srgb, #FFFFFF 14%, transparent);
-  --s2-line-3:color-mix(in srgb, #FFFFFF 22%, transparent);
-
-  --s2-ff-display:"Fraunces",Georgia,serif;
-  --s2-ff-ui:"Archivo",system-ui,-apple-system,sans-serif;
-  --s2-ff-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
-  /* Eine Skala für beide Modi. Die drei größten Stufen sind fluid, damit auf
-     390px nichts abreißt und auf 1440px nichts verloren wirkt. */
-  --s2-fs-label:.63rem;--s2-fs-xs:.78rem;--s2-fs-sm:.86rem;--s2-fs-base:.96rem;
-  --s2-fs-lg:1.12rem;
-  /* ACHTUNG: In clamp()/calc() MÜSSEN Leerzeichen um + und - stehen.
-     Ohne sie ist der Wert ungültig, die Eigenschaft fällt auf „erben" zurück
-     und jede Überschrift steht still in Fließtextgröße — ohne Fehlermeldung,
-     ohne Konsolen-Eintrag. Genau so stand die Angebotsseite am 02.09. da.
-     studio-flaechen.mjs prueft jeden Token jetzt mit CSS.supports nach. */
-  --s2-fs-xl:clamp(1.24rem, .9rem + 1.1vw, 1.46rem);
-  --s2-fs-2xl:clamp(1.72rem, 1.1rem + 2.4vw, 2.35rem);
-  --s2-fs-3xl:clamp(2.2rem, 1.2rem + 4.4vw, 3.4rem);
-  --s2-lh-tight:1.14;--s2-lh-snug:1.32;--s2-lh-base:1.6;
-  --s2-ls-label:.17em;--s2-ls-display:-.022em;
-
-  --s2-sp-1:4px;--s2-sp-2:8px;--s2-sp-3:12px;--s2-sp-4:16px;--s2-sp-5:22px;
-  --s2-sp-6:30px;--s2-sp-7:42px;--s2-sp-8:58px;--s2-sp-9:80px;
-  --s2-gutter:clamp(20px, 5vw, 44px);--s2-max:1080px;
-
-  --s2-r-1:9px;--s2-r-2:12px;--s2-r-3:16px;--s2-r-4:20px;--s2-r-5:26px;--s2-r-pill:999px;
-
-  --s2-hi:inset 0 1px 0 color-mix(in srgb, #FFFFFF 7%, transparent);
-  --s2-e-1:var(--s2-hi),0 1px 2px rgba(0,0,0,.4);
-  --s2-e-2:var(--s2-hi),0 2px 4px rgba(0,0,0,.45),0 14px 30px -18px rgba(0,0,0,.6);
-  --s2-e-3:var(--s2-hi),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.9);
-
-  --s2-ease:cubic-bezier(.16,1,.3,1);--s2-ease-in-out:cubic-bezier(.4,0,.2,1);
-  --s2-dur-1:140ms;--s2-dur-2:240ms;--s2-dur-3:420ms;--s2-dur-4:900ms;
-
-  --s2-focus:#1FC998;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--s2-ff-ui);color:var(--s2-ink);background:var(--s2-bg);
-  font-size:var(--s2-fs-base);line-height:var(--s2-lh-base);-webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;overflow-x:hidden}
-button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
-a{color:inherit;text-decoration:none}
-img,video{max-width:100%}
-
-/* Sichtbarer Fokus auf ALLEM, was Fokus bekommen kann. Vorher hatten die
-   Format-, Vorlagen-, Welt- und Herz-Knöpfe der Studio-App gar keinen —
-   mit der Tastatur war der Flow unbedienbar. */
-:where(a,button,input,textarea,select,summary,[tabindex]):focus-visible{
-  outline:2px solid var(--s2-focus);outline-offset:2px;border-radius:var(--s2-r-1)}
-
-/* Nur für Screenreader — Sprungmarke und Statusmeldungen. */
-.s2-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
-  clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.s2-skip{position:absolute;left:var(--s2-sp-3);top:-3rem;z-index:200;padding:10px 16px;
-  border-radius:var(--s2-r-2);background:var(--s2-accent);color:var(--s2-on-accent);
-  min-height:44px;display:inline-flex;align-items:center;
-  font-weight:700;transition:top var(--s2-dur-1) var(--s2-ease)}
-.s2-skip:focus{top:var(--s2-sp-3)}
-
-.s2-wrap{max-width:var(--s2-max);margin:0 auto;padding-inline:var(--s2-gutter)}
-
-/* Etikett — die Mono-Signatur, die Werkstatt und Schaufenster verbindet. */
-/* Der Akzent als TEXT — nie --s2-accent-2 direkt: das ist die FLÄCHEN-Farbe
-   und steht auf Evas Creme mit 3,09:1. */
-.s2-label{font-family:var(--s2-ff-mono);font-size:var(--s2-fs-label);font-weight:600;
-  letter-spacing:var(--s2-ls-label);text-transform:uppercase;color:var(--s2-accent-text)}
-.s2-label--quiet{color:var(--s2-faint)}
-
-.s2-display{font-family:var(--s2-ff-display);font-weight:540;line-height:var(--s2-lh-tight);
-  letter-spacing:var(--s2-ls-display);text-wrap:balance}
-.s2-h1{font-size:var(--s2-fs-3xl)}
-.s2-h2{font-size:var(--s2-fs-2xl)}
-.s2-h3{font-size:var(--s2-fs-xl)}
-/* Ein Wort im Verlauf — das wiederkehrende Betonungsmittel. Der Fallback ist
-   Pflicht: ohne ihn steht bei fehlendem background-clip unsichtbarer Text. */
-.s2-em{font-style:italic;font-weight:500;color:var(--s2-accent-text);
-  background:var(--s2-flow);-webkit-background-clip:text;background-clip:text}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .s2-em{color:transparent}}
-
-.s2-lead{color:var(--s2-muted);max-width:56ch}
-.s2-quiet{color:var(--s2-faint);font-size:var(--s2-fs-sm)}
-
-/* Sektions-Kopf mit Linie — trägt die Hierarchie, die vorher fehlte:
-   „Neu für dich" war eine Kette gleich aussehender Karten ohne Gliederung. */
-.s2-sect{display:flex;align-items:baseline;gap:var(--s2-sp-3);margin:var(--s2-sp-8) 0 var(--s2-sp-4)}
-.s2-sect::after{content:"";flex:1;height:1px;background:var(--s2-line-2)}
-.s2-sect h2{font-family:var(--s2-ff-display);font-weight:540;font-size:var(--s2-fs-xl);
-  letter-spacing:var(--s2-ls-display)}
-
-.s2-panel{position:relative;background:var(--s2-surface);border:1px solid var(--s2-line);
-  border-radius:var(--s2-r-4);box-shadow:var(--s2-e-2);padding:clamp(20px, 3vw, 30px);overflow:hidden}
-/* Die Haarlinie im Verlauf oben — das Erkennungszeichen einer Studio-Fläche. */
-.s2-panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--s2-accent) 36%,var(--s2-accent-2) 64%,transparent);opacity:.8}
-.s2-panel--flat::before{display:none}
-
-.s2-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2-sp-2);
-  font-weight:700;font-size:var(--s2-fs-base);border-radius:var(--s2-r-2);
-  padding:14px 26px;background:var(--s2-flow);color:var(--s2-on-accent-2);
-  box-shadow:0 16px 38px -14px var(--s2-accent-wash),var(--s2-hi);
-  transition:transform var(--s2-dur-1) var(--s2-ease),filter var(--s2-dur-1) var(--s2-ease)}
-.s2-btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
-.s2-btn:active{transform:translateY(1px)}
-.s2-btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;filter:none}
-.s2-btn--ghost{background:transparent;color:var(--s2-muted);border:1px solid var(--s2-line-2);box-shadow:none}
-.s2-btn--ghost:hover{color:var(--s2-ink);border-color:var(--s2-line-3);filter:none}
-.s2-btn--small{padding:9px 15px;font-size:var(--s2-fs-sm);border-radius:var(--s2-r-1)}
-
-.s2-pill{display:inline-flex;align-items:center;gap:var(--s2-sp-2);border-radius:var(--s2-r-pill);
-  padding:8px 15px;font-size:var(--s2-fs-sm);font-weight:600;
-  background:var(--s2-surface-2);border:1px solid var(--s2-line-2);box-shadow:var(--s2-e-1);
-  transition:border-color var(--s2-dur-1) var(--s2-ease),color var(--s2-dur-1) var(--s2-ease)}
-.s2-pill[aria-pressed="true"],.s2-pill.on{background:var(--s2-flow);border-color:transparent;
-  color:var(--s2-on-accent-2);font-weight:700}
-
-/* Waagerechte Leiste mit Bildern.
-   Zwei Fallen, die hier beide schon zugeschlagen haben:
-   1. Ein Grid-/Flex-Kind mit min-width:auto wächst auf Inhaltsbreite — dann
-      läuft nichts über und der Streifen scrollt NICHT.
-   2. Ohne sichtbare Bedienung findet auf dem Desktop niemand den Streifen. */
-.s2-rail-wrap{position:relative;min-width:0}
-.s2-rail{display:flex;gap:var(--s2-sp-3);overflow-x:auto;scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;padding-bottom:var(--s2-sp-2);min-width:0;
-  scrollbar-width:thin;scrollbar-color:var(--s2-line-3) transparent}
-.s2-rail>*{flex:0 0 auto;scroll-snap-align:start}
-.s2-rail::-webkit-scrollbar{height:6px}
-.s2-rail::-webkit-scrollbar-thumb{background:var(--s2-line-3);border-radius:var(--s2-r-pill)}
-.s2-rail-nav{position:absolute;top:calc(50% - var(--s2-sp-3));transform:translateY(-50%);
-  width:38px;height:38px;border-radius:50%;display:none;place-items:center;z-index:3;
-  background:var(--s2-surface);border:1px solid var(--s2-line-2);box-shadow:var(--s2-e-2);
-  color:var(--s2-ink);font-size:1.1rem;line-height:1}
-.s2-rail-nav[hidden]{display:none!important}
-.s2-rail-wrap.has-rail .s2-rail-nav{display:grid}
-.s2-rail-nav.prev{left:-14px}.s2-rail-nav.next{right:-14px}
-@media(max-width:760px){.s2-rail-wrap.has-rail .s2-rail-nav{display:none}}
-
-.s2-msg{padding:13px 16px;border-radius:var(--s2-r-3);font-size:var(--s2-fs-sm);line-height:var(--s2-lh-snug)}
-.s2-msg--warm{background:var(--s2-accent-wash);border:1px solid var(--s2-line-2);color:var(--s2-ink)}
-.s2-msg--err{background:color-mix(in srgb,var(--s2-danger) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--s2-danger) 34%,transparent);color:var(--s2-danger-ink)}
-
-@keyframes s2-rise{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
-@keyframes s2-shimmer{to{background-position:-220% 0}}
-@keyframes s2-aurora{0%{transform:translate3d(-4%,-2%,0) scale(1)}100%{transform:translate3d(5%,3%,0) scale(1.14)}}
-@keyframes s2-pulse{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.1)}}
-.s2-rise{animation:s2-rise var(--s2-dur-3) var(--s2-ease) both}
-
-/* Eine einzige Stelle, an der Motion abgeschaltet wird — nicht pro Fläche. */
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:1ms!important;animation-iteration-count:1!important;
-    transition-duration:1ms!important;scroll-behavior:auto!important}
-  .s2-rail{scroll-behavior:auto}
-}
-
-  :root{
-    /* Nur, was ausschließlich diese Seiten brauchen. */
-    --amber:#E8B34B;
-    --surf-grad:linear-gradient(180deg,color-mix(in srgb,var(--s2-surface-3) 55%,var(--s2-surface-2)) 0%,var(--s2-surface-2) 38%,var(--s2-surface) 100%);
-    --grad-emerald:radial-gradient(120% 140% at 78% 8%,color-mix(in srgb,var(--s2-accent) 12%,transparent),transparent 52%),radial-gradient(120% 130% at 14% 96%,color-mix(in srgb,var(--s2-accent-2) 10%,transparent),transparent 56%),linear-gradient(180deg,color-mix(in srgb,var(--s2-surface) 88%,var(--s2-ink)) 0%,var(--s2-surface) 70%);
-    --px:clamp(20px, 5vw, 56px);
-    /* Diese Seiten malen einen deutlich HELLEREN Verlauf hinter den Text als
-       --s2-bg. Der leise Ton des Systems ist dafür gebaut, auf #0E1013 zu
-       stehen, und kam hier auf 3,5:1. Statt fünf Regeln einzeln zu flicken,
-       wird die ROLLE für diese Fläche neu belegt — aus derselben Tinte
-       gemischt, damit sie leiser bleibt als der Fließtext. Gemessen mit
-       studio-flaechen.mjs --nur=danke. */
-    --s2-faint:color-mix(in srgb, var(--s2-ink) 78%, var(--s2-bg));
-    /* Aus demselben Grund der Sekundaerton: auf dem hellsten Punkt des
-       Seitenverlaufs stand er mit 4,06:1. Beide Rollen bleiben leiser als der
-       Fliesstext, nur eben hell genug fuer DIESE Flaeche. */
-    --s2-muted:color-mix(in srgb, var(--s2-ink) 88%, var(--s2-bg));
-  }
+  :root{color-scheme:dark;
+    --grund:#05090C;--linie:rgba(236,240,237,.12);--linie-stark:rgba(236,240,237,.22);
+    --tinte:#F1F3F0;--text:#C6CAC5;--leise:#ABAEA8;--emerald:#00B888;--emerald-hell:#3FD9AE;--teal:#1FA6E0;--auf-akzent:#04140F;
+    --ff-titel:'Fraunces',Georgia,serif;--ff-text:'Hanken Grotesk',system-ui,sans-serif;--ruhe:cubic-bezier(.2,.7,.2,1)}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:
-      /* Die beiden Farbwolken lagen bei .34 und .30 und machten den oberen
-         linken Bereich so hell, dass der Fliesstext darauf mit 2,87:1 stand —
-         genau dort, wo die Verkaufszeile sitzt. Gemessen auf der fertigen
-         Seite; vorher hat es kein Werkzeug gesehen, weil der Verlauf aus
-         mehreren Schichten besteht und falsch gerechnet wurde. */
-      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.22),transparent 55%),
-      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.20),transparent 56%),
-      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
-    background-attachment:fixed;background-color:#03080D;
-    color:var(--s2-ink);font-family:var(--s2-ff-ui);
-    -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
-  @media (max-width:700px){body{background-attachment:scroll;background-size:cover}}
-  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--s2-accent);outline-offset:3px;border-radius:4px}
-  .wrap{width:100%;max-width:880px;margin:0 auto;padding:0 var(--px)}
-
-  @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
-  @keyframes glowPulse{0%{opacity:0;transform:scale(.7)}45%{opacity:.85}100%{opacity:0;transform:scale(1.5)}}
-  @keyframes drawCheck{to{stroke-dashoffset:0}}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--s2-ease),transform .7s var(--s2-ease)}
-  .reveal.on{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    .reveal{opacity:1!important;transform:none!important;transition:none}
-    .r{animation:none!important;opacity:1!important}
-    .badge path{stroke-dashoffset:0!important;animation:none!important}
-    .celebrate{animation:none;opacity:0}
+  [hidden]{display:none!important}
+  html,body{height:100%}
+  body{background-color:var(--grund);color:var(--text);font:17px/1.55 var(--ff-text);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible{outline:2px solid var(--emerald-hell);outline-offset:3px;border-radius:6px}
+  .buehne{position:relative;overflow:clip;isolation:isolate;min-height:100%;display:grid;background-color:#050B0C;background-image:linear-gradient(180deg,#07130F,#050B0C 60%,#05090C)}
+  .hgb{position:absolute;inset:0;z-index:-1;pointer-events:none;display:flex;align-items:flex-end;justify-content:flex-end;gap:clamp(10px,1.6vw,26px);padding-right:clamp(0px,5vw,96px)}
+  .hgb i{width:clamp(64px,11vw,190px);border-radius:16px 16px 0 0;transform-origin:bottom;
+    background:linear-gradient(180deg,rgba(63,217,174,.20),rgba(31,166,224,.07) 55%,rgba(31,166,224,.02));box-shadow:inset 0 1px 0 rgba(140,240,210,.35),inset 1px 0 0 rgba(140,240,210,.06);
+    animation:wachsen 1.3s var(--ruhe) both}
+  .hgb i:nth-child(1){height:34%;animation-delay:.15s}.hgb i:nth-child(2){height:56%;animation-delay:.3s}.hgb i:nth-child(3){height:82%;animation-delay:.45s}
+  .seite{display:grid;grid-template-rows:auto 1fr auto;min-height:100%;max-width:1120px;width:100%;margin:0 auto;padding:0 20px}
+  .kopf{padding:clamp(12px,2.4vh,22px) 0;display:flex;align-items:center;justify-content:space-between}
+  .kopf a{display:inline-flex;align-items:center;min-height:44px}
+  .kopf img{height:30px;width:auto;display:block}
+  .stand{display:flex;align-items:center;gap:10px;color:var(--emerald-hell);font-weight:600;font-size:15px}
+  .balken{display:inline-flex;align-items:flex-end;gap:3px;height:18px}
+  .balken i{width:4px;border-radius:2px;background:linear-gradient(180deg,var(--emerald-hell),var(--teal));transform-origin:bottom;animation:wachsen .6s var(--ruhe) both}
+  .balken i:nth-child(1){height:7px}.balken i:nth-child(2){height:12px;animation-delay:.12s}.balken i:nth-child(3){height:18px;animation-delay:.24s}
+  .mitte{display:grid;align-content:center;justify-items:center;text-align:center;padding:clamp(8px,2vh,28px) 0}
+  h1{font:400 clamp(2.6rem,1rem + 7vw,6.25rem)/1 var(--ff-titel);color:var(--tinte);letter-spacing:-.035em;text-wrap:balance;animation:herein .8s var(--ruhe) .1s both}
+  .einstieg{margin-top:clamp(12px,2.2vh,22px);max-width:32em;font-size:clamp(1.0625rem,1rem + .35vw,1.25rem);text-wrap:pretty;animation:herein .8s var(--ruhe) .25s both}
+  .einstieg b{color:var(--tinte);font-weight:600}
+  .einstieg .zahl{font-variant-numeric:tabular-nums lining-nums;background:linear-gradient(100deg,#6FECC8,var(--emerald-hell) 40%,#39B6E6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-hell)}
+  .knopf{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding:0 34px;border-radius:12px;font-weight:600;font-size:1.125rem;text-decoration:none;margin-top:clamp(16px,3vh,32px);
+    background:var(--emerald);color:var(--auf-akzent);box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 14px 34px -12px rgba(0,184,136,.8);transition:transform .2s var(--ruhe),background-color .2s;animation:herein .8s var(--ruhe) .35s both}
+  .knopf:hover{transform:translateY(-2px);background:var(--emerald-hell)}
+  .knopf svg{width:20px;height:20px;transition:transform .25s var(--ruhe)}.knopf:hover svg{transform:translateX(4px)}
+  .hinweis{margin-top:14px;max-width:32em;font-size:15px;color:var(--leise);animation:herein .8s var(--ruhe) .45s both}
+  .hinweis a{display:inline-block;padding:10px 2px;margin:-10px 0;color:var(--text)}
+  .wir{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:clamp(14px,2.6vh,26px);font-size:15.5px;text-align:left;animation:herein .8s var(--ruhe) .55s both}
+  .wir span{display:flex;flex:none}.wir img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #06110E;display:block}.wir picture+picture img{margin-left:-12px}
+  .unten{padding-bottom:clamp(10px,2vh,20px);animation:herein .8s var(--ruhe) .65s both}
+  .schritte{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,22px);list-style:none;counter-reset:s}
+  .schritte li{position:relative;padding-top:12px}
+  .schritte li::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--linie-stark)}
+  .schritte li:first-child::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,var(--emerald-hell),var(--teal));transform-origin:left;animation:strich .8s var(--ruhe) .9s both}
+  .schritte b{display:block;font:400 clamp(1rem,.9rem + .5vw,1.25rem)/1.2 var(--ff-titel);color:var(--tinte)}
+  .schritte span{display:block;margin-top:3px;font-size:15px;color:var(--leise)}
+  .abo{margin-top:clamp(10px,2vh,18px);font-size:15px;color:var(--text);text-align:center}
+  .abo a{display:inline-block;padding:12px 2px;margin:-12px 0;color:var(--emerald-hell);font-weight:600;text-underline-offset:3px}
+  .recht{margin-top:clamp(8px,1.6vh,14px);color:var(--leise);font-size:15px;text-align:center}
+  .recht a{display:inline-block;padding:12px 2px;margin:-12px 0}
+  .recht a:hover,.hinweis a:hover{color:var(--tinte)}
+  @keyframes herein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes wachsen{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  @keyframes strich{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  @media (min-width:900px){.seite{padding:0 56px}}
+  @media (max-width:640px){
+    .schritte{gap:8px}.schritte li{padding-top:8px}
+    .schritte b{font-size:15px;line-height:1.25}.schritte span{display:none}
+    .hinweis{margin-top:10px}.abo{margin-top:8px}
+    h1{font-size:clamp(2.4rem,12vw,3.2rem)}
+    .knopf{width:100%;margin-top:16px}
+    .einstieg{font-size:1rem;margin-top:10px}
+    .mitte{padding:0}
+    .wir{margin-top:12px}
+    .hgb{padding-right:0;gap:8px;opacity:.4}.hgb i{width:20vw}.hgb i:nth-child(1){height:12%}.hgb i:nth-child(2){height:20%}.hgb i:nth-child(3){height:30%}
   }
-  .r{opacity:0;animation:upIn .7s var(--s2-ease) forwards}
-
-  .eyebrow{display:inline-flex;align-items:center;gap:var(--s2-sp-2);font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-faint)}
-  .klabel{font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent);display:block}
-  h2{font-family:var(--s2-ff-display);font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s2-sp-3)}
-  h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--s2-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--s2-accent)}
-  .lead{color:var(--s2-muted);max-width:58ch;margin-top:var(--s2-sp-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
-
-  .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
-  .bar .brand{display:inline-flex;align-items:center;min-height:44px}
-  .bar .brand img{height:30px;width:auto;display:block}
-
-  .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:0.9375rem;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
-  .btn:hover{transform:translateY(-3px)}
-  .btn-primary{background:linear-gradient(135deg,var(--s2-accent-soft) 0%,var(--s2-accent) 52%,var(--s2-accent-2) 100%);color:var(--s2-on-accent-2);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
-  .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
-  .btn-primary:hover::after{animation:glint .85s var(--s2-ease) forwards}
-  .btn .arr{display:inline-block;transition:transform .25s var(--s2-ease)}.btn:hover .arr{transform:translateX(4px)}
-  .btn-ghost{background:rgba(242,243,241,.04);border:1px solid var(--s2-line-2);color:var(--s2-ink)}
-  .btn-ghost:hover{border-color:var(--s2-line-3)}
-
-  .hero{position:relative;overflow:hidden;padding:clamp(var(--s2-sp-8),7vw,var(--s2-sp-9)) 0 max(clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)),72px)}
-  .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;z-index:0;pointer-events:none}
-  @media (prefers-reduced-motion:reduce){.herovid{display:none}}
-  .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--s2-ease) .2s both}
-  /* Der Bestaetigungs-Chip stand als Akzentfarbe auf einer Akzent-Waschung
-     ueber dem hellen Hero — 3,72:1. Sichtbar wurde das erst, als das
-     Pruefwerkzeug die Einblend-Animation ans Ende setzt; vorher war der Chip
-     zum Messzeitpunkt durchsichtig. */
-  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent-soft);background:var(--s2-surface);border:1px solid color-mix(in srgb,var(--s2-accent) 34%,transparent);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--s2-ease) .12s both}
-  .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--s2-ease) .55s forwards}
-  .hero h1{font-family:var(--s2-ff-display);font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s2-sp-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--s2-ease) .26s both}
-  .hero .sub{color:var(--s2-muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s2-sp-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--s2-ease) .38s both}
-  .hero .sub b{color:var(--s2-ink);font-weight:600}
-  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s2-sp-3);margin-top:var(--s2-sp-6);animation:upIn .7s var(--s2-ease) .5s both}
-    .hero .hint{font-family:var(--s2-ff-mono);font-size:0.9375rem;letter-spacing:.01em;line-height:1.5;color:var(--s2-muted);text-shadow:0 1px 10px rgba(0,0,0,.85)}
-
-  section.blk{padding:clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)) 0}
-  .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--s2-line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--s2-e-3)}
-  .offer .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
-  .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);flex-wrap:wrap}
-  .cd{display:inline-flex;align-items:baseline;gap:10px;background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.32);border-radius:999px;padding:8px 16px}
-  .cd-k{font-family:var(--s2-ff-ui);font-size:0.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
-  .cd-t{font-family:var(--s2-ff-mono);font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
-  .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s2-sp-6);margin-top:var(--s2-sp-6);background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--s2-e-2)}
-  .oc-big{font-family:var(--s2-ff-display);font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s2-sp-2)}
-  .oc-bonus{margin-top:var(--s2-sp-3);font-family:var(--s2-ff-ui);font-weight:600;font-size:.96rem;color:var(--amber)}
-  .oc-list{list-style:none;margin-top:var(--s2-sp-4);display:grid;gap:var(--s2-sp-2)}
-  .oc-list li{position:relative;padding-left:1.6em;color:var(--s2-muted);font-size:.98rem}
-  .oc-list li::before{content:"✓";position:absolute;left:0;color:var(--s2-accent);font-weight:700}
-  .oc-side{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s2-sp-3);border-left:1px solid var(--s2-line);padding-left:var(--s2-sp-6)}
-  .oc-price{font-family:var(--s2-ff-ui);font-weight:700;font-size:1.3rem}
-  .oc-hint{font-size:.85rem;color:var(--s2-faint);line-height:1.5}
-  .expired p{margin-top:var(--s2-sp-5);color:var(--s2-muted);background:rgba(242,243,241,.03);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5)}
-  .expired b{color:var(--s2-ink)}
-  .offer .panel.is-expired .offercard,.offer .panel.is-expired .cd,.offer .panel.is-expired .oc-hint{display:none}
-  @media (max-width:720px){
-    .offercard{grid-template-columns:1fr}
-    .oc-side{border-left:0;border-top:1px solid var(--s2-line);padding-left:0;padding-top:var(--s2-sp-5);align-items:stretch}
-    .oc-side .btn{text-align:center}
-  }
-
-  .steps-blk .wrap>.eyebrow{margin-bottom:var(--s2-sp-2)}
-  .steps{list-style:none;display:grid;gap:var(--s2-sp-3);counter-reset:step;margin-top:var(--s2-sp-5)}
-  .steps li{counter-increment:step;display:flex;gap:var(--s2-sp-5);align-items:baseline;background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:14px;padding:clamp(16px,2.4vw,22px) clamp(18px,3vw,26px);box-shadow:var(--s2-e-2)}
-  .steps li::before{content:counter(step,decimal-leading-zero);font-family:var(--s2-ff-mono);font-size:.95rem;color:var(--s2-accent);flex:none}
-  .steps li b{color:var(--s2-ink);font-weight:600}
-  .steps li{color:var(--s2-muted);font-size:.98rem}
-
-  .legal-blk .wrap{display:grid;gap:var(--s2-sp-4)}
-  /* Die Karte liegt auf dem hellen Teil des Verlaufs. Ein durchsichtiger
-     Grund reicht dort nicht: der Sekundaerton kam auf 4,25:1. Eine eigene,
-     deckende Flaeche gibt dem Text wieder einen definierten Grund. */
-  .notecard{background:var(--s2-surface);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5);color:var(--s2-muted);font-size:0.9375rem;line-height:1.65;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-  .notecard b{color:var(--s2-ink)}
-  .notecard a{color:var(--s2-accent-soft);text-decoration:none}
-  .notecard a:hover{text-decoration:underline}
-  .mandatory{font-family:var(--s2-ff-mono);font-size:0.9375rem;letter-spacing:.01em;line-height:1.5;color:var(--s2-muted)}
-
-  .site-footer{margin-top:var(--s2-sp-8);border-top:1px solid var(--s2-line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--s2-bg-2)}
-  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:0.6875rem;letter-spacing:.04em;color:var(--s2-faint)}
-  .site-footer img{height:34px;width:auto;display:block}
-  .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s2-sp-4)}
-  .site-footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--s2-muted);text-decoration:none}
-  .site-footer a:hover{color:var(--s2-ink)}
 </style>
-<noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
-<link rel="stylesheet" href="/bedienung.css">
-<link rel="stylesheet" href="/raum.css">
-<script src="/raum.js" defer></script>
-<script src="/szenen/szenen.js" data-css="basis,danke" defer></script>
 </head>
 <body>
-  <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>
-
-  <main>
-    <section class="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--studio-danke" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div><canvas class="raum-ebene raum-staub" style="--z:20"></canvas></div><!-- /RAUM -->
-      <video class="herovid" autoplay muted loop playsinline poster="/danke/studio/assets/danke-poster.jpg" aria-hidden="true"><source src="/danke/studio/assets/danke-bg.mp4" type="video/mp4"></video>
-      <div class="celebrate" aria-hidden="true"></div>
-      <div class="wrap">
-        <span class="badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Zahlung bestätigt</span>
-        <h1>Dein Guthaben ist <em>da</em>.</h1>
-        <p class="sub">Deine <b>100 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 4 komplette Beiträge.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://mein.social2scale.com">Zu deinem Bereich <span class="arr">→</span></a>
-          <span class="hint">Gutschrift dauert in der Regel nur Sekunden.</span>
-        </div>
-      </div>
-    </section>
-
-    
-  <section class="blk offer" aria-labelledby="offer-h">
-    <div class="wrap"><div class="panel reveal" id="offer-panel">
-      <div class="offer-top">
-        <span class="eyebrow">Wenn du magst · dein nächster Schritt</span>
-        
-      </div>
-      <h2 id="offer-h">Selbst erstellen ist stark. <em>Gar nicht dran denken müssen</em> ist stärker.</h2>
-      <p class="lead">Mit dem Rundum-Service läuft dein Content automatisch weiter: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir.</p>
-      <div class="offercard">
-        <div class="oc-main">
-          <span class="klabel">Smart Studio — Rundum-Service</span>
-          <p class="oc-big">Wir übernehmen. Du wählst aus.</p>
-          
-          <ul class="oc-list"><li>Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst</li><li>Du markierst deine Favoriten, wir kümmern uns um den Rest</li><li>Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit</li></ul>
-        </div>
-        <div class="oc-side">
-          <p class="oc-price">49 € / Monat</p>
-          <a class="btn btn-primary" id="upsell-cta" href="https://www.digistore24.com/product/722974">Rundum-Service starten <span class="arr">→</span></a>
-          
-        </div>
-      </div>
-      
-    </div></div>
-  </section>
-
-    <section class="blk steps-blk" aria-labelledby="steps-h" data-sz="drehplan">
-      <div class="wrap">
-        <span class="eyebrow" id="steps-h">In 3 Minuten zum ersten Beitrag</span>
-        <ol class="steps reveal">
-          <li data-sz-teil><span><b>Studio öffnen</b> — dein Guthaben steht oben rechts.</span></li>
-          <li data-sz-teil><span><b>Thema eingeben</b> — ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt.</span></li>
-          <li data-sz-teil><span><b>Favorit wählen &amp; feinschleifen</b> — bestätigen, fertig. Caption und Hashtags sind schon dabei.</span></li>
-        </ol>
-      </div>
-    </section>
-
-    <section class="blk legal-blk">
-      <div class="wrap">
-        <div class="notecard human"><b>Hinter deinem Studio stehen Menschen.</b> Wir — Sebi &amp; Phil — lesen jede Nachricht selbst. Wenn irgendwas ist oder du dir unsicher bist: <a href="mailto:info@social2scale.com">schreib uns</a>, wir antworten persönlich.</div>
-        <div class="notecard"><b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:info@social2scale.com">info@social2scale.com</a> — wir ordnen es dir persönlich zu.</div>
-        <p class="mandatory">Die Abbuchung erfolgt durch Digistore24.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer"><div class="wrap">
-    <a href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="68" height="34"></a>
-    <nav aria-label="Rechtliches">
-      <a href="/impressum/">Impressum</a>
-      <a href="/datenschutz/">Datenschutz</a>
-      <a href="mailto:info@social2scale.com">Kontakt</a>
-    </nav>
-    <span>© <span id="yr"></span> social2scale</span>
-  </div></footer>
-
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    // Reveal-on-scroll (dezent, reduced-motion respektiert CSS-seitig)
-    (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('on'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); } });
-      }, { rootMargin: '0px 0px -60px' });
-      els.forEach(function (e) { io.observe(e); });
-      setTimeout(function () { els.forEach(function (e) { e.classList.add('on'); }); }, 1200);
-    })();
-
-    // E-Mail aus Digistore-Dankesseiten-Parametern an den Upsell-Link
-    // weiterreichen → Bestellformular vorbefüllt → Auto-Match im Portal greift.
-    (function () {
-      var cta = document.getElementById('upsell-cta');
-      if (!cta) return;
-      try {
-        var q = new URLSearchParams(location.search);
-        var email = q.get('email') || q.get('buyer_email') || '';
-        if (email && cta.href.indexOf('digistore24.com') > -1) {
-          var u = new URL(cta.href);
-          u.searchParams.set('email', email);
-          cta.href = u.toString();
-        }
-      } catch (_) {}
-    })();
-
-  </script>
+<div class="buehne">
+  <div class="hgb" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="seite">
+    <header class="kopf"><a href="/" aria-label="social2scale, zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a><p class="stand"><span class="balken" aria-hidden="true"><i></i><i></i><i></i></span>Zahlung bestätigt</p></header>
+    <main class="mitte">
+      <h1>Dein Guthaben ist da.</h1>
+      <p class="einstieg">Deine <b class="zahl" data-ziel="100">100</b> <b>Token</b> sind auf dem Weg in dein Smart Studio, meist in wenigen Sekunden. Das reicht für 4 Beiträge.</p>
+      <a class="knopf" href="https://mein.social2scale.com">Zum Smart Studio<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <p class="hinweis">Guthaben nicht da? Meist wurde mit einer anderen E-Mail-Adresse bestellt. Schreib uns kurz an <a href="mailto:info@social2scale.com">info@social2scale.com</a>.</p>
+      <p class="wir"><span aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="40" height="40"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="40" height="40"></picture></span>Danke, dass du dabei bist. Sebi &amp; Phil</p>
+    </main>
+    <footer class="unten">
+      <ol class="schritte" aria-label="So geht es weiter">
+        <li><b>Studio öffnen</b><span>Dein Guthaben steht oben rechts.</span></li>
+        <li><b>Thema eingeben</b><span>Ein Satz reicht, du bekommst drei Vorschläge.</span></li>
+        <li><b>Favorit wählen</b><span>Caption und Hashtags sind schon dabei.</span></li>
+      </ol>
+      <p class="abo">Lieber gar nicht selbst? Im Rundum-Service erstellen wir laufend für dich, 49 € im Monat, monatlich kündbar. <a href="https://www.digistore24.com/product/722974">Ansehen</a></p>
+      <p class="recht">Die Abbuchung erfolgt durch Digistore24. <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p>
+    </footer>
+  </div>
+</div>
+<script>
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.querySelectorAll('.zahl[data-ziel]').forEach(function(e){
+    var ziel=+e.getAttribute('data-ziel'),t0=null,dauer=900;
+    if(!(ziel>0))return;
+    function bild(t){if(t0===null)t0=t;var a=Math.min(1,(t-t0)/dauer),w=1-Math.pow(1-a,3);e.textContent=String(Math.round(ziel*w));if(a<1)requestAnimationFrame(bild);}
+    e.textContent='0';setTimeout(function(){requestAnimationFrame(bild)},350);
+  });
+})();
+</script>
 <script>
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Auf DIESEN Seiten ist die Zahl der Beleg dafür, dass Digistore die
@@ -477,6 +144,5 @@ img,video{max-width:100%}
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
 </script>
-<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="studio-danke" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

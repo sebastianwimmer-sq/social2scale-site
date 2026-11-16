@@ -56,12 +56,5 @@ export const SEITEN = [
     abschnitte: [],
   },
   // /danke/ hat seit 15.11.2026 keine Szene mehr (Briefkarte entfernt; Sebi: high end clean).
-  {
-    dateien: ['danke/studio/index.html', 'danke/studio/abo/index.html', 'danke/studio/paket-100/index.html', 'danke/studio/paket-250/index.html', 'danke/studio/paket-500/index.html'],
-    css: 'danke',
-    abschnitte: [
-      // Drei Schritte zum ersten Beitrag = Drehplan an der Wand, abgehakt mit Kreide
-      { sz: 'drehplan', anker: /<section class="blk steps-blk"[^>]*>/, teile: [/<li>/g] },
-    ],
-  },
+  // /danke/studio/ seit 16.11.2026 ohne Szene (Drehplan entfernt; gleicher Aufbau wie /danke/).
 ];

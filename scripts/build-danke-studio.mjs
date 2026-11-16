@@ -1,549 +1,156 @@
 #!/usr/bin/env node
 // ============================================================
-// Smart-Studio-Dankesseiten-Generator
+// Danke-Seiten des Smart Studios (Token-Pakete und Rundum-Service)
 // ------------------------------------------------------------
-// Eine Config → 7 statische Seiten unter /danke/studio/…
-// (6 Produkt-Seiten + 1 Fallback). Nach Config-Änderung:
-//   node scripts/build-danke-studio.mjs
-// dann committen — main = Pages-Deploy.
+// Eine Config → 5 statische Seiten unter /danke/studio/…
+//   /danke/studio/paket-100/ · paket-250/ · paket-500/ · abo/ · /danke/studio/ (Fallback)
+// Nach Änderung:  node scripts/build-danke-studio.mjs  → committen → main = Pages-Deploy.
 //
-// System: Jede Digistore-Dankesseite bestätigt die Gutschrift,
-// führt in 3 Schritten zum ersten Beitrag und zeigt EIN
-// produktspezifisches, zeitlich begrenztes Anschluss-Angebot
-// (Post-Purchase-Upsell). Pain-Point je Produkt, Countdown ab
-// erstem Seitenbesuch (localStorage), abgelaufen = ruhiger
-// Normalzustand.
+// 16.11.2026 neu im Look von /danke/ (Sebi: „high end clean“, kein generischer KI-Look):
+// ein Schirm, die drei Balken aus dem Logo als Hintergrund, eine Handlung. Raus: Feier-Video, Lichtkegel,
+// Bonus-Countdown (es gab nie Bonus-Produkte, die Uhr war seit 19.08. abgeschaltet), Etiketten in Versalien,
+// Gedankenstriche im Text. Hier landet eine Kundin nach einem Nachkauf im Studio. Das Angebot mit der Uhr
+// sitzt am ersten Login im Social Hub (s2s-kunden lib/hub-startguthaben.js), nicht hier.
 //
-// ⚠️ WAHRHEITSPFLICHT (UWG): Der Countdown ist nur zulässig,
-// wenn das Angebot danach WIRKLICH nicht mehr gilt. Die
-// Bonus-Token-Produkte müssen in Digistore als eigene Produkte
-// existieren (IDs unten eintragen) und dürfen nirgendwo sonst
-// dauerhaft verlinkt sein. Keine Fake-Verknappung.
-//
-// TODO(Sebi/Phil) vor Launch:
-//   1. PREISE final eintragen (price/priceNote je Produkt).
-//   2. Digistore-Produkt-IDs in UPSELL.id eintragen
-//      (Bonus-Varianten = eigene Produkte, Token-Zahl inkl.
-//      Bonus kommt mit in DIGISTORE_TOKEN_PRODUCTS im Portal).
-//   3. In Digistore je Produkt diese Seite als Dankesseite
-//      hinterlegen + "Parameter an Dankeseite übergeben" an
-//      (dann greift die E-Mail-Weitergabe an den Upsell-Link).
+// Digistore: je Produkt diese Seite als Dankesseite hinterlegen. Reale Produkte (Phil, 16.08.):
+//   100 Token = 722966 · 250 Token = 722970 · 500 Token = 722971 · Rundum-Service-Abo = 722974.
+// Ein Beitrag kostet im Studio 25 Token (s2s-kunden lib/tokens.js › TOKEN_COSTS.post).
 // ============================================================
 
-import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-
-// Die Werkstatt-Tokens des Smart Studios — erzeugt aus
-// social2scale-clients/_portal/lib/studio-design.js. Fehlt die Datei, bricht
-// der Bau ab: eine Dankesseite ohne Design-Tokens hätte keine Farben und keine
-// Größenhierarchie, und das fiele erst der Kundin auf.
-const TOKENS_PFAD = join(dirname(fileURLToPath(import.meta.url)), "studio-tokens.css");
-if (!existsSync(TOKENS_PFAD)) {
-  console.error("Abbruch: " + TOKENS_PFAD + " fehlt.\n" +
-    "  Erzeugen: node scripts/design-tokens-export.mjs --ziel=" + TOKENS_PFAD +
-    "  (im Repo social2scale-clients, Ordner _portal)");
-  process.exit(1);
-}
-const TOKENS = readFileSync(TOKENS_PFAD, "utf8");
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const STUDIO_URL = "https://mein.social2scale.com";
 const SUPPORT_MAIL = "info@social2scale.com";
-const COUNTDOWN_MINUTES = 15;
+const ABO_URL = "https://www.digistore24.com/product/722974";
+const POST_KOSTEN = 25;
 
-// Digistore-Bestellformular-Basis. ID_TBD wird beim Launch ersetzt.
-const ds = (id) => "https://www.digistore24.com/product/" + id;
+const SCHRITTE_TOKEN = [
+  { b: "Studio öffnen", t: "Dein Guthaben steht oben rechts." },
+  { b: "Thema eingeben", t: "Ein Satz reicht, du bekommst drei Vorschläge." },
+  { b: "Favorit wählen", t: "Caption und Hashtags sind schon dabei." },
+];
+const SCHRITTE_ABO = [
+  { b: "Wir melden uns", t: "Innerhalb von 24 Stunden, persönlich." },
+  { b: "Dein Studio füllt sich", t: "Laufend fertige Beiträge in deiner Marke." },
+  { b: "Du wählst aus", t: "Herz drücken, den Rest übernehmen wir." },
+];
 
-// ------------------------------------------------------------
-// BONUS-UPSELL (Higgsfield-Style, Sebi 19.08.): „Kauf JETZT nochmal →
-// Bonus-Token obendrauf" mit echtem Countdown. Erst aktiv, wenn Phil die
-// exklusiven Bonus-Produkte in Digistore angelegt hat (IDs hier eintragen,
-// dann node scripts/build-danke-studio.mjs + deploy). Leer = ruhiger
-// Service-Upsell ohne Countdown — UWG: Verknappung nur, wenn sie real ist.
-// ------------------------------------------------------------
-const BONUS_ABO_ID = ""; // „Rundum-Service-Abo + 100 Bonus-Token (nur Dankesseite)" · 49 €/Mon
-const BONUS_250_ID = ""; // „250 Token + 50 Bonus-Token (nur Dankesseite)" · 47 € einmalig
+const tokenSeite = (n, satz) => ({
+  slug: "paket-" + n, titel: n + " Token", tokens: n,
+  h1: "Dein Guthaben ist da.",
+  sub: `Deine <b class="zahl" data-ziel="${n}">${n}</b> <b>Token</b> sind auf dem Weg in dein Smart Studio, meist in wenigen Sekunden. ${satz}`,
+  knopf: "Zum Smart Studio", hinweis: "Guthaben nicht da? Meist wurde mit einer anderen E-Mail-Adresse bestellt. Schreib uns kurz an ",
+  schritte: SCHRITTE_TOKEN, abo: true,
+});
 
-// Paket-Seiten: Abo-Upsell — mit Bonus+Countdown, sobald das Bonus-Produkt existiert.
-function aboUpsell(pain, lead) {
-  if (BONUS_ABO_ID) {
-    return {
-      id: BONUS_ABO_ID,
-      eyebrow: "Einmaliges Dankeschön · nur auf dieser Seite",
-      pain,
-      lead: lead + " Und nur hier legen wir dir 100 Bonus-Token auf den ersten Monat obendrauf.",
-      title: "Smart Studio — Rundum-Service",
-      big: "Wir übernehmen. Du wählst aus.",
-      bonus: "+100 Bonus-Token im 1. Monat — nur über diese Seite",
-      bullets: [
-        "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
-        "Du markierst deine Favoriten, wir kümmern uns um den Rest",
-        "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-      ],
-      price: "49 € / Monat",
-      cta: "Rundum-Service mit Bonus sichern",
-    };
-  }
-  return {
-    id: "722974",
-    eyebrow: "Wenn du magst · dein nächster Schritt",
-    pain,
-    lead,
-    title: "Smart Studio — Rundum-Service",
-    big: "Wir übernehmen. Du wählst aus.",
-    bonus: null,
-    bullets: [
-      "Laufend fertige Beiträge in deiner Marke — ohne dass du starten musst",
-      "Du markierst deine Favoriten, wir kümmern uns um den Rest",
-      "Monatlich kündbar über Digistore24 — ohne Mindestlaufzeit",
-    ],
-    price: "49 € / Monat",
-    cta: "Rundum-Service starten",
-    noCountdown: true,
-  };
-}
-
-// Abo-Seite: Token-Vorrat-Upsell — nur mit echtem Bonus-Produkt, sonst keiner.
-function aboPageUpsell() {
-  if (!BONUS_250_ID) return null;
-  return {
-    id: BONUS_250_ID,
-    eyebrow: "Einmaliger Start-Vorteil · nur auf dieser Seite",
-    pain: "Für die Wochen, in denen du <em>selbst</em> kreativ sein willst.",
-    lead: "Dein Service läuft ab jetzt automatisch. Fürs Selbermachen zwischendurch: Sichere dir jetzt einmalig den Token-Vorrat mit 50 Bonus-Token obendrauf — er verfällt nie.",
-    title: "Smart Studio — 250 Token",
-    big: "250 + 50 Bonus-Token",
-    bonus: "+50 Bonus-Token — nur über diese Seite",
-    bullets: [
-      "12 eigene Beiträge, wann immer du magst",
-      "Verfällt nie — dein Vorrat wartet auf dich",
-      "Einmalzahlung, kein weiteres Abo",
-    ],
-    price: "47 € einmalig",
-    cta: "Vorrat mit Bonus sichern",
-  };
-}
-
-
-// ------------------------------------------------------------
-// PRODUKT-CONFIG — die einzige Stelle, an der gepflegt wird.
-// tokens = was der Kauf gutschreibt · upsell = das EINE Angebot.
-// ------------------------------------------------------------
-const PRODUCTS = [
-  // Reale Digistore-Produkte (Phil, 16.08.): 100T=722966 · 250T=722970 ·
-  // 500T=722971 · Service-Abo=722974. Das Abo ist NICHT token-basiert
-  // (Sebi 19.08.): Rundum-Service — wir erstellen laufend, Kundin kuratiert.
-  // Kein Countdown/Bonus, solange keine exklusiven Bonus-Produkte existieren
-  // (UWG: Verknappung nur, wenn sie real ist).
+const SEITEN = [
+  tokenSeite(100, `Das reicht für ${100 / POST_KOSTEN} Beiträge.`),
+  tokenSeite(250, `Das reicht für ${250 / POST_KOSTEN} Beiträge.`),
+  tokenSeite(500, `Das reicht für ${500 / POST_KOSTEN} Beiträge.`),
   {
-    slug: "paket-100",
-    label: "100 Token",
-    isAbo: false,
-    tokens: 100,
-    heroSub: "Deine <b>100 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 4 komplette Beiträge.",
-    upsell: aboUpsell(
-      "Selbst erstellen ist stark. <em>Gar nicht dran denken müssen</em> ist stärker.",
-      "Mit dem Rundum-Service läuft dein Content automatisch weiter: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir."
-    ),
+    slug: "abo", titel: "Rundum-Service",
+    h1: "Dein Rundum-Service läuft.",
+    sub: "Ab jetzt erstellen wir laufend Beiträge in deiner Marke, du wählst nur noch aus. <b>Wir melden uns innerhalb von 24 Stunden persönlich bei dir.</b>",
+    knopf: "Zu deinem Bereich", hinweis: "Nach 24 Stunden nichts gehört? Meist wurde mit einer anderen E-Mail-Adresse bestellt. Schreib uns kurz an ",
+    schritte: SCHRITTE_ABO, abo: false, recht: " Dein Abo verlängert sich monatlich und ist jederzeit über Digistore24 kündbar.",
   },
   {
-    slug: "paket-250",
-    label: "250 Token",
-    isAbo: false,
-    tokens: 250,
-    heroSub: "Deine <b>250 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Genug für 10 komplette Beiträge.",
-    upsell: aboUpsell(
-      "Dein Rhythmus steht schon — mach ihn jetzt <em>automatisch</em>.",
-      "250 Token heißt: du meinst es ernst mit deiner Sichtbarkeit. Der Rundum-Service nimmt dir den letzten Handgriff ab — wir erstellen laufend, du wählst nur noch aus."
-    ),
-  },
-  {
-    slug: "paket-500",
-    label: "500 Token",
-    isAbo: false,
-    tokens: 500,
-    heroSub: "Deine <b>500 Token</b> sind auf dem Weg in dein Smart Studio — in der Regel siehst du sie in Sekunden. Dein Content-Vorrat für Monate.",
-    upsell: aboUpsell(
-      "Du planst groß. Mach aus dem Vorrat ein <em>System</em>.",
-      "Mit dem Rundum-Service musst du nie wieder auf den Kontostand schauen: Wir erstellen dir laufend Beiträge in deiner Marke — du wählst nur noch deine Favoriten aus."
-    ),
-  },
-  {
-    slug: "abo",
-    label: "Rundum-Service",
-    isAbo: true,
-    tokens: null,
-    h1: "Willkommen im <em>Rundum-Service</em>.",
-    heroSub: "Ab jetzt läuft dein Content <b>automatisch</b>: Wir erstellen dir laufend Beiträge in deiner Marke, du wählst nur noch deine Favoriten aus — den Rest übernehmen wir. <b>Wir melden uns innerhalb von 24 Stunden persönlich bei dir</b> und richten alles ein.",
-    stepsEyebrow: "So geht es jetzt weiter",
-    steps: [
-      { b: "Wir melden uns", t: "innerhalb von 24 Stunden — kurz abstimmen, was deine Marke gerade braucht." },
-      { b: "Dein Studio füllt sich", t: "wir erstellen dir laufend fertige Beiträge in deiner Markenwelt." },
-      { b: "Du wählst aus", t: "Herz drücken bei deinen Favoriten — wir planen und veröffentlichen für dich." },
-    ],
-    upsell: aboPageUpsell(),
+    slug: "", titel: "Guthaben",
+    h1: "Dein Guthaben ist unterwegs.",
+    sub: "Es landet in deinem Smart Studio, meist in wenigen Sekunden.",
+    knopf: "Zum Smart Studio", hinweis: "Guthaben nicht da? Meist wurde mit einer anderen E-Mail-Adresse bestellt. Schreib uns kurz an ",
+    schritte: SCHRITTE_TOKEN, abo: false,
   },
 ];
 
-// ------------------------------------------------------------
-// BONUS-VARIANTEN (Upsell-Käufe) — Ende der Kette: Bestätigung
-// mit Bonus-Rechnung, bewusst KEIN weiterer Upsell.
-// ------------------------------------------------------------
-const BONUS_PRODUCTS = [
-  // Bewusst leer: exklusive Bonus-Produkte existieren (noch) nicht in
-  // Digistore. Erst wieder befüllen, wenn Phil sie anlegt — sonst wären
-  // Countdown/Bonus-Versprechen UWG-Risiko.
-];
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const PFEIL = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-// Fallback-Seite, wenn ein Kauf ohne produktspezifische URL landet.
-const FALLBACK = {
-  slug: "",
-  label: "Token",
-  isAbo: false,
-  tokens: null,
-  heroSub: "Dein Token-Guthaben ist auf dem Weg in dein Smart Studio — in der Regel siehst du es in Sekunden.",
-  upsell: null,
-};
-
-// ------------------------------------------------------------
-// Template
-// ------------------------------------------------------------
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-
-function upsellHtml(p) {
-  const u = p.upsell;
-  if (!u) return "";
-  const href = u.id ? ds(u.id) : u.href;
-  const countdown = u.noCountdown
-    ? ""
-    : `<div class="cd" id="cd" role="timer" aria-label="Verbleibende Zeit für dieses Angebot">
-        <span class="cd-k">Angebot endet in</span>
-        <span class="cd-t" id="cd-t">${String(COUNTDOWN_MINUTES).padStart(2, "0")}:00</span>
-      </div>`;
-  return `
-  <section class="blk offer" aria-labelledby="offer-h">
-    <div class="wrap"><div class="panel reveal" id="offer-panel">
-      <div class="offer-top">
-        <span class="eyebrow">${esc(u.eyebrow)}</span>
-        ${countdown}
-      </div>
-      <h2 id="offer-h">${u.pain}</h2>
-      <p class="lead">${esc(u.lead)}</p>
-      <div class="offercard">
-        <div class="oc-main">
-          <span class="klabel">${esc(u.title)}</span>
-          <p class="oc-big">${esc(u.big)}</p>
-          ${u.bonus ? `<p class="oc-bonus">✦ ${esc(u.bonus)}</p>` : ""}
-          <ul class="oc-list">${u.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
-        </div>
-        <div class="oc-side">
-          ${u.price ? `<p class="oc-price">${esc(u.price)}</p>` : ""}
-          <a class="btn btn-primary" id="upsell-cta" href="${esc(href)}"${u.id ? "" : ' rel="noopener"'}>${esc(u.cta)} <span class="arr">→</span></a>
-          ${u.noCountdown ? "" : `<p class="oc-hint">Gilt nur auf dieser Seite — danach regulärer Umfang.</p>`}
-        </div>
-      </div>
-      ${u.noCountdown ? "" : `<div class="expired" id="expired" hidden>
-        <p><b>Dieses Angebot ist abgelaufen.</b> Alle Abos und Pakete findest du jederzeit in deinem Studio unter „Guthaben aufladen".</p>
-      </div>`}
-    </div></div>
-  </section>`;
-}
-
-function pageHtml(p) {
-  const title = p.slug
-    ? `Danke — ${p.label} · Smart Studio · social2scale`
-    : "Danke — dein Guthaben kommt · Smart Studio · social2scale";
-  const h1 = p.h1 || (p.isAbo
-    ? 'Dein Studio ist <em>startklar</em>.'
-    : 'Dein Guthaben ist <em>da</em>.');
-  const aboLegal = p.isAbo
-    ? " Dein Abo verlängert sich monatlich und ist jederzeit über Digistore24 kündbar."
-    : "";
-  const hasCountdown = p.upsell && !p.upsell.noCountdown;
-
-  return `<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
-     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#03080D">
-<title>${esc(title)}</title>
-<meta name="description" content="Danke für deinen Kauf — dein Smart-Studio-Guthaben ist unterwegs.">
-<link rel="stylesheet" href="/fonts.css">
-<style>
-  /* Die Werkstatt-Tokens kommen aus EINER Quelle:
-     social2scale-clients/_portal/lib/studio-design.js.
-     Hier stand vorher eine handgepflegte Kopie derselben Palette — und sie war
-     schon auseinandergelaufen (--faint auf #7C7E78 statt #8E918B). Erneuern:
-       node scripts/design-tokens-export.mjs --ziel=<site>/scripts/studio-tokens.css
-     Prüfen (Tor gegen Drift):
-       node scripts/design-tokens-export.mjs --pruefe=<site>/scripts/studio-tokens.css */
-${TOKENS}
-  :root{
-    /* Nur, was ausschließlich diese Seiten brauchen. */
-    --amber:#E8B34B;
-    --surf-grad:linear-gradient(180deg,color-mix(in srgb,var(--s2-surface-3) 55%,var(--s2-surface-2)) 0%,var(--s2-surface-2) 38%,var(--s2-surface) 100%);
-    --grad-emerald:radial-gradient(120% 140% at 78% 8%,color-mix(in srgb,var(--s2-accent) 12%,transparent),transparent 52%),radial-gradient(120% 130% at 14% 96%,color-mix(in srgb,var(--s2-accent-2) 10%,transparent),transparent 56%),linear-gradient(180deg,color-mix(in srgb,var(--s2-surface) 88%,var(--s2-ink)) 0%,var(--s2-surface) 70%);
-    --px:clamp(20px, 5vw, 56px);
-    /* Diese Seiten malen einen deutlich HELLEREN Verlauf hinter den Text als
-       --s2-bg. Der leise Ton des Systems ist dafür gebaut, auf #0E1013 zu
-       stehen, und kam hier auf 3,5:1. Statt fünf Regeln einzeln zu flicken,
-       wird die ROLLE für diese Fläche neu belegt — aus derselben Tinte
-       gemischt, damit sie leiser bleibt als der Fließtext. Gemessen mit
-       studio-flaechen.mjs --nur=danke. */
-    --s2-faint:color-mix(in srgb, var(--s2-ink) 78%, var(--s2-bg));
-    /* Aus demselben Grund der Sekundaerton: auf dem hellsten Punkt des
-       Seitenverlaufs stand er mit 4,06:1. Beide Rollen bleiben leiser als der
-       Fliesstext, nur eben hell genug fuer DIESE Flaeche. */
-    --s2-muted:color-mix(in srgb, var(--s2-ink) 88%, var(--s2-bg));
-  }
+const CSS = `
+  :root{color-scheme:dark;
+    --grund:#05090C;--linie:rgba(236,240,237,.12);--linie-stark:rgba(236,240,237,.22);
+    --tinte:#F1F3F0;--text:#C6CAC5;--leise:#ABAEA8;--emerald:#00B888;--emerald-hell:#3FD9AE;--teal:#1FA6E0;--auf-akzent:#04140F;
+    --ff-titel:'Fraunces',Georgia,serif;--ff-text:'Hanken Grotesk',system-ui,sans-serif;--ruhe:cubic-bezier(.2,.7,.2,1)}
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    background:
-      /* Die beiden Farbwolken lagen bei .34 und .30 und machten den oberen
-         linken Bereich so hell, dass der Fliesstext darauf mit 2,87:1 stand —
-         genau dort, wo die Verkaufszeile sitzt. Gemessen auf der fertigen
-         Seite; vorher hat es kein Werkzeug gesehen, weil der Verlauf aus
-         mehreren Schichten besteht und falsch gerechnet wurde. */
-      radial-gradient(95% 75% at 14% 6%,rgba(0,184,136,.22),transparent 55%),
-      radial-gradient(98% 82% at 90% 92%,rgba(20,140,200,.20),transparent 56%),
-      linear-gradient(150deg,#04140F 0%,#05131C 52%,#03080D 100%);
-    background-attachment:fixed;background-color:#03080D;
-    color:var(--s2-ink);font-family:var(--s2-ff-ui);
-    -webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
-  @media (max-width:700px){body{background-attachment:scroll;background-size:cover}}
-  ::selection{background:rgba(0,184,136,.30);color:#F2F3F1}
-  a:focus-visible,button:focus-visible{outline:2px solid var(--s2-accent);outline-offset:3px;border-radius:4px}
-  .wrap{width:100%;max-width:880px;margin:0 auto;padding:0 var(--px)}
-
-  @keyframes upIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-  @keyframes glint{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
-  @keyframes glowPulse{0%{opacity:0;transform:scale(.7)}45%{opacity:.85}100%{opacity:0;transform:scale(1.5)}}
-  @keyframes drawCheck{to{stroke-dashoffset:0}}
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--s2-ease),transform .7s var(--s2-ease)}
-  .reveal.on{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    .reveal{opacity:1!important;transform:none!important;transition:none}
-    .r{animation:none!important;opacity:1!important}
-    .badge path{stroke-dashoffset:0!important;animation:none!important}
-    .celebrate{animation:none;opacity:0}
+  [hidden]{display:none!important}
+  html,body{height:100%}
+  body{background-color:var(--grund);color:var(--text);font:17px/1.55 var(--ff-text);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  a:focus-visible{outline:2px solid var(--emerald-hell);outline-offset:3px;border-radius:6px}
+  .buehne{position:relative;overflow:clip;isolation:isolate;min-height:100%;display:grid;background-color:#050B0C;background-image:linear-gradient(180deg,#07130F,#050B0C 60%,#05090C)}
+  .hgb{position:absolute;inset:0;z-index:-1;pointer-events:none;display:flex;align-items:flex-end;justify-content:flex-end;gap:clamp(10px,1.6vw,26px);padding-right:clamp(0px,5vw,96px)}
+  .hgb i{width:clamp(64px,11vw,190px);border-radius:16px 16px 0 0;transform-origin:bottom;
+    background:linear-gradient(180deg,rgba(63,217,174,.20),rgba(31,166,224,.07) 55%,rgba(31,166,224,.02));box-shadow:inset 0 1px 0 rgba(140,240,210,.35),inset 1px 0 0 rgba(140,240,210,.06);
+    animation:wachsen 1.3s var(--ruhe) both}
+  .hgb i:nth-child(1){height:34%;animation-delay:.15s}.hgb i:nth-child(2){height:56%;animation-delay:.3s}.hgb i:nth-child(3){height:82%;animation-delay:.45s}
+  .seite{display:grid;grid-template-rows:auto 1fr auto;min-height:100%;max-width:1120px;width:100%;margin:0 auto;padding:0 20px}
+  .kopf{padding:clamp(12px,2.4vh,22px) 0;display:flex;align-items:center;justify-content:space-between}
+  .kopf a{display:inline-flex;align-items:center;min-height:44px}
+  .kopf img{height:30px;width:auto;display:block}
+  .stand{display:flex;align-items:center;gap:10px;color:var(--emerald-hell);font-weight:600;font-size:15px}
+  .balken{display:inline-flex;align-items:flex-end;gap:3px;height:18px}
+  .balken i{width:4px;border-radius:2px;background:linear-gradient(180deg,var(--emerald-hell),var(--teal));transform-origin:bottom;animation:wachsen .6s var(--ruhe) both}
+  .balken i:nth-child(1){height:7px}.balken i:nth-child(2){height:12px;animation-delay:.12s}.balken i:nth-child(3){height:18px;animation-delay:.24s}
+  .mitte{display:grid;align-content:center;justify-items:center;text-align:center;padding:clamp(8px,2vh,28px) 0}
+  h1{font:400 clamp(2.6rem,1rem + 7vw,6.25rem)/1 var(--ff-titel);color:var(--tinte);letter-spacing:-.035em;text-wrap:balance;animation:herein .8s var(--ruhe) .1s both}
+  .einstieg{margin-top:clamp(12px,2.2vh,22px);max-width:32em;font-size:clamp(1.0625rem,1rem + .35vw,1.25rem);text-wrap:pretty;animation:herein .8s var(--ruhe) .25s both}
+  .einstieg b{color:var(--tinte);font-weight:600}
+  .einstieg .zahl{font-variant-numeric:tabular-nums lining-nums;background:linear-gradient(100deg,#6FECC8,var(--emerald-hell) 40%,#39B6E6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-hell)}
+  .knopf{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding:0 34px;border-radius:12px;font-weight:600;font-size:1.125rem;text-decoration:none;margin-top:clamp(16px,3vh,32px);
+    background:var(--emerald);color:var(--auf-akzent);box-shadow:0 1px 0 rgba(255,255,255,.28) inset,0 14px 34px -12px rgba(0,184,136,.8);transition:transform .2s var(--ruhe),background-color .2s;animation:herein .8s var(--ruhe) .35s both}
+  .knopf:hover{transform:translateY(-2px);background:var(--emerald-hell)}
+  .knopf svg{width:20px;height:20px;transition:transform .25s var(--ruhe)}.knopf:hover svg{transform:translateX(4px)}
+  .hinweis{margin-top:14px;max-width:32em;font-size:15px;color:var(--leise);animation:herein .8s var(--ruhe) .45s both}
+  .hinweis a{display:inline-block;padding:10px 2px;margin:-10px 0;color:var(--text)}
+  .wir{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:clamp(14px,2.6vh,26px);font-size:15.5px;text-align:left;animation:herein .8s var(--ruhe) .55s both}
+  .wir span{display:flex;flex:none}.wir img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #06110E;display:block}.wir picture+picture img{margin-left:-12px}
+  .unten{padding-bottom:clamp(10px,2vh,20px);animation:herein .8s var(--ruhe) .65s both}
+  .schritte{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,22px);list-style:none;counter-reset:s}
+  .schritte li{position:relative;padding-top:12px}
+  .schritte li::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--linie-stark)}
+  .schritte li:first-child::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,var(--emerald-hell),var(--teal));transform-origin:left;animation:strich .8s var(--ruhe) .9s both}
+  .schritte b{display:block;font:400 clamp(1rem,.9rem + .5vw,1.25rem)/1.2 var(--ff-titel);color:var(--tinte)}
+  .schritte span{display:block;margin-top:3px;font-size:15px;color:var(--leise)}
+  .abo{margin-top:clamp(10px,2vh,18px);font-size:15px;color:var(--text);text-align:center}
+  .abo a{display:inline-block;padding:12px 2px;margin:-12px 0;color:var(--emerald-hell);font-weight:600;text-underline-offset:3px}
+  .recht{margin-top:clamp(8px,1.6vh,14px);color:var(--leise);font-size:15px;text-align:center}
+  .recht a{display:inline-block;padding:12px 2px;margin:-12px 0}
+  .recht a:hover,.hinweis a:hover{color:var(--tinte)}
+  @keyframes herein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes wachsen{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  @keyframes strich{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  @media (min-width:900px){.seite{padding:0 56px}}
+  @media (max-width:640px){
+    .schritte{gap:8px}.schritte li{padding-top:8px}
+    .schritte b{font-size:15px;line-height:1.25}.schritte span{display:none}
+    .hinweis{margin-top:10px}.abo{margin-top:8px}
+    h1{font-size:clamp(2.4rem,12vw,3.2rem)}
+    .knopf{width:100%;margin-top:16px}
+    .einstieg{font-size:1rem;margin-top:10px}
+    .mitte{padding:0}
+    .wir{margin-top:12px}
+    .hgb{padding-right:0;gap:8px;opacity:.4}.hgb i{width:20vw}.hgb i:nth-child(1){height:12%}.hgb i:nth-child(2){height:20%}.hgb i:nth-child(3){height:30%}
   }
-  .r{opacity:0;animation:upIn .7s var(--s2-ease) forwards}
+`;
 
-  .eyebrow{display:inline-flex;align-items:center;gap:var(--s2-sp-2);font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-faint)}
-  .klabel{font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent);display:block}
-  h2{font-family:var(--s2-ff-display);font-weight:450;font-size:clamp(1.9rem,1.3rem + 2.4vw,3rem);line-height:1.06;letter-spacing:-.022em;margin-top:var(--s2-sp-3)}
-  h2 em,.hero h1 em{font-style:italic;font-weight:450;background:var(--s2-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--s2-accent)}
-  .lead{color:var(--s2-muted);max-width:58ch;margin-top:var(--s2-sp-4);font-size:clamp(1.02rem,.98rem + .3vw,1.15rem)}
+// Die Token-Zahl zählt einmal hoch. Im HTML steht der Endwert: ohne JavaScript und ohne Bewegung bleibt er stehen.
+const ZAEHLEN = `<script>
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.querySelectorAll('.zahl[data-ziel]').forEach(function(e){
+    var ziel=+e.getAttribute('data-ziel'),t0=null,dauer=900;
+    if(!(ziel>0))return;
+    function bild(t){if(t0===null)t0=t;var a=Math.min(1,(t-t0)/dauer),w=1-Math.pow(1-a,3);e.textContent=String(Math.round(ziel*w));if(a<1)requestAnimationFrame(bild);}
+    e.textContent='0';setTimeout(function(){requestAnimationFrame(bild)},350);
+  });
+})();
+</script>`;
 
-  .bar{display:flex;align-items:center;justify-content:center;padding:0 var(--px);min-height:68px;border-bottom:1px solid rgba(0,184,136,.14);position:sticky;top:0;z-index:120;background:linear-gradient(180deg,rgba(8,16,13,.86),rgba(7,11,14,.78));-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%)}
-  .bar .brand{display:inline-flex;align-items:center;min-height:44px}
-  .bar .brand img{height:30px;width:auto;display:block}
-
-  .btn{position:relative;display:inline-block;font-family:var(--s2-ff-ui);font-size:0.9375rem;font-weight:700;letter-spacing:.02em;padding:18px 36px;border-radius:9px;text-decoration:none;cursor:pointer;overflow:hidden;transition:transform .25s var(--s2-ease),box-shadow .25s}
-  .btn:hover{transform:translateY(-3px)}
-  .btn-primary{background:linear-gradient(135deg,var(--s2-accent-soft) 0%,var(--s2-accent) 52%,var(--s2-accent-2) 100%);color:var(--s2-on-accent-2);box-shadow:0 16px 38px -12px rgba(0,184,136,.6),0 16px 38px -16px rgba(31,166,224,.45),inset 0 1px 0 rgba(255,255,255,.32)}
-  .btn-primary::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-150%)}
-  .btn-primary:hover::after{animation:glint .85s var(--s2-ease) forwards}
-  .btn .arr{display:inline-block;transition:transform .25s var(--s2-ease)}.btn:hover .arr{transform:translateX(4px)}
-  .btn-ghost{background:rgba(242,243,241,.04);border:1px solid var(--s2-line-2);color:var(--s2-ink)}
-  .btn-ghost:hover{border-color:var(--s2-line-3)}
-
-  .hero{position:relative;overflow:hidden;padding:clamp(var(--s2-sp-8),7vw,var(--s2-sp-9)) 0 max(clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)),72px)}
-  .herovid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5;z-index:0;pointer-events:none}
-  @media (prefers-reduced-motion:reduce){.herovid{display:none}}
-  .hero .wrap{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center}
-  .celebrate{position:absolute;top:30%;left:50%;width:540px;height:540px;margin:-270px 0 0 -270px;border-radius:50%;background:radial-gradient(circle,rgba(0,184,136,.45),rgba(31,166,224,.12) 52%,transparent 66%);pointer-events:none;z-index:0;animation:glowPulse 1.7s var(--s2-ease) .2s both}
-  /* Der Bestaetigungs-Chip stand als Akzentfarbe auf einer Akzent-Waschung
-     ueber dem hellen Hero — 3,72:1. Sichtbar wurde das erst, als das
-     Pruefwerkzeug die Einblend-Animation ans Ende setzt; vorher war der Chip
-     zum Messzeitpunkt durchsichtig. */
-  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--s2-ff-ui);font-size:0.6875rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--s2-accent-soft);background:var(--s2-surface);border:1px solid color-mix(in srgb,var(--s2-accent) 34%,transparent);border-radius:999px;padding:8px 15px;animation:upIn .6s var(--s2-ease) .12s both}
-  .badge svg{width:15px;height:15px}.badge path{stroke-dasharray:30;stroke-dashoffset:30;animation:drawCheck .5s var(--s2-ease) .55s forwards}
-  .hero h1{font-family:var(--s2-ff-display);font-weight:540;font-size:clamp(2.6rem,1rem + 5.6vw,5.2rem);line-height:.98;letter-spacing:-.03em;margin-top:var(--s2-sp-5);max-width:16ch;font-variation-settings:"opsz" 144;animation:upIn .7s var(--s2-ease) .26s both}
-  .hero .sub{color:var(--s2-muted);font-size:clamp(1.1rem,1rem + .55vw,1.3rem);margin-top:var(--s2-sp-6);max-width:52ch;line-height:1.6;animation:upIn .7s var(--s2-ease) .38s both}
-  .hero .sub b{color:var(--s2-ink);font-weight:600}
-  .hero .cta-row{display:flex;flex-direction:column;align-items:center;gap:var(--s2-sp-3);margin-top:var(--s2-sp-6);animation:upIn .7s var(--s2-ease) .5s both}
-    .hero .hint{font-family:var(--s2-ff-mono);font-size:0.9375rem;letter-spacing:.01em;line-height:1.5;color:var(--s2-muted);text-shadow:0 1px 10px rgba(0,0,0,.85)}
-
-  section.blk{padding:clamp(var(--s2-sp-7),5vw,var(--s2-sp-8)) 0}
-  .offer .panel{position:relative;overflow:hidden;background:var(--grad-emerald);border:1px solid var(--s2-line-2);border-radius:24px;padding:clamp(26px,4.5vw,48px);box-shadow:var(--s2-e-3)}
-  .offer .panel::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,184,136,.6) 40%,rgba(31,166,224,.55) 70%,transparent)}
-  .offer-top{display:flex;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);flex-wrap:wrap}
-  .cd{display:inline-flex;align-items:baseline;gap:10px;background:rgba(232,179,75,.08);border:1px solid rgba(232,179,75,.32);border-radius:999px;padding:8px 16px}
-  .cd-k{font-family:var(--s2-ff-ui);font-size:0.625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--amber)}
-  .cd-t{font-family:var(--s2-ff-mono);font-size:1.05rem;font-weight:500;color:var(--amber);font-variant-numeric:tabular-nums;letter-spacing:.06em}
-  .offercard{display:grid;grid-template-columns:1.5fr 1fr;gap:var(--s2-sp-6);margin-top:var(--s2-sp-6);background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:18px;padding:clamp(20px,3vw,30px);box-shadow:var(--s2-e-2)}
-  .oc-big{font-family:var(--s2-ff-display);font-weight:500;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.3rem);letter-spacing:-.02em;margin-top:var(--s2-sp-2)}
-  .oc-bonus{margin-top:var(--s2-sp-3);font-family:var(--s2-ff-ui);font-weight:600;font-size:.96rem;color:var(--amber)}
-  .oc-list{list-style:none;margin-top:var(--s2-sp-4);display:grid;gap:var(--s2-sp-2)}
-  .oc-list li{position:relative;padding-left:1.6em;color:var(--s2-muted);font-size:.98rem}
-  .oc-list li::before{content:"✓";position:absolute;left:0;color:var(--s2-accent);font-weight:700}
-  .oc-side{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:var(--s2-sp-3);border-left:1px solid var(--s2-line);padding-left:var(--s2-sp-6)}
-  .oc-price{font-family:var(--s2-ff-ui);font-weight:700;font-size:1.3rem}
-  .oc-hint{font-size:.85rem;color:var(--s2-faint);line-height:1.5}
-  .expired p{margin-top:var(--s2-sp-5);color:var(--s2-muted);background:rgba(242,243,241,.03);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5)}
-  .expired b{color:var(--s2-ink)}
-  .offer .panel.is-expired .offercard,.offer .panel.is-expired .cd,.offer .panel.is-expired .oc-hint{display:none}
-  @media (max-width:720px){
-    .offercard{grid-template-columns:1fr}
-    .oc-side{border-left:0;border-top:1px solid var(--s2-line);padding-left:0;padding-top:var(--s2-sp-5);align-items:stretch}
-    .oc-side .btn{text-align:center}
-  }
-
-  .steps-blk .wrap>.eyebrow{margin-bottom:var(--s2-sp-2)}
-  .steps{list-style:none;display:grid;gap:var(--s2-sp-3);counter-reset:step;margin-top:var(--s2-sp-5)}
-  .steps li{counter-increment:step;display:flex;gap:var(--s2-sp-5);align-items:baseline;background:var(--surf-grad);border:1px solid var(--s2-line-2);border-radius:14px;padding:clamp(16px,2.4vw,22px) clamp(18px,3vw,26px);box-shadow:var(--s2-e-2)}
-  .steps li::before{content:counter(step,decimal-leading-zero);font-family:var(--s2-ff-mono);font-size:.95rem;color:var(--s2-accent);flex:none}
-  .steps li b{color:var(--s2-ink);font-weight:600}
-  .steps li{color:var(--s2-muted);font-size:.98rem}
-
-  .legal-blk .wrap{display:grid;gap:var(--s2-sp-4)}
-  /* Die Karte liegt auf dem hellen Teil des Verlaufs. Ein durchsichtiger
-     Grund reicht dort nicht: der Sekundaerton kam auf 4,25:1. Eine eigene,
-     deckende Flaeche gibt dem Text wieder einen definierten Grund. */
-  .notecard{background:var(--s2-surface);border:1px solid var(--s2-line-2);border-radius:12px;padding:var(--s2-sp-4) var(--s2-sp-5);color:var(--s2-muted);font-size:0.9375rem;line-height:1.65;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-  .notecard b{color:var(--s2-ink)}
-  .notecard a{color:var(--s2-accent-soft);text-decoration:none}
-  .notecard a:hover{text-decoration:underline}
-  .mandatory{font-family:var(--s2-ff-mono);font-size:0.9375rem;letter-spacing:.01em;line-height:1.5;color:var(--s2-muted)}
-
-  .site-footer{margin-top:var(--s2-sp-8);border-top:1px solid var(--s2-line);background:linear-gradient(180deg,rgba(255,255,255,.012),transparent 40%),var(--s2-bg-2)}
-  .site-footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s2-sp-4);padding-top:var(--s2-sp-6);padding-bottom:var(--s2-sp-6);font-family:var(--s2-ff-mono);font-size:0.6875rem;letter-spacing:.04em;color:var(--s2-faint)}
-  .site-footer img{height:34px;width:auto;display:block}
-  .site-footer nav{display:flex;flex-wrap:wrap;gap:var(--s2-sp-4)}
-  .site-footer a{display:inline-flex;align-items:center;min-height:44px;color:var(--s2-muted);text-decoration:none}
-  .site-footer a:hover{color:var(--s2-ink)}
-</style>
-<noscript><style>.reveal,.r{opacity:1!important;transform:none!important;animation:none!important}.badge path{stroke-dashoffset:0!important}.cd-t::after{content:" Min."}</style></noscript>
-<link rel="stylesheet" href="/bedienung.css">
-</head>
-<body>
-  <div class="bar"><a class="brand" href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a></div>
-
-  <main>
-    <section class="hero">
-      <video class="herovid" autoplay muted loop playsinline poster="/danke/studio/assets/danke-poster.jpg" aria-hidden="true"><source src="/danke/studio/assets/danke-bg.mp4" type="video/mp4"></video>
-      <div class="celebrate" aria-hidden="true"></div>
-      <div class="wrap">
-        <span class="badge">${CHECK_SVG} Zahlung bestätigt</span>
-        <h1>${h1}</h1>
-        <p class="sub">${p.heroSub}</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="${STUDIO_URL}">Zu deinem Bereich <span class="arr">→</span></a>
-          <span class="hint">${p.isAbo ? "Wir haben deine Bestellung — du hörst innerhalb von 24 Stunden persönlich von uns." : "Gutschrift dauert in der Regel nur Sekunden."}</span>
-        </div>
-      </div>
-    </section>
-
-    ${upsellHtml(p)}
-
-    <section class="blk steps-blk" aria-labelledby="steps-h">
-      <div class="wrap">
-        <span class="eyebrow" id="steps-h">${esc(p.stepsEyebrow || "In 3 Minuten zum ersten Beitrag")}</span>
-        <ol class="steps reveal">
-${(p.steps || [
-  { b: "Studio öffnen", t: "dein Guthaben steht oben rechts." },
-  { b: "Thema eingeben", t: "ein Satz reicht. Du bekommst 3 Vorschläge in deiner Markenwelt." },
-  { b: "Favorit wählen & feinschleifen", t: "bestätigen, fertig. Caption und Hashtags sind schon dabei." },
-]).map((s) => `          <li><span><b>${esc(s.b)}</b> — ${esc(s.t)}</span></li>`).join("\n")}
-        </ol>
-      </div>
-    </section>
-
-    <section class="blk legal-blk">
-      <div class="wrap">
-        <div class="notecard human"><b>Hinter deinem Studio stehen Menschen.</b> Wir — Sebi &amp; Phil — lesen jede Nachricht selbst. Wenn irgendwas ist oder du dir unsicher bist: <a href="mailto:${SUPPORT_MAIL}">schreib uns</a>, wir antworten persönlich.</div>
-        <div class="notecard">${p.isAbo ? `<b>Nichts von uns gehört?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast, als wir von dir kennen. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir melden uns sofort.` : `<b>Guthaben nicht da?</b> Das passiert fast nur, wenn du mit einer anderen E-Mail-Adresse bestellt hast als der deines s2s-Bereichs. Schreib uns kurz an <a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a> — wir ordnen es dir persönlich zu.`}</div>
-        <p class="mandatory">Die Abbuchung erfolgt durch Digistore24.${aboLegal}</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer"><div class="wrap">
-    <a href="/" aria-label="social2scale — zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="68" height="34"></a>
-    <nav aria-label="Rechtliches">
-      <a href="/impressum/">Impressum</a>
-      <a href="/datenschutz/">Datenschutz</a>
-      <a href="mailto:${SUPPORT_MAIL}">Kontakt</a>
-    </nav>
-    <span>© <span id="yr"></span> social2scale</span>
-  </div></footer>
-
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    // Reveal-on-scroll (dezent, reduced-motion respektiert CSS-seitig)
-    (function () {
-      var els = document.querySelectorAll('.reveal');
-      if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('on'); }); return; }
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('on'); io.unobserve(en.target); } });
-      }, { rootMargin: '0px 0px -60px' });
-      els.forEach(function (e) { io.observe(e); });
-      setTimeout(function () { els.forEach(function (e) { e.classList.add('on'); }); }, 1200);
-    })();
-
-    // E-Mail aus Digistore-Dankesseiten-Parametern an den Upsell-Link
-    // weiterreichen → Bestellformular vorbefüllt → Auto-Match im Portal greift.
-    (function () {
-      var cta = document.getElementById('upsell-cta');
-      if (!cta) return;
-      try {
-        var q = new URLSearchParams(location.search);
-        var email = q.get('email') || q.get('buyer_email') || '';
-        if (email && cta.href.indexOf('digistore24.com') > -1) {
-          var u = new URL(cta.href);
-          u.searchParams.set('email', email);
-          cta.href = u.toString();
-        }
-      } catch (_) {}
-    })();
-${hasCountdown ? `
-    // Countdown: ${COUNTDOWN_MINUTES} Min ab erstem Besuch dieser Seite (pro
-    // Bestellung, via localStorage). Abgelaufen → Angebot ausblenden,
-    // ruhiger Hinweis. Muss mit einer ECHTEN Befristung in Digistore
-    // hinterlegt sein (kein Fake-Countdown).
-    (function () {
-      var MIN = ${COUNTDOWN_MINUTES};
-      var q = new URLSearchParams(location.search);
-      var key = 's2s_danke_${p.slug}_' + (q.get('order_id') || 'visit');
-      var end = 0;
-      try { end = Number(localStorage.getItem(key)) || 0; } catch (_) {}
-      if (!end) {
-        end = Date.now() + MIN * 60 * 1000;
-        try { localStorage.setItem(key, String(end)); } catch (_) {}
-      }
-      var tEl = document.getElementById('cd-t');
-      var panel = document.getElementById('offer-panel');
-      var expired = document.getElementById('expired');
-      function render() {
-        var left = Math.max(0, end - Date.now());
-        var m = Math.floor(left / 60000), s = Math.floor((left % 60000) / 1000);
-        if (tEl) tEl.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-        if (left <= 0) {
-          if (panel) panel.classList.add('is-expired');
-          if (expired) expired.hidden = false;
-          clearInterval(timer);
-        }
-      }
-      var timer = setInterval(render, 1000);
-      render();
-    })();` : ""}
-  </script>
-<script>
+const STATISTIK = `<script>
   // Seitenaufruf zählen — eigene, cookie-freie Messung (landet direkt im CRM).
   // Auf DIESEN Seiten ist die Zahl der Beleg dafür, dass Digistore die
   // Dankesseiten-URL wirklich ausliefert: 0 Aufrufe bei erfolgten Käufen =
@@ -565,23 +172,61 @@ ${hasCountdown ? `
       else fetch(url, { method: "POST", body: daten, headers: { "Content-Type": "text/plain;charset=UTF-8" }, keepalive: true }).catch(function () {});
     } catch (e) { /* Statistik darf die Seite nie stören */ }
   })();
-</script>
+</script>`;
+
+function pageHtml(p) {
+  const titel = (p.slug ? "Danke, " + p.titel : "Danke") + " · social2scale";
+  return `<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Sicherheits-Block (CSP, Referrer-Policy, Rahmenschutz) setzt
+     scripts/csp-haerten.mjs nach dem Bau ein — einzige Quelle. -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07130F">
+<title>${esc(titel)}</title>
+<meta name="description" content="Deine Zahlung ist bestätigt.">
+<link rel="stylesheet" href="/fonts.css">
+<style>${CSS}</style>
+</head>
+<body>
+<div class="buehne">
+  <div class="hgb" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="seite">
+    <header class="kopf"><a href="/" aria-label="social2scale, zur Startseite"><img src="/assets/s2s-t.webp" alt="social2scale" width="60" height="30"></a><p class="stand"><span class="balken" aria-hidden="true"><i></i><i></i><i></i></span>Zahlung bestätigt</p></header>
+    <main class="mitte">
+      <h1>${esc(p.h1)}</h1>
+      <p class="einstieg">${p.sub}</p>
+      <a class="knopf" href="${STUDIO_URL}">${esc(p.knopf)}${PFEIL}</a>
+      <p class="hinweis">${esc(p.hinweis)}<a href="mailto:${SUPPORT_MAIL}">${SUPPORT_MAIL}</a>.</p>
+      <p class="wir"><span aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="40" height="40"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="40" height="40"></picture></span>Danke, dass du dabei bist. Sebi &amp; Phil</p>
+    </main>
+    <footer class="unten">
+      <ol class="schritte" aria-label="So geht es weiter">
+${p.schritte.map((s) => `        <li><b>${esc(s.b)}</b><span>${esc(s.t)}</span></li>`).join("\n")}
+      </ol>
+${p.abo ? `      <p class="abo">Lieber gar nicht selbst? Im Rundum-Service erstellen wir laufend für dich, 49 € im Monat, monatlich kündbar. <a href="${ABO_URL}">Ansehen</a></p>\n` : ""}      <p class="recht">Die Abbuchung erfolgt durch Digistore24.${p.recht || ""} <a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a></p>
+    </footer>
+  </div>
+</div>
+${ZAEHLEN}
+${STATISTIK}
 </body>
 </html>
 `;
 }
 
-// ------------------------------------------------------------
-// Build
-// ------------------------------------------------------------
-let built = 0;
-for (const p of [...PRODUCTS, ...BONUS_PRODUCTS, FALLBACK]) {
+let gebaut = 0;
+for (const p of SEITEN) {
   const dir = p.slug ? join(ROOT, "danke", "studio", p.slug) : join(ROOT, "danke", "studio");
   mkdirSync(dir, { recursive: true });
   writeFileSync(join(dir, "index.html"), pageHtml(p));
-  built++;
+  gebaut++;
   console.log("✓", p.slug ? "/danke/studio/" + p.slug + "/" : "/danke/studio/ (Fallback)");
 }
-console.log("\n" + built + " Seiten generiert. Countdown: " + COUNTDOWN_MINUTES + " Min · Studio: " + STUDIO_URL);
-// Lichtstudio (27.10.2026): die frisch erzeugten Seiten bekommen ihren Raum aus der einen Quelle zurück
-import("node:child_process").then(({ execFileSync }) => { execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "raum-bauen.mjs")], { stdio: "inherit" }); execFileSync(process.execPath, [join(dirname(fileURLToPath(import.meta.url)), "szenen-bauen.mjs")], { stdio: "inherit" }); });
+console.log("\n" + gebaut + " Seiten gebaut. Danach: node scripts/csp-haerten.mjs");
