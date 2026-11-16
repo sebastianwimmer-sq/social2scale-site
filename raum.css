@@ -173,3 +173,12 @@ html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) section.abschl
     @keyframes s2sFluss{from{transform:translate3d(-6%,-8%,0) rotate(-6deg)}to{transform:translate3d(6%,10%,0) rotate(14deg)}}
   }
 }
+
+/* Ein Takt für alle Seiten (Sebi 16.11.2026: „keine Lücken, alles ein Scroll-System“). Gemessen vorher: 180 bis 390 px zwischen zwei Abschnitten,
+   je nach Seite. Jetzt trägt jeder Abschnitt oben und unten denselben Abstand; zwischen zwei Abschnitten liegt also immer das Doppelte.
+   Ausgenommen: der Kopf (eigener Abstand zur Leiste), die angeheftete Handy-Szene, die Zitat-Zeilen (sie stehen zwischen zwei Abschnitten und bringen keinen eigenen Abstand mit) und die Unterkante der Gründer (Fotos laufen in den Abschluss). */
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])){--takt:clamp(52px,6.4vw,92px)}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section:not(:first-child):not(.s2hero):not(#ablauf):not([class*="quote"]):not(.ab-mission){padding-top:var(--takt);padding-bottom:var(--takt)}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender{padding-bottom:0}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section:first-child{padding-bottom:var(--takt)}
+html:has([data-raum-licht]:not([data-raum-licht="studio-danke"])) main > section.gruender + section{padding-top:calc(var(--takt) * .4)}
