@@ -26,7 +26,7 @@
 
   --s2-ff-display:"Fraunces",Georgia,serif;
   --s2-ff-ui:"Archivo",system-ui,-apple-system,sans-serif;
-  --s2-ff-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  --s2-ff-mono:var(--s2-ff-ui);
   /* Eine Skala für beide Modi. Die drei größten Stufen sind fluid, damit auf
      390px nichts abreißt und auf 1440px nichts verloren wirkt. */
   --s2-fs-label:.63rem;--s2-fs-xs:.78rem;--s2-fs-sm:.86rem;--s2-fs-base:.96rem;
@@ -83,11 +83,11 @@ img,video{max-width:100%}
 
 .s2-wrap{max-width:var(--s2-max);margin:0 auto;padding-inline:var(--s2-gutter)}
 
-/* Etikett — die Mono-Signatur, die Werkstatt und Schaufenster verbindet. */
+/* Etikett: kleine Zeile in der Text-Schrift, normal geschrieben (keine Versal-Maschinenschrift, 17.11.2026). */
 /* Der Akzent als TEXT — nie --s2-accent-2 direkt: das ist die FLÄCHEN-Farbe
    und steht auf Evas Creme mit 3,09:1. */
-.s2-label{font-family:var(--s2-ff-mono);font-size:var(--s2-fs-label);font-weight:600;
-  letter-spacing:var(--s2-ls-label);text-transform:uppercase;color:var(--s2-accent-text)}
+.s2-label{font-family:inherit;font-size:var(--s2-fs-xs);font-weight:600;
+  letter-spacing:0;text-transform:none;color:var(--s2-accent-text)}
 .s2-label--quiet{color:var(--s2-faint)}
 
 .s2-display{font-family:var(--s2-ff-display);font-weight:540;line-height:var(--s2-lh-tight);
