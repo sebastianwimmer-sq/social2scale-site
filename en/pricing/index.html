@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/preise/@6f8ed0a4e2fb50ee">
+<meta name="s2s-quelle" content="/preise/@93d09c36286c4733">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -41,12 +41,7 @@
 <script src="/s2s.js" defer></script>
 <noscript><style>.reveal,.r,.stagger>*{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}.grow>*{transform:none!important}.wipe{clip-path:none!important;transform:none!important}.from-left,.from-right{transform:none!important}.fillbar{transform:scaleX(var(--fill,1))!important}
 
-  /* Seit 16.11.2026 (Besprechung #2, Punkt 5): laufende Pakete ohne Preis, zwei Wege nebeneinander */
-  .pr-emp-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4) var(--s-5)}
-  .pr-price-gespraech .p{font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
-  .pr-emp-preis{font-size:clamp(1.05rem,.95rem + .5vw,1.35rem)}
-  .pr-auf-anfrage{margin-top:var(--s-3);max-width:62ch}
-  .pr-alt-preis{font-size:clamp(1rem,.9rem + .4vw,1.2rem)}
+
 </style></noscript>
 <!-- ANPASSEN: [C1] alle data-cta-url="#" (Erstgespräch/Kalender) -->
 <style>
@@ -551,6 +546,31 @@
   .duo-txt b{color:var(--paper);font-weight:600}
   .duo-txt a{color:var(--emerald-soft);text-decoration:none;border-bottom:1px solid rgba(0,184,136,.38);transition:color var(--dur-2, .2s) ease,border-color var(--dur-2, .2s) ease}
   .duo-txt a:hover{color:var(--paper);border-bottom-color:var(--paper)}
+
+  /* Seit 16.11.2026 (Besprechung #2, Punkt 5): laufende Pakete ohne Preis, zwei Wege nebeneinander */
+  .pr-price-gespraech .p{font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
+  /* ── Drei Wege, knapp (16.11.2026, Sebi: „viel Text, unübersichtlich und buggy“). Ein Satz, kurze Leistungen, eine Preiszeile. ── */
+  .lw-emp{display:grid;gap:clamp(20px,2.4vw,28px)}
+  .lw-kopf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--s-4,16px);align-items:baseline}
+  .lw-wann{margin:var(--s-2,8px) 0 0;max-width:52ch;color:var(--muted);font-size:1.0625rem;line-height:1.55}
+  .lw-liste{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px clamp(16px,3vw,40px)}
+  .lw-liste li{position:relative;padding-left:22px;font-size:1rem;line-height:1.45;color:var(--paper)}
+  .lw-liste li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:1px;background:var(--emerald-soft,#1FC998)}
+  .lw-klein{grid-template-columns:1fr;gap:8px}
+  .lw-fuss{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s-4,16px) var(--s-6,24px);padding-top:clamp(18px,2vw,24px);border-top:1px solid var(--line)}
+  .lw-preis{margin:0;font-size:.95rem;letter-spacing:.01em;color:var(--muted)}
+  .lw-preis b{font-size:1.25rem;font-weight:600;color:var(--paper);margin-right:4px}
+  .lw-wege{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-4,16px) var(--s-5,20px)}
+  .lw-link{color:var(--paper);font-weight:600;font-size:.95rem;text-decoration:none;border-bottom:1px solid rgba(31,201,152,.5);padding-block:10px 2px;white-space:nowrap}
+  .lw-link:hover{border-bottom-color:var(--emerald-soft,#1FC998)}
+  .lw-link:focus-visible{outline:2px solid var(--emerald-soft,#1FC998);outline-offset:4px}
+  .pr-alt-grid:has(.lw-alt){align-items:stretch}
+  .lw-alt{display:flex;flex-direction:column;gap:14px;height:100%}
+  .pr-tax-kurz{margin:clamp(20px,2.4vw,28px) 0 0;max-width:64ch;font-size:.9rem;line-height:1.55;color:var(--faint)}
+  .lw-alt .lw-preis{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+  .lw-emp .pr-emp-karte{margin:0;font-size:.9rem;color:var(--faint)}
+  @media (max-width:760px){.lw-liste{grid-template-columns:1fr}.lw-fuss{flex-direction:column;align-items:flex-start}}
+
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/seite.css">
@@ -633,77 +653,41 @@
            Das Etikett heisst "Unsere Empfehlung" und nicht "Das nehmen die
            meisten": das erste ist wahr, das zweite waere eine Behauptung ueber
            Zahlen, die wir nicht belegen koennen. -->
-      <div class="pr-emp" data-licht>
+      <div class="pr-emp lw-emp" data-licht>
         <p class="pr-emp-lbl">Our recommendation</p>
-        <div class="pr-emp-kopf">
+        <div class="lw-kopf">
           <span class="pr-emp-nr" aria-hidden="true">01</span>
           <div>
             <h3 class="pr-emp-name">Hand off everything</h3>
-            <p class="pr-emp-wann">You have <b>no presence yet, or a weak one</b>. And you don’t want to have to deal with it.</p>
+            <p class="lw-wann">For anyone with no presence yet, or a weak one. You give us one briefing, we do the rest.</p>
           </div>
         </div>
-        <div class="pr-emp-grid">
-          <div class="pr-emp-spalte">
-            <p class="pr-ueb-lbl">You do</p>
-            <p class="pr-emp-du">One briefing. Once.</p>
-          </div>
-          <div class="pr-emp-spalte">
-            <p class="pr-ueb-lbl">We do</p>
-            <ol class="pr-ueb-liste">
-                <li>Build your profile</li>
-                <li>Branding and positioning</li>
-                <li>Ten posts a month</li>
-                <li>Publishing on a fixed schedule</li>
-                <li>Hashtag strategy for every post</li>
-                <li>Collect and forward inquiries</li>
-              </ol>
-          </div>
-        </div>
-        <div class="pr-emp-fuss">
-          <p class="pr-emp-preis">Profile, strategy and ten posts a month<small>We agree on scope and price together on the intro call, in writing, before you book anything.</small></p>
-          <div class="pr-emp-wege"><a class="btn btn-primary" href="/en/free/" data-cta-url="/en/free/">Get started free →</a><a class="textlink" href="/en/contact/">Intro call with Phil</a></div>
+        <ul class="lw-liste"><li>Build your profile</li><li>Branding and positioning</li><li>Ten posts a month</li><li>Publishing on a fixed schedule</li><li>Hashtag strategy for every post</li><li>Collect and forward inquiries</li></ul>
+        <div class="lw-fuss">
+          <p class="lw-preis">Price on the intro call</p>
+          <div class="lw-wege"><a class="btn btn-primary" href="/en/free/" data-cta-url="/en/free/">Get started free →</a><a class="lw-link" href="/en/contact/">Intro call with Phil</a></div>
         </div>
         <template id="karte-zeile" data-spende="https://mein.social2scale.com/api/spenden-zaehler"><p class="pr-emp-karte">10 euros of every order go to <b data-sp="empfaenger"></b>, and you get a card with your number. <a href="/en/about/#karte">How it works</a></p></template>
       </div>
 
       <p class="pr-alt-vor">Not quite right? Then it’s one of these two.</p>
       <div class="pr-alt-grid">
-        <article class="pr-alt">
+        <article class="pr-alt lw-alt">
           <span class="pr-alt-nr" aria-hidden="true">02</span>
           <h3 class="pr-alt-name">Hand off the ongoing work</h3>
-          <p class="pr-alt-wann">Your <b>profile is already set up</b>. All that’s missing is the content.</p>
-          <p class="pr-alt-du ist-null"><span class="pr-ueb-lbl">You do</span>Nothing.</p>
-          <p class="pr-alt-preis">Ten posts a month<small>price on the intro call, depending on scope</small></p>
-          <p class="pr-alt-bed">Three-month minimum term. <a class="textlink" href="/en/contact/">Intro call with Phil</a></p>
-          <details class="pr-alt-mehr">
-            <summary>What we do</summary>
-            <ol class="pr-ueb-liste pr-alt-liste">
-                <li>Ten posts a month</li>
-                <li>Publishing on a fixed schedule</li>
-                <li>Hashtag strategy for every post</li>
-                <li>Forward inquiries</li>
-                <li>Short monthly report</li>
-              </ol>
-          </details>
+          <p class="lw-wann">Your profile is already set up, the content is missing.</p>
+          <ul class="lw-liste lw-klein"><li>Ten posts a month</li><li>Publishing on a fixed schedule</li><li>Short monthly report</li></ul>
+          <p class="lw-preis">Price on the intro call</p>
         </article>
-        <article class="pr-alt">
+        <article class="pr-alt lw-alt">
           <span class="pr-alt-nr" aria-hidden="true">03</span>
           <h3 class="pr-alt-name">A one-time kickstart</h3>
-          <p class="pr-alt-wann">You want to <b>carry on yourself</b> afterwards.</p>
-          <p class="pr-alt-du"><span class="pr-ueb-lbl">You do</span>Give us a briefing, then post yourself.</p>
-          <p class="pr-alt-preis">from €446.25<small>one-time</small></p>
-          <details class="pr-alt-mehr">
-            <summary>What we do</summary>
-            <ol class="pr-ueb-liste pr-alt-liste">
-                <li>Design nine posts</li>
-                <li>Captions and hashtag research</li>
-                <li>Up to two rounds of revisions per post</li>
-              </ol>
-            <p class="pr-alt-zusatz">With profile, bio and branding: package 02, €1,297.10 one-time.</p>
-          </details>
+          <p class="lw-wann">You want to carry on yourself afterwards.</p>
+          <ul class="lw-liste lw-klein"><li>Nine designed posts</li><li>Captions and hashtag research</li><li>Up to two rounds of revisions</li></ul>
+          <p class="lw-preis"><b>€446.25</b> one-time</p>
         </article>
       </div>
-      <p class="pr-ueb-fuss">All prices include VAT. Which path fits you, we’ll tell you on the intro call. Even if it’s none of the three.</p>
+      <p class="pr-ueb-fuss">All prices include VAT. Ongoing management has a three-month minimum term. Which path fits you, we’ll tell you on the intro call, even if it’s none of the three.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
@@ -760,7 +744,7 @@
               <h3 class="pr-name">Management BASIS</h3>
               <p class="pr-what">Ten posts a month on a fixed content calendar, hashtag strategy for every post, one or two posts designed to win inquiries, forwarding of leads, short report.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span><span class="sub">we agree on scope and<br>price together</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">04</span>
@@ -768,7 +752,7 @@
               <h3 class="pr-name">Management GROWTH</h3>
               <p class="pr-what">Everything in BASIS, plus active engagement management, additional posts designed to win inquiries, two to three stories a week and a monthly strategy update call.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span><span class="sub">we agree on scope and<br>price together</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span></p>
           </article>
         </div>
 
@@ -780,7 +764,7 @@
               <h3 class="pr-name">Done-for-you BASIS</h3>
               <p class="pr-what">First month: full profile setup like package 02, then ongoing BASIS management. One point of contact instead of two contracts.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span><span class="sub">we agree on scope and<br>price together</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span></p>
           </article>
           <article class="pr-row">
             <span class="pr-num" aria-hidden="true">06</span>
@@ -788,7 +772,7 @@
               <h3 class="pr-name">Done-for-you GROWTH</h3>
               <p class="pr-what">Profile setup plus GROWTH management. Also included: setting up and running a ManyChat automation. That’s the difference from package 04.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span><span class="sub">we agree on scope and<br>price together</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span></p>
           </article>
         </div>
 
@@ -800,15 +784,12 @@
               <h3 class="pr-name">Landing page, fully managed</h3>
               <p class="pr-what">Concept and build of up to five sections, your own domain, inquiry form, mobile optimization, tracking. Ready in ten business days. After that, four changes a month with a response within two business days. Cancel monthly.</p>
             </div>
-            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span><span class="sub">we agree on scope and<br>price together</span></p>
+            <p class="pr-price pr-price-gespraech"><span class="p">on the intro call</span></p>
           </article>
         </div>
       </details>
 
-      <div class="pr-tax">
-        <p><b>All large amounts are final prices including 19% German VAT.</b> The smaller amount below is the net price, for anyone who deducts input tax and calculates with it.</p>
-        <p>Sales and invoicing are handled by <b>Digistore24 as reseller</b>. The prices here are exactly what you’ll see at checkout; the package names there are in German.</p>
-      </div>
+      <p class="pr-tax-kurz">All prices include 19% German VAT, with the net price below in small print. Sales and invoicing via Digistore24, where the package names are in German.</p>
     </div></section>
 
     <section class="pr-blk abschluss" aria-labelledby="pr-cta"><div class="wrap reveal">
