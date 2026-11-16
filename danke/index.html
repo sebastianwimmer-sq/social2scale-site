@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- SICHERHEIT:AUTO -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-PU2gUDDUEwhCPOuC2vEoUCh0mzDgiX47iDGoZvDbqNQ=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Axh3hNQQ79G6bf1etvkggryVchX39ihbyWErBwwLfYM=' 'sha256-6OMHerqTp/4WSxKxjD1Xox6bFYjq8Ifl+K9UdeJ+ZT8=' 'sha256-+UdGQ/lmrxbjpRmJWGCjfEidIvG7AQ2rGdlDBlNG9FM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://closing.social2scale.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
@@ -67,7 +67,8 @@
   .balken i:nth-child(1){height:7px}.balken i:nth-child(2){height:12px}.balken i:nth-child(3){height:18px}
   .mitte{display:grid;align-content:center;justify-items:center;text-align:center;padding:clamp(8px,2vh,28px) 0}
   h1{font:400 clamp(2.9rem,1rem + 8.4vw,7.5rem)/.98 var(--ff-titel);color:var(--tinte);letter-spacing:-.035em}
-  h1 .w>span{display:inline-block}
+  h1 .w{max-width:100%}
+  h1 .w>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}
   h1 .name{background:linear-gradient(100deg,#6FECC8,var(--emerald-hell) 40%,#39B6E6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-hell)}
   .einstieg{margin-top:clamp(12px,2.2vh,22px);max-width:30em;font-size:clamp(1.0625rem,1rem + .35vw,1.25rem)}
   .knopf{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding:0 34px;border-radius:12px;font-weight:600;font-size:1.125rem;text-decoration:none;margin-top:clamp(16px,3vh,32px);
@@ -150,8 +151,19 @@
 <script>
 (function(){
   var b=document.getElementById('buehne'),v='';
+  /* NAME:ANFANG – geprüft von scripts/danke-namen-check.mjs. Nur der Vorname, nur Buchstaben mit Bindestrich oder
+     Apostroph, höchstens 18 Zeichen (ein Doppelname wird am Bindestrich gekürzt). Alles andere: Gruß ohne Namen.
+     16.11.2026: ein 35-Zeichen-Wort lief am Handy und am Rechner aus dem Bildschirm, ein Name mit <…> stand als Text da. */
+  function vorname(roh){
+    var w=String(roh||'').trim().split(/\s+/)[0]||'';
+    var ok=function(s){return /^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž][A-Za-zÀ-ÖØ-öø-ÿĀ-ž'’-]{0,17}$/.test(s)};
+    if(ok(w))return w;
+    var teil=w.split('-')[0];
+    return ok(teil)&&teil.length>1?teil:'';
+  }
+  /* NAME:ENDE */
   try{var p=new URLSearchParams(location.search);
-    v=(p.get('vorname')||p.get('firstname')||p.get('first_name')||p.get('fname')||p.get('name')||'').trim().slice(0,40);}catch(e){}
+    v=vorname(p.get('vorname')||p.get('firstname')||p.get('first_name')||p.get('fname')||p.get('name'));}catch(e){}
   if(v){document.getElementById('los').textContent='los,';document.getElementById('vorname').textContent=v+'.';document.getElementById('nw').hidden=false;}
   // Vorspann: einmal je Sitzung, nie ohne Bewegung
   var gesehen=false;try{gesehen=sessionStorage.getItem('dk-vorspann')==='1'}catch(e){}

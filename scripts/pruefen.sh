@@ -50,6 +50,7 @@ selbst "Selbsttest Kollision" scripts/kollision-check.mjs node scripts/kollision
 selbst "Selbsttest Sprachen" scripts/sprachen-check.mjs node scripts/sprachen-check.mjs --selbsttest
 selbst "Selbsttest Zähler" scripts/zaehler-check.mjs node scripts/zaehler-check.mjs --selbsttest
 selbst "Selbsttest Sitemap" scripts/sitemap-check.mjs node scripts/sitemap-check.mjs --selbsttest
+selbst "Selbsttest Danke-Namen" scripts/danke-namen-check.mjs node scripts/danke-namen-check.mjs --selbsttest
 selbst "Platzhalter (Fixtures)" kit-build/platzhalter-check.py   python3 "$HOME/kit-build/platzhalter-check.py" --selbsttest
 selbst "Selbsttest Motion-Loop" kit-build/motion-loop/mess.mjs   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
@@ -60,6 +61,7 @@ lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs
 lauf "Zähler kennt jede Seite"  node scripts/zaehler-check.mjs
 lauf "Karte je Bestellung DE/EN" node scripts/spende-check.mjs
 lauf "Sitemap nur echte Seiten"  node scripts/sitemap-check.mjs
+lauf "Danke-Seite: Name im Gruß" node scripts/danke-namen-check.mjs
 lauf "Keine Platzhalter-Werte"  python3 "$HOME/kit-build/platzhalter-check.py" .
 lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
 lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
