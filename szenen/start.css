@@ -226,3 +226,11 @@
 .proof::before,.proof-visual::before{content:none}            /* kein Diagramm-Schatten hinter den drei Zahlen */
 .kap h2 em,.feed-band h2 em,.proof h2 em,.proof-h em,#leistungen h2 em,#faq h2 em,.s2hero h2 em{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit!important}   /* kursiv bleibt, die Farbe steht nur noch auf der Bühne und im Abschluss */
 #proof .sec-bg,#leistungen .sec-bg{display:none}               /* keine Stockfotos unter dunklem Schleier */
+/* Licht nur oben: der Grund scrollt mit, statt in jedem Bildschirm denselben grün-blauen Schein zu zeigen */
+html body{background:radial-gradient(1500px 1050px at 16% 0,rgba(0,184,136,.30),transparent 62%),linear-gradient(180deg,#04110F 0,#03080D 1400px);background-attachment:scroll;background-color:#03080D}
+/* Eigener Feed als Profilraster 3 × 2, doppelt so groß: die Beiträge sind der Beweis und müssen lesbar sein */
+@media (min-width:761px){
+  .feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);max-width:1140px;margin-left:0;margin-right:0;width:auto}
+  .feed-reihe img{border-radius:10px}
+}
+html body section.abschluss::before{content:none}            /* kein Punktraster hinter dem Abschluss, das Licht von unten bleibt */
