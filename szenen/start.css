@@ -234,3 +234,26 @@ html body{background:radial-gradient(1500px 1050px at 16% 0,rgba(0,184,136,.30),
   .feed-reihe img{border-radius:10px}
 }
 html body section.abschluss::before{content:none}            /* kein Punktraster hinter dem Abschluss, das Licht von unten bleibt */
+
+/* ── Dritter Durchgang (Sebi 16.11.2026: „extrem dunkel, es fehlt Gestaltung“). Wie bei Apple gemessen: helle und dunkle Gründe im Wechsel,
+   Inhalte in großen runden Kacheln (28 px), feine Strichsymbole, Pfeil-Links. Farben über die vorhandenen Variablen, je Abschnitt umgestellt. ── */
+#warum,.feed-band,#faq{--paper:#0B1518;--muted:#46524F;--faint:#5A6562;--line:rgba(8,18,20,.12);--line-2:rgba(8,18,20,.2);--emerald-soft:#0A7558;--emerald:#0A7558;
+  background:#F2F3F1;color:#0B1518;color-scheme:light;border-radius:clamp(20px,2.4vw,32px);margin-inline:clamp(8px,1.2vw,18px);overflow:hidden}
+#warum h2,.feed-band h2,#faq h2,#faq summary,#warum .wa-name{color:#0B1518}
+#warum .wa-row.is-us{background:#0B1518;border-color:#0B1518;border-radius:16px;--paper:#F2F3F1;--muted:#B9C0BC;--emerald-soft:#1FC998}
+#warum .wa-row.is-us .wa-name{color:#3FD9A9} #warum .wa-row.is-us .wa-note{color:#E4E8E5}
+.feed-band .feed-reihe img{box-shadow:0 30px 60px -34px rgba(4,20,16,.55),0 2px 0 rgba(255,255,255,.04) inset}
+/* dunkle Abschnitte: Kacheln auf eigener Stufe statt Text auf Schwarz */
+#stand .st-grid{gap:clamp(12px,1.4vw,20px)}
+#stand .st-card,#leistungen .cell{background:linear-gradient(180deg,#0E1B1F,#0A1418);border:1px solid rgba(242,243,241,.08);border-radius:clamp(18px,2vw,28px);padding:clamp(22px,2.4vw,34px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+#stand .st-card{border-left:1px solid rgba(242,243,241,.08)}
+#stand .st-let{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(31,201,152,.45);color:#1FC998;font-size:.8rem;margin-bottom:18px}
+#leistungen .bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);border:0}
+#leistungen .cell{display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(242,243,241,.08)}
+#leistungen .cell::before{content:"";width:40px;height:40px;margin-bottom:14px;background:#1FC998;-webkit-mask:var(--ico) center/28px no-repeat;mask:var(--ico) center/28px no-repeat}
+#leistungen .cell:nth-child(1){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 3.5 7.5 12 12l8.5-4.5L12 3Z'/%3E%3Cpath d='m3.5 12 8.5 4.5 8.5-4.5'/%3E%3Cpath d='m3.5 16.5 8.5 4.5 8.5-4.5'/%3E%3C/svg%3E")} #leistungen .cell:nth-child(2){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8.5' cy='8' r='3'/%3E%3Cpath d='M2.8 19.5c.5-3.3 2.8-5 5.7-5s5.2 1.7 5.7 5'/%3E%3Ccircle cx='17' cy='9' r='2.4'/%3E%3Cpath d='M16.4 14.6c2.6-.1 4.4 1.5 4.9 4.4'/%3E%3C/svg%3E")} #leistungen .cell:nth-child(3){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 20.5h17'/%3E%3Cpath d='m4.5 15.5 5-5 3.5 3.5 6.5-7'/%3E%3Cpath d='M15 7h4.5v4.5'/%3E%3C/svg%3E")}
+#leistungen .cell h3,#leistungen .cell .n,#leistungen .cell p{grid-column:auto;grid-row:auto;margin:0}
+@media (max-width:860px){#leistungen .bento{grid-template-columns:1fr}}
+/* Raster auf hellem Grund: kein Auslaufen ins Dunkel an den Seiten, kein Verblassen beim Scrollen */
+html body .feed-band .feed-reihe{-webkit-mask-image:none;mask-image:none}
+html body .feed-band .feed-reihe li{animation:none;opacity:1;transform:none}
