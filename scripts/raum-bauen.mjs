@@ -56,7 +56,7 @@ const SEITEN = [
   { dateien: ['about/index.html', 'en/about/index.html'], kopf: 'ueber-uns', anker: /<section class="ab-hero"[^>]*>/ },
   { dateien: ['results/index.html', 'en/results/index.html'], kopf: 'pruef-uns', anker: /<section class="rs-hero"[^>]*>/ },
   // /danke/ hat seit 15.11.2026 keinen Raum mehr: ruhige Seite ohne Lichtkegel (Sebi: high end clean).
-  { dateien: ['danke/studio/index.html', 'danke/studio/abo/index.html', 'danke/studio/paket-100/index.html', 'danke/studio/paket-250/index.html', 'danke/studio/paket-500/index.html'], kopf: 'studio-danke', anker: /<section class="hero">/ },
+  // /danke/studio/ seit 16.11.2026 ebenfalls ohne Raum: derselbe ruhige Aufbau wie /danke/ (build-danke-studio.mjs).
   { dateien: ['wissen/index.html', 'wissen/ablauf-zusammenarbeit/index.html', 'wissen/selbst-machen-oder-agentur/index.html', 'wissen/social-media-agentur-auswaehlen/index.html', 'wissen/was-kostet-social-media-betreuung/index.html', 'wissen/wie-lange-bis-ergebnisse/index.html',
     'en/knowledge/index.html', 'en/knowledge/choosing-a-social-media-agency/index.html', 'en/knowledge/diy-or-agency/index.html', 'en/knowledge/how-long-until-results/index.html', 'en/knowledge/how-we-work-together/index.html', 'en/knowledge/social-media-management-cost/index.html'], licht: 'wissen' },
   { dateien: ['anfrage/index.html', 'en/contact/index.html'], licht: 'anfrage' },
