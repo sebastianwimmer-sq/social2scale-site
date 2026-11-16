@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/@42f51d6586e6596a">
+<meta name="s2s-quelle" content="/@77f816e06c99d03f">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -1001,6 +1001,56 @@
   /* Abschluss als Buehne */
   section.abschluss{padding-bottom:var(--sec-buehne);
     background:radial-gradient(50% 38% at 50% 60%,rgba(0,184,136,.12),transparent 100%)}
+
+  /* ===== Einstieg „Zeit für Wachstum“ (Sebi 16./17.11.2026) =====
+     Botschaft: wir schaffen Zeit, die Kundin ist faehig (memory feedback_s2s_botschaft_zeit_fuer_wachstum).
+     Links Satz + Knopf, rechts ihr Profil, das ohne sie weiterlaeuft: ein neuer Beitrag
+     kommt dazu, daneben die Karte „Waehrend du arbeitest“. Laeuft EINMAL, dann steht es
+     (WCAG 2.2.2); reduced-motion zeigt den Endzustand. */
+  .hero-zwei{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(var(--s-7),5vw,var(--s-10));align-items:center}
+  .hero-zwei .hero-text{min-width:0}
+  .hero-zwei h1{text-align:left}
+  .hero-zwei h1 .gruss{font-style:normal;font-family:"Hanken Grotesk",sans-serif;font-weight:500;font-size:clamp(1rem,.9rem + .35vw,1.18rem);letter-spacing:.01em;color:var(--muted);text-shadow:none;margin-bottom:var(--s-4)}
+  .hero-zwei h1 .claim{margin:0;max-width:12ch;font-size:clamp(2.6rem,1.2rem + 4.6vw,5.4rem);line-height:.96}
+  .hero-zwei h1 em.wort{font-style:normal;font-weight:inherit;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald)}
+  .hero-zwei .sub{max-width:44ch}
+  .hero-zwei .cta-row{justify-content:flex-start;margin-top:clamp(var(--s-6),3vw,var(--s-7))}
+  .hero-zwei .hero-duo{justify-content:flex-start}
+  .ez-buehne{position:relative;justify-self:center;width:min(340px,100%);padding-bottom:var(--s-6)}
+  .ez-tel{position:relative;aspect-ratio:9/18.6;border-radius:46px;padding:9px;background:linear-gradient(160deg,#2a2f33,#0b0d0f 42%,#1b1f22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 1px 0 rgba(255,255,255,.06),0 30px 60px -24px rgba(0,0,0,.85),0 0 110px -18px rgba(31,201,152,.38)}
+  .ez-schirm{position:relative;height:100%;border-radius:38px;overflow:hidden;background:#fff;color:#111;font:500 12px/1.35 "Hanken Grotesk",sans-serif;padding:46px 14px 0}
+  .ez-kopf{display:flex;align-items:center;gap:12px}
+  .ez-ava{width:58px;height:58px;border-radius:50%;flex:none;background:var(--accent-flow);box-shadow:inset 0 0 0 3px #fff}
+  .ez-name{font-weight:700;font-size:13px}
+  .ez-bio{color:#555}
+  .ez-hl{display:flex;gap:12px;margin:14px 0 12px;font-size:10px;color:#444}
+  .ez-hl span{display:grid;justify-items:center;gap:4px}
+  .ez-hl i{width:44px;height:44px;border-radius:50%;background:#eee center/cover;box-shadow:0 0 0 2px #fff,0 0 0 3px #dadada}
+  .ez-gitter{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:0 -14px}
+  .ez-gitter img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+  .ez-neu{position:relative;display:block;overflow:hidden}
+  .ez-neu img{animation:ez-rein 1.1s var(--ease) 1.2s both}
+  .ez-neu::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px #1FC998;animation:ez-rahmen 2.4s ease 1.2s both}
+  .ez-toast{position:absolute;left:50%;top:14px;translate:-50% 0;white-space:nowrap;background:#0B1F1A;color:#fff;font:600 11px "Hanken Grotesk",sans-serif;padding:7px 12px;border-radius:999px;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);animation:ez-toast 3.2s var(--ease) 1.5s both}
+  .ez-hint{position:absolute;left:0;right:0;bottom:-2px;text-align:center;font-size:.8rem;color:var(--faint)}
+  .ez-karte{position:absolute;left:-26%;bottom:16%;width:min(250px,78%);background:#111618;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 16px 14px;box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 24px 50px -20px rgba(0,0,0,.8);font:500 .9rem/1.35 "Hanken Grotesk",sans-serif;color:var(--paper)}
+  .ez-karte p{margin:0 0 10px;color:var(--muted);font-size:.8rem}
+  .ez-karte ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+  .ez-karte li{position:relative;display:flex;gap:10px;align-items:flex-start;animation:ez-hak .7s var(--ease) both}
+  .ez-karte li:nth-child(1){animation-delay:2s}.ez-karte li:nth-child(2){animation-delay:2.7s}
+  .ez-karte li::before{content:"";flex:none;width:18px;height:18px;margin-top:1px;border-radius:50%;background:var(--accent-flow)}
+  .ez-karte li::after{content:"";position:absolute;left:6.5px;top:4.5px;width:5px;height:9px;border:solid var(--emerald-ink,#04201A);border-width:0 2px 2px 0;rotate:45deg}
+  @keyframes ez-rein{from{opacity:0;transform:translateY(-14px) scale(1.06)}to{opacity:1;transform:none}}
+  @keyframes ez-rahmen{0%{opacity:0}20%,70%{opacity:1}100%{opacity:0}}
+  @keyframes ez-toast{0%{opacity:0;translate:-50% -10px}15%,75%{opacity:1;translate:-50% 0}100%{opacity:0;translate:-50% 0}}
+  @keyframes ez-hak{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.ez-neu img,.ez-neu::after,.ez-toast,.ez-karte li{animation:none}.ez-toast,.ez-neu::after{display:none}}
+  @media (max-width:880px){
+    .hero-zwei{grid-template-columns:1fr;gap:var(--s-7)}
+    .ez-buehne{width:min(300px,82%)}
+    .ez-karte{left:-12%}
+  }
+  @media (max-width:700px){.hero-zwei h1 .claim{font-size:clamp(2.4rem,1.3rem + 5.6vw,3.2rem)}}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/bewegung.css">
@@ -1061,17 +1111,13 @@
 
   <main id="main" tabindex="-1">
     <section class="hero" id="hero"><!-- RAUM (scripts/raum-bauen.mjs) --><div class="raum raum--start" data-raum aria-hidden="true"><div class="raum-ebene raum-wand" style="--z:5"></div><div class="raum-ebene raum-kegel" style="--z:12"></div><div class="raum-ebene raum-boden" style="--z:9"></div></div><!-- /RAUM -->
-      <div class="wrap">
-        <div class="hero-center">
+      <div class="wrap hero-zwei">
+        <div class="hero-text">
           <h1 class="r" style="animation-delay:.1s">
-            <span class="gruss">Welcome to</span>
-            <picture>
-              <source type="image/webp" srcset="/assets/wordmark-t-900.webp 900w, /assets/wordmark-t.webp 1300w" sizes="(max-width:760px) 340px, 660px">
-              <img class="hero-logo" src="/assets/wordmark-t.png" alt="social2scale" width="560" height="315" fetchpriority="high" loading="eager" decoding="async">
-            </picture>
-            <span class="claim">We build the <em>system</em><br>that grows you predictably.</span>
+            <span class="gruss">Welcome to social2scale</span>
+            <span class="claim">More time for what makes you <em class="wort">grow</em>.</span>
           </h1>
-          <p class="sub r" style="animation-delay:.24s">For coaches and experts: we build your presence, create the content and run it for you. <b>All you have to do is talk.</b></p>
+          <p class="sub r" style="animation-delay:.24s">For coaches and experts: we take over your presence with strategy, content and ongoing support. <b>Your mind stays free for your work.</b></p>
           <div class="cta-row r" style="animation-delay:.38s">
             <a class="btn btn-primary" id="cta" href="/en/free/">Get started free →</a>
           </div>
@@ -1079,6 +1125,16 @@
             <span class="duo-pics" aria-hidden="true"><picture><source type="image/webp" srcset="/assets/founder-sebastian-avatar-192.webp"><img src="/assets/founder-sebastian-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture><picture><source type="image/webp" srcset="/assets/founder-philipp-avatar-192.webp"><img src="/assets/founder-philipp-avatar-192.jpg" alt="" width="192" height="192" decoding="async"></picture></span>
             <p class="duo-txt">Two founders who do the work themselves: <b>Sebi &amp; Phil</b>.</p>
           </div>
+        </div>
+        <div class="ez-buehne r" style="animation-delay:.3s" aria-hidden="true">
+          <div class="ez-tel"><div class="ez-schirm">
+            <div class="ez-kopf"><span class="ez-ava"></span><span><span class="ez-name">Your name</span><br><span class="ez-bio">Coaching &amp; guidance</span></span></div>
+            <div class="ez-hl"><span><i style="background-image:url(/assets/feed/beitrag-12-400.webp)"></i>Start</span><span><i style="background-image:url(/assets/feed/beitrag-5-360.webp)"></i>About</span><span><i style="background-image:url(/assets/feed/beitrag-11-400.webp)"></i>Voices</span></div>
+            <div class="ez-gitter"><span class="ez-neu"><img src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"></span><img src="/assets/feed/beitrag-10-400.webp" alt="" width="400" height="500" decoding="async"><img src="/assets/feed/beitrag-12-400.webp" alt="" width="400" height="500" decoding="async"><img src="/assets/feed/beitrag-4-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-11-400.webp" alt="" width="400" height="500" decoding="async"><img src="/assets/feed/beitrag-5-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-8-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-2-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-10-400.webp" alt="" width="400" height="500" decoding="async"><img src="/assets/feed/beitrag-13-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-4-360.webp" alt="" width="360" height="450" decoding="async"><img src="/assets/feed/beitrag-8-360.webp" alt="" width="360" height="450" decoding="async"></div>
+            <span class="ez-toast">Published, on schedule</span>
+          </div></div>
+          <div class="ez-karte"><p>While you work</p><ul><li>Post published, on schedule</li><li>Enquiry forwarded to you</li></ul></div>
+          <span class="ez-hint">Sample profile</span>
         </div>
       </div>
     </section>
@@ -1216,7 +1272,7 @@
       </div>
       <ul class="feed-reihe">
         <li><img src="/assets/feed/beitrag-2-360.webp" srcset="/assets/feed/beitrag-2-360.webp 360w, /assets/feed/beitrag-2-720.webp 720w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="360" height="450" alt="Post by @social2scale, in German: Twice a month does nothing." loading="lazy" decoding="async"></li>
-        <li><img src="/assets/feed/beitrag-3-360.webp" srcset="/assets/feed/beitrag-3-360.webp 360w, /assets/feed/beitrag-3-720.webp 720w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="360" height="450" alt="Post by @social2scale, in German: Six questions. Us included." loading="lazy" decoding="async"></li>
+        <li><img src="/assets/feed/beitrag-12-400.webp" srcset="/assets/feed/beitrag-12-400.webp 400w, /assets/feed/beitrag-12-800.webp 800w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="400" height="500" alt="Post by @social2scale, in German: Two founders. No middleman." loading="lazy" decoding="async"></li>
         <li><img src="/assets/feed/beitrag-4-360.webp" srcset="/assets/feed/beitrag-4-360.webp 360w, /assets/feed/beitrag-4-720.webp 720w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="360" height="450" alt="Post by @social2scale, in German: Four weeks, hardly any new followers." loading="lazy" decoding="async"></li>
         <li><img src="/assets/feed/beitrag-5-360.webp" srcset="/assets/feed/beitrag-5-360.webp 360w, /assets/feed/beitrag-5-720.webp 720w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="360" height="450" alt="Post by @social2scale, in German: No metric." loading="lazy" decoding="async"></li>
         <li><img src="/assets/feed/beitrag-8-360.webp" srcset="/assets/feed/beitrag-8-360.webp 360w, /assets/feed/beitrag-8-720.webp 720w" sizes="(max-width:760px) 34vw, (max-width:1240px) 30vw, 366px" width="360" height="450" alt="Post by @social2scale, in German: One word, one cease-and-desist letter." loading="lazy" decoding="async"></li>
