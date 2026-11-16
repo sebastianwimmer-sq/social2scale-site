@@ -254,13 +254,51 @@ html body section.abschluss::before{content:none}            /* kein Punktraster
 #stand .st-grid{gap:clamp(12px,1.4vw,20px)}
 #stand .st-card,#leistungen .cell{background:linear-gradient(180deg,#0E1B1F,#0A1418);border:1px solid rgba(242,243,241,.08);border-radius:clamp(18px,2vw,28px);padding:clamp(22px,2.4vw,34px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
 #stand .st-card{border-left:1px solid rgba(242,243,241,.08)}
-#stand .st-let{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid rgba(31,201,152,.45);color:#1FC998;font-size:.8rem;margin-bottom:18px}
+#stand .st-let{color:#1FC998;margin-bottom:14px;display:block}
 #leistungen .bento{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);border:0}
 #leistungen .cell{display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(242,243,241,.08)}
-#leistungen .cell::before{content:"";width:40px;height:40px;margin-bottom:14px;background:#1FC998;-webkit-mask:var(--ico) center/28px no-repeat;mask:var(--ico) center/28px no-repeat}
-#leistungen .cell:nth-child(1){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 3.5 7.5 12 12l8.5-4.5L12 3Z'/%3E%3Cpath d='m3.5 12 8.5 4.5 8.5-4.5'/%3E%3Cpath d='m3.5 16.5 8.5 4.5 8.5-4.5'/%3E%3C/svg%3E")} #leistungen .cell:nth-child(2){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='8.5' cy='8' r='3'/%3E%3Cpath d='M2.8 19.5c.5-3.3 2.8-5 5.7-5s5.2 1.7 5.7 5'/%3E%3Ccircle cx='17' cy='9' r='2.4'/%3E%3Cpath d='M16.4 14.6c2.6-.1 4.4 1.5 4.9 4.4'/%3E%3C/svg%3E")} #leistungen .cell:nth-child(3){--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 20.5h17'/%3E%3Cpath d='m4.5 15.5 5-5 3.5 3.5 6.5-7'/%3E%3Cpath d='M15 7h4.5v4.5'/%3E%3C/svg%3E")}
 #leistungen .cell h3,#leistungen .cell .n,#leistungen .cell p{grid-column:auto;grid-row:auto;margin:0}
 @media (max-width:860px){#leistungen .bento{grid-template-columns:1fr}}
 /* Raster auf hellem Grund: kein Auslaufen ins Dunkel an den Seiten, kein Verblassen beim Scrollen */
 html body .feed-band .feed-reihe{-webkit-mask-image:none;mask-image:none}
-html body .feed-band .feed-reihe li{animation:none;opacity:1;transform:none}
+html body .feed-band .feed-reihe li{animation:none}
+
+/* Gründer ohne Kasten: beide freigestellt, stehen direkt im Verlauf und laufen unten in ihn aus */
+.gr-bild{-webkit-mask-image:linear-gradient(180deg,#000 62%,transparent 98%);mask-image:linear-gradient(180deg,#000 62%,transparent 98%);-webkit-mask-composite:source-over;mask-composite:add;overflow:visible}
+.gr-bild::after{content:none}
+.gr-bild img{object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.gr-reihe{position:relative}
+.gr-reihe::before{content:"";position:absolute;inset:8% 6% 18%;z-index:0;pointer-events:none;background:radial-gradient(50% 55% at 50% 45%,rgba(31,201,152,.20),rgba(31,166,224,.10) 55%,transparent 75%)}
+.gr-person{position:relative;z-index:1}
+
+/* ── Bewegung als ein System (Sebi 16.11.2026): eine Kurve, eine Richtung (von unten), gestaffelt in Leserichtung. Nur transform und opacity.
+   Nichts läuft endlos: der Fluss bewegt sich mit dem Scrollen, alles andere einmal beim Erscheinen. ── */
+@media (prefers-reduced-motion:no-preference){
+  .reveal :is(h2,.st-card,.cell,.wa-row,.feed-reihe li,.proof-visual,.gr-person,.wa-close,.textlink){transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+  .reveal:not(.on) :is(h2,.st-card,.cell,.wa-row,.feed-reihe li,.proof-visual,.wa-close,.textlink){opacity:0;transform:translateY(30px)}
+  .reveal :is(.st-card,.cell,.wa-row,.feed-reihe li):nth-child(1){transition-delay:.10s}
+  .reveal :is(.st-card,.cell,.wa-row,.feed-reihe li):nth-child(2){transition-delay:.18s}
+  .reveal :is(.st-card,.cell,.wa-row,.feed-reihe li):nth-child(3){transition-delay:.26s}
+  .reveal :is(.wa-row,.feed-reihe li):nth-child(4){transition-delay:.34s}
+  .reveal .feed-reihe li:nth-child(5){transition-delay:.42s} .reveal .feed-reihe li:nth-child(6){transition-delay:.50s}
+  .reveal :is(.wa-close,.textlink){transition-delay:.45s}
+  /* „Mit uns“: einmal ein Lichtstreif über die Zeile, wenn sie steht */
+  #warum .wa-row.is-us{position:relative;overflow:hidden}
+  #warum .wa-row.is-us::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.14) 50%,transparent 65%);transform:translateX(-120%)}
+  .reveal.on .wa-row.is-us::after{transition:transform 1.4s cubic-bezier(.16,1,.3,1) .9s;transform:translateX(120%)}
+  /* Kacheln antworten auf die Maus */
+  @media (hover:hover){#stand .st-card,#leistungen .cell{transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .5s,opacity .9s cubic-bezier(.16,1,.3,1)}
+    #stand .st-card:hover,#leistungen .cell:hover{transform:translateY(-6px);border-color:rgba(31,201,152,.38)}}
+  /* Gründer treten aus dem Verlauf */
+  .gruender .gr-person{transition:opacity 1.2s cubic-bezier(.16,1,.3,1),transform 1.2s cubic-bezier(.16,1,.3,1)}
+  .gruender .gr-reihe:not(.da) .gr-person{}
+  /* Der Fluss lebt beim Scrollen: zwei Lichtfelder wandern gegeneinander (wo der Browser Scroll-Zeitachsen kann) */
+  @supports (animation-timeline:scroll()){
+    body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
+      background:radial-gradient(34% 30% at 28% 30%,rgba(0,184,136,.20),transparent 70%),radial-gradient(32% 30% at 74% 66%,rgba(31,166,224,.17),transparent 70%);
+      animation:s2sFluss linear both;animation-timeline:scroll(root)}
+    @keyframes s2sFluss{from{transform:translate3d(-6%,-8%,0) rotate(-6deg)}to{transform:translate3d(6%,10%,0) rotate(14deg)}}
+    .feed-band .feed-reihe li:nth-child(3n+2) img{animation:s2sVersatz linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+    @keyframes s2sVersatz{from{transform:translateY(22px)}to{transform:translateY(-22px)}}
+  }
+}
