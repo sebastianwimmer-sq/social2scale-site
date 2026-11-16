@@ -226,8 +226,17 @@
 .proof::before,.proof-visual::before{content:none}            /* kein Diagramm-Schatten hinter den drei Zahlen */
 .kap h2 em,.feed-band h2 em,.proof h2 em,.proof-h em,#leistungen h2 em,#faq h2 em,.s2hero h2 em{background:none!important;-webkit-text-fill-color:currentColor!important;color:inherit!important}   /* kursiv bleibt, die Farbe steht nur noch auf der Bühne und im Abschluss */
 #proof .sec-bg,#leistungen .sec-bg{display:none}               /* keine Stockfotos unter dunklem Schleier */
-/* Licht nur oben: der Grund scrollt mit, statt in jedem Bildschirm denselben grün-blauen Schein zu zeigen */
-html body{background:radial-gradient(1500px 1050px at 16% 0,rgba(0,184,136,.30),transparent 62%),linear-gradient(180deg,#04110F 0,#03080D 1400px);background-attachment:scroll;background-color:#03080D}
+/* Verlauf als Fluss über die ganze Seite (Sebi 16.11.2026: „kein gradient flow mehr wie vorgegeben“): Smaragd und Blau wechseln die Seite,
+   der Grund scrollt mit. So sieht jeder Bildschirm anders aus, statt überall denselben Schein zu zeigen, und nichts zerschneidet die Seite. */
+html body{background-color:#03080D;background-attachment:scroll;background-repeat:no-repeat;background-size:100% 100%;background-image:
+  radial-gradient(85vw 1000px at 12% 0%,rgba(0,184,136,.40),transparent 68%),
+  radial-gradient(75vw 1100px at 96% 13%,rgba(31,166,224,.26),transparent 70%),
+  radial-gradient(80vw 1200px at 2% 30%,rgba(0,184,136,.24),transparent 70%),
+  radial-gradient(80vw 1200px at 100% 47%,rgba(47,190,234,.22),transparent 70%),
+  radial-gradient(85vw 1200px at 4% 63%,rgba(0,184,136,.24),transparent 70%),
+  radial-gradient(80vw 1200px at 98% 79%,rgba(31,166,224,.24),transparent 70%),
+  radial-gradient(90vw 1000px at 50% 100%,rgba(0,184,136,.26),transparent 70%),
+  linear-gradient(180deg,#04130F 0%,#05121A 50%,#03080D 100%)}
 /* Eigener Feed als Profilraster 3 × 2, doppelt so groß: die Beiträge sind der Beweis und müssen lesbar sein */
 @media (min-width:761px){
   .feed-reihe{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px);max-width:1140px;margin-left:0;margin-right:0;width:auto}
@@ -237,12 +246,10 @@ html body section.abschluss::before{content:none}            /* kein Punktraster
 
 /* ── Dritter Durchgang (Sebi 16.11.2026: „extrem dunkel, es fehlt Gestaltung“). Wie bei Apple gemessen: helle und dunkle Gründe im Wechsel,
    Inhalte in großen runden Kacheln (28 px), feine Strichsymbole, Pfeil-Links. Farben über die vorhandenen Variablen, je Abschnitt umgestellt. ── */
-#warum,.feed-band,#faq{--paper:#0B1518;--muted:#46524F;--faint:#5A6562;--line:rgba(8,18,20,.12);--line-2:rgba(8,18,20,.2);--emerald-soft:#0A7558;--emerald:#0A7558;
-  background:#F2F3F1;color:#0B1518;color-scheme:light;border-radius:clamp(20px,2.4vw,32px);margin-inline:clamp(8px,1.2vw,18px);overflow:hidden}
-#warum h2,.feed-band h2,#faq h2,#faq summary,#warum .wa-name{color:#0B1518}
-#warum .wa-row.is-us{background:#0B1518;border-color:#0B1518;border-radius:16px;--paper:#F2F3F1;--muted:#B9C0BC;--emerald-soft:#1FC998}
-#warum .wa-row.is-us .wa-name{color:#3FD9A9} #warum .wa-row.is-us .wa-note{color:#E4E8E5}
-.feed-band .feed-reihe img{box-shadow:0 30px 60px -34px rgba(4,20,16,.55),0 2px 0 rgba(255,255,255,.04) inset}
+/* „Mit uns“ ist die eine getragene Zeile im Vergleich; das Raster bekommt Tiefe über Schatten, kein eigener Farbblock */
+#warum .wa-row.is-us{background:linear-gradient(120deg,rgba(0,184,136,.16),rgba(31,166,224,.10));border:1px solid rgba(31,201,152,.38);border-radius:16px}
+.feed-band{background:none}
+.feed-band .feed-reihe img{box-shadow:0 34px 70px -36px rgba(0,0,0,.8),0 0 0 1px rgba(242,243,241,.06)}
 /* dunkle Abschnitte: Kacheln auf eigener Stufe statt Text auf Schwarz */
 #stand .st-grid{gap:clamp(12px,1.4vw,20px)}
 #stand .st-card,#leistungen .cell{background:linear-gradient(180deg,#0E1B1F,#0A1418);border:1px solid rgba(242,243,241,.08);border-radius:clamp(18px,2vw,28px);padding:clamp(22px,2.4vw,34px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
