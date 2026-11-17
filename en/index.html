@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/@42f51d6586e6596a">
+<meta name="s2s-quelle" content="/@84142a851113a0b1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -1001,6 +1001,30 @@
   /* Abschluss als Buehne */
   section.abschluss{padding-bottom:var(--sec-buehne);
     background:radial-gradient(50% 38% at 50% 60%,rgba(0,184,136,.12),transparent 100%)}
+
+  /* Scale-Week-Laufband (22.-30.11.2026): ein Maßstab als Band. Endet per /scale-week.js, Ausbau Ticket #544 */
+  .sw-band{display:none;position:relative;z-index:2;height:52px;overflow:hidden;background:var(--grad-emerald),var(--ink,#0A0B0D);border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+  .sw-band::after{content:"";position:absolute;left:0;right:0;bottom:0;height:7px;pointer-events:none;background:repeating-linear-gradient(90deg,var(--line-3) 0 1px,transparent 1px 100%);background-size:56px 7px}
+  .sw-spur{position:absolute;top:0;bottom:7px;display:flex;align-items:center;white-space:nowrap;animation:sw-lauf 70s linear infinite}
+  .sw-spur span{font-family:"Fraunces",serif;font-size:1.06rem;color:var(--paper);padding-right:64px}
+  .sw-spur span:nth-child(4n+1) em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sw-band a{position:absolute;inset:0 48px 0 0;z-index:1}
+  .sw-band .sw-halt{position:absolute;right:0;top:0;bottom:0;z-index:2;width:48px;border:0;background:linear-gradient(90deg,transparent,#0A0B0D 40%);color:var(--muted);font:600 .8rem "Hanken Grotesk",sans-serif;cursor:pointer}
+  .sw-band .sw-halt:focus-visible{outline:2px solid var(--emerald-soft);outline-offset:-4px}
+  .sw-band.halt .sw-spur{animation-play-state:paused}
+  @keyframes sw-lauf{to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.sw-spur{animation:none}}
+  .sw-karte{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(max(16px,env(safe-area-inset-bottom,0px)) + 84px);z-index:40;width:min(320px,calc(100vw - 32px));padding:var(--s-5) var(--s-5) var(--s-4);border-radius:14px;background:var(--surf-grad);border:1px solid var(--line-2);box-shadow:0 30px 60px -24px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.05);transform:translateY(calc(100% + 32px));transition:transform .9s var(--ease)}
+  .sw-karte.da{transform:none}
+  .sw-karte p{margin:0}
+  .sw-karte-h{font-family:"Fraunces",serif;font-size:1.5rem;line-height:1.1}
+  .sw-karte-h em{font-style:italic;background:var(--accent-flow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sw-karte-t{color:var(--muted);margin:var(--s-2) 0 var(--s-4)!important}
+  .sw-karte .btn{padding:13px 20px}
+  .sw-karte-zu{position:absolute;right:4px;top:4px;width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:1.3rem;cursor:pointer}
+  @media (prefers-reduced-motion:reduce){.sw-karte{transition:none}}
+  .sw-an .sw-band{display:block}
+  .sw-vorbei .sw-band,.sw-vorbei .sw-karte{display:none}
 </style>
 <link rel="stylesheet" href="/abschluss.css">
 <link rel="stylesheet" href="/termin.css">
@@ -1008,6 +1032,7 @@
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
 <script src="/raum.js" defer></script>
+<script src="/scale-week.js"></script>
 <script src="/szenen/szenen.js" data-css="basis,start" defer></script>
 <!-- SPRACHE:KOPF -->
 <link rel="alternate" hreflang="de" href="https://social2scale.com/">
@@ -1087,6 +1112,8 @@
     <!-- 01 · Schmerz und 02 · Einwand, der Gespraechsbogen aus docs/SEITEN-BAUEN.md.
          Texte woertlich aus dem Stand vom 20.08.2026 (dort versehentlich mit dem
          Launch-Check entfernt, fbc5803). Zurueck am 29.09.2026. -->
+    <aside class="sw-band" id="sw-band" aria-label="Scale Week"><a href="/en/scale-week/" aria-label="To Scale Week"></a><div class="sw-spur" aria-hidden="true"><span><em>Scale Week</em></span><span>Nine days to get going</span><span>First call by 30 November</span><span>Profile build or 300 tokens on us</span><span><em>Scale Week</em></span><span>Nine days to get going</span><span>First call by 30 November</span><span>Profile build or 300 tokens on us</span><span><em>Scale Week</em></span><span>Nine days to get going</span><span>First call by 30 November</span><span>Profile build or 300 tokens on us</span><span><em>Scale Week</em></span><span>Nine days to get going</span><span>First call by 30 November</span><span>Profile build or 300 tokens on us</span></div><button class="sw-halt" type="button" aria-label="Pause ticker" data-halt>II</button></aside>
+
     <section class="kap" id="stand" aria-labelledby="stand-h">
       <div class="wrap reveal">
         <h2 id="stand-h">One of these <em>is you</em>.</h2>
