@@ -100,8 +100,16 @@ for (const breite of BREITEN) {
     if (!f.startsWith(W + sep)) return r.fulfill({ status: 403 });
     try { r.fulfill({ body: await readFile(f), contentType: TYP[extname(f)] || 'application/octet-stream' }); } catch { r.fulfill({ status: 404 }); }
   });
+  // Aktionsseiten schalten sich selbst ein (scale-week.js): vor dem Start leitet /scale-week/ auf / um und die Messung
+  // lief mitten in die Umleitung (18.11.: document.body null). Vor dem Start messen wir sie so, wie sie im Zeitraum
+  // aussieht (Start + 2 Tage). START steht in scale-week.js; fehlt die Datei, bleibt alles beim Alten.
+  let swStart = NaN;
+  try { swStart = Date.parse((/START = Date\.parse\('([^']+)'\)/.exec(await readFile(resolve(W, 'scale-week.js'), 'utf8')) || [])[1]); } catch { /* keine Aktion */ }
   for (const s of liste) {
     const p = await c.newPage();
+    if (/\/scale-week\/$/.test(s) && Date.now() < swStart) {
+      await p.addInitScript((t) => { const d = t - Date.now(); const jetzt = Date.now; Date.now = () => jetzt() + d; }, swStart + 2 * 864e5);
+    }
     // Hängt das Laden (12./14.11. nachts: /en/pricing/ 30 s, tagsüber nie nachstellbar), einmal neu versuchen. Hängt es
     // wieder, ist das ein roter Befund mit den offenen Anfragen statt eines Absturzes ohne Grund.
     const offen = new Set();

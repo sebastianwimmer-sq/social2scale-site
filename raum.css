@@ -121,7 +121,7 @@ body:not(:has(.raum)) .raum-licht{view-transition-name:studio}
 /* Ablauf: Licht rechts auf dem Kopf-Beitrag, der Weg führt durch die Phasen in die Tiefe */
 .raum--ablauf{--kegel-x:76%;--kegel-hell:.62}
 /* Unterseiten mit Kopf-Beitrag rechts: das Licht steht auf dem Beitrag */
-.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns{--kegel-x:78%;--kegel-hell:.62}
+.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns,.raum--scale-week{--kegel-x:78%;--kegel-hell:.62}
 /* Für wen: erst im Dunkeln („Online merkt's nur keiner“), das Licht kommt später (raum.js › data-spaet) */
 .raum--fuer-wen .raum-kegel{transition-duration:2.4s}
 /* Danke: das Licht geht für die neue Kundin an — zentral über der Begrüßung */
@@ -134,7 +134,7 @@ body:not(:has(.raum)) .raum-licht{view-transition-name:studio}
   .raum--start .raum-mitte .raum-abzug{--b:24%!important;--y:9%!important}
   .raum--start .raum-mitte .raum-abzug:first-child{--x:-11%!important}
   .raum--start .raum-mitte .raum-abzug:last-child{--x:92%!important}
-  .raum--ablauf,.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns,.raum--danke{--kegel-x:30%}
+  .raum--ablauf,.raum--preise,.raum--fuer-wen,.raum--ueber-uns,.raum--pruef-uns,.raum--scale-week,.raum--danke{--kegel-x:30%}
 }
 @media (prefers-reduced-motion:reduce){
   .raum-ebene{transform:none!important}
