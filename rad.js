@@ -23,7 +23,7 @@
   var FELDER = en ? [
     { id: 'zeit', name: 'Time',
       ohne: { wort: function () { return std(stunden()); }, satz: function () { return 'Around ' + std(stunden()) + ' a month go into ten posts instead of working with your clients.'; } },
-      mit: { wort: function () { return 'free'; }, satz: function () { return 'You just approve. The ' + std(stunden()) + ' go back to your clients, that’s ' + geld() + ' a month.'; } } },
+      mit: { wort: function () { return 'free'; }, satz: function () { return 'You approve only if you want to. The ' + std(stunden()) + ' go back to your clients, that’s ' + geld() + ' a month.'; } } },
     { id: 'anfragen', name: 'Enquiries',
       ohne: { wort: function () { return 'chance'; }, satz: function () { return 'Whether a post turns into an enquiry is left to chance.'; } },
       mit: { wort: function () { return 'planned'; }, satz: function () { return 'One or two posts a month are built to bring enquiries. Whoever gets in touch lands straight with you.'; } } },
@@ -39,7 +39,7 @@
   ] : [
     { id: 'zeit', name: 'Zeit',
       ohne: { wort: function () { return std(stunden()); }, satz: function () { return 'Rund ' + std(stunden()) + ' im Monat sitzt du an zehn Beiträgen, statt mit deinen Kunden zu arbeiten.'; } },
-      mit: { wort: function () { return 'frei'; }, satz: function () { return 'Du gibst nur frei. Die ' + std(stunden()) + ' gehören wieder deinen Kunden, das sind ' + geld() + ' im Monat.'; } } },
+      mit: { wort: function () { return 'frei'; }, satz: function () { return 'Freigeben nur, wenn du willst. Die ' + std(stunden()) + ' gehören wieder deinen Kunden, das sind ' + geld() + ' im Monat.'; } } },
     { id: 'anfragen', name: 'Anfragen',
       ohne: { wort: function () { return 'Zufall'; }, satz: function () { return 'Ob aus einem Beitrag eine Anfrage wird, bleibt dem Zufall überlassen.'; } },
       mit: { wort: function () { return 'geplant'; }, satz: function () { return 'Ein bis zwei Beiträge im Monat sind darauf gebaut, Anfragen zu bringen. Wer sich meldet, landet direkt bei dir.'; } } },

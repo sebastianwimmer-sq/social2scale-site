@@ -48,7 +48,7 @@
   inner.className = 'inner';
   inner.innerHTML =
     '<p class="tl-satz">' + (en ? 'Let’s build your profile.' : 'Lass uns dein Profil bauen.') +
-    '<small>' + (en ? 'First call with Phil, 30 min, free' : 'Erstgespräch mit Phil, 30 Min., kostenlos') + '</small></p>' +
+    '<small>' + (en ? 'Intro call with Phil, about 45 min, free' : 'Erstgespräch mit Phil, etwa 45 Min., kostenlos') + '</small></p>' +
     '<div class="tl-tage" role="group" aria-label="' + (en ? 'Choose a day' : 'Tag wählen') + '"></div>' +
     '<a class="tl-knopf" href="' + link(tage[0]) + '" rel="noopener">' + (en ? 'Let’s go' : 'Loslegen') + ' →</a>';
   var reihe = inner.querySelector('.tl-tage');

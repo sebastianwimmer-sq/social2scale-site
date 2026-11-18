@@ -25,7 +25,7 @@ export const SEITEN_EN = [
     beschreibung:
       "What professional Instagram management costs, what the price is made of and what getting started with us costs: from €446.25 one-time, profile setup and branding €1,297.10.",
     antwort:
-      "In Germany, professional social media management for small and mid-sized businesses typically costs between €400 and €2,000 a month, depending on how much of the work you hand off. At social2scale, nine designed posts cost from " + P.starthilfe.einmalig + " one-time, profile setup and branding " + P.profil.einmalig +
+      "Public price overviews in Germany list €150 to €3,000 a month for ongoing social media management by freelancers and €500 to €5,000 by agencies; where you land depends on how much of the work you hand off. At social2scale, nine designed posts cost from " + P.starthilfe.einmalig + " one-time, profile setup and branding " + P.profil.einmalig +
       ". We set the price for ongoing management on the intro call, because it depends on how much you hand off.",
     abschnitte: [
       {
@@ -45,9 +45,10 @@ export const SEITEN_EN = [
         ],
       },
       {
-        h: "How to spot prices that are too low",
+        h: "What to look for in a price",
+        verweis: { text: "What you get with us, area by area", href: "/en/pricing/#system" },
         p: [
-          "Offers under roughly €300 a month rarely cover more than scheduling ready-made templates. Anyone promising custom posts, image editing and management at that price is usually planning on very little time per client — or passing the work on.",
+          "A monthly price on its own says little. Ask what exactly is included: how many posts, whether they’re designed for you or scheduled from ready-made templates, and who actually does the work.",
           "On the other hand, expensive doesn’t automatically mean better: large agencies factor in project management and a team. What matters is who actually does the work in the end and how many clients that same person looks after.",
         ],
       },
@@ -126,8 +127,9 @@ export const SEITEN_EN = [
     abschnitte: [
       {
         h: "The real time it takes to do it yourself",
+        verweis: { text: "Run the numbers with your own time", href: "/en/pricing/#system" },
         p: [
-          "For ten posts a month, plan on seven and a half to fifteen hours — 45 to 90 minutes per post: finding topics, writing, designing, scheduling and replying to comments. The work doesn’t come in one block but is spread out — which makes it harder to plan in everyday life than the bare number of hours suggests.",
+          "For ten posts a month, you can roughly plan on seven and a half to fifteen hours, so 45 to 90 minutes per post: finding topics, writing, designing, scheduling and replying to comments. The work doesn’t come in one block but is spread out — which makes it harder to plan in everyday life than the bare number of hours suggests.",
           "On top of that comes the learning curve at the start: image formats, how to structure copy and a recognizable look take a few attempts. That learning curve is the main reason many people stop again after two months.",
         ],
       },

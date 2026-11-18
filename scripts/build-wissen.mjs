@@ -64,7 +64,7 @@ const SEITEN = [
     beschreibung:
       "Was professionelle Instagram-Betreuung kostet, woraus sich der Preis zusammensetzt und was der Einstieg bei uns kostet: ab 446,25 € einmalig, Profil-Setup und Branding 1.297,10 €.",
     antwort:
-      "Professionelle Social-Media-Betreuung kostet im deutschen Mittelstand typischerweise zwischen 400 und 2.000 Euro im Monat, je nachdem wie viel Arbeit abgegeben wird. Bei social2scale kosten neun gestaltete Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig, Profil-Setup und Branding " + PREISE.profil.einmalig +
+      "Öffentliche Preisübersichten nennen für laufende Social-Media-Betreuung 150 bis 3.000 Euro im Monat bei Freelancern und 500 bis 5.000 Euro bei Agenturen; wo man landet, hängt davon ab, wie viel Arbeit abgegeben wird. Bei social2scale kosten neun gestaltete Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig, Profil-Setup und Branding " + PREISE.profil.einmalig +
       ". Den Preis für die laufende Betreuung legen wir im Erstgespräch fest, weil er davon abhängt, wie viel du abgibst.",
     abschnitte: [
       {
@@ -84,9 +84,10 @@ const SEITEN = [
         ],
       },
       {
-        h: "Woran man zu niedrige Preise erkennt",
+        h: "Worauf man beim Preis achten sollte",
+        verweis: { text: "Was du bei uns bekommst, Feld für Feld", href: "/preise/#system" },
         p: [
-          "Angebote unter etwa 300 Euro monatlich decken selten mehr ab als das Einplanen fertiger Vorlagen. Wer für diesen Preis individuelle Beiträge, Bildbearbeitung und Betreuung verspricht, rechnet meist mit sehr wenig Zeit pro Kunde — oder gibt die Arbeit weiter.",
+          "Ein Monatspreis allein sagt wenig. Frag nach, was genau drin ist: wie viele Beiträge, ob sie für dich gestaltet oder aus fertigen Vorlagen eingeplant werden, und wer die Arbeit am Ende macht.",
           "Umgekehrt heißt teuer nicht automatisch besser: Große Agenturen kalkulieren Projektleitung und Team mit ein. Entscheidend ist, wer die Arbeit am Ende wirklich macht und wie viele Kundinnen dieselbe Person betreut.",
         ],
       },
@@ -162,8 +163,9 @@ const SEITEN = [
     abschnitte: [
       {
         h: "Der reale Zeitaufwand beim Selbermachen",
+        verweis: { text: "Mit deiner eigenen Zeit nachrechnen", href: "/preise/#system" },
         p: [
-          "Für zehn Beiträge im Monat sollte man mit siebeneinhalb bis fünfzehn Stunden rechnen — 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt.",
+          "Für zehn Beiträge im Monat kann man grob mit siebeneinhalb bis fünfzehn Stunden planen, also 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt.",
           "Dazu kommt der Einarbeitungsaufwand am Anfang: Bildformate, Textaufbau und ein wiedererkennbarer Look brauchen ein paar Anläufe. Diese Lernkurve ist der Hauptgrund, warum viele nach zwei Monaten wieder aufhören.",
         ],
       },
@@ -416,6 +418,8 @@ function abschnittHtml(a) {
     out += '<dl class="w-liste">' + a.liste
       .map(([k, v]) => "<dt>" + esc(k) + "</dt><dd>" + esc(v) + "</dd>").join("") + "</dl>";
   }
+  // Verweis in die passende Stelle der Website (18.11.2026: Wissen mit der Leistungsseite verweben)
+  if (a.verweis) out += '<p><a href="' + esc(a.verweis.href) + '">' + esc(a.verweis.text) + ' <span aria-hidden="true">→</span></a></p>';
   return '<section class="w-blk w-re">' + out + "</section>";
 }
 
