@@ -160,7 +160,7 @@
     margin:1.25rem 0 0;max-width:34ch;text-wrap:pretty}
   .w-lead::first-letter{font-family:"Fraunces",serif;font-size:1.15em;line-height:1;color:var(--emerald-soft)}
   .w-stand{margin-top:1.6rem;padding-top:1rem;border-top:1px solid var(--line);
-    font-family:"JetBrains Mono",monospace;font-size:0.6562rem;letter-spacing:.1em;
+    font-family:"JetBrains Mono",monospace;font-size:.75rem;letter-spacing:.1em;
     text-transform:uppercase;color:var(--faint)}
 
   /* Abschnitte: Rhythmus über Größe und Abstand, nicht über Kästen */

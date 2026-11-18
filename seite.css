@@ -165,3 +165,7 @@ p.pr-alt-du{font-size:1.0625rem}
 }
 @media (prefers-reduced-motion:reduce){.kopf-beitrag img{transition:none}}
 
+
+/* 19.11.2026: Etiketten unter 11 px waren am iPhone kaum lesbar (9,5–10,5 px gemessen,
+   alle-seiten-Lauf). Untergrenze 12 px, Gestaltung sonst unverändert. */
+.stat .lbl,.fw-mpain .mk,.fw-msys .mk,.rs-mcard .mk,.fl-fakt-lbl,.ab-frole{font-size:.75rem}

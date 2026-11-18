@@ -126,17 +126,7 @@
 .rd-finale-social{color:var(--paper,#F2F3F1)}
 .rd-scale span{display:inline-block;font-style:italic;background:var(--rd-flow);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rd-finale-satz{margin:0 0 clamp(28px,4vw,44px);color:var(--muted,#A4A6A1);max-width:56ch}
-.rd-schluss{display:flex;flex-wrap:wrap;gap:18px 32px;align-items:center;justify-content:space-between;padding:clamp(20px,3vw,32px);border-radius:20px;
-  background:linear-gradient(135deg,rgba(31,201,152,.14),rgba(70,190,234,.08));border:1px solid rgba(70,190,234,.22);box-shadow:var(--depth-lg,0 44px 96px -42px rgba(0,0,0,.88))}
-.rd-schluss b{display:block;font:400 clamp(1.3rem,1rem + 1vw,1.75rem)/1.2 var(--rd-display);margin-bottom:6px;color:var(--paper,#F2F3F1)}
-.rd-schluss p{margin:0;color:var(--muted,#A4A6A1);max-width:54ch;font-size:.9375rem}
-.rd-los{display:inline-flex;align-items:center;gap:6px;min-height:48px;background:var(--rd-flow);color:var(--rd-ink);font-weight:600;border-radius:12px;padding:14px 22px;text-decoration:none;white-space:nowrap;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 16px 36px -14px rgba(31,201,152,.75);transition:transform .25s var(--rd-ease)}
-.rd-los:hover{transform:translateY(-2px)}.rd-los:active{transform:scale(.97)}
-.rd-los:focus-visible{outline:2px solid var(--paper,#F2F3F1);outline-offset:3px}
-.rd-pfeil{display:inline-block}
-.rd-schluss.rd-da .rd-pfeil{animation:rd-schubs .9s var(--rd-ease) .7s 2}
-@keyframes rd-schubs{50%{transform:translateX(5px)}}
+.rd-wege .rd-b-kopf{margin-top:clamp(40px,6vw,72px)}
 .rd-vergleich{font-size:.9375rem;color:var(--faint,#8E918B);margin:clamp(32px,4vw,52px) 0 0;max-width:86ch}
 @media (max-width:640px){.rd-zeile{grid-template-columns:minmax(0,1fr);gap:4px}.rd-finale{font-size:clamp(2.2rem,11vw,3.4rem)}}
 
@@ -162,3 +152,7 @@
 @media (prefers-reduced-motion:reduce){
   .rd *,.rd *::before,.rd *::after{transition-duration:.01ms!important;animation-duration:.01ms!important;transition-delay:0ms!important;animation-delay:0ms!important}
 }
+
+/* Wege im Rad-Ablauf: ohne Versal-Etikett und ohne 01/02/03 (Vermeiden-Liste regeln/web.md) */
+.rd-wege .pr-emp-nr,.rd-wege .pr-alt-nr{display:none}
+.rd-wege .pr-emp-lbl{text-transform:none;letter-spacing:0;font:500 .9375rem/1.3 var(--rd-text);color:var(--emerald-soft,#1FC998)}

@@ -167,7 +167,7 @@
     };
     requestAnimationFrame(tick);
   };
-  var teile = [$('rd-b-kopf')].concat(zeilen, [$('rd-finale'), $('rd-finale-satz'), $('rd-schluss')]);
+  var teile = [$('rd-b-kopf')].concat(zeilen, [$('rd-finale'), $('rd-finale-satz'), $('rd-wege')]);
   teile.forEach(function (el) { el.classList.add('rd-r'); });
   var zeigen = function (el) {
     if (el.classList.contains('rd-da')) return; el.classList.add('rd-da');
