@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <script>if(self!==top){document.documentElement.style.display='none';top.location=self.location.href}</script>
 <!-- /SICHERHEIT:AUTO -->
-<meta name="s2s-quelle" content="/preise/@93d09c36286c4733">
+<meta name="s2s-quelle" content="/preise/@bc0a5153c713029f">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -206,16 +206,6 @@
   .pr-way.is-lead .pr-way-h{font-size:clamp(1.75rem,1.3rem + 1.8vw,2.7rem)}
 
   /* ===== Selbermachen-Rechnung ===== */
-  .pr-calc{margin-top:clamp(var(--s-6),3vw,var(--s-7));max-width:64ch}
-  .pr-calc-line{color:var(--muted);font-size:1.02rem;line-height:1.65}
-  .pr-calc-line b{color:var(--paper);font-weight:600}
-  .pr-calc-grid{margin-top:clamp(var(--s-5),2.6vw,var(--s-6))}
-  .pr-calc-grid div{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-5);padding:var(--s-4) 0;border-bottom:1px solid var(--line)}
-  .pr-calc-grid .l{font-family:"Hanken Grotesk",sans-serif;font-size:1rem;color:var(--muted)}
-  .pr-calc-grid .v{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;font-size:1rem;color:var(--paper);white-space:nowrap}
-  .pr-calc-grid .is-us{border-bottom-color:rgba(0,184,136,.4)}
-  .pr-calc-grid .is-us .l{color:var(--paper);font-weight:600}
-  .pr-calc-grid .is-us .v{color:var(--emerald);font-size:1.15rem}
 
   /* ===== Warum nicht billiger — Marktskala als Leiter ===== */
   .pr-why-grid{margin-top:clamp(var(--s-6),3vw,var(--s-7));display:grid;grid-template-columns:1fr 1fr;gap:clamp(var(--s-6),4vw,var(--s-8));align-items:start}
@@ -246,8 +236,7 @@
   }
   @media (max-width:760px){
     .pr-way{padding:var(--s-5)}
-    .pr-calc-grid div,.pr-why-scale div{flex-direction:column;gap:var(--s-2);align-items:flex-start}
-  }
+    }
 
   /* ===== Du / Wir — der No-Brainer wird sichtbar, nicht behauptet =====
      Die Asymmetrie IST das Argument: links ein Punkt, rechts sechs. Wer scannt,
@@ -578,6 +567,7 @@
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
+<link rel="stylesheet" href="/rad.css">
 <script src="/raum.js" defer></script>
 <script src="/szenen/szenen.js" data-css="basis,preise" defer></script>
 <!-- SPRACHE:KOPF -->
@@ -691,21 +681,73 @@
       <p class="pr-ueb-fuss">All prices include VAT. Ongoing management has a three-month minimum term. Which path fits you, we’ll tell you on the intro call, even if it’s none of the three.</p>
     </div></section>
 
-    <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
-      <div class="pr-blk-head">
-        <h2 id="pr-rechnung" class="wipe">What it costs you. In <em>time</em> and in money.</h2>
-        <p class="lead">Ten posts a month. Per post: idea, copy, design, hashtags, publishing. Plan on <b>45 to 90 minutes</b>. That’s <b>7.5 to 15 hours</b> a month.</p>
-      </div>
-
-      <div class="pr-calc">
-        <p class="pr-time-label">Per month</p>
-        <div class="pr-calc-grid stagger">
-          <div><span class="l">Yourself, at €60 an hour</span><span class="v">€450–900</span></div>
-          <div><span class="l">Yourself, at €80 an hour</span><span class="v">€600–1,200</span></div>
-          <div><span class="l">Yourself, at €120 an hour</span><span class="v">€900–1,800</span></div>
+<section class="pr-blk rd" id="system" aria-labelledby="rd-h"><div class="wrap reveal">
+      <!-- Rad „Vom Glücksspiel zum System“ (rad.css + rad.js, 18.11.2026) -->
+      <div class="rd-buehne" id="rd-buehne">
+        <div class="rd-spalte">
+          <h2 id="rd-h" class="rd-h2">Instagram on your own is a gamble. <em>With us</em> it’s a system.</h2>
+          <div class="rd-schalter" id="rd-schalter" role="group" aria-label="Without us or with us">
+            <span class="rd-knauf" aria-hidden="true"></span>
+            <button type="button" data-m="ohne" aria-pressed="true">Without us</button>
+            <button type="button" data-m="mit" aria-pressed="false">With us</button>
+          </div>
+          <div class="rd-antwort" aria-live="polite">
+            <h3 id="rd-name"></h3>
+            <p class="rd-satz" id="rd-satz"></p>
+            <p class="rd-gegen" id="rd-gegen"></p>
+            <div class="rd-grundlage" id="rd-grundlage" hidden>
+              <span id="rd-grund"></span><button type="button" class="rd-auf" id="rd-auf" aria-expanded="false" aria-controls="rd-regler">adjust</button>
+              <div class="rd-regler" id="rd-regler" hidden>
+                <div class="rd-stufe" data-id="min" data-min="20" data-max="180" data-step="10"><button type="button" data-d="-1" aria-label="Fewer minutes per post">−</button><div class="rd-mitte"><span>per post</span><output>60 min</output></div><button type="button" data-d="1" aria-label="More minutes per post">+</button></div>
+                <div class="rd-stufe" data-id="eur" data-min="40" data-max="400" data-step="10"><button type="button" data-d="-1" aria-label="Less per hour">−</button><div class="rd-mitte"><span>your hour</span><output>€120</output></div><button type="button" data-d="1" aria-label="More per hour">+</button></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="pr-note">What it costs with us, we work out on the intro call against your own number.</p>
+        <div class="rd-radbox" id="rd-radbox">
+          <svg class="rd-rad" id="rd-rad" viewBox="-228 -228 456 456" role="group" aria-label="Five fields, tap one">
+            <defs>
+              <linearGradient id="rd-flu" gradientUnits="userSpaceOnUse" x1="-200" y1="-200" x2="200" y2="200"><stop offset="0" stop-color="#1FC998"/><stop offset="1" stop-color="#46BEEA"/></linearGradient>
+              <radialGradient id="rd-glanz" gradientUnits="userSpaceOnUse" cx="-70" cy="-160" r="330"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <radialGradient id="rd-kern" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#1a1f24"/><stop offset="1" stop-color="#0a0c0f"/></radialGradient>
+              <radialGradient id="rd-schein-v"><stop offset="0" stop-color="#1FC998" stop-opacity=".3"/><stop offset="1" stop-color="#1FC998" stop-opacity="0"/></radialGradient>
+              <radialGradient id="rd-boden"><stop offset=".82" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+              <linearGradient id="rd-keil" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+              <clipPath id="rd-ring-form"><path clip-rule="evenodd" d="M0 -200A200 200 0 1 1 0 200A200 200 0 1 1 0 -200ZM0 -88A88 88 0 1 0 0 88A88 88 0 1 0 0 -88Z"/></clipPath>
+            </defs>
+            <circle r="218" cy="16" fill="url(#rd-boden)"/>
+            <circle class="rd-schein" id="rd-schein" r="226" fill="url(#rd-schein-v)" opacity="0"/>
+            <g class="rd-dreh" id="rd-dreh">
+              <circle class="rd-ring-rausch" r="212"/>
+              <circle class="rd-ring-voll" id="rd-ring-voll" r="212" transform="rotate(-90)"/>
+              <g id="rd-felder"></g>
+              <g class="rd-zeiger" id="rd-zeiger"><circle class="rd-hof" cy="-212" r="11"/><circle class="rd-perle" cy="-212" r="5"/></g>
+            </g>
+            <g clip-path="url(#rd-ring-form)"><path class="rd-licht" id="rd-licht" fill="url(#rd-keil)"/></g>
+            <circle class="rd-welle" id="rd-welle" r="82"/>
+            <circle class="rd-kern" r="80"/>
+            <text class="rd-wort" id="rd-wort" y="6"></text>
+            <text class="rd-klein" id="rd-klein" y="32"></text>
+          </svg>
+          <span class="rd-hinweis">Tap a field.</span>
+        </div>
       </div>
+      <div class="rd-bilanz" id="rd-bilanz">
+        <div class="rd-innen">
+          <h3 class="rd-b-kopf" id="rd-b-kopf">What you get <em class="rd-g">with us</em>.</h3>
+          <ul class="rd-liste">
+            <li class="rd-zeile" data-feld="0"><span class="rd-wort-gross"><span class="rd-init">S</span><span class="rd-restwort">pare hours</span></span><div class="rd-rest"><h4><span class="rd-zahl">10 hrs</span> a month freed up</h4><p>You just approve. At your hourly rate that’s <span class="rd-geld">€1,200</span> a month.</p></div></li>
+            <li class="rd-zeile" data-feld="1"><span class="rd-wort-gross"><span class="rd-init">C</span><span class="rd-restwort">lients</span></span><div class="rd-rest"><h4>enquire on purpose, not by chance</h4><p>One or two posts a month are built to make someone get in touch. Whoever enquires lands straight with you.</p></div></li>
+            <li class="rd-zeile" data-feld="2"><span class="rd-wort-gross"><span class="rd-init">A</span><span class="rd-restwort">udience</span></span><div class="rd-rest"><h4>reached with a plan</h4><p>A fixed content plan, hashtags chosen per post and a short report every month on what lands.</p></div></li>
+            <li class="rd-zeile" data-feld="3"><span class="rd-wort-gross"><span class="rd-init">L</span><span class="rd-restwort">ook</span></span><div class="rd-rest"><h4>that people recognise</h4><p>Profile, colours and tone from one mould. People know it’s you in the feed.</p></div></li>
+            <li class="rd-zeile" data-feld="4"><span class="rd-wort-gross"><span class="rd-init">E</span><span class="rd-restwort">xperts</span></span><div class="rd-rest"><h4>by your side</h4><p>Sebi and Phil in person, no team in between.</p></div></li>
+          </ul>
+          <p class="rd-finale" id="rd-finale" aria-label="social2scale"><span class="rd-finale-social">social2</span><span class="rd-scale"><span style="--k:0">s</span><span style="--k:1">c</span><span style="--k:2">a</span><span style="--k:3">l</span><span style="--k:4">e</span></span></p>
+          <p class="rd-finale-satz" id="rd-finale-satz">Spare hours, Clients, Audience, Look, Experts. Social becomes scale.</p>
+          <div class="rd-schluss" id="rd-schluss"><div><b>Let’s turn your profile into a system.</b><p>Intro call with Phil, 30 min, free. What it costs for you, we work out there against your own number. The starter package is a one-off from €446.25.</p></div><a class="rd-los" href="https://calendly.com/philipplibowicz/neues-meeting" rel="noopener">Pick a day <span class="rd-pfeil" aria-hidden="true">→</span></a></div>
+        </div>
+      </div>
+      <p class="rd-vergleich">For comparison: freelancers charge €150 to €3,000 a month for ongoing management, agencies €500 to €5,000 (public price overviews 2026: the-site24.de, nexaviral.de, sparkful.media). With us, the starter package is a one-off from €446.25; ongoing management we work out on the intro call against your own number.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
@@ -951,6 +993,7 @@
 <script src="/leiste.js" defer></script>
 <script src="/spende.js" defer></script>
 <script src="/termin.js" defer></script>
+<script src="/rad.js" defer></script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="preise" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>

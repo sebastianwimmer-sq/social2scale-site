@@ -205,16 +205,6 @@
   .pr-way.is-lead .pr-way-h{font-size:clamp(1.75rem,1.3rem + 1.8vw,2.7rem)}
 
   /* ===== Selbermachen-Rechnung ===== */
-  .pr-calc{margin-top:clamp(var(--s-6),3vw,var(--s-7));max-width:64ch}
-  .pr-calc-line{color:var(--muted);font-size:1.02rem;line-height:1.65}
-  .pr-calc-line b{color:var(--paper);font-weight:600}
-  .pr-calc-grid{margin-top:clamp(var(--s-5),2.6vw,var(--s-6))}
-  .pr-calc-grid div{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s-5);padding:var(--s-4) 0;border-bottom:1px solid var(--line)}
-  .pr-calc-grid .l{font-family:"Hanken Grotesk",sans-serif;font-size:1rem;color:var(--muted)}
-  .pr-calc-grid .v{font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums;font-size:1rem;color:var(--paper);white-space:nowrap}
-  .pr-calc-grid .is-us{border-bottom-color:rgba(0,184,136,.4)}
-  .pr-calc-grid .is-us .l{color:var(--paper);font-weight:600}
-  .pr-calc-grid .is-us .v{color:var(--emerald);font-size:1.15rem}
 
   /* ===== Warum nicht billiger — Marktskala als Leiter ===== */
   .pr-why-grid{margin-top:clamp(var(--s-6),3vw,var(--s-7));display:grid;grid-template-columns:1fr 1fr;gap:clamp(var(--s-6),4vw,var(--s-8));align-items:start}
@@ -245,8 +235,7 @@
   }
   @media (max-width:760px){
     .pr-way{padding:var(--s-5)}
-    .pr-calc-grid div,.pr-why-scale div{flex-direction:column;gap:var(--s-2);align-items:flex-start}
-  }
+    }
 
   /* ===== Du / Wir — der No-Brainer wird sichtbar, nicht behauptet =====
      Die Asymmetrie IST das Argument: links ein Punkt, rechts sechs. Wer scannt,
@@ -577,6 +566,7 @@
 <link rel="stylesheet" href="/bewegung.css">
 <link rel="stylesheet" href="/bedienung.css">
 <link rel="stylesheet" href="/raum.css">
+<link rel="stylesheet" href="/rad.css">
 <script src="/raum.js" defer></script>
 <script src="/szenen/szenen.js" data-css="basis,preise" defer></script>
 <!-- SPRACHE:KOPF -->
@@ -690,21 +680,73 @@
       <p class="pr-ueb-fuss">Alle Preise inklusive Umsatzsteuer. Laufende Betreuung mit drei Monaten Mindestlaufzeit. Welcher Weg passt, sagen wir dir im Erstgespräch, auch wenn es keiner der drei ist.</p>
     </div></section>
 
-    <section class="pr-blk" aria-labelledby="pr-rechnung"><div class="wrap reveal">
-      <div class="pr-blk-head">
-        <h2 id="pr-rechnung" class="wipe">Was es dich kostet. An <em>Zeit</em> und an Geld.</h2>
-        <p class="lead">Zehn Beiträge im Monat. Je Beitrag: Idee, Text, Gestaltung, Hashtags, Veröffentlichung. Rechne mit <b>45 bis 90 Minuten</b>. Macht <b>7,5 bis 15 Stunden</b> im Monat.</p>
-      </div>
-
-      <div class="pr-calc">
-        <p class="pr-time-label">Im Monat</p>
-        <div class="pr-calc-grid stagger">
-          <div><span class="l">Selbst, bei 60 € Stundensatz</span><span class="v">450 – 900 €</span></div>
-          <div><span class="l">Selbst, bei 80 € Stundensatz</span><span class="v">600 – 1.200 €</span></div>
-          <div><span class="l">Selbst, bei 120 € Stundensatz</span><span class="v">900 – 1.800 €</span></div>
+<section class="pr-blk rd" id="system" aria-labelledby="rd-h"><div class="wrap reveal">
+      <!-- Rad „Vom Glücksspiel zum System“ (rad.css + rad.js, 18.11.2026) -->
+      <div class="rd-buehne" id="rd-buehne">
+        <div class="rd-spalte">
+          <h2 id="rd-h" class="rd-h2">Instagram allein ist ein Glücksspiel. <em>Mit uns</em> ein System.</h2>
+          <div class="rd-schalter" id="rd-schalter" role="group" aria-label="Ohne uns oder mit uns">
+            <span class="rd-knauf" aria-hidden="true"></span>
+            <button type="button" data-m="ohne" aria-pressed="true">Ohne uns</button>
+            <button type="button" data-m="mit" aria-pressed="false">Mit uns</button>
+          </div>
+          <div class="rd-antwort" aria-live="polite">
+            <h3 id="rd-name"></h3>
+            <p class="rd-satz" id="rd-satz"></p>
+            <p class="rd-gegen" id="rd-gegen"></p>
+            <div class="rd-grundlage" id="rd-grundlage" hidden>
+              <span id="rd-grund"></span><button type="button" class="rd-auf" id="rd-auf" aria-expanded="false" aria-controls="rd-regler">anpassen</button>
+              <div class="rd-regler" id="rd-regler" hidden>
+                <div class="rd-stufe" data-id="min" data-min="20" data-max="180" data-step="10"><button type="button" data-d="-1" aria-label="Weniger Minuten je Beitrag">−</button><div class="rd-mitte"><span>je Beitrag</span><output>60 Min.</output></div><button type="button" data-d="1" aria-label="Mehr Minuten je Beitrag">+</button></div>
+                <div class="rd-stufe" data-id="eur" data-min="40" data-max="400" data-step="10"><button type="button" data-d="-1" aria-label="Weniger Euro je Stunde">−</button><div class="rd-mitte"><span>deine Stunde</span><output>120 €</output></div><button type="button" data-d="1" aria-label="Mehr Euro je Stunde">+</button></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="pr-note">Was es dich mit uns kostet, rechnen wir im Erstgespräch gegen deine Zahl.</p>
+        <div class="rd-radbox" id="rd-radbox">
+          <svg class="rd-rad" id="rd-rad" viewBox="-228 -228 456 456" role="group" aria-label="Fünf Felder, eines antippen">
+            <defs>
+              <linearGradient id="rd-flu" gradientUnits="userSpaceOnUse" x1="-200" y1="-200" x2="200" y2="200"><stop offset="0" stop-color="#1FC998"/><stop offset="1" stop-color="#46BEEA"/></linearGradient>
+              <radialGradient id="rd-glanz" gradientUnits="userSpaceOnUse" cx="-70" cy="-160" r="330"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <radialGradient id="rd-kern" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#1a1f24"/><stop offset="1" stop-color="#0a0c0f"/></radialGradient>
+              <radialGradient id="rd-schein-v"><stop offset="0" stop-color="#1FC998" stop-opacity=".3"/><stop offset="1" stop-color="#1FC998" stop-opacity="0"/></radialGradient>
+              <radialGradient id="rd-boden"><stop offset=".82" stop-color="#000" stop-opacity=".55"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+              <linearGradient id="rd-keil" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+              <clipPath id="rd-ring-form"><path clip-rule="evenodd" d="M0 -200A200 200 0 1 1 0 200A200 200 0 1 1 0 -200ZM0 -88A88 88 0 1 0 0 88A88 88 0 1 0 0 -88Z"/></clipPath>
+            </defs>
+            <circle r="218" cy="16" fill="url(#rd-boden)"/>
+            <circle class="rd-schein" id="rd-schein" r="226" fill="url(#rd-schein-v)" opacity="0"/>
+            <g class="rd-dreh" id="rd-dreh">
+              <circle class="rd-ring-rausch" r="212"/>
+              <circle class="rd-ring-voll" id="rd-ring-voll" r="212" transform="rotate(-90)"/>
+              <g id="rd-felder"></g>
+              <g class="rd-zeiger" id="rd-zeiger"><circle class="rd-hof" cy="-212" r="11"/><circle class="rd-perle" cy="-212" r="5"/></g>
+            </g>
+            <g clip-path="url(#rd-ring-form)"><path class="rd-licht" id="rd-licht" fill="url(#rd-keil)"/></g>
+            <circle class="rd-welle" id="rd-welle" r="82"/>
+            <circle class="rd-kern" r="80"/>
+            <text class="rd-wort" id="rd-wort" y="6"></text>
+            <text class="rd-klein" id="rd-klein" y="32"></text>
+          </svg>
+          <span class="rd-hinweis">Tipp auf ein Feld.</span>
+        </div>
       </div>
+      <div class="rd-bilanz" id="rd-bilanz">
+        <div class="rd-innen">
+          <h3 class="rd-b-kopf" id="rd-b-kopf">Das hast du <em class="rd-g">mit uns</em>.</h3>
+          <ul class="rd-liste">
+            <li class="rd-zeile" data-feld="0"><span class="rd-wort-gross"><span class="rd-init">S</span><span class="rd-restwort">tunden</span></span><div class="rd-rest"><h4><span class="rd-zahl">10 Std.</span> im Monat frei</h4><p>Du gibst nur noch frei. Mit deinem Stundensatz sind das <span class="rd-geld">1.200 €</span> im Monat.</p></div></li>
+            <li class="rd-zeile" data-feld="2"><span class="rd-wort-gross"><span class="rd-init">C</span><span class="rd-restwort">ontent</span></span><div class="rd-rest"><h4>mit Plan für deine Zielgruppe</h4><p>Fester Redaktionsplan, Hashtags je Beitrag und jeden Monat ein kurzer Bericht, was ankommt.</p></div></li>
+            <li class="rd-zeile" data-feld="1"><span class="rd-wort-gross"><span class="rd-init">A</span><span class="rd-restwort">nfragen</span></span><div class="rd-rest"><h4>kommen nicht mehr zufällig</h4><p>Ein bis zwei Beiträge im Monat sind darauf gebaut, dass sich jemand meldet. Wer anfragt, landet direkt bei dir.</p></div></li>
+            <li class="rd-zeile" data-feld="3"><span class="rd-wort-gross"><span class="rd-init">L</span><span class="rd-restwort">inie</span></span><div class="rd-rest"><h4>die man wiedererkennt</h4><p>Profil, Farben und Ton aus einem Guss. Man erkennt dich im Feed sofort.</p></div></li>
+            <li class="rd-zeile" data-feld="4"><span class="rd-wort-gross"><span class="rd-init">E</span><span class="rd-restwort">xperten</span></span><div class="rd-rest"><h4>an deiner Seite</h4><p>Sebi und Phil persönlich, ohne Team dazwischen.</p></div></li>
+          </ul>
+          <p class="rd-finale" id="rd-finale" aria-label="social2scale"><span class="rd-finale-social">social2</span><span class="rd-scale"><span style="--k:0">s</span><span style="--k:1">c</span><span style="--k:2">a</span><span style="--k:3">l</span><span style="--k:4">e</span></span></p>
+          <p class="rd-finale-satz" id="rd-finale-satz">Stunden, Content, Anfragen, Linie, Experten. Aus social wird scale.</p>
+          <div class="rd-schluss" id="rd-schluss"><div><b>Lass uns aus deinem Profil ein System machen.</b><p>Erstgespräch mit Phil, 30 Min., kostenlos. Was es bei dir kostet, rechnen wir dort gegen deine Zahl. Die Starthilfe gibt es einmalig ab 446,25 €.</p></div><a class="rd-los" href="https://calendly.com/philipplibowicz/neues-meeting" rel="noopener">Tag wählen <span class="rd-pfeil" aria-hidden="true">→</span></a></div>
+        </div>
+      </div>
+      <p class="rd-vergleich">Zum Vergleich: Freelancer nehmen für laufende Betreuung 150 bis 3.000 € im Monat, Agenturen 500 bis 5.000 € (öffentliche Preisübersichten 2026: the-site24.de, nexaviral.de, sparkful.media). Bei uns gibt es die Starthilfe einmalig ab 446,25 €, laufende Betreuung rechnen wir im Erstgespräch gegen deine Zahl.</p>
     </div></section>
 
     <section class="pr-blk" aria-labelledby="pr-detail"><div class="wrap reveal">
@@ -950,6 +992,7 @@
 <script src="/leiste.js" defer></script>
 <script src="/spende.js" defer></script>
 <script src="/termin.js" defer></script>
+<script src="/rad.js" defer></script>
 <!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div class="raum-licht" data-raum-licht="preise" aria-hidden="true"></div><!-- /RAUM-LICHT -->
 </body>
 </html>
