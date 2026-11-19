@@ -219,7 +219,7 @@ def warte_auf_auslieferungen():
 def ausliefern(jahr, kw):
     lauf(["bash", "scripts/pruefen.sh", "--schnell"], frist=5400)
     # Der Wachen-Worktree ist vor dem Lauf sauber auf origin/main: alles, was Bau und Kette schreiben, gehört in den Commit
-    lauf(["git", "add", "-A", "--", ".", ":(exclude)node_modules"])
+    lauf(["git", "add", "-A"])   # node_modules steht in .gitignore; ein :(exclude) darauf lässt git add scheitern
     status = lauf(["git", "status", "--porcelain"])
     if not status.strip():
         return "nichts zu tun"
