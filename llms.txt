@@ -30,7 +30,7 @@ Zwei Gründer machen die Arbeit selbst; es gibt kein Account-Manager-Karussell.
 ## Seiten
 
 - [Startseite](https://social2scale.com/): Was wir machen, der Ablauf in vier Phasen, Leistungen, FAQ.
-- [Leistungen](https://social2scale.com/preise/): Drei Wege, alle sieben Pakete mit Umfang (Preis im
+- [Leistungen](https://social2scale.com/leistungen/): Drei Wege, alle sieben Pakete mit Umfang (Preis im
   Erstgespräch), dazu „ohne uns / mit uns“ an fünf Stellen (Zeit, Anfragen, Zielgruppe, Auftritt,
   Begleitung) mit eigener Zeitrechnung.
 - [Ablauf](https://social2scale.com/ablauf/): Die vier Phasen von Strategie-Call bis Skalierung,
@@ -71,7 +71,7 @@ including German VAT). The free Instagram preview at start.social2scale.com is G
 English-speaking visitors book the free intro call directly.
 
 - [Home (English)](https://social2scale.com/en/): What we do, the four phases, services, FAQ.
-- [Services](https://social2scale.com/en/pricing/): Three paths, all seven packages (price on the
+- [Services](https://social2scale.com/en/services/): Three paths, all seven packages (price on the
   intro call), plus “without us / with us” across five areas with your own time math.
 - [Process](https://social2scale.com/en/process/): The four phases and how much of your time each takes.
 - [Who it's for](https://social2scale.com/en/for-you/): Coaches, experts and B2B.

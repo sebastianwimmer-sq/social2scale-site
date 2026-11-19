@@ -26,7 +26,10 @@ const KOPF = '<!doctype html><meta name="viewport" content="width=device-width">
 const FIX = {
   '/fix-rot/': KOPF + '<div style="position:relative;height:120px"><p style="margin:0">Gutschrift dauert in der Regel nur Sekunden.</p><button style="position:absolute;left:0;top:4px;height:44px">Bewegung anhalten</button></div><p style="margin:0">Erste Zeile mit Text</p><p style="margin:-18px 0 0">Zweite Zeile darüber</p>',
   '/fix-haengt/': KOPF + '<p>Text</p><img src="/haengt-fuer-immer.png" alt="">',
-  '/fix-gruen/': KOPF + '<p style="margin:0">Gutschrift dauert in der Regel nur Sekunden.</p><button style="height:44px;margin-top:16px">Bewegung anhalten</button><details><summary>Was wir dabei machen</summary><p>Anfragen weiterleiten</p></details><p>Alle Preise inklusive Umsatzsteuer.</p>',
+  '/fix-gruen/': KOPF + '<p style="margin:0">Gutschrift dauert in der Regel nur Sekunden.</p><button style="height:44px;margin-top:16px">Bewegung anhalten</button><details><summary>Was wir dabei machen</summary><p>Anfragen weiterleiten</p></details><p>Alle Preise inklusive Umsatzsteuer.</p>'
+    // Link in einem zugeklappten <details> (Quelle unter einer News-Zeile): WebKit gibt ihm eine Lage, obwohl er nicht zu sehen ist
+    // unterhalb des ersten Bildschirms: dort kann elementFromPoint nicht nachsehen, und ohne Ausnahme zählte er als Knopf
+    + '<div style="height:1400px"></div><details><summary style="font-size:28px">Satz der Woche</summary><p><a href="#q">Social Media Today</a>, 15. November</p></details><p style="font-size:28px;margin:0">Nächster Satz direkt darunter</p>',
 };
 
 async function seiten() {
@@ -67,6 +70,7 @@ function messen() {
   for (const k of document.querySelectorAll('a,button')) {
     const kb = k.getBoundingClientRect(); if (kb.width < 2 || kb.height < 2) continue;
     if (k.closest('[aria-hidden="true"],.sticky-cta,[hidden]') || !sichtbar(k) || fest(k)) continue;
+    const zuK = k.closest('details:not([open])'); if (zuK && !k.closest('summary')) continue;   // wie beim Text oben (19.11.: WebKit misst zugeklappte Links)
     const y0 = kb.top + scrollY, y1 = kb.bottom + scrollY;
     for (const Z of zeilen) {
       if (k.contains(Z.el) || Z.el.contains(k)) continue;
@@ -110,7 +114,7 @@ for (const breite of BREITEN) {
     if (/\/scale-week\/$/.test(s) && Date.now() < swStart) {
       await p.addInitScript((t) => { const d = t - Date.now(); const jetzt = Date.now; Date.now = () => jetzt() + d; }, swStart + 2 * 864e5);
     }
-    // Hängt das Laden (12./14.11. nachts: /en/pricing/ 30 s, tagsüber nie nachstellbar), einmal neu versuchen. Hängt es
+    // Hängt das Laden (12./14.11. nachts: /en/services/ 30 s, tagsüber nie nachstellbar), einmal neu versuchen. Hängt es
     // wieder, ist das ein roter Befund mit den offenen Anfragen statt eines Absturzes ohne Grund.
     const offen = new Set();
     p.on('request', (q) => offen.add(q.url())); p.on('requestfinished', (q) => offen.delete(q.url())); p.on('requestfailed', (q) => offen.delete(q.url()));

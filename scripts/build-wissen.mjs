@@ -30,14 +30,14 @@ const WURZEL = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BASIS = "https://social2scale.com";
 const STAND = "20. August 2026";
 
-// Alle Preise stammen 1:1 von /preise/ — niemals hier neu erfinden.
+// Alle Preise stammen 1:1 von /leistungen/ — niemals hier neu erfinden.
 // Seit 16.11.2026 (Besprechung #2, Punkt 5, Sebi: „eher die hochpreisigen rausnehmen … eher Einmalbuchungen auf website dann maximal nennen“)
 // stehen nur noch die Einmalbuchungen mit Preis auf der Website; die laufende Betreuung nennt Phil im Erstgespräch.
 const PREISE = {
   laufend: "im Erstgespräch, je nach Umfang",
   starthilfe: { einmalig: "446,25 €" },
   // Profil + Branding ist Paket 02, nicht die Starthilfe fuer 446,25 € (= nur
-  // neun Beitraege). Stand bis 02.10.2026 falsch auf /wissen/ und /preise/.
+  // neun Beitraege). Stand bis 02.10.2026 falsch auf /wissen/ und /leistungen/.
   profil: { einmalig: "1.297,10 €" },
   beitraege: 10,
 };
@@ -85,7 +85,7 @@ const SEITEN = [
       },
       {
         h: "Worauf man beim Preis achten sollte",
-        verweis: { text: "Was du bei uns bekommst, Feld für Feld", href: "/preise/#system" },
+        verweis: { text: "Was du bei uns bekommst, Feld für Feld", href: "/leistungen/#system" },
         p: [
           "Ein Monatspreis allein sagt wenig. Frag nach, was genau drin ist: wie viele Beiträge, ob sie für dich gestaltet oder aus fertigen Vorlagen eingeplant werden, und wer die Arbeit am Ende macht.",
           "Umgekehrt heißt teuer nicht automatisch besser: Große Agenturen kalkulieren Projektleitung und Team mit ein. Entscheidend ist, wer die Arbeit am Ende wirklich macht und wie viele Kundinnen dieselbe Person betreut.",
@@ -163,7 +163,7 @@ const SEITEN = [
     abschnitte: [
       {
         h: "Der reale Zeitaufwand beim Selbermachen",
-        verweis: { text: "Mit deiner eigenen Zeit nachrechnen", href: "/preise/#system" },
+        verweis: { text: "Mit deiner eigenen Zeit nachrechnen", href: "/leistungen/#system" },
         p: [
           "Für zehn Beiträge im Monat kann man grob mit siebeneinhalb bis fünfzehn Stunden planen, also 45 bis 90 Minuten je Beitrag: Themen finden, schreiben, gestalten, einplanen und auf Kommentare antworten. Der Aufwand fällt nicht am Stück an, sondern verteilt sich — was ihn im Alltag schwerer planbar macht als die reine Stundenzahl vermuten lässt.",
           "Dazu kommt der Einarbeitungsaufwand am Anfang: Bildformate, Textaufbau und ein wiedererkennbarer Look brauchen ein paar Anläufe. Diese Lernkurve ist der Hauptgrund, warum viele nach zwei Monaten wieder aufhören.",

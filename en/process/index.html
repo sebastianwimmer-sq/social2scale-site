@@ -67,7 +67,7 @@
   .fl-was{margin-top:var(--s-4);font-size:clamp(1.02rem,.97rem + .4vw,1.2rem);line-height:1.55;color:var(--muted);max-width:46ch}
   .fl-was b{color:var(--paper);font-weight:600}
   /* Rechte Spalte: Ergebnis und Aufwand als Haarlinien-Zeilen — dieselbe
-     Sprache wie die Tarif-Liste auf /preise/, keine Aufzaehlungspunkte. */
+     Sprache wie die Tarif-Liste auf /leistungen/, keine Aufzaehlungspunkte. */
   .fl-fakten{display:grid;gap:var(--s-4);padding-top:var(--s-3)}
   .fl-fakt{padding-top:var(--s-4);border-top:1px solid var(--line-2)}
   .fl-fakt-lbl{display:block;font-family:"JetBrains Mono",monospace;font-size:0.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
@@ -75,7 +75,7 @@
   .fl-fakt.ist-null .fl-fakt-txt{color:var(--emerald)}
   @media (max-width:880px){.fl-grid{grid-template-columns:1fr;gap:var(--s-5)}}
 
-  /* ===== Aufwand: die Rechnung, die schon auf /preise/ steht =====
+  /* ===== Aufwand: die Rechnung, die schon auf /leistungen/ steht =====
      Der Bezugsbalken ist die Zeit, die es selbst gemacht kostet. Alles andere
      wird daran gemessen — deshalb sind die Anteile echte Verhaeltnisse und
      keine gefuehlten Groessen. Quelle: 10 Beitraege x 45-90 Min = 7,5-15 h. */
@@ -148,13 +148,15 @@
     <nav class="nav" aria-label="Main navigation">
       <!-- SHELL:NAV -->
       <ul class="nav-links">
-        <li><a href="/en/pricing/">Services</a></li>
+        <li><a href="/en/services/">Services</a></li>
         <li><a href="/en/process/" aria-current="page">Process</a></li>
         <li><a href="/en/for-you/">Who it’s for</a></li>
         <li><a href="/en/results/">Proof</a></li>
+        <li><a href="/en/news/">News<span class="nz" data-news="2026-kw47" hidden style="color:var(--emerald-soft,#1FC998);font-weight:600;margin-left:4px"><span aria-hidden="true">(1)</span><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">, new issue</span></span></a></li>
         <li><a href="/en/about/">About us</a></li>
       </ul>
       <a class="sprache" href="/ablauf/" hreflang="de" lang="de" data-sprache="de"><svg class="sprache-flagge" viewBox="0 0 5 3" width="20" height="12" aria-hidden="true" focusable="false"><path fill="#000" d="M0 0h5v1H0z"/><path fill="#D00" d="M0 1h5v1H0z"/><path fill="#FFCE00" d="M0 2h5v1H0z"/></svg><span>Deutsch</span></a>
+      <script src="/news-zaehler.js" defer></script>
 <!-- /SHELL:NAV -->
       <a class="nav-cta" id="cta-top" href="/en/free/" data-cta-url="/en/free/">Get started free</a>
     </nav>
@@ -166,10 +168,11 @@
   <div class="nav-scrim" id="nav-scrim" hidden></div>
   <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" hidden>
     <!-- SHELL:MOBIL -->
-    <a class="m-link" href="/en/pricing/">Services</a>
+    <a class="m-link" href="/en/services/">Services</a>
     <a class="m-link" href="/en/process/" aria-current="page">Process</a>
     <a class="m-link" href="/en/for-you/">Who it’s for</a>
     <a class="m-link" href="/en/results/">Proof</a>
+    <a class="m-link" href="/en/news/">News<span class="nz" data-news="2026-kw47" hidden style="color:var(--emerald-soft,#1FC998);font-weight:600;margin-left:4px"><span aria-hidden="true">(1)</span><span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">, new issue</span></span></a>
     <a class="m-link" href="/en/about/">About us</a>
 <!-- /SHELL:MOBIL -->
     <a class="m-cta" id="cta-menu" href="/en/free/" data-cta-url="/en/free/">Get started free</a>  </nav>
@@ -270,7 +273,7 @@
     </section>
 
     <!-- Der Aufwand als Verhaeltnis. Die Zahlen sind dieselben, die auf
-         /preise/ stehen, eine Quelle, damit die Seiten sich nicht
+         /leistungen/ stehen, eine Quelle, damit die Seiten sich nicht
          widersprechen koennen. -->
     <section class="fl-aufwand" aria-labelledby="aufwand-h">
       <div class="wrap reveal">
@@ -290,7 +293,7 @@
             <div class="fl-track ist-leer" aria-hidden="true"></div>
           </li>
         </ol>
-        <p class="fl-aufwand-note">Based on ten posts a month at 45 to 90 minutes per post, a rough planning figure, not a measurement. Idea, copy, design, publishing. You can run the numbers with your own time on the <a href="/en/pricing/#system">services page</a>.</p>
+        <p class="fl-aufwand-note">Based on ten posts a month at 45 to 90 minutes per post, a rough planning figure, not a measurement. Idea, copy, design, publishing. You can run the numbers with your own time on the <a href="/en/services/#system">services page</a>.</p>
       </div>
     </section>
 
@@ -349,10 +352,11 @@
         <p class="foot-col-title">Agency</p>
         <ul>
           <!-- SHELL:FOOTER -->
-          <li><a href="/en/pricing/">Services</a></li>
+          <li><a href="/en/services/">Services</a></li>
           <li><a href="/en/process/">Process</a></li>
           <li><a href="/en/for-you/">Who it’s for</a></li>
           <li><a href="/en/results/">Proof</a></li>
+          <li><a href="/en/news/">News</a></li>
           <li><a href="/en/about/">About us</a></li>
           <li><a href="/en/#faq">FAQ</a></li>
           <li><a href="/en/free/">Free preview</a></li>

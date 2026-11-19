@@ -1,0 +1,82 @@
+{
+ "jahr": 2026,
+ "kw": 46,
+ "datum": "2026-11-11",
+ "quelle": "s2s-skool/news/2026-kw46.json",
+ "de": {
+  "frage": "Wo schneidest du deine Inhalte lieber, am Handy oder am Rechner, und warum?",
+  "kurz": "Edits für Mac, Karussells in Edits, 90-Minuten-Videos, Mere-Exposure-Effekt",
+  "punkte": [
+   {
+    "wo": "Instagram",
+    "quelle": "https://techcrunch.com/2026/11/05/instagram-brings-edits-to-desktop-to-take-on-capcut/",
+    "quelle_name": "TechCrunch",
+    "datum": "2026-11-05",
+    "satz": "Deine Reels kannst du mit Edits jetzt auch am Mac schneiden.",
+    "detail": "Instagram bringt seine Schnitt-App Edits auf den Mac."
+   },
+   {
+    "wo": "Instagram",
+    "quelle": "https://www.socialmediatoday.com/news/edits-gets-carousel-editing-tools/832448/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-10",
+    "satz": "Karussells kannst du jetzt direkt in Edits gestalten.",
+    "detail": "Der Karussell-Editor in Edits bietet Layouts, Schriften und eigene Sticker. Er kam zuerst für iOS und ist inzwischen auch für Android da."
+   },
+   {
+    "wo": "Instagram",
+    "quelle": "https://techcrunch.com/2026/10/26/watch-out-youtube-instagram-goes-from-short-form-to-90-minute-videos/",
+    "quelle_name": "TechCrunch",
+    "datum": "2026-10-26",
+    "satz": "Instagram testet Videos bis 90 Minuten, in Deutschland kannst du das noch nicht nutzen.",
+    "detail": "Das Format heißt „Features“ und läuft als Test für ausgewählte Creator in Brasilien und den USA, nicht in Deutschland. Laut Mosseri bringen kurze Inhalte mehr Teilen und DMs."
+   },
+   {
+    "wo": "Psychologie",
+    "quelle": "",
+    "quelle_name": "Zajonc, R. B. (1968). Attitudinal effects of mere exposure. Journal of Personality and Social Psychology, 9(2), 1-27.",
+    "datum": "",
+    "satz": "Wenn deine Leute dich regelmäßig sehen, steigt ihre Sympathie für dich.",
+    "detail": "Das ist der Mere-Exposure-Effekt: Was wir wiederholt sehen, finden wir eher sympathisch. Beschrieben hat ihn R. B. Zajonc 1968."
+   }
+  ]
+ },
+ "en": {
+  "frage": "Where do you prefer to edit your content, on your phone or a computer, and why?",
+  "kurz": "Edits for Mac, carousels in Edits, 90-minute videos, mere exposure effect",
+  "punkte": [
+   {
+    "wo": "Instagram",
+    "quelle": "https://techcrunch.com/2026/11/05/instagram-brings-edits-to-desktop-to-take-on-capcut/",
+    "quelle_name": "TechCrunch",
+    "datum": "2026-11-05",
+    "satz": "You can now edit your Reels in Edits on your Mac too.",
+    "detail": "Instagram is bringing Edits, its video editing app, to the Mac."
+   },
+   {
+    "wo": "Instagram",
+    "quelle": "https://www.socialmediatoday.com/news/edits-gets-carousel-editing-tools/832448/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-10",
+    "satz": "You can now design carousels right inside Edits.",
+    "detail": "Edits has a carousel editor with layouts, fonts and custom stickers. It launched on iOS first and is now on Android as well."
+   },
+   {
+    "wo": "Instagram",
+    "quelle": "https://techcrunch.com/2026/10/26/watch-out-youtube-instagram-goes-from-short-form-to-90-minute-videos/",
+    "quelle_name": "TechCrunch",
+    "datum": "2026-10-26",
+    "satz": "Instagram is testing videos up to 90 minutes, but you can't use them in Germany yet.",
+    "detail": "The format is called Features and is limited to selected creators, first tested in Brazil and now in the US. It's not available in Germany. Mosseri says short content drives more shares and DMs."
+   },
+   {
+    "wo": "Psychology",
+    "quelle": "",
+    "quelle_name": "Zajonc, R. B. (1968). Attitudinal effects of mere exposure. Journal of Personality and Social Psychology, 9(2), 1-27.",
+    "datum": "",
+    "satz": "The more often people see you, the more they tend to like you.",
+    "detail": "That's the mere exposure effect: seeing something repeatedly makes us like it more. R. B. Zajonc described it in 1968."
+   }
+  ]
+ }
+}

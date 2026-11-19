@@ -161,7 +161,7 @@ function sauber(wurzel, paar) {
 }
 
 function selbsttest() {
-  const paar = PAARE.find((p) => p.de === '/preise/');
+  const paar = PAARE.find((p) => p.de === '/leistungen/');
   const faelle = [
     { name: 'sauber', kaputt: () => {}, erwartet: null },
     { name: 'EN fehlt', kaputt: (w) => rmSync(join(w, datei(paar.en))), erwartet: /englische Schwester .* fehlt/ },

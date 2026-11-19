@@ -7,7 +7,7 @@
  * wurde — der Stempel ist die Unterschrift „ist nachgezogen“, kein Pflaster,
  * um das Tor gruen zu machen.
  *
- * Aufruf: node scripts/sprachen-stempel.mjs <en-pfad>   (z. B. /en/pricing/)
+ * Aufruf: node scripts/sprachen-stempel.mjs <en-pfad>   (z. B. /en/services/)
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { schwester, datei, stempelZeile, STEMPEL_MUSTER } from '../lib/sprachen.mjs';

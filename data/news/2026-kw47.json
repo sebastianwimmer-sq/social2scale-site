@@ -1,0 +1,82 @@
+{
+ "jahr": 2026,
+ "kw": 47,
+ "datum": "2026-11-18",
+ "quelle": "s2s-skool/news/2026-kw47.json",
+ "de": {
+  "frage": "Wie lädst du zu deinen Terminen ein, und wie viel schreibst du bei Kommentaren noch selbst?",
+  "kurz": "WhatsApp-Events ohne App, KI-Kommentare auf LinkedIn, Threads-Suche, sichtbare Mühe",
+  "punkte": [
+   {
+    "wo": "WhatsApp",
+    "quelle": "https://about.fb.com/news/2026/11/whatsapp-events-brings-people-together-beyond-the-group-chat/",
+    "quelle_name": "Meta Newsroom",
+    "datum": "2026-11-05",
+    "satz": "Zu deinem Workshop lädst du jetzt auch Leute ein, die gar kein WhatsApp haben.",
+    "detail": "Gäste ohne WhatsApp öffnen den Link im Browser und sagen dort zu, dazu kommen Titelbild und Erinnerungen. Die Funktion wird nach und nach verteilt, ob sie in Deutschland schon überall da ist, ist offen."
+   },
+   {
+    "wo": "LinkedIn",
+    "quelle": "https://www.socialmediatoday.com/news/linkedin-cracks-down-on-ai-generated-comments/874707/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-15",
+    "satz": "Kommentare, die nach KI klingen, rutschen weiter nach unten, also schreib lieber selbst.",
+    "detail": "Neue Filter zeigen vermutlich KI-geschriebene Kommentare unter ‚Relevanteste‘ weiter unten, im Test wurden sie über 20 Prozent seltener angesehen. Einen Zeitplan oder eine Länderliste für den breiten Start gibt es noch nicht."
+   },
+   {
+    "wo": "Threads",
+    "quelle": "https://www.socialmediatoday.com/news/threads-adds-advanced-search-filters/874339/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-10",
+    "satz": "Du kannst jetzt gezielt suchen, was über dein Thema oder deinen Namen geschrieben wird.",
+    "detail": "Filtern lässt sich nach Datum, Art des Beitrags, Community oder Thema und Profil, mit ‚Exakte Übereinstimmung‘ auch nach genauen Wortgruppen. In welchen Ländern und App-Versionen das schon geht, steht nicht in der Meldung."
+   },
+   {
+    "wo": "Psychologie",
+    "quelle": "",
+    "quelle_name": "Kruger, J., Wirtz, D., Van Boven, L. & Altermatt, T. W. (2004). The effort heuristic. Journal of Experimental Social Psychology, 40(1), 91–98",
+    "datum": "",
+    "satz": "Wer sieht, dass du dir Mühe gegeben hast, findet deinen Beitrag oft besser.",
+    "detail": "Kruger und Kollegen zeigten 2004: Glauben Menschen, dass in einem Gedicht oder Bild mehr Arbeit steckt, finden sie es besser. Das gilt vor allem, wenn sich die Qualität selbst schwer beurteilen lässt."
+   }
+  ]
+ },
+ "en": {
+  "frage": "How do you invite people to your events, and how much of your commenting is still your own words?",
+  "kurz": "WhatsApp events without the app, AI comments on LinkedIn, Threads search, visible effort",
+  "punkte": [
+   {
+    "wo": "WhatsApp",
+    "quelle": "https://about.fb.com/news/2026/11/whatsapp-events-brings-people-together-beyond-the-group-chat/",
+    "quelle_name": "Meta Newsroom",
+    "datum": "2026-11-05",
+    "satz": "You can now invite people to your workshop even if they don't use WhatsApp.",
+    "detail": "Guests without the app open the link in their browser and RSVP there, and hosts can add a cover photo and send reminders. Meta is rolling it out gradually, so it's unclear whether everyone in Germany has it yet."
+   },
+   {
+    "wo": "LinkedIn",
+    "quelle": "https://www.socialmediatoday.com/news/linkedin-cracks-down-on-ai-generated-comments/874707/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-15",
+    "satz": "Comments that read like AI now get pushed down, so it pays to write your own.",
+    "detail": "New filters move likely AI-written comments lower in the default 'Most relevant' view, and in testing they got over 20 percent fewer views. LinkedIn plans a wider rollout but hasn't shared a timeline or country list."
+   },
+   {
+    "wo": "Threads",
+    "quelle": "https://www.socialmediatoday.com/news/threads-adds-advanced-search-filters/874339/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-10",
+    "satz": "You can now track down exactly what people are posting about your topic or your name.",
+    "detail": "You can filter by date, post type, community or topic, and profile, and 'Exact match' finds multi-word phrases as typed. The announcement doesn't say which countries or app versions have it yet."
+   },
+   {
+    "wo": "Psychology",
+    "quelle": "",
+    "quelle_name": "Kruger, J., Wirtz, D., Van Boven, L. & Altermatt, T. W. (2004). The effort heuristic. Journal of Experimental Social Psychology, 40(1), 91–98",
+    "datum": "",
+    "satz": "When people can see the effort you put in, they tend to rate your work higher.",
+    "detail": "Kruger and colleagues showed in 2004 that people rate a poem or painting higher when they believe more work went into it. The effect is strongest when quality itself is hard to judge."
+   }
+  ]
+ }
+}

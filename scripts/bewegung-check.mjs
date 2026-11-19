@@ -20,7 +20,7 @@ import { extname, join, resolve, sep } from 'node:path';
 const { chromium, webkit } = await import('/opt/homebrew/lib/node_modules/playwright/index.mjs');
 const WURZEL = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
-const SEITEN = ['/', '/preise/', '/ablauf/', '/results/', '/for-you/', '/about/'];
+const SEITEN = ['/', '/leistungen/', '/ablauf/', '/results/', '/for-you/', '/about/'];
 const TYPEN = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg',
   '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.woff2': 'font/woff2',
   '.webp': 'image/webp', '.mp4': 'video/mp4' };

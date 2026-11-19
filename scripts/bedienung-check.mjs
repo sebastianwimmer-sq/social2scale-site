@@ -17,7 +17,7 @@ import { resolve, sep, extname } from 'node:path';
 const { chromium } = await import('/opt/homebrew/lib/node_modules/playwright/index.mjs');
 const WURZEL = resolve(import.meta.dirname, '..');
 const SELBSTTEST = process.argv.includes('--selbsttest');
-const SEITEN = ['/', '/preise/', '/about/', '/wissen/', '/wissen/was-kostet-social-media-betreuung/'];
+const SEITEN = ['/', '/leistungen/', '/about/', '/wissen/', '/wissen/was-kostet-social-media-betreuung/'];
 const KNOPF = '.btn-primary, .nav-cta, .w-btn, .btn-ghost';
 const TYPEN = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
 

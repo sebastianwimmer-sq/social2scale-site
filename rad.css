@@ -1,4 +1,4 @@
-/* Leistungsseite (DE /preise/, EN /en/pricing/): „Vom Glücksspiel zum System“ (Sebi 18.11.2026).
+/* Leistungsseite (DE /leistungen/, EN /en/services/): „Vom Glücksspiel zum System“ (Sebi 18.11.2026).
    Ein Schalter Ohne/Mit uns, ein Rad mit fünf Feldern, darunter die Bilanz S·C·A·L·E bis ins Erstgespräch.
    Bewegt werden nur transform und opacity; nichts läuft endlos; bei reduzierter Bewegung steht alles sofort.
    Ohne JS: Rad und Schalter fehlen, die Bilanz steht offen da (Klasse .rd-js setzt rad.js). */
@@ -14,11 +14,16 @@
 .rd-buehne.rd-mit::before{opacity:1}
 .rd-spalte{display:grid;gap:clamp(22px,2.6vw,30px);align-content:start;min-width:0}
 .rd-h2{margin:0;max-width:16ch;text-wrap:balance}
+.rd-kopf{padding-top:clamp(40px,6vw,88px)}
+.rd-kopf .rd-h2{font:470 clamp(2.5rem,1.25rem + 3.4vw,4.1rem)/1.02 var(--rd-display);letter-spacing:-.03em}
+.rd-ueber{margin:0 0 12px;font:500 .9375rem/1.3 var(--rd-text);color:var(--emerald-soft,#1FC998)}
+.rd-lead{margin:16px 0 0;max-width:40ch;font-size:clamp(1.0625rem,1rem + .35vw,1.2rem);color:var(--muted,#A4A6A1)}
+.rd-wege-lead{margin:10px 0 0;color:var(--muted,#A4A6A1);max-width:56ch}
 @media (max-width:860px){
   .rd-js .rd-buehne{grid-template-columns:minmax(0,1fr);gap:22px}
   .rd-buehne::before{background:radial-gradient(70% 34% at 50% 48%,rgba(31,201,152,.17),transparent 70%)}
   .rd-spalte{display:contents}
-  .rd-h2{order:1}.rd-schalter{order:2}.rd-radbox{order:3}.rd-antwort{order:4}
+  .rd-ueber,.rd-h2,.rd-lead{order:1}.rd-schalter{order:2}.rd-radbox{order:3}.rd-antwort{order:4}
 }
 
 /* Schalter aus Glas wie iOS: durchscheinend, Lichtkante, dehnt sich beim Wechsel, folgt dem Finger */
@@ -138,10 +143,12 @@
 .rd-js .rd-zeile.rd-da::before{transform:scaleX(1);transition:transform 1.1s var(--rd-ease)}
 .rd-js .rd-zeile .rd-init,.rd-js .rd-zeile .rd-restwort,.rd-js .rd-zeile .rd-rest{opacity:0;transform:translateY(.3em)}
 .rd-js .rd-zeile .rd-rest{transform:translateY(12px)}
-.rd-js .rd-zeile .rd-init{transform:translateY(-.4em) scale(1.15)}
+.rd-js .rd-zeile .rd-init{transform:translate(-.35em,-.3em) scale(1.6) rotate(-9deg);transform-origin:60% 80%}
 .rd-js .rd-zeile.rd-da .rd-init,.rd-js .rd-zeile.rd-da .rd-restwort,.rd-js .rd-zeile.rd-da .rd-rest{opacity:1;transform:none;transition:opacity .6s var(--rd-ease),transform .8s var(--rd-ease)}
-.rd-js .rd-zeile.rd-da .rd-restwort{transition-delay:.09s}.rd-js .rd-zeile.rd-da .rd-rest{transition-delay:.18s}
+.rd-js .rd-zeile.rd-da .rd-init{transition:opacity .45s var(--rd-ease),transform 1s var(--rd-feder)}
+.rd-js .rd-zeile.rd-da .rd-restwort{transition-delay:.16s}.rd-js .rd-zeile.rd-da .rd-rest{transition-delay:.18s}
 .rd-js .rd-scale span{opacity:0;transform:translateY(.45em)}
+.rd-js .rd-finale.rd-flug .rd-scale span{opacity:1;transform:none;transition:none}
 .rd-js .rd-finale.rd-da .rd-scale span{opacity:1;transform:none;transition:opacity .5s var(--rd-ease),transform .8s var(--rd-feder);transition-delay:calc(var(--k) * 90ms + 300ms)}
 
 /* Druck: Rad und Schalter sind Bedienung, die Bilanz steht offen */

@@ -88,10 +88,10 @@ async function schritt(name, start, klick, erwartet, verboten = []) {
 
 /* Seit 16.10.2026 fuehrt jeder Knopf in den Funnel (andere Domain = harter Schnitt, Bruecke
    /gratis/); /anfrage/ ist nur noch Weiterleitung. Gemessen werden die Wechsel innerhalb der Site. */
-await schritt('Preise -> Ablauf (Logo bleibt)', '/preise/', 'header.bar a[href="/ablauf/"]', ['marke']);
+await schritt('Preise -> Ablauf (Logo bleibt)', '/leistungen/', 'header.bar a[href="/ablauf/"]', ['marke']);
 /* Die Kopfleiste selbst steht mit animation:none still — ohne Animation sieht
    die Sonde sie nicht. Gemessen wird das Logo, das in ihr sitzt. */
-await schritt('Startseite -> Preise (Logo bleibt)', '/', 'header.bar a[href="/preise/"]', ['marke'], ['anfrage-karte', 'anfrage-titel']);
+await schritt('Startseite -> Preise (Logo bleibt)', '/', 'header.bar a[href="/leistungen/"]', ['marke'], ['anfrage-karte', 'anfrage-titel']);
 
 await browser.close();
 server.close();

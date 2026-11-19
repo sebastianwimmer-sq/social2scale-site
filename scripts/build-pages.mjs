@@ -11,11 +11,12 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { navigation, mobilMenue, fusszeile } from '../lib/shell.mjs';
 import { PAARE, datei, kopfZeilen } from '../lib/sprachen.mjs';
+import { newsPaare } from '../lib/news.mjs';
 
 const SEITEN = [
   { datei: 'index.html', aktiv: 'start' },
   { datei: 'ablauf/index.html', aktiv: 'ablauf' },
-  { datei: 'preise/index.html', aktiv: 'preise' },
+  { datei: 'leistungen/index.html', aktiv: 'leistungen' },
   { datei: 'about/index.html', aktiv: 'about' },
   { datei: 'for-you/index.html', aktiv: 'for-you' },
   { datei: 'results/index.html', aktiv: 'results' },
@@ -23,13 +24,17 @@ const SEITEN = [
   // uebersprungen wie jede andere fehlende Datei.
   { datei: 'en/index.html', aktiv: 'start' },
   { datei: 'en/process/index.html', aktiv: 'ablauf' },
-  { datei: 'en/pricing/index.html', aktiv: 'preise' },
+  { datei: 'en/services/index.html', aktiv: 'leistungen' },
   { datei: 'en/about/index.html', aktiv: 'about' },
   { datei: 'en/for-you/index.html', aktiv: 'for-you' },
   { datei: 'en/results/index.html', aktiv: 'results' },
+  { datei: 'scale-week/index.html', aktiv: 'scale-week' },
+  { datei: 'en/scale-week/index.html', aktiv: 'scale-week' },
+  // Wochen-News (lib/news.mjs): /news/ und jede Ausgabe, beide Sprachen
+  ...newsPaare().flatMap((p) => [p.de, p.en]).map((u) => ({ datei: `${u.slice(1)}index.html`, aktiv: 'news' })),
 ];
 
-// Datei → URL-Pfad ('preise/index.html' → '/preise/').
+// Datei → URL-Pfad ('leistungen/index.html' → '/leistungen/').
 const urlPfad = (d) => `/${d.replace(/index\.html$/, '')}`;
 
 // hreflang + og:locale direkt vor </head>, fuer JEDE zweisprachige Seite —

@@ -6,7 +6,7 @@ const SEITEN = [
   { name: 'about', pfad: '/about/' },
   { name: 'fuer-wen', pfad: '/for-you/' },
   { name: 'ergebnisse', pfad: '/results/' },
-  { name: 'preise', pfad: '/preise/' },
+  { name: 'preise', pfad: '/leistungen/' },
   // Beide haengen bewusst NICHT an der geteilten Shell: /onboarding/ ist ein
   // Formular mit 20 Feldern und /anfrage/ genauso — weniger Fluchtwege heisst
   // mehr Abschluesse. /danke/ steht hinter dem Kauf. Sie sind hier trotzdem

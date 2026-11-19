@@ -1,0 +1,80 @@
+/* Wochen-News (/news/, /en/news/, scripts/build-news.mjs). Eine Spalte, je Neuerung ein grosser Satz,
+   Details erst auf Antippen, unten eine Frage an Sebi. Klassen nw-, Tokens der Seite. */
+.nw{padding-block:clamp(40px,7vw,96px) clamp(48px,7vw,112px)}
+.nw-blatt{max-width:820px}
+.nw-kopf{display:grid;gap:10px;margin-bottom:clamp(28px,5vw,52px)}
+.nw-meta{margin:0;color:var(--muted,#A4A6A1);font-size:.9375rem}
+.nw-kopf h1{font:470 clamp(2.4rem,1.3rem + 4.2vw,4.4rem)/1.02 "Fraunces",Georgia,serif;letter-spacing:-.03em;margin:0;text-wrap:balance}
+.nw-kopf h1 em,.nw-du h2 em{font-style:italic;font-weight:450;background:var(--accent-flow,linear-gradient(135deg,#1FC998,#46BEEA));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald,#00B888)}
+
+/* je Neuerung ein Satz; Details auf Antippen */
+.nw-punkt{border-top:1px solid var(--line-2,rgba(242,243,241,.14))}
+.nw-punkt:last-of-type{border-bottom:1px solid var(--line-2,rgba(242,243,241,.14))}
+.nw-punkt summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;align-items:center;padding-block:clamp(20px,3vw,30px);border-radius:6px}
+.nw-punkt summary::-webkit-details-marker{display:none}
+.nw-wo{grid-column:1/-1;margin:0;font-size:.9375rem;font-weight:500;color:var(--emerald-soft,#1FC998)}
+.nw-satz{font:430 clamp(1.4rem,1.05rem + 1.5vw,2.05rem)/1.2 "Fraunces",Georgia,serif;letter-spacing:-.015em;color:var(--paper,#F2F3F1);text-wrap:balance}
+.nw-mehr{width:44px;height:44px;border-radius:50%;border:1px solid var(--line-3,rgba(242,243,241,.2));display:grid;place-items:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0));box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 6px 16px -10px rgba(0,0,0,.8);
+  transition:transform .4s var(--ease,cubic-bezier(.16,1,.3,1)),border-color .25s}
+.nw-mehr::before{content:"";width:9px;height:9px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+.nw-punkt summary:hover .nw-mehr{border-color:rgba(70,190,234,.6)}
+.nw-punkt[open] .nw-mehr{transform:rotate(180deg);border-color:rgba(70,190,234,.6)}
+.nw-detail{padding:0 64px clamp(20px,3vw,28px) 0;color:var(--muted,#A4A6A1);font-size:1.0625rem;max-width:62ch}
+.nw-detail p{margin:0 0 10px}
+.nw-punkt[open] .nw-detail{animation:nw-auf .45s var(--ease,cubic-bezier(.16,1,.3,1))}
+@keyframes nw-auf{from{opacity:0;transform:translateY(-6px)}}
+.nw-quelle{font-size:.9375rem;color:var(--faint,#8E918B)}
+.nw-quelle a{color:var(--paper,#F2F3F1);text-underline-offset:3px;text-decoration-color:var(--line-3,rgba(242,243,241,.2))}
+.nw-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Und du? */
+.nw-du{position:relative;margin-top:clamp(36px,6vw,64px);padding:clamp(24px,4vw,40px);border-radius:22px;border:1px solid rgba(70,190,234,.26);
+  background:radial-gradient(90% 120% at 0% 0%,rgba(31,201,152,.16),transparent 60%),linear-gradient(160deg,rgba(27,29,33,.92),rgba(16,18,21,.92));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 2px 4px rgba(0,0,0,.45),0 44px 96px -42px rgba(0,0,0,.88)}
+.nw-du h2{font:430 clamp(1.6rem,1.15rem + 1.8vw,2.4rem)/1.14 "Fraunces",Georgia,serif;letter-spacing:-.015em;margin:8px 0 20px;text-wrap:balance}
+.nw-du form{display:grid;gap:12px}
+.nw-du textarea,.nw-du input{width:100%;font:400 1.0625rem/1.5 "Hanken Grotesk",system-ui,sans-serif;color:var(--paper,#F2F3F1);background:rgba(0,0,0,.38);
+  border:1px solid var(--line-3,rgba(242,243,241,.2));border-radius:12px;padding:14px 16px;transition:border-color .2s,box-shadow .2s}
+.nw-du textarea{min-height:110px;resize:vertical}
+.nw-du textarea:focus,.nw-du input:focus{outline:none;border-color:rgba(70,190,234,.7);box-shadow:0 0 0 3px rgba(70,190,234,.18)}
+.nw-du ::placeholder{color:var(--faint,#8E918B)}
+.nw-falle{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.nw-zeile{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;margin-top:4px}
+.nw-hinweis{margin:0;flex:1 1 280px;font-size:.9375rem;color:var(--muted,#A4A6A1)}
+.nw-hinweis a{color:var(--paper,#F2F3F1);text-underline-offset:3px}
+.nw-knopf{display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:14px 24px;border:0;border-radius:12px;cursor:pointer;
+  font:700 1rem "Archivo","Hanken Grotesk",sans-serif;letter-spacing:.01em;color:var(--emerald-ink,#04201A);
+  background:linear-gradient(135deg,var(--emerald-soft,#1FC998) 0%,var(--emerald,#00B888) 52%,var(--teal,#1FA6E0) 100%);
+  box-shadow:0 16px 38px -14px rgba(0,184,136,.6),inset 0 1px 0 rgba(255,255,255,.32);transition:transform .2s var(--ease,ease),opacity .2s}
+.nw-knopf:hover{transform:translateY(-2px)}
+.nw-knopf:active{transform:scale(.98)}
+.nw-knopf[disabled]{opacity:.6;cursor:progress;transform:none}
+.nw-status{margin:0;min-height:1.5em;font-size:1rem;color:var(--emerald-soft,#1FC998)}
+.nw-status.rot{color:#F2A29B}
+.nw-du.fertig form>:not(.nw-status){display:none}
+.nw-du.fertig .nw-status{font:430 1.35rem/1.3 "Fraunces",Georgia,serif;color:var(--paper,#F2F3F1)}
+
+/* frühere Ausgaben */
+.nw-frueher{margin-top:clamp(40px,6vw,64px)}
+.nw-frueher h2{font:500 1rem/1.3 "Hanken Grotesk",system-ui,sans-serif;color:var(--muted,#A4A6A1);margin:0 0 8px;letter-spacing:0}
+.nw-frueher ul{list-style:none;margin:0;padding:0}
+.nw .nw-frueher li{padding:14px 0;border-bottom:1px solid var(--line,rgba(242,243,241,.08))}
+/* Farbe und Unterstrich kommen aus der Link-Regel der Seite (bedienung.css: Links im Text erkennbar) */
+.nw .nw-frueher a{font-size:1.0625rem}
+.nw .nw-frueher a span{font-weight:600;margin-right:6px}
+.nw-neueste{margin:28px 0 0}
+.nw-neueste a{color:var(--paper,#F2F3F1);font-weight:600;text-underline-offset:4px}
+
+@media (max-width:600px){
+  .nw-detail{padding-right:0}
+  .nw-punkt summary{gap:6px 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .nw-punkt[open] .nw-detail{animation:none}
+  .nw-mehr,.nw-knopf{transition:none}
+}
+@media print{
+  .nw-du,.nw-mehr{display:none}
+  .nw-punkt .nw-detail{display:block}
+}

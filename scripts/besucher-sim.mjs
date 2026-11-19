@@ -530,10 +530,10 @@ const PERSONAS = [
   { id: 'preise', wer: 'Preisvergleich · Desktop 1024 (Firefox)', engine: 'firefox', geraet: { viewport: { width: 1024, height: 768 } },
     async lauf(p, w) {
       await besuche(p, w.id, '/', { einstieg: true });
-      const nav = p.locator('a[href*="preise"]:visible').first();
+      const nav = p.locator('a[href*="leistungen"]:visible').first();
       if (!(await nav.count())) return befund(w.id, '/', 'rot', 'Preise von der Startseite aus nicht erreichbar');
       await nav.click(); await ruhe(p);
-      await besuche(p, w.id, '/preise/', { einstieg: true });
+      await besuche(p, w.id, '/leistungen/', { einstieg: true });
     } },
   // Seit 16.10.2026 lebt das Erstgespraech im Funnel (Weg B); /anfrage/ leitet nur noch weiter.
   { id: 'skeptisch', wer: 'Skeptikerin: Ergebnisse → Über uns → Ablauf → Knopf · iPhone 15 Pro', engine: 'webkit', geraet: devices['iPhone 15 Pro'],
@@ -583,7 +583,7 @@ const PERSONAS = [
     } },
   { id: 'dunkel-ruhig', wer: 'Dunkelmodus + reduzierte Bewegung · iPhone 15 Pro', engine: 'webkit', geraet: { ...devices['iPhone 15 Pro'], colorScheme: 'dark', reducedMotion: 'reduce' },
     async lauf(p, w) {
-      for (const s of ['/', '/preise/', '/gratis/']) {
+      for (const s of ['/', '/leistungen/', '/gratis/']) {
         await p.goto(BASIS + s, { waitUntil: 'load' }); await ruhe(p);
         // /gratis/ ist eine Brücke: die Karte bleibt absichtlich 1,5 s unsichtbar und erscheint nur, wenn die
         // Weiterleitung hängt (Notausgang). Gemessen wird das Ziel oder der Notausgang, nie die 1,5 s dazwischen

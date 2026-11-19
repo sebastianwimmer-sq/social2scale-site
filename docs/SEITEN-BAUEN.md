@@ -21,7 +21,7 @@ npx --no-install playwright test
 webkit. Schwelle: 0,1 % abweichende Pixel.
 
 Die acht: Startseite · `/ablauf/` · `/about/` · `/for-you/` · `/results/` ·
-`/preise/` · `/danke/` · `/onboarding/`. Die letzten beiden hängen bewusst
+`/leistungen/` · `/danke/` · `/onboarding/`. Die letzten beiden hängen bewusst
 nicht an der geteilten Shell — sie sind trotzdem abgesichert, weil ihre
 kopierten Fußzeilen auseinanderlaufen können.
 
@@ -105,7 +105,7 @@ Einwand selbst — meist mit „hat bei mir nicht funktioniert".
 Eine neue Sektion einzuschieben heißt: **Kapitel-Nummern nachziehen.** Sie
 stehen in `index.html` in den `.klabel` / `.s2eyebrow` / `.ix`-Elementen.
 
-Die Unterseiten (`/preise/`, `/results/`, `/for-you/`, `/about/`) sind die
+Die Unterseiten (`/leistungen/`, `/results/`, `/for-you/`, `/about/`) sind die
 **Vertiefung** zu einzelnen Kapiteln, nicht eigene Closings. Sie brauchen keine
 Nummerierung.
 
@@ -113,7 +113,7 @@ Nummerierung.
 
 Kurz: weil sie es nicht gefahrlos kann. Am 23.08.2026 ausgemessen.
 
-`/preise/` und `/ablauf/` lesen aus `s2s.css`, `index.html` hat dieselben Regeln
+`/leistungen/` und `/ablauf/` lesen aus `s2s.css`, `index.html` hat dieselben Regeln
 inline. Das sieht nach Doppelung aus, die man auflösen sollte — der Versuch ist
 messbar gescheitert:
 

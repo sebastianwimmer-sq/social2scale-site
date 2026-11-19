@@ -283,7 +283,7 @@ async function ruckeln(browser, pfad) {
 async function lauf({ voll }) {
   await quelle();
   const seiten = [...new Set(SEITEN.flatMap((s) => [s.dateien[0]]))].map(url);
-  const zusatz = voll ? ['/en/', '/en/pricing/', '/en/knowledge/how-long-until-results/'] : [];
+  const zusatz = voll ? ['/en/', '/en/services/', '/en/knowledge/how-long-until-results/'] : [];
   const cr = await chromium.launch();
   console.log('\nChromium — Hinsehen');
   for (const s of voll ? [...seiten, ...zusatz] : ['/']) await verhalten(cr, s);

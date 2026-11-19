@@ -1,4 +1,4 @@
-/* Leistungsseite: Rad „Vom Glücksspiel zum System“ (Sebi 18.11.2026), DE /preise/ und EN /en/pricing/.
+/* Leistungsseite: Rad „Vom Glücksspiel zum System“ (Sebi 18.11.2026), DE /leistungen/ und EN /en/services/.
    Liest die Sprache aus <html lang>. Ohne dieses Skript steht die Bilanz offen da (siehe rad.css).
    Belege: Sätze „mit uns“ aus den Paketen (Alles abgeben, BASIS, Profil-Setup); keine Anfrage-Zahlen,
    weil keine gemessenen vorliegen; Zeit = 10 Beiträge × Minuten je Beitrag (Startwert 60, anpassbar),
@@ -167,11 +167,35 @@
     };
     requestAnimationFrame(tick);
   };
+  // S, C, A, L, E fliegen aus ihren Zeilen in „social2scale“ (nur transform + opacity, endlich).
+  // Liegt eine Zeile weit über dem Bild, startet der Buchstabe am oberen Rand statt von ganz oben.
+  var fliegen = function (finale) {
+    if (reduce || !finale.animate) return;
+    var ziele = [].slice.call(finale.querySelectorAll('.rd-scale span'));
+    var starts = ziele.map(function (z, k) { var i = zeilen[k] && zeilen[k].querySelector('.rd-init'); return i && i.getBoundingClientRect(); });
+    if (starts.some(function (s) { return !s; })) return;
+    finale.classList.add('rd-flug');
+    ziele.forEach(function (z, k) {
+      var r = z.getBoundingClientRect(), s = starts[k];
+      var dx = s.left + s.width / 2 - (r.left + r.width / 2);
+      var dy = Math.max(s.top + s.height / 2 - (r.top + r.height / 2), -innerHeight * 0.75);
+      var f = Math.min(2.4, Math.max(0.6, s.height / Math.max(1, r.height)));
+      z.animate([
+        { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + f + ') rotate(-10deg)', opacity: 0 },
+        { opacity: 1, offset: 0.2 },
+        { transform: 'translate(0,0) scale(1) rotate(0deg)', opacity: 1 }
+      ], { duration: 1050, delay: 160 + k * 120, easing: 'cubic-bezier(.3,1.25,.5,1)', fill: 'backwards' });
+      var quelle = zeilen[k].querySelector('.rd-init');
+      quelle.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.18)', offset: 0.35 }, { transform: 'scale(1)' }],
+        { duration: 600, delay: 120 + k * 120, easing: EASE_OUT });
+    });
+  };
   var teile = [$('rd-b-kopf')].concat(zeilen, [$('rd-finale'), $('rd-finale-satz'), $('rd-wege')]);
   teile.forEach(function (el) { el.classList.add('rd-r'); });
   var zeigen = function (el) {
     if (el.classList.contains('rd-da')) return; el.classList.add('rd-da');
     if (el === zeilen[0]) zaehle(el.querySelector('.rd-zahl'), stunden(), 150);
+    if (el.id === 'rd-finale') fliegen(el);
   };
   // Die Bilanz steht immer im Fluss (kein Springen); ihre Teile erscheinen beim Hineinscrollen.
   var selbstGescrollt = false, geschaltet = false;

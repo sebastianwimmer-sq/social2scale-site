@@ -4,7 +4,7 @@
  * geaenderte deutsche Antwort → hier im selben Zug nachziehen, sonst haelt
  * scripts/sprachen-check.mjs die Auslieferung an.
  *
- * Preise kommen 1:1 von /en/pricing/ (gleiche Betraege wie /preise/, US-Schreibweise).
+ * Preise kommen 1:1 von /en/services/ (gleiche Betraege wie /leistungen/, US-Schreibweise).
  * `de` verbindet jede Seite mit ihrem deutschen Slug.
  */
 export const PREISE_EN = {
@@ -46,7 +46,7 @@ export const SEITEN_EN = [
       },
       {
         h: "What to look for in a price",
-        verweis: { text: "What you get with us, area by area", href: "/en/pricing/#system" },
+        verweis: { text: "What you get with us, area by area", href: "/en/services/#system" },
         p: [
           "A monthly price on its own says little. Ask what exactly is included: how many posts, whether they’re designed for you or scheduled from ready-made templates, and who actually does the work.",
           "On the other hand, expensive doesn’t automatically mean better: large agencies factor in project management and a team. What matters is who actually does the work in the end and how many clients that same person looks after.",
@@ -127,7 +127,7 @@ export const SEITEN_EN = [
     abschnitte: [
       {
         h: "The real time it takes to do it yourself",
-        verweis: { text: "Run the numbers with your own time", href: "/en/pricing/#system" },
+        verweis: { text: "Run the numbers with your own time", href: "/en/services/#system" },
         p: [
           "For ten posts a month, you can roughly plan on seven and a half to fifteen hours, so 45 to 90 minutes per post: finding topics, writing, designing, scheduling and replying to comments. The work doesn’t come in one block but is spread out — which makes it harder to plan in everyday life than the bare number of hours suggests.",
           "On top of that comes the learning curve at the start: image formats, how to structure copy and a recognizable look take a few attempts. That learning curve is the main reason many people stop again after two months.",

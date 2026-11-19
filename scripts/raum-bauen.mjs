@@ -51,7 +51,7 @@ const lichtBlock = (ort) => `<!-- RAUM-LICHT (scripts/raum-bauen.mjs) --><div cl
 const SEITEN = [
   { dateien: ['index.html', 'en/index.html'], kopf: 'start', anker: /<section class="hero" id="hero">/ },
   { dateien: ['ablauf/index.html', 'en/process/index.html'], kopf: 'ablauf', anker: /<section class="fl-hero">/ },
-  { dateien: ['preise/index.html', 'en/pricing/index.html'], kopf: 'preise', anker: /<section class="pr-hero"[^>]*>/ },
+  // Leistungen: seit 19.11.2026 ist das Rad der Kopf, mit eigener Tiefe (rad.css); kein Raum davor
   { dateien: ['for-you/index.html', 'en/for-you/index.html'], kopf: 'fuer-wen', anker: /<section class="fw-hero"[^>]*>/ },
   { dateien: ['about/index.html', 'en/about/index.html'], kopf: 'ueber-uns', anker: /<section class="ab-hero"[^>]*>/ },
   { dateien: ['results/index.html', 'en/results/index.html'], kopf: 'pruef-uns', anker: /<section class="rs-hero"[^>]*>/ },

@@ -1,4 +1,4 @@
-/* Karte je Bestellung (DE + EN). Auf /about/ liegt der Abschnitt als <template id="karte-vorlage">, auf /preise/ eine
+/* Karte je Bestellung (DE + EN). Auf /about/ liegt der Abschnitt als <template id="karte-vorlage">, auf /leistungen/ eine
    Zeile am empfohlenen Paket als <template id="karte-zeile"> (Link auf /about/#karte). Beide werden erst eingesetzt,
    wenn der Zähler im Portal freigegeben ist und die Antwort zum Text passt. Gezeigt wird die
    Nummer der nächsten Karte, keine Summe. Bei jedem Zweifel bleibt die Seite, wie sie ohne den Abschnitt ist. */

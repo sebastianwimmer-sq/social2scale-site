@@ -21,7 +21,7 @@ export const SEITEN = [
     abschnitte: [],
   },
   {
-    dateien: ['preise/index.html', 'en/pricing/index.html'],
+    dateien: ['leistungen/index.html', 'en/services/index.html'],
     css: 'preise',
     abschnitte: [],
   },
