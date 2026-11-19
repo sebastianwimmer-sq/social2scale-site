@@ -3,6 +3,7 @@
  * Kennt keine Interna: delegiert an validate/protect/leads/mail.
  */
 
+import { istFuenfterTakt } from './takt.js';
 import { validateSubmission } from './validate.js';
 import { reelWaechter } from './reel-waechter.js';
 import { reelBescheid } from './reel-bescheid.js';
@@ -402,7 +403,12 @@ export async function heileRenderAusfaelle(env) {
 }
 
 export default {
-  async scheduled(_event, env, _ctx) {
+  async scheduled(event, env, ctx) {
+    // TAKT FÜR DEN KI-ASSISTENTEN (19.11.2026): der Zeitplan läuft seitdem jede Minute, weil der kostenlose Tarif nur
+    // fünf Zeitpläne je Konto erlaubt und der Assistent neue Direktnachrichten minütlich abholen muss
+    // (s2s-kunden/takt-worker, Service-Bindung TAKT). Alles Bisherige läuft unverändert nur zu jeder fünften Minute.
+    if (env.TAKT) ctx.waitUntil(env.TAKT.fetch('https://takt/').catch((err) => console.error('[cron] Assistent-Takt fehlgeschlagen:', err)));
+    if (!istFuenfterTakt(event)) return;
     try {
       const befreit = await sweepStaleBuilding(env.DB);
       if (befreit) console.error('[cron]', befreit, 'haengende Builds befreit');

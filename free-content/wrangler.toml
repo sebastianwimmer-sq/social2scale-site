@@ -58,9 +58,10 @@ TURNSTILE_SITE_KEY = "0x4AAAAAAD5FwCxWtZhzGlpX"
 # Fehlte live vom Deploy am 09.09.2026 bis 28.09. — jede Founder-Mail ging an "undefined".
 NOTIFY_TO = "sebastian@social2scale.com, philipp@social2scale.com"
 
-# Live gelesen am 28.09.2026 (API /schedules): alle 5 Minuten.
+# Seit 19.11.2026 jede Minute: der KI-Assistent holt minütlich Direktnachrichten ab (Bindung TAKT, ganz unten).
+# Die Aufgaben dieses Workers laufen weiter nur zu jeder fünften Minute (src/index.js › istFuenfterTakt).
 [triggers]
-crons = ["*/5 * * * *"]
+crons = ["* * * * *"]
 # (Hier stand bis 20.10.2026 ein doppelter TURNSTILE_SITE_KEY — unter [triggers]
 #  ist er wirkungslos und erzeugte nur eine wrangler-Warnung; gilt: [vars].)
 
@@ -84,3 +85,9 @@ crons = ["*/5 * * * *"]
 # Im Quelltext wird ausserdem env.MODERATION_MODEL gelesen, das im Deployment
 # NICHT gesetzt ist — der Code muss dafür einen Rückfall haben. Vor einer
 # Änderung an der Moderation nachsehen.
+
+# Taktgeber des KI-Assistenten (s2s-kunden/takt-worker). Steht bewusst am Ende: ein [[services]]-Block vor [vars]
+# schluckt die folgenden Variablen (16.10.2026, whatsnext).
+[[services]]
+binding = "TAKT"
+service = "s2s-assistent-takt"
