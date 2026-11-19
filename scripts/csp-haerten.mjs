@@ -94,6 +94,8 @@ function htmlDateien(verzeichnis, gesammelt = []) {
     // Google-Bestaetigungsdatei (google<hex>.html) ist Klartext, kein Dokument —
     // sie darf nie veraendert werden und liess das Tor dauerhaft rot stehen.
     else if (/^google[0-9a-f]+\.html$/.test(eintrag)) continue;
+    // Meta-Domainbestaetigung (19.11.2026, 5686d78): <token>.html, Inhalt ist genau der Token. Gleiche Lage wie bei Google.
+    else if (/^[a-z0-9]{20,40}\.html$/.test(eintrag) && readFileSync(pfad, "utf8").trim() === eintrag.slice(0, -5)) continue;
     else if (eintrag.endsWith(".html")) gesammelt.push(pfad);
   }
   return gesammelt;

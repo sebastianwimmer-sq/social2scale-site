@@ -9,7 +9,8 @@
  * so laesst sich Seite fuer Seite umstellen.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
-import { navigation, mobilMenue, fusszeile } from '../lib/shell.mjs';
+import { navigation, mobilMenue, fuss } from '../lib/shell.mjs';
+import { execFileSync } from 'node:child_process';
 import { PAARE, datei, kopfZeilen } from '../lib/sprachen.mjs';
 import { newsPaare } from '../lib/news.mjs';
 
@@ -71,15 +72,11 @@ for (const seite of SEITEN) {
     continue;
   }
 
+  // Der Footer kommt seit 19.11.2026 ganz aus fuss() — eingesetzt in der Schleife ueber alle Seiten weiter unten.
   const neu = ersetze(
-    ersetze(
-      ersetze(html, 'NAV', navigation(seite.aktiv, urlPfad(seite.datei)), seite.datei),
-      'MOBIL',
-      mobilMenue(seite.aktiv, urlPfad(seite.datei)),
-      seite.datei
-    ),
-    'FOOTER',
-    fusszeile(seite.aktiv, urlPfad(seite.datei)),
+    ersetze(html, 'NAV', navigation(seite.aktiv, urlPfad(seite.datei)), seite.datei),
+    'MOBIL',
+    mobilMenue(seite.aktiv, urlPfad(seite.datei)),
     seite.datei
   );
 
@@ -90,6 +87,23 @@ for (const seite of SEITEN) {
   } else {
     console.log(`unveraendert: ${seite.datei}`);
   }
+}
+
+// Footer auf JEDER Seite mit Footer (19.11.2026), auch Wissen, Rechtstexte, Onboarding, 404: eine Quelle (lib/shell.mjs).
+// Beim ersten Lauf wird der alte <footer class="site-footer"> durch den Marker-Block ersetzt, danach nur der Block.
+const FUSS_BLOCK = /<!-- SHELL:FUSS -->[\s\S]*?<!-- \/SHELL:FUSS -->/;
+const ALT_FUSS = /<footer class="site-footer"[\s\S]*?<\/footer>/;
+const MENUE_AKTIV = Object.fromEntries(SEITEN.map((s) => [s.datei, s.aktiv]));
+const alleSeiten = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '*.html'], { encoding: 'utf8' })
+  .trim().split('\n').filter((d) => !/^(free-content|docs|tests|scripts|node_modules)\//.test(d));
+for (const d of alleSeiten) {
+  let html;
+  try { html = readFileSync(d, 'utf8'); } catch { continue; }
+  if (!FUSS_BLOCK.test(html) && !ALT_FUSS.test(html)) continue;
+  const aktiv = MENUE_AKTIV[d] ?? (d.startsWith('wissen/') || d.startsWith('en/knowledge/') ? 'wissen' : '');
+  const block = `<!-- SHELL:FUSS -->\n${fuss(aktiv, urlPfad(d))}\n<!-- /SHELL:FUSS -->`;
+  const neu = FUSS_BLOCK.test(html) ? html.replace(FUSS_BLOCK, () => block) : html.replace(ALT_FUSS, () => block);
+  if (neu !== html) { writeFileSync(d, neu, 'utf8'); console.log(`Footer: ${d}`); geaendert++; }
 }
 
 for (const pfad of PAARE.flatMap((p) => [p.de, p.en])) {

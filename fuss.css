@@ -1,0 +1,97 @@
+/* Footer aller Seiten (Sebi 19.11.2026: „footer komplett ohne ki slop … aufs aktuelle website level“, Richtung B + C).
+   Eine Quelle: lib/shell.mjs › fuss(), eingesetzt von scripts/build-pages.mjs. Klassen s2f-; .site-footer bleibt als
+   Anker für das Mobil-Menü (inert). Icons: eigene Zeichnung mit den Balken aus dem Logo. Karte: Glas in einer Schale. */
+.site-footer.s2f{position:relative;margin-top:0;border-top:1px solid rgba(242,243,241,.08);box-shadow:none;
+  background:radial-gradient(60% 50% at 80% 30%,rgba(31,166,224,.07),transparent 70%),linear-gradient(180deg,rgba(10,11,13,0),#0A0B0D 220px)}
+.site-footer.s2f::before{content:"";position:absolute;left:50%;top:-1px;width:min(560px,70%);height:1px;transform:translateX(-50%);opacity:1;inset:auto;
+  background:linear-gradient(90deg,transparent,rgba(31,201,152,.6),transparent)}
+.s2f .s2f-wrap{max-width:1240px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,5vw,56px) 28px}
+.s2f a{color:inherit}
+.s2f-ic{width:22px;height:22px;flex:0 0 auto;fill:none;stroke:url(#s2f-flow);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.s2f-ic .pf,.s2f-ic .bar{transition:transform .5s cubic-bezier(.32,.72,0,1)}
+.s2f a:hover .s2f-ic .pf,.s2f a:focus-visible .s2f-ic .pf{transform:translate(2px,-2px)}
+.s2f a:hover .s2f-ic .bar:nth-of-type(1){transform:translateY(-1px)}
+.s2f a:hover .s2f-ic .bar:nth-of-type(2){transform:translateY(-2px)}
+.s2f a:hover .s2f-ic .bar:nth-of-type(3){transform:translateY(-3px)}
+
+.s2f-oben{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(40px,7vw,104px);align-items:center}
+.s2f-frage{margin:0;font:420 clamp(2.1rem,1.3rem + 3vw,3.6rem)/1.03 "Fraunces",Georgia,serif;letter-spacing:-.03em;color:#F2F3F1;text-wrap:balance}
+.s2f-frage em{font-style:italic;font-weight:400;background:linear-gradient(135deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#1FC998}
+.s2f-satz{margin:18px 0 0;color:#A4A6A1;max-width:40ch;font:400 1.0625rem/1.6 "Hanken Grotesk",system-ui,sans-serif}
+.s2f-wege{display:grid;gap:4px;margin:28px 0 0;padding:0;list-style:none;max-width:400px}
+.s2f-weg{display:flex;align-items:center;gap:14px;min-height:56px;padding:8px 6px;text-decoration:none;border-bottom:1px solid rgba(242,243,241,.08);transition:border-color .3s}
+.s2f-weg:hover{border-color:rgba(70,190,234,.45)}
+.s2f-weg b{display:block;font:600 1rem "Archivo","Hanken Grotesk",sans-serif;color:#F2F3F1}
+.s2f-weg small{display:block;font:400 .9375rem "Hanken Grotesk",system-ui,sans-serif;color:#A4A6A1}
+.s2f-weg .s2f-ic{width:26px;height:26px}
+
+.s2f-schale{justify-self:center;width:min(100%,470px);padding:10px;border-radius:26px;
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.07);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 50px 90px -50px rgba(0,0,0,.95),0 80px 120px -80px rgba(0,184,136,.3)}
+.s2f-karte{position:relative;aspect-ratio:85/55;border-radius:17px;padding:clamp(18px,3vw,26px);display:grid;grid-template-rows:auto 1fr auto;overflow:clip;
+  background:linear-gradient(155deg,#1e2125 0%,#16181b 55%,#101215 100%);box-shadow:inset 0 1px 1px rgba(255,255,255,.12),inset 0 -1px 0 rgba(0,0,0,.6);
+  transform:rotate(-2.5deg);transition:transform .9s cubic-bezier(.32,.72,0,1)}
+.s2f-schale:hover .s2f-karte{transform:rotate(0deg) translateY(-3px)}
+.s2f-karte::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.013) 0 1px,transparent 1px 3px)}
+.s2f-karte::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(135deg,#1FC998,#46BEEA);opacity:.9}
+.s2f-glanz{position:absolute;inset:-40% -60%;pointer-events:none;background:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.07) 50%,transparent 58%);transform:translateX(-35%);transition:transform 1.4s cubic-bezier(.16,1,.3,1)}
+.s2f-schale:hover .s2f-glanz{transform:translateX(35%)}
+.s2f-kk{position:relative;display:flex;justify-content:space-between;align-items:flex-start}
+.s2f-kk>img{height:26px;width:auto;display:block}
+.s2f-duo{display:flex}
+.s2f-duo img{width:44px;height:44px;border-radius:50%;border:2px solid #17191c;object-fit:cover;display:block;box-shadow:0 6px 14px -6px rgba(0,0,0,.8)}
+.s2f-duo picture+picture img{margin-left:-12px}
+.s2f-name{position:relative;align-self:end;margin:0;font:440 clamp(1.4rem,1rem + 1.3vw,1.85rem)/1.12 "Fraunces",Georgia,serif;letter-spacing:-.01em;color:#F2F3F1}
+.s2f-name small{display:block;font:400 .95rem "Hanken Grotesk",system-ui,sans-serif;color:#A4A6A1;margin-top:4px;letter-spacing:0}
+.s2f-kf{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:2px 18px;margin-top:14px}
+.s2f-kf a{display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:#F2F3F1;font:400 .95rem "Hanken Grotesk",system-ui,sans-serif;min-height:44px}
+.s2f-kf a:hover{color:#1FC998}
+.s2f-kf .s2f-ic{width:18px;height:18px}
+.s2f-mail{display:inline-flex;align-items:center;white-space:nowrap}
+.s2f-kopie{display:inline-grid;place-items:center;width:44px;height:44px;margin-left:-8px;border-radius:10px;border:0;background:none;cursor:pointer;padding:0}
+.s2f-kopie[hidden]{display:none}
+.s2f-kopie:hover{background:rgba(255,255,255,.05)}
+.s2f-kopie .s2f-ic{width:17px;height:17px}
+.s2f-kopie .haken{stroke-dasharray:14;stroke-dashoffset:14;transition:stroke-dashoffset .45s cubic-bezier(.32,.72,0,1)}
+.s2f-kopie .blatt{transition:opacity .2s}
+.s2f-kopie.ok .blatt{opacity:0}
+.s2f-kopie.ok .haken{stroke-dashoffset:0}
+.s2f-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+.s2f-mitte{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:clamp(56px,7vw,96px);padding-top:28px;border-top:1px solid rgba(242,243,241,.08)}
+.s2f-mitte h2{margin:0 0 8px;font:500 1.0625rem/1.3 "Fraunces",Georgia,serif;color:#F2F3F1;letter-spacing:0}
+.s2f-mitte ul{list-style:none;margin:0;padding:0;display:grid}
+.s2f-mitte a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:#A4A6A1;font:500 .98rem "Archivo","Hanken Grotesk",sans-serif;transition:color .25s}
+.s2f-mitte a:hover,.s2f-mitte a[aria-current="page"]{color:#F2F3F1}
+.s2f-unten{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;margin-top:40px;padding-top:18px;border-top:1px solid rgba(242,243,241,.08);color:#8E918B;font:400 .9375rem "Hanken Grotesk",system-ui,sans-serif}
+.s2f-unten .s2f-l{display:flex;align-items:center;gap:18px}
+.s2f-unten img{height:22px;width:auto;opacity:.85;display:block}
+.s2f-unten nav{display:flex;gap:20px}
+.s2f-unten a{color:#8E918B;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.s2f-unten a:hover{color:#F2F3F1}
+.s2f .nz{color:#1FC998}
+
+/* Ankunft beim Hineinscrollen (fuss.js setzt .s2f-js nur bei erlaubter Bewegung) */
+.s2f-js .s2f-schale{opacity:0;transform:translateY(28px)}
+.s2f-js .s2f-schale .s2f-karte{transform:rotate(-7deg)}
+.s2f-js.s2f-da .s2f-schale{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.32,.72,0,1)}
+.s2f-js.s2f-da .s2f-schale .s2f-karte{transform:rotate(-2.5deg);transition:transform 1.3s cubic-bezier(.32,.72,0,1) .1s}
+.s2f-js.s2f-da .s2f-schale:hover .s2f-karte{transform:rotate(0deg) translateY(-3px);transition-delay:0s}
+
+@media (max-width:860px){
+  .s2f-oben{grid-template-columns:minmax(0,1fr)}
+  .s2f-schale{justify-self:start}
+  .s2f-karte,.s2f-js .s2f-schale .s2f-karte,.s2f-js.s2f-da .s2f-schale .s2f-karte{transform:none}
+  .s2f-mitte{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:420px){.s2f-mitte{grid-template-columns:minmax(0,1fr)}.s2f-karte{aspect-ratio:auto;min-height:220px}}
+@media (prefers-reduced-motion:reduce){
+  .s2f-js .s2f-schale{opacity:1;transform:none}
+  .s2f *{transition:none!important}
+}
+@media print{.s2f-oben,.s2f-mitte{display:none}}
+/* Seiten mit eigenem Listen-Stil (Wissen: Quadrate vor jedem li) dürfen nicht in den Footer greifen */
+.s2f ul,.s2f li{list-style:none;padding:0;margin:0}
+.s2f li::before,.s2f li::after{content:none;display:none}
+.s2f .s2f-mitte ul{gap:0}
+.s2f .s2f-mitte a,.s2f .s2f-unten a{min-width:44px}
