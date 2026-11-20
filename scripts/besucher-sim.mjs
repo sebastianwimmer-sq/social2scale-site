@@ -37,6 +37,15 @@ import { gzipSync } from 'node:zlib';
 import os from 'node:os';
 
 const ARGS = process.argv.slice(2);
+
+// Wachhund (20.11.2026): ein Browser, der nicht mehr antwortet, hielt die Kette 12 h fest
+// und sperrte damit den Nachtlauf (PID-Sperre in pruefen.sh). Ein voller Lauf dauert
+// rund 3 min; nach der Höchstdauer endet er rot statt zu hängen.
+const HOECHSTDAUER_MS = Number(process.env.S2S_SIM_HOECHSTDAUER_MS) || 20 * 60 * 1000;
+setTimeout(() => {
+  console.error(`✗ Besucher-Simulation hängt: nach ${Math.round(HOECHSTDAUER_MS / 1000)} s abgebrochen (Browser antwortet nicht) — neu starten`);
+  process.exit(1);
+}, HOECHSTDAUER_MS).unref();
 const SELBSTTEST = ARGS.includes('--selbsttest');
 const BILDER = ARGS.includes('--bilder');
 const NUR = (ARGS.find((a) => a.startsWith('--nur=')) || '').slice(6);
