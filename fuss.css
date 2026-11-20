@@ -48,7 +48,9 @@
 .s2f-kf a:hover{color:#1FC998}
 .s2f-kf .s2f-ic{width:18px;height:18px}
 .s2f-mail{display:inline-flex;align-items:center;white-space:nowrap}
-.s2f-kopie{display:inline-grid;place-items:center;width:44px;height:44px;margin-left:-8px;border-radius:10px;border:0;background:none;cursor:pointer;padding:0}
+.s2f-kf .s2f-mail{flex-basis:100%}
+.s2f-soz{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 22px}
+.s2f-kopie{display:inline-grid;place-items:center;width:44px;height:44px;margin-left:0;border-radius:10px;border:0;background:none;cursor:pointer;padding:0}
 .s2f-kopie[hidden]{display:none}
 .s2f-kopie:hover{background:rgba(255,255,255,.05)}
 .s2f-kopie .s2f-ic{width:17px;height:17px}
