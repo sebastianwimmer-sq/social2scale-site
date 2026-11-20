@@ -19,7 +19,19 @@ SPERRE="${TMPDIR:-/tmp}/s2s-pruefen.pid"
 if [ -f "$SPERRE" ] && kill -0 "$(cat "$SPERRE")" 2>/dev/null; then
   echo "✗ pruefen.sh laeuft schon (PID $(cat "$SPERRE")) — erst abwarten" >&2; exit 99
 fi
-echo $$ > "$SPERRE"; trap 'rm -f "$SPERRE"' EXIT
+echo $$ > "$SPERRE"
+# Eine Browser-Kette zur Zeit, auch ueber Repos und Sitzungen hinweg (20.11.2026: Mac-Absturz beim
+# Browser-Start, waehrend Portal-Tests, Selbsttests und diese Kette nur je ihre eigene Sperre kannten).
+# Das Werkzeug liegt in kit-build; fehlt es, laeuft die Kette mit der Repo-Sperre weiter und sagt es.
+BS="$HOME/.s2s-wachen/kit-build/browser-sperre.py"; [ -f "$BS" ] || BS="$HOME/kit-build/browser-sperre.py"
+if [ -f "$BS" ]; then
+  python3 "$BS" nehmen --pid $$ --name "pruefen.sh (Website)" --warten 1800 || { rc=$?; rm -f "$SPERRE"; exit $rc; }
+  export S2S_BROWSER_SPERRE="${S2S_BROWSER_SPERRE:-$$}"
+  trap 'python3 "$BS" frei --pid $$; rm -f "$SPERRE"' EXIT
+else
+  echo "⚠️  browser-sperre.py nicht gefunden: nur die Repo-Sperre gilt, andere Browser-Ketten sehe ich nicht." >&2
+  trap 'rm -f "$SPERRE"' EXIT
+fi
 
 rot=0; ZEITEN=""; ROTE=""
 lauf() {
