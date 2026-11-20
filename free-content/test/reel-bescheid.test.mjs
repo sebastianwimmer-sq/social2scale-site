@@ -22,7 +22,7 @@ function welt() {
 
 test('fertiges Reel → genau EINE Mail, Absender social2scale, danach nie wieder', async () => {
   const w = welt();
-  w.s.exec(`INSERT INTO clients VALUES (1, 'Sabine Rühl', 'sabine@example.org', 'sabine', '', 1, 1);
+  w.s.exec(`INSERT INTO clients VALUES (1, 'Anna Beispiel', 'anna@example.org', 'anna', '', 1, 1);
             INSERT INTO reel_auftrag VALUES (1, 'wa-1', 'Bildungsgutschein', 'fertig', NULL, NULL);`);
   assert.equal(await reelBescheid(w.env, w.versand), 'gesendet 1');
   assert.equal(w.post.length, 1);
@@ -31,15 +31,15 @@ test('fertiges Reel → genau EINE Mail, Absender social2scale, danach nie wiede
   assert.match(w.post[0].mail.htmlContent, /Das social2scale-Team/);
   assert.doesNotMatch(w.post[0].mail.htmlContent, /Phil ·/);
   assert.match(w.post[0].mail.subject, /Dein Reel ist fertig/);
-  assert.match(w.post[0].mail.htmlContent, /Hallo Sabine/);
-  assert.match(w.post[0].mail.htmlContent, /mein\.social2scale\.com\/sabine-kit\/hub\//);
+  assert.match(w.post[0].mail.htmlContent, /Hallo Anna/);
+  assert.match(w.post[0].mail.htmlContent, /mein\.social2scale\.com\/anna-kit\/hub\//);
   assert.equal(await reelBescheid(w.env, w.versand), 'ruhig', 'zweiter Lauf schickt nichts');
   assert.equal(w.post.length, 1);
 });
 
 test('mehrere Reels einer Kundin → eine Mail; rot mit ihrer Erklärung', async () => {
   const w = welt();
-  w.s.exec(`INSERT INTO clients VALUES (1, 'Eva', 'eva@example.org', 'eva', '', 1, 1);
+  w.s.exec(`INSERT INTO clients VALUES (1, 'Lena', 'lena@example.org', 'lena', '', 1, 1);
             INSERT INTO reel_auftrag VALUES (1, 'wa-1', 'Thema A', 'fertig', NULL, NULL), (1, 'wa-2', 'Thema B', 'fehler', 'Es stand zu wenig Konkretes drin.', NULL);
             INSERT INTO reel_upload VALUES (1, 'c-1', 'Mein Satz', 'fertig', NULL, 1, NULL);`);
   await reelBescheid(w.env, w.versand);

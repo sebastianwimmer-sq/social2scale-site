@@ -22,17 +22,17 @@ const offen = (w) => w.s.prepare(`SELECT code FROM workbook_auftrag WHERE besche
 
 test('fertiges Workbook → genau EINE Mail mit dem Titel des Hefts, Absender social2scale, danach nie wieder', async () => {
   const w = welt();
-  w.s.exec(`INSERT INTO clients VALUES (1, 'Eva Fichtinger', 'eva@example.org', 'eva', '', 1, 1);
+  w.s.exec(`INSERT INTO clients VALUES (1, 'Lena Muster', 'lena@example.org', 'lena', '', 1, 1);
             INSERT INTO workbook_auftrag VALUES (1, 'wb-1', 'rohes thema', '{"titel":"Ein freundliches Nein","seiten":[]}', 'fertig', NULL, NULL);`);
   assert.equal(await workbookBescheid(w.env, w.versand), 'gesendet 1');
   assert.equal(w.post.length, 1);
   assert.equal(w.post[0].absender, ABSENDER);
-  assert.equal(w.post[0].to, 'eva@example.org');
+  assert.equal(w.post[0].to, 'lena@example.org');
   assert.equal(w.post[0].mail.subject, 'Dein Workbook ist fertig');
-  assert.match(w.post[0].mail.htmlContent, /Hallo Eva,/);
+  assert.match(w.post[0].mail.htmlContent, /Hallo Lena,/);
   assert.match(w.post[0].mail.htmlContent, /Ein freundliches Nein/);
   assert.doesNotMatch(w.post[0].mail.htmlContent, /rohes thema/);
-  assert.match(w.post[0].mail.htmlContent, /mein\.social2scale\.com\/eva-kit\/workbook\//);
+  assert.match(w.post[0].mail.htmlContent, /mein\.social2scale\.com\/lena-kit\/workbook\//);
   assert.match(w.post[0].mail.htmlContent, /Das social2scale-Team/);
   assert.match(w.post[0].mail.htmlContent, /weil du in deinem Social Hub ein Workbook bestellt hast/);
   assert.equal(await workbookBescheid(w.env, w.versand), 'ruhig', 'zweiter Lauf schickt nichts');
@@ -41,7 +41,7 @@ test('fertiges Workbook → genau EINE Mail mit dem Titel des Hefts, Absender so
 
 test('rot: nie der rohe Fehlertext; Einspruch bekommt seinen festen Satz; mehrere Hefte → eine Mail', async () => {
   const w = welt();
-  w.s.exec(`INSERT INTO clients VALUES (1, 'Eva', 'eva@example.org', 'eva', '', 1, 1);
+  w.s.exec(`INSERT INTO clients VALUES (1, 'Lena', 'lena@example.org', 'lena', '', 1, 1);
             INSERT INTO workbook_auftrag VALUES (1, 'wb-1', 'Thema A', '{"titel":"Heft A"}', 'fertig', NULL, NULL),
               (1, 'wb-2', 'Thema B', '{"titel":"Heft B"}', 'fertig', NULL, NULL),
               (1, 'wb-3', 'Burnout heilen', NULL, 'fehler', 'einspruch:heil · thema: „Burnout heilen“ (Stelle: burnout)', NULL),
@@ -54,7 +54,7 @@ test('rot: nie der rohe Fehlertext; Einspruch bekommt seinen festen Satz; mehrer
   assert.match(html, /Wir sehen es uns an und melden uns/);
   assert.doesNotMatch(html, /einspruch:|Stelle:|BAU ROT|\/Users\//);
   assert.deepEqual(offen(w), []);
-  assert.equal(mailBauen({ name: 'Eva', slug: 'eva' }, [{ status: 'fehler', thema: 'x', fehler: 'einspruch:heil' }]).subject, 'Zu deinem Workbook gibt es eine Rückmeldung');
+  assert.equal(mailBauen({ name: 'Lena', slug: 'lena' }, [{ status: 'fehler', thema: 'x', fehler: 'einspruch:heil' }]).subject, 'Zu deinem Workbook gibt es eine Rückmeldung');
 });
 
 test('abgeschaltet, Testkonto mit fremder Adresse, ohne Mail, nicht freigeschaltet → keine Mail, abgehakt; Testkonto mit eigener Adresse bekommt sie', async () => {
@@ -71,7 +71,7 @@ test('abgeschaltet, Testkonto mit fremder Adresse, ohne Mail, nicht freigeschalt
 
 test('Versand scheitert → bleibt offen, nächster Lauf versucht es wieder; wirft nie', async () => {
   const w = welt();
-  w.s.exec(`INSERT INTO clients VALUES (1, 'Eva', 'eva@example.org', 'eva', '', 1, 1);
+  w.s.exec(`INSERT INTO clients VALUES (1, 'Lena', 'lena@example.org', 'lena', '', 1, 1);
             INSERT INTO workbook_auftrag VALUES (1, 'wb-1', 'x', NULL, 'fertig', NULL, NULL);`);
   assert.equal(await workbookBescheid(w.env, async () => false), 'gesendet 0');
   assert.deepEqual(offen(w), ['wb-1']);
@@ -82,7 +82,7 @@ test('Versand scheitert → bleibt offen, nächster Lauf versucht es wieder; wir
 test('Titel: aus dem geprüften Aufbau, sonst ihr Thema; HTML in ihrem Thema wird entschärft', () => {
   assert.equal(heftTitel({ thema: 'roh', gliederung: '{"titel":" Mein Platz "}' }), 'Mein Platz');
   assert.equal(heftTitel({ thema: 'roh', gliederung: 'kaputt{' }), 'roh');
-  const html = mailBauen({ name: 'Eva', slug: 'eva' }, [{ status: 'fertig', thema: '<b>x</b>', gliederung: null }]).htmlContent;
+  const html = mailBauen({ name: 'Lena', slug: 'lena' }, [{ status: 'fertig', thema: '<b>x</b>', gliederung: null }]).htmlContent;
   assert.match(html, /&lt;b&gt;x&lt;\/b&gt;/);
   assert.doesNotMatch(html, /<b>x<\/b>/);
 });

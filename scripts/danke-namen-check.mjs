@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path';
 
 const WURZEL = join(dirname(fileURLToPath(import.meta.url)), '..');
 const FAELLE = [
-  ['', ''], ['   ', ''], ['Eva', 'Eva'], ['Peter Weitzel', 'Peter'], ['Zoë O\'Neil', 'Zoë'], ['Jean-Luc', 'Jean-Luc'],
+  ['', ''], ['   ', ''], ['Eva', 'Eva'], ['Peter Muster', 'Peter'], ['Zoë O\'Neil', 'Zoë'], ['Jean-Luc', 'Jean-Luc'],
   ['Maximiliane-Charlotte Friederike', 'Maximiliane'], ['Donaudampfschifffahrtsgesellschaft', ''],
   ['<img src=x onerror=alert(1)>', ''], ['Anna<b>', ''], ['12345', ''], ['x'.repeat(200), ''], ['D\'Arcy', 'D\'Arcy'], ['Çağla', 'Çağla'],
 ];
