@@ -27,32 +27,31 @@ export const TEXTE = {
     waehlen: 'Video auswählen', ziehen: 'oder hierher ziehen', format: `MP4 oder MOV, bis ${MAX_MB} MB`, anderes: 'Anderes Video wählen',
     liegt: 'Ausgewählt', ohneBild: 'Dein Browser zeigt dieses Video nicht an. Ausgewählt ist es trotzdem.',
     zettel: 'Welches Reel sollen wir uns <em>ansehen?</em>',
-    f1: 'Wo postest du es?', vorname: 'Dein Vorname', vornameh: 'Damit wir dich im Befund ansprechen können.',
+    f1: 'Wo postest du es?', vorname: 'Dein Vorname', telefon: 'Handynummer', telefonh: 'Freiwillig. Nur wenn Phil dich zu deinem Befund anrufen darf.',
     mail: 'Wohin soll der Befund?', mailh: 'Deine E-Mail-Adresse',
     haken: `Ich bin einverstanden, dass social2scale mein Reel prüft, dabei die gesprochenen Worte und den Text im Bild von einer KI (Claude von Anthropic) auswerten lässt und mir den Befund per E-Mail schickt. Das Reel ist mein eigenes. Video und Befund werden nach ${LOESCH_FRIST_TAGE} Tagen gelöscht. Was wir daraus über Reels lernen, behalten wir ohne meinen Namen.`,
     mehr: 'Mehr dazu in der', ds: 'Datenschutzerklärung', dsFuss: 'Datenschutz', dsUrl: 'https://social2scale.com/datenschutz/#reel-check',
     senden: 'Reel prüfen lassen',
     impressum: 'Impressum', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
-      kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis die Zahl bei 100 steht.', gleich96: 'Gleich da, wir legen dein Reel ab.', weiter: 'Weiter hochladen',
+      kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis dein Video bei uns liegt.', weiter: 'Weiter hochladen',
+      prueft: 'Wir sehen uns dein Reel an', bleib: 'Das dauert ein paar Minuten. Dein Befund erscheint gleich hier, und wir schicken ihn dir zusätzlich per Mail.',
+      lang: 'Heute dauert es etwas länger. Du kannst die Seite schließen, dein Befund kommt per Mail.',
+      tun: ['Wir sehen uns dein Bild an', 'Wir hören deinen Ton ab', 'Wir lesen deinen Text im Bild', 'Wir gehen deinen Einstieg durch', 'Wir schreiben deine Vorschläge'],
       tipps: [['Die ersten drei Sekunden entscheiden.', 'Instagram misst, wie viele in den ersten 3 Sekunden weiterwischen.'], ['Text gehört in die Mitte.', 'Oben und unten liegen Knöpfe und Bildunterschrift darüber.'], ['Viele schauen ohne Ton.', 'Untertitel tragen deinen Satz auch dann.'], ['Ein Gedanke je Reel.', 'Unsere Arbeitsregel aus der täglichen Arbeit an Reels.']],
-      da: 'Angekommen.', post: 'Schau in dein Postfach und bestätige deine Adresse. Danach prüfen wir dein Reel und schicken dir den Befund.',
-      spam: 'Nichts angekommen? Sieh im Spam-Ordner nach oder lass dir die Mail nochmal schicken.', nochmal: 'Mail nochmal schicken', raus: 'Die Mail ist nochmal raus.',
-      gleich: 'Die letzte Mail ist erst ein paar Minuten alt. Warte kurz und versuch es dann nochmal.',
       fehler: {
         datei: 'Wähl zuerst dein Reel aus.',
         video_art: 'Das ist kein MP4 oder MOV. Speichere das Reel als Video auf deinem Gerät und wähl es nochmal aus.',
         video_gross: `Das Video ist größer als ${MAX_MB} MB. Exportier es in 1080p, dann passt es.`,
         video_klein: 'Die Datei ist zu klein für ein Reel. Wähl das fertige Video aus.',
         email: 'Bitte prüf deine E-Mail-Adresse.', email_domain: 'An diese Adresse können wir nichts schicken. Bitte prüf sie.', disposable: 'Bitte nimm eine Adresse, die du dauerhaft nutzt.',
-        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.', plattform: 'Bitte wähl aus, wo du postest.',
+        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.', plattform: 'Bitte wähl aus, wo du postest.', telefon: 'Die Handynummer sieht nicht richtig aus. Prüf sie oder lass das Feld leer.',
         schon: 'Deinen kostenlosen Check hast du schon genutzt. Jeden weiteren Beitrag sehen wir uns in der Betreuung an, such dir dafür oben einen Termin mit Phil aus.',
         einwilligung: 'Ohne dein Einverständnis dürfen wir das Reel nicht prüfen. Setz den Haken, wenn du einverstanden bist.',
         captcha: 'Die Sicherheitsprüfung läuft noch oder hat nicht geklappt. Warte einen Moment und tipp nochmal.',
         rate_limited: 'Das waren viele Versuche. Bitte versuch es in einer Stunde nochmal.',
         lesen: 'Dein Gerät gibt die Datei gerade nicht her. Tipp auf „Weiter hochladen“. Klappt es nicht, lad die Seite neu und wähl das Reel nochmal aus.',
         netz: 'Die Verbindung ist abgerissen. Dein Reel ist nicht verloren, tipp auf „Weiter hochladen“.',
-        mail: 'Dein Reel liegt bei uns, aber die Mail ging nicht raus. Tipp auf „Mail nochmal schicken“.',
         sonst: 'Das hat gerade nicht geklappt. Bitte versuch es gleich nochmal.',
       },
     },
@@ -77,32 +76,31 @@ export const TEXTE = {
     waehlen: 'Choose a video', ziehen: 'or drop it here', format: `MP4 or MOV, up to ${MAX_MB} MB`, anderes: 'Choose a different video',
     liegt: 'Selected', ohneBild: 'Your browser can’t show this video. It’s still selected.',
     zettel: 'Which reel should we <em>look at?</em>',
-    f1: 'Where do you post it?', vorname: 'Your first name', vornameh: 'So we can address you in the report.',
+    f1: 'Where do you post it?', vorname: 'Your first name', telefon: 'Mobile number', telefonh: 'Optional. Only if Phil may call you about your report.',
     mail: 'Where should the report go?', mailh: 'Your email address',
     haken: `I agree that social2scale checks my reel, has an AI (Claude by Anthropic) evaluate the spoken words and on-screen text, and emails me the report. The reel is my own. Video and report are deleted after ${LOESCH_FRIST_TAGE} days. What we learn about reels from it, we keep without my name.`,
     mehr: 'More in our', ds: 'privacy policy', dsFuss: 'Privacy', dsUrl: 'https://social2scale.com/en/privacy/#reel-check',
     senden: 'Check my reel',
     impressum: 'Legal notice', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
-      kommt: 'Your reel is on its way', offen: 'Keep this page open until the number reaches 100.', gleich96: 'Almost there, we’re storing your reel.', weiter: 'Continue upload',
+      kommt: 'Your reel is on its way', offen: 'Keep this page open until we have your video.', weiter: 'Continue upload',
+      prueft: 'We’re looking at your reel', bleib: 'This takes a few minutes. Your report appears right here, and we also send it to you by email.',
+      lang: 'It’s taking a little longer today. You can close this page, your report will arrive by email.',
+      tun: ['We’re looking at your picture', 'We’re listening to your sound', 'We’re reading your on-screen text', 'We’re going through your opening', 'We’re writing your suggestions'],
       tipps: [['The first three seconds decide.', 'Instagram measures how many swipe away within the first 3 seconds.'], ['Text belongs in the middle.', 'Buttons and the caption sit on top at the top and bottom.'], ['Many watch without sound.', 'Captions carry your sentence even then.'], ['One idea per reel.', 'Our working rule from making reels every day.']],
-      da: 'Got it.', post: 'Check your inbox and confirm your address. Then we check your reel and send you the report.',
-      spam: 'Nothing there? Look in your spam folder or have the email sent again.', nochmal: 'Send the email again', raus: 'The email is on its way again.',
-      gleich: 'The last email is only a few minutes old. Give it a moment, then try again.',
       fehler: {
         datei: 'Choose your reel first.',
         video_art: 'That’s not an MP4 or MOV. Save the reel as a video on your device and choose it again.',
         video_gross: `The video is larger than ${MAX_MB} MB. Export it in 1080p and it will fit.`,
         video_klein: 'The file is too small to be a reel. Choose the finished video.',
         email: 'Please check your email address.', email_domain: 'We can’t send anything to this address. Please check it.', disposable: 'Please use an address you keep.',
-        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.', plattform: 'Please choose where you post.',
+        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.', plattform: 'Please choose where you post.', telefon: 'That mobile number doesn’t look right. Check it or leave the field empty.',
         schon: 'You’ve already used your free check. We look at every further post as part of our service, pick a call with Phil at the top for that.',
         einwilligung: 'We can’t check the reel without your consent. Tick the box if you agree.',
         captcha: 'The security check is still running or didn’t work. Wait a moment and tap again.',
         rate_limited: 'That was a lot of attempts. Please try again in an hour.',
         lesen: 'Your device isn’t handing over the file right now. Tap “Continue upload”. If that doesn’t help, reload the page and choose the reel again.',
         netz: 'The connection dropped. Your reel isn’t lost, tap “Continue upload”.',
-        mail: 'We have your reel, but the email didn’t go out. Tap “Send the email again”.',
         sonst: 'That didn’t work just now. Please try again in a moment.',
       },
     },
@@ -203,7 +201,8 @@ const STIL = `
   .zettel .knopf{width:100%}
   .melde{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(240,121,107,.10);box-shadow:inset 0 0 0 1px rgba(240,121,107,.45);color:#FFD9D3;font-size:16px}
   .melde.gut{background:rgba(31,201,152,.10);box-shadow:inset 0 0 0 1px rgba(31,201,152,.45);color:#D6FFF2}
-  .lauf p,.quittung p{color:#B4B9B6;max-width:46ch}
+  .lauf p{color:#B4B9B6;max-width:46ch;margin-inline:auto}
+  .lauf .marke{color:var(--emerald-soft)}
   .streifen{position:relative;height:22px;margin:18px 0 10px;border-right:1px solid rgba(242,243,241,.28);background:repeating-linear-gradient(90deg,rgba(242,243,241,.28) 0 1px,transparent 1px 10%)}
   .streifen u{position:absolute;left:0;top:50%;height:6px;margin-top:-3px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#1FC998,#46BEEA)}
   .knopf.leer-k{background:none;color:var(--ink);box-shadow:inset 0 0 0 1px rgba(242,243,241,.32)}
@@ -248,10 +247,12 @@ function markup(T, siteKey) {
         </label></div>
         <fieldset class="frage"><legend>${T.f1}</legend><div class="chips">
           ${chip('instagram', 'Instagram', true)}${chip('tiktok', 'TikTok')}${chip('facebook', 'Facebook')}${chip('linkedin', 'LinkedIn')}${chip('youtube', 'YouTube')}</div></fieldset>
-        <div class="frage"><label for="vorname">${T.vorname}</label><p class="hilfe" id="vnh">${T.vornameh}</p>
-          <input class="feld" id="vorname" name="vorname" type="text" maxlength="40" autocomplete="given-name" aria-describedby="vnh"></div>
+        <div class="frage"><label for="vorname">${T.vorname}</label>
+          <input class="feld" id="vorname" name="vorname" type="text" maxlength="40" autocomplete="given-name"></div>
         <div class="frage"><label for="email">${T.mail}</label>
           <input class="feld" id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" placeholder="${T.mailh}"></div>
+        <div class="frage"><label for="telefon">${T.telefon}</label><p class="hilfe" id="telh">${T.telefonh}</p>
+          <input class="feld" id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" aria-describedby="telh"></div>
         <div class="honig" aria-hidden="true"><label>Website<input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="haken"><input type="checkbox" id="einwilligung"><label for="einwilligung">${T.haken} ${T.mehr} <a href="${T.dsUrl}" target="_blank" rel="noopener">${T.ds}</a>.</label></div>
         <div class="turnstile-wrap"><div id="ts"></div></div>
@@ -262,13 +263,10 @@ function markup(T, siteKey) {
     <section class="schritt lauf" id="s-lauf" hidden>
       <h2 class="mitte" id="lauf-kopf" tabindex="-1"></h2>
       <div class="pixfeld"><video id="laufbild" muted playsinline aria-hidden="true"></video><b class="proz" id="proz" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0 %</b></div>
-      <p class="klein mitte" id="lauf-text"></p>
+      <p class="marke mitte" id="lauf-text" role="status"></p>
+      <p class="klein mitte" id="bleib" hidden></p>
       <div class="tipp" id="tipp" role="status"></div>
       <p class="melde" id="melde2" role="alert" hidden></p><button class="knopf" id="weiter" type="button" hidden></button>
-    </section>
-    <section class="schritt quittung" id="s-da" hidden>
-      <h2 id="q-kopf" tabindex="-1"></h2><p id="q-text"></p><p class="klein" id="q-spam"></p>
-      <button class="knopf leer-k" id="nochmal" type="button"></button><p class="melde" id="melde3" role="alert" hidden></p>
     </section>
   </main>
   <footer class="fuss"><a href="${T.impressumUrl}">${T.impressum}</a><a href="${T.dsUrl}">${T.dsFuss}</a></footer>
@@ -281,7 +279,7 @@ function seitenSkript() {
   var $ = function (id) { return document.getElementById(id); };
   var datei = null, lauf = null, ruhig = matchMedia('(prefers-reduced-motion:reduce)').matches;
   var form = $('form'), melde = $('melde'), standort = $('standort'), geraet = $('geraet'), video = $('vorschau'), tsId = null;
-  var SCHRITTE = ['s-ein', 's-form', 's-lauf', 's-da'];
+  var SCHRITTE = ['s-ein', 's-form', 's-lauf'];
   function zeig(id, kopf) {
     SCHRITTE.forEach(function (s) { $(s).hidden = s !== id; });
     scrollTo({ top: 0, behavior: ruhig ? 'auto' : 'smooth' });
@@ -342,16 +340,23 @@ function seitenSkript() {
   function zeigeLauf() {
     $('lauf-kopf').textContent = T.kommt; $('lauf-text').textContent = T.offen; $('weiter').textContent = T.weiter;
     var bild = $('laufbild'); bild.src = video.src; bild.onloadeddata = function () { try { bild.currentTime = Math.min(2.5, (bild.duration || 5) / 2); } catch (e) {} };
-    stand(0); tipp(); tippLauf = setInterval(tipp, 6000);
+    stand(0); malen(); uhr = setInterval(malen, 220); tipp(); tippLauf = setInterval(tipp, 6000);
     zeig('s-lauf', 'lauf-kopf');
   }
   $('weiter').addEventListener('click', function () { $('weiter').hidden = true; $('melde2').hidden = true; laden(); });
-  // Die Zahl folgt dem echten Upload und hält bei 96, bis der Server das Video bestätigt hat. 100 heißt: es geht weiter.
-  function stand(anteil, fertig) {
-    p = fertig ? 100 : Math.max(p, Math.min(96, Math.floor(anteil * 96)));
+  // Eine Zahl für den ganzen Weg: bis 30 folgt sie dem echten Upload, danach läuft sie über die Prüfzeit auf 96 zu und hält
+  // dort, bis der Befund wirklich da ist. 100 heißt: es geht weiter. Die Anzeige zählt weich nach, sie springt nie.
+  var ziel = 0, pruefStart = 0, uhr = null;
+  function stand(anteil) { ziel = Math.max(ziel, Math.min(30, anteil * 30)); }
+  function malen() {
+    if (pruefStart && ziel < 100) {
+      var s = (Date.now() - pruefStart) / 1000;
+      ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / 150)));
+      $('lauf-text').textContent = s > 600 ? T.lang : T.tun[Math.min(T.tun.length - 1, Math.floor((p - 30) / 14))];
+    }
+    if (p < Math.floor(ziel)) p += ziel >= 100 ? 2 : 1; if (p > 100) p = 100;
     $('proz').textContent = p + ' %'; $('proz').setAttribute('aria-valuenow', p);
     $('laufbild').style.filter = 'blur(' + ((100 - p) * 0.17).toFixed(1) + 'px) saturate(' + (0.55 + p * 0.0045).toFixed(2) + ') brightness(' + (0.8 + p * 0.002).toFixed(2) + ')';
-    if (p >= 96 && !fertig) $('lauf-text').textContent = T.gleich96;
   }
   // Erst lesen, dann senden: Safari schickt sonst gelegentlich einen leeren Teil, wenn es die Datei gerade nicht lesen kann
   // (gemessen 15.11.2026: 2 von 8 Läufen in WebKit, Länge 0). Ein kurz gelesener Teil wird gar nicht erst geschickt.
@@ -385,31 +390,30 @@ function seitenSkript() {
       stand(1);
       var r = await fetch('/api/reel-check/fertig/' + lauf.token, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ teile: lauf.etags }) });
       var d = await r.json().catch(function () { return {}; });
-      if (r.ok && d.ok) return quittung(false);
-      if (d.error === 'mail') return quittung(true);
+      if (r.ok && d.ok) return pruefen();
       stolper(d.error === 'backend' ? 'netz' : d.error);
     } catch (e) { stolper('netz'); }
   }
-  // Quittung erst, wenn der Server das Video bestätigt hat: dann springt die Zahl auf 100 und es geht von selbst weiter
-  function quittung(mailFehlt) {
-    clearInterval(tippLauf); stand(1, true);
-    $('q-kopf').textContent = T.da; $('q-text').textContent = T.post; $('q-spam').textContent = T.spam; $('nochmal').textContent = T.nochmal;
-    var m = $('melde3');
-    if (mailFehlt) { m.textContent = T.fehler.mail; m.hidden = false; }
-    setTimeout(function () { zeig('s-da', 'q-kopf'); }, ruhig ? 0 : 900);
+  // Das Video liegt bei uns: dieselbe Seite bleibt offen, bis der Befund da ist, und zeigt ihn dann selbst.
+  function pruefen() {
+    pruefStart = Date.now();
+    $('lauf-kopf').textContent = T.prueft; $('bleib').textContent = T.bleib; $('bleib').hidden = false;
+    var frage = setInterval(function () {
+      if (document.hidden) return;
+      fetch('/api/reel-check/status/' + lauf.token).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.status !== 'fertig' && d.status !== 'fehler') return;
+        clearInterval(frage); clearInterval(tippLauf);
+        if (d.status === 'fehler') { location.href = '/rc/' + lauf.token; return; }
+        ziel = 100;
+        var warte = setInterval(function () { if (p >= 100) { clearInterval(warte); clearInterval(uhr); setTimeout(function () { location.href = '/rc/' + lauf.token; }, ruhig ? 0 : 900); } }, 200);
+      }).catch(function () {});
+    }, 5000);
   }
-  $('nochmal').addEventListener('click', async function () {
-    var m = $('melde3');
-    try {
-      var r = await fetch('/api/reel-check/nochmal/' + lauf.token, { method: 'POST' });
-      m.textContent = r.ok ? T.raus : r.status === 429 ? T.gleich : T.fehler.mail; m.className = 'melde' + (r.ok ? ' gut' : ''); m.hidden = false;
-    } catch (e) { m.textContent = T.fehler.sonst; m.className = 'melde'; m.hidden = false; }
-  });
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!datei) { sag('datei'); geraet.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'center' }); return; }
-    var daten = { email: $('email').value.trim(), vorname: $('vorname').value.trim(), plattform: wert('plattform'),
+    var daten = { email: $('email').value.trim(), vorname: $('vorname').value.trim(), telefon: $('telefon').value.trim(), plattform: wert('plattform'),
       einwilligung: $('einwilligung').checked, website: $('website').value, elapsed: Date.now() - START,
       bytes: datei.f.size, mime: datei.art, sprache: LANG === 'en' ? 'en' : 'de', turnstile: token() };
     // dieselbe Reihenfolge wie auf dem Schirm: die erste offene Stelle wird genannt und angesprungen

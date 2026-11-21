@@ -408,7 +408,9 @@ export default {
     // fünf Zeitpläne je Konto erlaubt und der Assistent neue Direktnachrichten minütlich abholen muss
     // (s2s-kunden/takt-worker, Service-Bindung TAKT). Alles Bisherige läuft unverändert nur zu jeder fünften Minute.
     if (env.TAKT) ctx.waitUntil(env.TAKT.fetch('https://takt/').catch((err) => console.error('[cron] Assistent-Takt fehlgeschlagen:', err)));
-    if (!istFuenfterTakt(event)) return;
+    // Der Befund des Reel-Checks geht jede Minute raus (21.11.2026: im Fünfer-Takt kam die Mail bis zu fünf Minuten nach dem Befund).
+    // Ein Riegel je Zeile (befund_mail_at) verhindert doppelte Mails.
+    if (!istFuenfterTakt(event)) { ctx.waitUntil(reelCheckPost(env)); return; }
     try {
       const befreit = await sweepStaleBuilding(env.DB);
       if (befreit) console.error('[cron]', befreit, 'haengende Builds befreit');

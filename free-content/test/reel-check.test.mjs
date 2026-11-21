@@ -12,7 +12,7 @@ import { reelCheckSeite, reelCheckStandSeite, TEXTE } from '../src/pages/reel-ch
 // D1-Hülle um echtes SQLite mit dem echten Schema aus der Migration; R2 als Speicher mit echter Teile-Logik.
 function welt() {
   const s = new DatabaseSync(':memory:');
-  for (const m of ['2026-11-15-reel-check.sql', '2026-11-21-reel-check-person.sql']) s.exec(readFileSync(new URL('../migrationen/' + m, import.meta.url), 'utf8'));
+  for (const m of ['2026-11-15-reel-check.sql', '2026-11-21-reel-check-person.sql', '2026-11-21b-reel-check-telefon.sql']) s.exec(readFileSync(new URL('../migrationen/' + m, import.meta.url), 'utf8'));
   s.exec('CREATE TABLE free_intake_log (ip TEXT, created_at TEXT)');
   s.exec('CREATE TABLE tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER, type TEXT, title TEXT, body TEXT, status TEXT, priority TEXT, source TEXT, owner TEXT, updated_at TEXT, done_at TEXT, done_note TEXT)');
   const prep = (sql, args = []) => ({
@@ -95,6 +95,8 @@ test('Anmeldung: jede Lücke hat ihren eigenen Schlüssel, Einwilligung zählt n
   assert.equal(pruefeStart({ ...KURZ, plattform: 'myspace' }).error, 'plattform'); assert.equal(pruefeStart({ ...KURZ, plattform: '' }).error, 'plattform');
   assert.equal(pruefeStart({ ...KURZ, vorname: '  <b>Ana</b>\u0000 ' + 'x'.repeat(80) }).value.vorname.length, 40);
   assert.doesNotMatch(pruefeStart({ ...KURZ, vorname: '<script>"Ana"&' }).value.vorname, /[<>&"]/);
+  assert.equal(pruefeStart(KURZ).value.telefon, ''); assert.equal(pruefeStart({ ...KURZ, telefon: ' +49 (171) 234-5678 ' }).value.telefon, '+491712345678');
+  for (const falsch of ['ruf mich an', '123', '+49 171 <b>', '0171 2345678 und 0172 9999999 oder so']) assert.equal(pruefeStart({ ...KURZ, telefon: falsch }).error, 'telefon', falsch);
   const v = pruefeStart({ ...GUT, zielgruppe: 'Mütter\u0000 <b>in</b>\nElternzeit', website: 'x', sprache: 'fr' }).value;
   assert.equal(v.zielgruppe, 'Mütter <b>in</b> Elternzeit'); assert.equal(v.spam, 1); assert.equal(v.sprache, 'de');
 });
@@ -107,7 +109,7 @@ test('Teile: Größen ergeben zusammen genau das Video', () => {
   assert.equal(istVideoKopf(video(64)), true); assert.equal(istVideoKopf(new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3, 4])), false);
 });
 
-test('ganzer Weg: hochladen → Mail → bestätigen → der Mac darf prüfen → Befund', async () => {
+test('ganzer Weg: hochladen → der Mac darf sofort prüfen, ohne Mail-Klick → Befund', async () => {
   const w = welt();
   try {
     const { token, etags } = await hochladen(w);
@@ -115,15 +117,11 @@ test('ganzer Weg: hochladen → Mail → bestätigen → der Mac darf prüfen �
     const f = await (await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags })).json();
     assert.equal(f.ok, true);
     const z = w.s.prepare('SELECT * FROM reel_check').get();
-    assert.equal(z.status, 'wartet'); assert.equal(z.einwilligung_fassung, EINWILLIGUNG_FASSUNG); assert.equal(z.email, 'lead@example.org'); assert.equal(z.upload_id, null);
+    assert.equal(z.status, 'da', 'kein Umweg über eine Bestätigungsmail'); assert.ok(z.confirmed_at, 'die Löschfrist läuft ab dem Hochladen'); assert.equal(z.einwilligung_fassung, EINWILLIGUNG_FASSUNG); assert.equal(z.email, 'lead@example.org'); assert.equal(z.upload_id, null);
     assert.equal(w.ablage.get(`reelcheck/${token}/reel.mp4`).length, GUT.bytes);
-    assert.equal(w.mails.length, 1); assert.equal(w.mails[0].to[0].email, 'lead@example.org');
-    assert.match(w.mails[0].htmlContent, new RegExp(`https://start\\.example\\.org/rc/c/${token}`));
-    // zweiter Abschluss (doppelter Klick, Wiederholung): keine zweite Mail
-    assert.equal((await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags })).status, 404);
-    assert.equal(w.mails.length, 1);
-    assert.deepEqual(await bestaetigen(w.env, token), { ok: true, status: 'da', sprache: 'de' });
-    assert.equal((await bestaetigen(w.env, token)).status, 'da', 'zweiter Klick ist harmlos');
+    assert.equal(w.mails.length, 0, 'beim Hochladen geht keine Mail raus, die erste ist der Befund');
+    assert.equal((await ruf(w.env, `/api/reel-check/fertig/${token}`, 'POST', { teile: etags })).status, 404, 'zweiter Abschluss ändert nichts');
+    assert.equal((await bestaetigen(w.env, token)).status, 'da', 'ein alter Bestätigungslink ist harmlos');
     assert.equal((await stand(w.env, token)).status, 'da');
     w.s.exec("UPDATE reel_check SET status='fertig'");
     assert.equal((await stand(w.env, token)).status, 'in_arbeit', 'fertig ohne Befund-Datei zeigt nie eine leere Seite');
@@ -222,12 +220,12 @@ test('ein Gratis-Check je Adresse: liegt das Video einmal vollständig, wird die
     await hochladen(w, { ...GUT, email: 'eins@example.org' });                               // bleibt bei laedt (abgebrochen)
     assert.equal((await neu('eins@example.org')).status, 200, 'ein abgebrochener Upload verbraucht den Check nicht');
     const b = await hochladen(w, { ...GUT, email: 'zwei@example.org' });
-    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });       // wartet
+    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });       // da
     const r = await neu('Zwei@Example.org');
     assert.equal(r.status, 409); assert.equal((await r.json()).error, 'schon');
     w.s.prepare("UPDATE reel_check SET status = 'fehler' WHERE token = ?").run(b.token);
     assert.equal((await neu('zwei@example.org')).status, 200, 'ließ sich das Video nicht prüfen, darf sie es nochmal versuchen');
-    for (const st of ['da', 'in_arbeit', 'fertig']) {
+    for (const st of ['wartet', 'in_arbeit', 'fertig']) {
       w.s.prepare('UPDATE reel_check SET status = ? WHERE token = ?').run(st, b.token);
       w.s.prepare("DELETE FROM reel_check WHERE status = 'laedt'").run();
       assert.equal((await neu('zwei@example.org')).status, 409, st);
@@ -241,8 +239,9 @@ test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach
   try {
     const a = await hochladen(w, { ...GUT, email: 'a@example.org' });                       // bleibt bei laedt
     const b = await hochladen(w, { ...GUT, email: 'b@example.org' });
-    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });      // wartet
-    const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla' });
+    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });
+    w.s.prepare("UPDATE reel_check SET status = 'wartet', confirmed_at = NULL WHERE token = ?").run(b.token);   // alte Zeile von vor dem 21.11.: Mail nie bestätigt
+    const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla', telefon: '0171 2345678' });
     await ruf(w.env, `/api/reel-check/fertig/${c.token}`, 'POST', { teile: c.etags }); await bestaetigen(w.env, c.token);
     await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'frisch: nichts wird gelöscht');
@@ -254,7 +253,7 @@ test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach
     assert.equal(w.ablage.size, 0, 'Videos und Befund sind weg'); assert.equal(w.offen.size, 0, 'der offene Upload ist abgebrochen');
     const rest = w.s.prepare('SELECT status, email, email_norm, zielgruppe, fehler FROM reel_check ORDER BY id').all();
     assert.deepEqual(rest.map((r) => [r.status, r.email, r.email_norm, r.zielgruppe]), Array(3).fill(['geloescht', '', '', '']));
-    assert.equal(w.s.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE vorname != ''").get().c, 0, 'der Vorname ist mit weg');
+    assert.equal(w.s.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE vorname != '' OR telefon != ''").get().c, 0, 'der Vorname ist mit weg');
     assert.deepEqual(rest.map((r) => r.fehler), ['upload_abgebrochen', 'nie_bestaetigt', 'frist']);
     assert.equal((await bestaetigen(w.env, b.token)).ok, false, 'ein gelöschter Link bestätigt nichts mehr');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'zweiter Lauf fasst Gelöschtes nicht nochmal an');
@@ -267,7 +266,8 @@ test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt,
     assert.match(html, new RegExp(`<html lang="${lang}">`));
     assert.equal((html.match(/type="radio" name="plattform"/g) || []).length, PLATTFORMEN.length); assert.equal((html.match(/ checked/g) || []).length, 1, 'vorbelegt ist nur die Plattform');
     for (const pl of PLATTFORMEN) assert.match(html, new RegExp(`name="plattform" value="${pl}"`));
-    assert.equal((html.match(/class="feld"/g) || []).length, 2, 'zwei Textfelder: Vorname und Adresse');
+    assert.equal((html.match(/class="feld"/g) || []).length, 3, 'drei Textfelder: Vorname, Adresse, freiwillige Handynummer');
+    assert.doesNotMatch(html, /Bestätige deine|confirm your address/i, 'die Seite schickt niemanden mehr ins Postfach');
     assert.match(html, /calendly\.com\/philipplibowicz/);
     assert.match(html, /<input type="checkbox" id="einwilligung">/);
     assert.match(html, new RegExp(`${LOESCH_FRIST_TAGE} (Tagen|days)`)); assert.match(html, /Claude/);

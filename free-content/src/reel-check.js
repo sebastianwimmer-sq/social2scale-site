@@ -5,8 +5,10 @@
  *
  * Ablauf einer Zeile in reel_check:
  *   laedt  → Upload läuft (Teile kommen einzeln, je höchstens TEIL_BYTES)
- *   wartet → Video liegt vollständig, Bestätigungsmail ist raus
- *   da     → Adresse bestätigt, der Mac darf prüfen (erst ab hier kostet es Rechenzeit und KI)
+ *   da     → Video liegt vollständig, der Mac darf prüfen. Seit dem 21.11.2026 ohne Klick in einer Mail (Sebi: „Angekommen,
+ *            also fertig? was lädt da?“): die Seite bleibt beim Prüfen offen und zeigt den Befund selbst, die Mail kommt dazu.
+ *            Bremse gegen Missbrauch bleiben Turnstile, die Grenze je IP und ein Check je Adresse.
+ *   wartet → nur noch alte Zeilen von vor dem 21.11. (Bestätigungsmail war raus)
  *   in_arbeit · fertig · fehler → setzt der Mac
  *                 danach verschickt reelCheckPost (Cron) genau eine Mail: Befund ist da, oder es hat nicht geklappt
  *   geloescht → Frist abgelaufen, Video und Befund sind weg, Adresse ist geleert
@@ -75,6 +77,10 @@ export function pruefeStart(input) {
   const lage = d.lage ?? '';
   if (lage !== '' && !LAGEN.includes(lage)) return { ok: false, error: 'lage' };
   const vorname = stripControlChars(d.vorname ?? '').replace(/[<>&"]/g, '').trim().slice(0, VORNAME_MAX);
+  // Handynummer nur, wenn sie selbst eine einträgt (Rückruf von Phil). Leer ist der Normalfall.
+  const telRoh = stripControlChars(d.telefon ?? '').trim();
+  if (telRoh && !/^\+?[0-9][0-9 ()\/.-]{5,22}$/.test(telRoh)) return { ok: false, error: 'telefon' };
+  const telefon = telRoh.replace(/[^0-9+]/g, '');
   const plattform = d.plattform === undefined ? 'instagram' : d.plattform;
   if (!PLATTFORMEN.includes(plattform)) return { ok: false, error: 'plattform' };
   // Die Einwilligung wird nie vorbelegt und nie abgeleitet: nur ein ausdrückliches true zählt.
@@ -87,7 +93,7 @@ export function pruefeStart(input) {
   return {
     ok: true,
     value: {
-      email: stripControlChars(d.email).toLowerCase().slice(0, 160), emailNorm, zielgruppe, spricht, lage, vorname, plattform,
+      email: stripControlChars(d.email).toLowerCase().slice(0, 160), emailNorm, zielgruppe, spricht, lage, vorname, plattform, telefon,
       bytes, mime: String(d.mime).toLowerCase(), ext, sprache: d.sprache === 'en' ? 'en' : 'de', spam: d.website ? 1 : 0,
     },
   };
@@ -133,9 +139,9 @@ async function start(request, env, cors) {
     const token = neuerToken();
     const mp = await env.IMAGES.createMultipartUpload(schluessel(token, v.ext), { httpMetadata: { contentType: v.mime } });
     await env.DB.prepare(
-      'INSERT INTO reel_check (token, email, email_norm, zielgruppe, spricht, lage, vorname, plattform, sprache, einwilligung_fassung, einwilligung_at, bytes, mime, upload_id, spam, status, created_at, updated_at) ' +
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, 'laedt', datetime('now'), datetime('now'))",
-    ).bind(token, v.email, v.emailNorm, v.zielgruppe, v.spricht, v.lage, v.vorname, v.plattform, v.sprache, EINWILLIGUNG_FASSUNG, v.bytes, v.mime, mp.uploadId, v.spam).run();
+      'INSERT INTO reel_check (token, email, email_norm, zielgruppe, spricht, lage, vorname, plattform, telefon, sprache, einwilligung_fassung, einwilligung_at, bytes, mime, upload_id, spam, status, created_at, updated_at) ' +
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, 'laedt', datetime('now'), datetime('now'))",
+    ).bind(token, v.email, v.emailNorm, v.zielgruppe, v.spricht, v.lage, v.vorname, v.plattform, v.telefon, v.sprache, EINWILLIGUNG_FASSUNG, v.bytes, v.mime, mp.uploadId, v.spam).run();
     return json({ ok: true, token, teil: TEIL_BYTES, teile: teile(v.bytes) }, 200, cors);
   } catch (err) {
     console.error('[reel-check] Anmeldung nicht gespeichert:', err);
@@ -198,15 +204,8 @@ async function fertig(request, env, ctx, cors, token) {
       await env.DB.prepare("UPDATE reel_check SET status='fehler', fehler='groesse', updated_at=datetime('now') WHERE token=?").bind(token).run();
       return json({ ok: false, error: 'teil' }, 400, cors);
     }
-    // Riegel: nur wer die Zeile von laedt auf wartet setzt, verschickt die Mail (zwei gleichzeitige Abschlüsse → eine Mail).
-    const r = await env.DB.prepare("UPDATE reel_check SET status='wartet', upload_id=NULL, updated_at=datetime('now') WHERE token=? AND status='laedt'").bind(token).run();
-    if ((r.meta?.changes ?? 0) === 1) {
-      const gesendet = await send(env, z.email, '', bestaetigungsMail(z, env.PUBLIC_ORIGIN || 'https://start.social2scale.com'));
-      if (!gesendet) {
-        console.error('[reel-check] Bestätigungsmail nicht zugestellt, Zeile', z.id);
-        return json({ ok: false, error: 'mail' }, 502, cors);
-      }
-    }
+    // Das Video liegt vollständig: ab jetzt darf der Mac prüfen. confirmed_at ist der Beginn der Löschfrist.
+    await env.DB.prepare("UPDATE reel_check SET status='da', upload_id=NULL, confirmed_at=datetime('now'), updated_at=datetime('now') WHERE token=? AND status='laedt'").bind(token).run();
     return json({ ok: true }, 200, cors);
   } catch (err) {
     console.error('[reel-check] Abschluss fehlgeschlagen:', err);
@@ -274,7 +273,7 @@ async function wegraeumen(env, z, grund) {
   await env.IMAGES.delete([key, befundSchluessel(z.token)]);
   // Die Zeile bleibt als Zähler ohne Person: Adresse, Vorname und Zielgruppe werden geleert, der Token ist danach tot.
   await env.DB.prepare(
-    "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', vorname='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
+    "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', vorname='', telefon='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
   ).bind(grund, z.id).run();
 }
 
@@ -309,8 +308,8 @@ export async function reelCheckAufraeumen(env) {
 export function befundMail(z, origin) {
   const en = z.sprache === 'en';
   const grund = en
-    ? 'You are getting this email because you confirmed this address for the social2scale Reel Check. Your reel, the report and your address are deleted 30 days after your confirmation.'
-    : 'Du bekommst diese Mail, weil du diese Adresse für den Reel-Check von social2scale bestätigt hast. Dein Reel, der Befund und deine Adresse werden 30 Tage nach deiner Bestätigung gelöscht.';
+    ? 'You are getting this email because this address was entered for the social2scale Reel Check. Your reel, the report and your address are deleted 30 days after the upload.'
+    : 'Du bekommst diese Mail, weil diese Adresse für den Reel-Check von social2scale angegeben wurde. Dein Reel, der Befund und deine Adresse werden 30 Tage nach dem Hochladen gelöscht.';
   if (z.status === 'fehler') {
     const link = `${origin}${en ? '/en' : ''}/reel-check/`;
     return en
@@ -359,7 +358,8 @@ export async function reelCheckPost(env) {
             subject: `Reel-Check fertig: ${z.zahl ?? '–'} von 100${z.sprache === 'en' ? ' [EN]' : ''}`,
             htmlContent: founderMailHtml('Reel-Check fertig', [
               ['Zahl', `${z.zahl ?? '–'} von 100`], ['Plattform', z.plattform || 'instagram'], ...(LAGE_WORT[z.lage] ? [['Lage', LAGE_WORT[z.lage]]] : []), ['Sprache', z.sprache === 'en' ? 'Englisch' : 'Deutsch'],
-              ['Hinweis', 'Ohne Adresse: die Person meldet sich über den Termin-Knopf im Befund. Der Link gilt bis zur Löschung nach 30 Tagen.'],
+              ...(z.telefon ? [['Rückruf erwünscht', `${z.vorname ? z.vorname + ' · ' : ''}${z.telefon}`]] : []),
+              ['Hinweis', z.telefon ? 'Die Nummer hat die Person selbst für einen Rückruf zum Befund eingetragen. Der Link gilt bis zur Löschung nach 30 Tagen.' : 'Ohne Adresse: die Person meldet sich über den Termin-Knopf im Befund. Der Link gilt bis zur Löschung nach 30 Tagen.'],
             ], `${origin}/rc/${z.token}`),
           });
         }
