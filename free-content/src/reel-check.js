@@ -234,6 +234,14 @@ export async function reelCheckApi(request, env, ctx, cors, url) {
   if (m) return request.method === 'POST' ? fertig(request, env, ctx, cors, m[1]) : json({ ok: false, error: 'method' }, 405, cors);
   m = p.match(/^\/api\/reel-check\/nochmal\/([a-f0-9]{48})$/);
   if (m) return request.method === 'POST' ? nochmal(env, cors, m[1]) : json({ ok: false, error: 'method' }, 405, cors);
+  // Die Profil-Vorschau geht direkt aus dem Befund weiter (Sebi 21.11.2026: „nicht nochmal alles neu fahren“): wer den Link
+  // seines Befunds hat, bekommt Vorname und Adresse zurück, damit die Vorschau sie nicht nochmal fragt. Nur solange die Zeile lebt.
+  m = p.match(/^\/api\/reel-check\/person\/([a-f0-9]{48})$/);
+  if (m) {
+    const z = await zeile(env.DB, m[1]);
+    if (!z || !GENUTZT_STATUS.includes(z.status) || !z.email) return json({ ok: false }, 404, cors);
+    return json({ ok: true, vorname: z.vorname || '', email: z.email }, 200, { ...cors, 'Cache-Control': 'no-store' });
+  }
   m = p.match(/^\/api\/reel-check\/status\/([a-f0-9]{48})$/);
   if (m) {
     const z = await zeile(env.DB, m[1]);

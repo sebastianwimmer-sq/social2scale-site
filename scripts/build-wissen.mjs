@@ -336,7 +336,7 @@ const SPRACHEN = {
     zurueck: "Alle Antworten", zurStart: "Zur Startseite",
     cta: "Kostenlos starten", ctaHref: "/gratis/",
     abschlussH2: "Wie sähe das bei <em>dir</em> aus?",
-    abschlussP: "Erst schauen wir kurz, ob wir zusammenpassen. Dann Vorschau oder Gespräch.",
+    abschlussP: "Lad ein Reel hoch und sieh, was andere darin sehen. Oder such dir direkt einen Termin mit Phil aus.",
     weiter: "Weitere Antworten",
     ueTitel: "Wissen — ehrliche Antworten zu Social-Media-Betreuung | social2scale",
     ueBeschr: "Was kostet Social-Media-Betreuung, wie lange dauert der Aufbau, selbst machen oder abgeben? Konkrete Antworten mit echten Zahlen — ohne Verkaufsgerede.",
@@ -345,7 +345,7 @@ const SPRACHEN = {
     ueH1: "Ehrliche Antworten statt <em>Verkaufsgerede</em>.",
     ueLead: "Die Fragen, die uns im Erstgespräch am häufigsten gestellt werden, hier mit echten Zahlen beantwortet. Auch dann, wenn die Antwort lautet: Mach es selbst.",
     ueAbschlussH2: "Deine Frage ist nicht <em>dabei</em>?",
-    ueAbschlussP: "Sieh dir an, wie dein Auftritt aussehen könnte: in 60 Sekunden, kostenlos. Oder schreib uns, wir antworten persönlich.",
+    ueAbschlussP: "Lad ein Reel hoch und sieh, was andere darin sehen: kostenlos. Oder schreib uns, wir antworten persönlich.",
   },
   en: {
     lang: "en", locale: "en_US", inLanguage: "en-US", pfad: "/en/knowledge/", start: "/en/", seiten: SEITEN_EN,
@@ -353,7 +353,7 @@ const SPRACHEN = {
     zurueck: "All answers", zurStart: "Back to the homepage",
     cta: "Get started free", ctaHref: "/en/free/",
     abschlussH2: "What would this look like for <em>you</em>?",
-    abschlussP: "First we take a quick look at whether we’re a good fit. Then a preview or a call.",
+    abschlussP: "Upload a reel and see what others see in it. Or pick a call with Phil right away.",
     weiter: "More answers",
     ueTitel: "Knowledge — honest answers about social media management | social2scale",
     ueBeschr: "How much does social media management cost, how long does it take to build, do it yourself or hand it off? Concrete answers with real numbers — no sales talk.",
@@ -362,7 +362,7 @@ const SPRACHEN = {
     ueH1: "Honest answers instead of <em>sales talk</em>.",
     ueLead: "The questions we get asked most on intro calls, answered here with real numbers. Even when the answer is: do it yourself.",
     ueAbschlussH2: "Your question isn’t <em>here</em>?",
-    ueAbschlussP: "See what your presence could look like: in 60 seconds, free. Or write to us, we answer personally.",
+    ueAbschlussP: "Upload a reel and see what others see in it: free. Or write to us, we answer personally.",
   },
 };
 

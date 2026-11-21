@@ -216,6 +216,8 @@ const STIL = `
   .st-kopf .tipp{margin-top:14px;max-width:30rem}
   @keyframes pendel{0%{transform:translateX(0)}50%{transform:translateX(163%)}100%{transform:translateX(0)}}
 
+  /* kleine Handys (iPhone SE, 568 px hoch): der erste Knopf bleibt über dem Falz (besucher-sim 21.11.2026) */
+  @media (max-height:620px){.schritt{gap:12px}.schleier{padding:14px 18px;grid-template-columns:84px minmax(0,1fr)}#s-ein .klein{display:none}h1{font-size:2rem}.lead{font-size:1rem}}
   @media (prefers-reduced-motion:reduce){.schritt{animation:none}.s-licht{animation:none}.pixfeld video{transition:none}.st-kopf .streifen u{animation:none;width:100%}}
 `;
 
@@ -471,6 +473,13 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
   const T = TEXTE[lang];
   if (status === 'fertig' && befund) {
     // Der Befund kommt fertig vom Mac (seite.py maskiert jeden Satz, kein Skript). Die strenge CSP gilt auch hier.
+    // Der Knopf zur Profil-Vorschau nimmt den Befund mit: so fragt die Vorschau Vorname und Adresse nicht nochmal.
+    // Erst hier eingesetzt, damit der Token nie im abgelegten Befund steht. Ältere Befunde zeigten noch auf /gratis/.
+    if (/^[a-f0-9]{48}$/.test(token)) {
+      const mit = (pfad) => `href='https://start.social2scale.com${pfad}?von=check&amp;rc=${token}'`;
+      befund = befund.replaceAll("href='https://start.social2scale.com/en/'", mit('/en/')).replaceAll("href='https://start.social2scale.com/'", mit('/'))
+        .replaceAll("href='https://social2scale.com/en/free/'", mit('/en/')).replaceAll("href='https://social2scale.com/gratis/'", mit('/'));
+    }
     return new Response(befund, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER, 'X-Robots-Tag': 'noindex' } });
   }
   const art = status === 'wartet' ? 'wartet' : status === 'da' || status === 'in_arbeit' || status === 'fertig' ? 'prueft' : status === 'fehler' ? 'fehler' : 'weg';

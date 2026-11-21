@@ -184,6 +184,7 @@ export const TABELLE = [
   ["wort+' '+(liste.indexOf(n)+1)+' von '+liste.length", "wort+' '+(liste.indexOf(n)+1)+' of '+liste.length"],
   ["stelle(CHECK,'Frage')", "stelle(CHECK,'Question')"],
   ["stelle(WEG_A,'Vorschau · Schritt')", "stelle(WEG_A,'Preview · Step')"],
+  ["stelle(CHECK_WEG,'Profil-Vorschau · Schritt')", "stelle(CHECK_WEG,'Profile preview · Step')"],
   ["stelle(WEG_B,'Gespräch · Schritt')", "stelle(WEG_B,'Call · Step')"],
   ["word:'ruhig & natürlich'", "word:'Calm & natural'"],
   ["word:'klar & professionell'", "word:'Clear & professional'"],

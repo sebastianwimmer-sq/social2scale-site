@@ -591,6 +591,9 @@ const PAGE_SCRIPT = `
   let WEG='',VORWAHL='';
   // Drei Abschnitte; je Abschnitt eine eigene Zaehlung, die nie springt.
   const CHECK=[1,2,3,4,5,6,16,18],WEG_A=[7,8,9,10],WEG_B=[12,13,14];
+  // Wer aus dem Befund des Reel-Checks kommt (?von=check), ist schon bei uns: kein „Passt du zu uns?“, keine Zeit-Frage, kein
+  // Zwischenergebnis, Vorname und Adresse sind mitgebracht. Ein Abschnitt, eine Zählung.
+  let VON_CHECK=false;const CHECK_WEG=[2,3,4,5,6,7,8,9,10];
   function phaseZeigen(n){
     if(n===18)mbGesehen=true;
     const ph=CHECK.includes(n)?'check':n===17?'ergebnis':n===0?'':'weg';
@@ -602,7 +605,7 @@ const PAGE_SCRIPT = `
     const eb=qs[n].querySelector('.eyebrow');if(!eb)return;
     if(!eb.dataset.alt)eb.dataset.alt=eb.textContent;
     const stelle=(liste,wort)=>wort+' '+(liste.indexOf(n)+1)+' von '+liste.length;
-    eb.textContent=CHECK.includes(n)?stelle(CHECK,'Frage'):WEG_A.includes(n)?stelle(WEG_A,'Vorschau · Schritt'):WEG_B.includes(n)?stelle(WEG_B,'Gespräch · Schritt'):eb.dataset.alt;
+    eb.textContent=VON_CHECK&&CHECK_WEG.includes(n)?stelle(CHECK_WEG,'Profil-Vorschau · Schritt'):CHECK.includes(n)?stelle(CHECK,'Frage'):WEG_A.includes(n)?stelle(WEG_A,'Vorschau · Schritt'):WEG_B.includes(n)?stelle(WEG_B,'Gespräch · Schritt'):eb.dataset.alt;
   }
   const START=Date.now();
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -860,7 +863,8 @@ const PAGE_SCRIPT = `
 
   function reqOk(req){if(!req)return true;if(req==='stimmung')return !!document.querySelector('#stimmung .chip[aria-pressed=true]');if(req==='stand')return !!document.querySelector('#stand .chip[aria-pressed=true]');if(['taetigkeit','ziel','budget','start','zeit'].includes(req))return !!document.querySelector('#'+req+' .chip[aria-pressed=true]');const el=document.getElementById(req);if(!el)return true;if(req==='f-mail')return validMail(el.value);return el.value.trim().length>0;}
   document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const req=b.dataset.req;
-    const to=+b.dataset.go;
+    let to=+b.dataset.go;
+    if(VON_CHECK){if(to===16||to===17||to===18)to=step<=6?7:6;if(to<=1)to=2;}
     if(b.classList.contains('next')&&!reqOk(req)){if(req==='f-mail')react('#r-mail','Bitte gib eine gültige E-Mail-Adresse ein.','warn');else{const el=document.getElementById(req)||qs[step].querySelector('input,textarea');const feld=el&&el.closest&&el.closest('.field');if(feld){feld.style.background='linear-gradient(180deg,rgba(240,168,139,.7),rgba(240,168,139,.2))';el.focus();}else{react(req==='stimmung'?'#r-mood':'#r-'+req,'Bitte tipp eine Antwort an.','warn');}}return;}
     show(to);});
   $('#resend').addEventListener('click',()=>{const b=$('#resend');const t=b.textContent;b.textContent='Nochmal geschickt — schau ins Postfach';b.disabled=true;setTimeout(()=>{b.textContent=t;b.disabled=false;},3500);});
@@ -914,6 +918,7 @@ const PAGE_SCRIPT = `
       turnstile:turnstileToken(),
       source:'formular',
     };
+    if(VON_CHECK)payload.source+='-nach-reel-check';
     try{
       const res=await fetch('/api/free-content',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       let data=null;
@@ -976,7 +981,17 @@ const PAGE_SCRIPT = `
   if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches)addEventListener('pointermove',e=>{px=(e.clientX/innerWidth-.5)*2;py=(e.clientY/innerHeight-.5)*2;if(!geplant){geplant=true;requestAnimationFrame(kippen);}});
   // ?weg=a|b (z. B. /anfrage/ → ?weg=b): der Check bleibt, die Wahl ist danach vorgemerkt.
   const vorgewaehlt=new URLSearchParams(location.search).get('weg');
-  if(['a','b'].includes(vorgewaehlt)){VORWAHL=vorgewaehlt;WEG=vorgewaehlt;zaehlen(0);show(1);}
+  const sp=new URLSearchParams(location.search),rc=sp.get('rc')||'';
+  if(sp.get('von')==='check'&&/^[a-f0-9]{48}$/.test(rc)){
+    // Erst die Person holen, dann zeigen: scheitert der Abruf (Befund gelöscht, Netz), läuft der normale Weg.
+    fetch('/api/reel-check/person/'+rc).then(r=>r.ok?r.json():null).then(d=>{
+      if(!d||!d.ok){show(0);return;}
+      VON_CHECK=true;VORWAHL='a';WEG='a';$('#phasen').style.visibility='hidden';
+      if(d.vorname){$('#f-name').value=d.vorname;$('#f-name').dispatchEvent(new Event('input',{bubbles:true}));}
+      $('#f-mail').value=d.email;zaehlen(0);zaehlen('a');show(d.vorname?2:1);
+    }).catch(()=>show(0));
+  }
+  else if(['a','b'].includes(vorgewaehlt)){VORWAHL=vorgewaehlt;WEG=vorgewaehlt;zaehlen(0);show(1);}
   else if(vorgewaehlt==='c'){zaehlen(0);show(1);}else show(0);
 `;
 

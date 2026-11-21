@@ -125,6 +125,10 @@ test('ganzer Weg: hochladen → der Mac darf sofort prüfen, ohne Mail-Klick →
     assert.equal((await stand(w.env, token)).status, 'da');
     w.s.exec("UPDATE reel_check SET status='fertig'");
     assert.equal((await stand(w.env, token)).status, 'in_arbeit', 'fertig ohne Befund-Datei zeigt nie eine leere Seite');
+    // Die Profil-Vorschau übernimmt Vorname und Adresse aus dem Befund: nur mit dem echten Link, nie für Fremde
+    const pers = await (await ruf(w.env, `/api/reel-check/person/${token}`, 'GET')).json();
+    assert.deepEqual(pers, { ok: true, vorname: '', email: 'lead@example.org' });
+    assert.equal((await ruf(w.env, `/api/reel-check/person/${'b'.repeat(48)}`, 'GET')).status, 404);
     await w.env.IMAGES.put(`reelcheck/${token}/befund.html`, '<!doctype html><title>Befund</title>');
     const st = await stand(w.env, token); assert.equal(st.status, 'fertig'); assert.match(st.befund, /Befund/);
   } finally { w.ende(); }
@@ -279,6 +283,10 @@ test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt,
   assert.equal(schluessel(TEXTE.de.js.fehler), schluessel(TEXTE.en.js.fehler)); assert.equal(schluessel(TEXTE.de.stand), schluessel(TEXTE.en.stand));
   const r = reelCheckStandSeite({ status: 'fertig', befund: '<!doctype html><p>Befund</p>' });
   assert.match(r.headers.get('Content-Security-Policy'), /frame-ancestors 'none'/); assert.equal(await r.text(), '<!doctype html><p>Befund</p>');
+  const tok = 'c'.repeat(48);
+  const mitLink = await reelCheckStandSeite({ status: 'fertig', token: tok, befund: "<a href='https://start.social2scale.com/'>V</a><a href='https://start.social2scale.com/en/'>E</a><a href='https://social2scale.com/gratis/'>alt</a>" }).text();
+  assert.equal(mitLink.split(`?von=check&amp;rc=${tok}'`).length - 1, 3, 'der Weg zur Profil-Vorschau nimmt den Befund mit, auch aus älteren Befunden');
+  assert.ok(mitLink.includes(`start.social2scale.com/en/?von=check&amp;rc=${tok}`));
   assert.match(await reelCheckStandSeite({ status: 'geloescht', sprache: 'en' }).text(), /This report is/);
   assert.doesNotMatch(await reelCheckStandSeite({ status: 'da', token: '"><script>' }).text(), /"><script>/);
 });

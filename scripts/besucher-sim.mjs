@@ -509,10 +509,19 @@ const PERSONAS = [
       await besuche(p, w.id, '/links/', { handy: true, einstieg: true });
       const ziel = await klickeVorschau(p);
       if (!ziel) return befund(w.id, '/links/', 'rot', 'Kein Vorschau-Knopf auf der Bio-Link-Seite');
-      if (FUNNEL !== 'https://start.social2scale.com/') { await p.goto(FUNNEL, { waitUntil: 'load' }); await ruhe(p); }
-      const f = await funnel(p, w.id);
-      pruefeZaehler(p, w.id, ['/links/', '/links/klick/gratis/', '/gratis/', '/vorschau/'], f);
-      WEGE.push({ persona: w.id, klicks: 1, ...f });
+      // Seit dem 21.11.2026 führt „Kostenlos starten“ in den Reel-Check (Sebi: wer aktiv etwas gratis will, bekommt zuerst den Check).
+      // Sie landet auf dem Einstieg, der erste Knopf liegt über dem Falz, ein Tipp bringt sie zum einen Schirm mit den Fragen.
+      // /gratis/ ist eine Brücke: erst zählen, dann weiterleiten. Auf die Ankunft im Check warten.
+      await p.waitForURL(/\/reel-check\/?$/, { timeout: 15000 }).catch(() => {}); await ruhe(p);
+      if (!/\/reel-check\/?$/.test(new URL(p.url()).pathname)) return befund(w.id, '/gratis/', 'rot', 'Kostenlos starten führt nicht in den Reel-Check', p.url());
+      const los = p.locator('#los');
+      const oben = await los.evaluate((e) => { const r = e.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }).catch(() => false);
+      if (!oben) befund(w.id, 'Reel-Check', 'rot', 'Der erste Knopf im Reel-Check liegt nicht über dem Falz');
+      await los.click({ timeout: 5000 }).catch(() => {});
+      const amZiel = await p.locator('#email').isVisible().catch(() => false);
+      if (!amZiel) befund(w.id, 'Reel-Check', 'rot', 'Nach „Zeig es mir“ erscheint der Schirm mit den Fragen nicht');
+      pruefeZaehler(p, w.id, ['/links/', '/links/klick/gratis/', '/gratis/'], { amZiel: false });
+      WEGE.push({ persona: w.id, klicks: 1, schritte: 1, amZiel });
     } },
   { id: 'funnel-mini', wer: 'Funnel direkt · iPhone 12 mini (WebKit)', engine: 'webkit', geraet: devices['iPhone 12 Mini'],
     async lauf(p, w) {
