@@ -1,9 +1,10 @@
 /**
  * Reel-Check: Annahme-Seite (/reel-check/ und /en/reel-check/) und Stand-Seite (/rc/<token>).
  *
- * Welt: der Prüfstand. Das Reel steht als Gerät im Licht des Studios (dieselbe Szene wie der Funnel), daneben
- * der Annahmezettel mit drei Fragen. Kontrolllampen und Messstreifen sind dieselben wie im Befund
- * (kit-build/reel-check/seite.py): wer hochlädt, erkennt die Seite wieder, auf der sein Ergebnis steht.
+ * Strecke (Sebi 21.11.2026): Einstieg (der Befund liegt verhüllt da) → EIN Schirm mit Fragen (Video, Plattform, Vorname,
+ * Adresse, Haken) → Ladescreen (ihr eigenes Bild wird mit dem Fortschritt scharf, darauf nur die Zahl; sie hält bei 96,
+ * bis der Server das Video bestätigt hat) → Quittung. Auf der Stand-Seite laufen beim Prüfen Hinweise durch.
+ * Zielgruppe, „spricht selbst“ und Lage fragt die Seite nicht mehr, der Check erkennt Sprache selbst.
  * Eine Vorlage für beide Sprachen: Gestaltung 1:1, Texte je Sprache eigen geschrieben (TEXTE).
  */
 
@@ -19,21 +20,22 @@ export const TEXTE = {
     titel: 'Reel-Check · social2scale',
     beschreibung: 'Lad ein Reel hoch und bekomm den Befund per Mail: 50 Prüfpunkte, eine Zahl von 0 bis 100. Kostenlos.',
     marke: 'social2scale · Reel-Check',
-    h1: 'Dein Reel auf dem <em>Prüfstand</em>',
-    lead: 'Lad ein Reel hoch. Wir prüfen es an 50 Punkten und schicken dir den Befund per Mail: eine Zahl von 0 bis 100 und die drei Stellen, an denen du anfängst. Kostenlos.',
-    waehlen: 'Reel auswählen', ziehen: 'oder hierher ziehen', format: `MP4 oder MOV, bis ${MAX_MB} MB`, anderes: 'Anderes Reel wählen',
-    liegt: 'Liegt auf dem Prüfstand', ohneBild: 'Dein Browser zeigt dieses Video nicht an. Ausgewählt ist es trotzdem.',
-    zettel: 'Drei Fragen, dann geht es los',
-    f1: 'Wen willst du erreichen?', f1h: 'In deinen Worten. Zum Beispiel: Frauen ab 40, die wieder mit Sport anfangen.',
-    f2: 'Sprichst du im Reel selbst?', f2a: 'Ja, ich spreche', f2b: 'Nein, Musik oder Text',
-    f3: 'Wo stehst du gerade?', f3a: 'Ich poste schon und will besser werden', f3b: 'Ich fange gerade an', f3c: 'Mir fehlt die Zeit dafür',
+    h1: 'Was sehen andere in deinem <em>Reel?</em>',
+    lead: 'Lad eins hoch und finde es heraus. Kostenlos, der Befund kommt per Mail.',
+    wo: 'Reel oder Kurzvideo. Von Instagram, TikTok, Facebook, LinkedIn oder YouTube.',
+    los: 'Zeig es mir', termin: 'Termin mit Phil wählen', terminUrl: 'https://calendly.com/philipplibowicz/neues-meeting',
+    waehlen: 'Video auswählen', ziehen: 'oder hierher ziehen', format: `MP4 oder MOV, bis ${MAX_MB} MB`, anderes: 'Anderes Video wählen',
+    liegt: 'Ausgewählt', ohneBild: 'Dein Browser zeigt dieses Video nicht an. Ausgewählt ist es trotzdem.',
+    zettel: 'Welches Reel sollen wir uns <em>ansehen?</em>',
+    f1: 'Wo postest du es?', vorname: 'Dein Vorname', vornameh: 'Damit wir dich im Befund ansprechen können.',
     mail: 'Wohin soll der Befund?', mailh: 'Deine E-Mail-Adresse',
     haken: `Ich bin einverstanden, dass social2scale mein Reel prüft, dabei die gesprochenen Worte und den Text im Bild von einer KI (Claude von Anthropic) auswerten lässt und mir den Befund per E-Mail schickt. Das Reel ist mein eigenes. Video und Befund werden nach ${LOESCH_FRIST_TAGE} Tagen gelöscht. Was wir daraus über Reels lernen, behalten wir ohne meinen Namen.`,
     mehr: 'Mehr dazu in der', ds: 'Datenschutzerklärung', dsFuss: 'Datenschutz', dsUrl: 'https://social2scale.com/datenschutz/#reel-check',
     senden: 'Reel prüfen lassen',
     impressum: 'Impressum', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
-      kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis der Streifen voll ist.', weiter: 'Weiter hochladen',
+      kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis die Zahl bei 100 steht.', gleich96: 'Gleich da, wir legen dein Reel ab.', weiter: 'Weiter hochladen',
+      tipps: [['Die ersten drei Sekunden entscheiden.', 'Instagram misst, wie viele in den ersten 3 Sekunden weiterwischen.'], ['Text gehört in die Mitte.', 'Oben und unten liegen Knöpfe und Bildunterschrift darüber.'], ['Viele schauen ohne Ton.', 'Untertitel tragen deinen Satz auch dann.'], ['Ein Gedanke je Reel.', 'Unsere Arbeitsregel aus der täglichen Arbeit an Reels.']],
       da: 'Angekommen.', post: 'Schau in dein Postfach und bestätige deine Adresse. Danach prüfen wir dein Reel und schicken dir den Befund.',
       spam: 'Nichts angekommen? Sieh im Spam-Ordner nach oder lass dir die Mail nochmal schicken.', nochmal: 'Mail nochmal schicken', raus: 'Die Mail ist nochmal raus.',
       gleich: 'Die letzte Mail ist erst ein paar Minuten alt. Warte kurz und versuch es dann nochmal.',
@@ -43,7 +45,8 @@ export const TEXTE = {
         video_gross: `Das Video ist größer als ${MAX_MB} MB. Exportier es in 1080p, dann passt es.`,
         video_klein: 'Die Datei ist zu klein für ein Reel. Wähl das fertige Video aus.',
         email: 'Bitte prüf deine E-Mail-Adresse.', email_domain: 'An diese Adresse können wir nichts schicken. Bitte prüf sie.', disposable: 'Bitte nimm eine Adresse, die du dauerhaft nutzt.',
-        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.',
+        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.', plattform: 'Bitte wähl aus, wo du postest.',
+        schon: 'Deinen kostenlosen Check hast du schon genutzt. Jeden weiteren Beitrag sehen wir uns in der Betreuung an, such dir dafür oben einen Termin mit Phil aus.',
         einwilligung: 'Ohne dein Einverständnis dürfen wir das Reel nicht prüfen. Setz den Haken, wenn du einverstanden bist.',
         captcha: 'Die Sicherheitsprüfung läuft noch oder hat nicht geklappt. Warte einen Moment und tipp nochmal.',
         rate_limited: 'Das waren viele Versuche. Bitte versuch es in einer Stunde nochmal.',
@@ -55,9 +58,10 @@ export const TEXTE = {
     },
     stand: {
       wartet: ['Bestätige deine <em>Adresse</em>', 'Wir haben dir eine Mail geschickt. Ein Klick darin, dann prüfen wir dein Reel.'],
-      prueft: ['Wir prüfen dein <em>Reel</em>', 'Der Befund kommt per Mail, sobald er fertig ist. Du kannst diese Seite schließen.'],
+      prueft: ['Wir sehen uns dein <em>Reel</em> an', 'Der Befund kommt per Mail, sobald er fertig ist. Du kannst diese Seite schließen oder hier warten.'],
+      tun: ['Wir sehen uns dein Bild an', 'Wir hören deinen Ton ab', 'Wir lesen deinen Text im Bild', 'Wir gehen deinen Einstieg durch', 'Wir schreiben deine Vorschläge'],
       fehler: ['Das hat nicht <em>geklappt</em>', 'Wir konnten dieses Reel nicht prüfen. Lad es bitte nochmal hoch.'],
-      weg: ['Diesen Befund gibt es <em>nicht mehr</em>', `Befunde löschen wir nach ${LOESCH_FRIST_TAGE} Tagen. Du kannst jederzeit ein neues Reel prüfen lassen.`],
+      weg: ['Diesen Befund gibt es <em>nicht mehr</em>', `Befunde löschen wir nach ${LOESCH_FRIST_TAGE} Tagen.`],
       neu: 'Reel hochladen',
     },
   },
@@ -66,21 +70,22 @@ export const TEXTE = {
     titel: 'Reel Check · social2scale',
     beschreibung: 'Upload a reel and get the report by email: 50 checkpoints, one score from 0 to 100. Free.',
     marke: 'social2scale · Reel Check',
-    h1: 'Put your reel on the <em>test bench</em>',
-    lead: 'Upload a reel. We check it against 50 points and email you the report: one score from 0 to 100 and the three things to fix first. Free.',
-    waehlen: 'Choose a reel', ziehen: 'or drop it here', format: `MP4 or MOV, up to ${MAX_MB} MB`, anderes: 'Choose a different reel',
-    liegt: 'On the test bench', ohneBild: 'Your browser can’t show this video. It’s still selected.',
-    zettel: 'Three questions and you’re set',
-    f1: 'Who do you want to reach?', f1h: 'In your own words. For example: women over 40 getting back into exercise.',
-    f2: 'Do you speak in the reel yourself?', f2a: 'Yes, I’m talking', f2b: 'No, music or text',
-    f3: 'Where are you right now?', f3a: 'I post already and want to get better', f3b: 'I’m just starting out', f3c: 'I don’t have the time for it',
+    h1: 'What do others see in your <em>reel?</em>',
+    lead: 'Upload one and find out. Free, the report arrives by email.',
+    wo: 'A reel or short video. From Instagram, TikTok, Facebook, LinkedIn or YouTube.',
+    los: 'Show me', termin: 'Pick a call with Phil', terminUrl: 'https://calendly.com/philipplibowicz/neues-meeting',
+    waehlen: 'Choose a video', ziehen: 'or drop it here', format: `MP4 or MOV, up to ${MAX_MB} MB`, anderes: 'Choose a different video',
+    liegt: 'Selected', ohneBild: 'Your browser can’t show this video. It’s still selected.',
+    zettel: 'Which reel should we <em>look at?</em>',
+    f1: 'Where do you post it?', vorname: 'Your first name', vornameh: 'So we can address you in the report.',
     mail: 'Where should the report go?', mailh: 'Your email address',
     haken: `I agree that social2scale checks my reel, has an AI (Claude by Anthropic) evaluate the spoken words and on-screen text, and emails me the report. The reel is my own. Video and report are deleted after ${LOESCH_FRIST_TAGE} days. What we learn about reels from it, we keep without my name.`,
     mehr: 'More in our', ds: 'privacy policy', dsFuss: 'Privacy', dsUrl: 'https://social2scale.com/en/privacy/#reel-check',
     senden: 'Check my reel',
     impressum: 'Legal notice', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
-      kommt: 'Your reel is on its way', offen: 'Keep this page open until the strip is full.', weiter: 'Continue upload',
+      kommt: 'Your reel is on its way', offen: 'Keep this page open until the number reaches 100.', gleich96: 'Almost there, we’re storing your reel.', weiter: 'Continue upload',
+      tipps: [['The first three seconds decide.', 'Instagram measures how many swipe away within the first 3 seconds.'], ['Text belongs in the middle.', 'Buttons and the caption sit on top at the top and bottom.'], ['Many watch without sound.', 'Captions carry your sentence even then.'], ['One idea per reel.', 'Our working rule from making reels every day.']],
       da: 'Got it.', post: 'Check your inbox and confirm your address. Then we check your reel and send you the report.',
       spam: 'Nothing there? Look in your spam folder or have the email sent again.', nochmal: 'Send the email again', raus: 'The email is on its way again.',
       gleich: 'The last email is only a few minutes old. Give it a moment, then try again.',
@@ -90,7 +95,8 @@ export const TEXTE = {
         video_gross: `The video is larger than ${MAX_MB} MB. Export it in 1080p and it will fit.`,
         video_klein: 'The file is too small to be a reel. Choose the finished video.',
         email: 'Please check your email address.', email_domain: 'We can’t send anything to this address. Please check it.', disposable: 'Please use an address you keep.',
-        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.',
+        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.', plattform: 'Please choose where you post.',
+        schon: 'You’ve already used your free check. We look at every further post as part of our service, pick a call with Phil at the top for that.',
         einwilligung: 'We can’t check the reel without your consent. Tick the box if you agree.',
         captcha: 'The security check is still running or didn’t work. Wait a moment and tap again.',
         rate_limited: 'That was a lot of attempts. Please try again in an hour.',
@@ -102,9 +108,10 @@ export const TEXTE = {
     },
     stand: {
       wartet: ['Confirm your <em>address</em>', 'We’ve sent you an email. One click in it and we check your reel.'],
-      prueft: ['We’re checking your <em>reel</em>', 'The report arrives by email as soon as it’s done. You can close this page.'],
+      prueft: ['We’re looking at your <em>reel</em>', 'The report arrives by email as soon as it’s done. You can close this page or wait here.'],
+      tun: ['We’re looking at your picture', 'We’re listening to your sound', 'We’re reading your on-screen text', 'We’re going through your opening', 'We’re writing your suggestions'],
       fehler: ['That didn’t <em>work</em>', 'We couldn’t check this reel. Please upload it again.'],
-      weg: ['This report is <em>gone</em>', `We delete reports after ${LOESCH_FRIST_TAGE} days. You can have a new reel checked any time.`],
+      weg: ['This report is <em>gone</em>', `We delete reports after ${LOESCH_FRIST_TAGE} days.`],
       neu: 'Upload a reel',
     },
   },
@@ -118,36 +125,47 @@ const STIL = `
   .wm-logo{height:26px;width:auto;display:block}
   .sprache{color:var(--muted);font-size:15px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 4px}
   .sprache:hover{color:var(--ink)}
-  .buehne{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);grid-template-areas:"kopf stand" "zettel stand";
-    column-gap:clamp(28px,6vw,88px);row-gap:clamp(22px,3vw,36px);margin-top:clamp(18px,4vw,52px);align-items:start}
-  .kopf{grid-area:kopf}.standort{grid-area:stand;position:sticky;top:28px}.zettel{grid-area:zettel}
-  .marke{color:var(--emerald-soft);font-weight:600;font-size:15px;margin-bottom:16px}
-  h1{font-family:var(--ff-serif);font-weight:450;font-size:clamp(2.2rem,1.3rem + 3.4vw,3.9rem);line-height:1.03;letter-spacing:-.022em;text-wrap:balance;margin-bottom:16px}
-  h1 em,.st-kopf em{font-style:italic;background:linear-gradient(135deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-soft)}
+  .weg{max-width:34rem;margin:clamp(18px,4vw,48px) auto 0}
+  .schritt{display:grid;gap:20px;animation:rein .5s var(--e-out) both}
+  .schritt[hidden]{display:none}
+  @keyframes rein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .marke{color:var(--emerald-soft);font-weight:600;font-size:15px}
+  h1,.schritt h2{font-family:var(--ff-serif);font-weight:450;line-height:1.05;letter-spacing:-.022em;text-wrap:balance}
+  h1{font-size:clamp(2.2rem,1.4rem + 3.4vw,3.6rem)}
+  .schritt h2{font-size:clamp(1.7rem,1.3rem + 1.8vw,2.3rem)}
+  h1 em,.schritt h2 em,.st-kopf em{font-style:italic;background:linear-gradient(135deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-soft)}
   .lead{color:#B4B9B6;font-size:1.12rem;max-width:44ch}
-
-  /* ── Prüfstand: das Gerät im Licht, links die Messleiste ── */
-  .stand-rahmen{position:relative;display:grid;grid-template-columns:18px minmax(0,1fr);gap:12px;perspective:1100px}
-  .leiste-mess{position:relative;border-right:1px solid rgba(242,243,241,.26);
-    background:repeating-linear-gradient(180deg,rgba(242,243,241,.30) 0 1px,transparent 1px 5%) right/9px 100% no-repeat,
-      repeating-linear-gradient(180deg,rgba(242,243,241,.34) 0 1px,transparent 1px 25%) right/18px 100% no-repeat}
-  .leiste-mess i{position:absolute;inset:0;background:
-      repeating-linear-gradient(180deg,#1FC998 0 1px,transparent 1px 5%) right/9px 100% no-repeat,
-      repeating-linear-gradient(180deg,#46BEEA 0 1px,transparent 1px 25%) right/18px 100% no-repeat;
-    filter:drop-shadow(0 0 5px rgba(31,201,152,.9));clip-path:inset(0 0 100% 0)}
-  .liegt .leiste-mess i{clip-path:inset(0 0 0 0);transition:clip-path 1.3s var(--e-out)}
-  .geraet{position:relative;aspect-ratio:9/16;border-radius:30px;overflow:hidden;cursor:pointer;display:block;
-    background:linear-gradient(160deg,#101D21,#070D10 60%);transform:rotateX(var(--kx,0deg)) rotateY(var(--ky,0deg));transition:transform .5s var(--e-out);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.22),0 1px 1px rgba(0,0,0,.5),0 12px 22px -8px rgba(0,0,0,.6),0 50px 80px -30px rgba(0,0,0,.9),0 0 90px -30px rgba(31,201,152,.35)}
-  .geraet::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;border-radius:inherit;
-    background:radial-gradient(70% 45% at var(--gx,30%) var(--gy,0%),rgba(255,255,255,.16),transparent 70%)}
+  /* Einstieg: der Befund liegt verhüllt da */
+  .schleier{position:relative;border-radius:20px;padding:26px 24px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:22px;align-items:center;overflow:hidden;
+    background:linear-gradient(180deg,rgba(16,27,32,.92),rgba(10,18,22,.92));box-shadow:inset 0 0 0 1px var(--hair),inset 0 1px 0 rgba(255,255,255,.07),0 40px 80px -40px #000}
+  .s-uhr{position:relative;filter:blur(5px);opacity:.8}.s-uhr svg{display:block;width:100%}
+  .s-uhr b{position:absolute;left:0;right:0;bottom:-4px;text-align:center;font:450 2.4rem/1 var(--ff-serif)}
+  .s-zeilen{display:grid;gap:12px;filter:blur(4px)}.s-zeilen i{display:block;height:12px;border-radius:6px;background:rgba(242,243,241,.22)}
+  .s-licht{position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 65%);transform:translateX(-100%);animation:streif 5.5s var(--e-out) 1.2s infinite}
+  @keyframes streif{0%{transform:translateX(-100%)}45%,100%{transform:translateX(100%)}}
+  .zwei{display:grid;gap:10px}
+  /* das gewählte Video */
+  .geraet{position:relative;min-height:150px;border-radius:20px;overflow:hidden;cursor:pointer;display:block;background:linear-gradient(160deg,#101D21,#070D10 60%);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.22),0 30px 60px -30px rgba(0,0,0,.9)}
   .geraet:focus-within{outline:2px solid var(--emerald-soft);outline-offset:4px}
   .geraet input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:4}
   .geraet video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s var(--e-out)}
-  .liegt .geraet video.zeigt{opacity:1}
-  .leer,.voll{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:22px;text-align:center}
-  .leer::before{content:"";position:absolute;inset:14px;border-radius:20px;border:1px dashed rgba(242,243,241,.24)}
+  .liegt .geraet video.zeigt{opacity:.55}
+  .leer,.voll{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px;text-align:center}
+  .leer::before{content:"";position:absolute;inset:12px;border-radius:14px;border:1px dashed rgba(242,243,241,.24)}
   .ziehen .leer::before{border-color:var(--emerald-soft);background:rgba(31,201,152,.08)}
+  .voll{opacity:0;pointer-events:none;background:rgba(3,8,13,.45)}
+  .liegt .voll{opacity:1;transition:opacity .4s .2s}.liegt .leer{opacity:0;transition:opacity .3s}
+  .voll b{font-family:var(--ff-serif);font-weight:450;font-size:1.3rem}.voll .klein{color:#DDE1DE}
+  .voll u{text-decoration:underline;text-underline-offset:3px;color:var(--ink);font-size:15px}
+  /* Ladescreen: ihr Bild wird scharf, darauf nur die Zahl */
+  .pixfeld{position:relative;width:min(210px,56vw);margin:0 auto;border-radius:18px;overflow:hidden;aspect-ratio:9/16;background:linear-gradient(160deg,#17262B,#0A1215);
+    box-shadow:0 1px 1px #000,0 24px 48px -14px rgba(0,0,0,.8),0 0 80px -10px rgba(31,201,152,.25)}
+  .pixfeld video{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:filter .6s linear}
+  .proz{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:450 3.4rem/1 var(--ff-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-shadow:0 2px 18px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.9)}
+  .mitte{text-align:center}
+  .tipp{border-radius:16px;padding:16px 18px;display:grid;gap:4px;background:rgba(16,27,32,.8);box-shadow:inset 0 0 0 1px var(--hair)}
+  .tipp b{font-family:var(--ff-serif);font-weight:450;font-size:1.2rem;line-height:1.2}
   .knopf{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 24px;border-radius:12px;border:0;cursor:pointer;
     font:600 17px var(--ff-body);color:#04201A;background:linear-gradient(135deg,#1FC998,#46BEEA);box-shadow:0 14px 30px -14px rgba(31,201,152,.8);transition:transform var(--dur-2) var(--e-out)}
   .knopf:hover{transform:translateY(-2px)}
@@ -157,20 +175,8 @@ const STIL = `
   .liegt .voll{opacity:1;transition:opacity .5s .5s}.liegt .leer{opacity:0;transition:opacity .3s}
   .voll b{font-family:var(--ff-serif);font-weight:450;font-size:1.3rem}.voll .klein{color:#DDE1DE}
   .voll u{text-decoration:underline;text-underline-offset:3px;color:var(--ink);font-size:15px}
-  .lampe{width:11px;height:11px;border-radius:50%;flex:none;background:rgba(242,243,241,.28)}
-  .voll .lampe{background:#1FC998;box-shadow:0 0 10px #1FC998}
-  .voll p{display:flex;align-items:center;gap:9px}
-  /* der eine Moment: beim Auflegen fährt einmal das Messlicht über das Reel */
-  .licht{position:absolute;left:0;right:0;top:0;height:26%;z-index:3;pointer-events:none;opacity:0;
-    background:linear-gradient(180deg,transparent,rgba(31,201,152,.26) 70%,rgba(70,190,234,.75) 98%,transparent)}
-  .liegt .licht{animation:fahrt 1.3s var(--e-out) both}
-  @keyframes fahrt{0%{opacity:0;transform:translateY(-100%)}15%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translateY(385%)}}
-  .standort .boden-schein{height:26px;margin:14px 30px 0;border-radius:50%;background:radial-gradient(50% 100% at 50% 0%,rgba(31,201,152,.34),transparent 72%);filter:blur(2px)}
-
-  /* ── Annahmezettel ── */
-  .zettel{border-radius:20px;padding:clamp(20px,3vw,32px);background:linear-gradient(180deg,rgba(16,27,32,.92),rgba(10,18,22,.92));
-    box-shadow:inset 0 0 0 1px var(--hair),inset 0 1px 0 rgba(255,255,255,.07),0 40px 80px -40px #000}
-  .zettel h2{font-family:var(--ff-serif);font-weight:450;font-size:1.5rem;line-height:1.15;margin-bottom:22px}
+  /* ── der eine Schirm mit Fragen ── */
+  .zettel{display:grid;gap:0}
   fieldset{border:0;min-width:0}
   .frage{margin-bottom:26px}
   .frage > label,legend{display:block;font-weight:600;font-size:17px;margin-bottom:8px;padding:0}
@@ -183,7 +189,11 @@ const STIL = `
   .zeile:hover{border-color:rgba(242,243,241,.3)}
   .zeile input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
   .zeile:has(input:checked){border-color:rgba(31,201,152,.7);background:rgba(31,201,152,.09)}
-  .zeile:has(input:checked) .lampe{background:#1FC998;box-shadow:0 0 10px #1FC998}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips .zeile{min-height:46px;padding:8px 16px;border-radius:999px}
+  .knopf.leer-k,a.knopf.leer-k{text-decoration:none}
+  .knopf[disabled]{opacity:.6;cursor:default}
+  .knopf[hidden],.melde[hidden]{display:none}
   .haken{display:grid;grid-template-columns:26px minmax(0,1fr);gap:13px;align-items:start;margin:4px 0 20px;color:#B4B9B6;font-size:15.5px;line-height:1.5}
   .haken input{width:26px;height:26px;margin:0;accent-color:#1FC998;cursor:pointer}
   .haken label{cursor:pointer}
@@ -193,33 +203,21 @@ const STIL = `
   .zettel .knopf{width:100%}
   .melde{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(240,121,107,.10);box-shadow:inset 0 0 0 1px rgba(240,121,107,.45);color:#FFD9D3;font-size:16px}
   .melde.gut{background:rgba(31,201,152,.10);box-shadow:inset 0 0 0 1px rgba(31,201,152,.45);color:#D6FFF2}
-  /* Messstreifen wie im Befund */
+  .lauf p,.quittung p{color:#B4B9B6;max-width:46ch}
   .streifen{position:relative;height:22px;margin:18px 0 10px;border-right:1px solid rgba(242,243,241,.28);background:repeating-linear-gradient(90deg,rgba(242,243,241,.28) 0 1px,transparent 1px 10%)}
-  .streifen::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(242,243,241,.14)}
-  .streifen u{position:absolute;left:0;top:50%;height:6px;margin-top:-3px;width:100%;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#1FC998,#46BEEA);box-shadow:0 0 14px rgba(31,201,152,.6);
-    transform-origin:0 50%;transform:scaleX(var(--w,0));transition:transform .4s linear}
-  .lauf-zahl{font-family:var(--ff-serif);font-size:2.6rem;line-height:1;font-variant-numeric:tabular-nums}
-  .lauf h2,.quittung h2{margin-bottom:10px}
-  .quittung p,.lauf p{color:#B4B9B6;margin-bottom:14px;max-width:46ch}
+  .streifen u{position:absolute;left:0;top:50%;height:6px;margin-top:-3px;border-radius:0 6px 6px 0;background:linear-gradient(90deg,#1FC998,#46BEEA)}
   .knopf.leer-k{background:none;color:var(--ink);box-shadow:inset 0 0 0 1px rgba(242,243,241,.32)}
   .fuss{margin-top:56px;color:var(--faint);font-size:15px;display:flex;gap:18px;flex-wrap:wrap}
   .fuss a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted)}
   /* Stand-Seite */
   .st-kopf{max-width:36rem;margin-top:clamp(40px,10vh,120px)}
-  .st-kopf h1{font-size:clamp(2rem,1.3rem + 2.6vw,3.2rem)}
+  .st-kopf h1{font-size:clamp(2rem,1.3rem + 2.6vw,3.2rem);margin:14px 0 16px}
   .st-kopf p{color:#B4B9B6;font-size:1.12rem;margin-bottom:26px;max-width:44ch}
-  .st-kopf .streifen u{transform:none;width:38%;animation:pendel 2.2s var(--e-out) 3 both}
+  .st-kopf .streifen u{width:38%;animation:pendel 2.2s var(--e-out) 3 both}
+  .st-kopf .tipp{margin-top:14px;max-width:30rem}
   @keyframes pendel{0%{transform:translateX(0)}50%{transform:translateX(163%)}100%{transform:translateX(0)}}
 
-  @media (max-width:820px){
-    .buehne{grid-template-columns:minmax(0,1fr);grid-template-areas:"kopf" "stand" "zettel"}
-    .standort{position:static;max-width:300px;width:100%;margin:0 auto}
-    .geraet{aspect-ratio:auto;height:clamp(210px,36vh,300px)}
-    .liegt .geraet{height:clamp(300px,52vh,420px)}
-    .lead{font-size:1.05rem}
-    .standort .boden-schein{display:none}
-  }
-  @media (prefers-reduced-motion:reduce){.geraet{transform:none}.liegt .licht{animation:none;opacity:0}.st-kopf .streifen u{animation:none;width:100%}}
+  @media (prefers-reduced-motion:reduce){.schritt{animation:none}.s-licht{animation:none}.pixfeld video{transition:none}.st-kopf .streifen u{animation:none;width:100%}}
 `;
 
 const esc = (s) => String(s).replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
@@ -230,42 +228,47 @@ function kopfleiste(T) {
 }
 
 function markup(T, siteKey) {
+  const chip = (wert, name, an) => `<label class="zeile"><input type="radio" name="plattform" value="${wert}"${an ? ' checked' : ''}><span>${name}</span></label>`;
   return `<div class="rc">${kopfleiste(T)}
-  <main class="buehne" id="buehne">
-    <div class="kopf"><p class="marke">${T.marke}</p><h1>${T.h1}</h1><p class="lead">${T.lead}</p></div>
-    <div class="standort" id="standort">
-      <div class="stand-rahmen">
-        <div class="leiste-mess" aria-hidden="true"><i></i></div>
-        <label class="geraet" id="geraet">
+  <main class="weg" id="weg" data-sitekey="${esc(siteKey)}">
+    <section class="schritt" id="s-ein">
+      <p class="marke">${T.marke}</p><h1>${T.h1}</h1><p class="lead">${T.lead}</p>
+      <div class="schleier" aria-hidden="true"><div class="s-uhr"><svg viewBox="0 0 200 112"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#1FC998"/><stop offset="1" stop-color="#46BEEA"/></linearGradient></defs><path d="M16 100A84 84 0 0 1 184 100" fill="none" stroke="url(#sg)" stroke-width="14" stroke-linecap="round"/></svg><b>?</b></div><div class="s-zeilen"><i style="width:82%"></i><i style="width:64%"></i><i style="width:91%"></i></div><div class="s-licht"></div></div>
+      <p class="klein">${T.wo}</p>
+      <div class="zwei"><button class="knopf" id="los" type="button">${T.los}</button><a class="knopf leer-k" href="${T.terminUrl}" target="_blank" rel="noopener">${T.termin}</a></div>
+    </section>
+    <section class="schritt" id="s-form" hidden aria-live="polite">
+      <form id="form" class="zettel" novalidate>
+        <h2 id="form-kopf" tabindex="-1" style="margin-bottom:20px">${T.zettel}</h2>
+        <div class="frage" id="standort"><label class="geraet" id="geraet">
           <input type="file" id="datei" accept="video/mp4,video/quicktime,.mp4,.mov" aria-label="${T.waehlen}">
           <video id="vorschau" muted playsinline loop aria-hidden="true"></video>
-          <span class="licht" aria-hidden="true"></span>
-          <span class="leer"><span class="knopf" aria-hidden="true">${T.waehlen}</span><span class="klein">${T.format}<span class="nur-maus"><br>${T.ziehen}</span></span></span>
-          <span class="voll"><p><span class="lampe" aria-hidden="true"></span><b>${T.liegt}</b></p><span class="klein" id="masse"></span><u>${T.anderes}</u></span>
-        </label>
-      </div>
-      <div class="boden-schein" aria-hidden="true"></div>
-    </div>
-    <section class="zettel" id="zettel" aria-live="polite">
-      <form id="form" novalidate>
-        <h2>${T.zettel}</h2>
-        <div class="frage"><label for="zielgruppe">${T.f1}</label><p class="hilfe" id="f1h">${T.f1h}</p>
-          <input class="feld" id="zielgruppe" name="zielgruppe" type="text" maxlength="200" autocomplete="off" aria-describedby="f1h"></div>
-        <fieldset class="frage"><legend>${T.f2}</legend><div class="wahl">
-          <label class="zeile"><input type="radio" name="spricht" value="ja"><span class="lampe" aria-hidden="true"></span><span>${T.f2a}</span></label>
-          <label class="zeile"><input type="radio" name="spricht" value="nein"><span class="lampe" aria-hidden="true"></span><span>${T.f2b}</span></label></div></fieldset>
-        <fieldset class="frage"><legend>${T.f3}</legend><div class="wahl">
-          <label class="zeile"><input type="radio" name="lage" value="besser"><span class="lampe" aria-hidden="true"></span><span>${T.f3a}</span></label>
-          <label class="zeile"><input type="radio" name="lage" value="anfang"><span class="lampe" aria-hidden="true"></span><span>${T.f3b}</span></label>
-          <label class="zeile"><input type="radio" name="lage" value="keine_zeit"><span class="lampe" aria-hidden="true"></span><span>${T.f3c}</span></label></div></fieldset>
+          <span class="leer"><span class="knopf leer-k" aria-hidden="true">${T.waehlen}</span><span class="klein">${T.format}<span class="nur-maus"><br>${T.ziehen}</span></span></span>
+          <span class="voll"><b>${T.liegt}</b><span class="klein" id="masse"></span><u>${T.anderes}</u></span>
+        </label></div>
+        <fieldset class="frage"><legend>${T.f1}</legend><div class="chips">
+          ${chip('instagram', 'Instagram', true)}${chip('tiktok', 'TikTok')}${chip('facebook', 'Facebook')}${chip('linkedin', 'LinkedIn')}${chip('youtube', 'YouTube')}</div></fieldset>
+        <div class="frage"><label for="vorname">${T.vorname}</label><p class="hilfe" id="vnh">${T.vornameh}</p>
+          <input class="feld" id="vorname" name="vorname" type="text" maxlength="40" autocomplete="given-name" aria-describedby="vnh"></div>
         <div class="frage"><label for="email">${T.mail}</label>
           <input class="feld" id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" placeholder="${T.mailh}"></div>
         <div class="honig" aria-hidden="true"><label>Website<input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="haken"><input type="checkbox" id="einwilligung"><label for="einwilligung">${T.haken} ${T.mehr} <a href="${T.dsUrl}" target="_blank" rel="noopener">${T.ds}</a>.</label></div>
-        <div class="turnstile-wrap"><div class="cf-turnstile" id="ts" data-sitekey="${esc(siteKey)}" data-theme="dark"></div></div>
+        <div class="turnstile-wrap"><div id="ts"></div></div>
         <button class="knopf" type="submit">${T.senden}</button>
         <p class="melde" id="melde" role="alert" hidden></p>
       </form>
+    </section>
+    <section class="schritt lauf" id="s-lauf" hidden>
+      <h2 class="mitte" id="lauf-kopf" tabindex="-1"></h2>
+      <div class="pixfeld"><video id="laufbild" muted playsinline aria-hidden="true"></video><b class="proz" id="proz" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0 %</b></div>
+      <p class="klein mitte" id="lauf-text"></p>
+      <div class="tipp" id="tipp" role="status"></div>
+      <p class="melde" id="melde2" role="alert" hidden></p><button class="knopf" id="weiter" type="button" hidden></button>
+    </section>
+    <section class="schritt quittung" id="s-da" hidden>
+      <h2 id="q-kopf" tabindex="-1"></h2><p id="q-text"></p><p class="klein" id="q-spam"></p>
+      <button class="knopf leer-k" id="nochmal" type="button"></button><p class="melde" id="melde3" role="alert" hidden></p>
     </section>
   </main>
   <footer class="fuss"><a href="${T.impressumUrl}">${T.impressum}</a><a href="${T.dsUrl}">${T.dsFuss}</a></footer>
@@ -277,7 +280,20 @@ function seitenSkript() {
   var T = window.RC_T, LANG = document.documentElement.lang, MAX = window.RC_MAX, START = Date.now();
   var $ = function (id) { return document.getElementById(id); };
   var datei = null, lauf = null, ruhig = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var form = $('form'), melde = $('melde'), zettel = $('zettel'), standort = $('standort'), geraet = $('geraet'), video = $('vorschau');
+  var form = $('form'), melde = $('melde'), standort = $('standort'), geraet = $('geraet'), video = $('vorschau'), tsId = null;
+  var SCHRITTE = ['s-ein', 's-form', 's-lauf', 's-da'];
+  function zeig(id, kopf) {
+    SCHRITTE.forEach(function (s) { $(s).hidden = s !== id; });
+    scrollTo({ top: 0, behavior: ruhig ? 'auto' : 'smooth' });
+    if (kopf) $(kopf).focus({ preventScroll: true });
+  }
+  // Turnstile erst zeichnen, wenn der Schirm mit den Fragen sichtbar ist (in einem versteckten Bereich misst es nichts)
+  function tsZeichnen() {
+    if (tsId !== null || !window.turnstile || $('s-form').hidden) return;
+    try { tsId = turnstile.render('#ts', { sitekey: $('weg').getAttribute('data-sitekey'), theme: 'dark' }); } catch (e) {}
+  }
+  window.rcTs = tsZeichnen;
+  $('los').addEventListener('click', function () { zeig('s-form', 'form-kopf'); tsZeichnen(); });
 
   function sag(schluessel, gut) {
     melde.textContent = T.fehler[schluessel] || T[schluessel] || T.fehler.sonst;
@@ -302,8 +318,6 @@ function seitenSkript() {
     video.onloadeddata = function () { video.classList.add('zeigt'); if (!ruhig) video.play().catch(function () {}); };
     video.onerror = function () { $('masse').textContent = mb(f.size) + ' · ' + T.ohneBild; };
     requestAnimationFrame(function () { standort.classList.add('liegt'); });
-    // am Handy steht der Zettel unter dem Prüfstand: nach dem Auflegen dorthin, an den Kopf
-    if (matchMedia('(max-width:820px)').matches) setTimeout(function () { zettel.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'start' }); }, ruhig ? 0 : 1300);
   }
   $('datei').addEventListener('change', function (e) { nimm(e.target.files[0]); });
   // eine Meldung gilt, bis sie etwas ändert: dann verschwindet sie
@@ -312,38 +326,32 @@ function seitenSkript() {
   ['dragleave', 'drop'].forEach(function (n) { geraet.addEventListener(n, function (e) { e.preventDefault(); geraet.classList.remove('ziehen'); }); });
   geraet.addEventListener('drop', function (e) { nimm(e.dataTransfer.files[0]); });
 
-  // das Gerät kippt leicht zur Maus, der Glanz wandert mit (nur mit Maus, nie bei ruhiger Darstellung)
-  if (!ruhig && matchMedia('(pointer:fine)').matches) {
-    var wartet = false;
-    document.addEventListener('pointermove', function (e) {
-      if (wartet) return; wartet = true;
-      requestAnimationFrame(function () {
-        wartet = false;
-        var r = geraet.getBoundingClientRect(), x = (e.clientX - r.left - r.width / 2) / innerWidth, y = (e.clientY - r.top - r.height / 2) / innerHeight;
-        geraet.style.setProperty('--ky', (x * 9).toFixed(2) + 'deg'); geraet.style.setProperty('--kx', (-y * 7).toFixed(2) + 'deg');
-        geraet.style.setProperty('--gx', (50 + x * 90).toFixed(0) + '%'); geraet.style.setProperty('--gy', (30 + y * 90).toFixed(0) + '%');
-      });
-    }, { passive: true });
-  } else {
-    var nm = document.querySelector('.nur-maus'); if (nm && !matchMedia('(pointer:fine)').matches) nm.hidden = true;
-  }
+  var nm = document.querySelector('.nur-maus'); if (nm && !matchMedia('(pointer:fine)').matches) nm.hidden = true;
 
   function token() {
-    try { return window.turnstile ? (turnstile.getResponse($('ts')) || '') : ''; } catch (e) { return ''; }
+    try { return window.turnstile && tsId !== null ? (turnstile.getResponse(tsId) || '') : ''; } catch (e) { return ''; }
   }
   function wert(name) { var el = form.querySelector('input[name=' + name + ']:checked'); return el ? el.value : ''; }
 
-  function zeigeLauf() {
-    zettel.innerHTML = '<div class="lauf"><h2 id="lauf-kopf" tabindex="-1"></h2><p class="lauf-zahl" id="lauf-zahl">0 %</p>' +
-      '<div class="streifen" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="lauf-s"><u></u></div><p id="lauf-text"></p>' +
-      '<p class="melde" id="melde2" role="alert" hidden></p><button class="knopf" id="weiter" type="button" hidden></button></div>';
-    $('lauf-kopf').textContent = T.kommt; $('lauf-text').textContent = T.offen; $('weiter').textContent = T.weiter;
-    $('weiter').addEventListener('click', function () { $('weiter').hidden = true; $('melde2').hidden = true; laden(); });
-    zettel.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'start' }); $('lauf-kopf').focus({ preventScroll: true });
+  var p = 0, tippNr = 0, tippLauf = null;
+  function tipp() {
+    var x = T.tipps[tippNr % T.tipps.length], el = $('tipp'); tippNr++;
+    el.textContent = ''; var b = document.createElement('b'); b.textContent = x[0]; var s = document.createElement('span'); s.className = 'klein'; s.textContent = x[1];
+    el.appendChild(b); el.appendChild(s);
   }
-  function stand(anteil) {
-    var p = Math.min(100, Math.floor(anteil * 100));
-    $('lauf-zahl').textContent = p + ' %'; $('lauf-s').setAttribute('aria-valuenow', p); $('lauf-s').firstChild.style.setProperty('--w', anteil.toFixed(4));
+  function zeigeLauf() {
+    $('lauf-kopf').textContent = T.kommt; $('lauf-text').textContent = T.offen; $('weiter').textContent = T.weiter;
+    var bild = $('laufbild'); bild.src = video.src; bild.onloadeddata = function () { try { bild.currentTime = Math.min(2.5, (bild.duration || 5) / 2); } catch (e) {} };
+    stand(0); tipp(); tippLauf = setInterval(tipp, 6000);
+    zeig('s-lauf', 'lauf-kopf');
+  }
+  $('weiter').addEventListener('click', function () { $('weiter').hidden = true; $('melde2').hidden = true; laden(); });
+  // Die Zahl folgt dem echten Upload und hält bei 96, bis der Server das Video bestätigt hat. 100 heißt: es geht weiter.
+  function stand(anteil, fertig) {
+    p = fertig ? 100 : Math.max(p, Math.min(96, Math.floor(anteil * 96)));
+    $('proz').textContent = p + ' %'; $('proz').setAttribute('aria-valuenow', p);
+    $('laufbild').style.filter = 'blur(' + ((100 - p) * 0.17).toFixed(1) + 'px) saturate(' + (0.55 + p * 0.0045).toFixed(2) + ') brightness(' + (0.8 + p * 0.002).toFixed(2) + ')';
+    if (p >= 96 && !fertig) $('lauf-text').textContent = T.gleich96;
   }
   // Erst lesen, dann senden: Safari schickt sonst gelegentlich einen leeren Teil, wenn es die Datei gerade nicht lesen kann
   // (gemessen 15.11.2026: 2 von 8 Läufen in WebKit, Länge 0). Ein kurz gelesener Teil wird gar nicht erst geschickt.
@@ -382,38 +390,37 @@ function seitenSkript() {
       stolper(d.error === 'backend' ? 'netz' : d.error);
     } catch (e) { stolper('netz'); }
   }
-  // Quittung erst, wenn der Server das Video bestätigt hat
+  // Quittung erst, wenn der Server das Video bestätigt hat: dann springt die Zahl auf 100 und es geht von selbst weiter
   function quittung(mailFehlt) {
-    zettel.innerHTML = '<div class="quittung"><h2 id="q-kopf" tabindex="-1"></h2><p id="q-text"></p><p class="klein" id="q-spam"></p>' +
-      '<button class="knopf leer-k" id="nochmal" type="button"></button><p class="melde" id="melde3" role="alert" hidden></p></div>';
+    clearInterval(tippLauf); stand(1, true);
     $('q-kopf').textContent = T.da; $('q-text').textContent = T.post; $('q-spam').textContent = T.spam; $('nochmal').textContent = T.nochmal;
     var m = $('melde3');
     if (mailFehlt) { m.textContent = T.fehler.mail; m.hidden = false; }
-    $('nochmal').addEventListener('click', async function () {
-      try {
-        var r = await fetch('/api/reel-check/nochmal/' + lauf.token, { method: 'POST' });
-        m.textContent = r.ok ? T.raus : r.status === 429 ? T.gleich : T.fehler.mail; m.className = 'melde' + (r.ok ? ' gut' : ''); m.hidden = false;
-      } catch (e) { m.textContent = T.fehler.sonst; m.className = 'melde'; m.hidden = false; }
-    });
-    $('q-kopf').focus({ preventScroll: true });
+    setTimeout(function () { zeig('s-da', 'q-kopf'); }, ruhig ? 0 : 900);
   }
+  $('nochmal').addEventListener('click', async function () {
+    var m = $('melde3');
+    try {
+      var r = await fetch('/api/reel-check/nochmal/' + lauf.token, { method: 'POST' });
+      m.textContent = r.ok ? T.raus : r.status === 429 ? T.gleich : T.fehler.mail; m.className = 'melde' + (r.ok ? ' gut' : ''); m.hidden = false;
+    } catch (e) { m.textContent = T.fehler.sonst; m.className = 'melde'; m.hidden = false; }
+  });
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!datei) { sag('datei'); geraet.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'center' }); return; }
-    var daten = { email: $('email').value.trim(), zielgruppe: $('zielgruppe').value.trim(), spricht: wert('spricht'), lage: wert('lage'),
+    var daten = { email: $('email').value.trim(), vorname: $('vorname').value.trim(), plattform: wert('plattform'),
       einwilligung: $('einwilligung').checked, website: $('website').value, elapsed: Date.now() - START,
       bytes: datei.f.size, mime: datei.art, sprache: LANG === 'en' ? 'en' : 'de', turnstile: token() };
-    // dieselbe Reihenfolge wie auf dem Zettel: die erste offene Stelle wird genannt und angesprungen
-    var luecke = daten.zielgruppe.length < 3 ? ['zielgruppe', $('zielgruppe')] : !daten.spricht ? ['spricht', form.querySelector('input[name=spricht]')] :
-      !daten.lage ? ['lage', form.querySelector('input[name=lage]')] : !/^\S+@\S+\.\S+$/.test(daten.email) ? ['email', $('email')] :
+    // dieselbe Reihenfolge wie auf dem Schirm: die erste offene Stelle wird genannt und angesprungen
+    var luecke = !daten.plattform ? ['plattform', form.querySelector('input[name=plattform]')] : !/^\S+@\S+\.\S+$/.test(daten.email) ? ['email', $('email')] :
       !daten.einwilligung ? ['einwilligung', $('einwilligung')] : (window.turnstile && !daten.turnstile) ? ['captcha', null] : null;
     if (luecke) { sag(luecke[0]); if (luecke[1]) luecke[1].focus(); return; }
     var knopf = form.querySelector('button[type=submit]'); knopf.disabled = true;
     try {
       var r = await fetch('/api/reel-check/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(daten) });
       var d = await r.json().catch(function () { return {}; });
-      if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile) turnstile.reset($('ts')); } catch (x) {} return sag(d.error || 'sonst'); }
+      if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile && tsId !== null) turnstile.reset(tsId); } catch (x) {} return sag(d.error || 'sonst'); }
       lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] };
       zeigeLauf(); laden();
     } catch (x) { knopf.disabled = false; sag('sonst'); }
@@ -440,7 +447,9 @@ export function reelCheckSeite(env, lang = 'de') {
     '<meta property="og:image" content="https://social2scale.com/assets/og-image.png">' +
     `<link rel="canonical" href="${basis}${T.pfad}">` +
     `<link rel="alternate" hreflang="de" href="${basis}/reel-check/"><link rel="alternate" hreflang="en" href="${basis}/en/reel-check/"><link rel="alternate" hreflang="x-default" href="${basis}/reel-check/">` +
-    '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' +
+    // Platzhalter, falls Turnstile vor dem Seitenskript fertig ist; das Seitenskript setzt die echte Funktion.
+    '<script>window.rcTs=function(){}</script>' +
+    '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=rcTs" async defer></script>' +
     `<style>${STIL}</style>`;
   const daten = JSON.stringify(T.js).replace(/</g, '\\u003c');
   const body = `${markup(T, siteKey)}<script>window.RC_T=${daten};window.RC_MAX=${MAX_BYTES};(${seitenSkript.toString()})();</script>`;
@@ -458,12 +467,18 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
   const art = status === 'wartet' ? 'wartet' : status === 'da' || status === 'in_arbeit' || status === 'fertig' ? 'prueft' : status === 'fehler' ? 'fehler' : 'weg';
   const [kopf, text] = T.stand[art];
   const laeuft = art === 'wartet' || art === 'prueft';
+  const tokenOk = /^[a-f0-9]{48}$/.test(token);
+  const lauf = art === 'prueft'
+    ? `<p class="marke" id="st-tun" role="status">${T.stand.tun[0]}</p><div class="tipp" id="tipp" role="status"><b>${esc(T.js.tipps[0][0])}</b><span class="klein">${esc(T.js.tipps[0][1])}</span></div>`
+    : '<div class="streifen" aria-hidden="true"><u></u></div>';
   const body = `<div class="rc">${kopfleiste(T)}<main class="st-kopf"><p class="marke">${T.marke}</p><h1>${kopf}</h1><p>${text}</p>` +
-    (laeuft ? '<div class="streifen" aria-hidden="true"><u></u></div>' : `<a class="knopf" href="${T.pfad}">${T.stand.neu}</a>`) +
+    (laeuft ? lauf : `<a class="knopf" href="${T.pfad}">${T.stand.neu}</a>`) +
     `</main><footer class="fuss"><a href="${T.impressumUrl}">${T.impressum}</a><a href="${T.dsUrl}">${T.dsFuss}</a></footer></div>` +
-    // Ändert sich der Stand, lädt die Seite neu. Fragt nur, solange sie sichtbar ist.
-    (laeuft && /^[a-f0-9]{48}$/.test(token)
-      ? `<script>(function(){var alt=${JSON.stringify(status)};setInterval(function(){if(document.hidden)return;fetch('/api/reel-check/status/${token}').then(function(r){return r.json()}).then(function(d){if(d.status&&d.status!==alt)location.reload()}).catch(function(){})},20000)})();</script>`
+    // Ändert sich der Stand, lädt die Seite neu. Fragt nur, solange sie sichtbar ist. Beim Prüfen wechseln Schritt und Hinweis.
+    (laeuft && tokenOk
+      ? `<script>(function(){var alt=${JSON.stringify(status)},TUN=${JSON.stringify(T.stand.tun).replace(/</g, '\\u003c')},TIPPS=${JSON.stringify(T.js.tipps).replace(/</g, '\\u003c')},n=0;` +
+        `setInterval(function(){if(document.hidden)return;fetch('/api/reel-check/status/${token}').then(function(r){return r.json()}).then(function(d){if(d.status&&d.status!==alt)location.reload()}).catch(function(){})},${art === 'prueft' ? 8000 : 20000});` +
+        `var tun=document.getElementById('st-tun'),tipp=document.getElementById('tipp');if(tun)setInterval(function(){n++;tun.textContent=TUN[n%TUN.length];var x=TIPPS[n%TIPPS.length];tipp.firstChild.textContent=x[0];tipp.lastChild.textContent=x[1]},6000)})();</script>`
       : '');
   const antwort = htmlDoc({ title: T.titel, head: `<meta name="robots" content="noindex"><style>${STIL}</style>`, body, lang });
   antwort.headers.set('X-Robots-Tag', 'noindex');

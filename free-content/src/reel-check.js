@@ -23,7 +23,10 @@ import { reelCheckMailHtml, founderMailHtml } from './pages/confirm-email.js';
 export const MAX_BYTES = 250 * 1024 * 1024;      // ein Reel aus dem Handy liegt weit darunter; darüber ist es kein Reel-Export
 export const MIN_BYTES = 200 * 1024;             // darunter ist es kein Video, das sich prüfen lässt
 export const TEIL_BYTES = 8 * 1024 * 1024;       // R2 verlangt ≥ 5 MB je Teil (außer dem letzten)
-export const JE_ADRESSE_AM_TAG = 3;              // Bremse: jede Prüfung kostet KI-Aufrufe
+export const JE_ADRESSE_AM_TAG = 3;              // Bremse für angefangene Uploads: jede Prüfung kostet KI-Aufrufe
+// Ein Gratis-Check je Adresse (Sebi 21.11.2026: „sonst ist ja unser Abo unnütz“). Zählt, sobald das Video vollständig liegt;
+// ein abgebrochener Upload oder ein unlesbares Video verbraucht ihn nicht. Nach der Löschung (Adresse geleert) ist er wieder frei.
+export const GENUTZT_STATUS = ['wartet', 'da', 'in_arbeit', 'fertig'];
 export const UPLOAD_FRIST_STUNDEN = 24;          // angefangener Upload ohne Abschluss
 export const BESTAETIGEN_FRIST_TAGE = 7;         // hochgeladen, aber Adresse nie bestätigt
 export const LOESCH_FRIST_TAGE = 30;             // nach der Bestätigung: Video, Befund und Adresse weg
@@ -32,6 +35,8 @@ export const LOESCH_FRIST_TAGE = 30;             // nach der Bestätigung: Video
 export const EINWILLIGUNG_FASSUNG = 'reel-check-1';
 export const MIME = { 'video/mp4': 'mp4', 'video/quicktime': 'mov' };
 export const LAGEN = ['besser', 'anfang', 'keine_zeit'];
+export const PLATTFORMEN = ['instagram', 'tiktok', 'facebook', 'linkedin', 'youtube'];
+const VORNAME_MAX = 40;
 const ZIELGRUPPE_MAX = 200;
 const TOKEN_RE = /^[a-f0-9]{48}$/;
 
@@ -61,10 +66,17 @@ export function pruefeStart(input) {
   const emailNorm = normalizeEmail(d.email);
   if (!emailNorm) return { ok: false, error: 'email' };
   if (isDisposable(emailNorm)) return { ok: false, error: 'disposable' };
-  const zielgruppe = stripControlChars(d.zielgruppe).slice(0, ZIELGRUPPE_MAX);
-  if (zielgruppe.length < 3) return { ok: false, error: 'zielgruppe' };
-  if (d.spricht !== 'ja' && d.spricht !== 'nein') return { ok: false, error: 'spricht' };
-  if (!LAGEN.includes(d.lage)) return { ok: false, error: 'lage' };
+  // Zielgruppe, „spricht selbst“ und Lage sind seit dem 21.11.2026 freiwillig (ein Eingabeschirm): leer heißt „nicht gefragt“,
+  // der Check erkennt Sprache selbst. Was kommt, muss trotzdem gültig sein.
+  const zielgruppe = stripControlChars(d.zielgruppe ?? '').slice(0, ZIELGRUPPE_MAX);
+  if (zielgruppe && zielgruppe.length < 3) return { ok: false, error: 'zielgruppe' };
+  const spricht = d.spricht ?? '';
+  if (spricht !== '' && spricht !== 'ja' && spricht !== 'nein') return { ok: false, error: 'spricht' };
+  const lage = d.lage ?? '';
+  if (lage !== '' && !LAGEN.includes(lage)) return { ok: false, error: 'lage' };
+  const vorname = stripControlChars(d.vorname ?? '').replace(/[<>&"]/g, '').trim().slice(0, VORNAME_MAX);
+  const plattform = d.plattform === undefined ? 'instagram' : d.plattform;
+  if (!PLATTFORMEN.includes(plattform)) return { ok: false, error: 'plattform' };
   // Die Einwilligung wird nie vorbelegt und nie abgeleitet: nur ein ausdrückliches true zählt.
   if (d.einwilligung !== true) return { ok: false, error: 'einwilligung' };
   const bytes = Number(d.bytes);
@@ -75,7 +87,7 @@ export function pruefeStart(input) {
   return {
     ok: true,
     value: {
-      email: stripControlChars(d.email).toLowerCase().slice(0, 160), emailNorm, zielgruppe, spricht: d.spricht, lage: d.lage,
+      email: stripControlChars(d.email).toLowerCase().slice(0, 160), emailNorm, zielgruppe, spricht, lage, vorname, plattform,
       bytes, mime: String(d.mime).toLowerCase(), ext, sprache: d.sprache === 'en' ? 'en' : 'de', spam: d.website ? 1 : 0,
     },
   };
@@ -116,12 +128,14 @@ async function start(request, env, cors) {
   try {
     const heute = await env.DB.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE email_norm = ? AND created_at > datetime('now', '-1 day')").bind(v.emailNorm).first();
     if ((heute?.c ?? 0) >= JE_ADRESSE_AM_TAG) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+    const genutzt = await env.DB.prepare(`SELECT COUNT(*) AS c FROM reel_check WHERE email_norm = ? AND status IN (${GENUTZT_STATUS.map(() => '?').join(', ')})`).bind(v.emailNorm, ...GENUTZT_STATUS).first();
+    if ((genutzt?.c ?? 0) >= 1) return json({ ok: false, error: 'schon' }, 409, cors);
     const token = neuerToken();
     const mp = await env.IMAGES.createMultipartUpload(schluessel(token, v.ext), { httpMetadata: { contentType: v.mime } });
     await env.DB.prepare(
-      'INSERT INTO reel_check (token, email, email_norm, zielgruppe, spricht, lage, sprache, einwilligung_fassung, einwilligung_at, bytes, mime, upload_id, spam, status, created_at, updated_at) ' +
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, 'laedt', datetime('now'), datetime('now'))",
-    ).bind(token, v.email, v.emailNorm, v.zielgruppe, v.spricht, v.lage, v.sprache, EINWILLIGUNG_FASSUNG, v.bytes, v.mime, mp.uploadId, v.spam).run();
+      'INSERT INTO reel_check (token, email, email_norm, zielgruppe, spricht, lage, vorname, plattform, sprache, einwilligung_fassung, einwilligung_at, bytes, mime, upload_id, spam, status, created_at, updated_at) ' +
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, 'laedt', datetime('now'), datetime('now'))",
+    ).bind(token, v.email, v.emailNorm, v.zielgruppe, v.spricht, v.lage, v.vorname, v.plattform, v.sprache, EINWILLIGUNG_FASSUNG, v.bytes, v.mime, mp.uploadId, v.spam).run();
     return json({ ok: true, token, teil: TEIL_BYTES, teile: teile(v.bytes) }, 200, cors);
   } catch (err) {
     console.error('[reel-check] Anmeldung nicht gespeichert:', err);
@@ -258,9 +272,9 @@ async function wegraeumen(env, z, grund) {
     try { await env.IMAGES.resumeMultipartUpload(key, z.upload_id).abort(); } catch (err) { console.error('[reel-check] Upload-Abbruch:', err); }
   }
   await env.IMAGES.delete([key, befundSchluessel(z.token)]);
-  // Die Zeile bleibt als Zähler ohne Person: Adresse und Zielgruppe werden geleert, der Token ist danach tot.
+  // Die Zeile bleibt als Zähler ohne Person: Adresse, Vorname und Zielgruppe werden geleert, der Token ist danach tot.
   await env.DB.prepare(
-    "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
+    "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', vorname='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
   ).bind(grund, z.id).run();
 }
 
@@ -344,7 +358,7 @@ export async function reelCheckPost(env) {
           await send(env, an, 'social2scale', {
             subject: `Reel-Check fertig: ${z.zahl ?? '–'} von 100${z.sprache === 'en' ? ' [EN]' : ''}`,
             htmlContent: founderMailHtml('Reel-Check fertig', [
-              ['Zahl', `${z.zahl ?? '–'} von 100`], ['Lage', LAGE_WORT[z.lage] || ''], ['Sprache', z.sprache === 'en' ? 'Englisch' : 'Deutsch'],
+              ['Zahl', `${z.zahl ?? '–'} von 100`], ['Plattform', z.plattform || 'instagram'], ...(LAGE_WORT[z.lage] ? [['Lage', LAGE_WORT[z.lage]]] : []), ['Sprache', z.sprache === 'en' ? 'Englisch' : 'Deutsch'],
               ['Hinweis', 'Ohne Adresse: die Person meldet sich über den Termin-Knopf im Befund. Der Link gilt bis zur Löschung nach 30 Tagen.'],
             ], `${origin}/rc/${z.token}`),
           });

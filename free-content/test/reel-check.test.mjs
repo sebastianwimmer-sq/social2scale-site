@@ -5,14 +5,14 @@ import { DatabaseSync } from 'node:sqlite';
 import {
   pruefeStart, teile, teilGroesse, istVideoKopf, reelCheckApi, bestaetigen, stand, reelCheckAufraeumen,
   reelCheckPost, reelCheckWaechter, WAECHTER_TITEL, MARKIERT_TITEL, WAECHTER_MIN,
-  TEIL_BYTES, MAX_BYTES, MIN_BYTES, JE_ADRESSE_AM_TAG, LOESCH_FRIST_TAGE, EINWILLIGUNG_FASSUNG,
+  TEIL_BYTES, MAX_BYTES, MIN_BYTES, JE_ADRESSE_AM_TAG, PLATTFORMEN, LOESCH_FRIST_TAGE, EINWILLIGUNG_FASSUNG,
 } from '../src/reel-check.js';
 import { reelCheckSeite, reelCheckStandSeite, TEXTE } from '../src/pages/reel-check.js';
 
 // D1-Hülle um echtes SQLite mit dem echten Schema aus der Migration; R2 als Speicher mit echter Teile-Logik.
 function welt() {
   const s = new DatabaseSync(':memory:');
-  s.exec(readFileSync(new URL('../migrationen/2026-11-15-reel-check.sql', import.meta.url), 'utf8'));
+  for (const m of ['2026-11-15-reel-check.sql', '2026-11-21-reel-check-person.sql']) s.exec(readFileSync(new URL('../migrationen/' + m, import.meta.url), 'utf8'));
   s.exec('CREATE TABLE free_intake_log (ip TEXT, created_at TEXT)');
   s.exec('CREATE TABLE tickets (id INTEGER PRIMARY KEY AUTOINCREMENT, client_id INTEGER, type TEXT, title TEXT, body TEXT, status TEXT, priority TEXT, source TEXT, owner TEXT, updated_at TEXT, done_at TEXT, done_note TEXT)');
   const prep = (sql, args = []) => ({
@@ -87,6 +87,14 @@ test('Anmeldung: jede Lücke hat ihren eigenen Schlüssel, Einwilligung zählt n
   }
   assert.equal(pruefeStart({ ...GUT, bytes: MAX_BYTES }).ok, true, 'genau die Grenze geht noch');
   assert.equal(pruefeStart({ ...GUT, bytes: MIN_BYTES }).ok, true);
+  // seit dem 21.11.2026 fragt die Seite nur noch Video, Plattform, Vorname, Adresse: der Rest darf fehlen, Falsches bleibt falsch
+  const KURZ = { email: 'lead@example.org', einwilligung: true, mime: 'video/mp4', bytes: MIN_BYTES };
+  const k = pruefeStart(KURZ).value;
+  assert.deepEqual([k.zielgruppe, k.spricht, k.lage, k.vorname, k.plattform], ['', '', '', '', 'instagram']);
+  for (const pl of PLATTFORMEN) assert.equal(pruefeStart({ ...KURZ, plattform: pl }).value.plattform, pl);
+  assert.equal(pruefeStart({ ...KURZ, plattform: 'myspace' }).error, 'plattform'); assert.equal(pruefeStart({ ...KURZ, plattform: '' }).error, 'plattform');
+  assert.equal(pruefeStart({ ...KURZ, vorname: '  <b>Ana</b>\u0000 ' + 'x'.repeat(80) }).value.vorname.length, 40);
+  assert.doesNotMatch(pruefeStart({ ...KURZ, vorname: '<script>"Ana"&' }).value.vorname, /[<>&"]/);
   const v = pruefeStart({ ...GUT, zielgruppe: 'Mütter\u0000 <b>in</b>\nElternzeit', website: 'x', sprache: 'fr' }).value;
   assert.equal(v.zielgruppe, 'Mütter <b>in</b> Elternzeit'); assert.equal(v.spam, 1); assert.equal(v.sprache, 'de');
 });
@@ -207,13 +215,34 @@ test(`Bremse: ${JE_ADRESSE_AM_TAG} Prüfungen je Adresse am Tag, die nächste wi
   } finally { w.ende(); }
 });
 
+test('ein Gratis-Check je Adresse: liegt das Video einmal vollständig, wird die nächste Anmeldung abgewiesen; Abbruch und Fehler verbrauchen ihn nicht', async () => {
+  const w = welt();
+  try {
+    const neu = async (email) => { w.s.exec('DELETE FROM free_intake_log'); return ruf(w.env, '/api/reel-check/start', 'POST', { ...GUT, email }); };
+    await hochladen(w, { ...GUT, email: 'eins@example.org' });                               // bleibt bei laedt (abgebrochen)
+    assert.equal((await neu('eins@example.org')).status, 200, 'ein abgebrochener Upload verbraucht den Check nicht');
+    const b = await hochladen(w, { ...GUT, email: 'zwei@example.org' });
+    await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });       // wartet
+    const r = await neu('Zwei@Example.org');
+    assert.equal(r.status, 409); assert.equal((await r.json()).error, 'schon');
+    w.s.prepare("UPDATE reel_check SET status = 'fehler' WHERE token = ?").run(b.token);
+    assert.equal((await neu('zwei@example.org')).status, 200, 'ließ sich das Video nicht prüfen, darf sie es nochmal versuchen');
+    for (const st of ['da', 'in_arbeit', 'fertig']) {
+      w.s.prepare('UPDATE reel_check SET status = ? WHERE token = ?').run(st, b.token);
+      w.s.prepare("DELETE FROM reel_check WHERE status = 'laedt'").run();
+      assert.equal((await neu('zwei@example.org')).status, 409, st);
+    }
+    assert.equal((await neu('drei@example.org')).status, 200, 'eine andere Adresse ist frei');
+  } finally { w.ende(); }
+});
+
 test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach Bestätigung, die Grenze selbst bleibt', async () => {
   const w = welt();
   try {
     const a = await hochladen(w, { ...GUT, email: 'a@example.org' });                       // bleibt bei laedt
     const b = await hochladen(w, { ...GUT, email: 'b@example.org' });
     await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });      // wartet
-    const c = await hochladen(w, { ...GUT, email: 'c@example.org' });
+    const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla' });
     await ruf(w.env, `/api/reel-check/fertig/${c.token}`, 'POST', { teile: c.etags }); await bestaetigen(w.env, c.token);
     await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'frisch: nichts wird gelöscht');
@@ -225,6 +254,7 @@ test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach
     assert.equal(w.ablage.size, 0, 'Videos und Befund sind weg'); assert.equal(w.offen.size, 0, 'der offene Upload ist abgebrochen');
     const rest = w.s.prepare('SELECT status, email, email_norm, zielgruppe, fehler FROM reel_check ORDER BY id').all();
     assert.deepEqual(rest.map((r) => [r.status, r.email, r.email_norm, r.zielgruppe]), Array(3).fill(['geloescht', '', '', '']));
+    assert.equal(w.s.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE vorname != ''").get().c, 0, 'der Vorname ist mit weg');
     assert.deepEqual(rest.map((r) => r.fehler), ['upload_abgebrochen', 'nie_bestaetigt', 'frist']);
     assert.equal((await bestaetigen(w.env, b.token)).ok, false, 'ein gelöschter Link bestätigt nichts mehr');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'zweiter Lauf fasst Gelöschtes nicht nochmal an');
@@ -235,7 +265,10 @@ test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt,
   const de = await reelCheckSeite({}, 'de').text(); const en = await reelCheckSeite({}, 'en').text();
   for (const [html, lang] of [[de, 'de'], [en, 'en']]) {
     assert.match(html, new RegExp(`<html lang="${lang}">`));
-    assert.equal((html.match(/type="radio"/g) || []).length, 5); assert.equal((html.match(/ checked/g) || []).length, 0);
+    assert.equal((html.match(/type="radio" name="plattform"/g) || []).length, PLATTFORMEN.length); assert.equal((html.match(/ checked/g) || []).length, 1, 'vorbelegt ist nur die Plattform');
+    for (const pl of PLATTFORMEN) assert.match(html, new RegExp(`name="plattform" value="${pl}"`));
+    assert.equal((html.match(/class="feld"/g) || []).length, 2, 'zwei Textfelder: Vorname und Adresse');
+    assert.match(html, /calendly\.com\/philipplibowicz/);
     assert.match(html, /<input type="checkbox" id="einwilligung">/);
     assert.match(html, new RegExp(`${LOESCH_FRIST_TAGE} (Tagen|days)`)); assert.match(html, /Claude/);
     assert.match(html, /hreflang="de" href="https:\/\/start\.social2scale\.com\/reel-check\/"/);
