@@ -435,6 +435,11 @@ function seitenSkript() {
   } catch (e) {}
 }
 
+// Der Bau des Workers (esbuild, keepNames) setzt in jede benannte Funktion einen Aufruf von __name. Das Seitenskript wird als
+// Text in die Seite gelegt, dort gibt es __name nicht: ohne diese Zeile bricht das ganze Skript ab (21.11.2026 live so passiert,
+// die Tests ohne Bau sahen es nicht). Deshalb bringt die Seite die Funktion selbst mit.
+export const NAME_HILFE = 'var __name=function(f){return f};';
+
 /** Annahme-Seite. */
 export function reelCheckSeite(env, lang = 'de') {
   const T = TEXTE[lang === 'en' ? 'en' : 'de'];
@@ -452,7 +457,7 @@ export function reelCheckSeite(env, lang = 'de') {
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=rcTs" async defer></script>' +
     `<style>${STIL}</style>`;
   const daten = JSON.stringify(T.js).replace(/</g, '\\u003c');
-  const body = `${markup(T, siteKey)}<script>window.RC_T=${daten};window.RC_MAX=${MAX_BYTES};(${seitenSkript.toString()})();</script>`;
+  const body = `${markup(T, siteKey)}<script>window.RC_T=${daten};window.RC_MAX=${MAX_BYTES};${NAME_HILFE}(${seitenSkript.toString()})();</script>`;
   return htmlDoc({ title: T.titel, head, body, lang });
 }
 
