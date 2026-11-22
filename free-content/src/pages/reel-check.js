@@ -36,7 +36,7 @@ export const TEXTE = {
     js: {
       kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis dein Video bei uns liegt.', weiter: 'Weiter hochladen',
       prueft: 'Wir sehen uns dein Reel an', bleib: 'Das dauert ein paar Minuten. Dein Befund erscheint gleich hier, und wir schicken ihn dir zusätzlich per Mail.',
-      lang: 'Heute dauert es etwas länger. Du kannst die Seite schließen, dein Befund kommt per Mail.',
+      lang: 'Heute dauert es länger als sonst. Du kannst die Seite schließen, dein Befund kommt per Mail, sobald er fertig ist.',
       tun: ['Wir sehen uns dein Bild an', 'Wir hören deinen Ton ab', 'Wir lesen deinen Text im Bild', 'Wir gehen deinen Einstieg durch', 'Wir schreiben deine Vorschläge'],
       tipps: [['Die ersten drei Sekunden entscheiden.', 'Instagram misst, wie viele in den ersten 3 Sekunden weiterwischen.'], ['Text gehört in die Mitte.', 'Oben und unten liegen Knöpfe und Bildunterschrift darüber.'], ['Viele schauen ohne Ton.', 'Untertitel tragen deinen Satz auch dann.'], ['Ein Gedanke je Reel.', 'Unsere Arbeitsregel aus der täglichen Arbeit an Reels.']],
       fehler: {
@@ -85,7 +85,7 @@ export const TEXTE = {
     js: {
       kommt: 'Your reel is on its way', offen: 'Keep this page open until we have your video.', weiter: 'Continue upload',
       prueft: 'We’re looking at your reel', bleib: 'This takes a few minutes. Your report appears right here, and we also send it to you by email.',
-      lang: 'It’s taking a little longer today. You can close this page, your report will arrive by email.',
+      lang: 'It’s taking longer than usual today. You can close this page, your report will arrive by email as soon as it’s ready.',
       tun: ['We’re looking at your picture', 'We’re listening to your sound', 'We’re reading your on-screen text', 'We’re going through your opening', 'We’re writing your suggestions'],
       tipps: [['The first three seconds decide.', 'Instagram measures how many swipe away within the first 3 seconds.'], ['Text belongs in the middle.', 'Buttons and the caption sit on top at the top and bottom.'], ['Many watch without sound.', 'Captions carry your sentence even then.'], ['One idea per reel.', 'Our working rule from making reels every day.']],
       fehler: {
@@ -348,13 +348,14 @@ function seitenSkript() {
   $('weiter').addEventListener('click', function () { $('weiter').hidden = true; $('melde2').hidden = true; laden(); });
   // Eine Zahl für den ganzen Weg: bis 30 folgt sie dem echten Upload, danach läuft sie über die Prüfzeit auf 96 zu und hält
   // dort, bis der Befund wirklich da ist. 100 heißt: es geht weiter. Die Anzeige zählt weich nach, sie springt nie.
-  var ziel = 0, pruefStart = 0, uhr = null;
+  var ziel = 0, pruefStart = 0, uhr = null, verzug = false;
   function stand(anteil) { ziel = Math.max(ziel, Math.min(30, anteil * 30)); }
   function malen() {
     if (pruefStart && ziel < 100) {
       var s = (Date.now() - pruefStart) / 1000;
       ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / 150)));
-      $('lauf-text').textContent = s > 600 ? T.lang : T.tun[Math.min(T.tun.length - 1, Math.floor((p - 30) / 14))];
+      if ((verzug || s > 600) && !$('bleib').hidden) $('bleib').hidden = true;
+      $('lauf-text').textContent = verzug || s > 600 ? T.lang : T.tun[Math.min(T.tun.length - 1, Math.floor((p - 30) / 14))];
     }
     if (p < Math.floor(ziel)) p += ziel >= 100 ? 2 : 1; if (p > 100) p = 100;
     $('proz').textContent = p + ' %'; $('proz').setAttribute('aria-valuenow', p);
@@ -403,6 +404,9 @@ function seitenSkript() {
     var frage = setInterval(function () {
       if (document.hidden) return;
       fetch('/api/reel-check/status/' + lauf.token).then(function (r) { return r.json(); }).then(function (d) {
+        // Geprüft wird auf unserem Rechner. Hat er das Reel nach drei Minuten noch nicht aufgenommen, ist er gerade nicht am Netz
+        // (Reise, Nacht): dann sagt die Seite das ehrlich, statt minutenlang weiterzuzählen. Der Befund kommt per Mail nach.
+        if (d.status === 'da' && Date.now() - pruefStart > 180000) verzug = true;
         if (d.status !== 'fertig' && d.status !== 'fehler') return;
         clearInterval(frage); clearInterval(tippLauf);
         if (d.status === 'fehler') { location.href = '/rc/' + lauf.token; return; }
