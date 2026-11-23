@@ -23,7 +23,11 @@ echo $$ > "$SPERRE"
 # Eine Browser-Kette zur Zeit, auch ueber Repos und Sitzungen hinweg (20.11.2026: Mac-Absturz beim
 # Browser-Start, waehrend Portal-Tests, Selbsttests und diese Kette nur je ihre eigene Sperre kannten).
 # Das Werkzeug liegt in kit-build; fehlt es, laeuft die Kette mit der Repo-Sperre weiter und sagt es.
-BS="$HOME/.s2s-wachen/kit-build/browser-sperre.py"; [ -f "$BS" ] || BS="$HOME/kit-build/browser-sperre.py"
+# Tore und Register aus kit-build kommen aus dem Wachen-Worktree (origin/main), nie aus dem Entwicklungs-Checkout:
+# der lag am 23.11.2026 108 Staende zurueck, dort fehlte die Freigabe fuer das Scale-Week-Laufband, die Kette stand zwei Naechte phantomrot.
+KIT="$HOME/.s2s-wachen/kit-build"; [ -d "$KIT/motion-loop" ] || KIT="$HOME/kit-build"
+mkdir -p "$KIT/motion-loop/stand"   # Messstand des Bewegungs-Tors (dort ignoriert); im frischen Wachen-Worktree fehlt der Ordner, das Tor bricht sonst nach der Messung ab
+BS="$KIT/browser-sperre.py"; [ -f "$BS" ] || BS="$HOME/kit-build/browser-sperre.py"
 if [ -f "$BS" ]; then
   python3 "$BS" nehmen --pid $$ --name "pruefen.sh (Website)" --warten 1800 || { rc=$?; rm -f "$SPERRE"; exit $rc; }
   export S2S_BROWSER_SPERRE="${S2S_BROWSER_SPERRE:-$$}"
@@ -63,18 +67,18 @@ selbst "Selbsttest Sprachen" scripts/sprachen-check.mjs node scripts/sprachen-ch
 selbst "Selbsttest Zähler" scripts/zaehler-check.mjs node scripts/zaehler-check.mjs --selbsttest
 selbst "Selbsttest Sitemap" scripts/sitemap-check.mjs node scripts/sitemap-check.mjs --selbsttest
 selbst "Selbsttest Danke-Namen" scripts/danke-namen-check.mjs node scripts/danke-namen-check.mjs --selbsttest
-selbst "Platzhalter (Fixtures)" kit-build/platzhalter-check.py   python3 "$HOME/kit-build/platzhalter-check.py" --selbsttest
-selbst "Selbsttest Motion-Loop" kit-build/motion-loop/mess.mjs   node "$HOME/kit-build/motion-loop/mess.mjs" --selbsttest
+selbst "Platzhalter (Fixtures)" kit-build/platzhalter-check.py   python3 "$KIT/platzhalter-check.py" --selbsttest
+selbst "Selbsttest Motion-Loop" kit-build/motion-loop/mess.mjs   node "$KIT/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
 lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs free-content/test/reel-check.test.mjs tests/bewertungen.test.mjs
-lauf "Server nur lokal"          node "$HOME/kit-build/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
+lauf "Server nur lokal"          node "$KIT/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
 # Zweisprachig (17.10.2026): jede DE-Seite hat eine aktuelle EN-Schwester
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs
 lauf "Zähler kennt jede Seite"  node scripts/zaehler-check.mjs
 lauf "Karte je Bestellung DE/EN" node scripts/spende-check.mjs
 lauf "Sitemap nur echte Seiten"  node scripts/sitemap-check.mjs
 lauf "Danke-Seite: Name im Gruß" node scripts/danke-namen-check.mjs
-lauf "Keine Platzhalter-Werte"  python3 "$HOME/kit-build/platzhalter-check.py" .
+lauf "Keine Platzhalter-Werte"  python3 "$KIT/platzhalter-check.py" .
 lauf "CSP gehaertet"             node scripts/csp-haerten.mjs --pruefen
 lauf "CSP im Browser"            node scripts/csp-pruefen-browser.mjs
 lauf "Seitenwechsel"             node scripts/uebergang-check.mjs
@@ -86,11 +90,11 @@ lauf "Szenen je Abschnitt"      env S2S_RUCKELN="$RUCKELN" node scripts/szenen-c
 lauf "Bedienung (Knöpfe)"        node scripts/bedienung-check.mjs
 lauf "Bildschärfe"              node scripts/bild-schaerfe-check.mjs
 lauf "Nichts liegt übereinander" env KOLLISION="$([ "$SCHNELL" = 1 ] && echo schnell || echo voll)" node scripts/kollision-check.mjs
-lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$HOME/kit-build/motion-loop/mess.mjs" s2s
-lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$HOME/kit-build/motion-loop/mess.mjs" funnel
+lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$KIT/motion-loop/mess.mjs" s2s
+lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$KIT/motion-loop/mess.mjs" funnel
 selbst "Selbsttest Besucher" scripts/besucher-sim.mjs node scripts/besucher-sim.mjs --selbsttest
 lauf "Besucher-Simulation"       node scripts/besucher-sim.mjs --wurzel="$PWD"
-lauf "Aussagen (Register s2s)"   env S2S_SITE="$PWD" python3 "$HOME/kit-build/aussagen-check.py" s2s
+lauf "Aussagen (Register s2s)"   env S2S_SITE="$PWD" python3 "$KIT/aussagen-check.py" s2s
 
 echo
 echo "── Dauer je Tor (laengste zuerst)"; printf '%s' "$ZEITEN" | sort -rn | head -12
