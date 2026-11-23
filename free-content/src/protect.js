@@ -72,12 +72,14 @@ export async function hasMailServer(email) {
         { headers: { accept: 'application/dns-json' } }
       );
       const data = await res.json();
-      return Array.isArray(data.Answer) && data.Answer.length > 0;
+      return Array.isArray(data.Answer) ? data.Answer : [];
     };
 
-    if (await lookup('MX')) return true;
-    if (await lookup('A')) return true;
-    return false;
+    const mx = await lookup('MX');
+    // „Null MX“ (RFC 7505, ein Eintrag „0 .“): die Domain sagt ausdrücklich, dass sie keine Mails annimmt (z. B. example.com).
+    if (mx.some((a) => /^0\s+\.$/.test(String(a?.data ?? '').trim()))) return false;
+    if (mx.length) return true;
+    return (await lookup('A')).length > 0;
   } catch (err) {
     console.error('[protect] DNS-Lookup fehlgeschlagen:', err);
     return true; // fail-open: Lookup-Panne darf keine echten Leads killen

@@ -93,9 +93,13 @@ test('Anmeldung: jede Lücke hat ihren eigenen Schlüssel, Einwilligung zählt n
   assert.deepEqual([k.zielgruppe, k.spricht, k.lage, k.vorname, k.plattform], ['', '', '', '', 'instagram']);
   for (const pl of PLATTFORMEN) assert.equal(pruefeStart({ ...KURZ, plattform: pl }).value.plattform, pl);
   assert.equal(pruefeStart({ ...KURZ, plattform: 'myspace' }).error, 'plattform'); assert.equal(pruefeStart({ ...KURZ, plattform: '' }).error, 'plattform');
-  assert.equal(pruefeStart({ ...KURZ, vorname: '  <b>Ana</b>\u0000 ' + 'x'.repeat(80) }).value.vorname.length, 40);
-  assert.doesNotMatch(pruefeStart({ ...KURZ, vorname: '<script>"Ana"&' }).value.vorname, /[<>&"]/);
-  assert.equal(pruefeStart(KURZ).value.telefon, ''); assert.equal(pruefeStart({ ...KURZ, telefon: ' +49 (171) 234-5678 ' }).value.telefon, '+491712345678');
+  assert.equal(pruefeStart({ ...KURZ, vorname: '  Ana\u0000 ' }).value.vorname, 'Ana');
+  for (const falsch of ['<script>"Ana"&', '<b>Ana</b>', 'asdf', '123']) assert.equal(pruefeStart({ ...KURZ, vorname: falsch }).error, 'vorname', falsch);
+  assert.equal(pruefeStart({ ...KURZ, telefon: '0664 1234568', land: 'AT' }).value.telefon, '+436641234568');
+  const tipp = pruefeStart({ ...KURZ, email: 'ana@gmial.com' }); assert.deepEqual([tipp.error, tipp.vorschlag], ['email_tipp', 'ana@gmail.com']);
+  assert.equal(pruefeStart({ ...KURZ, email: 'ana@gmial.com', email_ok: 'ana@gmial.com' }).ok, true, 'bestätigte Schreibweise geht durch');
+  assert.equal(pruefeStart({ ...KURZ, email: 'test@gmail.com' }).error, 'email');
+  assert.equal(pruefeStart(KURZ).value.telefon, ''); assert.equal(pruefeStart({ ...KURZ, telefon: ' +49 (171) 234-5679 ' }).value.telefon, '+491712345679');
   for (const falsch of ['ruf mich an', '123', '+49 171 <b>', '0171 2345678 und 0172 9999999 oder so']) assert.equal(pruefeStart({ ...KURZ, telefon: falsch }).error, 'telefon', falsch);
   const v = pruefeStart({ ...GUT, zielgruppe: 'Mütter\u0000 <b>in</b>\nElternzeit', website: 'x', sprache: 'fr' }).value;
   assert.equal(v.zielgruppe, 'Mütter <b>in</b> Elternzeit'); assert.equal(v.spam, 1); assert.equal(v.sprache, 'de');
@@ -235,6 +239,9 @@ test('ein Gratis-Check je Adresse: liegt das Video einmal vollständig, wird die
       assert.equal((await neu('zwei@example.org')).status, 409, st);
     }
     assert.equal((await neu('drei@example.org')).status, 200, 'eine andere Adresse ist frei');
+    w.env.REEL_CHECK_TEST_MAIL = 'Zwei@example.org'; for (let i = 0; i < 5; i++) assert.equal((await neu('zwei@example.org')).status, 200, 'unsere Testadresse darf immer wieder');
+    assert.equal((await neu('drei@example.org')).status, 200); w.env.REEL_CHECK_TEST_MAIL = ',';
+    assert.equal((await neu('zwei@example.org')).status === 200, false, 'ohne Eintrag gilt die Regel wieder');
   } finally { w.ende(); }
 });
 
@@ -245,7 +252,7 @@ test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach
     const b = await hochladen(w, { ...GUT, email: 'b@example.org' });
     await ruf(w.env, `/api/reel-check/fertig/${b.token}`, 'POST', { teile: b.etags });
     w.s.prepare("UPDATE reel_check SET status = 'wartet', confirmed_at = NULL WHERE token = ?").run(b.token);   // alte Zeile von vor dem 21.11.: Mail nie bestätigt
-    const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla', telefon: '0171 2345678' });
+    const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla', telefon: '0171 2345679' });
     await ruf(w.env, `/api/reel-check/fertig/${c.token}`, 'POST', { teile: c.etags }); await bestaetigen(w.env, c.token);
     await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'frisch: nichts wird gelöscht');

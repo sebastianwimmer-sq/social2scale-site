@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@cloudflare/puppeteer": "2.0.1",
+    "libphonenumber-js": "1.13.16",
     "qrcode-generator": "2.0.4"
   },
   "devDependencies": {

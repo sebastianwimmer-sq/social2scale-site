@@ -19,6 +19,7 @@
 
 import { verifyTurnstile, hasMailServer, registerAttempt } from './protect.js';
 import { normalizeEmail, isDisposable, stripControlChars } from './validate.js';
+import { mailVorschlag, mailErfunden, nameGueltig, nummer } from './eingaben.js';
 import { send } from './mail.js';
 import { reelCheckMailHtml, founderMailHtml } from './pages/confirm-email.js';
 
@@ -38,6 +39,7 @@ export const EINWILLIGUNG_FASSUNG = 'reel-check-1';
 export const MIME = { 'video/mp4': 'mp4', 'video/quicktime': 'mov' };
 export const LAGEN = ['besser', 'anfang', 'keine_zeit'];
 export const PLATTFORMEN = ['instagram', 'tiktok', 'facebook', 'linkedin', 'youtube'];
+const TEST_AM_TAG = 30;
 const VORNAME_MAX = 40;
 const ZIELGRUPPE_MAX = 200;
 const TOKEN_RE = /^[a-f0-9]{48}$/;
@@ -68,6 +70,10 @@ export function pruefeStart(input) {
   const emailNorm = normalizeEmail(d.email);
   if (!emailNorm) return { ok: false, error: 'email' };
   if (isDisposable(emailNorm)) return { ok: false, error: 'disposable' };
+  if (mailErfunden(d.email)) return { ok: false, error: 'email' };
+  // Vertipper in der Domain: einmal nachfragen. Bestätigt sie ihre Schreibweise (email_ok = dieselbe Adresse), geht sie durch.
+  const vorschlag = mailVorschlag(d.email);
+  if (vorschlag && d.email_ok !== String(d.email).trim()) return { ok: false, error: 'email_tipp', vorschlag };
   // Zielgruppe, „spricht selbst“ und Lage sind seit dem 21.11.2026 freiwillig (ein Eingabeschirm): leer heißt „nicht gefragt“,
   // der Check erkennt Sprache selbst. Was kommt, muss trotzdem gültig sein.
   const zielgruppe = stripControlChars(d.zielgruppe ?? '').slice(0, ZIELGRUPPE_MAX);
@@ -76,11 +82,11 @@ export function pruefeStart(input) {
   if (spricht !== '' && spricht !== 'ja' && spricht !== 'nein') return { ok: false, error: 'spricht' };
   const lage = d.lage ?? '';
   if (lage !== '' && !LAGEN.includes(lage)) return { ok: false, error: 'lage' };
-  const vorname = stripControlChars(d.vorname ?? '').replace(/[<>&"]/g, '').trim().slice(0, VORNAME_MAX);
+  const vorname = stripControlChars(d.vorname ?? '').trim().slice(0, VORNAME_MAX);
+  if (!nameGueltig(vorname)) return { ok: false, error: 'vorname' };
   // Handynummer nur, wenn sie selbst eine einträgt (Rückruf von Phil). Leer ist der Normalfall.
-  const telRoh = stripControlChars(d.telefon ?? '').trim();
-  if (telRoh && !/^\+?[0-9][0-9 ()\/.-]{5,22}$/.test(telRoh)) return { ok: false, error: 'telefon' };
-  const telefon = telRoh.replace(/[^0-9+]/g, '');
+  const telefon = nummer(stripControlChars(d.telefon ?? ''), d.land);
+  if (telefon === null) return { ok: false, error: 'telefon' };
   const plattform = d.plattform === undefined ? 'instagram' : d.plattform;
   if (!PLATTFORMEN.includes(plattform)) return { ok: false, error: 'plattform' };
   // Die Einwilligung wird nie vorbelegt und nie abgeleitet: nur ein ausdrückliches true zählt.
@@ -105,6 +111,25 @@ export function istVideoKopf(bytes) {
   return b.length >= 8 && b[4] === 0x66 && b[5] === 0x74 && b[6] === 0x79 && b[7] === 0x70;
 }
 
+/** Unsere eigenen Testadressen (Secret REEL_CHECK_TEST_MAIL, mit Komma getrennt, nie im Code: das Repo ist öffentlich). */
+export function istTest(env, emailNorm) {
+  return String(env.REEL_CHECK_TEST_MAIL || '').split(',').map(normalizeEmail).filter(Boolean).includes(emailNorm);
+}
+
+/** Vorabprüfung beim Verlassen eines Felds: dieselben Regeln wie beim Absenden, ohne Datenbank und ohne Netz. */
+async function eingabe(request, cors) {
+  let d;
+  try { d = await request.json(); } catch { return json({ ok: false }, 400, cors); }
+  if (d?.feld === 'vorname') return json({ ok: nameGueltig(String(d.wert ?? '').slice(0, 80)) , error: 'vorname' }, 200, cors);
+  if (d?.feld === 'telefon') return json({ ok: nummer(String(d.wert ?? '').slice(0, 40), d.land) !== null, error: 'telefon' }, 200, cors);
+  if (d?.feld !== 'email') return json({ ok: false }, 400, cors);
+  const m = String(d.wert ?? '').trim().slice(0, 160), norm = normalizeEmail(m);
+  if (m && (!norm || mailErfunden(m))) return json({ ok: false, error: 'email' }, 200, cors);
+  if (m && isDisposable(norm)) return json({ ok: false, error: 'disposable' }, 200, cors);
+  const vorschlag = mailVorschlag(m);
+  return json(vorschlag ? { ok: false, error: 'email_tipp', vorschlag } : { ok: true }, 200, cors);
+}
+
 async function zeile(db, token) {
   if (!TOKEN_RE.test(token)) return null;
   return db.prepare('SELECT * FROM reel_check WHERE token = ?').bind(token).first();
@@ -120,7 +145,7 @@ async function start(request, env, cors) {
     console.error('[reel-check] TURNSTILE_SECRET fehlt — Bot-Gate ist AUS');
   }
   const c = pruefeStart(body);
-  if (!c.ok) return json({ ok: false, error: c.error }, 422, cors);
+  if (!c.ok) return json({ ok: false, error: c.error, ...(c.vorschlag ? { vorschlag: c.vorschlag } : {}) }, 422, cors);
   const v = c.value;
   // Der Honigtopf verwirft nie, er markiert (Autofill füllt ihn bei echten Menschen): die Bestätigung per Mail entscheidet.
   if (v.spam) console.error('[reel-check] Honigtopf gefüllt, Zeile wird markiert');
@@ -129,13 +154,14 @@ async function start(request, env, cors) {
     console.error('[reel-check] Rate-Limit-Zählung fehlgeschlagen:', err);
     return json({ ok: false, error: 'backend' }, 503, cors);
   }
-  if (!limit.ok) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+  const test = istTest(env, v.emailNorm);
+  if (!limit.ok && !test) return json({ ok: false, error: 'rate_limited' }, 429, cors);
   if (!(await hasMailServer(v.emailNorm))) return json({ ok: false, error: 'email_domain' }, 422, cors);
   try {
     const heute = await env.DB.prepare("SELECT COUNT(*) AS c FROM reel_check WHERE email_norm = ? AND created_at > datetime('now', '-1 day')").bind(v.emailNorm).first();
-    if ((heute?.c ?? 0) >= JE_ADRESSE_AM_TAG) return json({ ok: false, error: 'rate_limited' }, 429, cors);
+    if ((heute?.c ?? 0) >= (test ? TEST_AM_TAG : JE_ADRESSE_AM_TAG)) return json({ ok: false, error: 'rate_limited' }, 429, cors);
     const genutzt = await env.DB.prepare(`SELECT COUNT(*) AS c FROM reel_check WHERE email_norm = ? AND status IN (${GENUTZT_STATUS.map(() => '?').join(', ')})`).bind(v.emailNorm, ...GENUTZT_STATUS).first();
-    if ((genutzt?.c ?? 0) >= 1) return json({ ok: false, error: 'schon' }, 409, cors);
+    if ((genutzt?.c ?? 0) >= 1 && !test) return json({ ok: false, error: 'schon' }, 409, cors);
     const token = neuerToken();
     const mp = await env.IMAGES.createMultipartUpload(schluessel(token, v.ext), { httpMetadata: { contentType: v.mime } });
     await env.DB.prepare(
@@ -228,6 +254,7 @@ export async function reelCheckApi(request, env, ctx, cors, url) {
   const p = url.pathname;
   if (!p.startsWith('/api/reel-check/')) return null;
   if (p === '/api/reel-check/start') return request.method === 'POST' ? start(request, env, cors) : json({ ok: false, error: 'method' }, 405, cors);
+  if (p === '/api/reel-check/eingabe') return request.method === 'POST' ? eingabe(request, cors) : json({ ok: false, error: 'method' }, 405, cors);
   let m = p.match(/^\/api\/reel-check\/teil\/([a-f0-9]{48})\/(\d{1,3})$/);
   if (m) return request.method === 'PUT' ? teil(request, env, cors, m[1], Number(m[2])) : json({ ok: false, error: 'method' }, 405, cors);
   m = p.match(/^\/api\/reel-check\/fertig\/([a-f0-9]{48})$/);

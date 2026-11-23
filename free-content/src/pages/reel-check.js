@@ -10,6 +10,7 @@
 
 import { htmlDoc, SICHERHEITS_HEADER } from './shell.js';
 import { MAX_BYTES, LOESCH_FRIST_TAGE } from '../reel-check.js';
+import { laender } from '../eingaben.js';
 
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
 const MAX_MB = Math.round(MAX_BYTES / 1024 / 1024);
@@ -27,7 +28,7 @@ export const TEXTE = {
     waehlen: 'Video auswählen', ziehen: 'oder hierher ziehen', format: `MP4 oder MOV, bis ${MAX_MB} MB`, anderes: 'Anderes Video wählen',
     liegt: 'Ausgewählt', ohneBild: 'Dein Browser zeigt dieses Video nicht an. Ausgewählt ist es trotzdem.',
     zettel: 'Welches Reel sollen wir uns <em>ansehen?</em>',
-    f1: 'Wo postest du es?', vorname: 'Dein Vorname', telefon: 'Handynummer', telefonh: 'Freiwillig. Nur wenn Phil dich zu deinem Befund anrufen darf.',
+    f1: 'Wo postest du es?', vorname: 'Dein Vorname', telefon: 'Handynummer', land: 'Ländervorwahl', telefonh: 'Freiwillig. Nur wenn Phil dich zu deinem Befund anrufen darf.',
     mail: 'Wohin soll der Befund?', mailh: 'Deine E-Mail-Adresse',
     haken: `Ich bin einverstanden, dass social2scale mein Reel prüft, dabei die gesprochenen Worte und den Text im Bild von einer KI (Claude von Anthropic) auswerten lässt und mir den Befund per E-Mail schickt. Das Reel ist mein eigenes. Video und Befund werden nach ${LOESCH_FRIST_TAGE} Tagen gelöscht. Was wir daraus über Reels lernen, behalten wir ohne meinen Namen.`,
     mehr: 'Mehr dazu in der', ds: 'Datenschutzerklärung', dsFuss: 'Datenschutz', dsUrl: 'https://social2scale.com/datenschutz/#reel-check',
@@ -44,8 +45,9 @@ export const TEXTE = {
         video_art: 'Das ist kein MP4 oder MOV. Speichere das Reel als Video auf deinem Gerät und wähl es nochmal aus.',
         video_gross: `Das Video ist größer als ${MAX_MB} MB. Exportier es in 1080p, dann passt es.`,
         video_klein: 'Die Datei ist zu klein für ein Reel. Wähl das fertige Video aus.',
+        vorname: 'Bitte schreib deinen Vornamen, wie du heißt.', email_tipp: 'Meinst du', email_so: 'Nein, meine stimmt',
         email: 'Bitte prüf deine E-Mail-Adresse.', email_domain: 'An diese Adresse können wir nichts schicken. Bitte prüf sie.', disposable: 'Bitte nimm eine Adresse, die du dauerhaft nutzt.',
-        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.', plattform: 'Bitte wähl aus, wo du postest.', telefon: 'Die Handynummer sieht nicht richtig aus. Prüf sie oder lass das Feld leer.',
+        zielgruppe: 'Schreib in ein paar Worten, wen du erreichen willst.', spricht: 'Bitte wähl eine Antwort aus.', lage: 'Bitte wähl eine Antwort aus.', plattform: 'Bitte wähl aus, wo du postest.', telefon: 'Diese Nummer gibt es so nicht. Prüf Land und Nummer oder lass das Feld leer.',
         schon: 'Deinen kostenlosen Check hast du schon genutzt. Jeden weiteren Beitrag sehen wir uns in der Betreuung an, such dir dafür oben einen Termin mit Phil aus.',
         einwilligung: 'Ohne dein Einverständnis dürfen wir das Reel nicht prüfen. Setz den Haken, wenn du einverstanden bist.',
         captcha: 'Die Sicherheitsprüfung läuft noch oder hat nicht geklappt. Warte einen Moment und tipp nochmal.',
@@ -76,7 +78,7 @@ export const TEXTE = {
     waehlen: 'Choose a video', ziehen: 'or drop it here', format: `MP4 or MOV, up to ${MAX_MB} MB`, anderes: 'Choose a different video',
     liegt: 'Selected', ohneBild: 'Your browser can’t show this video. It’s still selected.',
     zettel: 'Which reel should we <em>look at?</em>',
-    f1: 'Where do you post it?', vorname: 'Your first name', telefon: 'Mobile number', telefonh: 'Optional. Only if Phil may call you about your report.',
+    f1: 'Where do you post it?', vorname: 'Your first name', telefon: 'Mobile number', land: 'Country code', telefonh: 'Optional. Only if Phil may call you about your report.',
     mail: 'Where should the report go?', mailh: 'Your email address',
     haken: `I agree that social2scale checks my reel, has an AI (Claude by Anthropic) evaluate the spoken words and on-screen text, and emails me the report. The reel is my own. Video and report are deleted after ${LOESCH_FRIST_TAGE} days. What we learn about reels from it, we keep without my name.`,
     mehr: 'More in our', ds: 'privacy policy', dsFuss: 'Privacy', dsUrl: 'https://social2scale.com/en/privacy/#reel-check',
@@ -93,8 +95,9 @@ export const TEXTE = {
         video_art: 'That’s not an MP4 or MOV. Save the reel as a video on your device and choose it again.',
         video_gross: `The video is larger than ${MAX_MB} MB. Export it in 1080p and it will fit.`,
         video_klein: 'The file is too small to be a reel. Choose the finished video.',
+        vorname: 'Please enter your first name as you use it.', email_tipp: 'Did you mean', email_so: 'No, mine is right',
         email: 'Please check your email address.', email_domain: 'We can’t send anything to this address. Please check it.', disposable: 'Please use an address you keep.',
-        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.', plattform: 'Please choose where you post.', telefon: 'That mobile number doesn’t look right. Check it or leave the field empty.',
+        zielgruppe: 'Tell us in a few words who you want to reach.', spricht: 'Please pick an answer.', lage: 'Please pick an answer.', plattform: 'Please choose where you post.', telefon: 'That number doesn’t exist like this. Check country and number, or leave the field empty.',
         schon: 'You’ve already used your free check. We look at every further post as part of our service, pick a call with Phil at the top for that.',
         einwilligung: 'We can’t check the reel without your consent. Tick the box if you agree.',
         captcha: 'The security check is still running or didn’t work. Wait a moment and tap again.',
@@ -181,6 +184,16 @@ const STIL = `
   .hilfe{color:var(--muted);font-size:15px;margin:-2px 0 10px}
   .feld{width:100%;min-height:52px;padding:12px 14px;border-radius:12px;border:1px solid var(--hair-2);background:rgba(3,8,13,.6);color:var(--ink);font:17px var(--ff-body)}
   .feld:hover{border-color:rgba(242,243,241,.3)}
+  .tel{display:grid;grid-template-columns:104px minmax(0,1fr);gap:8px}
+  .vw{position:relative;display:flex;align-items:center;justify-content:space-between}
+  .vw b{font-weight:500}
+  .vw::after{content:'';width:8px;height:8px;margin:-4px 2px 0 0;border:solid var(--muted);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+  .vw select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:17px}
+  .vw:focus-within{outline:2px solid var(--emerald-soft);outline-offset:2px}
+  .vw option{color:#0A1216;background:#fff}
+  .feld[aria-invalid=true]{border-color:rgba(240,121,107,.75)}
+  .fehl{margin-top:8px;color:#FFB9AE;font-size:15px}
+  .fehl button{min-height:44px;padding:0;margin-right:14px;border:0;background:none;color:var(--ink);font:600 15px var(--ff-body);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
   .wahl{display:grid;gap:8px}
   .zeile{position:relative;display:flex;align-items:center;gap:13px;min-height:52px;padding:10px 14px;border-radius:12px;border:1px solid var(--hair-2);cursor:pointer;
     transition:border-color var(--dur-2),background var(--dur-2)}
@@ -254,7 +267,8 @@ function markup(T, siteKey) {
         <div class="frage"><label for="email">${T.mail}</label>
           <input class="feld" id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" placeholder="${T.mailh}"></div>
         <div class="frage"><label for="telefon">${T.telefon}</label><p class="hilfe" id="telh">${T.telefonh}</p>
-          <input class="feld" id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" aria-describedby="telh"></div>
+          <div class="tel"><span class="vw feld"><b id="vw">+49</b><select id="land" aria-label="${T.land}" autocomplete="off">${laender(T.andere[2] === 'en' ? 'de' : 'en').map((l) => `<option value="${l.c}" data-vw="${l.vw}"${l.c === 'DE' ? ' selected' : ''}>${esc(l.name)} (+${l.vw})</option>`).join('')}</select></span>
+          <input class="feld" id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" aria-describedby="telh"></div></div>
         <div class="honig" aria-hidden="true"><label>Website<input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="haken"><input type="checkbox" id="einwilligung"><label for="einwilligung">${T.haken} ${T.mehr} <a href="${T.dsUrl}" target="_blank" rel="noopener">${T.ds}</a>.</label></div>
         <div class="turnstile-wrap"><div id="ts"></div></div>
@@ -331,6 +345,45 @@ function seitenSkript() {
   function token() {
     try { return window.turnstile && tsId !== null ? (turnstile.getResponse(tsId) || '') : ''; } catch (e) { return ''; }
   }
+  var FELD = { vorname: 'vorname', email: 'email', email_domain: 'email', disposable: 'email', email_tipp: 'email', telefon: 'telefon' }, mailOk = '';
+  function feldFrei(id) {
+    var alt = $('fehl-' + id); if (alt) alt.remove(); $(id).removeAttribute('aria-invalid');
+    $(id).setAttribute('aria-describedby', id === 'telefon' ? 'telh' : ''); if (id !== 'telefon') $(id).removeAttribute('aria-describedby');
+  }
+  // Der Hinweis steht direkt unter seinem Feld, nicht erst unten am Knopf.
+  function feldSag(schluessel, vorschlag) {
+    var id = FELD[schluessel], el = $(id), f = document.createElement('p'); feldFrei(id);
+    f.className = 'fehl'; f.id = 'fehl-' + id; f.setAttribute('role', 'alert'); f.textContent = T.fehler[schluessel];
+    if (vorschlag) {
+      var ja = document.createElement('button'), so = document.createElement('button'); ja.type = so.type = 'button'; ja.textContent = vorschlag + '?'; so.textContent = T.fehler.email_so;
+      ja.onclick = function () { el.value = vorschlag; feldFrei(id); el.focus(); }; so.onclick = function () { mailOk = el.value.trim(); feldFrei(id); };
+      f.append(' ', ja, ' ', so);
+    }
+    el.closest('.frage').appendChild(f); el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', f.id);
+  }
+  var landEl = $('land');
+  function vwZeigen() { $('vw').textContent = '+' + landEl.selectedOptions[0].dataset.vw; }
+  function landNach(c) { var o = landEl.querySelector('option[value="' + c + '"]'); if (o) { landEl.value = c; vwZeigen(); } return !!o; }
+  // Vorbelegung: Zeitzone des Geräts (verlässlicher als die Sprache), sonst die Region der Sprache, sonst Deutschland
+  var zone = ''; try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+  var region = { 'Europe/Vienna': 'AT', 'Europe/Zurich': 'CH', 'Europe/Berlin': 'DE', 'Europe/Vaduz': 'LI', 'Europe/Luxembourg': 'LU', 'Europe/London': 'GB' }[zone] || (navigator.language || '').split('-')[1];
+  if (region) landNach(String(region).toUpperCase());
+  landEl.addEventListener('change', function () { vwZeigen(); if ($('telefon').value.trim()) pruefFeld('telefon'); });
+  // Steht die Vorwahl schon in der Nummer (Autofill, eingefügt), stellt sich das Land danach.
+  $('telefon').addEventListener('input', function () {
+    feldFrei('telefon'); var z = this.value.replace(/[^0-9+]/g, '').replace(/^00/, '+'); if (z[0] !== '+') return;
+    if (z.slice(1).indexOf(landEl.selectedOptions[0].dataset.vw) === 0) return;
+    for (var n = 3; n; n--) for (var i = 0; i < landEl.options.length; i++) if (landEl.options[i].dataset.vw === z.slice(1, 1 + n)) { landEl.selectedIndex = i; return vwZeigen(); }
+  });
+  function pruefFeld(id) {
+    var w = $(id).value.trim(); if (!w || (id === 'email' && w === mailOk)) return;
+    fetch('/api/reel-check/eingabe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ feld: id, wert: w, land: landEl.value }) })
+      .then(function (r) { return r.json(); }).then(function (d) { if ($(id).value.trim() === w && d.error && !d.ok) feldSag(d.error, d.vorschlag); }).catch(function () {});
+  }
+  ['vorname', 'email', 'telefon'].forEach(function (id) {
+    $(id).addEventListener('blur', function () { pruefFeld(id); });
+    if (id !== 'telefon') $(id).addEventListener('input', function () { feldFrei(id); });
+  });
   function wert(name) { var el = form.querySelector('input[name=' + name + ']:checked'); return el ? el.value : ''; }
 
   var p = 0, tippNr = 0, tippLauf = null;
@@ -419,7 +472,7 @@ function seitenSkript() {
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!datei) { sag('datei'); geraet.scrollIntoView({ behavior: ruhig ? 'auto' : 'smooth', block: 'center' }); return; }
-    var daten = { email: $('email').value.trim(), vorname: $('vorname').value.trim(), telefon: $('telefon').value.trim(), plattform: wert('plattform'),
+    var daten = { email: $('email').value.trim(), vorname: $('vorname').value.trim(), telefon: $('telefon').value.trim(), land: landEl.value, email_ok: mailOk, plattform: wert('plattform'),
       einwilligung: $('einwilligung').checked, website: $('website').value, elapsed: Date.now() - START,
       bytes: datei.f.size, mime: datei.art, sprache: LANG === 'en' ? 'en' : 'de', turnstile: token() };
     // dieselbe Reihenfolge wie auf dem Schirm: die erste offene Stelle wird genannt und angesprungen
@@ -430,7 +483,7 @@ function seitenSkript() {
     try {
       var r = await fetch('/api/reel-check/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(daten) });
       var d = await r.json().catch(function () { return {}; });
-      if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile && tsId !== null) turnstile.reset(tsId); } catch (x) {} return sag(d.error || 'sonst'); }
+      if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile && tsId !== null) turnstile.reset(tsId); } catch (x) {} if (FELD[d.error]) { melde.hidden = true; feldSag(d.error, d.vorschlag); $(FELD[d.error]).focus(); return; } return sag(d.error || 'sonst'); }
       lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] }; zaehl('abgeschickt');
       zeigeLauf(); laden();
     } catch (x) { knopf.disabled = false; sag('sonst'); }
