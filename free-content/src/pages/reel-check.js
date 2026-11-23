@@ -559,7 +559,7 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
     if (/^[a-f0-9]{48}$/.test(token)) {
       const mit = (pfad) => `href='https://start.social2scale.com${pfad}?von=check&amp;rc=${token}'`;
       befund = befund.replaceAll("href='https://start.social2scale.com/en/'", mit('/en/')).replaceAll("href='https://start.social2scale.com/'", mit('/'))
-        .replaceAll("href='https://social2scale.com/en/free/'", mit('/en/')).replaceAll("href='https://social2scale.com/gratis/'", mit('/'));
+        .replaceAll('__BEFUND_PDF__', `/rc/${token}/befund.pdf`).replaceAll("href='https://social2scale.com/en/free/'", mit('/en/')).replaceAll("href='https://social2scale.com/gratis/'", mit('/'));
     }
     return new Response(befund, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER, 'X-Robots-Tag': 'noindex' } });
   }

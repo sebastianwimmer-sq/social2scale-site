@@ -47,6 +47,7 @@ const TOKEN_RE = /^[a-f0-9]{48}$/;
 const json = (body, status, cors) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', ...cors } });
 const schluessel = (token, ext) => `reelcheck/${token}/reel.${ext}`;
 const befundSchluessel = (token) => `reelcheck/${token}/befund.html`;
+const pdfSchluessel = (token) => `reelcheck/${token}/befund.pdf`;
 
 function neuerToken() {
   const b = new Uint8Array(24);
@@ -300,12 +301,21 @@ export async function stand(env, token) {
   return { status: z.status, sprache: z.sprache, seit: z.confirmed_at ? Math.max(0, (Date.now() - Date.parse(z.confirmed_at.replace(' ', 'T') + 'Z')) / 1000) : 0 };
 }
 
+/** Der Befund als PDF. Nur solange die Zeile fertig ist; danach 404 wie die Seite. */
+export async function befundPdf(env, token) {
+  const z = await zeile(env.DB, token);
+  const obj = z && z.status === 'fertig' ? await env.IMAGES.get(pdfSchluessel(token)) : null;
+  if (!obj) return null;
+  return new Response(obj.body, { status: 200, headers: { 'Content-Type': 'application/pdf', 'Content-Disposition': `attachment; filename="reel-check-social2scale.pdf"`,
+    'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', 'X-Robots-Tag': 'noindex' } });
+}
+
 async function wegraeumen(env, z, grund) {
   const key = schluessel(z.token, MIME[z.mime] || 'mp4');
   if (z.upload_id) {
     try { await env.IMAGES.resumeMultipartUpload(key, z.upload_id).abort(); } catch (err) { console.error('[reel-check] Upload-Abbruch:', err); }
   }
-  await env.IMAGES.delete([key, befundSchluessel(z.token)]);
+  await env.IMAGES.delete([key, befundSchluessel(z.token), pdfSchluessel(z.token)]);
   // Die Zeile bleibt als Zähler ohne Person: Adresse, Vorname und Zielgruppe werden geleert, der Token ist danach tot.
   await env.DB.prepare(
     "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', vorname='', telefon='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",

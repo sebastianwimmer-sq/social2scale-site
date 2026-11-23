@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
-import {
+import { befundPdf,
   pruefeStart, teile, teilGroesse, istVideoKopf, reelCheckApi, bestaetigen, stand, reelCheckAufraeumen,
   reelCheckPost, reelCheckWaechter, WAECHTER_TITEL, MARKIERT_TITEL, WAECHTER_MIN,
   TEIL_BYTES, MAX_BYTES, MIN_BYTES, JE_ADRESSE_AM_TAG, PLATTFORMEN, LOESCH_FRIST_TAGE, EINWILLIGUNG_FASSUNG,
@@ -36,7 +36,7 @@ function welt() {
   const IMAGES = {
     createMultipartUpload: async (key) => { const id = `u${++nr}`; offen.set(id, new Map()); return mp(key, id); },
     resumeMultipartUpload: (key, id) => mp(key, id),
-    get: async (key) => (ablage.has(key) ? { text: async () => new TextDecoder().decode(ablage.get(key)) } : null),
+    get: async (key) => (ablage.has(key) ? { text: async () => new TextDecoder().decode(ablage.get(key)), body: ablage.get(key) } : null),
     put: async (key, v) => ablage.set(key, new TextEncoder().encode(v)),
     delete: async (k) => { for (const x of [].concat(k)) ablage.delete(x); },
   };
@@ -254,7 +254,7 @@ test('Löschfristen: 24 h ohne Abschluss, 7 Tage ohne Bestätigung, 30 Tage nach
     w.s.prepare("UPDATE reel_check SET status = 'wartet', confirmed_at = NULL WHERE token = ?").run(b.token);   // alte Zeile von vor dem 21.11.: Mail nie bestätigt
     const c = await hochladen(w, { ...GUT, email: 'c@example.org', vorname: 'Carla', telefon: '0171 2345679' });
     await ruf(w.env, `/api/reel-check/fertig/${c.token}`, 'POST', { teile: c.etags }); await bestaetigen(w.env, c.token);
-    await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x');
+    await w.env.IMAGES.put(`reelcheck/${c.token}/befund.html`, 'x'); await w.env.IMAGES.put(`reelcheck/${c.token}/befund.pdf`, '%PDF');
     assert.equal(await reelCheckAufraeumen(w.env), 0, 'frisch: nichts wird gelöscht');
     const alt = (tok, spalte, wie) => w.s.prepare(`UPDATE reel_check SET ${spalte} = datetime('now', ?) WHERE token = ?`).run(wie, tok);
     alt(a.token, 'created_at', '-23 hours'); alt(b.token, 'created_at', '-6 days'); alt(c.token, 'confirmed_at', `-${LOESCH_FRIST_TAGE - 1} days`);
@@ -297,4 +297,20 @@ test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt,
   assert.ok(mitLink.includes(`start.social2scale.com/en/?von=check&amp;rc=${tok}`));
   assert.match(await reelCheckStandSeite({ status: 'geloescht', sprache: 'en' }).text(), /This report is/);
   assert.doesNotMatch(await reelCheckStandSeite({ status: 'da', token: '"><script>' }).text(), /"><script>/);
+});
+
+test('PDF-Befund: nur bei fertiger Zeile, als Download, mit der Löschung weg; die Seite setzt den Link', async () => {
+  const w = welt();
+  try {
+    const a = await hochladen(w, { ...GUT, email: 'pdf@example.org' });
+    await w.env.IMAGES.put(`reelcheck/${a.token}/befund.pdf`, '%PDF-1.4');
+    assert.equal(await befundPdf(w.env, a.token), null, 'noch nicht fertig'); assert.equal(await befundPdf(w.env, 'b'.repeat(48)), null);
+    w.s.prepare("UPDATE reel_check SET status = 'fertig', confirmed_at = datetime('now', '-40 days') WHERE token = ?").run(a.token);
+    const r = await befundPdf(w.env, a.token);
+    assert.equal(r.headers.get('content-type'), 'application/pdf'); assert.match(r.headers.get('content-disposition'), /^attachment/); assert.equal(await r.text(), '%PDF-1.4');
+    await reelCheckAufraeumen(w.env);
+    assert.equal(await w.env.IMAGES.get(`reelcheck/${a.token}/befund.pdf`), null); assert.equal(await befundPdf(w.env, a.token), null);
+    const s = await reelCheckStandSeite({ status: 'fertig', befund: "<a href='__BEFUND_PDF__'>", token: a.token }).text();
+    assert.equal(s, `<a href='/rc/${a.token}/befund.pdf'>`);
+  } finally { w.ende(); }
 });

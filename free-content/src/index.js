@@ -10,7 +10,7 @@ import { reelBescheid } from './reel-bescheid.js';
 import { workbookBescheid } from './workbook-bescheid.js';
 import { abstimmungMail } from './abstimmung-mail.js';
 import { alteAdresse } from './alte-adresse.js';
-import { reelCheckApi, bestaetigen as reelCheckBestaetigen, stand as reelCheckStand, reelCheckAufraeumen, reelCheckPost, reelCheckWaechter } from './reel-check.js';
+import { reelCheckApi, bestaetigen as reelCheckBestaetigen, stand as reelCheckStand, befundPdf as reelCheckPdf, reelCheckAufraeumen, reelCheckPost, reelCheckWaechter } from './reel-check.js';
 import { reelCheckSeite, reelCheckStandSeite } from './pages/reel-check.js';
 import {
   verifyTurnstile,
@@ -486,6 +486,12 @@ export default {
         console.error('[reel-check] Bestätigung fehlgeschlagen:', err);
         return reelCheckStandSeite({ status: 'not_found', sprache: 'de' });
       }
+    }
+    const rcPdf = url.pathname.match(/^\/rc\/([a-f0-9]{48})\/befund\.pdf$/);
+    if (rcPdf && request.method === 'GET') {
+      try { const r = await reelCheckPdf(env, rcPdf[1]); if (r) return r; } catch (err) { console.error('[reel-check] PDF nicht lesbar:', err); }
+      const weg = reelCheckStandSeite({ status: 'not_found', sprache: 'de' });
+      return new Response(weg.body, { status: 404, headers: weg.headers });
     }
     const rcStand = url.pathname.match(/^\/rc\/([a-f0-9]{48})$/);
     if (rcStand && request.method === 'GET') {
