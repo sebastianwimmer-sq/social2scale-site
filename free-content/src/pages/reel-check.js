@@ -293,7 +293,7 @@ function seitenSkript() {
     try { tsId = turnstile.render('#ts', { sitekey: $('weg').getAttribute('data-sitekey'), theme: 'dark' }); } catch (e) {}
   }
   window.rcTs = tsZeichnen;
-  $('los').addEventListener('click', function () { zeig('s-form', 'form-kopf'); tsZeichnen(); });
+  $('los').addEventListener('click', function () { zeig('s-form', 'form-kopf'); tsZeichnen(); zaehl('fragen'); });
 
   function sag(schluessel, gut) {
     melde.textContent = T.fehler[schluessel] || T[schluessel] || T.fehler.sonst;
@@ -399,7 +399,7 @@ function seitenSkript() {
   }
   // Das Video liegt bei uns: dieselbe Seite bleibt offen, bis der Befund da ist, und zeigt ihn dann selbst.
   function pruefen() {
-    pruefStart = Date.now();
+    pruefStart = Date.now(); zaehl('liegt');
     $('lauf-kopf').textContent = T.prueft; $('bleib').textContent = T.bleib; $('bleib').hidden = false;
     var frage = setInterval(function () {
       if (document.hidden) return;
@@ -410,7 +410,7 @@ function seitenSkript() {
         if (d.status !== 'fertig' && d.status !== 'fehler') return;
         clearInterval(frage); clearInterval(tippLauf);
         if (d.status === 'fehler') { location.href = '/rc/' + lauf.token; return; }
-        ziel = 100;
+        ziel = 100; zaehl('befund');
         var warte = setInterval(function () { if (p >= 100) { clearInterval(warte); clearInterval(uhr); setTimeout(function () { location.href = '/rc/' + lauf.token; }, ruhig ? 0 : 900); } }, 200);
       }).catch(function () {});
     }, 5000);
@@ -431,18 +431,22 @@ function seitenSkript() {
       var r = await fetch('/api/reel-check/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(daten) });
       var d = await r.json().catch(function () { return {}; });
       if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile && tsId !== null) turnstile.reset(tsId); } catch (x) {} return sag(d.error || 'sonst'); }
-      lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] };
+      lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] }; zaehl('abgeschickt');
       zeigeLauf(); laden();
     } catch (x) { knopf.disabled = false; sag('sonst'); }
   });
 
-  // Seitenaufruf zählen wie im Funnel: ohne Cookie, ohne Kennung (closing /api/pv)
-  try {
-    if (navigator.doNotTrack !== '1' && localStorage.getItem('s2s-zaehlen') !== 'aus') {
-      var pv = JSON.stringify({ p: location.pathname, r: document.referrer || '', d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
+  // Zählen wie im Funnel: ohne Cookie, ohne Kennung (closing /api/pv). Die Seite zählt als Aufruf, jeder Schritt danach als
+  // Ereignis unter <Seite>schritt/<name>/ (Portal: REEL_CHECK_TRICHTER in _portal/lib/siteviews.js, dort müssen die Namen stehen).
+  function zaehl(schritt) {
+    try {
+      if (navigator.doNotTrack === '1' || localStorage.getItem('s2s-zaehlen') === 'aus') return;
+      var seite = LANG === 'en' ? '/en/reel-check/' : '/reel-check/';
+      var pv = JSON.stringify({ p: schritt ? seite + 'schritt/' + schritt + '/' : seite, r: document.referrer || '', d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
       if (navigator.sendBeacon) navigator.sendBeacon('https://closing.social2scale.com/api/pv', new Blob([pv], { type: 'text/plain;charset=UTF-8' }));
-    }
-  } catch (e) {}
+    } catch (e) {}
+  }
+  zaehl('');
 }
 
 // Der Bau des Workers (esbuild, keepNames) setzt in jede benannte Funktion einen Aufruf von __name. Das Seitenskript wird als
