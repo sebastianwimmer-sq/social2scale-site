@@ -15,6 +15,7 @@ import { laender } from '../eingaben.js';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
 const MAX_MB = Math.round(MAX_BYTES / 1024 / 1024);
 
+export const PRUEF_TAU = 40;   // Sekunden: nach einer gemessenen Prüfdauer von rund 80 s steht die Zahl bei 87
 export const TEXTE = {
   de: {
     pfad: '/reel-check/', andere: ['/en/reel-check/', 'English', 'en'], start: 'https://social2scale.com/',
@@ -36,7 +37,7 @@ export const TEXTE = {
     impressum: 'Impressum', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
       kommt: 'Dein Reel kommt an', offen: 'Lass die Seite offen, bis dein Video bei uns liegt.', weiter: 'Weiter hochladen',
-      prueft: 'Wir sehen uns dein Reel an', bleib: 'Das dauert ein paar Minuten. Dein Befund erscheint gleich hier, und wir schicken ihn dir zusätzlich per Mail.',
+      prueft: 'Wir sehen uns dein Reel an', bleib: 'Du kannst die Seite schließen. Wir schreiben dir an {mail}, sobald dein Befund da ist.',
       lang: 'Heute dauert es länger als sonst. Du kannst die Seite schließen, dein Befund kommt per Mail, sobald er fertig ist.',
       tun: ['Wir sehen uns dein Bild an', 'Wir hören deinen Ton ab', 'Wir lesen deinen Text im Bild', 'Wir gehen deinen Einstieg durch', 'Wir schreiben deine Vorschläge'],
       tipps: [['Die ersten drei Sekunden entscheiden.', 'Instagram misst, wie viele in den ersten 3 Sekunden weiterwischen.'], ['Text gehört in die Mitte.', 'Oben und unten liegen Knöpfe und Bildunterschrift darüber.'], ['Viele schauen ohne Ton.', 'Untertitel tragen deinen Satz auch dann.'], ['Ein Gedanke je Reel.', 'Unsere Arbeitsregel aus der täglichen Arbeit an Reels.']],
@@ -86,7 +87,7 @@ export const TEXTE = {
     impressum: 'Legal notice', impressumUrl: 'https://social2scale.com/impressum/',
     js: {
       kommt: 'Your reel is on its way', offen: 'Keep this page open until we have your video.', weiter: 'Continue upload',
-      prueft: 'We’re looking at your reel', bleib: 'This takes a few minutes. Your report appears right here, and we also send it to you by email.',
+      prueft: 'We’re looking at your reel', bleib: 'You can close this page. We’ll write to {mail} as soon as your report is ready.',
       lang: 'It’s taking longer than usual today. You can close this page, your report will arrive by email as soon as it’s ready.',
       tun: ['We’re looking at your picture', 'We’re listening to your sound', 'We’re reading your on-screen text', 'We’re going through your opening', 'We’re writing your suggestions'],
       tipps: [['The first three seconds decide.', 'Instagram measures how many swipe away within the first 3 seconds.'], ['Text belongs in the middle.', 'Buttons and the caption sit on top at the top and bottom.'], ['Many watch without sound.', 'Captions carry your sentence even then.'], ['One idea per reel.', 'Our working rule from making reels every day.']],
@@ -117,6 +118,9 @@ export const TEXTE = {
     },
   },
 };
+
+const RING = '<svg class="ring" viewBox="0 0 148 148" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1FC998"/><stop offset="1" stop-color="#46BEEA"/></linearGradient></defs>' +
+  '<circle class="bahn" cx="74" cy="74" r="66"/><circle class="bogen" id="bogen" cx="74" cy="74" r="66" pathLength="100"/><circle class="licht" cx="74" cy="74" r="72" pathLength="100"/></svg>';
 
 const STIL = `
   body{font-size:17px;line-height:1.55}
@@ -163,7 +167,16 @@ const STIL = `
   .pixfeld{position:relative;width:min(210px,56vw);margin:0 auto;border-radius:18px;overflow:hidden;aspect-ratio:9/16;background:linear-gradient(160deg,#17262B,#0A1215);
     box-shadow:0 1px 1px #000,0 24px 48px -14px rgba(0,0,0,.8),0 0 80px -10px rgba(31,201,152,.25)}
   .pixfeld video{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.14);transition:filter .6s linear}
-  .proz{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:450 3.4rem/1 var(--ff-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-shadow:0 2px 18px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.9)}
+  /* Kreis wie beim Streaming: der Bogen ist der echte Stand, das umlaufende Licht zeigt, dass gearbeitet wird */
+  .pixfeld::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(3,8,13,.62) 0 27%,rgba(3,8,13,0) 62%)}
+  .ring{position:absolute;z-index:1;left:50%;top:50%;width:148px;height:148px;margin:-74px 0 0 -74px;overflow:visible}
+  .ring circle{fill:none;stroke-width:7;stroke-linecap:round}
+  .ring .bahn{stroke:rgba(242,243,241,.16)}
+  .ring .bogen{stroke:url(#rg);stroke-dasharray:0 100;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dasharray .5s linear;filter:drop-shadow(0 0 7px rgba(31,201,152,.55))}
+  .ring .licht{stroke:rgba(242,243,241,.85);stroke-width:2.5;stroke-dasharray:11 89;transform-origin:50% 50%;animation:ringlauf 1.5s linear infinite}
+  @keyframes ringlauf{to{transform:rotate(360deg)}}
+  .st-ring{position:relative;width:148px;height:148px;margin:26px auto 6px}
+  .proz{position:absolute;z-index:1;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:450 2.5rem/1 var(--ff-serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-shadow:0 2px 18px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.9)}
   .mitte{text-align:center}
   .tipp{border-radius:16px;padding:16px 18px;display:grid;gap:4px;background:rgba(16,27,32,.8);box-shadow:inset 0 0 0 1px var(--hair)}
   .tipp b{font-family:var(--ff-serif);font-weight:450;font-size:1.2rem;line-height:1.2}
@@ -231,7 +244,7 @@ const STIL = `
 
   /* kleine Handys (iPhone SE, 568 px hoch): der erste Knopf bleibt über dem Falz (besucher-sim 21.11.2026) */
   @media (max-height:620px){.schritt{gap:12px}.schleier{padding:14px 18px;grid-template-columns:84px minmax(0,1fr)}#s-ein .klein{display:none}h1{font-size:2rem}.lead{font-size:1rem}}
-  @media (prefers-reduced-motion:reduce){.schritt{animation:none}.s-licht{animation:none}.pixfeld video{transition:none}.st-kopf .streifen u{animation:none;width:100%}}
+  @media (prefers-reduced-motion:reduce){.schritt{animation:none}.s-licht{animation:none}.pixfeld video,.ring .bogen{transition:none}.ring .licht{display:none}.st-kopf .streifen u{animation:none;width:100%}}
 `;
 
 const esc = (s) => String(s).replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
@@ -278,7 +291,7 @@ function markup(T, siteKey) {
     </section>
     <section class="schritt lauf" id="s-lauf" hidden>
       <h2 class="mitte" id="lauf-kopf" tabindex="-1"></h2>
-      <div class="pixfeld"><video id="laufbild" muted playsinline aria-hidden="true"></video><b class="proz" id="proz" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0 %</b></div>
+      <div class="pixfeld"><video id="laufbild" muted playsinline aria-hidden="true"></video>${RING}<b class="proz" id="proz" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">0 %</b></div>
       <p class="marke mitte" id="lauf-text" role="status"></p>
       <p class="klein mitte" id="bleib" hidden></p>
       <div class="tipp" id="tipp" role="status"></div>
@@ -406,12 +419,12 @@ function seitenSkript() {
   function malen() {
     if (pruefStart && ziel < 100) {
       var s = (Date.now() - pruefStart) / 1000;
-      ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / 60)));
+      ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / window.RC_TAU)));
       if ((verzug || s > 600) && !$('bleib').hidden) $('bleib').hidden = true;
       $('lauf-text').textContent = verzug || s > 600 ? T.lang : T.tun[Math.min(T.tun.length - 1, Math.floor((p - 30) / 14))];
     }
     if (p < Math.floor(ziel)) p += ziel >= 100 ? 2 : 1; if (p > 100) p = 100;
-    $('proz').textContent = p + ' %'; $('proz').setAttribute('aria-valuenow', p);
+    $('proz').textContent = p + ' %'; $('proz').setAttribute('aria-valuenow', p); $('bogen').style.strokeDasharray = p + ' 100';
     $('laufbild').style.filter = 'blur(' + ((100 - p) * 0.17).toFixed(1) + 'px) saturate(' + (0.55 + p * 0.0045).toFixed(2) + ') brightness(' + (0.8 + p * 0.002).toFixed(2) + ')';
   }
   // Erst lesen, dann senden: Safari schickt sonst gelegentlich einen leeren Teil, wenn es die Datei gerade nicht lesen kann
@@ -430,6 +443,11 @@ function seitenSkript() {
       x.send(stueck);
     });
   }
+  // Solange das Video unterwegs ist, soll das Handy nicht sperren (sonst hält Safari den Upload an). Kann der Browser es nicht, läuft alles wie bisher.
+  var wach = null;
+  function wachHalten() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function (w) { wach = w; }).catch(function () {}); } catch (e) {} }
+  function wachLassen() { if (wach) { wach.release().catch(function () {}); wach = null; } }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && lauf && !pruefStart) wachHalten(); });
   function stolper(schluessel) {
     var m = $('melde2'); m.textContent = T.fehler[schluessel] || T.fehler.sonst; m.hidden = false; $('weiter').hidden = false;
   }
@@ -452,8 +470,10 @@ function seitenSkript() {
   }
   // Das Video liegt bei uns: dieselbe Seite bleibt offen, bis der Befund da ist, und zeigt ihn dann selbst.
   function pruefen() {
-    pruefStart = Date.now(); zaehl('liegt');
-    $('lauf-kopf').textContent = T.prueft; $('bleib').textContent = T.bleib; $('bleib').hidden = false;
+    pruefStart = Date.now(); zaehl('liegt'); wachLassen();
+    // Ab hier gehört die Adresse zum Befund: neu laden, Tab wiederfinden oder zurückkommen führt immer zu diesem Reel.
+    try { history.replaceState(null, '', '/rc/' + lauf.token); } catch (e) {}
+    $('lauf-kopf').textContent = T.prueft; $('bleib').textContent = T.bleib.replace('{mail}', function () { return $('email').value.trim(); }); $('bleib').hidden = false;
     var frage = setInterval(function () {
       if (document.hidden) return;
       fetch('/api/reel-check/status/' + lauf.token).then(function (r) { return r.json(); }).then(function (d) {
@@ -466,7 +486,7 @@ function seitenSkript() {
         ziel = 100; zaehl('befund');
         var warte = setInterval(function () { if (p >= 100) { clearInterval(warte); clearInterval(uhr); setTimeout(function () { location.href = '/rc/' + lauf.token; }, ruhig ? 0 : 900); } }, 200);
       }).catch(function () {});
-    }, 5000);
+    }, 3000);
   }
 
   form.addEventListener('submit', async function (e) {
@@ -484,7 +504,7 @@ function seitenSkript() {
       var r = await fetch('/api/reel-check/start', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(daten) });
       var d = await r.json().catch(function () { return {}; });
       if (!r.ok || !d.ok) { knopf.disabled = false; try { if (window.turnstile && tsId !== null) turnstile.reset(tsId); } catch (x) {} if (FELD[d.error]) { melde.hidden = true; feldSag(d.error, d.vorschlag); $(FELD[d.error]).focus(); return; } return sag(d.error || 'sonst'); }
-      lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] }; zaehl('abgeschickt');
+      lauf = { token: d.token, teil: d.teil, teile: d.teile, etags: [] }; zaehl('abgeschickt'); wachHalten();
       zeigeLauf(); laden();
     } catch (x) { knopf.disabled = false; sag('sonst'); }
   });
@@ -524,12 +544,12 @@ export function reelCheckSeite(env, lang = 'de') {
     '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=rcTs" async defer></script>' +
     `<style>${STIL}</style>`;
   const daten = JSON.stringify(T.js).replace(/</g, '\\u003c');
-  const body = `${markup(T, siteKey)}<script>window.RC_T=${daten};window.RC_MAX=${MAX_BYTES};${NAME_HILFE}(${seitenSkript.toString()})();</script>`;
+  const body = `${markup(T, siteKey)}<script>window.RC_T=${daten};window.RC_MAX=${MAX_BYTES};window.RC_TAU=${PRUEF_TAU};${NAME_HILFE}(${seitenSkript.toString()})();</script>`;
   return htmlDoc({ title: T.titel, head, body, lang });
 }
 
 /** Stand-Seite /rc/<token>: wartet auf Bestätigung · wird geprüft · Befund · Fehler · gelöscht. */
-export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token = '' }) {
+export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token = '', seit = 0 }) {
   const lang = sprache === 'en' ? 'en' : 'de';
   const T = TEXTE[lang];
   if (status === 'fertig' && befund) {
@@ -548,7 +568,7 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
   const laeuft = art === 'wartet' || art === 'prueft';
   const tokenOk = /^[a-f0-9]{48}$/.test(token);
   const lauf = art === 'prueft'
-    ? `<p class="marke" id="st-tun" role="status">${T.stand.tun[0]}</p><div class="tipp" id="tipp" role="status"><b>${esc(T.js.tipps[0][0])}</b><span class="klein">${esc(T.js.tipps[0][1])}</span></div>`
+    ? `<div class="st-ring">${RING}<b class="proz" id="proz"></b></div><p class="marke mitte" id="st-tun" role="status">${T.stand.tun[0]}</p><div class="tipp" id="tipp" role="status"><b>${esc(T.js.tipps[0][0])}</b><span class="klein">${esc(T.js.tipps[0][1])}</span></div>`
     : '<div class="streifen" aria-hidden="true"><u></u></div>';
   const body = `<div class="rc">${kopfleiste(T)}<main class="st-kopf"><p class="marke">${T.marke}</p><h1>${kopf}</h1><p>${text}</p>` +
     (laeuft ? lauf : `<a class="knopf" href="${T.pfad}">${T.stand.neu}</a>`) +
@@ -556,7 +576,8 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
     // Ändert sich der Stand, lädt die Seite neu. Fragt nur, solange sie sichtbar ist. Beim Prüfen wechseln Schritt und Hinweis.
     (laeuft && tokenOk
       ? `<script>(function(){var alt=${JSON.stringify(status)},TUN=${JSON.stringify(T.stand.tun).replace(/</g, '\\u003c')},TIPPS=${JSON.stringify(T.js.tipps).replace(/</g, '\\u003c')},n=0;` +
-        `setInterval(function(){if(document.hidden)return;fetch('/api/reel-check/status/${token}').then(function(r){return r.json()}).then(function(d){if(d.status&&d.status!==alt)location.reload()}).catch(function(){})},${art === 'prueft' ? 8000 : 20000});` +
+        `setInterval(function(){if(document.hidden)return;fetch('/api/reel-check/status/${token}').then(function(r){return r.json()}).then(function(d){if(d.status&&d.status!==alt)location.reload()}).catch(function(){})},${art === 'prueft' ? 3000 : 20000});` +
+        `var b=document.getElementById('bogen'),z=document.getElementById('proz'),t0=Date.now()-${Math.max(0, Math.round(Number(seit) || 0)) * 1000};function mal(){var v=Math.floor(30+66*(1-Math.exp(-(Date.now()-t0)/1000/${PRUEF_TAU})));z.textContent=v+' %';b.style.strokeDasharray=v+' 100'}if(z){mal();setInterval(mal,500)}` +
         `var tun=document.getElementById('st-tun'),tipp=document.getElementById('tipp');if(tun)setInterval(function(){n++;tun.textContent=TUN[n%TUN.length];var x=TIPPS[n%TIPPS.length];tipp.firstChild.textContent=x[0];tipp.lastChild.textContent=x[1]},6000)})();</script>`
       : '');
   const antwort = htmlDoc({ title: T.titel, head: `<meta name="robots" content="noindex"><style>${STIL}</style>`, body, lang });

@@ -297,7 +297,7 @@ export async function stand(env, token) {
     if (obj) return { status: 'fertig', sprache: z.sprache, befund: await obj.text() };
     return { status: 'in_arbeit', sprache: z.sprache };
   }
-  return { status: z.status, sprache: z.sprache };
+  return { status: z.status, sprache: z.sprache, seit: z.confirmed_at ? Math.max(0, (Date.now() - Date.parse(z.confirmed_at.replace(' ', 'T') + 'Z')) / 1000) : 0 };
 }
 
 async function wegraeumen(env, z, grund) {
