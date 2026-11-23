@@ -353,7 +353,7 @@ function seitenSkript() {
   function malen() {
     if (pruefStart && ziel < 100) {
       var s = (Date.now() - pruefStart) / 1000;
-      ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / 150)));
+      ziel = Math.max(ziel, 30 + 66 * (1 - Math.exp(-s / 60)));
       if ((verzug || s > 600) && !$('bleib').hidden) $('bleib').hidden = true;
       $('lauf-text').textContent = verzug || s > 600 ? T.lang : T.tun[Math.min(T.tun.length - 1, Math.floor((p - 30) / 14))];
     }
