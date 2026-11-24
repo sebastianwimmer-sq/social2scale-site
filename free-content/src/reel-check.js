@@ -18,6 +18,7 @@
  */
 
 import { einsetzen as scaleWeekEinsetzen } from './scale-week.js';
+import { geschenkEinsetzen } from './geschenk.js';
 import { verifyTurnstile, hasMailServer, registerAttempt } from './protect.js';
 import { normalizeEmail, isDisposable, stripControlChars } from './validate.js';
 import { mailVorschlag, mailErfunden, nameGueltig, nummer } from './eingaben.js';
@@ -296,7 +297,7 @@ export async function stand(env, token) {
   if (!z) return { status: 'not_found', sprache: 'de' };
   if (z.status === 'fertig') {
     const obj = await env.IMAGES.get(befundSchluessel(token));
-    if (obj) return { status: 'fertig', sprache: z.sprache, befund: scaleWeekEinsetzen(await obj.text(), z.sprache) };
+    if (obj) return { status: 'fertig', sprache: z.sprache, befund: geschenkEinsetzen(scaleWeekEinsetzen(await obj.text(), z.sprache), z.sprache) };
     return { status: 'in_arbeit', sprache: z.sprache };
   }
   return { status: z.status, sprache: z.sprache, seit: z.confirmed_at ? Math.max(0, (Date.now() - Date.parse(z.confirmed_at.replace(' ', 'T') + 'Z')) / 1000) : 0 };
