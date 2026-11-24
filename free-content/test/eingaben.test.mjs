@@ -20,3 +20,15 @@ test('Name: echte Schreibweisen aller Art gehen durch, Getippe nicht', () => {
 test('Länder: DACH zuerst, beide Sprachen, jedes mit Vorwahl', () => {
   for (const s of ['de', 'en']) { const l = laender(s); assert.deepEqual(l.slice(0, 3).map((x) => x.c), ['DE', 'AT', 'CH']); assert.ok(l.length > 200 && l.every((x) => /^\d{1,3}/.test(x.vw) && x.name)); }
 });
+
+test('Erstgespräch: Nummer wird mit Land geprüft und mit Vorwahl gespeichert, ohne Land gilt die alte Regel', async () => {
+  const { anfrageAusFunnel, pflichtFehler } = await import('../src/anfrage-weiter.js');
+  const g = { name: 'Anna', email: 'anna@beispiel.de' };
+  const mit = (x) => anfrageAusFunnel({ ...g, ...x });
+  assert.equal(mit({ phone: '0151 26374850', land: 'DE' }).phone, '+4915126374850');
+  assert.equal(pflichtFehler(mit({ phone: '0151 26374850', land: 'DE' })), '');
+  assert.equal(pflichtFehler(mit({ phone: '0151 11111111', land: 'DE' })), 'phone');
+  assert.equal(pflichtFehler(mit({ phone: '12345', land: 'AT' })), 'phone');
+  assert.equal(pflichtFehler(mit({ phone: '0171 1234567' })), '');
+  assert.equal(pflichtFehler(anfrageAusFunnel({ ...g, email: 'test@gmail.com', phone: '015126374850', land: 'DE' })), 'email');
+});

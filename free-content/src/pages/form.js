@@ -11,6 +11,7 @@
  */
 
 import { htmlDoc } from './shell.js';
+import { laenderOptionen } from '../eingaben.js';
 import { FARB_CHIPS, ERSTGESPRAECH_URL, PHIL, buchungsLink, buchungsNotiz } from '../constants.js';
 import { PROBE_STYLE, PROBE_MARKUP, PROBE_SCRIPT } from './probeaufnahme.js';
 import { filmMarkup, FILM_STYLE, FILM_SCRIPT } from './film.js';
@@ -108,6 +109,13 @@ const PAGE_STYLE = `
   .field-in{position:relative;border-radius:15px;background:linear-gradient(180deg,rgba(16,19,23,.9),rgba(9,11,14,.95));box-shadow:inset 0 1px 1px rgba(255,255,255,.08)}
   .field .pre{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--faint);font-size:1.05rem;pointer-events:none;z-index:1}
   input[type=text],input[type=email],input[type=tel],textarea{width:100%;font-family:var(--ff-body);font-size:1.08rem;color:var(--ink);background:transparent;border:0;padding:15px 16px;outline:none}
+  .tel-reihe{display:grid;grid-template-columns:104px minmax(0,1fr);gap:9px;margin-top:9px}
+  .vw{display:flex;align-items:center;justify-content:space-between;height:100%;padding:0 16px;font-size:1.08rem}
+  .vw b{font-weight:500}
+  .vw::after{content:"";width:8px;height:8px;margin-top:-4px;border:solid var(--muted);border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+  .vw select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:17px}
+  .vw option{color:#0A1216;background:#fff}
+  .vw:focus-within{outline:2px solid var(--emerald-soft);outline-offset:2px}
   input.hashandle{padding-left:30px}
   textarea{resize:none;min-height:78px;line-height:1.5}
   ::placeholder{color:var(--faint)}
@@ -508,7 +516,8 @@ ${filmMarkup('a')}
         <span class="eyebrow">Letzter Schritt</span>
         <h2>Wie erreicht Phil <em>dich</em>?</h2>
         <div class="field"><div class="field-in"><input type="email" id="b-mail" placeholder="dein@email.de" autocomplete="email" autocapitalize="off"></div></div>
-        <div class="field" style="margin-top:9px"><div class="field-in"><input type="tel" id="b-tel" placeholder="Telefon für den Rückruf" autocomplete="tel" inputmode="tel" maxlength="40"></div></div>
+        <div class="tel-reihe"><div class="field"><div class="field-in vw"><b id="b-vw">+49</b><select id="b-land" aria-label="Ländervorwahl" autocomplete="off">${laenderOptionen('de')}</select></div></div>
+        <div class="field"><div class="field-in"><input type="tel" id="b-tel" placeholder="Telefon für den Rückruf" autocomplete="tel" inputmode="tel" maxlength="24"></div></div></div>
         <div class="react" id="r-b"></div>
         <div class="foot">
           <label class="consent"><input type="checkbox" id="b-consent"><span>Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.</span></label>
@@ -939,9 +948,34 @@ const PAGE_SCRIPT = `
   // ── Weg B: Erstgespraech-Anfrage. Der Worker prueft Turnstile und reicht ans Portal
   // weiter (anfrage-weiter.js). „Danke“ erst, wenn das Portal angenommen hat. ──
   const B_FEHLER={email:'Bitte prüf deine E-Mail-Adresse.',email_domain:'Diese E-Mail-Adresse gibt es nicht — bitte prüfen.',
-    phone:'Bitte gib eine Telefonnummer für den Rückruf an.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',
+    phone:'Diese Nummer gibt es so nicht. Bitte prüf Vorwahl und Nummer.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',
     rate_limited:'Kurz warten und nochmal versuchen.'};
   function wahlText(g){const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';}
+  // Vorwahl: Zeitzone des Geräts, sonst Region der Sprache, sonst Deutschland (wie im Reel-Check).
+  const bLand=$('#b-land'),bVw=()=>bLand.selectedOptions[0].dataset.vw,bVwZeigen=()=>{$('#b-vw').textContent='+'+bVw();};
+  let bZone='';try{bZone=Intl.DateTimeFormat().resolvedOptions().timeZone;}catch(e){}
+  const bRegion=String({'Europe/Vienna':'AT','Europe/Zurich':'CH','Europe/Berlin':'DE','Europe/Vaduz':'LI','Europe/Luxembourg':'LU','Europe/London':'GB'}[bZone]||(navigator.language||'').split('-')[1]||'').toUpperCase();
+  if([...bLand.options].some(o=>o.value===bRegion))bLand.value=bRegion;bVwZeigen();
+  async function bPruefen(feld,el){
+    const wert=el.value.trim();if(!wert)return;
+    try{
+      const d=await(await fetch('/api/reel-check/eingabe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feld,wert,land:bLand.value})})).json();
+      if(el.value.trim()!==wert||d.ok||!d.error)return;
+      if(d.vorschlag){react('#r-b','Meintest du <b id="b-tipp" role="button" tabindex="0"></b>?','warn');const t=$('#b-tipp');t.textContent=d.vorschlag;t.onclick=()=>{el.value=d.vorschlag;clr('#r-b');};t.onkeydown=e=>{if(e.key==='Enter')t.click();};}
+      else if(feld==='telefon')react('#r-b',B_FEHLER.phone,'warn');
+      else react('#r-b',B_FEHLER.email,'warn');
+    }catch(err){console.error('Feldprüfung nicht erreichbar:',err);}
+  }
+  $('#b-mail').addEventListener('blur',()=>bPruefen('email',$('#b-mail')));
+  $('#b-tel').addEventListener('blur',()=>bPruefen('telefon',$('#b-tel')));
+  bLand.addEventListener('change',()=>{bVwZeigen();clr('#r-b');bPruefen('telefon',$('#b-tel'));});
+  $('#b-mail').addEventListener('input',()=>clr('#r-b'));
+  // Steht die Vorwahl schon in der Nummer (Autofill, eingefügt), stellt sich das Land danach.
+  $('#b-tel').addEventListener('input',()=>{
+    clr('#r-b');const z=$('#b-tel').value.replace(/[^0-9+]/g,'').replace(/^00/,'+');
+    if(z[0]!=='+'||z.slice(1).indexOf(bVw())===0)return;
+    for(let n=3;n;n--){const o=[...bLand.options].find(x=>x.dataset.vw===z.slice(1,1+n));if(o){bLand.value=o.value;bVwZeigen();return;}}
+  });
   async function anfrageSenden(btn){
     const mail=$('#b-mail').value.trim(),tel=$('#b-tel').value.trim();
     if(!validMail(mail)){react('#r-b','Bitte gib eine gültige E-Mail-Adresse ein.','warn');return;}
@@ -951,7 +985,7 @@ const PAGE_SCRIPT = `
     if(window.turnstile&&!tok){react('#r-b','Die Sicherheitsprüfung läuft noch. Bitte in ein paar Sekunden erneut.','warn');return;}
     const label=btn.querySelector('.lab'),war=label.textContent;btn.disabled=true;label.textContent='Wird gesendet…';
     const thema=$('#f-thema').value.trim(),handle=$('#f-handle').value.trim().replace(/^@+/,'');
-    const payload={name:$('#f-name').value.trim(),email:mail,phone:tel,
+    const payload={name:$('#f-name').value.trim(),email:mail,phone:tel,land:bLand.value,
       business:[wahlText('taetigkeit'),thema,handle?'@'+handle:''].filter(Boolean).join(' · '),
       status:wahlText('stand'),goal:[wahlText('ziel'),mbWahl().length?'Bringt mit: '+mbWahl().join(', '):''].filter(Boolean).join(' · '),budget:wahlText('budget'),start:wahlText('start'),
       turnstile:tok,elapsed:Date.now()-START};

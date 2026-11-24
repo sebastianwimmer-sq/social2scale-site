@@ -12,6 +12,7 @@
  * muss es hier mitgehen — der Test hält die Felder fest.
  */
 
+import { mailErfunden, nummer } from './eingaben.js';
 import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } from './protect.js';
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
@@ -40,12 +41,15 @@ export function anfrageAusFunnel(body) {
   if (start) d.goal = (d.goal ? d.goal + ' · ' : '') + 'Start: ' + start;
   // Nur ein bekannter Wert, sonst deutsch — nichts Freies aus dem Body landet hier.
   d.sprache = body?.sprache === 'en' ? 'en' : '';
+  // Land kommt nur aus unserem Formular; gespeichert wird die Nummer dann mit Vorwahl (+49…), damit Phil sie direkt antippen kann.
+  d.land = /^[A-Z]{2}$/.test(String(body?.land || '')) ? body.land : '';
+  if (d.land) d.phone = nummer(d.phone, d.land) || '';
   return d;
 }
 
 export function pflichtFehler(d) {
   if (!d.name) return 'name';
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(d.email)) return 'email';
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(d.email) || mailErfunden(d.email)) return 'email';
   if (d.phone.replace(/[^0-9]/g, '').length < 6) return 'phone';
   return '';
 }

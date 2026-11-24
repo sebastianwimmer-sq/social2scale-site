@@ -10,7 +10,7 @@
 
 import { htmlDoc, SICHERHEITS_HEADER } from './shell.js';
 import { MAX_BYTES, LOESCH_FRIST_TAGE } from '../reel-check.js';
-import { laender } from '../eingaben.js';
+import { laenderOptionen } from '../eingaben.js';
 
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
 const MAX_MB = Math.round(MAX_BYTES / 1024 / 1024);
@@ -280,7 +280,7 @@ function markup(T, siteKey) {
         <div class="frage"><label for="email">${T.mail}</label>
           <input class="feld" id="email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="160" placeholder="${T.mailh}"></div>
         <div class="frage"><label for="telefon">${T.telefon}</label><p class="hilfe" id="telh">${T.telefonh}</p>
-          <div class="tel"><span class="vw feld"><b id="vw">+49</b><select id="land" aria-label="${T.land}" autocomplete="off">${laender(T.andere[2] === 'en' ? 'de' : 'en').map((l) => `<option value="${l.c}" data-vw="${l.vw}"${l.c === 'DE' ? ' selected' : ''}>${esc(l.name)} (+${l.vw})</option>`).join('')}</select></span>
+          <div class="tel"><span class="vw feld"><b id="vw">+49</b><select id="land" aria-label="${T.land}" autocomplete="off">${laenderOptionen(T.andere[2] === 'en' ? 'de' : 'en')}</select></span>
           <input class="feld" id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="24" aria-describedby="telh"></div></div>
         <div class="honig" aria-hidden="true"><label>Website<input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
         <div class="haken"><input type="checkbox" id="einwilligung"><label for="einwilligung">${T.haken} ${T.mehr} <a href="${T.dsUrl}" target="_blank" rel="noopener">${T.ds}</a>.</label></div>
@@ -511,11 +511,14 @@ function seitenSkript() {
 
   // Zählen wie im Funnel: ohne Cookie, ohne Kennung (closing /api/pv). Die Seite zählt als Aufruf, jeder Schritt danach als
   // Ereignis unter <Seite>schritt/<name>/ (Portal: REEL_CHECK_TRICHTER in _portal/lib/siteviews.js, dort müssen die Namen stehen).
+  // ?von=facebook (unsere eigenen Links) zählt als Herkunft, auch wenn die Brücke /gratis/ oder die App den Verweis verschluckt.
+  var VON = { facebook: 'https://www.facebook.com/', instagram: 'https://www.instagram.com/', linkedin: 'https://www.linkedin.com/', youtube: 'https://www.youtube.com/' };
+  var von = new URLSearchParams(location.search).get('von'), woher = Object.prototype.hasOwnProperty.call(VON, von) ? VON[von] : document.referrer || '';
   function zaehl(schritt) {
     try {
       if (navigator.doNotTrack === '1' || localStorage.getItem('s2s-zaehlen') === 'aus') return;
       var seite = LANG === 'en' ? '/en/reel-check/' : '/reel-check/';
-      var pv = JSON.stringify({ p: schritt ? seite + 'schritt/' + schritt + '/' : seite, r: document.referrer || '', d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
+      var pv = JSON.stringify({ p: schritt ? seite + 'schritt/' + schritt + '/' : seite, r: woher, d: matchMedia('(max-width:759px)').matches ? 'mobil' : 'desktop' });
       if (navigator.sendBeacon) navigator.sendBeacon('https://closing.social2scale.com/api/pv', new Blob([pv], { type: 'text/plain;charset=UTF-8' }));
     } catch (e) {}
   }

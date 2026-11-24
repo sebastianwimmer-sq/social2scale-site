@@ -11,6 +11,7 @@
 
 import { formPage, FLAGGE_EN, FLAGGE_DE } from './form.js';
 import { filmMarkup, filmScript } from './film.js';
+import { laenderOptionen } from '../eingaben.js';
 
 export const TABELLE = [
   // ── Kopf ──
@@ -137,6 +138,9 @@ export const TABELLE = [
   ['<span>In 1–3 Monaten</span>', '<span>In 1–3 months</span>'],
   ['<span>Erst mal informieren</span>', '<span>Just looking for now</span>'],
   ['<h2>Wie erreicht Phil <em>dich</em>?</h2>', '<h2>How can Phil <em>reach you</em>?</h2>'],
+  [laenderOptionen('de'), laenderOptionen('en')],
+  ['aria-label="Ländervorwahl"', 'aria-label="Country code"'],
+  ["react('#r-b','Meintest du <b id=\"b-tipp\"", "react('#r-b','Did you mean <b id=\"b-tipp\""],
   ['placeholder="Telefon für den Rückruf"', 'placeholder="Phone for a callback"'],
   ['Ich habe die <a href="https://social2scale.com/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und bin einverstanden.', 'I’ve read the <a href="https://social2scale.com/en/privacy/" target="_blank" rel="noopener">privacy policy</a> and agree.'],
   ['<span class="lab">Erstgespräch anfragen</span>', '<span class="lab">Request an intro call</span>'],
@@ -248,8 +252,8 @@ export const TABELLE = [
   ["label.textContent='Wird gesendet…';", "label.textContent='Sending…';"],
   ["SUBMIT_FEHLER[data&&data.error]||'Kurz warten und nochmal versuchen.'", "SUBMIT_FEHLER[data&&data.error]||'Please wait a moment and try again.'"],
   ["react('#r-mail','Keine Verbindung — kurz warten und nochmal versuchen.','warn');", "react('#r-mail','No connection — please wait a moment and try again.','warn');"],
-  ["const B_FEHLER={email:'Bitte prüf deine E-Mail-Adresse.',email_domain:'Diese E-Mail-Adresse gibt es nicht — bitte prüfen.',\n    phone:'Bitte gib eine Telefonnummer für den Rückruf an.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',\n    rate_limited:'Kurz warten und nochmal versuchen.'};",
-    "const B_FEHLER={email:'Please check your email address.',email_domain:'That email address doesn’t exist — please check it.',\n    phone:'Please enter a phone number so Phil can call you back.',name:'Please enter your name above.',captcha:'Security check failed — please wait a moment and try again.',\n    rate_limited:'Please wait a moment and try again.'};"],
+  ["const B_FEHLER={email:'Bitte prüf deine E-Mail-Adresse.',email_domain:'Diese E-Mail-Adresse gibt es nicht — bitte prüfen.',\n    phone:'Diese Nummer gibt es so nicht. Bitte prüf Vorwahl und Nummer.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',\n    rate_limited:'Kurz warten und nochmal versuchen.'};",
+    "const B_FEHLER={email:'Please check your email address.',email_domain:'That email address doesn’t exist — please check it.',\n    phone:'That number doesn’t exist. Please check the country code and number.',name:'Please enter your name above.',captcha:'Security check failed — please wait a moment and try again.',\n    rate_limited:'Please wait a moment and try again.'};"],
   ["react('#r-b','Bitte gib eine gültige E-Mail-Adresse ein.','warn')", "react('#r-b','Please enter a valid email address.','warn')"],
   ["react('#r-b','Bitte bestätige die Datenschutzerklärung.','warn')", "react('#r-b','Please confirm the privacy policy.','warn')"],
   ["react('#r-b','Die Sicherheitsprüfung läuft noch. Bitte in ein paar Sekunden erneut.','warn')", "react('#r-b','The security check is still running. Please try again in a few seconds.','warn')"],

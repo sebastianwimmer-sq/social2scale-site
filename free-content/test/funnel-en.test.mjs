@@ -12,7 +12,9 @@ const en = await (await formPageEn({ TURNSTILE_SITE_KEY: 'x' })).text();
 const INTERN = new Set(['Ziel', 'Rückruf', 'Stand', 'Rahmen', 'Mehr Anfragen', 'Mehr Sichtbarkeit', 'Mehr Umsatz',
   'Weniger Zeit für Content', 'Meine Marke stärken', 'Ganz am Anfang', 'Poste unregelmäßig', 'Aktiv, will mehr', 'ist-empf',
   // Setting-Film (#378): Schlüssel der Zeitleiste, Wortmarke und Klassennamen — Code, kein sichtbarer Text
-  'von', 'nicht', 'ist', '.film-nochmal']);
+  'von', 'nicht', 'ist', '.film-nochmal',
+  // Landesname in der Vorwahl-Auswahl, auf Englisch genau so geschrieben
+  'Türkiye (+90)']);
 test('EN-Funnel: kein sichtbares Deutsch', () => {
   assert.deepEqual(reste(en, INTERN), []);
 });

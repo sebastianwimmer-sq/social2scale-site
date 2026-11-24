@@ -48,6 +48,11 @@ export function nummer(roh, land) {
   return n.number;
 }
 
+/** <option>-Liste der Vorwahlen, gemeinsam für Reel-Check und Erstgespräch. */
+export function laenderOptionen(sprache) {
+  return laender(sprache).map((l) => `<option value="${l.c}" data-vw="${l.vw}"${l.c === 'DE' ? ' selected' : ''}>${l.name.replace(/&/g, '&amp;')} (+${l.vw})</option>`).join('');
+}
+
 /** Länder für die Auswahl: Deutschland, Österreich, Schweiz zuerst, dann nach Namen. */
 export function laender(sprache) {
   const namen = new Intl.DisplayNames([sprache], { type: 'region' });
