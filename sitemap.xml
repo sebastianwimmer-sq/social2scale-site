@@ -360,4 +360,20 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/news/2026-kw46/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/news/2026-kw46/"/>
   </url>
+  <url>
+    <loc>https://social2scale.com/news/scale-week/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/news/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/news/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/news/scale-week/"/>
+  </url>
+  <url>
+    <loc>https://social2scale.com/en/news/scale-week/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://social2scale.com/news/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://social2scale.com/en/news/scale-week/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://social2scale.com/news/scale-week/"/>
+  </url>
 </urlset>

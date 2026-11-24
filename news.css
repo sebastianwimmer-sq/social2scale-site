@@ -78,3 +78,40 @@
   .nw-du,.nw-mehr{display:none}
   .nw-punkt .nw-detail{display:block}
 }
+
+/* Sonderausgabe je Aktion: Kopf mit Handy, lange Fassung in ruhigen Abschnitten */
+.nw-s-hinweis{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:baseline;min-height:44px;margin-bottom:clamp(28px,4vw,44px);padding:16px 0 16px 18px;
+  border-left:3px solid var(--emerald-soft,#1FC998);color:var(--paper,#F2F3F1);text-decoration:none}
+.nw-s-hinweis[hidden],.nw-s-vorbei[hidden]{display:none}
+.nw-s-hinweis .nw-s-was{font:430 1.4rem/1.2 "Fraunces",Georgia,serif}
+.nw-s-hinweis .nw-s-los{color:var(--emerald-soft,#1FC998);font-weight:700}
+.nw-s-hinweis:hover .nw-s-los{text-decoration:underline;text-underline-offset:4px}
+.nw-s .nw-blatt{max-width:1000px}
+.nw-s-vorbei{margin:0 0 32px;padding-left:18px;border-left:3px solid var(--emerald-soft,#1FC998);font-size:1.0625rem}
+.nw-s-kopf{grid-template-columns:minmax(0,1fr) minmax(210px,290px);gap:clamp(28px,5vw,64px);align-items:center}
+.nw-s-kopf h1{margin-top:10px}
+.nw-s-lead{margin:22px 0 28px;max-width:54ch;color:var(--muted,#A4A6A1);font-size:1.125rem;line-height:1.6}
+.nw-s-knopf{text-decoration:none}
+.nw-s-handy{margin:0}
+.nw-s-schirm{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:34px 9px 9px;border-radius:34px;background:linear-gradient(160deg,#2b2e34,#0b0c0e 58%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.08),inset 0 1px 0 rgba(255,255,255,.14),0 2px 4px rgba(0,0,0,.4),0 50px 80px -36px #000;transform:perspective(1100px) rotateY(-9deg) rotateX(3deg)}
+.nw-s-schirm img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.nw-s-schirm img:nth-child(7){border-bottom-left-radius:24px}.nw-s-schirm img:nth-child(9){border-bottom-right-radius:24px}
+.nw-s-handy figcaption{margin-top:18px;color:var(--muted,#A4A6A1);font-size:.9375rem;text-align:center}
+.nw-s-teil{padding-block:clamp(30px,5vw,52px);border-top:1px solid var(--line-2,rgba(242,243,241,.14))}
+.nw-s-teil h2{margin:0 0 14px;font:430 clamp(1.6rem,1.2rem + 1.6vw,2.3rem)/1.15 "Fraunces",Georgia,serif;letter-spacing:-.015em;text-wrap:balance}
+.nw-s-teil>p{margin:0;max-width:62ch;color:var(--muted,#A4A6A1);font-size:1.0625rem;line-height:1.6}
+.nw-s-liste{margin:24px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 48px}
+.nw-s-liste dt{font-weight:600;color:var(--paper,#F2F3F1);font-size:1.0625rem}
+.nw-s-liste dd{margin:4px 0 0;color:var(--muted,#A4A6A1);line-height:1.5}
+.nw-s-schritte{list-style:none;counter-reset:s;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 40px}
+.nw-s-schritte li{counter-increment:s}
+.nw-s-schritte li::before{content:counter(s);display:block;margin-bottom:8px;font:400 2.2rem/1 "Fraunces",Georgia,serif;color:var(--emerald-soft,#1FC998)}
+.nw-s-schritte h3{margin:0;font-size:1.0625rem;font-weight:600}
+.nw-s-schritte p{margin:6px 0 0;color:var(--muted,#A4A6A1);line-height:1.5}
+.nw-satz.nw-s-frage{font-size:clamp(1.15rem,1rem + .7vw,1.4rem)}
+.nw-s-regeln>p{margin-bottom:26px;font-size:1rem}
+@media (max-width:760px){
+  .nw-s-kopf{grid-template-columns:1fr}.nw-s-handy{width:min(250px,76%);margin-inline:auto}.nw-s-schirm{transform:none}
+  .nw-s-liste,.nw-s-schritte{grid-template-columns:1fr;gap:20px}
+}

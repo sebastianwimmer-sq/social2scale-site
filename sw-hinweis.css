@@ -1,0 +1,23 @@
+/* Scale Week 22.-30.11.2026 auf jeder Seite (Sebi 24.11.: „der hinweis soll überall sein das is ja eig der sinn einer aktion“).
+   Eine Zeile unter der Leiste, dazu der Bonus an den zwei Paketen und in der Terminleiste. Steht still, trägt den Maßstab der Aktion.
+   Sichtbar nur mit .sw-an (sw-hinweis.js), weg mit .sw-vorbei. Ausbau: node scripts/sw-verteilen.mjs --aus (Ticket #544). */
+.sw-zeile{display:none}
+.sw-an .sw-zeile{position:relative;z-index:6;display:flex;align-items:center;justify-content:center;gap:4px 18px;flex-wrap:wrap;min-height:52px;
+  box-sizing:border-box;padding:9px max(16px,env(safe-area-inset-right)) 15px max(16px,env(safe-area-inset-left));
+  background-color:#0A0B0D;background-image:linear-gradient(180deg,rgba(31,201,152,.10),rgba(31,166,224,.03) 70%,rgba(10,11,13,0));
+  border-bottom:1px solid rgba(255,255,255,.09);color:#F2F3F1;text-decoration:none;text-align:center;text-wrap:balance;font:500 1rem/1.35 "Hanken Grotesk",system-ui,sans-serif}
+.sw-zeile::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.2) 0 1px,transparent 1px 56px)}
+.sw-zeile b{font:400 1.16rem/1.2 "Fraunces",Georgia,serif;white-space:nowrap}
+.sw-zeile b em{font-style:italic;background:linear-gradient(90deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sw-zeile .sw-z-was{color:#C9CBC6}
+.sw-zeile .sw-z-los{color:#1FC998;font-weight:700;white-space:nowrap}
+.sw-zeile:hover .sw-z-los{text-decoration:underline;text-underline-offset:4px}
+.sw-zeile:focus-visible{outline:2px solid #1FC998;outline-offset:-4px}
+.sw-z-kurz{display:none}
+/* Feste Höhe: Schrift und Tageszahl kommen nach, die Seite darunter darf nicht springen (besucher-sim, CLS) */
+@media (max-width:759px){.sw-an .sw-zeile{font-size:.95rem;gap:2px 12px;height:76px;align-content:center;overflow:hidden}.sw-z-lang{display:none}.sw-z-kurz{display:inline}.sw-zeile .sw-z-was{flex:1 0 100%;order:3}}
+.sw-paket{display:none}
+.sw-an .sw-paket{display:block;margin:12px 0 0;max-width:52ch;padding-left:14px;border-left:3px solid #1FC998;color:#F2F3F1;font-size:1rem;line-height:1.5}
+.sw-paket a{color:#1FC998;font-weight:600;text-underline-offset:3px}
+.sw-vorbei .sw-zeile,.sw-vorbei .sw-paket{display:none}

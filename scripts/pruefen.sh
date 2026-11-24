@@ -85,6 +85,7 @@ lauf "Server nur lokal"          node "$KIT/server-lokal-check.mjs" "$PWD/script
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs
 lauf "Zähler kennt jede Seite"  node scripts/zaehler-check.mjs
 lauf "Karte je Bestellung DE/EN" node scripts/spende-check.mjs
+lauf "Scale Week auf jeder Seite" node scripts/sw-verteilen.mjs --pruefen
 lauf "Sitemap nur echte Seiten"  node scripts/sitemap-check.mjs
 lauf "Danke-Seite: Name im Gruß" node scripts/danke-namen-check.mjs
 lauf "Keine Platzhalter-Werte"  python3 "$KIT/platzhalter-check.py" .

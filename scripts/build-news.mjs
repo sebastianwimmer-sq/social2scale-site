@@ -3,6 +3,7 @@
  * Baut die Wochen-News aus data/news/<jahr>-kw<nn>.json (geschrieben von scripts/news-mittwoch.py):
  *   /news/                 neueste Ausgabe           /en/news/
  *   /news/<jahr>-kw<nn>/   jede Ausgabe, bleibt      /en/news/<jahr>-kw<nn>/
+ *   /news/<aktion>/        Sonderausgabe je Aktion (data/news/sonder/), ausfuehrlich, oben auf /news/ verlinkt, solange sie laeuft
  * und traegt sie in sitemap.xml ein (die englischen Bloecke setzt danach sitemap-sprachen.mjs).
  *
  * Form (Sebi 19.11.2026, „macht noch kein bock zu lesen, viel text, struktur wirr“): je Neuerung ein grosser Satz,
@@ -15,7 +16,7 @@
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { DOMAIN } from '../lib/sprachen.mjs';
-import { ausgaben } from '../lib/news.mjs';
+import { ausgaben, neuesteId, sonder } from '../lib/news.mjs';
 
 const T = {
   de: {
@@ -28,7 +29,7 @@ const T = {
     quelle: 'Quelle', du: 'Und du?',
     feld: 'Deine Antwort, oder frag Sebi etwas zu dieser Woche', mail: 'Deine E-Mail (freiwillig)',
     knopf: 'An Sebi schicken', hinweis: (ds) => `Deine Antwort geht direkt an Sebi. Die E-Mail ist freiwillig und nur für seine Antwort, mehr im <a href="${ds}">Datenschutz</a>.`,
-    frueher: 'Frühere Ausgaben', neueste: 'Zur neuesten Ausgabe', skip: 'Zum Inhalt',
+    frueher: 'Weitere Ausgaben', sonder: 'Sonderausgabe', sonderLesen: 'Ganz lesen', neueste: 'Zur neuesten Ausgabe', skip: 'Zum Inhalt',
   },
   en: {
     vorlage: 'en/process/index.html', wurzel: '/en/news/', lang: 'en-US', datenschutz: '/en/privacy/',
@@ -40,7 +41,7 @@ const T = {
     quelle: 'Source', du: 'And you?',
     feld: 'Your answer, or ask Sebi something about this week', mail: 'Your email (optional)',
     knopf: 'Send to Sebi', hinweis: (ds) => `Your answer goes straight to Sebi. The email is optional and only used for his reply, see our <a href="${ds}">privacy policy</a>.`,
-    frueher: 'Earlier issues', neueste: 'Go to the latest issue', skip: 'Skip to content',
+    frueher: 'More issues', sonder: 'Special issue', sonderLesen: 'Read it all', neueste: 'Go to the latest issue', skip: 'Skip to content',
   },
 };
 
@@ -101,36 +102,85 @@ function punktHtml(p, sp) {
       </details>`;
 }
 
-function hauptHtml(a, sp, alle, istNeueste) {
+function fragenBlock(sp, frage, ausgabe) {
   const L = T[sp];
-  const id = `${a.jahr}-kw${a.kw}`;
-  const frueher = alle.filter((x) => x.id !== id).slice(0, 8);
-  const frueherHtml = frueher.length ? `
-      <nav class="nw-frueher" aria-label="${L.frueher}">
-        <h2>${L.frueher}</h2>
-        <ul>
-${frueher.map((x) => `          <li><a href="${L.wurzel}${x.id}/"><span>KW ${x.kw}</span> ${esc(x[sp].kurz)}</a></li>`).join('\n')}
-        </ul>
-      </nav>` : '';
-  const zurNeuesten = istNeueste ? '' : `\n      <p class="nw-neueste"><a href="${L.wurzel}">${L.neueste} <span aria-hidden="true">→</span></a></p>`;
-  return `  <main id="main" tabindex="-1" class="nw" data-news="${alle[0].id}">
-    <article class="nw-blatt wrap">
-      <header class="nw-kopf">
-        <p class="nw-meta">${esc(L.meta({ ...a[sp], kw: a.kw, datum: a.datum }, minuten(a[sp])))}</p>
-        <h1>${istNeueste ? L.h1 : L.h1Alt(a)}</h1>
-      </header>
-${a[sp].punkte.map((p) => punktHtml(p, sp)).join('\n')}
-      <section class="nw-du" aria-labelledby="nw-du-h">
+  return `      <section class="nw-du" aria-labelledby="nw-du-h">
         <p class="nw-wo">${L.du}</p>
-        <h2 id="nw-du-h">${esc(a[sp].frage)}</h2>
-        <form id="nw-form" novalidate data-ausgabe="KW ${a.kw}/${a.jahr}" data-frage="${esc(a[sp].frage)}">
+        <h2 id="nw-du-h">${esc(frage)}</h2>
+        <form id="nw-form" novalidate data-ausgabe="${ausgabe}" data-frage="${esc(frage)}">
           <textarea id="nw-text" name="antwort" required maxlength="3000" aria-label="${L.feld}" placeholder="${L.feld}"></textarea>
           <input id="nw-mail" aria-label="${L.mail}" name="email" type="email" autocomplete="email" maxlength="160" placeholder="${L.mail}">
           <div class="nw-falle" aria-hidden="true"><label for="nw-website">Website</label><input id="nw-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
           <div class="nw-zeile"><p class="nw-hinweis">${L.hinweis(L.datenschutz)}</p><button class="nw-knopf" type="submit">${L.knopf} <span aria-hidden="true">→</span></button></div>
           <p class="nw-status" id="nw-status" role="status" aria-live="polite"></p>
         </form>
-      </section>${frueherHtml}${zurNeuesten}
+      </section>`;
+}
+
+function hauptHtml(a, sp, alle, istNeueste) {
+  const L = T[sp];
+  const id = `${a.jahr}-kw${a.kw}`;
+  const frueher = alle.filter((x) => x.id !== id).slice(0, 8);
+  const sonderListe = sonder().map((s) => `          <li><a href="${L.wurzel}${s.id}/"><span>${L.sonder}</span> ${esc(s[sp].kurz)}</a></li>\n`).join('');
+  const frueherHtml = frueher.length || sonderListe ? `
+      <nav class="nw-frueher" aria-label="${L.frueher}">
+        <h2>${L.frueher}</h2>
+        <ul>
+${sonderListe}${frueher.map((x) => `          <li><a href="${L.wurzel}${x.id}/"><span>KW ${x.kw}</span> ${esc(x[sp].kurz)}</a></li>`).join('\n')}
+        </ul>
+      </nav>` : '';
+  const zurNeuesten = istNeueste ? '' : `\n      <p class="nw-neueste"><a href="${L.wurzel}">${L.neueste} <span aria-hidden="true">→</span></a></p>`;
+  return `  <main id="main" tabindex="-1" class="nw" data-news="${neuesteId()}">
+    <article class="nw-blatt wrap">
+${sonderHinweis(sp)}      <header class="nw-kopf">
+        <p class="nw-meta">${esc(L.meta({ ...a[sp], kw: a.kw, datum: a.datum }, minuten(a[sp])))}</p>
+        <h1>${istNeueste ? L.h1 : L.h1Alt(a)}</h1>
+      </header>
+${a[sp].punkte.map((p) => punktHtml(p, sp)).join('\n')}
+${fragenBlock(sp, a[sp].frage, `KW ${a.kw}/${a.jahr}`)}${frueherHtml}${zurNeuesten}
+    </article>
+  </main>`;
+}
+
+/** Laufende Sonderausgabe oben auf jeder News-Seite. Steht im HTML versteckt, news.js zeigt sie von start bis ende. */
+function sonderHinweis(sp) {
+  const L = T[sp];
+  return sonder().map((s) => `      <a class="nw-s-hinweis" href="${L.wurzel}${s.id}/" data-ab="${s.start}" data-bis="${s.ende}" hidden><span class="nw-wo">${L.sonder}</span><span class="nw-s-was">${esc(s[sp].kurz)}</span><span class="nw-s-los">${L.sonderLesen} <span aria-hidden="true">→</span></span></a>\n`).join('');
+}
+
+function sonderHtml(s, sp, alle) {
+  const L = T[sp], t = s[sp], anfrage = sp === 'de' ? '/anfrage/' : '/en/contact/';
+  const knopf = `<a class="nw-knopf nw-s-knopf" href="${anfrage}">${esc(t.knopf)} <span aria-hidden="true">→</span></a>`;
+  const teil = (x) => `      <section class="nw-s-teil">
+        <h2>${esc(x.h)}</h2>${x.p ? `\n        <p>${esc(x.p)}</p>` : ''}${x.liste ? `
+        <dl class="nw-s-liste">${x.liste.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>` : ''}${x.schritte ? `
+        <ol class="nw-s-schritte">${x.schritte.map(([a, b]) => `<li><h3>${esc(a)}</h3><p>${esc(b)}</p></li>`).join('')}</ol>` : ''}
+      </section>`;
+  return `  <main id="main" tabindex="-1" class="nw nw-s" data-news="${neuesteId()}" data-bis="${s.ende}">
+    <article class="nw-blatt wrap">
+      <p class="nw-s-vorbei" hidden>${esc(t.vorbei)} <a href="${anfrage}">${esc(t.knopf)}</a></p>
+      <header class="nw-kopf nw-s-kopf">
+        <div>
+          <p class="nw-meta">${esc(t.meta)}</p>
+          <h1>${t.titel}</h1>
+          <p class="nw-s-lead">${esc(t.lead)}</p>
+          ${knopf}
+        </div>
+        <figure class="nw-s-handy"><div class="nw-s-schirm">${s.bilder.map((b) => { const [w, h] = b.endsWith('360') ? [360, 450] : [400, 500]; return `<img src="/assets/feed/beitrag-${b}.webp" alt="" width="${w}" height="${h}" decoding="async">`; }).join('')}</div><figcaption>${esc(t.bild)}</figcaption></figure>
+      </header>
+${t.teile.map(teil).join('\n')}
+      <section class="nw-s-teil">
+        <h2>${esc(t.fragen_h)}</h2>
+${t.fragen.map(([f, a]) => `        <details class="nw-punkt"><summary><span class="nw-satz nw-s-frage">${esc(f)}</span><span class="nw-mehr" aria-hidden="true"></span></summary><div class="nw-detail"><p>${esc(a)}</p></div></details>`).join('\n')}
+      </section>
+      <section class="nw-s-teil nw-s-regeln"><h2>${esc(t.regeln_h)}</h2><p>${esc(t.regeln)}</p>${knopf}</section>
+${fragenBlock(sp, t.frage, `${L.sonder} ${s.id}`)}
+      <nav class="nw-frueher" aria-label="${L.frueher}">
+        <h2>${L.frueher}</h2>
+        <ul>
+${alle.slice(0, 8).map((x) => `          <li><a href="${L.wurzel}${x.id}/"><span>KW ${x.kw}</span> ${esc(x[sp].kurz)}</a></li>`).join('\n')}
+        </ul>
+      </nav>
     </article>
   </main>`;
 }
@@ -160,7 +210,7 @@ function seite(a, sp, alle, pfad, istNeueste) {
 
 function sitemap(alle) {
   let xml = readFileSync('sitemap.xml', 'utf8');
-  for (const pfad of ['/news/', ...alle.map((a) => `/news/${a.id}/`)]) {
+  for (const pfad of ['/news/', ...[...sonder(), ...alle].map((a) => `/news/${a.id}/`)]) {
     const loc = `<loc>${DOMAIN}${pfad}</loc>`;
     if (xml.includes(loc)) continue;
     const block = `  <url>\n    ${loc}\n    <changefreq>weekly</changefreq>\n    <priority>${pfad === '/news/' ? '0.7' : '0.5'}</priority>\n  </url>\n`;
@@ -175,6 +225,12 @@ for (const sp of ['de', 'en']) {
   const wurzel = T[sp].wurzel;
   seite(alle[0], sp, alle, wurzel, true);
   for (const a of alle) seite(a, sp, alle, `${wurzel}${a.id}/`, false);
+  for (const s of sonder()) {
+    const pfad = `${wurzel}${s.id}/`, url = DOMAIN + pfad, titel = `${s[sp].kurz} | social2scale`;
+    const daten = JSON.stringify({ '@context': 'https://schema.org', '@type': 'NewsArticle', headline: s[sp].kurz, datePublished: s.datum, dateModified: s.datum, expires: s.ende, inLanguage: T[sp].lang, url, mainEntityOfPage: url, image: `${DOMAIN}/assets/og-image.png`, author: { '@id': `${DOMAIN}/#org` }, publisher: { '@id': `${DOMAIN}/#org` } });
+    const { kopf, fuss } = rahmen(sp, { titel, beschreibung: s[sp].lead.slice(0, 155).replace(/\s+\S*$/, ' …'), url, ldJson: daten });
+    schreibe(pfad, kopf + sonderHtml(s, sp, alle) + fuss);
+  }
 }
 sitemap(alle);
 console.log(`fertig: ${alle.length} Ausgabe(n), neueste ${alle[0].id}`);

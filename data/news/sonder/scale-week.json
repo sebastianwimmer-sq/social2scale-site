@@ -1,0 +1,237 @@
+{
+ "datum": "2026-11-25",
+ "start": "2026-11-22T00:00:00+01:00",
+ "ende": "2026-12-01T00:00:00+01:00",
+ "quelle": "Wortlaut aus /scale-week/, /leistungen/, pakete.json 02 und Phils Antworten (CRM Aktionen), Stand 24.11.2026",
+ "bilder": [
+  "13-360",
+  "10-400",
+  "12-400",
+  "4-360",
+  "11-400",
+  "5-360",
+  "8-360",
+  "2-360",
+  "3-360"
+ ],
+ "de": {
+  "kurz": "Scale Week, alles im Detail",
+  "titel": "Scale Week, dein Profil-Aufbau <em>geschenkt</em>.",
+  "meta": "Sonderausgabe, gilt bis 30. November, 23:59 Uhr",
+  "lead": "Wer bei null startet, braucht zwei Dinge: einen fertigen Auftritt und jemanden, der ihn jeden Monat bespielt. Den Auftritt bauen wir dir in der Scale Week ohne Aufpreis, wenn du mit WACHSTUM startest. Startest du mit BASIS, bekommst du 300 Token für dein Smart Studio dazu.",
+  "bild": "Neun Beiträge aus unserem eigenen Profil",
+  "vorbei": "Die Scale Week ist vorbei. Danke an alle, die dabei waren. Ein Erstgespräch mit Phil kannst du weiterhin buchen.",
+  "teile": [
+   {
+    "h": "Was wir dir aufbauen",
+    "p": "Der Aufbau ist sonst ein eigenes Paket, Profil-Setup & Branding für 1.297,10 €. Das gehört dazu:",
+    "liste": [
+     [
+      "Profil",
+      "Name-Feld, Highlights und Kategorie, so dass man dich findet und versteht"
+     ],
+     [
+      "Profilbild",
+      "Dein Bild, zugeschnitten auf den kleinen Kreis"
+     ],
+     [
+      "Bio",
+      "Wer du bist, für wen, und was man als Nächstes tut"
+     ],
+     [
+      "Neun Beiträge",
+      "Gestaltet, getextet und von uns auf dein Profil gestellt"
+     ],
+     [
+      "Hashtag-Strategie",
+      "In drei Stufen"
+     ],
+     [
+      "Farben und Ton",
+      "Deine Farben, deine Schriften, deine Sprache"
+     ]
+    ]
+   },
+   {
+    "h": "Was WACHSTUM danach übernimmt",
+    "p": "Jeden Monat Beiträge nach festem Redaktionsplan, dazu kümmern wir uns aktiv um Kommentare und Nachrichten.",
+    "liste": [
+     [
+      "Zehn Beiträge im Monat",
+      "Nach Plan veröffentlicht, mit Hashtags je Beitrag"
+     ],
+     [
+      "Mehr Beiträge für Anfragen",
+      "Sie führen zu einem Gespräch mit dir"
+     ],
+     [
+      "Zwei bis drei Storys pro Woche",
+      "Zusätzlich zu den Beiträgen"
+     ],
+     [
+      "Strategie-Update im Call",
+      "Einmal im Monat, mit Kurz-Report"
+     ]
+    ]
+   },
+   {
+    "h": "Oder du startest mit BASIS",
+    "p": "Zehn Beiträge im Monat nach festem Plan, ein bis zwei davon, um Anfragen zu gewinnen, Weiterleitung der Interessenten und ein Kurz-Report. In der Scale Week kommen 300 Token für dein Smart Studio dazu. Ein Beitrag kostet dort 25 Token, das reicht zum Beispiel für 12 Beiträge in deiner Marke."
+   },
+   {
+    "h": "So läuft es ab",
+    "schritte": [
+     [
+      "Erstgespräch buchen",
+      "Bis 30. November, 23:59 Uhr. Kostenlos und unverbindlich."
+     ],
+     [
+      "Mit Phil sprechen",
+      "Ihr schaut gemeinsam, wo du stehst und welche Betreuung zu dir passt."
+     ],
+     [
+      "Starten",
+      "Wann es losgeht, macht ihr zusammen aus. Es muss nicht im November sein."
+     ]
+    ]
+   }
+  ],
+  "fragen_h": "Was uns dazu gefragt wird",
+  "fragen": [
+   [
+    "Was kostet die Betreuung?",
+    "Das hängt davon ab, was du brauchst, und das klärt ihr im Erstgespräch. Das Gespräch selbst kostet nichts. Der Preis deiner Betreuung bleibt, wie er ist, der Bonus kommt dazu."
+   ],
+   [
+    "Muss ich schon im November anfangen?",
+    "Nein. Wichtig ist, dass dein Erstgespräch bis 30. November gebucht ist. Den Start legt ihr danach fest."
+   ],
+   [
+    "Kann ich mir den Bonus auszahlen lassen?",
+    "Nein, Bonus und Token werden nicht ausgezahlt."
+   ],
+   [
+    "Gilt das auch für die Komplettpakete?",
+    "Dort ist der Aufbau schon enthalten. Den Bonus gibt es deshalb zur Betreuung BASIS und WACHSTUM."
+   ],
+   [
+    "Gibt es eine begrenzte Zahl an Plätzen?",
+    "Eine feste Zahl gibt es nicht, begrenzt ist nur die Zeit. Phil sagt dir im Gespräch ehrlich, ob wir zu dir passen."
+   ]
+  ],
+  "regeln_h": "Die Bedingungen",
+  "regeln": "Gilt für Erstgespräche, die bis 30. November 2026, 23:59 Uhr gebucht sind, wenn du danach mit der Betreuung BASIS oder WACHSTUM startest. Zu WACHSTUM gehört der Profil-Aufbau, zu BASIS gehören die 300 Token. In den Komplettpaketen ist der Aufbau schon enthalten. Der Preis deiner Betreuung bleibt, wie er ist. Bonus und Token werden nicht ausgezahlt.",
+  "knopf": "Erstgespräch buchen",
+  "frage": "Was möchtest du zur Scale Week noch wissen?"
+ },
+ "en": {
+  "kurz": "Scale Week in detail",
+  "titel": "Scale Week, your profile build is <em>on us</em>.",
+  "meta": "Special issue, valid until 30 November, 11:59 pm",
+  "lead": "Starting from zero takes two things: a finished profile and someone who runs it every month. During Scale Week we build the profile at no extra cost when you start with GROWTH. Start with BASIS and you get 300 tokens for your Smart Studio on top.",
+  "bild": "Nine posts from our own profile",
+  "vorbei": "Scale Week is over. Thank you to everyone who joined. You can still book a first call with Phil.",
+  "teile": [
+   {
+    "h": "What we build for you",
+    "p": "Normally the build is its own package, Profile setup & branding, at €1,297.10. It includes:",
+    "liste": [
+     [
+      "Profile",
+      "Name field, highlights and category, so people find you and get what you do"
+     ],
+     [
+      "Profile picture",
+      "Your photo, cropped for the small circle"
+     ],
+     [
+      "Bio",
+      "Who you are, who it's for, and what to do next"
+     ],
+     [
+      "Nine posts",
+      "Designed, written and published to your profile by us"
+     ],
+     [
+      "Hashtag strategy",
+      "In three tiers"
+     ],
+     [
+      "Colours and tone",
+      "Your colours, your fonts, your voice"
+     ]
+    ]
+   },
+   {
+    "h": "What GROWTH takes care of after that",
+    "p": "Posts every month on a fixed editorial plan, and we actively look after comments and messages.",
+    "liste": [
+     [
+      "Ten posts a month",
+      "Published to plan, with hashtags for each post"
+     ],
+     [
+      "More posts that bring enquiries",
+      "They lead to a conversation with you"
+     ],
+     [
+      "Two to three stories a week",
+      "On top of the posts"
+     ],
+     [
+      "Strategy update on a call",
+      "Once a month, with a short report"
+     ]
+    ]
+   },
+   {
+    "h": "Or start with BASIS",
+    "p": "Ten posts a month on a fixed plan, one or two of them to bring in enquiries, forwarding of interested people and a short report. During Scale Week you get 300 tokens for your Smart Studio on top. A post costs 25 tokens there, so that's enough for 12 posts in your brand, for example."
+   },
+   {
+    "h": "How it works",
+    "schritte": [
+     [
+      "Book your first call",
+      "By 30 November, 11:59 pm. Free and without obligation."
+     ],
+     [
+      "Talk to Phil",
+      "Together you look at where you stand and which support fits you."
+     ],
+     [
+      "Start",
+      "You agree on a start date together. It doesn't have to be in November."
+     ]
+    ]
+   }
+  ],
+  "fragen_h": "What people ask us",
+  "fragen": [
+   [
+    "What does the support cost?",
+    "It depends on what you need, and you work that out on the first call. The call itself is free. The price of your support stays as it is, the bonus comes on top."
+   ],
+   [
+    "Do I have to start in November?",
+    "No. What matters is that your first call is booked by 30 November. You set the start date after that."
+   ],
+   [
+    "Can I have the bonus paid out?",
+    "No, bonus and tokens are not paid out."
+   ],
+   [
+    "Does it apply to the complete packages?",
+    "They already include the build. That's why the bonus comes with Management BASIS and GROWTH."
+   ],
+   [
+    "Is there a limited number of spots?",
+    "There's no fixed number, only the time is limited. Phil will tell you honestly on the call whether we're a good fit."
+   ]
+  ],
+  "regeln_h": "The conditions",
+  "regeln": "Applies to first calls booked by 30 November 2026, 11:59 pm, if you then start with Management BASIS or GROWTH. GROWTH comes with the profile build, BASIS with the 300 tokens. The complete packages already include the build. The price of your support stays as it is. Bonus and tokens are not paid out.",
+  "knopf": "Book your first call",
+  "frage": "What else would you like to know about Scale Week?"
+ }
+}

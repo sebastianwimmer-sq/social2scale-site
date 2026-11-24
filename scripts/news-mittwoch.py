@@ -200,6 +200,8 @@ def lauf(befehl, frist=3600):
 def bauen():
     lauf(["node", "scripts/build-news.mjs"])
     lauf(["node", "scripts/build-pages.mjs"])
+    if (SITE / "scripts" / "sw-verteilen.mjs").exists():   # Aktions-Hinweis auf jeder Seite, auch der neuen Ausgabe
+        lauf(["node", "scripts/sw-verteilen.mjs"])
     lauf(["node", "scripts/sitemap-sprachen.mjs"])
     lauf(["node", "scripts/csp-haerten.mjs"])
     # EN und DE entstehen im selben Lauf aus derselben Quelle: Stempel „ist nachgezogen“ für jede englische News-Seite

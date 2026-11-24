@@ -1,5 +1,14 @@
 // Wochen-News: Antwort auf die Frage der Woche geht direkt an Sebi (CRM-Eingang, Typ feedback; 19.11.2026).
 // Ohne JavaScript steht das Formular nicht zur Verfuegung (kein action-Ziel), die Seite bleibt lesbar.
+// Sonderausgabe: Hinweis nur, solange die Aktion laeuft; danach steht auf ihrer Seite, dass sie vorbei ist.
+(function () {
+  var jetzt = Date.now();
+  document.querySelectorAll(".nw-s-hinweis").forEach(function (h) {
+    h.hidden = !(jetzt >= Date.parse(h.getAttribute("data-ab")) && jetzt < Date.parse(h.getAttribute("data-bis")));
+  });
+  var s = document.querySelector("main.nw-s");
+  if (s && jetzt >= Date.parse(s.getAttribute("data-bis"))) s.querySelector(".nw-s-vorbei").hidden = false;
+})();
 (function () {
   var form = document.getElementById("nw-form");
   if (!form) return;
