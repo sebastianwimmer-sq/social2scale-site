@@ -484,8 +484,8 @@ function seitenSkript() {
         if (d.status !== 'fertig' && d.status !== 'fehler') return;
         clearInterval(frage); clearInterval(tippLauf);
         if (d.status === 'fehler') { location.href = '/rc/' + lauf.token; return; }
-        ziel = 100; zaehl('befund');
-        var warte = setInterval(function () { if (p >= 100) { clearInterval(warte); clearInterval(uhr); setTimeout(function () { location.href = '/rc/' + lauf.token; }, ruhig ? 0 : 900); } }, 200);
+        ziel = 100;
+        var warte = setInterval(function () { if (p >= 100) { clearInterval(warte); clearInterval(uhr); setTimeout(function () { location.href = '/rc/' + lauf.token + (Object.prototype.hasOwnProperty.call(VON, von) ? '#' + von : ''); }, ruhig ? 0 : 900); } }, 200);
       }).catch(function () {});
     }, 3000);
   }
@@ -552,6 +552,14 @@ export function reelCheckSeite(env, lang = 'de') {
   return htmlDoc({ title: T.titel, head, body, lang });
 }
 
+/** Zählt auf der Befundseite „gesehen“ und „Termin angetippt“. Speichert nichts im Gerät (§ 25 TDDDG), ohne Kennung, ohne Token; die Herkunft steht im # der Adresse. */
+export function befundZaehler(lang) {
+  const seite = lang === 'en' ? '/en/reel-check/' : '/reel-check/';
+  return `<script>(function(){var v=/^#(facebook|instagram|linkedin|youtube)$/.exec(location.hash);function z(s){try{if(navigator.doNotTrack==='1'||localStorage.getItem('s2s-zaehlen')==='aus')return;`
+    + `if(navigator.sendBeacon)navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([JSON.stringify({p:'${seite}schritt/'+s+'/',r:v?'https://www.'+v[1]+'.com/':'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'})],{type:'text/plain;charset=UTF-8'}))}catch(e){}}`
+    + `z('befund');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest("a[href*='calendly.com']");if(a)z('termin')})})();</script>`;
+}
+
 /** Kalenderlink aus dem Befund: Calendly liest utm_* und a1 (Phils Vorbereitungsfeld, siehe constants.js). */
 export function terminAusBefund(lang) {
   const notiz = lang === 'en' ? 'I have my reel report and would like to go through it with Phil.' : 'Ich habe meinen Reel-Befund und möchte ihn mit Phil durchgehen.';
@@ -573,6 +581,7 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
     }
     // Phil sieht im Kalender, woher die Person kommt. Nur Herkunft und ein fester Satz, nie Name, Adresse oder Befundlink.
     befund = befund.replaceAll(`href='${ERSTGESPRAECH_URL}'`, `href='${terminAusBefund(lang)}'`);
+    befund = befund.replace('</body>', () => `${befundZaehler(lang)}</body>`);
     return new Response(befund, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER, 'X-Robots-Tag': 'noindex' } });
   }
   const art = status === 'wartet' ? 'wartet' : status === 'da' || status === 'in_arbeit' || status === 'fertig' ? 'prueft' : status === 'fehler' ? 'fehler' : 'weg';

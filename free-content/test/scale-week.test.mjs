@@ -38,3 +38,12 @@ test('Terminknopf im Befund: Herkunft und fester Satz, keine persönlichen Daten
     assert.ok(!s.includes(token) && !s.includes(`href='${url}'`));
   }
 });
+
+test('Befund zählt gesehen und Termin, ohne Token und ohne Befundadresse', async () => {
+  const { reelCheckStandSeite, befundZaehler } = await import('../src/pages/reel-check.js');
+  const token = 'b'.repeat(48);
+  const s = await reelCheckStandSeite({ status: 'fertig', sprache: 'en', token, befund: '<body>x</body>' }).text();
+  assert.ok(s.includes(befundZaehler('en')) && s.includes("z('befund')") && s.includes("z('termin')") && s.includes('/en/reel-check/'));
+  assert.ok(!s.includes(token) && !/location\.(href|pathname)|setItem|cookie/.test(befundZaehler('de')));
+  new Function(befundZaehler('de').replace(/<\/?script>/g, ''));
+});

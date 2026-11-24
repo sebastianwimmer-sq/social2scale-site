@@ -283,7 +283,7 @@ test('Seite: beide Sprachen haben dieselben Felder, der Haken ist nie vorbelegt,
     assert.match(html, /<input type="checkbox" id="einwilligung">/);
     assert.match(html, new RegExp(`${LOESCH_FRIST_TAGE} (Tagen|days)`)); assert.match(html, /Claude/);
     assert.match(html, /var __name=function\(f\)\{return f\};\(function seitenSkript/, 'das Seitenskript bringt __name mit, sonst bricht es nach dem Bau ab');
-    for (const s of ['fragen', 'abgeschickt', 'liegt', 'befund']) assert.ok(html.includes(`zaehl('${s}')`), 'Schritt wird gezählt: ' + s);
+    for (const s of ['fragen', 'abgeschickt', 'liegt']) assert.ok(html.includes(`zaehl('${s}')`), 'Schritt wird gezählt: ' + s);
     assert.match(html, /hreflang="de" href="https:\/\/start\.social2scale\.com\/reel-check\/"/);
   }
   const schluessel = (o) => Object.keys(o).sort().join();
