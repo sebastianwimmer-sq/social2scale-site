@@ -53,7 +53,7 @@ function mailHead(title, preheader, lang = 'de') {
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;opacity:0;">${preheader}</div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#04070B" style="background-color:#04070B;">
     <tr><td align="center" bgcolor="#04070B" style="padding:26px 12px;background-color:#04070B;">
-      <table role="presentation" width="520" cellpadding="0" cellspacing="0" border="0" style="width:520px;max-width:520px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+      <table role="presentation" width="520" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:520px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
         <tr><td class="shell" bgcolor="${SHELL_BG}" style="background-color:${SHELL_BG};background-image:radial-gradient(120% 90% at 0% 0%,rgba(0,184,136,0.14),transparent 42%),linear-gradient(160deg,#0C1A15,${SHELL_BG} 55%,#06090D);border:1px solid rgba(255,255,255,0.09);border-radius:22px;padding:38px 34px;">
           <img src="https://social2scale.com/assets/sig-wordmark.png" alt="social2scale" width="150" height="22" style="display:block;height:22px;width:150px;border:0;margin:0 0 30px;">`;
 }

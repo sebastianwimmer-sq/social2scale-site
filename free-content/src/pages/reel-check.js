@@ -11,6 +11,7 @@
 import { htmlDoc, SICHERHEITS_HEADER } from './shell.js';
 import { MAX_BYTES, LOESCH_FRIST_TAGE } from '../reel-check.js';
 import { laenderOptionen } from '../eingaben.js';
+import { ERSTGESPRAECH_URL } from '../constants.js';
 
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
 const MAX_MB = Math.round(MAX_BYTES / 1024 / 1024);
@@ -551,6 +552,12 @@ export function reelCheckSeite(env, lang = 'de') {
   return htmlDoc({ title: T.titel, head, body, lang });
 }
 
+/** Kalenderlink aus dem Befund: Calendly liest utm_* und a1 (Phils Vorbereitungsfeld, siehe constants.js). */
+export function terminAusBefund(lang) {
+  const notiz = lang === 'en' ? 'I have my reel report and would like to go through it with Phil.' : 'Ich habe meinen Reel-Befund und möchte ihn mit Phil durchgehen.';
+  return `${ERSTGESPRAECH_URL}?utm_source=reel-check&amp;utm_medium=befund&amp;a1=${encodeURIComponent(notiz)}`;
+}
+
 /** Stand-Seite /rc/<token>: wartet auf Bestätigung · wird geprüft · Befund · Fehler · gelöscht. */
 export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token = '', seit = 0 }) {
   const lang = sprache === 'en' ? 'en' : 'de';
@@ -564,6 +571,8 @@ export function reelCheckStandSeite({ status, sprache = 'de', befund = '', token
       befund = befund.replaceAll("href='https://start.social2scale.com/en/'", mit('/en/')).replaceAll("href='https://start.social2scale.com/'", mit('/'))
         .replaceAll('__BEFUND_PDF__', `/rc/${token}/befund.pdf`).replaceAll("href='https://social2scale.com/en/free/'", mit('/en/')).replaceAll("href='https://social2scale.com/gratis/'", mit('/'));
     }
+    // Phil sieht im Kalender, woher die Person kommt. Nur Herkunft und ein fester Satz, nie Name, Adresse oder Befundlink.
+    befund = befund.replaceAll(`href='${ERSTGESPRAECH_URL}'`, `href='${terminAusBefund(lang)}'`);
     return new Response(befund, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', ...SICHERHEITS_HEADER, 'X-Robots-Tag': 'noindex' } });
   }
   const art = status === 'wartet' ? 'wartet' : status === 'da' || status === 'in_arbeit' || status === 'fertig' ? 'prueft' : status === 'fehler' ? 'fehler' : 'weg';
