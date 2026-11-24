@@ -70,7 +70,16 @@ selbst "Selbsttest Danke-Namen" scripts/danke-namen-check.mjs node scripts/danke
 selbst "Platzhalter (Fixtures)" kit-build/platzhalter-check.py   python3 "$KIT/platzhalter-check.py" --selbsttest
 selbst "Selbsttest Motion-Loop" kit-build/motion-loop/mess.mjs   node "$KIT/motion-loop/mess.mjs" --selbsttest
 # Vor jedem Browser-Lauf: kein Testserver darf ins WLAN horchen oder aus dem Baum lesen (12.10.2026)
-lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs free-content/test/reel-check.test.mjs tests/bewertungen.test.mjs
+# Frischer Checkout (Nachtlauf, neue Worktrees) hat keine Pakete des Funnel-Workers: nachladen, genau nach Lockfile
+# (24.11.2026: libphonenumber-js fehlte, der Nachtlauf war rot). Nie durch einen Symlink schreiben.
+funnel_pakete() {
+  local ordner=free-content
+  ( cd "$ordner" && npm ls --omit=dev --depth=0 >/dev/null 2>&1 ) && { echo "✓ Pakete des Funnel-Workers sind da"; return 0; }
+  [ -L "$ordner/node_modules" ] && { echo "✗ $ordner/node_modules ist ein Symlink und passt nicht zum Lockfile: dort npm ci laufen lassen" >&2; return 1; }
+  ( cd "$ordner" && npm ci --omit=dev --ignore-scripts --prefer-offline --no-audit --no-fund )
+}
+lauf "Funnel-Pakete"             funnel_pakete
+lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs free-content/test/reel-check.test.mjs free-content/test/eingaben.test.mjs tests/bewertungen.test.mjs
 lauf "Server nur lokal"          node "$KIT/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
 # Zweisprachig (17.10.2026): jede DE-Seite hat eine aktuelle EN-Schwester
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs
