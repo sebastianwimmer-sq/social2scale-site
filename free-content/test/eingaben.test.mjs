@@ -30,5 +30,6 @@ test('Erstgespräch: Nummer wird mit Land geprüft und mit Vorwahl gespeichert, 
   assert.equal(pflichtFehler(mit({ phone: '0151 11111111', land: 'DE' })), 'phone');
   assert.equal(pflichtFehler(mit({ phone: '12345', land: 'AT' })), 'phone');
   assert.equal(pflichtFehler(mit({ phone: '0171 1234567' })), '');
+  for (const [name, soll] of [['Anna-Lena Müller', ''], ["Dr. O'Neil", ''], ['asdf', 'name'], ['Aaaa', 'name']]) assert.equal(pflichtFehler(mit({ name, phone: '0151 26374850', land: 'DE' })), soll);
   assert.equal(pflichtFehler(anfrageAusFunnel({ ...g, email: 'test@gmail.com', phone: '015126374850', land: 'DE' })), 'email');
 });

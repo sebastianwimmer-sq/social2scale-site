@@ -12,7 +12,7 @@
  * muss es hier mitgehen — der Test hält die Felder fest.
  */
 
-import { mailErfunden, nummer } from './eingaben.js';
+import { mailErfunden, nameGueltig, nummer } from './eingaben.js';
 import { verifyTurnstile, isHoneypotTripped, registerAttempt, hasMailServer } from './protect.js';
 import { send } from './mail.js';
 import { stripControlChars } from './validate.js';
@@ -48,7 +48,7 @@ export function anfrageAusFunnel(body) {
 }
 
 export function pflichtFehler(d) {
-  if (!d.name) return 'name';
+  if (!d.name || (d.land && !nameGueltig(d.name))) return 'name';
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(d.email) || mailErfunden(d.email)) return 'email';
   if (d.phone.replace(/[^0-9]/g, '').length < 6) return 'phone';
   return '';

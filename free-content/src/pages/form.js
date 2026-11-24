@@ -721,6 +721,12 @@ const PAGE_SCRIPT = `
     zaehleKacheln();
   }
 
+  $('#f-name').addEventListener('blur',async()=>{
+    const wert=$('#f-name').value.trim();if(!wert)return;
+    try{const d=await(await fetch('/api/reel-check/eingabe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feld:'vorname',wert})})).json();
+      if($('#f-name').value.trim()===wert&&d.ok===false&&d.error)react('#r-name','Mit welchem Vornamen dürfen wir dich ansprechen?','warn');
+    }catch(err){console.error('Feldprüfung nicht erreichbar:',err);}
+  });
   $('#f-name').addEventListener('input',e=>{const v=e.target.value.trim();pvN.textContent=v||' ';pvAv.textContent=v?v[0].toUpperCase():'·';if(v){bump(pvAv);react('#r-name',\`Schön, dich kennenzulernen, \${v}.\`);}else clr('#r-name');});
   $('#f-handle').addEventListener('input',e=>{let v=e.target.value.trim().replace(/^@+/,'').replace(/\\s+/g,'');pvH.textContent=v||'dein.profil';if(v)bump(pvH);if(v.length>=3)react('#r-handle',\`@\${v} — sieht gut aus, das nehmen wir.\`);else clr('#r-handle');});
   $('#f-thema').addEventListener('input',e=>{const v=e.target.value.trim();pvB.textContent=v?v.slice(0,40)+(v.length>40?'…':''):' ';const tl=document.querySelectorAll('#pv-grid .pv-tile');if(v.length>8){['Dein Thema','Warum jetzt?','3 Schritte'].forEach((t,i)=>tl[i].textContent=t);react('#r-thema',\`Verstanden — daraus bauen wir deine Posts.\`);}else clr('#r-thema');});
@@ -948,7 +954,7 @@ const PAGE_SCRIPT = `
   // ── Weg B: Erstgespraech-Anfrage. Der Worker prueft Turnstile und reicht ans Portal
   // weiter (anfrage-weiter.js). „Danke“ erst, wenn das Portal angenommen hat. ──
   const B_FEHLER={email:'Bitte prüf deine E-Mail-Adresse.',email_domain:'Diese E-Mail-Adresse gibt es nicht — bitte prüfen.',
-    phone:'Diese Nummer gibt es so nicht. Bitte prüf Vorwahl und Nummer.',name:'Bitte gib oben deinen Namen ein.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',
+    phone:'Diese Nummer gibt es so nicht. Bitte prüf Vorwahl und Nummer.',name:'Bitte prüf deinen Vornamen in der ersten Frage.',captcha:'Sicherheitscheck nicht bestanden — kurz warten und nochmal.',
     rate_limited:'Kurz warten und nochmal versuchen.'};
   function wahlText(g){const c=document.querySelector('#'+g+' .chip[aria-pressed=true]');return c?c.textContent.trim():'';}
   // Vorwahl: Zeitzone des Geräts, sonst Region der Sprache, sonst Deutschland (wie im Reel-Check).
