@@ -4,7 +4,7 @@
  "datum": "2026-11-25",
  "quelle": "s2s-skool/news/2026-kw48.json",
  "de": {
-  "frage": "Was würde dir gerade mehr Zeit sparen: Storys ändern, Shorts aus Videos holen oder am Rechner planen?",
+  "frage": "Was würde dir gerade mehr Zeit sparen: Storys ändern, Shorts aus Videos holen oder am Rechner arbeiten?",
   "kurz": "Storys bearbeiten, Shorts aus langen Videos, Creator Dashboard am PC, Untertitel",
   "punkte": [
    {
@@ -28,7 +28,7 @@
     "quelle": "https://www.socialmediatoday.com/news/meta-brings-its-updated-creator-dashboard-to-the-web/875143/",
     "quelle_name": "Social Media Today",
     "datum": "2026-11-18",
-    "satz": "Beiträge und Reels planst du im neuen Creator Dashboard jetzt auch am Rechner.",
+    "satz": "Metas neues Creator Dashboard läuft jetzt auch am Rechner im Browser.",
     "detail": "Mit Live-Vorschau, Upload mehrerer Videos und Einladungen zum Folgen an Leute, die deine Inhalte gesehen haben. Gilt für Creator-Profile, für Unternehmen gibt es das Business Dashboard; ob in Deutschland schon alle Zugriff haben, ist nicht belegt."
    },
    {
@@ -42,7 +42,7 @@
   ]
  },
  "en": {
-  "frage": "Which would save you the most time: editing stories, clipping Shorts or planning on your computer?",
+  "frage": "Which would save you the most time: editing stories, clipping Shorts or working on your computer?",
   "kurz": "Story edits, Shorts from long videos, Creator Dashboard on desktop, captions",
   "punkte": [
    {
@@ -66,7 +66,7 @@
     "quelle": "https://www.socialmediatoday.com/news/meta-brings-its-updated-creator-dashboard-to-the-web/875143/",
     "quelle_name": "Social Media Today",
     "datum": "2026-11-18",
-    "satz": "You can now plan posts and Reels on your computer in the updated Creator Dashboard.",
+    "satz": "Meta's updated Creator Dashboard now runs in your computer's browser too.",
     "detail": "You get live previews, bulk video uploads and a way to invite people who saw your content to follow you. It's for creator profiles, while businesses have the Business Dashboard. Whether every account in Germany has access yet isn't confirmed."
    },
    {
