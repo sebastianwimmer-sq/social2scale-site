@@ -9,8 +9,6 @@
  */
 export const PREISE_EN = {
   laufend: "set on the intro call, depending on scope",
-  starthilfe: { einmalig: "€446.25" },
-  profil: { einmalig: "€1,297.10" },
   beitraege: 10,
 };
 const P = PREISE_EN;
@@ -23,10 +21,9 @@ export const SEITEN_EN = [
     emWort: "cost",
     kurz: "How much does social media management cost?",
     beschreibung:
-      "What professional Instagram management costs, what the price is made of and what getting started with us costs: from €446.25 one-time, profile setup and branding €1,297.10.",
+      "What professional Instagram management costs, what the price is made of and how to recognize a fair offer.",
     antwort:
-      "Public price overviews in Germany list €150 to €3,000 a month for ongoing social media management by freelancers and €500 to €5,000 by agencies; where you land depends on how much of the work you hand off. At social2scale, nine designed posts cost from " + P.starthilfe.einmalig + " one-time, profile setup and branding " + P.profil.einmalig +
-      ". We set the price for ongoing management on the intro call, because it depends on how much you hand off.",
+      "Public price overviews in Germany list €150 to €3,000 a month for ongoing social media management by freelancers and €500 to €5,000 by agencies; where you land depends on how much of the work you hand off. At social2scale, we set the price on the intro call, in writing and before you book anything, because it depends on how much you hand off.",
     abschnitte: [
       {
         h: "What the price is made of",
@@ -41,7 +38,7 @@ export const SEITEN_EN = [
         liste: [
           ["Hand off everything", "Setup plus ongoing management, price " + P.laufend + ". For anyone starting from zero or who doesn’t want to deal with it at all."],
           ["Hand off only the ongoing work", "Your profile is already in place; the content is missing. Price " + P.laufend + ", with a three-month minimum term."],
-          ["A one-time kickstart", "Nine designed posts including captions, after which you post yourself. From " + P.starthilfe.einmalig + " one-time; with profile, bio and branding " + P.profil.einmalig + "."],
+          ["A one-time kickstart", "Nine designed posts including captions, after which you post yourself. With profile, bio and branding if you like. Price " + P.laufend + "."],
         ],
       },
       {
@@ -138,7 +135,7 @@ export const SEITEN_EN = [
         liste: [
           ["Do it yourself", "If you like writing, have a clear topic and can reliably keep the time free. The upside: your voice stays completely your own."],
           ["Hand it off", "If time is short, your profile has already gone quiet several times, or you need a consistent presence without having to deal with it."],
-          ["A mix", "Have it set up once, then carry on yourself. At social2scale, profile and branding for " + P.profil.einmalig + ", just the posts from " + P.starthilfe.einmalig + " one-time."],
+          ["A mix", "Have it set up once, then carry on yourself. At social2scale, that works with profile and branding or with just the posts."],
         ],
       },
     ],

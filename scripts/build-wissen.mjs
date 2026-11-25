@@ -32,13 +32,10 @@ const STAND = "20. August 2026";
 
 // Alle Preise stammen 1:1 von /leistungen/ — niemals hier neu erfinden.
 // Seit 16.11.2026 (Besprechung #2, Punkt 5, Sebi: „eher die hochpreisigen rausnehmen … eher Einmalbuchungen auf website dann maximal nennen“)
-// stehen nur noch die Einmalbuchungen mit Preis auf der Website; die laufende Betreuung nennt Phil im Erstgespräch.
+// standen nur noch die Einmalbuchungen mit Preis auf der Website. Seit 25.11.2026 (Sebi: „steht gar nix auf der website hoffe ich“,
+// „so soll alles individuell bleiben“) steht kein eigener Preis mehr, außer in der laufenden Scale Week. Tor: preise-check.mjs.
 const PREISE = {
   laufend: "im Erstgespräch, je nach Umfang",
-  starthilfe: { einmalig: "446,25 €" },
-  // Profil + Branding ist Paket 02, nicht die Starthilfe fuer 446,25 € (= nur
-  // neun Beitraege). Stand bis 02.10.2026 falsch auf /wissen/ und /leistungen/.
-  profil: { einmalig: "1.297,10 €" },
   beitraege: 10,
 };
 
@@ -62,10 +59,9 @@ const SEITEN = [
     emWort: "kostet",
     kurz: "Was kostet Social-Media-Betreuung?",
     beschreibung:
-      "Was professionelle Instagram-Betreuung kostet, woraus sich der Preis zusammensetzt und was der Einstieg bei uns kostet: ab 446,25 € einmalig, Profil-Setup und Branding 1.297,10 €.",
+      "Was professionelle Instagram-Betreuung kostet, woraus sich der Preis zusammensetzt und woran du ein faires Angebot erkennst.",
     antwort:
-      "Öffentliche Preisübersichten nennen für laufende Social-Media-Betreuung 150 bis 3.000 Euro im Monat bei Freelancern und 500 bis 5.000 Euro bei Agenturen; wo man landet, hängt davon ab, wie viel Arbeit abgegeben wird. Bei social2scale kosten neun gestaltete Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig, Profil-Setup und Branding " + PREISE.profil.einmalig +
-      ". Den Preis für die laufende Betreuung legen wir im Erstgespräch fest, weil er davon abhängt, wie viel du abgibst.",
+      "Öffentliche Preisübersichten nennen für laufende Social-Media-Betreuung 150 bis 3.000 Euro im Monat bei Freelancern und 500 bis 5.000 Euro bei Agenturen; wo man landet, hängt davon ab, wie viel Arbeit abgegeben wird. Bei social2scale legen wir den Preis im Erstgespräch fest, schriftlich und bevor du etwas buchst, weil er davon abhängt, wie viel du abgibst.",
     abschnitte: [
       {
         h: "Woraus sich der Preis zusammensetzt",
@@ -80,7 +76,7 @@ const SEITEN = [
         liste: [
           ["Alles abgeben", "Aufbau plus laufende Betreuung, Preis " + PREISE.laufend + ". Für alle, die bei null starten oder sich gar nicht kümmern wollen."],
           ["Nur das Laufende abgeben", "Das Profil steht bereits, es fehlt der Content. Preis " + PREISE.laufend + ", bei drei Monaten Mindestlaufzeit."],
-          ["Einmalige Starthilfe", "Neun gestaltete Beiträge samt Captions, danach postet man selbst. Ab " + PREISE.starthilfe.einmalig + " einmalig; mit Profil, Bio und Branding " + PREISE.profil.einmalig + "."],
+          ["Einmalige Starthilfe", "Neun gestaltete Beiträge samt Captions, danach postet man selbst. Auf Wunsch mit Profil, Bio und Branding. Preis " + PREISE.laufend + "."],
         ],
       },
       {
@@ -174,7 +170,7 @@ const SEITEN = [
         liste: [
           ["Selbst machen", "Wenn du gern schreibst, ein klares Thema hast und die Zeit verlässlich freihalten kannst. Der Vorteil: deine Stimme ist unverfälscht."],
           ["Abgeben", "Wenn die Zeit fehlt, das Profil schon mehrfach eingeschlafen ist oder du einen einheitlichen Auftritt brauchst, ohne sich damit zu beschäftigen."],
-          ["Mischform", "Einmal aufbauen lassen, danach selbst weitermachen. Bei social2scale Profil und Branding für " + PREISE.profil.einmalig + ", nur die Beiträge ab " + PREISE.starthilfe.einmalig + " einmalig."],
+          ["Mischform", "Einmal aufbauen lassen, danach selbst weitermachen. Bei social2scale geht das mit Profil und Branding oder nur mit den Beiträgen."],
         ],
       },
     ],

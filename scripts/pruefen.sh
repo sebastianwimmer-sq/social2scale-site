@@ -104,6 +104,8 @@ lauf "Bewegung gegen Entscheidung" env MOTION_WURZEL="$PWD" node "$KIT/motion-lo
 lauf "Bewegung im Funnel"        env FUNNEL_QUELLE="$PWD/free-content" node "$KIT/motion-loop/mess.mjs" funnel
 selbst "Selbsttest Besucher" scripts/besucher-sim.mjs node scripts/besucher-sim.mjs --selbsttest
 lauf "Besucher-Simulation"       node scripts/besucher-sim.mjs --wurzel="$PWD"
+selbst "Selbsttest Preise" scripts/preise-check.mjs node scripts/preise-check.mjs --selbsttest
+lauf "Kein eigener Preis"        node scripts/preise-check.mjs
 lauf "Aussagen (Register s2s)"   env S2S_SITE="$PWD" python3 "$KIT/aussagen-check.py" s2s
 
 echo
