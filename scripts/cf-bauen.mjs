@@ -27,5 +27,6 @@ const alle = execFileSync("git", ["ls-files", "-z"], { encoding: "utf8" }).split
 for (const p of rein) { mkdirSync(dirname(join(aus, p)), { recursive: true }); cpSync(p, join(aus, p)); }
 // Die pages.dev-Adresse ist eine Kopie: nie in Suchmaschinen.
 const h = existsSync("_headers") ? readFileSync("_headers", "utf8") : "";
-writeFileSync(join(aus, "_headers"), h.replace(/\s*$/, "\n") + "\nhttps://:projekt.pages.dev/*\n  X-Robots-Tag: noindex\nhttps://:version.:projekt.pages.dev/*\n  X-Robots-Tag: noindex\n");
+// no-transform: Cloudflare verändert nichts an den Seiten (25.11.2026: Mail-Adressen im Impressum wurden verschleiert, ein Skript kam dazu).
+writeFileSync(join(aus, "_headers"), h.replace(/\s*$/, "\n") + "\n/*\n  Cache-Control: public, max-age=0, must-revalidate, no-transform\n" + "\nhttps://:projekt.pages.dev/*\n  X-Robots-Tag: noindex\nhttps://:version.:projekt.pages.dev/*\n  X-Robots-Tag: noindex\n");
 console.log("cf-bauen: " + rein.length + " Dateien, " + (alle.length - rein.length) + " bleiben privat");
