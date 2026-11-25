@@ -46,4 +46,5 @@ test('Befund zählt gesehen und Termin, ohne Token und ohne Befundadresse', asyn
   assert.ok(s.includes(befundZaehler('en')) && s.includes("z('befund')") && s.includes("z('termin')") && s.includes('/en/reel-check/'));
   assert.ok(!s.includes(token) && !/location\.(href|pathname)|setItem|cookie/.test(befundZaehler('de')));
   new Function(befundZaehler('de').replace(/<\/?script>/g, ''));
+  assert.ok(befundZaehler('de').includes('youtube|anzeige') && befundZaehler('de').includes("'https://anzeige.invalid/'"), 'Anzeigen behalten ihre Herkunft bis zum Termin');
 });

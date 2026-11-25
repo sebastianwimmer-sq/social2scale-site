@@ -250,6 +250,8 @@ async function oeffne(engine, geraet) {
     };
   });
   await ctx.route('**/*', (r) => {
+    // Phils Kalender ist fremd: sein Code (Cookie-Banner, 25.11.2026 „DomainData“) gehört nicht in unsere Messung, die Adresse reicht.
+    if (/^https:\/\/([a-z]+\.)?calendly\.com\//.test(r.request().url())) return r.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><html lang="de"><title>Kalender</title><h1>Kalender</h1>' });
     const q = r.request();
     if (/\/api\/pv\b/.test(q.url())) gezaehlt.anfragen = (gezaehlt.anfragen || 0) + 1;
     if (!['GET', 'HEAD'].includes(q.method()) || /\/api\/pv\b/.test(q.url())) { abgebrochen.add(q.url()); return r.abort(); }
@@ -632,14 +634,17 @@ const PERSONAS = [
       const links = () => p.evaluate(() => [...new Set([...document.querySelectorAll('a[href]')].map((a) => new URL(a.href, location.href))
         .filter((u) => u.host === location.host && !/\.(pdf|png|jpe?g|svg|xml|txt)$/i.test(u.pathname)).map((u) => u.pathname))]);
       // Zwei Ebenen: Startseite und alles, was von dort verlinkt ist (so kommen die /wissen/-Artikel dazu).
-      const gesehen = new Set(['/', '/wissen/']), kalender = new Set();
+      const gesehen = new Set(['/', '/wissen/']), kalender = ['/anfrage/', '/en/contact/'];
       await p.goto(BASIS + '/', { waitUntil: 'load' });
       for (const s of await links()) gesehen.add(s);
       for (const s of [...gesehen]) { await p.goto(BASIS + s, { waitUntil: 'load' }).catch(() => {}); 
-        // /anfrage/ und /en/contact/ leiten in Phils Kalender (25.11.2026): das Ziel ist fremd und lädt selbst weiter, gemessen wird nur, dass es stimmt.
-        if (await p.waitForURL(/calendly\.com/, { timeout: /^\/(anfrage|en\/contact)\/$/.test(s) ? 8000 : 1 }).then(() => true, () => false)) { kalender.add(s); continue; }
         if (new URL(p.url()).host === new URL(BASIS).host) for (const x of await links()) gesehen.add(x); }
-      for (const s of kalender) { gesehen.delete(s); if (!/^\/(anfrage|en\/contact)\/$/.test(s)) befund(w.id, s, 'rot', 'Seite leitet unerwartet in den Kalender'); }
+// /anfrage/ und /en/contact/ leiten in Phils Kalender (25.11.2026): das Ziel ist fremd, gemessen wird nur, dass es stimmt.
+      for (const s of kalender) {
+        gesehen.delete(s);
+        await p.goto(BASIS + s, { waitUntil: 'commit' }).catch(() => {});
+        if (!(await p.waitForURL(/calendly\.com/, { timeout: 8000 }).then(() => true, () => false))) befund(w.id, s, 'rot', 'Die Seite führt nicht in Phils Kalender', p.url());
+      }
       const seiten = [...new Set([...gesehen, '/wissen/', '/impressum/', '/datenschutz/', '/for-you/', '/gratis/'])].sort();
       for (const s of seiten) await besuche(p, w.id, s, { handy: true, einstieg: /^\/(|links\/)$/.test(s) });
       WEGE.push({ persona: w.id, seiten: seiten.length });

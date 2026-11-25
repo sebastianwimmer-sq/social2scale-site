@@ -137,18 +137,21 @@ const STIL = `
   @keyframes rein{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
   .marke{color:var(--emerald-soft);font-weight:600;font-size:15px}
   h1,.schritt h2{font-family:var(--ff-serif);font-weight:450;line-height:1.05;letter-spacing:-.022em;text-wrap:balance}
-  h1{font-size:clamp(2.2rem,1.4rem + 3.4vw,3.6rem)}
+  h1{font-size:clamp(2.2rem,1.4rem + 3.4vw,3.6rem);font-variation-settings:'opsz' 144;letter-spacing:-.028em}
   .schritt h2{font-size:clamp(1.7rem,1.3rem + 1.8vw,2.3rem)}
-  h1 em,.schritt h2 em,.st-kopf em{font-style:italic;background:linear-gradient(135deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-soft)}
+  h1 em,.schritt h2 em,.st-kopf em{font-style:italic;padding-right:.08em;background:linear-gradient(135deg,#1FC998,#46BEEA);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--emerald-soft)}
   .lead{color:#B4B9B6;font-size:1.12rem;max-width:44ch}
   /* Einstieg: der Befund liegt verhüllt da */
-  .schleier{position:relative;border-radius:20px;padding:26px 24px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:22px;align-items:center;overflow:hidden;
-    background:linear-gradient(180deg,rgba(16,27,32,.92),rgba(10,18,22,.92));box-shadow:inset 0 0 0 1px var(--hair),inset 0 1px 0 rgba(255,255,255,.07),0 40px 80px -40px #000}
-  .s-uhr{position:relative;filter:blur(5px);opacity:.8}.s-uhr svg{display:block;width:100%}
-  .s-uhr b{position:absolute;left:0;right:0;bottom:-4px;text-align:center;font:450 2.4rem/1 var(--ff-serif)}
-  .s-zeilen{display:grid;gap:12px;filter:blur(4px)}.s-zeilen i{display:block;height:12px;border-radius:6px;background:rgba(242,243,241,.22)}
-  .s-licht{position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 65%);transform:translateX(-100%);animation:streif 5.5s var(--e-out) 1.2s infinite}
-  @keyframes streif{0%{transform:translateX(-100%)}45%,100%{transform:translateX(100%)}}
+  .schleier{position:relative;display:flex;gap:8px;justify-content:flex-end;overflow:clip;margin-inline:calc(50% - 50vw);padding:24px 0;background-color:#0b1418;
+    background-image:radial-gradient(circle at 10px 6px,#04090c 4px,transparent 4.7px),radial-gradient(circle at 10px 6px,#04090c 4px,transparent 4.7px),linear-gradient(180deg,#182329,#0b1418);background-size:20px 12px,20px 12px,auto;background-position:0 5px,0 calc(100% - 5px),0 0;background-repeat:repeat-x,repeat-x,no-repeat;box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 30px 50px -20px #000}
+  .schleier i{flex:0 0 clamp(74px,22vw,104px);aspect-ratio:9/14;background-color:#07100f;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+  .schleier i:nth-child(1){background-image:radial-gradient(60% 40% at 40% 70%,rgba(70,190,234,.35),transparent),radial-gradient(70% 40% at 60% 20%,rgba(31,201,152,.22),transparent)}
+  .schleier i:nth-child(2){background-image:radial-gradient(40% 34% at 50% 40%,rgba(242,243,241,.22),transparent 80%),radial-gradient(90% 50% at 50% 100%,rgba(31,201,152,.30),transparent)}
+  .schleier i:nth-child(3){background-image:radial-gradient(80% 30% at 30% 30%,rgba(31,166,224,.34),transparent),radial-gradient(40% 30% at 70% 72%,rgba(242,243,241,.18),transparent 80%)}
+  .schleier i:nth-child(4){background-image:radial-gradient(46% 38% at 54% 46%,rgba(31,201,152,.36),transparent 80%),radial-gradient(80% 40% at 20% 100%,rgba(31,166,224,.24),transparent)}
+  .schleier i:last-child{margin-right:max(20px,calc(50vw - 250px));background-color:#dff5ee;background-image:radial-gradient(80% 60% at 50% 38%,#fff,#d3eee6 62%,#9fcfc6);box-shadow:0 0 50px rgba(150,245,220,.5)}
+  @media (prefers-reduced-motion:no-preference){.schleier i{animation:herein 1s var(--e-out) both}.schleier i:last-child{animation:angehen 1.3s .5s var(--e-out) both}}
+  @keyframes herein{from{transform:translateX(70px);opacity:0}}@keyframes angehen{from{filter:brightness(.1);box-shadow:none}}
   .zwei{display:grid;gap:10px}
   /* das gewählte Video */
   .geraet{position:relative;min-height:150px;border-radius:20px;overflow:hidden;cursor:pointer;display:block;background:linear-gradient(160deg,#101D21,#070D10 60%);
@@ -244,8 +247,8 @@ const STIL = `
   @keyframes pendel{0%{transform:translateX(0)}50%{transform:translateX(163%)}100%{transform:translateX(0)}}
 
   /* kleine Handys (iPhone SE, 568 px hoch): der erste Knopf bleibt über dem Falz (besucher-sim 21.11.2026) */
-  @media (max-height:620px){.schritt{gap:12px}.schleier{padding:14px 18px;grid-template-columns:84px minmax(0,1fr)}#s-ein .klein{display:none}h1{font-size:2rem}.lead{font-size:1rem}}
-  @media (prefers-reduced-motion:reduce){.schritt{animation:none}.s-licht{animation:none}.pixfeld video,.ring .bogen{transition:none}.ring .licht{display:none}.st-kopf .streifen u{animation:none;width:100%}}
+  @media (max-height:620px){.schritt{gap:12px}.schleier{padding:20px 0}.schleier i{flex-basis:58px}#s-ein .klein{display:none}h1{font-size:2rem}.lead{font-size:1rem}}
+  @media (prefers-reduced-motion:reduce){.schritt{animation:none}.pixfeld video,.ring .bogen{transition:none}.ring .licht{display:none}.st-kopf .streifen u{animation:none;width:100%}}
 `;
 
 const esc = (s) => String(s).replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]));
@@ -261,7 +264,7 @@ function markup(T, siteKey) {
   <main class="weg" id="weg" data-sitekey="${esc(siteKey)}">
     <section class="schritt" id="s-ein">
       <p class="marke">${T.marke}</p><h1>${T.h1}</h1><p class="lead">${T.lead}</p>
-      <div class="schleier" aria-hidden="true"><div class="s-uhr"><svg viewBox="0 0 200 112"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#1FC998"/><stop offset="1" stop-color="#46BEEA"/></linearGradient></defs><path d="M16 100A84 84 0 0 1 184 100" fill="none" stroke="url(#sg)" stroke-width="14" stroke-linecap="round"/></svg><b>?</b></div><div class="s-zeilen"><i style="width:82%"></i><i style="width:64%"></i><i style="width:91%"></i></div><div class="s-licht"></div></div>
+      <div class="schleier" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
       <p class="klein">${T.wo}</p>
       <div class="zwei"><button class="knopf" id="los" type="button">${T.los}</button><a class="knopf leer-k" href="${T.terminUrl}" target="_blank" rel="noopener">${T.termin}</a></div>
     </section>
@@ -513,7 +516,7 @@ function seitenSkript() {
   // Zählen wie im Funnel: ohne Cookie, ohne Kennung (closing /api/pv). Die Seite zählt als Aufruf, jeder Schritt danach als
   // Ereignis unter <Seite>schritt/<name>/ (Portal: REEL_CHECK_TRICHTER in _portal/lib/siteviews.js, dort müssen die Namen stehen).
   // ?von=facebook (unsere eigenen Links) zählt als Herkunft, auch wenn die Brücke /gratis/ oder die App den Verweis verschluckt.
-  var VON = { facebook: 'https://www.facebook.com/', instagram: 'https://www.instagram.com/', linkedin: 'https://www.linkedin.com/', youtube: 'https://www.youtube.com/' };
+  var VON = { facebook: 'https://www.facebook.com/', instagram: 'https://www.instagram.com/', linkedin: 'https://www.linkedin.com/', youtube: 'https://www.youtube.com/', anzeige: 'https://anzeige.invalid/' };   // Anzeige: eigene Herkunft, kein echter Host (Portal: normalisiereQuelle)
   var von = new URLSearchParams(location.search).get('von'), woher = Object.prototype.hasOwnProperty.call(VON, von) ? VON[von] : document.referrer || '';
   function zaehl(schritt) {
     try {
@@ -555,8 +558,8 @@ export function reelCheckSeite(env, lang = 'de') {
 /** Zählt auf der Befundseite „gesehen“ und „Termin angetippt“. Speichert nichts im Gerät (§ 25 TDDDG), ohne Kennung, ohne Token; die Herkunft steht im # der Adresse. */
 export function befundZaehler(lang) {
   const seite = lang === 'en' ? '/en/reel-check/' : '/reel-check/';
-  return `<script>(function(){var v=/^#(facebook|instagram|linkedin|youtube)$/.exec(location.hash);function z(s){try{if(navigator.doNotTrack==='1'||localStorage.getItem('s2s-zaehlen')==='aus')return;`
-    + `if(navigator.sendBeacon)navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([JSON.stringify({p:'${seite}schritt/'+s+'/',r:v?'https://www.'+v[1]+'.com/':'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'})],{type:'text/plain;charset=UTF-8'}))}catch(e){}}`
+  return `<script>(function(){var v=/^#(facebook|instagram|linkedin|youtube|anzeige)$/.exec(location.hash);function z(s){try{if(navigator.doNotTrack==='1'||localStorage.getItem('s2s-zaehlen')==='aus')return;`
+    + `if(navigator.sendBeacon)navigator.sendBeacon('https://closing.social2scale.com/api/pv',new Blob([JSON.stringify({p:'${seite}schritt/'+s+'/',r:v?(v[1]==='anzeige'?'https://anzeige.invalid/':'https://www.'+v[1]+'.com/'):'',d:matchMedia('(max-width:759px)').matches?'mobil':'desktop'})],{type:'text/plain;charset=UTF-8'}))}catch(e){}}`
     + `z('befund');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest("a[href*='calendly.com']");if(a)z('termin')})})();</script>`;
 }
 
