@@ -1,0 +1,82 @@
+{
+ "jahr": 2026,
+ "kw": 48,
+ "datum": "2026-11-25",
+ "quelle": "s2s-skool/news/2026-kw48.json",
+ "de": {
+  "frage": "Was würde dir gerade mehr Zeit sparen: Storys ändern, Shorts aus Videos holen oder am Rechner planen?",
+  "kurz": "Storys bearbeiten, Shorts aus langen Videos, Creator Dashboard am PC, Untertitel",
+  "punkte": [
+   {
+    "wo": "Instagram",
+    "quelle": "https://www.engadget.com/2320953/you-can-finally-edit-an-instagram-story-without-deleting-it/",
+    "quelle_name": "Engadget",
+    "datum": "2026-11-18",
+    "satz": "Tippfehler in der Story korrigierst du jetzt bis zu 15 Minuten nach dem Posten.",
+    "detail": "Über „Story bearbeiten“ im Mehr-Menü; Aufrufe, Likes und Antworten bleiben, ein Hinweis zeigt die Bearbeitung an. Kommt schrittweise, Deutschland wird nicht eigens genannt, und ob sich Foto oder Video austauschen lassen, ist offen."
+   },
+   {
+    "wo": "YouTube",
+    "quelle": "https://www.searchenginejournal.com/youtube-studio-clips-podcast-episodes-shorts/597408/",
+    "quelle_name": "Search Engine Journal",
+    "datum": "2026-11-12",
+    "satz": "Aus langen Videos schneidest du direkt in YouTube Studio hochkante Shorts.",
+    "detail": "Stelle per Zeitmarke oder Transkript wählen, Untertitel kommen dazu, wo verfügbar. Vor allem für Podcaster angekündigt, Kanäle und Sprachen sind nicht belegt, KI-Vorschläge gibt es nur teilweise; bei privaten, nicht gelisteten oder Kinder-Shorts fehlt der Link zum ganzen Video."
+   },
+   {
+    "wo": "Facebook",
+    "quelle": "https://www.socialmediatoday.com/news/meta-brings-its-updated-creator-dashboard-to-the-web/875143/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-18",
+    "satz": "Beiträge und Reels planst du im neuen Creator Dashboard jetzt auch am Rechner.",
+    "detail": "Mit Live-Vorschau, Upload mehrerer Videos und Einladungen zum Folgen an Leute, die deine Inhalte gesehen haben. Gilt für Creator-Profile, für Unternehmen gibt es das Business Dashboard; ob in Deutschland schon alle Zugriff haben, ist nicht belegt."
+   },
+   {
+    "wo": "Psychologie",
+    "quelle": "",
+    "quelle_name": "Gernsbacher, M. A. (2015). Video Captions Benefit Everyone. Policy Insights from the Behavioral and Brain Sciences, 2(1), 195-202",
+    "datum": "",
+    "satz": "Lass bei Shorts die Untertitel an und lies sie vor dem Veröffentlichen gegen.",
+    "detail": "Ein Überblick über mehr als 100 Studien zeigt: Mit Untertiteln verstehen Menschen Videos besser, sind aufmerksamer und merken sich mehr. Besonders profitieren alle, die schlecht hören oder die Sprache noch lernen."
+   }
+  ]
+ },
+ "en": {
+  "frage": "Which would save you the most time: editing stories, clipping Shorts or planning on your computer?",
+  "kurz": "Story edits, Shorts from long videos, Creator Dashboard on desktop, captions",
+  "punkte": [
+   {
+    "wo": "Instagram",
+    "quelle": "https://www.engadget.com/2320953/you-can-finally-edit-an-instagram-story-without-deleting-it/",
+    "quelle_name": "Engadget",
+    "datum": "2026-11-18",
+    "satz": "You can now fix a typo in your story for up to 15 minutes after posting.",
+    "detail": "Pick the edit option in the story's More menu; views, likes and replies stay, and the story is marked as edited. It's rolling out gradually, reports don't mention Germany specifically, and it's unclear whether you can swap the photo or video itself."
+   },
+   {
+    "wo": "YouTube",
+    "quelle": "https://www.searchenginejournal.com/youtube-studio-clips-podcast-episodes-shorts/597408/",
+    "quelle_name": "Search Engine Journal",
+    "datum": "2026-11-12",
+    "satz": "You can cut vertical Shorts from your long videos right inside YouTube Studio.",
+    "detail": "Pick a section by timestamp or transcript; captions are added where available. It's aimed mainly at podcasters, eligible channels and languages aren't confirmed, and AI suggestions are limited. Private, unlisted or made-for-kids Shorts won't link to the full video."
+   },
+   {
+    "wo": "Facebook",
+    "quelle": "https://www.socialmediatoday.com/news/meta-brings-its-updated-creator-dashboard-to-the-web/875143/",
+    "quelle_name": "Social Media Today",
+    "datum": "2026-11-18",
+    "satz": "You can now plan posts and Reels on your computer in the updated Creator Dashboard.",
+    "detail": "You get live previews, bulk video uploads and a way to invite people who saw your content to follow you. It's for creator profiles, while businesses have the Business Dashboard. Whether every account in Germany has access yet isn't confirmed."
+   },
+   {
+    "wo": "Psychology",
+    "quelle": "",
+    "quelle_name": "Gernsbacher, M. A. (2015). Video Captions Benefit Everyone. Policy Insights from the Behavioral and Brain Sciences, 2(1), 195-202",
+    "datum": "",
+    "satz": "Keep captions on for your Shorts and proofread them before you publish.",
+    "detail": "A review of more than 100 studies found that captions help people understand a video, pay attention and remember more. People who are hard of hearing or still learning the language benefit most."
+   }
+  ]
+ }
+}
