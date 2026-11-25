@@ -53,7 +53,7 @@ const NUR = (ARGS.find((a) => a.startsWith('--nur=')) || '').slice(6);
 const WURZEL = (ARGS.find((a) => a.startsWith('--wurzel=')) || '').slice(9);
 let BASIS = (ARGS.find((a) => !a.startsWith('--')) || 'https://social2scale.com').replace(/\/$/, '');
 // Funnel direkt prüfen (z. B. lokaler `wrangler dev` vor einem Deploy von free-content).
-const FUNNEL = (ARGS.find((a) => a.startsWith('--funnel=')) || '').slice(9) || 'https://start.social2scale.com/';
+const FUNNEL = (ARGS.find((a) => a.startsWith('--funnel=')) || '').slice(9) || 'https://start.social2scale.com/?weg=a';
 const AUS = join(process.env.TMPDIR || os.tmpdir(), 'besucher-sim');
 
 // Schwellen mit Quelle — jede hat einen roten und einen grünen Fixture im Selbsttest.
@@ -632,10 +632,14 @@ const PERSONAS = [
       const links = () => p.evaluate(() => [...new Set([...document.querySelectorAll('a[href]')].map((a) => new URL(a.href, location.href))
         .filter((u) => u.host === location.host && !/\.(pdf|png|jpe?g|svg|xml|txt)$/i.test(u.pathname)).map((u) => u.pathname))]);
       // Zwei Ebenen: Startseite und alles, was von dort verlinkt ist (so kommen die /wissen/-Artikel dazu).
-      const gesehen = new Set(['/', '/wissen/']);
+      const gesehen = new Set(['/', '/wissen/']), kalender = new Set();
       await p.goto(BASIS + '/', { waitUntil: 'load' });
       for (const s of await links()) gesehen.add(s);
-      for (const s of [...gesehen]) { await p.goto(BASIS + s, { waitUntil: 'load' }).catch(() => {}); if (new URL(p.url()).host === new URL(BASIS).host) for (const x of await links()) gesehen.add(x); }
+      for (const s of [...gesehen]) { await p.goto(BASIS + s, { waitUntil: 'load' }).catch(() => {}); 
+        // /anfrage/ und /en/contact/ leiten in Phils Kalender (25.11.2026): das Ziel ist fremd und lädt selbst weiter, gemessen wird nur, dass es stimmt.
+        if (await p.waitForURL(/calendly\.com/, { timeout: /^\/(anfrage|en\/contact)\/$/.test(s) ? 8000 : 1 }).then(() => true, () => false)) { kalender.add(s); continue; }
+        if (new URL(p.url()).host === new URL(BASIS).host) for (const x of await links()) gesehen.add(x); }
+      for (const s of kalender) { gesehen.delete(s); if (!/^\/(anfrage|en\/contact)\/$/.test(s)) befund(w.id, s, 'rot', 'Seite leitet unerwartet in den Kalender'); }
       const seiten = [...new Set([...gesehen, '/wissen/', '/impressum/', '/datenschutz/', '/for-you/', '/gratis/'])].sort();
       for (const s of seiten) await besuche(p, w.id, s, { handy: true, einstieg: /^\/(|links\/)$/.test(s) });
       WEGE.push({ persona: w.id, seiten: seiten.length });

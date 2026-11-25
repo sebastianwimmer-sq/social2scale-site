@@ -3,6 +3,7 @@
  * Kennt keine Interna: delegiert an validate/protect/leads/mail.
  */
 
+import { einstiegUmleiten } from './einstieg.js';
 import { istFuenfterTakt } from './takt.js';
 import { validateSubmission } from './validate.js';
 import { reelWaechter } from './reel-waechter.js';
@@ -265,19 +266,19 @@ function confirmFehler(formularUrl, anfrageUrl, sprache = 'de') {
       title: 'Diesen Link hast du schon benutzt',
       body:
         '<p>Kein Problem — trag dich einfach nochmal ein, dann schicken wir dir einen frischen Link.</p>' +
-        `<p><a href="${formularUrl}">Nochmal eintragen</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Nochmal eintragen</a></p>`,
     },
     expired: {
       title: 'Dieser Link ist nicht mehr gültig',
       body:
         '<p>Links gelten 24 Stunden. Trag dich nochmal ein, dann bekommst du sofort einen neuen.</p>' +
-        `<p><a href="${formularUrl}">Neuen Link holen</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Neuen Link holen</a></p>`,
     },
     not_found: {
       title: 'Diesen Link kennen wir nicht mehr',
       body:
         '<p>Vielleicht ein Tippfehler beim Kopieren? Trag dich einfach nochmal ein.</p>' +
-        `<p><a href="${formularUrl}">Nochmal eintragen</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Nochmal eintragen</a></p>`,
     },
     // Zwei noch unbestaetigte Leads duerfen denselben Handle haben (kein Griefing) —
     // bestaetigt aber nur einer. Der Zweite darf KEINEN 500 sehen.
@@ -298,19 +299,19 @@ function confirmFehlerEn(formularUrl, anfrageUrl) {
       title: 'You’ve already used this link',
       body:
         '<p>No problem — just sign up again and we’ll send you a fresh link.</p>' +
-        `<p><a href="${formularUrl}">Sign up again</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Sign up again</a></p>`,
     },
     expired: {
       title: 'This link is no longer valid',
       body:
         '<p>Links are valid for 24 hours. Sign up again and you’ll get a new one right away.</p>' +
-        `<p><a href="${formularUrl}">Get a new link</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Get a new link</a></p>`,
     },
     not_found: {
       title: 'We don’t recognise this link anymore',
       body:
         '<p>Maybe a typo when copying? Just sign up again.</p>' +
-        `<p><a href="${formularUrl}">Sign up again</a></p>`,
+        `<p><a href="${formularUrl}?weg=a">Sign up again</a></p>`,
     },
     handle_taken: {
       title: 'Someone has already signed up this account',
@@ -535,6 +536,8 @@ export default {
 
     // Formular-Seite: der Worker liefert sie jetzt selbst statt an eine
     // statische Seite zu verweisen (Plan 3).
+    const einstieg = einstiegUmleiten(request);
+    if (einstieg) return new Response(null, { status: 302, headers: { ...SICHERHEITS_HEADER, Location: einstieg, 'Cache-Control': 'no-store' } });
     if (url.pathname === '/' && request.method === 'GET') {
       return formPage(env);
     }

@@ -317,6 +317,8 @@ async function wegraeumen(env, z, grund) {
     try { await env.IMAGES.resumeMultipartUpload(key, z.upload_id).abort(); } catch (err) { console.error('[reel-check] Upload-Abbruch:', err); }
   }
   await env.IMAGES.delete([key, befundSchluessel(z.token), pdfSchluessel(z.token)]);
+  // Die Notiz für Phil (volle Lösungen, Sätze aus dem Reel) geht mit derselben Frist.
+  await env.DB.prepare("DELETE FROM tickets WHERE source='reel-check-befund' AND title LIKE ?").bind(`Reel-Check ${Number(z.id)} ·%`).run();
   // Die Zeile bleibt als Zähler ohne Person: Adresse, Vorname und Zielgruppe werden geleert, der Token ist danach tot.
   await env.DB.prepare(
     "UPDATE reel_check SET status='geloescht', email='', email_norm='', zielgruppe='', vorname='', telefon='', upload_id=NULL, fehler=?, geloescht_at=datetime('now'), updated_at=datetime('now') WHERE id=?",
