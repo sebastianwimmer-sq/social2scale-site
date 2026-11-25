@@ -79,7 +79,7 @@ funnel_pakete() {
   ( cd "$ordner" && npm ci --omit=dev --ignore-scripts --prefer-offline --no-audit --no-fund )
 }
 lauf "Funnel-Pakete"             funnel_pakete
-lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs free-content/test/reel-check.test.mjs free-content/test/eingaben.test.mjs tests/bewertungen.test.mjs
+lauf "Funnel-Tests"              node --test free-content/test/alte-adresse.test.mjs free-content/test/lead-loeschung.test.mjs free-content/test/anfrage-loeschen.test.mjs free-content/test/reel-bescheid.test.mjs free-content/test/workbook-bescheid.test.mjs free-content/test/reel-check.test.mjs free-content/test/eingaben.test.mjs tests/bewertungen.test.mjs tests/news-mittwoch-neustart.test.mjs
 lauf "Server nur lokal"          node "$KIT/server-lokal-check.mjs" "$PWD/scripts" "$PWD/free-content/src"
 # Zweisprachig (17.10.2026): jede DE-Seite hat eine aktuelle EN-Schwester
 lauf "Sprachen DE/EN"           node scripts/sprachen-check.mjs

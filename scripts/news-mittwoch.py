@@ -246,9 +246,15 @@ def auf_main_stellen():
     """Als Wache (launchd) läuft der Lauf im eigenen Worktree auf origin/main, nie in einem Entwicklungs-Checkout (kern.md)."""
     if ".s2s-wachen" not in str(SITE):
         return
+    geladen = Path(__file__).resolve().read_bytes()
     subprocess.run(["git", "-C", str(SITE), "fetch", "-q", "origin"], check=True)
     subprocess.run(["git", "-C", str(SITE), "checkout", "-q", "--detach", "--force", "origin/main"], check=True)
     subprocess.run(["git", "-C", str(SITE), "clean", "-fdq", "--", "data/news", "news", "en/news"], check=True)
+    # Python hat diese Datei vor dem Umstellen geladen: hat sie sich geändert, läuft sonst der alte Bau gegen die neuen Tore
+    # (25.11.2026: KW 48 angehalten, der Bau vom 19.11. kannte den Scale-Week-Baustein nicht).
+    if Path(__file__).resolve().read_bytes() != geladen:
+        print("Skript hat sich geändert, starte mit dem neuen Stand neu", flush=True)
+        os.execv(sys.executable, [sys.executable, str(Path(__file__).resolve()), *sys.argv[1:]])
 
 
 def main():
@@ -282,8 +288,10 @@ def main():
 if __name__ == "__main__":
     if SPERRE.exists():
         try:
-            os.kill(int(SPERRE.read_text()), 0)
-            sys.exit("Es läuft schon ein Mittwochslauf")
+            besitzer = int(SPERRE.read_text())
+            os.kill(besitzer, 0)
+            if besitzer != os.getpid():   # nach dem eigenen Neustart (execv) ist es dieselbe Nummer
+                sys.exit("Es läuft schon ein Mittwochslauf")
         except (OSError, ValueError):
             pass
     SPERRE.write_text(str(os.getpid()))
