@@ -16,12 +16,12 @@ import { ERSTGESPRAECH_URL } from '../constants.js';
 const DEFAULT_TURNSTILE_SITE_KEY = '0x4AAAAAAD5FwCxWtZhzGlpX';
 const MAX_MB = Math.round(MAX_BYTES / 1024 / 1024);
 
-export const PRUEF_TAU = 40;   // Sekunden: nach einer gemessenen Prüfdauer von rund 80 s steht die Zahl bei 87
+export const PRUEF_TAU = 60;   // Sekunden: 100 Punkte brauchen gemessen rund 120 s (25.11.2026), dann steht die Zahl bei 87
 export const TEXTE = {
   de: {
     pfad: '/reel-check/', andere: ['/en/reel-check/', 'English', 'en'], start: 'https://social2scale.com/',
     titel: 'Reel-Check · social2scale',
-    beschreibung: 'Lad ein Reel hoch und bekomm den Befund per Mail: 50 Prüfpunkte, eine Zahl von 0 bis 100. Kostenlos.',
+    beschreibung: 'Lad ein Reel hoch und bekomm den Befund per Mail: 100 Prüfpunkte, eine Zahl von 0 bis 100. Kostenlos.',
     marke: 'social2scale · Reel-Check',
     h1: 'Was sehen andere in deinem <em>Reel?</em>',
     lead: 'Lad eins hoch und finde es heraus. Kostenlos, der Befund kommt per Mail.',
@@ -71,7 +71,7 @@ export const TEXTE = {
   en: {
     pfad: '/en/reel-check/', andere: ['/reel-check/', 'Deutsch', 'de'], start: 'https://social2scale.com/en/',
     titel: 'Reel Check · social2scale',
-    beschreibung: 'Upload a reel and get the report by email: 50 checkpoints, one score from 0 to 100. Free.',
+    beschreibung: 'Upload a reel and get the report by email: 100 checkpoints, one score from 0 to 100. Free.',
     marke: 'social2scale · Reel Check',
     h1: 'What do others see in your <em>reel?</em>',
     lead: 'Upload one and find out. Free, the report arrives by email.',

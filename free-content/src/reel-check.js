@@ -369,9 +369,9 @@ export function befundMail(z, origin) {
   const link = `${origin}/rc/${z.token}`;
   return en
     ? { subject: 'Your reel report is ready', tags: ['reel-check-befund'],
-      htmlContent: reelCheckMailHtml('Your report is ready', 'We checked your reel against 50 points. The report shows what already works and the three places to start.', link, 'Open the report', 'Your reel report is ready.', grund, 'en') }
+      htmlContent: reelCheckMailHtml('Your report is ready', 'We checked your reel against 100 points. The report shows what already works and where we would start.', link, 'Open the report', 'Your reel report is ready.', grund, 'en') }
     : { subject: 'Dein Befund ist da', tags: ['reel-check-befund'],
-      htmlContent: reelCheckMailHtml('Dein Befund ist da', 'Wir haben dein Reel an 50 Punkten geprüft. Der Befund zeigt, was schon sitzt und an welchen drei Stellen du anfängst.', link, 'Befund ansehen', 'Dein Befund ist da.', grund) };
+      htmlContent: reelCheckMailHtml('Dein Befund ist da', 'Wir haben dein Reel an 100 Punkten geprüft. Der Befund zeigt, was schon sitzt und wo wir anfangen würden.', link, 'Befund ansehen', 'Dein Befund ist da.', grund) };
 }
 
 const LAGE_WORT = { besser: 'will besser werden', anfang: 'steht am Anfang', keine_zeit: 'hat keine Zeit dafür' };
